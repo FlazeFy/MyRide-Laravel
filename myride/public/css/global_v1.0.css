@@ -1,0 +1,89 @@
+:root {   
+    /* Typography */
+    --textXJumbo : 24px;
+    --textJumbo : 20px;
+    --textXLG : 18px;
+    --textLG : 16px;
+    --textXMD : 14px;
+    --textMD : 13px;
+    --textSM : 12px;
+    --textXSM : 11px;
+
+    /* Rounded */
+    --roundedCircle : 100%;
+    --roundedJumbo : 30px;
+    --roundedXLG : 24px;
+    --roundedLG : 18px;
+    --roundedMD : 14px;
+    --roundedSM : 12px;
+    --roundedMini : 6px;
+
+    /* Spacing */
+    --spaceJumbo : 35px;
+    --spaceXLG : 24px;
+    --spaceLG : 20px;
+    --spaceXMD : 16px;
+    --spaceMD : 12px;
+    --spaceSM : 10px;
+    --spaceXSM : 8px;
+    --spaceXXSM : 6px;
+    --spaceMini : 4px;
+
+    /* Table column min width */
+    --tcolMinXSM : 60px;
+    --tcolMinSM : 120px;
+    --tcolMinMD : 140px;
+    --tcolMinLG : 180px;
+    --tcolMinJumbo : 240px;
+    --tcolMinHuge : 360px;
+
+    /* Color Pallete */
+    --successBG : #00C363;
+    --dangerBG : #DD0022;
+    --warningBG : #FFC352;
+    --infoBG : #009FF9;
+    --infoLightBG : #E7F4FE;
+    --hoverBG : #F2F2F2;
+
+    --primaryColor : #3b82f6;
+    --darkColor : #191919;
+    --whiteColor : #FFFFFF;
+    --greyColor : #838181;
+    --shadowColor : #E0E0E0;
+}
+
+body {
+    background: var(--darkColor);
+    min-height: 75vh;
+}
+
+/* Carousel */
+.carousel-control-prev, .carousel-control-next {
+    background: var(--primaryColor);
+    height: calc(var(--spaceJumbo) * 2);
+    width: calc(var(--spaceJumbo) * 2);
+    opacity: 1 !important;
+    border-radius: 100%;
+    margin-top: 45vh;
+    box-shadow: rgba(0, 0, 0, 0.65) 0px 7px 21px;
+    -webkit-transition: all 0.4s !important;
+    -o-transition: all 0.4s !important;
+    transition: all 0.4s !important;
+}
+.carousel-item .row > div:nth-child(2) .btn {
+    transform: scale(1.025);
+}
+.carousel-item .row > div:nth-child(1) .btn, .carousel-item .row > div:nth-child(3) .btn {
+    transform: scale(0.95);
+}
+
+/* Button */
+button, a {
+    -webkit-transition: all 0.4s !important;
+    -o-transition: all 0.4s !important;
+    transition: all 0.4s !important;
+}
+button:hover, .btn:hover .carousel-control-prev:hover, .carousel-control-next:hover {
+    transform: scale(1.12);
+}
+
