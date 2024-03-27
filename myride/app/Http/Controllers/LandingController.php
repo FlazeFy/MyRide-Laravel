@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+// Helpers
+use App\Helpers\Generator;
+
 class LandingController extends Controller
 {
     /**
@@ -11,7 +14,13 @@ class LandingController extends Controller
      */
     public function index()
     {
-        return view('landing.index');
+        $user_id = Generator::getUserId(session()->get('role_key'));
+
+        if($user_id != null){
+            return view('landing.index');
+        } else {
+            return redirect("/login");
+        }
     }
 
     /**

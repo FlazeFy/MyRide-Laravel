@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LandingController;
 use App\Http\Controllers\GarageController;
 use App\Http\Controllers\CleanController;
+use App\Http\Controllers\LoginController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,6 +19,9 @@ use App\Http\Controllers\CleanController;
 
 Route::prefix('/')->group(function () {
     Route::get('/', [LandingController::class, 'index'])->name('landing');
+
+    Route::get('/login', [LoginController::class, 'index']);
+    Route::post('/login/validate', [LoginController::class, 'login_auth']);
 });
 
 Route::prefix('/garage')->group(function () {

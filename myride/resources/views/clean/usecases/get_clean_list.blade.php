@@ -11,7 +11,10 @@
     <tbody>
         @foreach($dt_all_clean as $dt)
             <tr>
-                <td>{{$dt->vehicle_name}}</td>
+                <td>
+                    <h6 class="mb-0">{{$dt->vehicle_name}}</h6>
+                    <p>{{$dt->vehicle_plate_number}}</p>
+                </td>
                 <td>
                     <div class="row">
                         <div class="col-6">

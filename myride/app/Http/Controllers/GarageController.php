@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 // Helpers
+use App\Helpers\Generator;
 use App\Helpers\Query;
 
 // Models
@@ -17,13 +18,19 @@ class GarageController extends Controller
      */
     public function index()
     {
-        $query_header_vehicle = Query::get_select_template('vehicle_header');
-        $dt_vehicle = VehicleModel::selectRaw($query_header_vehicle)
-            ->orderBy('updated_at')
-            ->get();
+        $user_id = Generator::getUserId(session()->get('role_key'));
 
-        return view('garage.index')
-            ->with('dt_all_vehicle', $dt_vehicle);
+        if($user_id != null){
+            $query_header_vehicle = Query::get_select_template('vehicle_header');
+            $dt_vehicle = VehicleModel::selectRaw($query_header_vehicle)
+                ->orderBy('updated_at')
+                ->get();
+    
+            return view('garage.index')
+                ->with('dt_all_vehicle', $dt_vehicle);
+        } else {
+            return redirect("/login");
+        }
     }
 
     /**
