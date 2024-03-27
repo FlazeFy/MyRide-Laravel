@@ -27,6 +27,12 @@
     .carousel-indicators button:hover {
         border: var(--spaceMini) solid var(--primaryColor);
     }
+    .carousel-control-prev, .carousel-control-next {
+        margin-top: 25vh;
+    }
+    .btn-nav-page {
+        position:absolute !important;
+    }
 </style>
 
 <?php
@@ -79,6 +85,8 @@
                     </div>
                     <h3>{{$dt->vehicle_plate_number}}</h3><hr>
                     <h5>{{$dt->vehicle_desc}}</h5>
+
+                    <a class="btn btn-success rounded-pill py-2 px-5 my-2"><i class="fa-solid fa-arrow-right"></i> See Detail</a>
 
                     @if($dt->updated_at != null)
                         <h6 class="fst-italic" style="font-size: var(--textXMD); text-align: end;">Last Updated {{$dt->updated_at}}</h6>

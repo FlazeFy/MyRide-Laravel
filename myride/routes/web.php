@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LandingController;
 use App\Http\Controllers\GarageController;
+use App\Http\Controllers\CleanController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,5 +22,9 @@ Route::prefix('/')->group(function () {
 
 Route::prefix('/garage')->group(function () {
     Route::get('/', [GarageController::class, 'index'])->name('garage');
+});
+
+Route::prefix('/clean')->group(function () {
+    Route::get('/', [CleanController::class, 'index'])->name('clean');
 });
 

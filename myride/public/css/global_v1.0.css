@@ -93,11 +93,15 @@ button:hover, .btn:hover .carousel-control-prev:hover, .carousel-control-next:ho
     background-color: var(--darkColor);
 }
 .btn-nav-page {
-    position:absolute !important;
     z-index: 999;
     background: var(--dangerColor);
     color: var(--whiteColor) !important;
     padding: var(--spaceMD) var(--spaceXLG);
     border-radius: var(--roundedJumbo);
+    margin: var(--spaceLG);
 }
 
+/* Table */
+table th, table tr {
+    color: var(--whiteColor);
+}
