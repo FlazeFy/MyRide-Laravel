@@ -38,12 +38,10 @@
     --tcolMinHuge : 360px;
 
     /* Color Pallete */
-    --successBG : #00C363;
-    --dangerBG : #DD0022;
-    --warningBG : #FFC352;
-    --infoBG : #009FF9;
-    --infoLightBG : #E7F4FE;
-    --hoverBG : #F2F2F2;
+    --successColor : #00C363;
+    --dangerColor : #DD0022;
+    --warningColor : #FFC352;
+    --infoColor : #009FF9;
 
     --primaryColor : #3b82f6;
     --darkColor : #191919;
@@ -85,5 +83,21 @@ button, a {
 }
 button:hover, .btn:hover .carousel-control-prev:hover, .carousel-control-next:hover {
     transform: scale(1.12);
+}
+
+.btn-menu-landing, .carousel-indicators button{
+    background-position: center;
+    background-repeat:no-repeat;
+    position: relative;
+    background-size: cover;
+    background-color: var(--darkColor);
+}
+.btn-nav-page {
+    position:absolute !important;
+    z-index: 999;
+    background: var(--dangerColor);
+    color: var(--whiteColor) !important;
+    padding: var(--spaceMD) var(--spaceXLG);
+    border-radius: var(--roundedJumbo);
 }
 

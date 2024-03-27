@@ -6,11 +6,6 @@
         -webkit-transition: all 0.4s !important;
         -o-transition: all 0.4s !important;
         transition: all 0.4s !important;
-        background-position: center;
-        background-repeat:no-repeat;
-        position: relative;
-        background-size: cover;
-        background-color: var(--darkColor);
         border: transparent solid var(--primaryColor);
         /* z-index: 999 !important; */
     }
@@ -35,17 +30,17 @@
         <div class="carousel-item h-100 active">
             <div class="row">
                 <div class="col-lg-4 col-md-6 col-sm-12">
-                    <button class="btn btn-menu-landing" style="background-image: linear-gradient(rgba(0, 0, 0, 0.4),rgba(0, 0, 0, 0.55)), url('http://127.0.0.1:8000/assets/trip.jpg');">
+                    <button class="btn btn-menu-landing" style="background-image: linear-gradient(rgba(0, 0, 0, 0.4),rgba(0, 0, 0, 0.55)), url('http://127.0.0.1:8000/assets/trip.jpg');" onclick="window.location.href='/trip'">
                         <h2 class="text-white position-absolute" style="bottom: var(--spaceLG); left: var(--spaceLG);">Trip</h2>
                     </button>
                 </div>
                 <div class="col-lg-4 col-md-6 col-sm-12">
-                    <button class="btn btn-menu-landing" style="background-image: linear-gradient(rgba(0, 0, 0, 0.4),rgba(0, 0, 0, 0.55)), url('http://127.0.0.1:8000/assets/garage.jpg');">
+                    <button class="btn btn-menu-landing" style="background-image: linear-gradient(rgba(0, 0, 0, 0.4),rgba(0, 0, 0, 0.55)), url('http://127.0.0.1:8000/assets/garage.jpg');" onclick="window.location.href='/garage'">
                         <h2 class="text-white position-absolute" style="bottom: var(--spaceLG); left: var(--spaceLG);">My Garage</h2>
                     </button>
                 </div>
                 <div class="col-lg-4 col-md-6 col-sm-12">
-                    <button class="btn btn-menu-landing" style="background-image: linear-gradient(rgba(0, 0, 0, 0.4),rgba(0, 0, 0, 0.55)), url('http://127.0.0.1:8000/assets/service.jpg');">
+                    <button class="btn btn-menu-landing" style="background-image: linear-gradient(rgba(0, 0, 0, 0.4),rgba(0, 0, 0, 0.55)), url('http://127.0.0.1:8000/assets/service.jpg');" onclick="window.location.href='/service'">
                         <h2 class="text-white position-absolute" style="bottom: var(--spaceLG); left: var(--spaceLG);">Service</h2>
                     </button>
                 </div>
@@ -54,17 +49,17 @@
         <div class="carousel-item">
             <div class="row">
                 <div class="col-lg-4 col-md-6 col-sm-12">
-                    <button class="btn btn-menu-landing" style="background-image: linear-gradient(rgba(0, 0, 0, 0.4),rgba(0, 0, 0, 0.55)), url('http://127.0.0.1:8000/assets/wash.jpg');">
+                    <button class="btn btn-menu-landing" style="background-image: linear-gradient(rgba(0, 0, 0, 0.4),rgba(0, 0, 0, 0.55)), url('http://127.0.0.1:8000/assets/wash.jpg');" onclick="window.location.href='/wash'">
                         <h2 class="text-white position-absolute" style="bottom: var(--spaceLG); left: var(--spaceLG);">Cleanliness</h2>
                     </button>
                 </div>
                 <div class="col-lg-4 col-md-6 col-sm-12">
-                    <button class="btn btn-menu-landing" style="background-image: linear-gradient(rgba(0, 0, 0, 0.4),rgba(0, 0, 0, 0.55)), url('http://127.0.0.1:8000/assets/stats.jpg');">
+                    <button class="btn btn-menu-landing" style="background-image: linear-gradient(rgba(0, 0, 0, 0.4),rgba(0, 0, 0, 0.55)), url('http://127.0.0.1:8000/assets/stats.jpg');" onclick="window.location.href='/stats'">
                         <h2 class="text-white position-absolute" style="bottom: var(--spaceLG); left: var(--spaceLG);">Statistic</h2>
                     </button>
                 </div>
                 <div class="col-lg-4 col-md-6 col-sm-12">
-                    <button class="btn btn-menu-landing" style="background-image: linear-gradient(rgba(0, 0, 0, 0.4),rgba(0, 0, 0, 0.55)), url('http://127.0.0.1:8000/assets/driver.jpg');">
+                    <button class="btn btn-menu-landing" style="background-image: linear-gradient(rgba(0, 0, 0, 0.4),rgba(0, 0, 0, 0.55)), url('http://127.0.0.1:8000/assets/driver.jpg');" onclick="window.location.href='/driver'">
                         <h2 class="text-white position-absolute" style="bottom: var(--spaceLG); left: var(--spaceLG);">Driver</h2>
                     </button>
                 </div>
@@ -73,17 +68,17 @@
         <div class="carousel-item">
             <div class="row">
                 <div class="col-lg-4 col-md-6 col-sm-12">
-                    <button class="btn btn-menu-landing" style="background-image: linear-gradient(rgba(0, 0, 0, 0.4),rgba(0, 0, 0, 0.55)), url('http://127.0.0.1:8000/assets/help.jpg');">
+                    <button class="btn btn-menu-landing" style="background-image: linear-gradient(rgba(0, 0, 0, 0.4),rgba(0, 0, 0, 0.55)), url('http://127.0.0.1:8000/assets/help.jpg');" onclick="window.location.href='/help'">
                         <h2 class="text-white position-absolute" style="bottom: var(--spaceLG); left: var(--spaceLG);">Help Center</h2>
                     </button>
                 </div>
                 <div class="col-lg-4 col-md-6 col-sm-12">
-                    <button class="btn btn-menu-landing" style="background-image: linear-gradient(rgba(0, 0, 0, 0.4),rgba(0, 0, 0, 0.55)), url('http://127.0.0.1:8000/assets/setting.jpg');">
+                    <button class="btn btn-menu-landing" style="background-image: linear-gradient(rgba(0, 0, 0, 0.4),rgba(0, 0, 0, 0.55)), url('http://127.0.0.1:8000/assets/setting.jpg');" onclick="window.location.href='/setting'">
                         <h2 class="text-white position-absolute" style="bottom: var(--spaceLG); left: var(--spaceLG);">Setting</h2>
                     </button>
                 </div>
                 <div class="col-lg-4 col-md-6 col-sm-12">
-                    <button class="btn btn-menu-landing" style="background-image: linear-gradient(rgba(0, 0, 0, 0.4),rgba(0, 0, 0, 0.55)), url('http://127.0.0.1:8000/assets/signout.jpg');">
+                    <button class="btn btn-menu-landing" style="background-image: linear-gradient(rgba(0, 0, 0, 0.4),rgba(0, 0, 0, 0.55)), url('http://127.0.0.1:8000/assets/signout.jpg');" onclick="window.location.href='/signout'">
                         <h2 class="text-white position-absolute" style="bottom: var(--spaceLG); left: var(--spaceLG);">Sign Out</h2>
                     </button>
                 </div>

@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LandingController;
+use App\Http\Controllers\GarageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,5 +17,9 @@ use App\Http\Controllers\LandingController;
 
 Route::prefix('/')->group(function () {
     Route::get('/', [LandingController::class, 'index'])->name('landing');
+});
+
+Route::prefix('/garage')->group(function () {
+    Route::get('/', [GarageController::class, 'index'])->name('garage');
 });
 
