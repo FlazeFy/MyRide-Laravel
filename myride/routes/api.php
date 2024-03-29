@@ -12,4 +12,4 @@ Route::post('/v1/login', [CommandAuthApi::class, 'login']);
 
 ######################### Private Route #########################
 
-Route::get('/v1/logout', [QueryAuthApi::class, 'logout'])->middleware(['auth:sanctum']);
+Route::post('/v1/logout', [QueryAuthApi::class, 'logout'])->middleware(['auth:sanctum']);

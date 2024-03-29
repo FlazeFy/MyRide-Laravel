@@ -105,3 +105,11 @@ button:hover, .btn:hover .carousel-control-prev:hover, .carousel-control-next:ho
 table th, table tr {
     color: var(--whiteColor);
 }
+
+/* Modal */
+.modal-content {
+    background: var(--darkColor) !important;
+}
+.modal-content {
+    color: var(--whiteColor) !important;
+}

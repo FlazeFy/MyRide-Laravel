@@ -35,6 +35,7 @@
                 @include('landing.usecases.get_profile_section')
             </div>
         </div>
+        @include('landing.usecases.post_sign_out')
     </div>
 </body>
 </html>

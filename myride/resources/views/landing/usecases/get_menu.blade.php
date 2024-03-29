@@ -78,7 +78,8 @@
                     </button>
                 </div>
                 <div class="col-lg-4 col-md-6 col-sm-12">
-                    <button class="btn btn-menu-landing" style="background-image: linear-gradient(rgba(0, 0, 0, 0.4),rgba(0, 0, 0, 0.55)), url('http://127.0.0.1:8000/assets/signout.jpg');" onclick="window.location.href='/signout'">
+                    <button class="btn btn-menu-landing" style="background-image: linear-gradient(rgba(0, 0, 0, 0.4),rgba(0, 0, 0, 0.55)), url('http://127.0.0.1:8000/assets/signout.jpg');"
+                        data-bs-toggle="modal" data-bs-target="#modalSignOut">
                         <h2 class="text-white position-absolute" style="bottom: var(--spaceLG); left: var(--spaceLG);">Sign Out</h2>
                     </button>
                 </div>

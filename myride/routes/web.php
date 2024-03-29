@@ -23,6 +23,7 @@ Route::prefix('/')->group(function () {
 
     Route::get('/login', [LoginController::class, 'index']);
     Route::post('/login/validate', [LoginController::class, 'login_auth']);
+    Route::post('/sign_out', [LandingController::class, 'sign_out']);
 });
 
 Route::prefix('/garage')->group(function () {
