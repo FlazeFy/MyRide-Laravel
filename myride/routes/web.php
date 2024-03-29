@@ -6,6 +6,7 @@ use App\Http\Controllers\GarageController;
 use App\Http\Controllers\CleanController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\TripController;
+use App\Http\Controllers\StatsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,5 +37,11 @@ Route::prefix('/clean')->group(function () {
 
 Route::prefix('/trip')->group(function () {
     Route::get('/', [TripController::class, 'index'])->name('trip');
+});
+
+Route::prefix('/stats')->group(function () {
+    Route::get('/', [StatsController::class, 'index'])->name('stats');
+
+    Route::post('/convert/csv', [StatsController::class, 'convert_csv']);
 });
 

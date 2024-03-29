@@ -113,3 +113,17 @@ table th, table tr {
 .modal-content {
     color: var(--whiteColor) !important;
 }
+
+/* Typography */
+label {
+    margin-bottom: var(--spaceMD);
+}
+
+/* Container */
+.container {
+    border: 1.75px solid var(--whiteColor);
+    border-radius: var(--roundedMD);
+    padding: var(--spaceLG);
+    margin-bottom: var(--spaceLG);
+    color: var(--whiteColor);
+}
