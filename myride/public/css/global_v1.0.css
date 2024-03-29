@@ -98,7 +98,7 @@ button:hover, .btn:hover .carousel-control-prev:hover, .carousel-control-next:ho
     color: var(--whiteColor) !important;
     padding: var(--spaceMD) var(--spaceXLG);
     border-radius: var(--roundedJumbo);
-    margin: var(--spaceLG);
+    margin: var(--spaceLG) 0 var(--spaceLG) var(--spaceLG);
 }
 
 /* Table */
