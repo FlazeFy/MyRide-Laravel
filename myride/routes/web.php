@@ -5,8 +5,10 @@ use App\Http\Controllers\LandingController;
 use App\Http\Controllers\GarageController;
 use App\Http\Controllers\CleanController;
 use App\Http\Controllers\LoginController;
-use App\Http\Controllers\TripController;
 use App\Http\Controllers\StatsController;
+
+use App\Http\Controllers\TripController;
+use App\Http\Controllers\AddTripController;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,6 +39,9 @@ Route::prefix('/clean')->group(function () {
 
 Route::prefix('/trip')->group(function () {
     Route::get('/', [TripController::class, 'index'])->name('trip');
+
+    Route::get('/add', [AddTripController::class, 'index'])->name('add_trip');
+    Route::post('/add', [AddTripController::class, 'post_trip']);
 });
 
 Route::prefix('/stats')->group(function () {
