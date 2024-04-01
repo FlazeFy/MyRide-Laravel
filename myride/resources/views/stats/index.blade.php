@@ -10,4 +10,12 @@
             
         </div>
     </div>
+    <div class="row">
+        <div class="col">
+            @include('stats.usecases.get_total_trip_by_category')
+        </div>
+        <div class="col">
+            @include('stats.usecases.get_total_vehicle_by_type')
+        </div>
+    </div>
 </div>

@@ -36,6 +36,11 @@
                 <!-- Bootstrap dataTables Javascript -->
                 <script type='text/javascript' language='javascript' src='https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js'></script>
             ";
+        } else if($route == 'stats'){
+            echo "
+                <!--Apex Chart-->
+                <script src='https://cdn.jsdelivr.net/npm/apexcharts'></script>
+            ";
         }
     ?>
 

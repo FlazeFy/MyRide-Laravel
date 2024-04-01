@@ -23,8 +23,24 @@ class StatsController extends Controller
     {
         $user_id = Generator::getUserId(session()->get('role_key'));
 
+        $total_trip_by_category = TripModel::selectRaw('trip_category as context, COUNT(1) as total')
+            ->where('created_by', $user_id)
+            ->orderBy('total','DESC')
+            ->groupBy('trip_category')
+            ->limit(6)
+            ->get();
+
+        $total_vehicle_by_category = VehicleModel::selectRaw('vehicle_category as context, COUNT(1) as total')
+            ->where('created_by', $user_id)
+            ->orderBy('total','DESC')
+            ->groupBy('vehicle_category')
+            ->limit(6)
+            ->get();
+
         if($user_id != null){    
-            return view('stats.index');
+            return view('stats.index')
+                ->with('total_trip_by_category',$total_trip_by_category)
+                ->with('total_vehicle_by_category',$total_vehicle_by_category);
         } else {
             return redirect("/login");
         }
