@@ -24,12 +24,44 @@
 
     <!-- Jquery -->
     <script type="text/javascript" language="javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    
+    <?php 
+        // Datatable CDN
+        $route = Route::currentRouteName();
+        if($route == 'clean'){
+            echo "
+                <!-- Jquery DataTables -->
+                <script type='text/javascript' language='javascript' src='https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js'></script>
+            
+                <!-- Bootstrap dataTables Javascript -->
+                <script type='text/javascript' language='javascript' src='https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js'></script>
+            ";
+        }
+    ?>
+
+    <script type="text/javascript" charset="utf-8">
+        $(document).ready(function () {
+            <?php 
+                $route = Route::currentRouteName();
+                if($route == 'clean'){
+                    echo "$('#clean_tb').DataTable();";
+                }
+            ?>
+        });
+    </script>
 </head>
 <body>
     @yield('content')
 </body>
 
 <!-- Others JS -->
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDXu2ivsJ8Hj6Qg1punir1LR2kY9Q_MSq8&callback=initMap&v=weekly" defer></script>
+<?php 
+    $route = Route::currentRouteName();
+    if($route == 'add_trip' || $route == 'trip'){
+        echo "
+            <script src='https://maps.googleapis.com/maps/api/js?key=AIzaSyDXu2ivsJ8Hj6Qg1punir1LR2kY9Q_MSq8&callback=initMap&v=weekly' defer></script>
+        ";
+    }
+?>
 
 </html>

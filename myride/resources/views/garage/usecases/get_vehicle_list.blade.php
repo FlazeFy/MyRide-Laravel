@@ -5,14 +5,14 @@
     }
     .carousel-caption {
         color: var(--whiteColor) !important;
-        right: 0;
-        left: 0;
+        right: 0 !important;
+        left: 0 !important;
         background: var(--darkColor) !important;
-        bottom: 0;
+        bottom: 0 !important;
         margin: 0;
         width: 100%;
-        text-align: left;
-        padding: var(--spaceJumbo) var(--spaceJumbo) 16vh var(--spaceJumbo);
+        text-align: left !important;
+        padding: var(--spaceJumbo) var(--spaceJumbo) 16vh var(--spaceJumbo) !important;
     }
     .carousel-indicators {
         display: block !important;
@@ -28,7 +28,7 @@
         border: var(--spaceMini) solid var(--primaryColor);
     }
     .carousel-control-prev, .carousel-control-next {
-        margin-top: 25vh;
+        margin-top: 25vh !important;
     }
     .btn-nav-page {
         position:absolute !important;

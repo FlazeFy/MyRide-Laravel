@@ -53,8 +53,6 @@
     </div>
 </div>
 
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDXu2ivsJ8Hj6Qg1punir1LR2kY9Q_MSq8&callback=init_map&v=weekly" defer></script>
-
 <script type="text/javascript">
     let map;
     let markers = [

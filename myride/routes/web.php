@@ -35,6 +35,8 @@ Route::prefix('/garage')->group(function () {
 
 Route::prefix('/clean')->group(function () {
     Route::get('/', [CleanController::class, 'index'])->name('clean');
+
+    Route::post('/destroy/{id}', [CleanController::class, 'hard_del_clean']);
 });
 
 Route::prefix('/trip')->group(function () {
