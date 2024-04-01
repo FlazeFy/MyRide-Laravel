@@ -6,9 +6,12 @@ use Illuminate\Http\Request;
 
 // Helpers
 use App\Helpers\Generator;
+use App\Helpers\Audit;
 
 // Models
 use App\Models\TripModel;
+use App\Models\VehicleModel;
+use App\Models\DictionaryModel;
 
 class AddTripController extends Controller
 {
@@ -19,58 +22,43 @@ class AddTripController extends Controller
     {
         $user_id = Generator::getUserId(session()->get('role_key'));
 
+        $dt_all_vehicle = VehicleModel::selectRaw("id, CONCAT(vehicle_merk,' - ',vehicle_name) as vehicle_name")
+            ->orderBy('vehicle_name', 'ASC')
+            ->get();
+
+        $dt_trip_category = DictionaryModel::getDictionaryByType('trip_category');
+
         if($user_id != null){
-            return view('trip.add.index');
+            return view('trip.add.index')
+                ->with('dt_all_vehicle', $dt_all_vehicle)
+                ->with('dt_trip_category', $dt_trip_category);
         } else {
             return redirect("/login");
         }
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function post_trip(Request $request)
     {
-        //
-    }
+        $user_id = Generator::getUserId(session()->get('role_key'));
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+        TripModel::create([
+            'id' => Generator::getUUID(), 
+            'vehicle_id' => $request->vehicle_id, 
+            'trip_desc' => $request->trip_desc, 
+            'trip_category' => $request->trip_category,  
+            'trip_person' => $request->trip_person, 
+            'trip_origin_name' => $request->trip_origin_name, 
+            'trip_origin_coordinate' => $request->trip_origin_coordinate,  
+            'trip_destination_name'  => $request->trip_destination_name,
+            'trip_destination_coordinate' => $request->trip_destination_coordinate,  
+            'created_at' => date('Y-m-d H:i:s'), 
+            'created_by' => $user_id, 
+            'updated_at' => null, 
+            'deleted_at' => null
+        ]);
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
+        Audit::createHistory('Add Trip', 'History');
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        return redirect("/trip");
     }
 }

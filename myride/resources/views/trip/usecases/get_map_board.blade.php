@@ -119,7 +119,7 @@
             });
         }
 
-        markers.push(marker);
+        markers.push(marker)
     }
 
     function init_map() {
