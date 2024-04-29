@@ -1,12 +1,12 @@
 <style>
     .btn-trip-box {
         color: var(--whiteColor) !important;
-        padding: var(--spaceLG);
+        padding: var(--spaceLG) !important;
         margin-bottom: var(--spaceLG);
         width: 100%;
-        text-align: left;
-        border: 1.5px solid var(--whiteColor);
-        border-radius: var(--roundedMD);
+        text-align: left !important;
+        border: 1.5px solid var(--whiteColor) !important;
+        border-radius: var(--roundedMD) !important;
     }
     .btn-trip-box:hover {
         transform: scale(1.05);

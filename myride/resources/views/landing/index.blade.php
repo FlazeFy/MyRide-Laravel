@@ -1,13 +1,15 @@
 @extends('layouts.main_layout')
 
-<div class="p-3">
-    <div class="row">
-        <div class="col-lg-8 col-md-6 col-sm-12">
-            @include('landing.usecases.get_menu')
+@section('content')
+    <div class="p-3">
+        <div class="row">
+            <div class="col-lg-8 col-md-6 col-sm-12">
+                @include('landing.usecases.get_menu')
+            </div>
+            <div class="col-lg-4 col-md-6 col-sm-12">
+                @include('landing.usecases.get_profile_section')
+            </div>
         </div>
-        <div class="col-lg-4 col-md-6 col-sm-12">
-            @include('landing.usecases.get_profile_section')
-        </div>
+        @include('landing.usecases.post_sign_out')
     </div>
-    @include('landing.usecases.post_sign_out')
-</div>
+@endsection
