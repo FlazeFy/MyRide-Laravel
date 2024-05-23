@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LandingController;
 use App\Http\Controllers\GarageController;
+use App\Http\Controllers\GarageEditController;
 use App\Http\Controllers\CleanController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\StatsController;
@@ -20,6 +21,8 @@ Route::prefix('/')->group(function () {
 
 Route::prefix('/garage')->middleware(['auth_v2:sanctum'])->group(function () {
     Route::get('/', [GarageController::class, 'index'])->name('garage');
+
+    Route::get('/edit/{id}', [GarageEditController::class, 'index']);
 });
 
 Route::prefix('/clean')->middleware(['auth_v2:sanctum'])->group(function () {

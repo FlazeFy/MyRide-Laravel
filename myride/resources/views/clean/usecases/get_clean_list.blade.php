@@ -1,6 +1,6 @@
 <div class="mx-4">
     <h2 class="text-center">All Clean History</h2>
-    <table class="table" id="clean_tb">
+    <table class="table table-bordered" id="clean_tb">
         <thead>
             <tr>
                 <th scope="col">Vehicle Name</th>

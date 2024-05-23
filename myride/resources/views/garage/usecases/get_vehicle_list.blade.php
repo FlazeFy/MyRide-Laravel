@@ -86,7 +86,8 @@
                     <h3>{{$dt->vehicle_plate_number}}</h3><hr>
                     <h5>{{$dt->vehicle_desc}}</h5>
 
-                    <a class="btn btn-success rounded-pill py-2 px-5 my-2"><i class="fa-solid fa-arrow-right"></i> See Detail</a>
+                    <a class="btn btn-success rounded-pill py-2 px-5 my-2 me-2"><i class="fa-solid fa-arrow-right"></i> See Detail</a>
+                    <a class="btn btn-warning rounded-pill py-2 px-5 my-2 text-white" href="/garage/edit/{{$dt->id}}"><i class="fa-solid fa-pen-to-square"></i> Edit</a>
 
                     @if($dt->updated_at != null)
                         <h6 class="fst-italic" style="font-size: var(--textXMD); text-align: end;">Last Updated {{$dt->updated_at}}</h6>

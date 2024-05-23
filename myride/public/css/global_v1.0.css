@@ -105,6 +105,9 @@ button:hover, .btn:hover .carousel-control-prev:hover, .carousel-control-next:ho
 table th, table tr {
     color: var(--whiteColor);
 }
+thead th {
+    text-align: center;
+}
 
 /* Modal */
 .modal-content {
@@ -129,4 +132,17 @@ label, a, p, b, i, li, h1, h2, h3, h4 ,h5, h6 {
     padding: var(--spaceLG);
     margin-bottom: var(--spaceLG);
     color: var(--whiteColor);
+}
+
+.form-control, .form-select, .input-group-text {
+    background: transparent;
+    color: var(--whiteColor);
+    border-radius: var(--roundedLG);
+}
+.input-group-text {
+    height: 38px;
+}
+
+hr {
+    background: var(--whiteColor);
 }

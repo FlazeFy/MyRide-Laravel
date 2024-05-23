@@ -1,6 +1,6 @@
 <style>
     #map-board {
-        height:70vh;
+        height:50vh;
         border-radius: 20px;
         margin-bottom: 6px;
         border: 5px solid black;
@@ -36,69 +36,63 @@
     <h2>Add Trip</h2>
     <form action="/trip/add" method="POST">
         @csrf
+        <div class="position-relative">
+            <div id="map-board"></div>
+        </div>
         <div class="row">
-            <div class="col-lg-6">
-                <div class="row">
-                    <div class="col-lg-6 col-md-6 col-sm-12">
-                        <label>Vehicle Name</label>
-                        <select class="form-select" name="vehicle_id" id="vehicle_id" aria-label="Default select example">
-                            @foreach($dt_all_vehicle as $dt)
-                                <option value="{{$dt->id}}">{{$dt->vehicle_name}}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="col-lg-6 col-md-6 col-sm-12">
-                        <label>Trip Category</label>
-                        <select class="form-select" name="trip_category" id="trip_category" aria-label="Default select example">
-                            @foreach($dt_trip_category as $dt)
-                                <option value="{{$dt->dictionary_name}}">{{$dt->dictionary_name}}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-6 col-md-6 col-sm-12">
-                        <label>Description</label>
-                        <textarea class="form-control" name="trip_desc" id="trip_desc" required></textarea>
-                    </div>
-                    <div class="col-lg-6 col-md-6 col-sm-12">
-                        <label>Person</label>
-                        <textarea class="form-control" name="trip_person" id="trip_person" required></textarea>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-6 col-md-6 col-sm-12">
-                        <label>Trip Origin Name</label>
-                        <input class="form-control" name="trip_origin_name" id="trip_origin_name" requried>
-                    </div>
-                    <div class="col-lg-6 col-md-6 col-sm-12">
-                        <label>Trip Destination Name</label>
-                        <input class="form-control" name="trip_destination_name" id="trip_destination_name" requried>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-6 col-md-6 col-sm-12">
-                        <label>Trip Origin Coordinate</label>
-                        <input class="form-control" name="trip_origin_coordinate" id="trip_origin_coordinate" requried>
-                    </div>
-                    <div class="col-lg-6 col-md-6 col-sm-12">
-                        <label>Trip Destination Coordinate</label>
-                        <input class="form-control" name="trip_destination_coordinate" id="trip_destination_coordinate" requried>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-6 col-md-6 col-sm-12">
-                        <a class="btn btn-danger rounded-pill py-3 w-100 mt-3" onclick="resetMarker()"><i class="fa-solid fa-rotate-left"></i> Reset Location</a>
-                    </div>
-                    <div class="col-lg-6 col-md-6 col-sm-12">
-                        <button class="btn btn-success rounded-pill py-3 w-100 mt-3"><i class="fa-solid fa-floppy-disk"></i> Save Trip</button>
-                    </div>
-                </div>
+            <div class="col-lg-6 col-md-6 col-sm-12">
+                <label>Vehicle Name</label>
+                <select class="form-select" name="vehicle_id" id="vehicle_id" aria-label="Default select example">
+                    @foreach($dt_all_vehicle as $dt)
+                        <option value="{{$dt->id}}">{{$dt->vehicle_name}}</option>
+                    @endforeach
+                </select>
             </div>
-            <div class="col-lg-6">
-                <div class="position-relative">
-                    <div id="map-board"></div>
-                </div>
+            <div class="col-lg-6 col-md-6 col-sm-12">
+                <label>Trip Category</label>
+                <select class="form-select" name="trip_category" id="trip_category" aria-label="Default select example">
+                    @foreach($dt_trip_category as $dt)
+                        <option value="{{$dt->dictionary_name}}">{{$dt->dictionary_name}}</option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-12">
+                <label>Description</label>
+                <textarea class="form-control" name="trip_desc" id="trip_desc" required></textarea>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12">
+                <label>Person</label>
+                <textarea class="form-control" name="trip_person" id="trip_person" required></textarea>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-12">
+                <label>Trip Origin Name</label>
+                <input class="form-control" name="trip_origin_name" id="trip_origin_name" requried>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12">
+                <label>Trip Destination Name</label>
+                <input class="form-control" name="trip_destination_name" id="trip_destination_name" requried>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-12">
+                <label>Trip Origin Coordinate</label>
+                <input class="form-control" name="trip_origin_coordinate" id="trip_origin_coordinate" requried>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12">
+                <label>Trip Destination Coordinate</label>
+                <input class="form-control" name="trip_destination_coordinate" id="trip_destination_coordinate" requried>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-12">
+                <a class="btn btn-danger rounded-pill py-3 w-100 mt-3" onclick="resetMarker()"><i class="fa-solid fa-rotate-left"></i> Reset Location</a>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12">
+                <button class="btn btn-success rounded-pill py-3 w-100 mt-3"><i class="fa-solid fa-floppy-disk"></i> Save Trip</button>
             </div>
         </div>
     </form>

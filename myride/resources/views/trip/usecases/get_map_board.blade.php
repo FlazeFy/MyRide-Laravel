@@ -42,6 +42,9 @@
         margin: 10px !important;
         border-radius: 10px !important;
     }
+    .maps-info-box p, .maps-info-box h6 {
+        color: var(--textWhite) !important;
+    }
 </style>
 
 <div class="maps-toolbar">
@@ -64,7 +67,7 @@
                 echo "{
                     coords: {lat: "; echo $coor_origin[0]; echo", lng: "; echo $coor_origin[1]; echo"},
                     content: 
-                    `<div>
+                    `<div class='maps-info-box'>
                         <h6>$dt->trip_desc</h6>
                         <span class='bg-dark rounded-pill px-2 py-1 text-white'>$dt->trip_category</span>
                         ";
@@ -80,7 +83,7 @@
                 },{
                     coords: {lat: "; echo $coor_destination[0]; echo", lng: "; echo $coor_destination[1]; echo"},
                     content: 
-                    `<div>
+                    `<div class='maps-info-box'>
                         <h6>$dt->trip_desc</h6>
                         <span class='bg-dark rounded-pill px-2 py-1 text-white'>$dt->trip_category</span>
                         ";
@@ -120,7 +123,7 @@
         markers.push(marker)
     }
 
-    function init_map() {
+    function initMap() {
         map = new google.maps.Map(document.getElementById("map-board"), {
             center: { lat: -6.226838579766097, lng: 106.82157923228753},
             zoom: 12,
@@ -137,5 +140,5 @@
         ?>
     }
 
-    window.init_map = init_map;
+    window.initMap = initMap;
 </script>
