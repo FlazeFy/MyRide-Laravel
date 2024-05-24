@@ -41,6 +41,11 @@
                 <!--Apex Chart-->
                 <script src='https://cdn.jsdelivr.net/npm/apexcharts'></script>
             ";
+        } else if($route == "edit_garage"){
+            echo "
+                <link rel=stylesheet' href='"; echo asset('/css/attachment_v1.0.css'); echo"'/>
+                <script src='"; echo asset('/js/attachment_v1.0.js'); echo"'></script>
+            ";
         }
     ?>
 
@@ -71,7 +76,7 @@
         echo "
             <script src='https://maps.googleapis.com/maps/api/js?key=AIzaSyDXu2ivsJ8Hj6Qg1punir1LR2kY9Q_MSq8&callback=initMap&v=weekly' defer></script>
         ";
-    }
+    } 
 ?>
 
 </html>

@@ -67,12 +67,18 @@ class GarageEditController extends Controller
         return redirect()->back()->with('success_mini_message', 'Vehicle updated!');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function edit_vehicle_doc(Request $request,$id)
     {
-        //
+        $user_id = Generator::getUserId(session()->get('role_key'));
+
+        VehicleModel::where('created_by',$user_id)
+            ->where('id',$id)
+            ->update([
+                'vehicle_document' => $request->vehicle_document,
+                'updated_at' => date('Y-m-d H:i:s')
+            ]);
+
+        return redirect()->back()->with('success_mini_message', 'Vehicle document updated!');
     }
 
     /**

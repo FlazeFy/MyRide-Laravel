@@ -128,6 +128,3 @@
     </div>
 </div>
 <hr>
-<h6>Documents</h6>
-<hr>
-<h6>Others Image</h6>
