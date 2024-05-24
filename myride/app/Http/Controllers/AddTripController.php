@@ -59,6 +59,6 @@ class AddTripController extends Controller
 
         Audit::createHistory('Add Trip', 'History');
 
-        return redirect("/trip");
+        return redirect("/trip")->with('success_message', 'Trip created!');;
     }
 }

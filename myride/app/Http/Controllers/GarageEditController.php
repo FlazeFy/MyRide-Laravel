@@ -30,12 +30,41 @@ class GarageEditController extends Controller
         }
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function edit_vehicle(Request $request,$id)
     {
-        //
+        $user_id = Generator::getUserId(session()->get('role_key'));
+
+        if($request->vehicle_transmission_code == "MT"){
+            $vehicle_transmission = "Manual";
+        } else if($request->vehicle_transmission_code == "AT"){
+            $vehicle_transmission = "Automatic";
+        } else if($request->vehicle_transmission_code == "CVT"){
+            $vehicle_transmission = "CVT";
+        }
+
+        VehicleModel::where('created_by',$user_id)
+            ->where('id',$id)
+            ->update([
+                'vehicle_name' => $request->vehicle_name.' '.$request->vehicle_transmission_code, 
+                'vehicle_merk' => $request->vehicle_merk, 
+                'vehicle_type' => $request->vehicle_type, 
+                'vehicle_price' => $request->vehicle_price, 
+                'vehicle_desc' => $request->vehicle_desc, 
+                'vehicle_distance' => $request->vehicle_distance, 
+                'vehicle_category' => $request->vehicle_category, 
+                'vehicle_status' => $request->vehicle_status, 
+                'vehicle_year_made' => $request->vehicle_year_made, 
+                'vehicle_plate_number' => $request->vehicle_plate_number, 
+                'vehicle_fuel_status' => $request->vehicle_fuel_status, 
+                'vehicle_fuel_capacity' => $request->vehicle_fuel_capacity, 
+                'vehicle_default_fuel' => $request->vehicle_default_fuel, 
+                'vehicle_color' => $request->vehicle_color, 
+                'vehicle_transmission' => $vehicle_transmission,
+                'vehicle_capacity' => $request->vehicle_capacity, 
+                'updated_at' => date('Y-m-d H:i:s')
+            ]);
+
+        return redirect()->back()->with('success_mini_message', 'Vehicle updated!');
     }
 
     /**

@@ -44,6 +44,6 @@ class CleanController extends Controller
 
         Audit::createHistory('Permentally Delete', 'Clean history');
 
-        return redirect()->back();        
+        return redirect()->back()->with('success_message', 'Clean history deleted!');        
     }
 }

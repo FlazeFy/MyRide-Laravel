@@ -59,6 +59,11 @@
     @yield('content')
 </body>
 
+ <!--Modal-->
+@include('others.popup.success')
+@include('others.popup.failed')
+@include('others.popup.success_mini')
+
 <!-- Others JS -->
 <?php 
     $route = Route::currentRouteName();

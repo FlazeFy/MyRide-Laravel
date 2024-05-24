@@ -23,6 +23,7 @@ Route::prefix('/garage')->middleware(['auth_v2:sanctum'])->group(function () {
     Route::get('/', [GarageController::class, 'index'])->name('garage');
 
     Route::get('/edit/{id}', [GarageEditController::class, 'index']);
+    Route::post('/edit/{id}', [GarageEditController::class, 'edit_vehicle']);
 });
 
 Route::prefix('/clean')->middleware(['auth_v2:sanctum'])->group(function () {
