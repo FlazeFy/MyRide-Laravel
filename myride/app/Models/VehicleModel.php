@@ -52,4 +52,13 @@ class VehicleModel extends Model
 
         return $res;
     }
+
+    public static function getVehicleIdentity($user_id,$id){
+        $res = VehicleModel::select('vehicle_name','vehicle_plate_number')
+            ->where('id',$id)
+            ->where('created_by',$user_id)
+            ->first();
+
+        return $res;
+    }
 }

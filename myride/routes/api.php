@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\VehicleApi\Commands as CommandsVehicleApi;
 use App\Http\Controllers\Api\CleanApi\Queries as QueriesCleanApi;
 use App\Http\Controllers\Api\DictionaryApi\Queries as QueriesDictionaryApi;
 use App\Http\Controllers\Api\DictionaryApi\Commands as CommandsDictionaryApi;
+use App\Http\Controllers\Api\TripApi\Commands as CommandsTripApi;
 
 ######################### Public Route #########################
 
@@ -33,4 +34,8 @@ Route::prefix('/v1/dictionary')->middleware(['auth:sanctum'])->group(function ()
 
 Route::prefix('/v1/clean')->middleware(['auth:sanctum'])->group(function () {
     Route::get('/', [QueriesCleanApi::class, 'getAllCleanHistory']);
+});
+
+Route::prefix('/v1/trip')->middleware(['auth:sanctum'])->group(function () {
+    Route::post('/', [CommandsTripApi::class, 'postTrip']);
 });
