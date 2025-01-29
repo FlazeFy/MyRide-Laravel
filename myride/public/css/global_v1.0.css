@@ -136,12 +136,11 @@ label, a, p, b, i, li, h1, h2, h3, h4 ,h5, h6 {
 }
 
 .form-control, .form-select, .input-group-text {
-    background: transparent;
-    color: var(--whiteColor);
+    background: transparent !important;
+    color: var(--whiteColor) !important;
     border-radius: var(--roundedLG);
-}
-.input-group-text {
-    height: 38px;
+    font-size: var(--textXLG);
+    padding: var(--spaceMD);
 }
 
 hr {

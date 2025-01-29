@@ -1,5 +1,5 @@
 <h6>Documents</h6>
-<form action="/garage/edit_doc/{{$dt_vehicle->id}}" method="POST">
+<form action="/garage/edit_doc/{{$id}}" method="POST">
     @csrf
     <div>
         <a class="btn btn-add-att mb-2 text-white" style="float:none;" id="add_att_btn" onclick="addAttachmentForm()"><i class="fa-solid fa-plus"></i> Add Attachment</a>

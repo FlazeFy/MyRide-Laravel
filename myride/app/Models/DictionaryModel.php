@@ -13,7 +13,7 @@ class DictionaryModel extends Model
 
     protected $table = 'dictionary';
     protected $primaryKey = 'id';
-    protected $fillable = ['dictionary_type', 'dictionary_name'];
+    protected $fillable = ['id', 'dictionary_type', 'dictionary_name'];
 
     public static function getDictionaryByType($type){
         $res = DictionaryModel::select("dictionary_name")

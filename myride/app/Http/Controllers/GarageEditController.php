@@ -21,10 +21,8 @@ class GarageEditController extends Controller
         $user_id = Generator::getUserId(session()->get('role_key'));
 
         if($user_id != null){
-            $dt_vehicle = VehicleModel::find($id);
-    
             return view('garage.edit.index')
-                ->with('dt_vehicle', $dt_vehicle);
+                ->with('id', $id);
         } else {
             return redirect("/login");
         }
@@ -79,37 +77,5 @@ class GarageEditController extends Controller
             ]);
 
         return redirect()->back()->with('success_mini_message', 'Vehicle document updated!');
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
     }
 }
