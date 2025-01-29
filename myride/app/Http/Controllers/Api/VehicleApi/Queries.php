@@ -1,12 +1,12 @@
 <?php
 
 namespace App\Http\Controllers\Api\VehicleApi;
-
-use App\Models\VehicleModel;
-
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
+
+// Models
+use App\Models\VehicleModel;
 
 // Helper
 use App\Helpers\Generator;
@@ -25,8 +25,10 @@ class Queries extends Controller
             $user_id = $request->user()->id;
             $limit = $request->query("limit",14);
 
+            // Model
             $res = VehicleModel::getAllVehicleHeader($user_id,$limit);
 
+            // Response
             if ($res) {
                 return response()->json([
                     'status' => 'success',
@@ -52,8 +54,10 @@ class Queries extends Controller
         try{
             $user_id = $request->user()->id;
 
+            // Model
             $res = VehicleModel::getVehicleDetailById($user_id,$id);
 
+            // Response
             if ($res) {
                 return response()->json([
                     'status' => 'success',

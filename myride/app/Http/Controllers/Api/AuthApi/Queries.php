@@ -1,14 +1,14 @@
 <?php
 
 namespace App\Http\Controllers\Api\AuthApi;
-
-use App\Models\UserModel;
-use App\Models\AdminModel;
-
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
+
+// Models
+use App\Models\UserModel;
+use App\Models\AdminModel;
 
 class Queries extends Controller
 {
@@ -17,6 +17,7 @@ class Queries extends Controller
         $user_id = $request->user()->id;
         $check = AdminModel::where('id', $user_id)->first();
 
+        // Response
         if($check == null){
             $request->user()->currentAccessToken()->delete();
             return response()->json([

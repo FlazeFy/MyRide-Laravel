@@ -13,7 +13,7 @@ class DictionaryModel extends Model
 
     protected $table = 'dictionary';
     protected $primaryKey = 'id';
-    protected $fillable = ['id', 'dictionary_type', 'dictionary_name'];
+    protected $fillable = ['id', 'dictionary_type', 'dictionary_name', 'created_at', 'created_by'];
 
     public static function getDictionaryByType($type){
         $res = DictionaryModel::select("dictionary_name")
@@ -22,5 +22,14 @@ class DictionaryModel extends Model
             ->get();
 
         return $res;
+    }
+
+    public static function isUsedName($name, $type){
+        $res = DictionaryModel::selectRaw('1')
+            ->whereRaw('LOWER(dictionary_name) = LOWER(?)', [$name])
+            ->whereRaw('LOWER(dictionary_type) = LOWER(?)', [$type])
+            ->first();
+
+        return $res ? true : false;
     }
 }

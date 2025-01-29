@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Http\Controllers\Api\CleanApi;
+namespace App\Http\Controllers\Api\DictionaryApi;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use App\Http\Controllers\Controller;
 
-//  Models
-use App\Models\CleanModel;
+// Model
+use App\Models\DictionaryModel;
 
-// Helpers
+// Helper
 use App\Helpers\Generator;
 
 class Queries extends Controller
@@ -16,20 +16,33 @@ class Queries extends Controller
     private $module;
     public function __construct()
     {
-        $this->module = "clean history";
+        $this->module = "dictionary";
     }
 
-    public function getAllCleanHistory(Request $request)
+    public function getDictionaryByType(Request $request,$type)
     {
         try{
             $user_id = $request->user()->id;
-            $limit = $request->query("limit",14);
 
-            // Model 
-            $res = CleanModel::getAllCleanHistory($user_id,$limit);
+            // Model
+            $res = DictionaryModel::select('dictionary_name','dictionary_type')
+                ->where('created_by',$user_id)
+                ->orwherenull('created_by');
+            if(strpos($type, ',')){
+                $dcts = explode(",", $type);
+                foreach ($dcts as $dt) {
+                    $res = $res->orwhere('dictionary_type',$dt); 
+                }
+            } else {
+                $res = $res->where('dictionary_type',$type); 
+            }
 
+            $res = $res->orderby('dictionary_type', 'ASC')
+                ->orderby('dictionary_name', 'ASC')
+                ->get();
+            
             // Response
-            if($res) {
+            if (count($res) > 0) {
                 return response()->json([
                     'status' => 'success',
                     'message' => Generator::getMessageTemplate("fetch", $this->module),
