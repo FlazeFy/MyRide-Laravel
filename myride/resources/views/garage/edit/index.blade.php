@@ -52,9 +52,9 @@
                 $(`#vehicle_fuel_capacity`).val(data.vehicle_fuel_capacity)
                 $(`#vehicle_capacity`).val(data.vehicle_capacity)
 
-                $('#created_at').val(data.created_at)
-                $('#updated_at').val(data.updated_at ?? '-')
-                $('#deleted_at').val(data.deleted_at ?? '-')
+                $('#created_at').text(data.created_at)
+                $('#updated_at').text(data.updated_at ?? '-')
+                $('#deleted_at').text(data.deleted_at ?? '-')
             },
             error: function(response, jqXHR, textStatus, errorThrown) {
                 Swal.close()

@@ -111,6 +111,13 @@ thead th {
 }
 
 /* Modal */
+.modal-content, .swal2-popup, .popover {
+    border-radius: var(--roundedJumbo) !important;
+    background: var(--darkColor);
+    border: 1.75px solid var(--whiteColor);
+    color: var(--whiteColor);
+    box-shadow: rgba(59, 130, 246, 0.35) 0px 6px 17px;
+}
 .modal-content {
     background: var(--darkColor) !important;
 }

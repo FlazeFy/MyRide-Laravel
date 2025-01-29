@@ -1,5 +1,4 @@
-<form action="/garage/edit/{{$id}}" method="POST">
-    @csrf
+<form id="form-edit-detail">
     <div class="row">
         <div class="col-lg-6 col-md-6 col-sm-12">
             <label>Vehicle Name & Transmission</label>
@@ -71,7 +70,7 @@
             <select class="form-select" aria-label="Default select example" name="vehicle_fuel_status" id="vehicle_fuel_status"></select>    
         </div>
         <div class="col-lg-6 col-md-6 col-sm-12">
-            <label>Plate</label>
+            <label>Main Color</label>
             <select class="form-select" aria-label="Default select example" name="vehicle_color" id="vehicle_color"></select>
         </div>
         <div class="col-lg-6 col-md-6 col-sm-12">
@@ -82,5 +81,40 @@
             </div>
         </div>
     </div>
-    <button type="submit" class="btn btn-success rounded-pill px-3 py-2"><i class="fa-solid fa-floppy-disk"></i> Save Changes</button>
+    <a class="btn btn-success rounded-pill px-3 py-2" id="submit-edit-detail-btn"><i class="fa-solid fa-floppy-disk"></i> Save Changes</a>
 </form>
+
+<script>
+    $(document).on('click','#submit-edit-detail-btn', function(){
+        update_vehicle_detail('<?= $id ?>')
+    })
+
+    const update_vehicle_detail = (id) => {
+        Swal.showLoading()
+        $.ajax({
+            url: `/api/v1/vehicle/detail/${id}`,
+            type: 'PUT',
+            data: $('#form-edit-detail').serialize(),
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Accept", "application/json")
+                xhr.setRequestHeader("Authorization", `Bearer <?= session()->get("token_key"); ?>`)    
+            },
+            success: function(response) {
+                Swal.hideLoading()
+                Swal.fire({
+                    title: "Success!",
+                    text: `${response.message}`,
+                    icon: "success",
+                    allowOutsideClick: false,
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        get_vehicle(id)
+                    }   
+                });
+            },
+            error: function(response, jqXHR, textStatus, errorThrown) {
+                generate_api_error(response, true)
+            }
+        });
+    }
+</script>

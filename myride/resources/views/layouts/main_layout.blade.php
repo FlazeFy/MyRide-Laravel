@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>My Ride</title>
+    <link rel="icon" type="image/png" href="{{asset('assets/logo_nocap.png')}}"/>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
