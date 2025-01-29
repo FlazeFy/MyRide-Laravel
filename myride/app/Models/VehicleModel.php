@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+use App\Helpers\Query;
+
 class VehicleModel extends Model
 {
     use HasFactory;
@@ -24,5 +26,15 @@ class VehicleModel extends Model
             ->get();
 
         return $res;
+    }
+
+    public static function getAllVehicleHeader($user_id){
+        $query_header_vehicle = Query::get_select_template('vehicle_header');
+        $res = VehicleModel::selectRaw($query_header_vehicle)
+            ->orderBy('updated_at','desc')
+            ->orderBy('created_at','desc')
+            ->get();
+
+        return count($res) > 0 ? $res : null;
     }
 }

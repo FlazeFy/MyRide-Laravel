@@ -40,4 +40,27 @@ class Generator
         
         return $uuid;
     }
+
+    public static function getMessageTemplate($type, $ctx){
+        if (in_array($type, ['create', 'update', 'delete', 'permentally delete', 'fetch','recover','analyze','generate'])) {
+            $ext = in_array($type, ['fetch','recover']) ? "ed" : "d";
+            $res = "$ctx ".$type.$ext;              
+        } else if($type == "not_found"){
+            $res = "$ctx not found";
+        } else if($type == "unknown_error"){
+            $res = "something wrong. please contact admin";
+        } else if($type == "conflict"){
+            $res = "$ctx has been used. try another";
+        } else if($type == "custom"){
+            $res = "$ctx";
+        } else if($type == "validation_failed"){
+            $res = "validation failed : $ctx";
+        } else if($type == "permission"){
+            $res = "permission denied. only $ctx can use this feature";
+        } else {
+            $res = "failed to get respond message";
+        }
+
+        return $res;
+    }
 }
