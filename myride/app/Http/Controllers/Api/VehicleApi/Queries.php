@@ -23,10 +23,11 @@ class Queries extends Controller
     {
         try{
             $user_id = $request->user()->id;
+            $limit = $request->query("limit",14);
 
-            $res = VehicleModel::getAllVehicleHeader($user_id);
+            $res = VehicleModel::getAllVehicleHeader($user_id,$limit);
 
-            if (count($res) > 0) {
+            if ($res) {
                 return response()->json([
                     'status' => 'success',
                     'message' => Generator::getMessageTemplate("fetch", $this->module),

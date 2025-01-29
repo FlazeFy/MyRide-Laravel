@@ -28,13 +28,13 @@ class VehicleModel extends Model
         return $res;
     }
 
-    public static function getAllVehicleHeader($user_id){
+    public static function getAllVehicleHeader($user_id,$limit){
         $query_header_vehicle = Query::get_select_template('vehicle_header');
         $res = VehicleModel::selectRaw($query_header_vehicle)
             ->orderBy('updated_at','desc')
             ->orderBy('created_at','desc')
-            ->get();
+            ->paginate($limit);
 
-        return count($res) > 0 ? $res : null;
+        return $res->isNotEmpty() ? $res : null;
     }
 }
