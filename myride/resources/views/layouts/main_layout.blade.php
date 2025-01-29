@@ -10,6 +10,7 @@
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet" />
     <script src="https://kit.fontawesome.com/328b2b4f87.js" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <!-- Bootstrap 5 -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
@@ -51,17 +52,6 @@
             ";
         }
     ?>
-
-    <script type="text/javascript" charset="utf-8">
-        $(document).ready(function () {
-            <?php 
-                $route = Route::currentRouteName();
-                if($route == 'clean'){
-                    echo "$('#clean_tb').DataTable();";
-                }
-            ?>
-        });
-    </script>
 </head>
 <body>
     @yield('content')

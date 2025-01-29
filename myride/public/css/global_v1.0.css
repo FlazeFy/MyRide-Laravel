@@ -53,6 +53,7 @@
 body {
     background: var(--darkColor);
     min-height: 75vh;
+    font-family: 'Poppins';
 }
 
 /* Carousel */
@@ -82,7 +83,7 @@ button, a {
     transition: all 0.4s !important;
 }
 button:hover, .btn:hover .carousel-control-prev:hover, .carousel-control-next:hover {
-    transform: scale(1.12);
+    transform: scale(1.05);
 }
 
 .btn-menu-landing, .carousel-indicators button{

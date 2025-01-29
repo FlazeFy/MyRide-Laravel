@@ -61,7 +61,7 @@
             },
             success: function(response) {
                 Swal.close()
-                const data = response.data
+                const data = response.data.data
                 let ext_class = 'active'
                 $("#vehicle-nav-list").empty()
                 $("#vehicle-content-list").empty()
@@ -120,7 +120,7 @@
                 Swal.close()
                 Swal.fire({
                     title: "Oops!",
-                    text: "Failed to get the error",
+                    text: "Something went wrong",
                     icon: "error"
                 });
             }
