@@ -58,48 +58,40 @@
 
 <script type="text/javascript">
     let map;
-    let markers = [
-        <?php 
-            foreach($dt_all_trip_location as $dt){
-                $coor_destination = explode(", ", $dt->trip_destination_coordinate);
-                $coor_origin = explode(", ", $dt->trip_origin_coordinate);
 
-                echo "{
-                    coords: {lat: "; echo $coor_origin[0]; echo", lng: "; echo $coor_origin[1]; echo"},
-                    content: 
-                    `<div class='maps-info-box'>
-                        <h6>$dt->trip_desc</h6>
-                        <span class='bg-dark rounded-pill px-2 py-1 text-white'>$dt->trip_category</span>
-                        ";
-                        if($dt->trip_origin_name){
-                            echo "<p class='mt-2 mb-0 fw-bold'>Origin</p>
-                            <p>$dt->trip_origin_name</p>";
-                        }
-                        echo"
-                        <p class='mt-2 mb-0 fw-bold'>Created At</p>
-                        <p>"; echo date("Y-m-d H:i",strtotime($dt->created_at)); echo"</p>
-                        <a class='btn btn-dark rounded-pill px-2 py-1' style='font-size:12px;'><i class='fa-solid fa-location-arrow'></i> Set Direction</a>
-                    </div>`
-                },{
-                    coords: {lat: "; echo $coor_destination[0]; echo", lng: "; echo $coor_destination[1]; echo"},
-                    content: 
-                    `<div class='maps-info-box'>
-                        <h6>$dt->trip_desc</h6>
-                        <span class='bg-dark rounded-pill px-2 py-1 text-white'>$dt->trip_category</span>
-                        ";
-                        if($dt->trip_destination_name){
-                            echo "<p class='mt-2 mb-0 fw-bold'>Destination</p>
-                            <p>$dt->trip_destination_name</p>";
-                        }
-                        echo"
-                        <p class='mt-2 mb-0 fw-bold'>Created At</p>
-                        <p>"; echo date("Y-m-d H:i",strtotime($dt->created_at)); echo"</p>
-                        <a class='btn btn-dark rounded-pill px-2 py-1' style='font-size:12px;'><i class='fa-solid fa-location-arrow'></i> Set Direction</a>
-                    </div>`
-                },";
+    const place_marker = (dt) => {
+        const coorOrigin = dt.trip_origin_coordinate.split(", ").map(Number)
+        const coorDestination = dt.trip_destination_coordinate.split(", ").map(Number)
+
+        markers.push(
+            {
+                coords: { lat: coorOrigin[0], lng: coorOrigin[1] },
+                content: `<div class='maps-info-box'>
+                    <h6>${dt.trip_desc}</h6>
+                    <span class='bg-dark rounded-pill px-2 py-1 text-white'>${dt.trip_category}</span>
+                    ${dt.trip_origin_name ? `<p class='mt-2 mb-0 fw-bold'>Origin</p><p>${dt.trip_origin_name}</p>` : ""}
+                    <p class='mt-2 mb-0 fw-bold'>Created At</p>
+                    <p>${dt.created_at}</p>
+                    <a class='btn btn-dark rounded-pill px-2 py-1' style='font-size:12px;'>
+                        <i class='fa-solid fa-location-arrow'></i> Set Direction
+                    </a>
+                </div>`
+            },
+            {
+                coords: { lat: coorDestination[0], lng: coorDestination[1] },
+                content: `<div class='maps-info-box'>
+                    <h6>${dt.trip_desc}</h6>
+                    <span class='bg-dark rounded-pill px-2 py-1 text-white'>${dt.trip_category}</span>
+                    ${dt.trip_destination_name ? `<p class='mt-2 mb-0 fw-bold'>Destination</p><p>${dt.trip_destination_name}</p>` : ""}
+                    <p class='mt-2 mb-0 fw-bold'>Created At</p>
+                    <p>${dt.created_at}</p>
+                    <a class='btn btn-dark rounded-pill px-2 py-1' style='font-size:12px;'>
+                        <i class='fa-solid fa-location-arrow'></i> Set Direction
+                    </a>
+                </div>`
             }
-        ?>
-    ];
+        );
+    }
 
     function add_marker(props){
         var marker = new google.maps.Marker({
@@ -129,15 +121,9 @@
             zoom: 12,
         });
 
-        <?php 
-            if($dt_all_trip_location){
-                $total = count($dt_all_trip_location) * 2;
-
-                for($i = 0; $i < $total; $i++){
-                    echo "add_marker(markers[".$i."]);";
-                }
-            }
-        ?>
+        if (markers.length > 0) {
+            markers.forEach(markerData => add_marker(markerData));
+        }
     }
 
     window.initMap = initMap;

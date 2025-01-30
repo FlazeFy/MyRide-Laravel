@@ -12,7 +12,7 @@ class Query
                 updated_at";
         } else if($type == 'trip_coordinate'){
             $res = "
-                trip.id, 
+                trip.id, vehicle_name, vehicle_plate_number,
                 trip_desc,trip_category,trip_origin_name,trip_person,trip_origin_coordinate,trip_destination_name,trip_destination_coordinate
                 ";
         }
