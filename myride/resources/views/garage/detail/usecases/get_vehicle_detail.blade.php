@@ -47,6 +47,8 @@
             success: function(response) {
                 Swal.close()
                 const detail = response.data.detail
+                const trip_data = response.data.trip
+                const clean_data = response.data.clean
                     
                 $('#vehicle_name').html(`${detail.vehicle_year_made} | ${detail.vehicle_name}`)
                 $('#vehicle_merk').html(detail.vehicle_merk)
@@ -61,6 +63,9 @@
                 $('#vehicle_distance').html(`${detail.vehicle_distance} Km`)
                 $('#vehicle_desc').html(detail.vehilce_desc ?? '<span class="fst-italic">- No Description Provided -</span>')
                 $('#vehicle_fuel_capacity').html(`${detail.vehicle_fuel_capacity} Ltr`)
+
+                build_layout_trip(trip_data)
+                build_layout_clean(clean_data)
             },
             error: function(response, jqXHR, textStatus, errorThrown) {
                 Swal.close()

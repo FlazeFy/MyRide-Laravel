@@ -109,6 +109,9 @@ table th, table tr {
 thead th {
     text-align: center;
 }
+table tbody p {
+    font-size: var(--textXMD);
+}
 
 /* Modal */
 .modal-content, .swal2-popup, .popover {

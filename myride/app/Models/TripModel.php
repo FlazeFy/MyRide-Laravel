@@ -23,7 +23,7 @@ class TripModel extends Model
         $res = TripModel::selectRaw("$query_trip_coordinate, trip.created_at")
             ->join('vehicle','vehicle.id','=','trip.vehicle_id')
             ->orderBy('created_at','desc')
-            ->where('created_by',$user_id)
+            ->where('trip.created_by',$user_id)
             ->paginate($limit);
 
         return $res->isNotEmpty() ? $res : null;

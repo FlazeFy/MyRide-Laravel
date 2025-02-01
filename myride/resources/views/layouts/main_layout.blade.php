@@ -25,6 +25,7 @@
     <!-- JS Collection -->
     <script src="{{ asset('/js/global_v1.0.js')}}"></script>
     <script src="{{ asset('/js/math_v1.0.js')}}"></script>
+    <script src="{{ asset('/js/template_v1.0.js')}}"></script>
 
     <!-- Jquery -->
     <script type="text/javascript" language="javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>

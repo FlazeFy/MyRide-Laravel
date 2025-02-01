@@ -34,7 +34,6 @@
                     const data = response.data.data
                     const total = response.data.total
 
-                    let rows = ''
                     $('#clean_tb tbody').empty()
                     data.forEach((dt, idx) => {
                         $('#clean_tb tbody').append(`

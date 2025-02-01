@@ -5,13 +5,16 @@
         <div class="d-flex justify-content-between">
             <button class="btn btn-nav-page" onclick="window.location.href='/garage'"><i class="fa-solid fa-house"></i> Back to Garage</button><br>
         </div>
-        <h2>Detail Vehicle</h2>
         <div class="row">
             <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                <h2>Detail Vehicle</h2>
                 @include('garage.detail.usecases.get_vehicle_detail')
+                <h2>Wash History</h2>
+                @include('garage.detail.usecases.get_vehicle_wash_history')
             </div>
             <div class="col-lg-6 col-md-6 col-sm-12 col-12">
-
+                <h2>Trip History</h2>
+                @include('garage.detail.usecases.get_vehicle_trip_history')
             </div>
         </div>
     </div>
