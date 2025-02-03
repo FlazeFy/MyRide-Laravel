@@ -29,6 +29,19 @@ class TripModel extends Model
         return $res->isNotEmpty() ? $res : null;
     }
 
+    public static function getContextTotalStats($context,$user_id){
+        $res = TripModel::selectRaw("$context as context, COUNT(1) as total");
+        if($user_id){
+            $res = $res->where('created_by', $user_id);
+        }
+        $res = $res->groupby($context)
+            ->orderby('total','desc')
+            ->limit(7)
+            ->get();
+        
+        return count($res) > 0 ? $res : null;
+    }
+
     public static function getTotalTripByCategory($user_id){
         $res = TripModel::selectRaw('trip_category as context, COUNT(1) as total')
             ->where('created_by', $user_id)
