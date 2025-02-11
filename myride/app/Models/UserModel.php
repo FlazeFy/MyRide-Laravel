@@ -32,4 +32,25 @@ class UserModel extends Authenticatable
 
         return $res;
     }
+
+    public static function getUserById($user_id){
+        $select_query = 'id,username,email,telegram_user_id,telegram_is_valid,created_at';
+
+        $res = UserModel::selectRaw($select_query)
+            ->where('id',$user_id)
+            ->first();
+        if($res){
+            $res->role = 'user';
+        }
+        if(!$res){
+            $res = AdminModel::selectRaw($select_query)
+                ->where('id',$user_id)
+                ->first();
+            if($res){
+                $res->role = 'admin';
+            }
+        }
+
+        return $res;
+    }
 }

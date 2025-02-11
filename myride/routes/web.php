@@ -8,6 +8,7 @@ use App\Http\Controllers\GarageDetailController;
 use App\Http\Controllers\CleanController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\StatsController;
+use App\Http\Controllers\ProfileController;
 
 use App\Http\Controllers\TripController;
 use App\Http\Controllers\AddTripController;
@@ -45,5 +46,9 @@ Route::prefix('/stats')->middleware(['auth_v2:sanctum'])->group(function () {
     Route::get('/', [StatsController::class, 'index'])->name('stats');
 
     Route::post('/convert/csv', [StatsController::class, 'convert_csv']);
+});
+
+Route::prefix('/profile')->middleware(['auth_v2:sanctum'])->group(function () {
+    Route::get('/', [ProfileController::class, 'index'])->name('profile');
 });
 

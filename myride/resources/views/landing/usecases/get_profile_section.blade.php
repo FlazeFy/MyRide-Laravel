@@ -4,7 +4,7 @@
         <h3>{{session()->get('username_key')}}</h3>
     </div>
     <div class="p-3 my-2 w-100 d-flex justify-content-center">
-        <button class="btn btn-success rounded-circle p-2 m-2" style="height: 60px; width: 60px;"><i class="fa-solid fa-user fa-lg"></i></button>
-        <button class="btn btn-danger rounded-circle p-2 m-2" style="height: 60px; width: 60px;"><i class="fa-solid fa-right-from-bracket fa-lg"></i></button>
+        <a class="btn btn-success rounded-circle p-2 m-2 pt-3" href="/profile" style="height: 60px; width: 60px;"><i class="fa-solid fa-user fa-lg"></i></a>
+        <a class="btn btn-danger rounded-circle p-2 m-2 pt-3" style="height: 60px; width: 60px;"><i class="fa-solid fa-right-from-bracket fa-lg"></i></a>
     </div>
 </div>
