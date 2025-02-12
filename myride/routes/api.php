@@ -13,7 +13,7 @@ use App\Http\Controllers\Api\DictionaryApi\Commands as CommandsDictionaryApi;
 use App\Http\Controllers\Api\TripApi\Commands as CommandsTripApi;
 use App\Http\Controllers\Api\TripApi\Queries as QueriesTripApi;
 use App\Http\Controllers\Api\StatsApi\Queries as QueriesStatsApi;
-use App\Http\Controllers\Api\UserApi\Commands as CommandsUserController;
+use App\Http\Controllers\Api\UserApi\Queries as QueriesUserController;
 
 ######################### Public Route #########################
 
