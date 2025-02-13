@@ -14,6 +14,7 @@ use App\Http\Controllers\Api\TripApi\Commands as CommandsTripApi;
 use App\Http\Controllers\Api\TripApi\Queries as QueriesTripApi;
 use App\Http\Controllers\Api\StatsApi\Queries as QueriesStatsApi;
 use App\Http\Controllers\Api\UserApi\Queries as QueriesUserController;
+use App\Http\Controllers\Api\UserApi\Commands as CommandsUserController;
 
 ######################### Public Route #########################
 
@@ -54,4 +55,5 @@ Route::prefix('/v1/user')->middleware(['auth:sanctum'])->group(function () {
     Route::get('/', [QueriesUserController::class, 'get_all_user']);
     Route::get('/my_year', [QueriesUserController::class, 'get_content_year']);
     Route::get('/my_profile', [QueriesUserController::class, 'get_my_profile']);
+    Route::put('/update_telegram_id', [CommandsUserController::class, 'update_telegram_id']);
 });

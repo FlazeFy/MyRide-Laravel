@@ -82,6 +82,10 @@ button, a {
     -o-transition: all 0.4s !important;
     transition: all 0.4s !important;
 }
+.btn {
+    border-radius: var(--roundedJumbo);
+    padding-inline: var(--spaceLG);
+}
 button:hover, .btn:hover .carousel-control-prev:hover, .carousel-control-next:hover {
     transform: scale(1.05);
 }
