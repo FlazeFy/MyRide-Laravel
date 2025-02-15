@@ -25,6 +25,7 @@
             success: function(response) {
                 Swal.close()
                 const data = response.data
+                const data_telegram = response.telegram_data
 
                 $(`#username`).val(data.username)
                 $(`#email`).val(data.email)
@@ -32,9 +33,11 @@
                 $(`#created_at`).text(data.created_at ?? '=')
                 $(`#updated_at`).text(data.updated_at ?? '-')
                 $('#telegram_validated_status').html(data.telegram_is_valid == 0 ? `<span class='text-danger'><i class="fa-solid fa-check text-danger"></i> Not Validated</span>`:`<span class='text-success'><i class="fa-solid fa-xmark text-success"></i> Validated/span>`)
-                if(data.telegram_is_valid == ''){
+                if(data.telegram_is_valid == 0 && data_telegram == null){
                     $('#telegram_group_id').append(`<a class="btn btn-primary" id="request_validation_token"><i class="fa-solid fa-paper-plane"></i> Send Validation</a>`)
                 }
+
+                telegram_req_holder(data_telegram)
             },
             error: function(response, jqXHR, textStatus, errorThrown) {
                 Swal.close()
