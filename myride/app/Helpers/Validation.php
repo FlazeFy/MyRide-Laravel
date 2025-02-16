@@ -66,4 +66,12 @@ class Validation
             'trip_destination_coordinate' => 'nullable|string|max:144', 
         ]);
     }
+
+    public static function getValidateUser($request){
+        return Validator::make($request->all(), [
+            'username' => 'required|min:6|max:30|string',
+            'email' => 'nullable|string|max:144|min:10', 
+            'telegram_user_id' => 'nullable|string|max:36|min:2'
+        ]);
+    }
 }

@@ -18,6 +18,10 @@ class UserModel extends Authenticatable
     protected $table = 'users';
     protected $primaryKey = 'id';
     protected $fillable = ['id', 'username', 'password', 'email', 'telegram_user_id', 'telegram_is_valid', 'created_at', 'updated_at'];
+    protected $casts = [
+        'created_at' => 'datetime:Y-m-d H:i:s',
+        'updated_at' => 'datetime:Y-m-d H:i:s',
+    ];
 
     public static function getSocial($id){
         $res = UserModel::select('username','telegram_user_id','telegram_is_valid','email')
@@ -34,7 +38,7 @@ class UserModel extends Authenticatable
     }
 
     public static function getUserById($user_id){
-        $select_query = 'id,username,email,telegram_user_id,telegram_is_valid,created_at';
+        $select_query = 'id,username,email,telegram_user_id,telegram_is_valid,created_at,updated_at';
 
         $res = UserModel::selectRaw($select_query)
             ->where('id',$user_id)
