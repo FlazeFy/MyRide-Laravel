@@ -116,4 +116,35 @@ class Queries extends Controller
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
+
+    public function getVehicleTripSummaryById(Request $request, $id){
+        try{
+            $user_id = $request->user()->id;
+
+            // Model : Show Most Person Trip With
+            $res_most_person_with = TripModel::getMostPersonTripWith($user_id,$id);
+
+            // Model : Show Vehicle Trip Most Origin, Destination, and Category
+            $res_most_context_total_trip = TripModel::getMostContext($user_id,$id);
+            $res_most_origin = $res_most_context_total_trip->most_origin;
+            $res_most_destination = $res_most_context_total_trip->most_destination;
+            $res_most_category = $res_most_context_total_trip->most_category;
+            
+            return response()->json([
+                'status' => 'success',
+                'message' => Generator::getMessageTemplate("fetch", $this->module),
+                'data' => [
+                    'most_person_with' => $res_most_person_with ? $res_most_person_with[0]->context : null,
+                    'most_origin' => $res_most_origin,
+                    'most_destination' => $res_most_destination,
+                    'most_category' => $res_most_category,
+                ]
+            ], Response::HTTP_OK);
+        } catch(\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage(),
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
 }

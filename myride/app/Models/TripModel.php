@@ -79,4 +79,54 @@ class TripModel extends Model
 
         return $res->isNotEmpty() ? $res : null;
     }
+
+    public static function getMostPersonTripWith($user_id, $vehicle_id, $limit = 7){
+        $res = TripModel::selectRaw("LOWER(trip_person) as context")
+            ->where('vehicle_id', $vehicle_id)
+            ->where('created_by', $user_id)
+            ->whereNull('deleted_at')
+            ->get();
+
+        $name_counts = [];			
+        foreach ($res as $row) {
+            if (!empty($row->context)) {
+                // Separate using ", " and ", and "
+                $names = preg_split('/, and |, /', $row->context);
+                
+                foreach ($names as $name) {
+                    $name = trim(strtolower($name)); 
+                    if (!empty($name)) {
+                        if (isset($name_counts[$name])) {
+                            $name_counts[$name]++;
+                        } else {
+                            $name_counts[$name] = 1;
+                        }
+                    }
+                }
+            }
+        }
+        arsort($name_counts);
+
+        $result = [];
+        $i = 0;
+        foreach ($name_counts as $context => $total) {
+            $result[] = (object)['context' => $context, 'total' => $total];
+            
+            if (++$i >= $limit) {
+                break;
+            }
+        }
+    
+        return $result;
+    }
+
+    public static function getMostContext($user_id, $vehicle_id){
+        $res = TripModel::selectRaw("MAX(LOWER(trip_destination_name)) as most_destination, MAX(LOWER(trip_origin_name)) as most_origin, MAX(trip_category) as most_category")
+            ->where('vehicle_id',$vehicle_id)
+            ->where('created_by',$user_id)
+            ->whereNull('deleted_at')
+            ->first();
+
+        return $res;
+    }
 }
