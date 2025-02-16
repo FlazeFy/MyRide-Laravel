@@ -6,6 +6,10 @@
             <h2 class="fw-bold" id="most_person_with"></h2>
         </div>
         <div class="col-lg-4 col-md-6 col-sm-6 col-6 mx-auto">
+            <h5>Total Distance</h5>
+            <h2 class="fw-bold" id="vehicle_total_trip_distance"></h2>
+        </div>
+        <div class="col-lg-4 col-md-6 col-sm-6 col-6 mx-auto">
             <h5>Most Origin</h5>
             <h2 class="fw-bold" id="most_origin"></h2>
         </div>
@@ -38,6 +42,7 @@
                 $('#most_origin').text(data.most_origin ?? '-')
                 $('#most_destination').text(data.most_destination ?? '-')
                 $('#most_category').text(data.most_category ?? '-')
+                $('#vehicle_total_trip_distance').text(`${data.vehicle_total_trip_distance ?? '-'} Km`)
             },
             error: function(response, jqXHR, textStatus, errorThrown) {
                 Swal.close()

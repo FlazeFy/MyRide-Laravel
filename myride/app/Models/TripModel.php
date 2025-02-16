@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 // Helpers
 use App\Helpers\Query;
+use App\Helpers\Converter;
 
 class TripModel extends Model
 {
@@ -128,5 +129,28 @@ class TripModel extends Model
             ->first();
 
         return $res;
+    }
+
+    public static function getTotalTripDistance($user_id,$vehicle_id){
+        $res = TripModel::select("trip_origin_coordinate","trip_destination_coordinate")
+            ->where('vehicle_id',$vehicle_id)
+            ->where('created_by',$user_id)
+            ->whereNull('deleted_at')
+            ->get();
+
+        $total_distance = 0;
+        foreach ($res as $dt) {
+            $origin_coor = explode(", ", $dt->trip_origin_coordinate);
+            $destination_coor = explode(", ", $dt->trip_destination_coordinate);
+            $lat1 = $origin_coor[0];
+            $lon1 = $origin_coor[1];
+            $lat2 = $destination_coor[0];
+            $lon2 = $destination_coor[1];
+
+            $distance = Converter::calculate_distance($lat1, $lon1, $lat2, $lon2, $unit = 'km');
+            $total_distance = $total_distance + $distance;
+        }
+
+        return $total_distance;
     }
 }

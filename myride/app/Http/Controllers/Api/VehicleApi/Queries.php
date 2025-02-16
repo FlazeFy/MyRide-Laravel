@@ -126,6 +126,7 @@ class Queries extends Controller
 
             // Model : Show Vehicle Trip Most Origin, Destination, and Category
             $res_most_context_total_trip = TripModel::getMostContext($user_id,$id);
+            $res_vehicle_total_trip_distance = TripModel::getTotalTripDistance($user_id,$id);
             $res_most_origin = $res_most_context_total_trip->most_origin;
             $res_most_destination = $res_most_context_total_trip->most_destination;
             $res_most_category = $res_most_context_total_trip->most_category;
@@ -135,6 +136,7 @@ class Queries extends Controller
                 'message' => Generator::getMessageTemplate("fetch", $this->module),
                 'data' => [
                     'most_person_with' => $res_most_person_with ? $res_most_person_with[0]->context : null,
+                    'vehicle_total_trip_distance' => $res_vehicle_total_trip_distance,
                     'most_origin' => $res_most_origin,
                     'most_destination' => $res_most_destination,
                     'most_category' => $res_most_category,
