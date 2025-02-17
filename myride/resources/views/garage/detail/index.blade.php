@@ -1,5 +1,7 @@
 @extends('layouts.main_layout')
 
+<script src="{{ asset('/js/chart_v1.0.js')}}"></script>
+
 @section('content')
     <div class="d-block mx-auto p-3">
         <div class="d-flex justify-content-between">
@@ -13,7 +15,7 @@
                 @include('garage.detail.usecases.get_vehicle_wash_history')
             </div>
             <div class="col-lg-6 col-md-6 col-sm-12 col-12">
-                <h2>Summary Trip</h2>
+                @include('garage.detail.usecases.get_vehicle_monthly_trip_stats')
                 @include('garage.detail.usecases.get_vehicle_summary_trip')
                 <h2>Trip History</h2>
                 @include('garage.detail.usecases.get_vehicle_trip_history')

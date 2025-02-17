@@ -4,6 +4,26 @@ const getUUID = () => {
     );
 }
 
+const ucEachWord = (val) => {
+    const arr = val.split(" ")
+    for (var i = 0; i < arr.length; i++) {
+        arr[i] = arr[i].charAt(0).toUpperCase() + arr[i].slice(1)
+    }
+    const res = arr.join(" ")
+
+    return res
+}
+
+const ucFirst = (val) => {
+    if (typeof val !== 'string' || val.length === 0) {
+        var res = val
+    } else {
+        var res = val.charAt(0).toUpperCase() + val.slice(1)
+    }
+
+    return res
+}
+
 const generate_api_error = (response, is_list_format) => {
     if (response.status === 422) {
         let msg = response.responseJSON.message

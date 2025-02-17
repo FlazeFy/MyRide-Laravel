@@ -153,4 +153,18 @@ class TripModel extends Model
 
         return $total_distance;
     }
+
+    public static function getTotalTripByVehiclePerYear($user_id,$vehicle_id,$year = null){
+        if($year == null){
+            $year = date('Y');
+        }
+        $res = TripModel::selectRaw("COUNT(DISTINCT trip.id) as total, MONTH(trip.created_at) as context")
+            ->where('vehicle_id',$vehicle_id)
+            ->where('created_by',$user_id)
+            ->whereRaw("YEAR(trip.created_at) = '$year'")
+            ->groupByRaw('MONTH(trip.created_at)')
+            ->get();
+
+        return $res;
+    }
 }

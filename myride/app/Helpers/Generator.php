@@ -53,6 +53,16 @@ class Generator
         return $res;
     }
 
+    public static function generateMonthName($idx,$type){
+        $months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    
+        if($type == 'short'){
+            return substr($months[$idx-1], 0, 3);
+        } else if($type == 'full'){
+            return $months[$idx-1];
+        }
+    }
+
     public static function getMessageTemplate($type, $ctx){
         if (in_array($type, ['create', 'update', 'delete', 'permentally delete', 'fetch','recover','analyze','generate'])) {
             $ext = in_array($type, ['fetch','recover']) ? "ed" : "d";
