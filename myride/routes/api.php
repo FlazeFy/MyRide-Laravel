@@ -15,6 +15,7 @@ use App\Http\Controllers\Api\TripApi\Queries as QueriesTripApi;
 use App\Http\Controllers\Api\StatsApi\Queries as QueriesStatsApi;
 use App\Http\Controllers\Api\UserApi\Queries as QueriesUserController;
 use App\Http\Controllers\Api\UserApi\Commands as CommandsUserController;
+use App\Http\Controllers\Api\ExportApi\Queries as QueriesExportController;
 
 ######################### Public Route #########################
 
@@ -60,4 +61,8 @@ Route::prefix('/v1/user')->middleware(['auth:sanctum'])->group(function () {
     Route::put('/update_telegram_id', [CommandsUserController::class, 'update_telegram_id']);
     Route::put('/validate_telegram_id', [CommandsUserController::class, 'validate_telegram_id']);
     Route::put('/update_profile', [CommandsUserController::class, 'update_profile']);
+});
+
+Route::prefix('/v1/export')->middleware(['auth:sanctum'])->group(function () {
+    Route::get('/clean', [QueriesExportController::class, 'exportCleanHistory']);
 });

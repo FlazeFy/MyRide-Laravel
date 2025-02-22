@@ -1,5 +1,6 @@
 <div class="mx-4">
     <h2>All Clean History</h2><br>
+    @include('clean.usecases.get_export_clean')
     <table class="table table-bordered" id="clean_tb">
         <thead>
             <tr>
