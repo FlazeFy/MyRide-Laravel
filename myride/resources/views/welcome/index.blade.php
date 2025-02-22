@@ -5,5 +5,7 @@
         @include('welcome.welcoming')
         <br><br>
         @include('welcome.services')
+        <br><br>
+        @include('welcome.summary')
     </div>
 @endsection

@@ -21,6 +21,10 @@ use App\Http\Controllers\Api\ExportApi\Queries as QueriesExportController;
 
 Route::post('/v1/login', [CommandAuthApi::class, 'login']);
 
+Route::prefix('/v1/stats')->group(function () {
+    Route::get('/summary', [QueriesStatsApi::class, 'getSummaryApps']);
+});
+
 ######################### Private Route #########################
 
 Route::post('/v1/logout', [QueryAuthApi::class, 'logout'])->middleware(['auth:sanctum']);
