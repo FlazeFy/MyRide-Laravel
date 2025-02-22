@@ -9,13 +9,13 @@ use App\Http\Controllers\CleanController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\StatsController;
 use App\Http\Controllers\ProfileController;
-
+use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\TripController;
 use App\Http\Controllers\AddTripController;
 
 Route::prefix('/')->group(function () {
-    Route::get('/', [LandingController::class, 'index'])->name('landing');
-
+    Route::get('/', [WelcomeController::class, 'index'])->name('welcome');
+    Route::get('/landing', [LandingController::class, 'index'])->name('landing');
     Route::get('/login', [LoginController::class, 'index'])->name('login');
     Route::post('/login/validate', [LoginController::class, 'login_auth']);
     Route::post('/sign_out', [LandingController::class, 'sign_out']);
