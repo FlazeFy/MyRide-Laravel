@@ -11,12 +11,12 @@
     }
 </style>
 
-<div style="margin: 10vh 0; max-width: 1080px;" class="d-block mx-auto">
+<div style="margin: 10vh 0; max-width: 1080px;" class="d-block mx-auto" id="services_section">
     <div class="bg-primary text-white rounded-pill px-3 py-2 d-block mx-auto" style="width:140px;">Services</div>
     <br>
     <h1 class="fw-bold" style="font-size:50px;">What We Serve</h1>
     <div class="row mt-4">
-        <div class="col-lg-4 col-md-6 col-12 mx-auto">
+        <div class="col-lg-4 col-md-6 col-sm-12 col-12 mx-auto">
             <div class="container-service">
                 <i class="fa-solid fa-car mb-4" style="font-size:34px;"></i>
                 <h2>Vehicle Listing</h2>
@@ -24,7 +24,7 @@
                 <a class="btn btn-link">Get Started</a>
             </div>
         </div>
-        <div class="col-lg-4 col-md-6 col-12 mx-auto">
+        <div class="col-lg-4 col-md-6 col-sm-12 col-12 mx-auto">
             <div class="container-service">
                 <i class="fa-solid fa-gears mb-4" style="font-size:34px;"></i>
                 <h2>Service Schedule</h2>
@@ -32,7 +32,7 @@
                 <a class="btn btn-link">Get Started</a>
             </div>
         </div>
-        <div class="col-lg-4 col-md-6 col-12 mx-auto">
+        <div class="col-lg-4 col-md-6 col-sm-12 col-12 mx-auto">
             <div class="container-service">
                 <i class="fa-solid fa-broom mb-4" style="font-size:34px;"></i>
                 <h2>Clean Schedule</h2>
@@ -40,7 +40,7 @@
                 <a class="btn btn-link">Get Started</a>
             </div>
         </div>
-        <div class="col-lg-4 col-md-6 col-12 mx-auto">
+        <div class="col-lg-4 col-md-6 col-sm-12 col-12 mx-auto">
             <div class="container-service">
                 <i class="fa-solid fa-suitcase mb-4" style="font-size:34px;"></i>
                 <h2>Trip History</h2>
@@ -48,7 +48,7 @@
                 <a class="btn btn-link">Get Started</a>
             </div>
         </div>
-        <div class="col-lg-4 col-md-6 col-12 mx-auto">
+        <div class="col-lg-4 col-md-6 col-sm-12 col-12 mx-auto">
             <div class="container-service">
                 <i class="fa-solid fa-user mb-4" style="font-size:34px;"></i>
                 <h2>Manage Driver</h2>
@@ -56,7 +56,7 @@
                 <a class="btn btn-link">Get Started</a>
             </div>
         </div>
-        <div class="col-lg-4 col-md-6 col-12 mx-auto">
+        <div class="col-lg-4 col-md-6 col-sm-12 col-12 mx-auto">
             <div class="container-service">
                 <i class="fa-solid fa-chart-simple mb-4" style="font-size:34px;"></i>
                 <h2>Statistic</h2>
@@ -64,7 +64,7 @@
                 <a class="btn btn-link">Get Started</a>
             </div>
         </div>
-        <div class="col-lg-4 col-md-6 col-12 mx-auto">
+        <div class="col-lg-4 col-md-6 col-sm-12 col-12 mx-auto">
             <div class="container-service">
                 <i class="fa-solid fa-location-dot mb-4" style="font-size:34px;"></i>
                 <h2>Live Tracking</h2>

@@ -14,6 +14,25 @@ use App\Models\AdminModel;
 // Helpers
 use App\Helpers\Validation;
 
+
+/**
+ * @OA\Info(
+ *     title="MyRide",
+ *     version="1.0.0",
+ *     description="API Documentation for MyRide",
+ *     @OA\Contact(
+ *         email="flazen.edu@gmail.com"
+ *     )
+ * ),
+ * @OA\SecurityScheme(
+ *     securityScheme="bearerAuth",
+ *     type="http",
+ *     scheme="bearer",
+ *     bearerFormat="JWT",
+ *     description="JWT Authorization header using the Bearer scheme",
+ * )
+ */
+
 class Commands extends Controller
 {
     public function login(Request $request)

@@ -8,7 +8,6 @@ class ServiceModel extends Model
 {
     use HasFactory;
     //use HasUuids;
-    use HasApiTokens;
     public $incrementing = false;
 
     protected $table = 'service';

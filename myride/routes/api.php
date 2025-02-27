@@ -16,6 +16,7 @@ use App\Http\Controllers\Api\StatsApi\Queries as QueriesStatsApi;
 use App\Http\Controllers\Api\UserApi\Queries as QueriesUserController;
 use App\Http\Controllers\Api\UserApi\Commands as CommandsUserController;
 use App\Http\Controllers\Api\ExportApi\Queries as QueriesExportController;
+use App\Http\Controllers\Api\QuestionApi\FAQQueries as QueriesFAQController;
 
 ######################### Public Route #########################
 
@@ -23,6 +24,10 @@ Route::post('/v1/login', [CommandAuthApi::class, 'login']);
 
 Route::prefix('/v1/stats')->group(function () {
     Route::get('/summary', [QueriesStatsApi::class, 'getSummaryApps']);
+});
+
+Route::prefix('/v1/question')->group(function () {
+    Route::get('/faq', [QueriesFAQController::class, 'getShowingFAQ']);
 });
 
 ######################### Private Route #########################

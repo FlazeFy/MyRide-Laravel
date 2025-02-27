@@ -197,7 +197,6 @@ class Queries extends Controller
      *             @OA\Property(property="status", type="string", example="success"),
      *             @OA\Property(property="message", type="string", example="stats fetched"),
      *                 @OA\Property(property="data", type="object",
-     *                     @OA\Items(
      *                          @OA\Property(property="total_user", type="integer", example=2),
      *                          @OA\Property(property="total_vehicle", type="integer", example=3),
      *                          @OA\Property(property="total_service", type="integer", example=2),

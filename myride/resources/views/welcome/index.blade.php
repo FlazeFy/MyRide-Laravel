@@ -2,10 +2,13 @@
 
 @section('content')
     <div class="position-relative text-center pt-4">
-        @include('welcome.welcoming')
+        @include('welcome.usecases.welcoming')
         <br><br>
-        @include('welcome.services')
+        @include('welcome.usecases.services')
         <br><br>
-        @include('welcome.summary')
+        @include('welcome.usecases.summary')
+        <br><br>
+        @include('welcome.usecases.faq')
     </div>
+    @include('welcome.usecases.footer')
 @endsection
