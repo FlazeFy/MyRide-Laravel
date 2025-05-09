@@ -5,6 +5,8 @@ namespace App\Console;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
+use App\Schedule\AuditSchedule;
+
 class Kernel extends ConsoleKernel
 {
     /**
@@ -13,6 +15,12 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule): void
     {
         // $schedule->command('inspire')->hourly();
+        // In staging
+        // $schedule->call([new AuditSchedule, 'audit_error'])->weeklyOn(1, '3:00');
+
+        // In development
+        // $schedule->command(AuditSchedule::audit_error())->everyMinute();
+        // $schedule->command('dusk:run')->everyMinute();
     }
 
     /**
