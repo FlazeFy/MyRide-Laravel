@@ -13,7 +13,7 @@ use App\Models\AdminModel;
 
 // Helpers
 use App\Helpers\Validation;
-
+use App\Helpers\Generator;
 
 /**
  * @OA\Info(
@@ -35,47 +35,101 @@ use App\Helpers\Validation;
 
 class Commands extends Controller
 {
+    /**
+     * @OA\POST(
+     *     path="/api/v1/login",
+     *     summary="Sign in to the Apps",
+     *     tags={"Auth"},
+     *     @OA\Response(
+     *         response=200,
+     *         description="login successfully",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="token", type="string", example="286|L5fqrLCDDCzPRLKngtm2FM9wq1IU2xFZSVAm10yp874a1a85"),
+     *             @OA\Property(property="role", type="integer", example=1),
+     *             @OA\Property(property="result", type="object",
+     *                 @OA\Property(property="id", type="string", example="83ce75db-4016-d87c-2c3c-db1e222d0001"),
+     *                 @OA\Property(property="username", type="string", example="flazefy"),
+     *                 @OA\Property(property="email", type="string", example="flazen.edu@gmail.com"),
+     *                 @OA\Property(property="telegram_user_id", type="string", example="123456789"),
+     *                 @OA\Property(property="telegram_is_valid", type="integer", example=1),
+     *                 @OA\Property(property="created_at", type="string", format="date-time", example="2024-03-14 02:28:37"),
+     *                 @OA\Property(property="updated_at", type="string", format="date-time", example="2024-10-25 09:37:20"),
+     *             ),
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="{validation_msg}",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="failed"),
+     *             @OA\Property(property="result", type="string", example="{field validation message}")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="account is not found or have wrong password",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="failed"),
+     *             @OA\Property(property="result", type="string", example="wrong username or password")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal Server Error",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="error"),
+     *             @OA\Property(property="message", type="string", example="something wrong. please contact admin")
+     *         )
+     *     ),
+     * )
+     */
     public function login(Request $request)
     {
-        $validator = Validation::getValidateLogin($request);
+        try {
+            $validator = Validation::getValidateLogin($request);
 
-        if ($validator->fails()) {
-            $errors = $validator->messages();
+            if ($validator->fails()) {
+                $errors = $validator->messages();
 
-            return response()->json([
-                'status' => 'failed',
-                'result' => $errors,
-                'token' => null
-            ], Response::HTTP_UNPROCESSABLE_ENTITY);
-        } else {
-            // Check for Admin
-            $user = AdminModel::where('username', $request->username)->first();
-            $role = 1;
-            if($user == null){
-                // Check for User
-                $user = UserModel::where('username', $request->username)->first();
-                $role = 0;
-            }
-
-            // Response
-            if (!$user || !Hash::check($request->password, $user->password)) {
                 return response()->json([
                     'status' => 'failed',
-                    'result' => 'wrong username or password',
-                    'token' => null,                
-                ], Response::HTTP_UNAUTHORIZED);
+                    'result' => $errors,
+                ], Response::HTTP_UNPROCESSABLE_ENTITY);
             } else {
-                $token = $user->createToken('login')->plainTextToken;
-                unset($user->password);
+                // Check for Admin
+                $user = AdminModel::where('username', $request->username)->first();
+                $role = 1;
+                if($user == null){
+                    // Check for User
+                    $user = UserModel::where('username', $request->username)->first();
+                    $role = 0;
+                }
 
-                return response()->json([
-                    'status' => 'success',
-                    'result' => $user,
-                    'token' => $token,  
-                    'role' => $role                  
-                ], Response::HTTP_OK);
+                // Response
+                if (!$user || !Hash::check($request->password, $user->password)) {
+                    return response()->json([
+                        'status' => 'failed',
+                        'result' => 'wrong username or password',
+                    ], Response::HTTP_UNAUTHORIZED);
+                } else {
+                    $token = $user->createToken('login')->plainTextToken;
+                    unset($user->password);
+
+                    return response()->json([
+                        'status' => 'success',
+                        'result' => $user,
+                        'token' => $token,  
+                        'role' => $role                  
+                    ], Response::HTTP_OK);
+                }
             }
+            
+        } catch(\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => Generator::getMessageTemplate("unknown_error", null),
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
-        
     }
 }

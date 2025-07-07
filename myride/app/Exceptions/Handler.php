@@ -27,4 +27,16 @@ class Handler extends ExceptionHandler
             //
         });
     }
+
+    protected function unauthenticated($request, \Illuminate\Auth\AuthenticationException $exception)
+    {
+        if ($request->expectsJson()) {
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'you need to include the authorization token from login' 
+            ], 401);
+        }
+
+        return redirect()->guest(route('login')); 
+    }
 }
