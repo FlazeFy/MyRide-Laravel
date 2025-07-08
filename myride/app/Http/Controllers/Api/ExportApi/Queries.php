@@ -3,19 +3,18 @@
 namespace App\Http\Controllers\Api\ExportApi;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 // Exports
 use App\Exports\CleanExport;
 use Maatwebsite\Excel\Facades\Excel;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
+// Telegram
 use Telegram\Bot\Laravel\Facades\Telegram;
 use Telegram\Bot\FileUpload\InputFile;
-use Carbon\Carbon;
-
 // Models
 use App\Models\CleanModel;
 use App\Models\UserModel;
-
 // Helpers
 use App\Helpers\Generator;
 
@@ -93,7 +92,7 @@ class Queries extends Controller {
         } catch(\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => $e->getMessage(),
+                'message' => Generator::getMessageTemplate("unknown_error", null),
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }

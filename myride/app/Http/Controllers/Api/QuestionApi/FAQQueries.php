@@ -6,7 +6,6 @@ use Illuminate\Http\Response;
 
 // Model
 use App\Models\FAQModel;
-
 // Helper
 use App\Helpers\Generator;
 

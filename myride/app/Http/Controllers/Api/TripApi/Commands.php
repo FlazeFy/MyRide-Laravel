@@ -4,13 +4,13 @@ namespace App\Http\Controllers\Api\TripApi;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
-use Telegram\Bot\Laravel\Facades\Telegram;
 
+// Telegram
+use Telegram\Bot\Laravel\Facades\Telegram;
 // Model
 use App\Models\VehicleModel;
 use App\Models\TripModel;
 use App\Models\UserModel;
-
 // Helper
 use App\Helpers\Validation;
 use App\Helpers\Generator;
@@ -93,7 +93,7 @@ class Commands extends Controller
         } catch(\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => $e->getMessage(),
+                'message' => Generator::getMessageTemplate("unknown_error", null),
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }

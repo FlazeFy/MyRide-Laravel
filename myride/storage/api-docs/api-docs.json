@@ -216,6 +216,230 @@
                 ]
             }
         },
+        "/api/v1/clean": {
+            "get": {
+                "tags": [
+                    "Clean"
+                ],
+                "summary": "Get all clean history",
+                "description": "This request is used to get all clean history with pagination. This request is using MySql database, and have a protected routes.",
+                "operationId": "6f51553a069b144e1f6ac9f846443e20",
+                "responses": {
+                    "200": {
+                        "description": "clean fetched",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "stats fetched"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "current_page": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "data": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "string",
+                                                                "format": "uuid",
+                                                                "example": "ab8b8d0e-d74d-11ed-afa1-0242ac120002"
+                                                            },
+                                                            "vehicle_name": {
+                                                                "type": "string",
+                                                                "example": "Honda - Brio RS MT"
+                                                            },
+                                                            "vehicle_plate_number": {
+                                                                "type": "string",
+                                                                "example": "D 1610 ZRB"
+                                                            },
+                                                            "clean_desc": {
+                                                                "type": "string",
+                                                                "example": "Cuci mobil"
+                                                            },
+                                                            "clean_by": {
+                                                                "type": "string",
+                                                                "example": "Carwash"
+                                                            },
+                                                            "clean_tools": {
+                                                                "type": "string",
+                                                                "example": null,
+                                                                "nullable": true
+                                                            },
+                                                            "is_clean_body": {
+                                                                "type": "integer",
+                                                                "example": 1
+                                                            },
+                                                            "is_clean_window": {
+                                                                "type": "integer",
+                                                                "example": 1
+                                                            },
+                                                            "is_clean_dashboard": {
+                                                                "type": "integer",
+                                                                "example": 1
+                                                            },
+                                                            "is_clean_tires": {
+                                                                "type": "integer",
+                                                                "example": 1
+                                                            },
+                                                            "is_clean_trash": {
+                                                                "type": "integer",
+                                                                "example": 1
+                                                            },
+                                                            "is_clean_engine": {
+                                                                "type": "integer",
+                                                                "example": 1
+                                                            },
+                                                            "is_clean_seat": {
+                                                                "type": "integer",
+                                                                "example": 1
+                                                            },
+                                                            "is_clean_carpet": {
+                                                                "type": "integer",
+                                                                "example": 1
+                                                            },
+                                                            "is_clean_pillows": {
+                                                                "type": "integer",
+                                                                "example": 0
+                                                            },
+                                                            "clean_address": {
+                                                                "type": "string",
+                                                                "example": "AutoService Jl. Kapten Tandean"
+                                                            },
+                                                            "clean_start_time": {
+                                                                "type": "string",
+                                                                "format": "datetime",
+                                                                "example": "2024-02-29 21:30:00"
+                                                            },
+                                                            "clean_end_time": {
+                                                                "type": "string",
+                                                                "format": "datetime",
+                                                                "example": "2024-02-29 22:20:00"
+                                                            },
+                                                            "is_fill_window_cleaning_water": {
+                                                                "type": "integer",
+                                                                "example": 0
+                                                            },
+                                                            "is_fill_fuel": {
+                                                                "type": "integer",
+                                                                "example": 0
+                                                            },
+                                                            "is_clean_hollow": {
+                                                                "type": "integer",
+                                                                "example": 1
+                                                            },
+                                                            "created_at": {
+                                                                "type": "string",
+                                                                "format": "datetime",
+                                                                "example": "2024-03-27 12:33:05"
+                                                            },
+                                                            "updated_at": {
+                                                                "type": "string",
+                                                                "example": null,
+                                                                "nullable": true
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                },
+                                                "last_page": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "per_page": {
+                                                    "type": "integer",
+                                                    "example": 14
+                                                },
+                                                "total": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "protected route need to include sign in token as authorization bearer",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "you need to include the authorization token from login"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "clean failed to fetched",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "clean history not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "something wrong. please contact admin"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/v1/question/faq": {
             "get": {
                 "tags": [
@@ -302,6 +526,256 @@
                         }
                     }
                 }
+            }
+        },
+        "/api/v1/stats/total/trip/{context}": {
+            "get": {
+                "tags": [
+                    "Stats"
+                ],
+                "summary": "Get total trip by context",
+                "description": "This request is used to get total trip by `context`, that can be trip_category, trip_origin_name, and trip_destination_name. This request is using MySql database, and have a protected routes.",
+                "operationId": "c0d553400b7958f3827ae8cd20f5f8a5",
+                "parameters": [
+                    {
+                        "name": "context",
+                        "in": "path",
+                        "description": "Trip Context",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "trip_category"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "stats fetched",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "stats fetched"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "context": {
+                                                        "type": "string",
+                                                        "example": "Others"
+                                                    },
+                                                    "total": {
+                                                        "type": "integer",
+                                                        "example": 4
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "protected route need to include sign in token as authorization bearer",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "you need to include the authorization token from login"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "stats failed to fetched",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "stats not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "something wrong. please contact admin"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/stats/total/vehicle/{context}": {
+            "get": {
+                "tags": [
+                    "Stats"
+                ],
+                "summary": "Get total vehicle by context",
+                "description": "This request is used to get total vehicle by `context`, that can be vehicle_merk, vehicle_type, vehicle_status, vehicle_fuel_status, vehicle_transmission, and vehicle_color. This request is using MySql database, and have a protected routes.",
+                "operationId": "9ac23a6e672074fbed33d71224ad074f",
+                "parameters": [
+                    {
+                        "name": "context",
+                        "in": "path",
+                        "description": "Vehicle Context",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "vehicle_merk"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "stats fetched",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "stats fetched"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "context": {
+                                                        "type": "string",
+                                                        "example": "Honda"
+                                                    },
+                                                    "total": {
+                                                        "type": "integer",
+                                                        "example": 2
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "protected route need to include sign in token as authorization bearer",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "you need to include the authorization token from login"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "stats failed to fetched",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "stats not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "something wrong. please contact admin"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/api/v1/stats/total/trip/{year}": {
@@ -1111,6 +1585,10 @@
         {
             "name": "Auth",
             "description": "Auth"
+        },
+        {
+            "name": "Clean",
+            "description": "Clean"
         },
         {
             "name": "Question",

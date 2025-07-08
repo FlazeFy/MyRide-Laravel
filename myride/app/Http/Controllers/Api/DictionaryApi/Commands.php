@@ -7,7 +7,6 @@ use App\Http\Controllers\Controller;
 
 // Model
 use App\Models\DictionaryModel;
-
 // Helper
 use App\Helpers\Validation;
 use App\Helpers\Generator;

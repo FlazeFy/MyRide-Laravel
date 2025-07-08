@@ -4,12 +4,12 @@ namespace App\Http\Controllers\Api\VehicleApi;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
-use Telegram\Bot\Laravel\Facades\Telegram;
 
+// Telegram
+use Telegram\Bot\Laravel\Facades\Telegram;
 // Model
 use App\Models\VehicleModel;
 use App\Models\UserModel;
-
 // Helper
 use App\Helpers\Validation;
 use App\Helpers\Generator;
@@ -26,11 +26,13 @@ class Commands extends Controller
     {
         try{
             // Validator
-            $vehicle_transmission = "CVT"; 
+            $vehicle_transmission = null;
             if ($request->vehicle_transmission === "MT") {
                 $vehicle_transmission = "Manual";
             } else if ($request->vehicle_transmission === "AT") {
                 $vehicle_transmission = "Automatic";
+            } else if ($request->vehicle_transmission === "CVT") {
+                $vehicle_transmission = "CVT"; 
             }
 
             $request->merge(['vehicle_transmission' => $vehicle_transmission]);

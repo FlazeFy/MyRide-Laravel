@@ -10,7 +10,6 @@ use Illuminate\Validation\ValidationException;
 // Models
 use App\Models\UserModel;
 use App\Models\AdminModel;
-
 // Helpers
 use App\Helpers\Validation;
 use App\Helpers\Generator;

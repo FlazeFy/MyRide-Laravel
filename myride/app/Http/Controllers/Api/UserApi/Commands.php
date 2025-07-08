@@ -6,12 +6,12 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Hash;
-use Telegram\Bot\Laravel\Facades\Telegram;
 
+// Telegram
+use Telegram\Bot\Laravel\Facades\Telegram;
 // Helper
 use App\Helpers\Generator;
 use App\Helpers\Validation;
-
 // Models
 use App\Models\UserModel;
 use App\Models\AdminModel;

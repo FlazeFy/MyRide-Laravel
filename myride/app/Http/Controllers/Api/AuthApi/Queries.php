@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\Hash;
 // Models
 use App\Models\UserModel;
 use App\Models\AdminModel;
-
 // Helper
 use App\Helpers\Generator;
 

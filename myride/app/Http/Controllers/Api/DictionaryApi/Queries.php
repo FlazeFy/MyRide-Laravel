@@ -7,7 +7,6 @@ use Illuminate\Http\Response;
 
 // Model
 use App\Models\DictionaryModel;
-
 // Helper
 use App\Helpers\Generator;
 
