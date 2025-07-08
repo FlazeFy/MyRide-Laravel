@@ -76,7 +76,7 @@
                             }
                         }
                     },
-                    "422": {
+                    "400": {
                         "description": "{validation_msg}",
                         "content": {
                             "application/json": {
@@ -1645,6 +1645,115 @@
                 ]
             }
         },
+        "/api/v1/user/my_year": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Get my year content",
+                "description": "This request is used to get list of year in which the user has created content (Vehicle, Trip, Service, and Clean History). This request is using MySql database, and have a protected routes.",
+                "operationId": "8f8d65302095f16adbc3960a60221f37",
+                "responses": {
+                    "200": {
+                        "description": "user year fetched",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "user year fetched"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "year": {
+                                                        "type": "integer",
+                                                        "example": 2024
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "protected route need to include sign in token as authorization bearer",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "you need to include the authorization token from login"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "user year failed to fetched",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "user year not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "something wrong. please contact admin"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/v1/vehicle/header": {
             "get": {
                 "tags": [
@@ -1989,6 +2098,548 @@
                                                     "type": "string",
                                                     "example": null,
                                                     "nullable": true
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "protected route need to include sign in token as authorization bearer",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "you need to include the authorization token from login"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "vehicle failed to fetched",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "vehicle not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "something wrong. please contact admin"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/vehicle/detail/full/{id}": {
+            "get": {
+                "tags": [
+                    "Vehicle"
+                ],
+                "summary": "Get vehicle full detail by id",
+                "description": "This request is used to get vehicle detail by id, it comes with Clean and Trip History. This request is using MySql database, and have a protected routes.",
+                "operationId": "093cfdf4530576f08b4f9c4b7c063627",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Vehicle ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "4f33d5e4-de9f-11ed-b5ea-0242ac120002"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "trip fetched",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "vehicle fetched"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "detail": {
+                                                    "properties": {
+                                                        "id": {
+                                                            "type": "string",
+                                                            "format": "uuid",
+                                                            "example": "2d98f524-de02-11ed-b5ea-0242ac120002"
+                                                        },
+                                                        "vehicle_name": {
+                                                            "type": "string",
+                                                            "example": "Brio RS MT"
+                                                        },
+                                                        "vehicle_merk": {
+                                                            "type": "string",
+                                                            "example": "Honda"
+                                                        },
+                                                        "vehicle_type": {
+                                                            "type": "string",
+                                                            "example": "City Car"
+                                                        },
+                                                        "vehicle_price": {
+                                                            "type": "integer",
+                                                            "example": 188000000
+                                                        },
+                                                        "vehicle_desc": {
+                                                            "type": "string",
+                                                            "example": "snowy"
+                                                        },
+                                                        "vehicle_distance": {
+                                                            "type": "integer",
+                                                            "example": 45000
+                                                        },
+                                                        "vehicle_category": {
+                                                            "type": "string",
+                                                            "example": "Personal Car"
+                                                        },
+                                                        "vehicle_status": {
+                                                            "type": "string",
+                                                            "example": "Available"
+                                                        },
+                                                        "vehicle_year_made": {
+                                                            "type": "integer",
+                                                            "example": 2020
+                                                        },
+                                                        "vehicle_plate_number": {
+                                                            "type": "string",
+                                                            "example": "D 1060 ZBC"
+                                                        },
+                                                        "vehicle_fuel_status": {
+                                                            "type": "string",
+                                                            "example": "Normal"
+                                                        },
+                                                        "vehicle_fuel_capacity": {
+                                                            "type": "integer",
+                                                            "example": 35
+                                                        },
+                                                        "vehicle_default_fuel": {
+                                                            "type": "string",
+                                                            "example": "Shell Super"
+                                                        },
+                                                        "vehicle_color": {
+                                                            "type": "string",
+                                                            "example": "White"
+                                                        },
+                                                        "vehicle_transmission": {
+                                                            "type": "string",
+                                                            "example": "CVT"
+                                                        },
+                                                        "vehicle_img_url": {
+                                                            "type": "string",
+                                                            "example": null,
+                                                            "nullable": true
+                                                        },
+                                                        "vehicle_other_img_url": {
+                                                            "type": "string",
+                                                            "example": null,
+                                                            "nullable": true
+                                                        },
+                                                        "vehicle_capacity": {
+                                                            "type": "integer",
+                                                            "example": 5
+                                                        },
+                                                        "vehicle_document": {
+                                                            "type": "string",
+                                                            "example": null,
+                                                            "nullable": true
+                                                        },
+                                                        "created_at": {
+                                                            "type": "string",
+                                                            "format": "datetime",
+                                                            "example": "2024-03-27 04:03:34"
+                                                        },
+                                                        "updated_at": {
+                                                            "type": "string",
+                                                            "format": "datetime",
+                                                            "example": "2025-01-29 15:04:18"
+                                                        },
+                                                        "deleted_at": {
+                                                            "type": "string",
+                                                            "example": null,
+                                                            "nullable": true
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                },
+                                                "trip": {
+                                                    "properties": {
+                                                        "current_page": {
+                                                            "type": "integer",
+                                                            "example": 1
+                                                        },
+                                                        "data": {
+                                                            "type": "array",
+                                                            "items": {
+                                                                "properties": {
+                                                                    "id": {
+                                                                        "type": "string",
+                                                                        "example": "28668090-5653-dff5-2d8f-af603fc36b45"
+                                                                    },
+                                                                    "trip_desc": {
+                                                                        "type": "string",
+                                                                        "example": "jalan2"
+                                                                    },
+                                                                    "trip_category": {
+                                                                        "type": "string",
+                                                                        "example": "Others"
+                                                                    },
+                                                                    "trip_person": {
+                                                                        "type": "string",
+                                                                        "example": "budi",
+                                                                        "nullable": true
+                                                                    },
+                                                                    "trip_origin_name": {
+                                                                        "type": "string",
+                                                                        "example": "Place A"
+                                                                    },
+                                                                    "trip_origin_coordinate": {
+                                                                        "type": "string",
+                                                                        "example": "-6.226828716225759, 106.82152290589822"
+                                                                    },
+                                                                    "trip_destination_name": {
+                                                                        "type": "string",
+                                                                        "example": "Place B"
+                                                                    },
+                                                                    "trip_destination_coordinate": {
+                                                                        "type": "string",
+                                                                        "example": "-6.230792280916382, 106.81781530380249"
+                                                                    },
+                                                                    "created_at": {
+                                                                        "type": "string",
+                                                                        "format": "datetime",
+                                                                        "example": "2025-01-29 16:46:45"
+                                                                    }
+                                                                },
+                                                                "type": "object"
+                                                            }
+                                                        },
+                                                        "last_page": {
+                                                            "type": "integer",
+                                                            "example": 1
+                                                        },
+                                                        "per_page": {
+                                                            "type": "integer",
+                                                            "example": 14
+                                                        },
+                                                        "total": {
+                                                            "type": "integer",
+                                                            "example": 5
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                },
+                                                "clean": {
+                                                    "properties": {
+                                                        "current_page": {
+                                                            "type": "integer",
+                                                            "example": 1
+                                                        },
+                                                        "data": {
+                                                            "type": "array",
+                                                            "items": {
+                                                                "properties": {
+                                                                    "id": {
+                                                                        "type": "string",
+                                                                        "example": "ab8b8d0e-d74d-11ed-afa1-0242ac120002"
+                                                                    },
+                                                                    "clean_desc": {
+                                                                        "type": "string",
+                                                                        "example": "Cuci mobil"
+                                                                    },
+                                                                    "clean_by": {
+                                                                        "type": "string",
+                                                                        "example": "Carwash"
+                                                                    },
+                                                                    "clean_tools": {
+                                                                        "type": "string",
+                                                                        "example": null,
+                                                                        "nullable": true
+                                                                    },
+                                                                    "is_clean_body": {
+                                                                        "type": "integer",
+                                                                        "example": 1
+                                                                    },
+                                                                    "is_clean_window": {
+                                                                        "type": "integer",
+                                                                        "example": 1
+                                                                    },
+                                                                    "is_clean_dashboard": {
+                                                                        "type": "integer",
+                                                                        "example": 1
+                                                                    },
+                                                                    "is_clean_tires": {
+                                                                        "type": "integer",
+                                                                        "example": 1
+                                                                    },
+                                                                    "is_clean_trash": {
+                                                                        "type": "integer",
+                                                                        "example": 1
+                                                                    },
+                                                                    "is_clean_engine": {
+                                                                        "type": "integer",
+                                                                        "example": 1
+                                                                    },
+                                                                    "is_clean_seat": {
+                                                                        "type": "integer",
+                                                                        "example": 1
+                                                                    },
+                                                                    "is_clean_carpet": {
+                                                                        "type": "integer",
+                                                                        "example": 1
+                                                                    },
+                                                                    "is_clean_pillows": {
+                                                                        "type": "integer",
+                                                                        "example": 0
+                                                                    },
+                                                                    "clean_address": {
+                                                                        "type": "string",
+                                                                        "example": "AutoService Jl. Kapten Tandean"
+                                                                    },
+                                                                    "clean_start_time": {
+                                                                        "type": "string",
+                                                                        "format": "datetime",
+                                                                        "example": "2024-02-29 21:30:00"
+                                                                    },
+                                                                    "clean_end_time": {
+                                                                        "type": "string",
+                                                                        "format": "datetime",
+                                                                        "example": "2024-02-29 22:20:00"
+                                                                    },
+                                                                    "is_fill_window_cleaning_water": {
+                                                                        "type": "integer",
+                                                                        "example": 0
+                                                                    },
+                                                                    "is_fill_fuel": {
+                                                                        "type": "integer",
+                                                                        "example": 0
+                                                                    },
+                                                                    "is_clean_hollow": {
+                                                                        "type": "integer",
+                                                                        "example": 1
+                                                                    },
+                                                                    "created_at": {
+                                                                        "type": "string",
+                                                                        "format": "datetime",
+                                                                        "example": "2024-03-27 12:33:05"
+                                                                    },
+                                                                    "updated_at": {
+                                                                        "type": "string",
+                                                                        "example": null,
+                                                                        "nullable": true
+                                                                    }
+                                                                },
+                                                                "type": "object"
+                                                            }
+                                                        },
+                                                        "last_page": {
+                                                            "type": "integer",
+                                                            "example": 1
+                                                        },
+                                                        "per_page": {
+                                                            "type": "integer",
+                                                            "example": 14
+                                                        },
+                                                        "total": {
+                                                            "type": "integer",
+                                                            "example": 1
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "protected route need to include sign in token as authorization bearer",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "you need to include the authorization token from login"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "vehicle failed to fetched",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "vehicle not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "something wrong. please contact admin"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/vehicle/trip/summary/{id}": {
+            "get": {
+                "tags": [
+                    "Vehicle"
+                ],
+                "summary": "Get vehicle trip summary by id",
+                "description": "This request is used to get vehicle trip history summary by id. This request is using MySql database, and have a protected routes.",
+                "operationId": "0ec160ab68e5614a26acd1f9e83f9c46",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Vehicle ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "4f33d5e4-de9f-11ed-b5ea-0242ac120002"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "trip fetched",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "vehicle fetched"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "detail": {
+                                                    "properties": {
+                                                        "most_person_with": {
+                                                            "type": "string",
+                                                            "example": "budi"
+                                                        },
+                                                        "vehicle_total_trip_distance": {
+                                                            "type": "decimal",
+                                                            "example": 30.46
+                                                        },
+                                                        "most_origin": {
+                                                            "type": "string",
+                                                            "example": "Place A"
+                                                        },
+                                                        "most_destination": {
+                                                            "type": "string",
+                                                            "example": "Place B"
+                                                        },
+                                                        "most_category": {
+                                                            "type": "string",
+                                                            "example": "Office"
+                                                        }
+                                                    },
+                                                    "type": "object"
                                                 }
                                             },
                                             "type": "object"

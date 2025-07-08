@@ -352,7 +352,7 @@ class Queries extends Controller
             $total_vehicle = VehicleModel::whereNull('deleted_at')->count();
             $total_clean = CleanModel::count();
             // $total_driver = DriverModel::count();
-            // $total_service = ServiceModel::count();
+            $total_service = ServiceModel::count();
             $total_trip = TripModel::whereNull('deleted_at')->count();
 
             return response()->json([
@@ -361,7 +361,7 @@ class Queries extends Controller
                 'data' => [
                     'total_user' => $total_user,
                     'total_vehicle' => $total_vehicle,
-                    // 'total_service' => $total_service,
+                    'total_service' => $total_service,
                     'total_clean' => $total_clean,
                     // 'total_driver' => $total_driver,
                     'total_trip' => $total_trip

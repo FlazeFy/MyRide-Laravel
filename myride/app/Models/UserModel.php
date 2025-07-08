@@ -7,6 +7,9 @@ use Laravel\Sanctum\HasApiTokens;
 
 // Others Model
 use App\Models\AdminModel;
+use App\Models\TripModel;
+use App\Models\VehicleModel;
+use App\Models\CleanModel;
 
 class UserModel extends Authenticatable
 {
@@ -54,6 +57,41 @@ class UserModel extends Authenticatable
                 $res->role = 'admin';
             }
         }
+
+        return $res;
+    }
+
+    public static function getAvailableYear($user_id, $is_admin){
+        $res_vehicle = VehicleModel::selectRaw('YEAR(created_at) as year');
+        if (!$is_admin) {
+            $res_vehicle = $res_vehicle->where('created_by', $user_id);
+        }
+        $res_vehicle = $res_vehicle->groupBy('year')->get();
+    
+        $res_trip = TripModel::selectRaw('YEAR(created_at) as year');
+        if (!$is_admin) {
+            $res_trip = $res_trip->where('created_by', $user_id);
+        }
+        $res_trip = $res_trip->groupBy('year')->get();
+
+        $res_clean = CleanModel::selectRaw('YEAR(created_at) as year');
+        if (!$is_admin) {
+            $res_clean = $res_clean->where('created_by', $user_id);
+        }
+        $res_clean = $res_clean->groupBy('year')->get();
+
+        $res_service = ServiceModel::selectRaw('YEAR(created_at) as year');
+        if (!$is_admin) {
+            $res_service = $res_service->where('created_by', $user_id);
+        }
+        $res_service = $res_service->groupBy('year')->get();
+    
+        $res = $res_vehicle->concat($res_trip)
+            ->concat($res_clean)
+            ->concat($res_service)
+            ->unique('year') 
+            ->sortBy('year')
+            ->values(); 
 
         return $res;
     }

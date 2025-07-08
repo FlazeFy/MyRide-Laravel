@@ -58,7 +58,7 @@ class Commands extends Controller
      *         )
      *     ),
      *     @OA\Response(
-     *         response=422,
+     *         response=400,
      *         description="{validation_msg}",
      *         @OA\JsonContent(
      *             @OA\Property(property="status", type="string", example="failed"),
@@ -94,7 +94,7 @@ class Commands extends Controller
                 return response()->json([
                     'status' => 'failed',
                     'result' => $errors,
-                ], Response::HTTP_UNPROCESSABLE_ENTITY);
+                ], Response::HTTP_BAD_REQUEST);
             } else {
                 // Check for Admin
                 $user = AdminModel::where('username', $request->username)->first();

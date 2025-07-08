@@ -229,6 +229,134 @@ class Queries extends Controller
         }
     }
 
+    /**
+     * @OA\GET(
+     *     path="/api/v1/vehicle/detail/full/{id}",
+     *     summary="Get vehicle full detail by id",
+     *     description="This request is used to get vehicle detail by id, it comes with Clean and Trip History. This request is using MySql database, and have a protected routes.",
+     *     tags={"Vehicle"},
+     *     security={{"bearerAuth":{}}},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string",
+     *             example="4f33d5e4-de9f-11ed-b5ea-0242ac120002"
+     *         ),
+     *         description="Vehicle ID",
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="trip fetched",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="message", type="string", example="vehicle fetched"),
+     *             @OA\Property(property="data", type="object",
+     *                 @OA\Property(property="detail", type="object",
+     *                     @OA\Property(property="id", type="string", format="uuid", example="2d98f524-de02-11ed-b5ea-0242ac120002"),
+     *                     @OA\Property(property="vehicle_name", type="string", example="Brio RS MT"),
+     *                     @OA\Property(property="vehicle_merk", type="string", example="Honda"),
+     *                     @OA\Property(property="vehicle_type", type="string", example="City Car"),
+     *                     @OA\Property(property="vehicle_price", type="integer", example=188000000),
+     *                     @OA\Property(property="vehicle_desc", type="string", example="snowy"),
+     *                     @OA\Property(property="vehicle_distance", type="integer", example=45000),
+     *                     @OA\Property(property="vehicle_category", type="string", example="Personal Car"),
+     *                     @OA\Property(property="vehicle_status", type="string", example="Available"),
+     *                     @OA\Property(property="vehicle_year_made", type="integer", example=2020),
+     *                     @OA\Property(property="vehicle_plate_number", type="string", example="D 1060 ZBC"),
+     *                     @OA\Property(property="vehicle_fuel_status", type="string", example="Normal"),
+     *                     @OA\Property(property="vehicle_fuel_capacity", type="integer", example=35),
+     *                     @OA\Property(property="vehicle_default_fuel", type="string", example="Shell Super"),
+     *                     @OA\Property(property="vehicle_color", type="string", example="White"),
+     *                     @OA\Property(property="vehicle_transmission", type="string", example="CVT"),
+     *                     @OA\Property(property="vehicle_img_url", type="string", nullable=true, example=null),
+     *                     @OA\Property(property="vehicle_other_img_url", type="string", nullable=true, example=null),
+     *                     @OA\Property(property="vehicle_capacity", type="integer", example=5),
+     *                     @OA\Property(property="vehicle_document", type="string", nullable=true, example=null),
+     *                     @OA\Property(property="created_at", type="string", format="datetime", example="2024-03-27 04:03:34"),
+     *                     @OA\Property(property="updated_at", type="string", format="datetime", example="2025-01-29 15:04:18"),
+     *                     @OA\Property(property="deleted_at", type="string", nullable=true, example=null)
+     *                 ),
+     *                 @OA\Property(property="trip", type="object",
+     *                     @OA\Property(property="current_page", type="integer", example=1),
+     *                     @OA\Property(property="data", type="array",
+     *                         @OA\Items(type="object",
+     *                             @OA\Property(property="id", type="string", example="28668090-5653-dff5-2d8f-af603fc36b45"),
+     *                             @OA\Property(property="trip_desc", type="string", example="jalan2"),
+     *                             @OA\Property(property="trip_category", type="string", example="Others"),
+     *                             @OA\Property(property="trip_person", type="string", nullable=true, example="budi"),
+     *                             @OA\Property(property="trip_origin_name", type="string", example="Place A"),
+     *                             @OA\Property(property="trip_origin_coordinate", type="string", example="-6.226828716225759, 106.82152290589822"),
+     *                             @OA\Property(property="trip_destination_name", type="string", example="Place B"),
+     *                             @OA\Property(property="trip_destination_coordinate", type="string", example="-6.230792280916382, 106.81781530380249"),
+     *                             @OA\Property(property="created_at", type="string", format="datetime", example="2025-01-29 16:46:45")
+     *                         )
+     *                     ),
+     *                     @OA\Property(property="last_page", type="integer", example=1),
+     *                     @OA\Property(property="per_page", type="integer", example=14),
+     *                     @OA\Property(property="total", type="integer", example=5)
+     *                 ),
+     *                 @OA\Property(property="clean", type="object",
+     *                     @OA\Property(property="current_page", type="integer", example=1),
+     *                     @OA\Property(property="data", type="array",
+     *                         @OA\Items(type="object",
+     *                             @OA\Property(property="id", type="string", example="ab8b8d0e-d74d-11ed-afa1-0242ac120002"),
+     *                             @OA\Property(property="clean_desc", type="string", example="Cuci mobil"),
+     *                             @OA\Property(property="clean_by", type="string", example="Carwash"),
+     *                             @OA\Property(property="clean_tools", type="string", nullable=true, example=null),
+     *                             @OA\Property(property="is_clean_body", type="integer", example=1),
+     *                             @OA\Property(property="is_clean_window", type="integer", example=1),
+     *                             @OA\Property(property="is_clean_dashboard", type="integer", example=1),
+     *                             @OA\Property(property="is_clean_tires", type="integer", example=1),
+     *                             @OA\Property(property="is_clean_trash", type="integer", example=1),
+     *                             @OA\Property(property="is_clean_engine", type="integer", example=1),
+     *                             @OA\Property(property="is_clean_seat", type="integer", example=1),
+     *                             @OA\Property(property="is_clean_carpet", type="integer", example=1),
+     *                             @OA\Property(property="is_clean_pillows", type="integer", example=0),
+     *                             @OA\Property(property="clean_address", type="string", example="AutoService Jl. Kapten Tandean"),
+     *                             @OA\Property(property="clean_start_time", type="string", format="datetime", example="2024-02-29 21:30:00"),
+     *                             @OA\Property(property="clean_end_time", type="string", format="datetime", example="2024-02-29 22:20:00"),
+     *                             @OA\Property(property="is_fill_window_cleaning_water", type="integer", example=0),
+     *                             @OA\Property(property="is_fill_fuel", type="integer", example=0),
+     *                             @OA\Property(property="is_clean_hollow", type="integer", example=1),
+     *                             @OA\Property(property="created_at", type="string", format="datetime", example="2024-03-27 12:33:05"),
+     *                             @OA\Property(property="updated_at", type="string", nullable=true, example=null)
+     *                         )
+     *                     ),
+     *                     @OA\Property(property="last_page", type="integer", example=1),
+     *                     @OA\Property(property="per_page", type="integer", example=14),
+     *                     @OA\Property(property="total", type="integer", example=1)
+     *                 )
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="protected route need to include sign in token as authorization bearer",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="failed"),
+     *             @OA\Property(property="message", type="string", example="you need to include the authorization token from login")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="vehicle failed to fetched",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="failed"),
+     *             @OA\Property(property="message", type="string", example="vehicle not found")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal Server Error",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="error"),
+     *             @OA\Property(property="message", type="string", example="something wrong. please contact admin")
+     *         )
+     *     ),
+     * )
+     */
     public function getVehicleFullDetailById(Request $request, $id){
         try{
             $user_id = $request->user()->id;
@@ -266,6 +394,66 @@ class Queries extends Controller
         }
     }
 
+    /**
+     * @OA\GET(
+     *     path="/api/v1/vehicle/trip/summary/{id}",
+     *     summary="Get vehicle trip summary by id",
+     *     description="This request is used to get vehicle trip history summary by id. This request is using MySql database, and have a protected routes.",
+     *     tags={"Vehicle"},
+     *     security={{"bearerAuth":{}}},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string",
+     *             example="4f33d5e4-de9f-11ed-b5ea-0242ac120002"
+     *         ),
+     *         description="Vehicle ID",
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="trip fetched",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="message", type="string", example="vehicle fetched"),
+     *             @OA\Property(property="data", type="object",
+     *                 @OA\Property(property="detail", type="object",
+     *                     @OA\Property(property="most_person_with", type="string", example="budi"),
+     *                     @OA\Property(property="vehicle_total_trip_distance", type="decimal", example=30.46),
+     *                     @OA\Property(property="most_origin", type="string", example="Place A"),
+     *                     @OA\Property(property="most_destination", type="string", example="Place B"),
+     *                     @OA\Property(property="most_category", type="string", example="Office")
+     *                 ),
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="protected route need to include sign in token as authorization bearer",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="failed"),
+     *             @OA\Property(property="message", type="string", example="you need to include the authorization token from login")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="vehicle failed to fetched",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="failed"),
+     *             @OA\Property(property="message", type="string", example="vehicle not found")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal Server Error",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="error"),
+     *             @OA\Property(property="message", type="string", example="something wrong. please contact admin")
+     *         )
+     *     ),
+     * )
+     */
     public function getVehicleTripSummaryById(Request $request, $id){
         try{
             $user_id = $request->user()->id;

@@ -188,6 +188,52 @@ class Queries extends Controller
         }
     }
 
+    /**
+     * @OA\GET(
+     *     path="/api/v1/user/my_year",
+     *     summary="Get my year content",
+     *     description="This request is used to get list of year in which the user has created content (Vehicle, Trip, Service, and Clean History). This request is using MySql database, and have a protected routes.",
+     *     tags={"User"},
+     *     security={{"bearerAuth":{}}},
+     *     @OA\Response(
+     *         response=200,
+     *         description="user year fetched",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="message", type="string", example="user year fetched"),
+     *                 @OA\Property(property="data", type="array",
+     *                     @OA\Items(
+     *                          @OA\Property(property="year", type="integer", example=2024)
+     *                 )
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="protected route need to include sign in token as authorization bearer",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="failed"),
+     *             @OA\Property(property="message", type="string", example="you need to include the authorization token from login")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="user year failed to fetched",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="failed"),
+     *             @OA\Property(property="message", type="string", example="user year not found")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal Server Error",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="error"),
+     *             @OA\Property(property="message", type="string", example="something wrong. please contact admin")
+     *         )
+     *     ),
+     * )
+     */
     public function get_content_year(Request $request){
         try{
             $user_id = $request->user()->id;
