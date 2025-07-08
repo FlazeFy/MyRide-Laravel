@@ -30,7 +30,7 @@ class Queries extends Controller
      *         description="clean fetched",
      *         @OA\JsonContent(
      *             @OA\Property(property="status", type="string", example="success"),
-     *             @OA\Property(property="message", type="string", example="stats fetched"),
+     *             @OA\Property(property="message", type="string", example="clean fetched"),
      *             @OA\Property(property="data",
      *                 @OA\Property(property="current_page", type="integer", example=1),
      *                 @OA\Property(property="data", type="array",

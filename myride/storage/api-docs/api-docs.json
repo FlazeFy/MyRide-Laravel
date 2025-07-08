@@ -237,7 +237,7 @@
                                         },
                                         "message": {
                                             "type": "string",
-                                            "example": "stats fetched"
+                                            "example": "clean fetched"
                                         },
                                         "data": {
                                             "properties": {
@@ -956,6 +956,179 @@
                 }
             }
         },
+        "/api/v1/trip": {
+            "get": {
+                "tags": [
+                    "Trip"
+                ],
+                "summary": "Get all trip history",
+                "description": "This request is used to get all trip history with pagination. This request is using MySql database, and have a protected routes.",
+                "operationId": "f1bd5ed3638a68bd70161cf74ffafcb8",
+                "responses": {
+                    "200": {
+                        "description": "trip fetched",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "trip fetched"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "current_page": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "data": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "string",
+                                                                "format": "uuid",
+                                                                "example": "28668090-5653-dff5-2d8f-af603fc36b45"
+                                                            },
+                                                            "vehicle_name": {
+                                                                "type": "string",
+                                                                "example": "Brio RS MT"
+                                                            },
+                                                            "vehicle_plate_number": {
+                                                                "type": "string",
+                                                                "example": "D 1610 ZBC"
+                                                            },
+                                                            "trip_desc": {
+                                                                "type": "string",
+                                                                "example": "jalan2"
+                                                            },
+                                                            "trip_category": {
+                                                                "type": "string",
+                                                                "example": "Others"
+                                                            },
+                                                            "trip_origin_name": {
+                                                                "type": "string",
+                                                                "example": "Budi House"
+                                                            },
+                                                            "trip_person": {
+                                                                "type": "string",
+                                                                "example": "Budi",
+                                                                "nullable": true
+                                                            },
+                                                            "trip_origin_coordinate": {
+                                                                "type": "string",
+                                                                "example": "-6.252640549671855, 106.76424433238519"
+                                                            },
+                                                            "trip_destination_name": {
+                                                                "type": "string",
+                                                                "example": "Central Park"
+                                                            },
+                                                            "trip_destination_coordinate": {
+                                                                "type": "string",
+                                                                "example": "-6.177464532426197, 106.7912179194768"
+                                                            },
+                                                            "created_at": {
+                                                                "type": "string",
+                                                                "format": "datetime",
+                                                                "example": "2025-06-19 07:54:42"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                },
+                                                "last_page": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "per_page": {
+                                                    "type": "integer",
+                                                    "example": 14
+                                                },
+                                                "total": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "protected route need to include sign in token as authorization bearer",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "you need to include the authorization token from login"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "trip failed to fetched",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "trip history not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "something wrong. please contact admin"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/v1/user/update_telegram_id": {
             "put": {
                 "tags": [
@@ -1471,6 +1644,428 @@
                     }
                 ]
             }
+        },
+        "/api/v1/vehicle/header": {
+            "get": {
+                "tags": [
+                    "Vehicle"
+                ],
+                "summary": "Get all vehicle",
+                "description": "This request is used to get all vehicle with pagination. This request is using MySql database, and have a protected routes.",
+                "operationId": "6d70a56336f3eb7c41cd11d0b97a3bf8",
+                "responses": {
+                    "200": {
+                        "description": "trip fetched",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "vehicle fetched"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "current_page": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "data": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "string",
+                                                                "format": "uuid",
+                                                                "example": "2d98f524-de02-11ed-b5ea-0242ac120002"
+                                                            },
+                                                            "vehicle_name": {
+                                                                "type": "string",
+                                                                "example": "Brio RS MT"
+                                                            },
+                                                            "vehicle_desc": {
+                                                                "type": "string",
+                                                                "example": "snowy"
+                                                            },
+                                                            "vehicle_merk": {
+                                                                "type": "string",
+                                                                "example": "Honda"
+                                                            },
+                                                            "vehicle_type": {
+                                                                "type": "string",
+                                                                "example": "City Car"
+                                                            },
+                                                            "vehicle_distance": {
+                                                                "type": "integer",
+                                                                "example": 45000
+                                                            },
+                                                            "vehicle_category": {
+                                                                "type": "string",
+                                                                "example": "Personal Car"
+                                                            },
+                                                            "vehicle_status": {
+                                                                "type": "string",
+                                                                "example": "Available"
+                                                            },
+                                                            "vehicle_plate_number": {
+                                                                "type": "string",
+                                                                "example": "D 1610 ZBC"
+                                                            },
+                                                            "vehicle_fuel_status": {
+                                                                "type": "string",
+                                                                "example": "Normal"
+                                                            },
+                                                            "vehicle_default_fuel": {
+                                                                "type": "string",
+                                                                "example": "Shell Super"
+                                                            },
+                                                            "vehicle_color": {
+                                                                "type": "string",
+                                                                "example": "White"
+                                                            },
+                                                            "vehicle_capacity": {
+                                                                "type": "integer",
+                                                                "example": 5
+                                                            },
+                                                            "vehicle_img_url": {
+                                                                "type": "string",
+                                                                "example": null,
+                                                                "nullable": true
+                                                            },
+                                                            "updated_at": {
+                                                                "type": "string",
+                                                                "format": "datetime",
+                                                                "example": "2025-01-29 15:04:18"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                },
+                                                "last_page": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "per_page": {
+                                                    "type": "integer",
+                                                    "example": 14
+                                                },
+                                                "total": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "protected route need to include sign in token as authorization bearer",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "you need to include the authorization token from login"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "vehicle failed to fetched",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "vehicle not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "something wrong. please contact admin"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/vehicle/detail/{id}": {
+            "get": {
+                "tags": [
+                    "Vehicle"
+                ],
+                "summary": "Get vehicle detail by id",
+                "description": "This request is used to get vehicle detail by id. This request is using MySql database, and have a protected routes.",
+                "operationId": "72eecbefc758130b99a60704c96174dd",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Vehicle ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "4f33d5e4-de9f-11ed-b5ea-0242ac120002"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "trip fetched",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "vehicle fetched"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "string",
+                                                    "format": "uuid",
+                                                    "example": "4f33d5e4-de9f-11ed-b5ea-0242ac120002"
+                                                },
+                                                "vehicle_name": {
+                                                    "type": "string",
+                                                    "example": "Kijang Innova 2.0 Type G MT"
+                                                },
+                                                "vehicle_merk": {
+                                                    "type": "string",
+                                                    "example": "Toyota"
+                                                },
+                                                "vehicle_type": {
+                                                    "type": "string",
+                                                    "example": "Minibus"
+                                                },
+                                                "vehicle_price": {
+                                                    "type": "integer",
+                                                    "example": 275000000
+                                                },
+                                                "vehicle_desc": {
+                                                    "type": "string",
+                                                    "example": "sudah jarang digunakan 2"
+                                                },
+                                                "vehicle_distance": {
+                                                    "type": "integer",
+                                                    "example": 90000
+                                                },
+                                                "vehicle_category": {
+                                                    "type": "string",
+                                                    "example": "Parents Car"
+                                                },
+                                                "vehicle_status": {
+                                                    "type": "string",
+                                                    "example": "Available"
+                                                },
+                                                "vehicle_year_made": {
+                                                    "type": "integer",
+                                                    "example": 2011
+                                                },
+                                                "vehicle_plate_number": {
+                                                    "type": "string",
+                                                    "example": "PA 1060 VZ"
+                                                },
+                                                "vehicle_fuel_status": {
+                                                    "type": "string",
+                                                    "example": "Not Monitored"
+                                                },
+                                                "vehicle_fuel_capacity": {
+                                                    "type": "integer",
+                                                    "example": 50
+                                                },
+                                                "vehicle_default_fuel": {
+                                                    "type": "string",
+                                                    "example": "Pertamina Pertalite"
+                                                },
+                                                "vehicle_color": {
+                                                    "type": "string",
+                                                    "example": "White"
+                                                },
+                                                "vehicle_transmission": {
+                                                    "type": "string",
+                                                    "example": "Manual"
+                                                },
+                                                "vehicle_img_url": {
+                                                    "type": "string",
+                                                    "example": null,
+                                                    "nullable": true
+                                                },
+                                                "vehicle_other_img_url": {
+                                                    "type": "string",
+                                                    "example": null,
+                                                    "nullable": true
+                                                },
+                                                "vehicle_capacity": {
+                                                    "type": "integer",
+                                                    "example": 8
+                                                },
+                                                "vehicle_document": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "string",
+                                                                "example": "fL9eDk"
+                                                            },
+                                                            "attach_type": {
+                                                                "type": "string",
+                                                                "example": "attachment_image"
+                                                            },
+                                                            "attach_name": {
+                                                                "type": "string",
+                                                                "example": "ini gambar"
+                                                            },
+                                                            "attach_url": {
+                                                                "type": "string",
+                                                                "format": "uri",
+                                                                "example": "https://firebasestorage.googleapis.com/..."
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "format": "datetime",
+                                                    "example": "2024-03-27 04:03:34"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "format": "datetime",
+                                                    "example": "2025-07-08 02:13:45"
+                                                },
+                                                "deleted_at": {
+                                                    "type": "string",
+                                                    "example": null,
+                                                    "nullable": true
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "protected route need to include sign in token as authorization bearer",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "you need to include the authorization token from login"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "vehicle failed to fetched",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "vehicle not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "something wrong. please contact admin"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
         }
     },
     "components": {
@@ -1599,8 +2194,16 @@
             "description": "Stats"
         },
         {
+            "name": "Trip",
+            "description": "Trip"
+        },
+        {
             "name": "User",
             "description": "User"
+        },
+        {
+            "name": "Vehicle",
+            "description": "Vehicle"
         }
     ]
 }
