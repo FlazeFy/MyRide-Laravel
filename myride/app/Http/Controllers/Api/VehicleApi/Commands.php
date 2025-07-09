@@ -22,6 +22,61 @@ class Commands extends Controller
         $this->module = "vehicle";
     }
 
+    /**
+     * @OA\PUT(
+     *     path="/api/v1/vehicle/{id}",
+     *     summary="Put Vehicle Detail By Id",
+     *     description="Update a new vehicle using `vehicle_name`, `vehicle_merk`, `vehicle_type`, `vehicle_price`, `vehicle_desc`, `vehicle_distance`, `vehicle_category`, `vehicle_status`, `vehicle_year_made`, `vehicle_plate_number`, `vehicle_fuel_status`, `vehicle_fuel_capacity`, `vehicle_default_fuel`, `vehicle_color`, `vehicle_transmission`, and `vehicle_capacity`. This request is using MySQL database and send Telegram Message.",
+     *     tags={"Vehicle"},
+     *     security={{"bearerAuth":{}}},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Vehicle update successfully",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="message", type="string", example="vehicle update")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Validation failed",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             oneOf={
+     *                 @OA\Schema(
+     *                     @OA\Property(property="status", type="string", example="failed"),
+     *                     @OA\Property(property="message", type="string", example="vehicle name must be at least 2 characters")
+     *                 ),
+     *                 @OA\Schema(
+     *                     @OA\Property(property="status", type="string", example="failed"),
+     *                     @OA\Property(property="message", type="string", example="vehicle type is a required field")
+     *                 ),
+     *                 @OA\Schema(
+     *                     @OA\Property(property="status", type="string", example="failed"),
+     *                     @OA\Property(property="message", type="string", example="vehicle type must be one of the following values City Car, Minibus, Motorcycle, Hatchback, Sedan, SUV, Pickup Truck, Convertible, Coupe, Van, Wagon, Crossover, Electric")
+     *                 ),
+     *             }
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="vehicle failed to fetched",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="failed"),
+     *             @OA\Property(property="message", type="string", example="vehicle not found")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal Server Error",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="error"),
+     *             @OA\Property(property="message", type="string", example="something wrong. please contact admin")
+     *         )
+     *     )
+     * )
+     */
     public function putVehicleDetailById(Request $request, $id)
     {
         try{

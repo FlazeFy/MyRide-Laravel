@@ -23,6 +23,57 @@ class Commands extends Controller
         $this->module = "trip";
     }
 
+    /**
+     * @OA\POST(
+     *     path="/api/v1/trip",
+     *     summary="Post create trip",
+     *     description="Create a new trip using `vehicle_id`, `trip_desc`, `trip_category`, `trip_origin_name`, `trip_person`, `trip_origin_coordinate`, `trip_destination_coordinate`, and `trip_destination_name`. This request is using MySQL database and send Telegram Message.",
+     *     tags={"Trip"},
+     *     security={{"bearerAuth":{}}},
+     *     @OA\Response(
+     *         response=201,
+     *         description="Trip created successfully",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="message", type="string", example="trip created"),
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Validation failed",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             oneOf={
+     *                 @OA\Schema(
+     *                     @OA\Property(property="status", type="string", example="failed"),
+     *                     @OA\Property(property="message", type="string", example="trip category must be at least 2 characters")
+     *                 ),
+     *                 @OA\Schema(
+     *                     @OA\Property(property="status", type="string", example="failed"),
+     *                     @OA\Property(property="message", type="string", example="trip category is a required field")
+     *                 ),
+     *             }
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="vehicle failed to fetched",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="failed"),
+     *             @OA\Property(property="message", type="string", example="vehicle not found")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal Server Error",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="error"),
+     *             @OA\Property(property="message", type="string", example="something wrong. please contact admin")
+     *         )
+     *     )
+     * )
+     */
     public function postTrip(Request $request)
     {
         try{
