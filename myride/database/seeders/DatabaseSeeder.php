@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\AdminModel;
 use App\Models\UserModel;
+use App\Models\FAQModel;
 
 use Illuminate\Database\Seeder;
 
@@ -13,5 +14,7 @@ class DatabaseSeeder extends Seeder
     {
         AdminModel::factory(1)->create();
         UserModel::factory(1)->create();
+        FAQModel::factory(8)->state(['is_show' => 1])->create();
+        FAQModel::factory(10)->state(['is_show' => 0])->create();
     }
 }
