@@ -53,6 +53,19 @@ class Generator
         return $res;
     }
 
+    public static function getRandomDate($null){
+        if($null == 0){
+            $start = strtotime('2023-01-01 00:00:00');
+            $end = strtotime(date("Y-m-d H:i:s"));
+            $random = mt_rand($start, $end); 
+            $res = date('Y-m-d H:i:s', $random);
+        } else {
+            $res = null;
+        }
+
+        return $res;
+    }
+
     public static function generateMonthName($idx,$type){
         $months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
     
