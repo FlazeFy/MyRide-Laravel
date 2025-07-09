@@ -19,6 +19,62 @@ class Commands extends Controller
         $this->module = "dictionary";
     }
 
+    /**
+     * @OA\DELETE(
+     *     path="/api/v1/dictionary/{id}",
+     *     summary="Delete dictionary by id",
+     *     tags={"Dictionary"},
+     *     security={{"bearerAuth":{}}},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="string"),
+     *         description="Dictionary ID",
+     *         example="e1288783-a5d4-1c4c-2cd6-0e92f7cc3bf9",
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="dictionary permentally deleted",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="message", type="string", example="dictionary permentally deleted")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="protected route need to include sign in token as authorization bearer",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="failed"),
+     *             @OA\Property(property="message", type="string", example="you need to include the authorization token from login")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="dictionary failed to permentally deleted",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="failed"),
+     *             @OA\Property(property="message", type="string", example="dictionary not found")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="{validation_msg}",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="failed"),
+     *             @OA\Property(property="message", type="string", example="{field validation message}")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal Server Error",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="error"),
+     *             @OA\Property(property="message", type="string", example="something wrong. please contact admin")
+     *         )
+     *     ),
+     * )
+     */
     public function hardDeleteDictionaryById(Request $request, $id)
     {
         try{
@@ -29,7 +85,7 @@ class Commands extends Controller
                 return response()->json([
                     'status' => 'error',
                     'message' => $validator->errors()
-                ], Response::HTTP_UNPROCESSABLE_ENTITY);
+                ], Response::HTTP_BAD_REQUEST);
             } else {
                 // Service : Delete
                 $rows = DictionaryModel::destroy($id);
@@ -55,7 +111,58 @@ class Commands extends Controller
         }
     }
 
-    public function postDictionary(Request $request)
+    /**
+     * @OA\POST(
+     *     path="/api/v1/dictionary",
+     *     summary="Post dictionary",
+     *     description="Create a new dictionary using the given name and category. This request is using MySQL database.",
+     *     tags={"Dictionary"},
+     *     security={{"bearerAuth":{}}},
+     *     @OA\Response(
+     *         response=201,
+     *         description="Dictionary created successfully",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="message", type="string", example="dictionary created"),
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Validation failed",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             oneOf={
+     *                 @OA\Schema(
+     *                     @OA\Property(property="status", type="string", example="failed"),
+     *                     @OA\Property(property="message", type="string", example="dictionary name must be at least 2 characters")
+     *                 ),
+     *                 @OA\Schema(
+     *                     @OA\Property(property="status", type="string", example="failed"),
+     *                     @OA\Property(property="message", type="string", example="dictionary type must be one of the following values trip_category, vehicle_merk, vehicle_type, vehicle_category, vehicle_status, vehicle_default_fuel, vehicle_fuel_status, vehicle_transmission_code")
+     *                 ),
+     *                 @OA\Schema(
+     *                     @OA\Property(property="status", type="string", example="failed"),
+     *                     @OA\Property(property="message", type="string", example="dictionary_name is a required field")
+     *                 ),
+     *                 @OA\Schema(
+     *                     @OA\Property(property="status", type="string", example="failed"),
+     *                     @OA\Property(property="message", type="string", example="dictionary name has been used. try another")
+     *                 )
+     *             }
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal Server Error",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="error"),
+     *             @OA\Property(property="message", type="string", example="something wrong. please contact admin")
+     *         )
+     *     )
+     * )
+     */
+    public function postCreateDictionary(Request $request)
     {
         try{
             // Validator
@@ -64,7 +171,7 @@ class Commands extends Controller
                 return response()->json([
                     'status' => 'error',
                     'message' => $validator->errors()
-                ], Response::HTTP_UNPROCESSABLE_ENTITY);
+                ], Response::HTTP_BAD_REQUEST);
             } else {
                 $dictionary_type = $request->dictionary_type;
                 $dictionary_name = $request->dictionary_name;

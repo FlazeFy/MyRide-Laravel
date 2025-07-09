@@ -41,7 +41,7 @@ class Commands extends Controller
                 return response()->json([
                     'status' => 'error',
                     'message' => $validator->errors()
-                ], Response::HTTP_UNPROCESSABLE_ENTITY);
+                ], Response::HTTP_BAD_REQUEST);
             } else {
                 $user_id = $request->user()->id;
                 $vehicle_name = $request->vehicle_name." ".$request->vehicle_transmission_code;

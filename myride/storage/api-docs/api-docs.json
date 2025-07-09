@@ -440,6 +440,380 @@
                 ]
             }
         },
+        "/api/v1/dictionary/{id}": {
+            "delete": {
+                "tags": [
+                    "Dictionary"
+                ],
+                "summary": "Delete dictionary by id",
+                "operationId": "41d0a45e2befa472da1adade242b757d",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Dictionary ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "e1288783-a5d4-1c4c-2cd6-0e92f7cc3bf9"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "dictionary permentally deleted",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "dictionary permentally deleted"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "protected route need to include sign in token as authorization bearer",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "you need to include the authorization token from login"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "dictionary failed to permentally deleted",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "dictionary not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "{validation_msg}",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "{field validation message}"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "something wrong. please contact admin"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/dictionary": {
+            "post": {
+                "tags": [
+                    "Dictionary"
+                ],
+                "summary": "Post dictionary",
+                "description": "Create a new dictionary using the given name and category. This request is using MySQL database.",
+                "operationId": "6577d5dad15a6096cca1f0954f5794e0",
+                "responses": {
+                    "201": {
+                        "description": "Dictionary created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "dictionary created"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Validation failed",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "oneOf": [
+                                        {
+                                            "properties": {
+                                                "status": {
+                                                    "type": "string",
+                                                    "example": "failed"
+                                                },
+                                                "message": {
+                                                    "type": "string",
+                                                    "example": "dictionary name must be at least 2 characters"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        {
+                                            "properties": {
+                                                "status": {
+                                                    "type": "string",
+                                                    "example": "failed"
+                                                },
+                                                "message": {
+                                                    "type": "string",
+                                                    "example": "dictionary type must be one of the following values trip_category, vehicle_merk, vehicle_type, vehicle_category, vehicle_status, vehicle_default_fuel, vehicle_fuel_status, vehicle_transmission_code"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        {
+                                            "properties": {
+                                                "status": {
+                                                    "type": "string",
+                                                    "example": "failed"
+                                                },
+                                                "message": {
+                                                    "type": "string",
+                                                    "example": "dictionary_name is a required field"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        {
+                                            "properties": {
+                                                "status": {
+                                                    "type": "string",
+                                                    "example": "failed"
+                                                },
+                                                "message": {
+                                                    "type": "string",
+                                                    "example": "dictionary name has been used. try another"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "something wrong. please contact admin"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/dictionary/type/{type}": {
+            "get": {
+                "tags": [
+                    "Dictionary"
+                ],
+                "summary": "Get dictionary by type",
+                "description": "This request is used to get dictionary by its `dictionary_type`, that can be trip_category, vehicle_merk, vehicle_type, vehicle_category, vehicle_status, vehicle_default_fuel, vehicle_fuel_status, or vehicle_transmission_code. This request is using MySql database, and have a protected routes.",
+                "operationId": "c6cd36c8c3508387249c596947b82e6f",
+                "parameters": [
+                    {
+                        "name": "type",
+                        "in": "path",
+                        "description": "Dictionary Type",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "trip_category"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "dictionary fetched",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "dictionary fetched"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "dictionary_name": {
+                                                        "type": "string",
+                                                        "example": "Others"
+                                                    },
+                                                    "dictionary_type": {
+                                                        "type": "string",
+                                                        "example": "trip_category"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "protected route need to include sign in token as authorization bearer",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "you need to include the authorization token from login"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "dictionary failed to fetched",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "dictionary not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "something wrong. please contact admin"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/v1/question/faq": {
             "get": {
                 "tags": [
@@ -2835,6 +3209,10 @@
         {
             "name": "Clean",
             "description": "Clean"
+        },
+        {
+            "name": "Dictionary",
+            "description": "Dictionary"
         },
         {
             "name": "Question",

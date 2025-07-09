@@ -99,7 +99,7 @@ class Queries extends Controller
                 return response()->json([
                     'status' => 'failed',
                     'message' => Generator::getMessageTemplate("custom", "$context is not available"),
-                ], Response::HTTP_UNPROCESSABLE_ENTITY);
+                ], Response::HTTP_BAD_REQUEST);
             }
         } catch(\Exception $e) {
             return response()->json([
@@ -191,7 +191,7 @@ class Queries extends Controller
                 return response()->json([
                     'status' => 'failed',
                     'message' => Generator::getMessageTemplate("custom", "$context is not available"),
-                ], Response::HTTP_UNPROCESSABLE_ENTITY);
+                ], Response::HTTP_BAD_REQUEST);
             }
         } catch(\Exception $e) {
             return response()->json([

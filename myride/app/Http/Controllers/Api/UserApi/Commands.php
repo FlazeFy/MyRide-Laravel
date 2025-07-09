@@ -234,7 +234,7 @@ class Commands extends Controller
                 return response()->json([
                     'status' => 'error',
                     'message' => $validator->errors()
-                ], Response::HTTP_UNPROCESSABLE_ENTITY);
+                ], Response::HTTP_BAD_REQUEST);
             } else {
                 $check = UserModel::selectRaw('1')
                     ->where(function ($query) use ($request) {
