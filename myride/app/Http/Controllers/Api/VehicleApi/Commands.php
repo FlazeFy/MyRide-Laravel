@@ -26,9 +26,31 @@ class Commands extends Controller
      * @OA\PUT(
      *     path="/api/v1/vehicle/{id}",
      *     summary="Put Vehicle Detail By Id",
-     *     description="Update a new vehicle using `vehicle_name`, `vehicle_merk`, `vehicle_type`, `vehicle_price`, `vehicle_desc`, `vehicle_distance`, `vehicle_category`, `vehicle_status`, `vehicle_year_made`, `vehicle_plate_number`, `vehicle_fuel_status`, `vehicle_fuel_capacity`, `vehicle_default_fuel`, `vehicle_color`, `vehicle_transmission`, and `vehicle_capacity`. This request is using MySQL database and send Telegram Message.",
+     *     description="Update a new vehicle using `vehicle_name`, `vehicle_merk`, `vehicle_type`, `vehicle_price`, `vehicle_distance`, `vehicle_category`, `vehicle_status`, `vehicle_year_made`, `vehicle_plate_number`, `vehicle_fuel_status`, `vehicle_default_fuel`, `vehicle_color`, `vehicle_transmission`, and `vehicle_capacity`. This request is using MySQL database and send Telegram Message.",
      *     tags={"Vehicle"},
      *     security={{"bearerAuth":{}}},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"vehicle_name","vehicle_merk","vehicle_type","vehicle_price","vehicle_distance","vehicle_category","vehicle_status","vehicle_year_made","vehicle_plate_number","vehicle_fuel_status","vehicle_default_fuel","vehicle_color","vehicle_transmission","vehicle_capacity"},
+     *             @OA\Property(property="vehicle_name", type="string", example="Kijang Innova 2.0 Type G MT"),
+     *             @OA\Property(property="vehicle_merk", type="string", example="Toyota"),
+     *             @OA\Property(property="vehicle_type", type="string", example="Minibus"),
+     *             @OA\Property(property="vehicle_price", type="integer", example=275000000),
+     *             @OA\Property(property="vehicle_desc", type="string", example="sudah jarang digunakan 2"),
+     *             @OA\Property(property="vehicle_distance", type="integer", example=90000),
+     *             @OA\Property(property="vehicle_category", type="string", example="Parents Car"),
+     *             @OA\Property(property="vehicle_status", type="string", example="Available"),
+     *             @OA\Property(property="vehicle_year_made", type="integer", example=2011),
+     *             @OA\Property(property="vehicle_plate_number", type="string", example="PA 1234 ZX"),
+     *             @OA\Property(property="vehicle_fuel_status", type="string", example="Not Monitored"),
+     *             @OA\Property(property="vehicle_fuel_capacity", type="integer", example=50),
+     *             @OA\Property(property="vehicle_default_fuel", type="string", example="Pertamina Pertalite"),
+     *             @OA\Property(property="vehicle_color", type="string", example="White"),
+     *             @OA\Property(property="vehicle_transmission", type="string", example="Manual"),
+     *             @OA\Property(property="vehicle_capacity", type="integer", example=8)
+     *         )
+     *     ),
      *     @OA\Response(
      *         response=200,
      *         description="Vehicle update successfully",

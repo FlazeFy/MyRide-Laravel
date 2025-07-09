@@ -83,7 +83,7 @@ class Queries extends Controller
 
                 $res = TripModel::getContextTotalStats($context,$user_id);
                 
-                if (count($res) > 0) {
+                if ($res && count($res) > 0) {
                     return response()->json([
                         'status' => 'success',
                         'message' => Generator::getMessageTemplate("fetch", 'stats'),
@@ -175,7 +175,7 @@ class Queries extends Controller
             if (in_array($context, $vehicleContext)) {
                 $res = VehicleModel::getContextTotalStats($context,$user_id);
                 
-                if (count($res) > 0) {
+                if ($res && count($res) > 0) {
                     return response()->json([
                         'status' => 'success',
                         'message' => Generator::getMessageTemplate("fetch", 'stats'),
@@ -264,7 +264,7 @@ class Queries extends Controller
             $user_id = $request->user()->id;
             $res = TripModel::getTotalTripByVehiclePerYear($user_id, $vehicle_id, $year);
             
-            if (count($res) > 0) {
+            if ($res && count($res) > 0) {
                 $res_final = [];
                 for ($i=1; $i <= 12; $i++) { 
                     $total = 0;

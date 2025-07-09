@@ -28,6 +28,13 @@ class Commands extends Controller
      *     summary="Update telegram token id",
      *     tags={"User"},
      *     security={{"bearerAuth":{}}},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"telegram_user_id"},
+     *             @OA\Property(property="telegram_user_id", type="string", example="1234567890"),
+     *         )
+     *     ),
      *     @OA\Response(
      *         response=200,
      *         description="telegram id updated! and validation has been sended to you",
@@ -127,6 +134,13 @@ class Commands extends Controller
      * @OA\PUT(
      *     path="/api/v1/user/validate_telegram_id",
      *     summary="Validate telegram id change",
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"request_context"},
+     *             @OA\Property(property="request_context", type="string", example="A1B2C3"),
+     *         )
+     *     ),
      *     tags={"User"},
      *     @OA\Response(
      *         response=200,
@@ -190,6 +204,15 @@ class Commands extends Controller
      *     summary="Update profile",
      *     tags={"User"},
      *     security={{"bearerAuth":{}}},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"email","username"},
+     *             @OA\Property(property="telegram_user_id", type="string", example="1234567890"),
+     *             @OA\Property(property="email", type="string", example="tester@gmail.com"),
+     *             @OA\Property(property="username", type="string", example="flazefy"),
+     *         )
+     *     ),
      *     @OA\Response(
      *         response=200,
      *         description="profile updated",

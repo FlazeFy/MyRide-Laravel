@@ -16,6 +16,30 @@
                 ],
                 "summary": "Sign in to the Apps",
                 "operationId": "26ae6f7a2668f358293a502309985206",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "username",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "username": {
+                                        "type": "string",
+                                        "example": "flazefy"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "nopass123"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "200": {
                         "description": "login successfully",
@@ -576,6 +600,30 @@
                 "summary": "Post dictionary",
                 "description": "Create a new dictionary using the given name and category. This request is using MySQL database.",
                 "operationId": "c00bb932223a0676d61b6d1079013eca",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "dictionary_type",
+                                    "dictionary_name"
+                                ],
+                                "properties": {
+                                    "dictionary_type": {
+                                        "type": "string",
+                                        "example": "trip_category"
+                                    },
+                                    "dictionary_name": {
+                                        "type": "string",
+                                        "example": "test category"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "201": {
                         "description": "Dictionary created successfully",
@@ -1509,6 +1557,56 @@
                 "summary": "Post create trip",
                 "description": "Create a new trip using `vehicle_id`, `trip_desc`, `trip_category`, `trip_origin_name`, `trip_person`, `trip_origin_coordinate`, `trip_destination_coordinate`, and `trip_destination_name`. This request is using MySQL database and send Telegram Message.",
                 "operationId": "882a6a351df5af828e955f4b761b82db",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "vehicle_id",
+                                    "trip_category",
+                                    "trip_origin_name",
+                                    "trip_destination_name"
+                                ],
+                                "properties": {
+                                    "vehicle_id": {
+                                        "type": "string",
+                                        "example": "2d98f524-de02-11ed-b5ea-0242ac120002"
+                                    },
+                                    "trip_desc": {
+                                        "type": "string",
+                                        "example": "Business meeting"
+                                    },
+                                    "trip_category": {
+                                        "type": "string",
+                                        "example": "Business"
+                                    },
+                                    "trip_origin_name": {
+                                        "type": "string",
+                                        "example": "Office A"
+                                    },
+                                    "trip_person": {
+                                        "type": "string",
+                                        "example": "John Doe"
+                                    },
+                                    "trip_origin_coordinate": {
+                                        "type": "string",
+                                        "example": "-6.9175,107.6191"
+                                    },
+                                    "trip_destination_coordinate": {
+                                        "type": "string",
+                                        "example": "-6.2000,106.8167"
+                                    },
+                                    "trip_destination_name": {
+                                        "type": "string",
+                                        "example": "Office B"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "201": {
                         "description": "Trip created successfully",
@@ -1623,6 +1721,25 @@
                 ],
                 "summary": "Update telegram token id",
                 "operationId": "b3319a420453e08af500d97aa4d48b6d",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "telegram_user_id"
+                                ],
+                                "properties": {
+                                    "telegram_user_id": {
+                                        "type": "string",
+                                        "example": "1234567890"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "200": {
                         "description": "telegram id updated! and validation has been sended to you",
@@ -1719,6 +1836,25 @@
                 ],
                 "summary": "Validate telegram id change",
                 "operationId": "de1ceb7d57fb3bab1493d6315a623752",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "request_context"
+                                ],
+                                "properties": {
+                                    "request_context": {
+                                        "type": "string",
+                                        "example": "A1B2C3"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "200": {
                         "description": "telegram id has been validated"
@@ -1756,6 +1892,34 @@
                 ],
                 "summary": "Update profile",
                 "operationId": "d8307a36aad6b3e10693a92193f8d4ad",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "username"
+                                ],
+                                "properties": {
+                                    "telegram_user_id": {
+                                        "type": "string",
+                                        "example": "1234567890"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "example": "tester@gmail.com"
+                                    },
+                                    "username": {
+                                        "type": "string",
+                                        "example": "flazefy"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "200": {
                         "description": "profile updated",
@@ -2247,8 +2411,100 @@
                     "Vehicle"
                 ],
                 "summary": "Put Vehicle Detail By Id",
-                "description": "Update a new vehicle using `vehicle_name`, `vehicle_merk`, `vehicle_type`, `vehicle_price`, `vehicle_desc`, `vehicle_distance`, `vehicle_category`, `vehicle_status`, `vehicle_year_made`, `vehicle_plate_number`, `vehicle_fuel_status`, `vehicle_fuel_capacity`, `vehicle_default_fuel`, `vehicle_color`, `vehicle_transmission`, and `vehicle_capacity`. This request is using MySQL database and send Telegram Message.",
+                "description": "Update a new vehicle using `vehicle_name`, `vehicle_merk`, `vehicle_type`, `vehicle_price`, `vehicle_distance`, `vehicle_category`, `vehicle_status`, `vehicle_year_made`, `vehicle_plate_number`, `vehicle_fuel_status`, `vehicle_default_fuel`, `vehicle_color`, `vehicle_transmission`, and `vehicle_capacity`. This request is using MySQL database and send Telegram Message.",
                 "operationId": "a00ec7b39268b8fb47c1480e59442e1b",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "vehicle_name",
+                                    "vehicle_merk",
+                                    "vehicle_type",
+                                    "vehicle_price",
+                                    "vehicle_distance",
+                                    "vehicle_category",
+                                    "vehicle_status",
+                                    "vehicle_year_made",
+                                    "vehicle_plate_number",
+                                    "vehicle_fuel_status",
+                                    "vehicle_default_fuel",
+                                    "vehicle_color",
+                                    "vehicle_transmission",
+                                    "vehicle_capacity"
+                                ],
+                                "properties": {
+                                    "vehicle_name": {
+                                        "type": "string",
+                                        "example": "Kijang Innova 2.0 Type G MT"
+                                    },
+                                    "vehicle_merk": {
+                                        "type": "string",
+                                        "example": "Toyota"
+                                    },
+                                    "vehicle_type": {
+                                        "type": "string",
+                                        "example": "Minibus"
+                                    },
+                                    "vehicle_price": {
+                                        "type": "integer",
+                                        "example": 275000000
+                                    },
+                                    "vehicle_desc": {
+                                        "type": "string",
+                                        "example": "sudah jarang digunakan 2"
+                                    },
+                                    "vehicle_distance": {
+                                        "type": "integer",
+                                        "example": 90000
+                                    },
+                                    "vehicle_category": {
+                                        "type": "string",
+                                        "example": "Parents Car"
+                                    },
+                                    "vehicle_status": {
+                                        "type": "string",
+                                        "example": "Available"
+                                    },
+                                    "vehicle_year_made": {
+                                        "type": "integer",
+                                        "example": 2011
+                                    },
+                                    "vehicle_plate_number": {
+                                        "type": "string",
+                                        "example": "PA 1234 ZX"
+                                    },
+                                    "vehicle_fuel_status": {
+                                        "type": "string",
+                                        "example": "Not Monitored"
+                                    },
+                                    "vehicle_fuel_capacity": {
+                                        "type": "integer",
+                                        "example": 50
+                                    },
+                                    "vehicle_default_fuel": {
+                                        "type": "string",
+                                        "example": "Pertamina Pertalite"
+                                    },
+                                    "vehicle_color": {
+                                        "type": "string",
+                                        "example": "White"
+                                    },
+                                    "vehicle_transmission": {
+                                        "type": "string",
+                                        "example": "Manual"
+                                    },
+                                    "vehicle_capacity": {
+                                        "type": "integer",
+                                        "example": 8
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "200": {
                         "description": "Vehicle update successfully",

@@ -30,6 +30,20 @@ class Commands extends Controller
      *     description="Create a new trip using `vehicle_id`, `trip_desc`, `trip_category`, `trip_origin_name`, `trip_person`, `trip_origin_coordinate`, `trip_destination_coordinate`, and `trip_destination_name`. This request is using MySQL database and send Telegram Message.",
      *     tags={"Trip"},
      *     security={{"bearerAuth":{}}},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"vehicle_id","trip_category","trip_origin_name","trip_destination_name"},
+     *             @OA\Property(property="vehicle_id", type="string", example="2d98f524-de02-11ed-b5ea-0242ac120002"),
+     *             @OA\Property(property="trip_desc", type="string", example="Business meeting"),
+     *             @OA\Property(property="trip_category", type="string", example="Business"),
+     *             @OA\Property(property="trip_origin_name", type="string", example="Office A"),
+     *             @OA\Property(property="trip_person", type="string", example="John Doe"),
+     *             @OA\Property(property="trip_origin_coordinate", type="string", example="-6.9175,107.6191"),
+     *             @OA\Property(property="trip_destination_coordinate", type="string", example="-6.2000,106.8167"),
+     *             @OA\Property(property="trip_destination_name", type="string", example="Office B")
+     *         )
+     *     ),
      *     @OA\Response(
      *         response=201,
      *         description="Trip created successfully",

@@ -39,6 +39,14 @@ class Commands extends Controller
      *     path="/api/v1/login",
      *     summary="Sign in to the Apps",
      *     tags={"Auth"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"username", "password"},
+     *             @OA\Property(property="username", type="string", example="flazefy"),
+     *             @OA\Property(property="password", type="string", example="nopass123")
+     *         )
+     *     ),
      *     @OA\Response(
      *         response=200,
      *         description="login successfully",

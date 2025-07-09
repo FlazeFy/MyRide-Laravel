@@ -118,6 +118,14 @@ class Commands extends Controller
      *     description="Create a new dictionary using the given name and category. This request is using MySQL database.",
      *     tags={"Dictionary"},
      *     security={{"bearerAuth":{}}},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"dictionary_type", "dictionary_name"},
+     *             @OA\Property(property="dictionary_type", type="string", example="trip_category"),
+     *             @OA\Property(property="dictionary_name", type="string", example="test category")
+     *         )
+     *     ),
      *     @OA\Response(
      *         response=201,
      *         description="Dictionary created successfully",
