@@ -131,4 +131,29 @@ class Generator
             ";
         }
     }
+    function getPlateNumber() {
+        // First Word: 1–2 letters (A–Z)
+        $first = '';
+        $firstLength = rand(1, 2);
+        for ($i = 0; $i < $firstLength; $i++) {
+            $first .= chr(rand(65, 90)); 
+        }
+    
+        // Second Word: 2–4 digits (first digit 1–9)
+        $secondLength = rand(2, 4);
+        $second = strval(rand(1, 9)); 
+        for ($i = 1; $i < $secondLength; $i++) {
+            $second .= strval(rand(0, 9));
+        }
+    
+        // Last Word: 2–3 letters (A–Z)
+        $last = '';
+        $lastLength = rand(2, 3);
+        for ($i = 0; $i < $lastLength; $i++) {
+            $last .= chr(rand(65, 90)); 
+        }
+    
+        return "$first $second $last";
+    }
+    
 }

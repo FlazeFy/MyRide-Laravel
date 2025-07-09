@@ -1,8 +1,9 @@
 <?php
 
 namespace Database\Factories;
-
 use Illuminate\Database\Eloquent\Factories\Factory;
+
+// Helper
 use App\Helpers\Generator;
 
 class FAQModelFactory extends Factory

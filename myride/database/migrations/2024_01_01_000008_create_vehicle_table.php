@@ -13,7 +13,7 @@ return new class extends Migration
             $table->string('vehicle_name', 75);
             $table->string('vehicle_merk', 36);
             $table->string('vehicle_type', 36);
-            $table->integer('vehicle_price')->length(12);
+            $table->integer('vehicle_price')->length(13);
             $table->string('vehicle_desc', 500)->nullable();
             $table->integer('vehicle_distance')->length(7);
             $table->string('vehicle_category', 36);
