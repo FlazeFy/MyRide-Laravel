@@ -28,6 +28,13 @@ class Validation
         ]);
     }
 
+    public static function getValidateRegisterValidation($request){
+        return Validator::make($request->all(), [
+            'username' => 'required|min:6|max:36|string',
+            'token' => 'required|min:6|max:6|string',
+        ]);
+    }
+
     public static function getValidateDictionary($request,$type){
         if($type == 'create'){
             return Validator::make($request->all(), [

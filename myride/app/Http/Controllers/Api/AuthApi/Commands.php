@@ -292,6 +292,106 @@ class Commands extends Controller
         } catch(\Exception $e) {
             return response()->json([
                 'status' => 'error',
+                'message' => Generator::getMessageTemplate("unknown_error", null),
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
+     * @OA\POST(
+     *     path="/api/v1/register/validate",
+     *     summary="Validate an account register's request",
+     *     tags={"Auth"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"username", "token"},
+     *             @OA\Property(property="username", type="string", example="flazefy"),
+     *             @OA\Property(property="token", type="string", example="ABC123")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="validation successfully",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="message", type="string", example="user has been validated")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="{validation_msg}",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="failed"),
+     *             @OA\Property(property="result", type="string", example="{field validation message}")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="token is invalid or user request not found or has been accepted",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="failed"),
+     *             @OA\Property(property="message", type="string", example="token is invalid or request not found")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal Server Error",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="error"),
+     *             @OA\Property(property="message", type="string", example="something wrong. please contact admin")
+     *         )
+     *     ),
+     * )
+     */
+    public function validate_register(Request $request){
+        try {
+            $validator = Validation::getValidateRegisterValidation($request);
+
+            if ($validator->fails()) {
+                $errors = $validator->messages();
+
+                return response()->json([
+                    'status' => 'failed',
+                    'data' => $errors,
+                ], Response::HTTP_BAD_REQUEST);
+            } else {
+                $username = $request->username;
+                $token = $request->token;
+
+                $valid_req = ValidateRequestModel::getActiveRequestByCreatedByTokenAndType($username,$token,'register');                    
+                if($valid_req){
+                    // Delete Request
+                    $is_deleted = ValidateRequestModel::destroy($valid_req);
+                    if($is_deleted){
+                        $user = UserModel::where('username',$username)->first();
+
+                        // Send email
+                        $ctx = 'Registration Complete!';
+                        $data = "You have finished register your account. Welcome to MyRide $username, happy explore the world";
+
+                        dispatch(new UserJob($ctx, $data, $username, $user->email));
+
+                        return response()->json([
+                            'status' => 'success',
+                            'message' => 'user has been validated',
+                        ], Response::HTTP_OK);
+                    } else {
+                        return response()->json([
+                            'status' => 'error',
+                            'message' => Generator::getMessageTemplate("unknown_error", null),
+                        ], Response::HTTP_INTERNAL_SERVER_ERROR);
+                    }
+                } else {
+                    return response()->json([
+                        'status' => 'failed',
+                        'message' => 'token is invalid or request not found',           
+                    ], Response::HTTP_NOT_FOUND);
+                }   
+            }
+        } catch(\Exception $e) {
+            return response()->json([
+                'status' => 'error',
                 'message' => $e->getMessage(),
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }

@@ -50,6 +50,16 @@ class ValidateRequestModel extends Model
         return $res ? $res->id : null;
     }
 
+    public static function getActiveRequestByCreatedByTokenAndType($created_by,$token,$type){
+        $res = ValidateRequestModel::select('id')
+            ->where('request_type',$type)
+            ->where('request_context',$token)
+            ->where('created_by',$created_by)
+            ->first();
+
+        return $res ? $res->id : null;
+    }
+
     public static function createValidateRequest($data, $user_id){
         $res = ValidateRequestModel::create([
             'id' => Generator::getUUID(), 

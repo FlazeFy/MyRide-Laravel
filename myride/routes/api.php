@@ -22,6 +22,7 @@ use App\Http\Controllers\Api\QuestionApi\FAQQueries as QueriesFAQController;
 
 Route::post('/v1/login', [CommandAuthApi::class, 'login']);
 Route::post('/v1/register', [CommandAuthApi::class, 'register']);
+Route::post('/v1/register/validate', [CommandAuthApi::class, 'validate_register']);
 
 Route::prefix('/v1/stats')->group(function () {
     Route::get('/summary', [QueriesStatsApi::class, 'getSummaryApps']);
