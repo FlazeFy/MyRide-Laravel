@@ -74,4 +74,16 @@ class VehicleModel extends Model
 
         return $res;
     }
+
+    // For Seeder
+    public static function getRandom($null, $user_id){
+        if($null == 0){
+            $data = VehicleModel::where('created_by',$user_id)->inRandomOrder()->take(1)->first();
+            $res = $data->id;
+        } else {
+            $res = null;
+        }
+        
+        return $res;
+    }
 }

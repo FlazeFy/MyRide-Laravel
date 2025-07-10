@@ -13,6 +13,9 @@ class DictionarySeeder extends Seeder
 {
     public function run(): void
     {
+        // Delete All 
+        DictionaryModel::truncate();
+
         $dictionaries = [
             'vehicle_fuel_status' => ['Normal','Full','High','Low','Empty','Not Monitored'],
             'vehicle_status' => ['Available','Under Maintenance','Damaged','Reserved'],
@@ -23,7 +26,10 @@ class DictionarySeeder extends Seeder
             ],
             'vehicle_category' => ['Operational', 'Parents Car', 'Rental', 'Project'],
             'vehicle_default_fuel' => ['Pertamina Pertalite', 'Pertamina Pertamax', 'Solar', 'Dexlite', 'Shell Super', 'Shell V-Power', 'Shell V-Power Diesel', 'Shell V-Power Nitro+'],
-            'trip_category' => ['Routine Check', 'Office Trip', 'Project Visit', 'Logistics']
+            'trip_category' => [
+                'Culinary Hunting','Business Trip','Family Vacation','Worship','Refreshing','Strolling Around','City Exploration','Nature Retreat',
+                'Cultural Festival','Road Trip','Backpacking','Photography','Shopping','Sport Event',
+            ]
         ];
         $now = Carbon::now();
 
