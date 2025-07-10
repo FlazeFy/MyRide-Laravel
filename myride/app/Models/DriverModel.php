@@ -5,7 +5,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Sanctum\HasApiTokens;
 
-class UserModel extends Authenticatable
+class DriverModel extends Authenticatable
 {
     use HasFactory;
     //use HasUuids;

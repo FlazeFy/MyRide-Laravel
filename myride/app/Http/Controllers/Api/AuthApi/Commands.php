@@ -115,6 +115,16 @@ class Commands extends Controller
                     // Check for User
                     $user = UserModel::where('username', $request->username)->first();
                     $role = 0;
+
+                    if($user){
+                        $check_register = ValidateRequestModel::getCheckRegisterToken($request->username);
+                        if($check_register){
+                            return response()->json([
+                                'status' => 'failed',
+                                'result' => 'your account is not validated yet, check your email and validate again',
+                            ], Response::HTTP_UNAUTHORIZED);
+                        }
+                    }
                 }
 
                 // Response

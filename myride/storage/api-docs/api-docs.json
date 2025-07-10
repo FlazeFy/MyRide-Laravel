@@ -3866,6 +3866,98 @@
     },
     "components": {
         "schemas": {
+            "Admin": {
+                "required": [
+                    "id",
+                    "username",
+                    "password",
+                    "email",
+                    "telegram_is_valid",
+                    "password",
+                    "created_at"
+                ],
+                "properties": {
+                    "id": {
+                        "description": "Primary Key",
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "telegram_user_id": {
+                        "description": "Telegram Account ID for Bot Apps",
+                        "type": "string"
+                    },
+                    "telegram_is_valid": {
+                        "description": "Validation status of attached telegram account",
+                        "type": "boolean"
+                    },
+                    "username": {
+                        "description": "Unique Identifier for admin",
+                        "type": "string"
+                    },
+                    "email": {
+                        "description": "Email for Auth and Task Scheduling",
+                        "type": "string"
+                    },
+                    "password": {
+                        "description": "Sanctum Hashed Password",
+                        "type": "string"
+                    },
+                    "created_at": {
+                        "description": "Timestamp when the admin was created",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "description": "Timestamp when the admin was updated",
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            },
+            "Error": {
+                "required": [
+                    "id",
+                    "message",
+                    "stack_trace",
+                    "file",
+                    "line",
+                    "created_at"
+                ],
+                "properties": {
+                    "id": {
+                        "description": "Primary Key",
+                        "type": "integer"
+                    },
+                    "message": {
+                        "description": "Message or description of the error",
+                        "type": "string"
+                    },
+                    "stack_trace": {
+                        "description": "Trail of function calls leading up to the error",
+                        "type": "string"
+                    },
+                    "file": {
+                        "description": "Path of the file where the error is faced",
+                        "type": "string"
+                    },
+                    "line": {
+                        "description": "Line of code in specific file where the error is faced",
+                        "type": "integer"
+                    },
+                    "created_at": {
+                        "description": "Timestamp when the error was faced",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "faced_by": {
+                        "description": "ID of the user who specific faced the error",
+                        "type": "string",
+                        "format": "uuid"
+                    }
+                },
+                "type": "object"
+            },
             "FailedJobs": {
                 "required": [
                     "id",
@@ -3893,6 +3985,89 @@
                     },
                     "created_at": {
                         "description": "Timestamp when the jobs had failed",
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            },
+            "History": {
+                "required": [
+                    "id",
+                    "history_type",
+                    "history_context",
+                    "created_at",
+                    "created_by"
+                ],
+                "properties": {
+                    "id": {
+                        "description": "Primary Key",
+                        "type": "integer"
+                    },
+                    "history_type": {
+                        "description": "Type of the history",
+                        "type": "string"
+                    },
+                    "history_context": {
+                        "description": "Context of the history",
+                        "type": "string"
+                    },
+                    "created_at": {
+                        "description": "Timestamp when the user created the history",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "created_by": {
+                        "description": "ID of the user who created the history",
+                        "type": "string",
+                        "format": "uuid"
+                    }
+                },
+                "type": "object"
+            },
+            "User": {
+                "required": [
+                    "id",
+                    "username",
+                    "password",
+                    "email",
+                    "telegram_is_valid",
+                    "password",
+                    "created_at"
+                ],
+                "properties": {
+                    "id": {
+                        "description": "Primary Key",
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "telegram_user_id": {
+                        "description": "Telegram Account ID for Bot Apps",
+                        "type": "string"
+                    },
+                    "telegram_is_valid": {
+                        "description": "Validation status of attached telegram account",
+                        "type": "boolean"
+                    },
+                    "username": {
+                        "description": "Unique Identifier for user",
+                        "type": "string"
+                    },
+                    "email": {
+                        "description": "Email for Auth and Task Scheduling",
+                        "type": "string"
+                    },
+                    "password": {
+                        "description": "Sanctum Hashed Password",
+                        "type": "string"
+                    },
+                    "created_at": {
+                        "description": "Timestamp when the user was created",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "description": "Timestamp when the user was updated",
                         "type": "string",
                         "format": "date-time"
                     }
