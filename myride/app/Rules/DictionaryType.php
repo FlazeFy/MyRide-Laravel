@@ -18,7 +18,7 @@ class DictionaryType implements Rule
 
     public function passes($attribute, $value)
     {
-        $type = ['trip_category','vehicle_merk','vehicle_type','vehicle_category','vehicle_status','vehicle_default_fuel','vehicle_fuel_status','vehicle_transmission_code'];
+        $type = ['trip_category','vehicle_type','vehicle_category','vehicle_status','vehicle_default_fuel','vehicle_fuel_status','vehicle_transmission_code'];
 
         foreach ($type as $format) {
             if ($format === $value) {

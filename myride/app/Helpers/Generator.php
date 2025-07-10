@@ -131,7 +131,7 @@ class Generator
             ";
         }
     }
-    function getPlateNumber() {
+    public static function getPlateNumber() {
         // First Word: 1–2 letters (A–Z)
         $first = '';
         $firstLength = rand(1, 2);

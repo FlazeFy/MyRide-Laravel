@@ -22,7 +22,7 @@ class VehicleModelFactory extends Factory
             'vehicle_name' => fake()->sentence($ranName), 
             'vehicle_merk' => fake()->company(), 
             'vehicle_type' => DictionaryModel::getRandom(0,'vehicle_type'), 
-            'vehicle_price' => mt_rand(150, 10000) * 1000000, 
+            'vehicle_price' => (string)mt_rand(150, 10000) * 1000000, 
             'vehicle_desc' => fake()->paragraph(), 
             'vehicle_distance' => mt_rand(1, 200) * 1000, 
             'vehicle_category' => DictionaryModel::getRandom(0,'vehicle_category'), 
