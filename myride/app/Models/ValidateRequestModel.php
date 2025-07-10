@@ -5,6 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+// Helper 
+use App\Helpers\Generator;
+
 /**
  * @OA\Schema(
  *     schema="ValidateRequest",
@@ -37,4 +40,25 @@ class ValidateRequestModel extends Model
 
         return $res;
     }   
+
+    public static function getCheckRegisterToken($username){
+        $res = ValidateRequestModel::select('id')
+            ->where('request_type','register')
+            ->where('created_by',$username)
+            ->first();
+
+        return $res ? $res->id : null;
+    }
+
+    public static function createValidateRequest($data, $user_id){
+        $res = ValidateRequestModel::create([
+            'id' => Generator::getUUID(), 
+            'request_type' => $data->request_type, 
+            'request_context' => $data->request_context, 
+            'created_at' => date('Y-m-d H:i:s'), 
+            'created_by' => $user_id
+        ]);
+
+        return $res;
+    }
 }

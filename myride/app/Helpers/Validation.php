@@ -13,8 +13,18 @@ class Validation
 {
     public static function getValidateLogin($request){
         return Validator::make($request->all(), [
-            'username' => 'required|min:6|max:30|string',
-            'password' => 'required|min:6|string'
+            'username' => 'required|min:6|max:36|string',
+            'password' => 'required|min:6|max:36|string',
+        ]);
+    }
+
+    public static function getValidateRegister($request){
+        return Validator::make($request->all(), [
+            'username' => 'required|min:6|max:36|string',
+            'password' => 'required|min:6|max:36|string',
+            'confirm_password' => 'required|min:6|max:36|string',
+            'email' => 'required|min:10|max:255|string',
+            'telegram_user_id' => 'nullable|string|max:36|min:2'
         ]);
     }
 

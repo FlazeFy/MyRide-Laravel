@@ -163,6 +163,165 @@
                 }
             }
         },
+        "/api/v1/register": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Register an account",
+                "operationId": "06be8aeac0568d6da099bf9de9631bec",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "username",
+                                    "password",
+                                    "email"
+                                ],
+                                "properties": {
+                                    "username": {
+                                        "type": "string",
+                                        "example": "flazefy"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "nopass123"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "example": "tester@gmail.com"
+                                    },
+                                    "telegram_user_id": {
+                                        "type": "string",
+                                        "example": "1317625123"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "register successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "user has been created"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "string",
+                                                    "example": "83ce75db-4016-d87c-2c3c-db1e222d0001"
+                                                },
+                                                "username": {
+                                                    "type": "string",
+                                                    "example": "flazefy"
+                                                },
+                                                "email": {
+                                                    "type": "string",
+                                                    "example": "flazen.work@gmail.com"
+                                                },
+                                                "telegram_user_id": {
+                                                    "type": "string",
+                                                    "example": "123456789"
+                                                },
+                                                "telegram_is_valid": {
+                                                    "type": "integer",
+                                                    "example": 0
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2024-03-14 02:28:37"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2024-10-25 09:37:20"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "{validation_msg}",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "result": {
+                                            "type": "string",
+                                            "example": "{field validation message}"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "user with same email or username had been registered, try using another",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "user with same email or username has been used"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "something wrong. please contact admin"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/logout": {
             "get": {
                 "tags": [
@@ -3592,6 +3751,39 @@
     },
     "components": {
         "schemas": {
+            "FailedJobs": {
+                "required": [
+                    "id",
+                    "type",
+                    "status",
+                    "payload",
+                    "created_at"
+                ],
+                "properties": {
+                    "id": {
+                        "description": "Primary Key",
+                        "type": "string"
+                    },
+                    "type": {
+                        "description": "Type of the failed jobs on Task Scheduling",
+                        "type": "string"
+                    },
+                    "status": {
+                        "description": "Status of the failed jobs on Task Scheduling",
+                        "type": "string"
+                    },
+                    "payload": {
+                        "description": "Respond / Payload from the error",
+                        "type": "string"
+                    },
+                    "created_at": {
+                        "description": "Timestamp when the jobs had failed",
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            },
             "ValidateRequest": {
                 "required": [
                     "id",

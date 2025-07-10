@@ -13,7 +13,7 @@ class FAQModelFactory extends Factory
         return [
             'id' => Generator::getUUID(), 
             'faq_question' => fake()->sentence(), 
-            'faq_answer' => fake()->paragraph(),
+            'faq_answer' => fake()->paragraph(1),
             'created_at' => Generator::getRandomDate(0), 
         ];
     }

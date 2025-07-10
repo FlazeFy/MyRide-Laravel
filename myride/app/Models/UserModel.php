@@ -4,12 +4,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Support\Facades\Hash;
 
 // Others Model
 use App\Models\AdminModel;
 use App\Models\TripModel;
 use App\Models\VehicleModel;
 use App\Models\CleanModel;
+// Helper 
+use App\Helpers\Generator;
 
 class UserModel extends Authenticatable
 {
@@ -94,6 +97,33 @@ class UserModel extends Authenticatable
             ->values(); 
 
         return $res;
+    }
+
+    public static function createUser($data){
+        $res = UserModel::create([
+            'id' => Generator::getUUID(), 
+            'username' => $data->username, 
+            'password' => Hash::make($data->password),
+            'email' => $data->email, 
+            'telegram_user_id' => $data->telegram_user_id, 
+            'telegram_is_valid' => 0, 
+            'created_at' => date('Y-m-d H:i:s'), 
+            'updated_at' => null
+        ]);
+
+        return $res;
+    }
+
+    public static function getCheckUserByUsernameAndEmail($username, $email){
+        $res = UserModel::where('username',$username)
+            ->orwhere('email',$email)
+            ->first();
+
+        if($res){
+            return true;
+        } else {
+            return false;
+        }
     }
 
     // For Seeder

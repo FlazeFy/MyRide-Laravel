@@ -16,10 +16,11 @@ class VehicleModelFactory extends Factory
         $ran = mt_rand(0, 1);
         $ran2 = mt_rand(0, 1);
         $ranName = mt_rand(2, 3);
+        $vehicle_name = str_replace(".", "", fake()->sentence($ranName));
 
         return [
             'id' => Generator::getUUID(), 
-            'vehicle_name' => fake()->sentence($ranName), 
+            'vehicle_name' => $vehicle_name, 
             'vehicle_merk' => fake()->company(), 
             'vehicle_type' => DictionaryModel::getRandom(0,'vehicle_type'), 
             'vehicle_price' => (string)mt_rand(150, 10000) * 1000000, 
