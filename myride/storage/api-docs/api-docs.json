@@ -2969,7 +2969,7 @@
                 "operationId": "6d70a56336f3eb7c41cd11d0b97a3bf8",
                 "responses": {
                     "200": {
-                        "description": "trip fetched",
+                        "description": "vehicle fetched",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -3148,6 +3148,124 @@
                 ]
             }
         },
+        "/api/v1/vehicle/name": {
+            "get": {
+                "tags": [
+                    "Vehicle"
+                ],
+                "summary": "Get all vehicle name",
+                "description": "This request is used to get all vehicle name. This request is using MySql database, and have a protected routes.",
+                "operationId": "f35309a39045fbff11e7a45bba2b6000",
+                "responses": {
+                    "200": {
+                        "description": "vehicle fetched",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "vehicle fetched"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "string",
+                                                        "format": "uuid",
+                                                        "example": "2d98f524-de02-11ed-b5ea-0242ac120002"
+                                                    },
+                                                    "vehicle_name": {
+                                                        "type": "string",
+                                                        "example": "Brio RS MT"
+                                                    },
+                                                    "vehicle_plate_number": {
+                                                        "type": "string",
+                                                        "example": "D 1610 ZBC"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "protected route need to include sign in token as authorization bearer",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "you need to include the authorization token from login"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "vehicle failed to fetched",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "vehicle not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "something wrong. please contact admin"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/v1/vehicle/detail/{id}": {
             "get": {
                 "tags": [
@@ -3170,7 +3288,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "trip fetched",
+                        "description": "vehicle fetched",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -3403,7 +3521,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "trip fetched",
+                        "description": "vehicle fetched",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -3806,7 +3924,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "trip fetched",
+                        "description": "vehicle fetched",
                         "content": {
                             "application/json": {
                                 "schema": {

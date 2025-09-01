@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\LandingController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\GarageController;
 use App\Http\Controllers\GarageEditController;
 use App\Http\Controllers\GarageDetailController;
@@ -15,10 +15,10 @@ use App\Http\Controllers\AddTripController;
 
 Route::prefix('/')->group(function () {
     Route::get('/', [WelcomeController::class, 'index'])->name('welcome');
-    Route::get('/landing', [LandingController::class, 'index'])->name('landing');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/login', [LoginController::class, 'index'])->name('login');
     Route::post('/login/validate', [LoginController::class, 'login_auth']);
-    Route::post('/sign_out', [LandingController::class, 'sign_out']);
+    Route::post('/sign_out', [DashboardController::class, 'sign_out']);
 });
 
 Route::prefix('/garage')->middleware(['auth_v2:sanctum'])->group(function () {

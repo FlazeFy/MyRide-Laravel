@@ -1,4 +1,4 @@
-<h2>My Profile</h2>
+<h2>My Profile</h2><br>
 <label>Username</label>
 <input class="form-control" type="text" name="username" id="username" required>
 <label>Email</label>
@@ -8,8 +8,8 @@
     <input class="form-control" type="text" name="telegram_user_id" id="telegram_user_id" required>
     <span class="input-group-text" id="telegram_validated_status"></span>
 </div>
-<p class="text-white mb-0">Joined since : <span id="created_at"></span></p>
-<p class="text-white mb-0">Updated at : <span id="updated_at"></span></p>
+<p class="text-secondary mb-0">Joined since : <span id="created_at"></span></p>
+<p class="text-secondary">Updated at : <span id="updated_at"></span></p>
 <a class="btn btn-success my-2" id="save_changes_profile"><i class="fa-solid fa-floppy-disk"></i> Save Changes</a>
 
 <script>

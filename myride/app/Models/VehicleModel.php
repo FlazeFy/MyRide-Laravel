@@ -23,14 +23,20 @@ class VehicleModel extends Model
     ];
 
     public static function getTotalVehicleByCategory($user_id){
-        $res = VehicleModel::selectRaw('vehicle_category as context, COUNT(1) as total')
+        return VehicleModel::selectRaw('vehicle_category as context, COUNT(1) as total')
             ->where('created_by', $user_id)
             ->orderBy('total','DESC')
             ->groupBy('vehicle_category')
             ->limit(6)
             ->get();
+    }
 
-        return $res;
+    public static function getAllVehicleName($user_id){
+        return VehicleModel::select('id','vehicle_name','vehicle_plate_number')
+            ->where('created_by', $user_id)
+            ->orderBy('vehicle_name','DESC')
+            ->orderBy('vehicle_plate_number','DESC')
+            ->get();
     }
 
     public static function getContextTotalStats($context,$user_id){

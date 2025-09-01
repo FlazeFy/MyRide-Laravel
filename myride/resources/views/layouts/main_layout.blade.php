@@ -61,13 +61,14 @@
     @include('others.bars.navbar')
     <div class="d-flex">
         @include('others.bars.sidebar')
+        @include('layouts.post_sign_out')
         <div class="content flex-grow-1">
             @yield('content')
         </div>
     </div>
 </body>
 
- <!--Modal-->
+<!--Modal-->
 @include('others.popup.success')
 @include('others.popup.failed')
 @include('others.popup.success_mini')

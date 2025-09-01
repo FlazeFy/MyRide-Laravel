@@ -9,7 +9,7 @@ use App\Helpers\Generator;
 
 use Illuminate\Support\Facades\Session;
 
-class LandingController extends Controller
+class DashboardController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -19,7 +19,7 @@ class LandingController extends Controller
         $user_id = Generator::getUserId(session()->get('role_key'));
 
         if($user_id != null){
-            return view('landing.index');
+            return view('dashboard.index');
         } else {
             return redirect("/login");
         }

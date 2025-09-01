@@ -1,13 +1,13 @@
 <form action="/login/validate" method="POST" id="form-login">
     @csrf
     <div class="mb-3">
-        <label for="exampleInputEmail1" class="form-label text-white">Email address / Username</label>
+        <label for="exampleInputEmail1" class="form-label">Email address / Username</label>
         <input type="text" name="username" id="username" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
         <div id="emailHelp" class="form-text">We'll never share your email with anyone else</div>
         <a class="error_input" id="username_msg"></a>
     </div>
     <div class="mb-3">
-        <label for="exampleInputPassword1" class="form-label text-white">Password</label>
+        <label for="exampleInputPassword1" class="form-label">Password</label>
         <input type="password" name="password" id="password" class="form-control" id="exampleInputPassword1">
         <a class="error_input" id="pass_msg"></a>
     </div>

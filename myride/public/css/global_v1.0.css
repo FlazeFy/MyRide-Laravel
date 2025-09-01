@@ -48,10 +48,9 @@
     --secondaryInfoColor: #0095cc;    
     --primaryColor: #2d94ff;
     --secondaryPrimaryColor: #1f6fd1;
-    --secondaryColor: #35373b;
     --darkColor : #232323;
     --whiteColor : #f6fbff;
-    --greyColor : #a5abbd;
+    --greyColor : #656565;
     --shadowColor : #E0E0E0;
 }
 
@@ -62,6 +61,29 @@ body {
     background: var(--whiteColor);
     min-height: 75vh;
     font-family: 'Poppins';
+}
+
+.container, .form-control, .form-select, .modal-content, .swal2-popup, .popover {
+    border: 2px solid var(--darkColor) !important;
+}
+.modal-content, .swal2-popup, .popover {
+    border-radius: var(--roundedLG);
+    padding: var(--spaceMD) !important;
+}
+
+/* Container & Button & Input */
+.form-control, .form-select, .btn, .container, .sidebar .nav-link.active {
+    border-radius: var(--roundedSM) !important;
+}
+.form-label {
+    font-weight: 500;
+}
+
+/* Typography */
+.text-secondary {
+    font-style: italic;
+    color: var(--greyColor);
+    font-size: var(--textMD);
 }
 
 .navbar {
@@ -114,17 +136,24 @@ body {
     border-top: none;
     border-right: none;
     padding: var(--spaceSM) var(--spaceMD);
-    border-radius: var(--roundedSM) !important;
     font-weight: 500;
 }
 
+.btn.btn-primary{
+    background: var(--primaryColor);
+    border-bottom: var(--spaceXXSM) solid var(--secondaryPrimaryColor) !important;
+}
 .btn.btn-success{
     background: var(--successColor);
-    border-bottom: var(--spaceXXSM) solid var(--secondarySuccessColor);
+    border-bottom: var(--spaceXXSM) solid var(--secondarySuccessColor) !important;
 }
 .btn.btn-danger{
     background: var(--dangerColor);
-    border-bottom: var(--spaceXXSM) solid var(--secondaryDangerColor);
+    border-bottom: var(--spaceXXSM) solid var(--secondaryDangerColor) !important;
+}
+.btn.btn-warning{
+    background: var(--warningColor);
+    border-bottom: var(--spaceXXSM) solid var(--secondaryWarningrColor) !important;
 }
 
 /* Carousel */
@@ -145,20 +174,6 @@ body {
 }
 .carousel-item .row > div:nth-child(1) .btn, .carousel-item .row > div:nth-child(3) .btn {
     transform: scale(0.95);
-}
-
-/* Button */
-button, a {
-    -webkit-transition: all 0.4s !important;
-    -o-transition: all 0.4s !important;
-    transition: all 0.4s !important;
-}
-.btn {
-    border-radius: var(--roundedJumbo);
-    padding-inline: var(--spaceLG);
-}
-button:hover, .btn:hover .carousel-control-prev:hover, .carousel-control-next:hover {
-    transform: scale(1.05);
 }
 
 .btn-menu-landing, .carousel-indicators button{
@@ -188,38 +203,21 @@ table tbody p {
     font-size: var(--textXMD);
 }
 
-/* Modal */
-.modal-content, .swal2-popup, .popover {
-    border-radius: var(--roundedJumbo) !important;
-    background: var(--darkColor);
-    border: 1.75px solid var(--whiteColor);
-    color: var(--whiteColor);
-    box-shadow: rgba(59, 130, 246, 0.35) 0px 6px 17px;
-}
-.modal-content {
-    background: var(--darkColor) !important;
-}
-.modal-content {
-    color: var(--whiteColor) !important;
-}
-
 /* Typography */
 label, input, textarea, select {
     margin-bottom: var(--spaceMD);
 }
 
 /* Container */
-.container {
-    border: 1.75px solid var(--whiteColor);
-    border-radius: var(--roundedMD);
-    padding: var(--spaceLG);
+.container, .modal-content, .swal2-popup, .popover {
+    border-bottom: var(--spaceXXSM) solid var(--darkColor) !important;
+    padding: var(--spaceXLG);
     margin-bottom: var(--spaceLG);
-    color: var(--whiteColor);
+    background: var(--whiteColor);
 }
 
 .form-control, .form-select, .input-group-text {
     background: transparent !important;
-    color: var(--whiteColor) !important;
     border-radius: var(--roundedLG);
     font-size: var(--textXLG);
     padding: var(--spaceMD);
@@ -227,4 +225,16 @@ label, input, textarea, select {
 
 hr {
     background: var(--whiteColor);
+}
+
+.btn, .container, .sidebar .nav-link{
+    -webkit-transition: all 0.4s !important;
+    -o-transition: all 0.4s !important;
+    transition: all 0.4s !important;
+}
+.btn:hover {
+    transform: scale(1.025);
+}
+.modal-content, .swal2-popup, .popover, .btn:hover {
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
 }
