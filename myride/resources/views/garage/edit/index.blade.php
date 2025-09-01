@@ -3,7 +3,7 @@
 @section('content')
     <div class="d-block mx-auto p-3">
         <div class="d-flex justify-content-between">
-            <button class="btn btn-nav-page" onclick="window.location.href='/garage'"><i class="fa-solid fa-house"></i> Back to Garage</button><br>
+            <button class="btn btn-danger" onclick="window.location.href='/garage'"><i class="fa-solid fa-house"></i> Back to Garage</button><br>
             @include('garage.edit.usecases.get_props')
         </div>
         <h2>Edit Vehicle</h2><br>

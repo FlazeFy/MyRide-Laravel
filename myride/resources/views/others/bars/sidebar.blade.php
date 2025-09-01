@@ -28,7 +28,7 @@
         data.forEach(dt => {
             $(`#${ctx_holder}`).append(`
                 <li>
-                    <span class="container py-1 px-2 mx-2 fw-bold mb-0" style="font-size:var(--textMD); background:var(--warningColor);">${dt.vehicle_plate_number}</span>
+                    <span class="plate-number mb-0">${dt.vehicle_plate_number}</span>
                     <a href="/garage/detail/${dt.id}" class="nav-link container p-2 mb-2" style="font-size:var(--textXMD);">${dt.vehicle_name}</a>
                 </li>
             `)

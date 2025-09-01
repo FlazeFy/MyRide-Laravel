@@ -2,8 +2,8 @@
 
 @section('content')
     <div class="position-relative">
-        <div class="d-block mx-auto p-3">
-            <button class="btn btn-nav-page" onclick="window.location.href='/trip'"><i class="fa-solid fa-arrow-left"></i> Back to Trip</button>
+        <button class="btn btn-danger" onclick="window.location.href='/trip'"><i class="fa-solid fa-arrow-left"></i> Browse All Trip</button>
+        <div class="container w-100 mt-4">
             @include('trip.add.usecases.post_trip')
         </div>
     </div>

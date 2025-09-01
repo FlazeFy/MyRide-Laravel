@@ -30,7 +30,7 @@
     .carousel-control-prev, .carousel-control-next {
         margin-top: 25vh !important;
     }
-    .btn-nav-page {
+    .btn-danger {
         position:absolute !important;
     }
 </style>

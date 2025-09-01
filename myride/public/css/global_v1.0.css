@@ -63,7 +63,12 @@ body {
     font-family: 'Poppins';
 }
 
-.container, .form-control, .form-select, .modal-content, .swal2-popup, .popover {
+a {
+    text-decoration: none;
+    color: var(--darkColor) !important;
+}
+
+.container, .form-control, .form-select, .modal-content, .swal2-popup, .popover, .plate-number {
     border: 2px solid var(--darkColor) !important;
 }
 .modal-content, .swal2-popup, .popover {
@@ -72,10 +77,10 @@ body {
 }
 
 /* Container & Button & Input */
-.form-control, .form-select, .btn, .container, .sidebar .nav-link.active {
+.form-control, .form-select, .btn, .container, .sidebar .nav-link.active, .plate-number {
     border-radius: var(--roundedSM) !important;
 }
-.form-label {
+.form-label, label {
     font-weight: 500;
 }
 
@@ -130,8 +135,8 @@ body {
     padding: 20px;
 }
 
-.btn, .sidebar .nav-link.active {
-    color: var(--whiteColor);
+.btn, .sidebar .nav-link.active, .gm-control-active {
+    color: var(--whiteColor) !important;
     border-left: none;
     border-top: none;
     border-right: none;
@@ -139,20 +144,20 @@ body {
     font-weight: 500;
 }
 
-.btn.btn-primary{
-    background: var(--primaryColor);
+.btn.btn-primary, .gm-control-active{
+    background: var(--primaryColor) !important;
     border-bottom: var(--spaceXXSM) solid var(--secondaryPrimaryColor) !important;
 }
 .btn.btn-success{
-    background: var(--successColor);
+    background: var(--successColor) !important;
     border-bottom: var(--spaceXXSM) solid var(--secondarySuccessColor) !important;
 }
 .btn.btn-danger{
-    background: var(--dangerColor);
+    background: var(--dangerColor) !important;
     border-bottom: var(--spaceXXSM) solid var(--secondaryDangerColor) !important;
 }
 .btn.btn-warning{
-    background: var(--warningColor);
+    background: var(--warningColor) !important;
     border-bottom: var(--spaceXXSM) solid var(--secondaryWarningrColor) !important;
 }
 
@@ -183,13 +188,14 @@ body {
     background-size: cover;
     background-color: var(--darkColor);
 }
-.btn-nav-page {
-    z-index: 999;
-    background: var(--dangerColor);
-    color: var(--whiteColor) !important;
-    padding: var(--spaceMD) var(--spaceXLG);
-    border-radius: var(--roundedJumbo);
-    margin: var(--spaceLG) 0 var(--spaceLG) var(--spaceSM);
+
+.plate-number {
+    padding: var(--spaceMini) var(--spaceSM) !important;
+    margin-inline: var(--spaceSM);
+    font-weight: bold;
+    z-index: 1000;
+    font-size:var(--textMD); 
+    background:var(--warningColor) !important; 
 }
 
 /* Table */
@@ -209,11 +215,12 @@ label, input, textarea, select {
 }
 
 /* Container */
-.container, .modal-content, .swal2-popup, .popover {
+.container, .modal-content, .swal2-popup, .popover, .plate-number {
     border-bottom: var(--spaceXXSM) solid var(--darkColor) !important;
     padding: var(--spaceXLG);
     margin-bottom: var(--spaceLG);
     background: var(--whiteColor);
+    position: relative;
 }
 
 .form-control, .form-select, .input-group-text {
@@ -224,17 +231,53 @@ label, input, textarea, select {
 }
 
 hr {
-    background: var(--whiteColor);
+    background: var(--darkColor);
 }
 
-.btn, .container, .sidebar .nav-link{
+.btn, .container, .sidebar .nav-link, .btn-trip, .plate-number{
     -webkit-transition: all 0.4s !important;
     -o-transition: all 0.4s !important;
     transition: all 0.4s !important;
 }
-.btn:hover {
+.btn:hover, .btn-trip:hover {
     transform: scale(1.025);
 }
 .modal-content, .swal2-popup, .popover, .btn:hover {
     box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+}
+
+/* Maps Dialog */
+.gm-ui-hover-effect {
+    background: black !important;
+    border-radius: 100%;
+    position: absolute !important;
+    right: 6px !important;
+    top: 6px !important;
+}
+.gm-ui-hover-effect span {
+    color: var(--whiteColor) !important;
+}
+.gm-control-active {
+    fill: var(--whiteColor) !important;
+    border-radius: var(--roundedSM) !important;
+}
+.gmnoprint div{
+    background: transparent !important;
+    box-shadow: none !important;
+    position: absolute;
+    top: -30px;
+    right: -15px;
+}
+.maps-toolbar {
+    border-radius: 20px;
+    border: 5px solid var(--darkColor);
+    padding: 0 !important;
+    background: var(--darkColor);
+}
+.maps-toolbar button {
+    margin: 10px !important;
+    border-radius: 10px !important;
+}
+.maps-info-box p, .maps-info-box h6 {
+    color: var(--textWhite) !important;
 }

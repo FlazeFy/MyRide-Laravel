@@ -3,48 +3,6 @@
         height:80vh;
         border-radius: var(--roundedLG);
     }
-
-    /* Maps Dialog */
-    .gm-ui-hover-effect {
-        background: black !important;
-        border-radius: 100%;
-        position: absolute !important;
-        right: 6px !important;
-        top: 6px !important;
-    }
-    .gm-ui-hover-effect span {
-        color: white !important;
-    }
-    .gm-control-active {
-        background: var(--darkColor) !important;
-        border: 1.75px solid var(--whiteColor) !important;
-        border-radius: 10px !important;
-        margin-bottom: 10px !important;
-    }
-    .gmnoprint div{
-        background: transparent !important;
-        box-shadow: none !important;
-        position: absolute;
-        top: -30px;
-        right: -15px;
-    }
-    .gm-control-active span {
-        background: var(--whiteColor) !important;
-    }
-
-    .maps-toolbar {
-        border-radius: 20px;
-        border: 5px solid var(--darkColor);
-        padding: 0 !important;
-        background: var(--darkColor);
-    }
-    .maps-toolbar button {
-        margin: 10px !important;
-        border-radius: 10px !important;
-    }
-    .maps-info-box p, .maps-info-box h6 {
-        color: var(--textWhite) !important;
-    }
 </style>
 
 <div class="maps-toolbar">

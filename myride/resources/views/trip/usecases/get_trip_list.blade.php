@@ -1,6 +1,5 @@
 <style>
     .btn-trip-box {
-        color: var(--whiteColor) !important;
         padding: var(--spaceLG) !important;
         margin-bottom: var(--spaceLG);
         width: 100%;
