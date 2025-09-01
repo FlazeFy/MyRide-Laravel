@@ -58,7 +58,13 @@
     ?>
 </head>
 <body>
-    @yield('content')
+    @include('others.bars.navbar')
+    <div class="d-flex">
+        @include('others.bars.sidebar')
+        <div class="content flex-grow-1">
+            @yield('content')
+        </div>
+    </div>
 </body>
 
  <!--Modal-->

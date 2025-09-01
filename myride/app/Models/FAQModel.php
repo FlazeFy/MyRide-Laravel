@@ -18,6 +18,7 @@ class FAQModel extends Model
     public static function getShowingFAQ(){
         $res = FAQModel::select("faq_question","faq_answer")
             ->where('is_show',1)
+            ->whereNotNull('faq_answer')
             ->orderBy('created_at','desc')
             ->limit(8)
             ->get();

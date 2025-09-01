@@ -316,7 +316,7 @@ class Queries extends Controller
      *                          @OA\Property(property="total_vehicle", type="integer", example=3),
      *                          @OA\Property(property="total_service", type="integer", example=2),
      *                          @OA\Property(property="total_clean", type="integer", example=4)
-     *                 )
+     *                 
      *             )
      *         )
      *     ),
