@@ -17,7 +17,8 @@ class TripController extends Controller
         $user_id = Generator::getUserId(session()->get('role_key'));
 
         if($user_id != null){
-            return view('trip.index');
+            return view('trip.index')
+                ->with('active_menu','trip');
         } else {
             return redirect("/login");
         }

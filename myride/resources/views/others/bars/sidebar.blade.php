@@ -1,24 +1,25 @@
 <div class="sidebar p-3">
     <h5 class="group-menu">Menu</h5>
     <ul class="nav nav-pills flex-column">
-        <li><a href="/dashboard" class="nav-link active">Dashboard</a></li>
-        <li><a href="/garage" class="nav-link">My Garage</a></li>
-        <li><a href="/trip" class="nav-link">Trip</a></li>
-        <li><a href="/fuel" class="nav-link">Fuel</a></li>
-        <li><a href="/clean" class="nav-link">Cleanliness</a></li>
-        <li><a href="/service" class="nav-link">Service</a></li>
-        <li><a href="/reminder" class="nav-link">Reminder</a></li>
-        <li><a href="/stats" class="nav-link">Statistic</a></li>
-        <li><a href="/driver" class="nav-link">Driver</a></li>
+        <li><a href="/dashboard" class="nav-link <?= $active_menu == "dashboard" ? "active" : "" ?>"><i class="fa-solid fa-table"></i> Dashboard</a></li>
+        <li><a href="/garage" class="nav-link <?= $active_menu == "garage" ? "active" : "" ?>"><i class="fa-solid fa-warehouse"></i> My Garage</a></li>
+        <li><a href="/trip" class="nav-link <?= $active_menu == "trip" ? "active" : "" ?>"><i class="fa-solid fa-suitcase"></i> Trip</a></li>
+        <li><a href="/fuel" class="nav-link <?= $active_menu == "fuel" ? "active" : "" ?>"><i class="fa-solid fa-gas-pump"></i> Fuel</a></li>
+        <li><a href="/clean" class="nav-link <?= $active_menu == "clean" ? "active" : "" ?>"><i class="fa-solid fa-soap"></i> Cleanliness</a></li>
+        <li><a href="/service" class="nav-link <?= $active_menu == "service" ? "active" : "" ?>"><i class="fa-solid fa-screwdriver-wrench"></i> Service</a></li>
+        <li><a href="/reminder" class="nav-link <?= $active_menu == "reminder" ? "active" : "" ?>"><i class="fa-solid fa-clock"></i> Reminder</a></li>
+        <li><a href="/stats" class="nav-link <?= $active_menu == "stats" ? "active" : "" ?>"><i class="fa-solid fa-chart-simple"></i> Statistic</a></li>
+        <li><a href="/driver" class="nav-link <?= $active_menu == "driver" ? "active" : "" ?>"><i class="fa-solid fa-users"></i> Driver</a></li>
+        <li><a href="/inventory" class="nav-link <?= $active_menu == "inventory" ? "active" : "" ?>"><i class="fa-solid fa-boxes-stacked"></i> Inventory</a></li>
     </ul>
     <h5 class="group-menu">Vehicle</h5>
     <ul class="nav nav-pills flex-column" id="vehicle_menu-list"></ul>
     <h5 class="group-menu">Others</h5>
     <ul class="nav nav-pills flex-column">
-        <li><a href="/setting" class="nav-link">Setting</a></li>
-        <li><a href="/history" class="nav-link">History</a></li>
-        <li><a href="/help" class="nav-link">Help Center</a></li>
-        <li><a href="/about" class="nav-link">About Us</a></li>
+        <li><a href="/setting" class="nav-link <?= $active_menu == "setting" ? "active" : "" ?>"><i class="fa-solid fa-gear"></i> Setting</a></li>
+        <li><a href="/history" class="nav-link <?= $active_menu == "history" ? "active" : "" ?>"><i class="fa-solid fa-clock-rotate-left"></i> History</a></li>
+        <li><a href="/help" class="nav-link <?= $active_menu == "help" ? "active" : "" ?>"><i class="fa-solid fa-headset"></i> Help Center</a></li>
+        <li><a href="/about" class="nav-link <?= $active_menu == "about" ? "active" : "" ?>"><i class="fa-solid fa-circle-info"></i> About Us</a></li>
     </ul>
 </div>
 

@@ -9,7 +9,7 @@
         
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
-                <li class="nav-item"><a class="btn btn-primary me-3" href="/profile">My Profile</a></li>
+                <li class="nav-item"><a class="btn btn-primary me-3" href="/profile"><i class="fa-solid fa-user"></i> My Profile</a></li>
                 <li class="nav-item"><a class="btn btn-success px-3 me-3" href="#"><i class="fa-solid fa-bell fa-lg"></i></a></li>
                 <li class="nav-item"><a class="btn btn-danger px-3" data-bs-target="#modalSignOut" data-bs-toggle="modal"><i class="fa-solid fa-right-from-bracket fa-lg"></i></a></li>
             </ul>

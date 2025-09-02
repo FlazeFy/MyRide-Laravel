@@ -13,7 +13,8 @@ class CleanController extends Controller
         $user_id = Generator::getUserId(session()->get('role_key'));
 
         if($user_id != null){
-            return view('clean.index');
+            return view('clean.index')
+                ->with('active_menu','clean');
         } else {
             return redirect("/login");
         }

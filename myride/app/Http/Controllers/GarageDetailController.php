@@ -22,7 +22,8 @@ class GarageDetailController extends Controller
 
         if($user_id != null){
             return view('garage.detail.index')
-                ->with('id', $id);
+                ->with('id', $id)
+                ->with('active_menu','garage');
         } else {
             return redirect("/login");
         }

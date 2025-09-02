@@ -33,7 +33,8 @@ class StatsController extends Controller
                 ->with('total_trip_by_category',$total_trip_by_category)
                 ->with('total_vehicle_by_category',$total_vehicle_by_category)
                 ->with('total_trip_by_destination',$total_trip_by_destination)
-                ->with('total_trip_by_origin',$total_trip_by_origin);
+                ->with('total_trip_by_origin',$total_trip_by_origin)
+                ->with('active_menu','stats');
         } else {
             return redirect("/login");
         }
