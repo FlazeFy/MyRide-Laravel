@@ -98,6 +98,7 @@ a {
     top: 0;
     background: var(--warningColor);
     z-index: 1000;
+    height: 100px;
 }
 .navbar .navbar-brand {
     color: var(--darkColor);
@@ -162,23 +163,22 @@ a {
 }
 
 /* Carousel */
+.carousel-parent {
+    position: relative;
+}
+.carousel-button-holder {
+    position: absolute;
+    top: calc(-1.5*var(--spaceJumbo));       
+    right: 0;      
+    display: flex;
+    gap: 8px;         
+}
 .carousel-control-prev, .carousel-control-next {
-    background: var(--primaryColor);
-    height: calc(var(--spaceJumbo) * 2);
-    width: calc(var(--spaceJumbo) * 2);
+    height: calc(var(--spaceJumbo) * 1.25);
+    width: calc(var(--spaceJumbo) * 1.25);
     opacity: 1 !important;
-    border-radius: 100%;
-    margin-top: 45vh;
-    box-shadow: rgba(0, 0, 0, 0.65) 0px 7px 21px;
-    -webkit-transition: all 0.4s !important;
-    -o-transition: all 0.4s !important;
-    transition: all 0.4s !important;
-}
-.carousel-item .row > div:nth-child(2) .btn {
-    transform: scale(1.025);
-}
-.carousel-item .row > div:nth-child(1) .btn, .carousel-item .row > div:nth-child(3) .btn {
-    transform: scale(0.95);
+    margin-top: 0; 
+    position: relative; 
 }
 
 .btn-menu-landing, .carousel-indicators button{
@@ -234,12 +234,12 @@ hr {
     background: var(--darkColor);
 }
 
-.btn, .container, .sidebar .nav-link, .btn-trip, .plate-number{
+.btn, .container, .sidebar .nav-link, .hover-grow, .plate-number{
     -webkit-transition: all 0.4s !important;
     -o-transition: all 0.4s !important;
     transition: all 0.4s !important;
 }
-.btn:hover, .btn-trip:hover {
+.btn:hover, .hover-grow:hover {
     transform: scale(1.025);
 }
 .modal-content, .swal2-popup, .popover, .btn:hover {

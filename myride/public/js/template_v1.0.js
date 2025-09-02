@@ -1,6 +1,6 @@
 const template_alert_container = (target, type, msg, btn_title, icon, href) => {
     $(`#${target}`).html(`
-        <div class="container p-3" style="${type == 'no-data'? 'background-color:rgba(59, 131, 246, 0.2);':''}">
+        <div class="container p-3" style="${type == 'no-data'? 'background-color:rgba(245, 93, 134, 0.2);':''}">
             <div class="d-flex justify-content-start">
                 <div class="me-3">
                     <h1 style="font-size: 70px;">${icon}</h1>
@@ -14,14 +14,14 @@ const template_alert_container = (target, type, msg, btn_title, icon, href) => {
     `)
 }
 
-const template_trip_box = (dt,target_holder) => {
+const template_trip_box = (dt, extra_class = '') => {
     const coorOrigin = dt.trip_origin_coordinate.split(",").map(Number)
     const coorDestination = dt.trip_destination_coordinate.split(",").map(Number)
     const deletedStyle = dt.deleted_at ? "background-color: rgba(221, 0, 33, 0.3);" : ""
     const deletedTitle = dt.deleted_at ? "title='Deleted Item'" : ""
-    
-    $(target_holder).append(`
-        <button class="container btn-trip text-start mb-4" style="${deletedStyle}" ${deletedTitle} 
+
+    return `
+        <button class="container text-start mb-4 ${extra_class}" style="${deletedStyle}" ${deletedTitle} 
             onclick="show_location(${coorOrigin[0]}, ${coorOrigin[1]}, ${coorDestination[0]}, ${coorDestination[1]})">
             ${dt.vehicle_plate_number ? `<a class="plate-number position-absolute" style="top:calc(-2*var(--spaceSM)); left:calc(-2*var(--spaceSM)); width: fit-content;">${dt.vehicle_plate_number}</a>`:''}
             ${dt.vehicle_name ? `<h6 class="mb-2">${dt.vehicle_name}</h6>`:''}
@@ -67,5 +67,36 @@ const template_trip_box = (dt,target_holder) => {
                 <a class="btn btn-primary pt-2 pb-1 px-3 ms-2" data-bs-toggle="collapse" href="#collapseDetailTrip${dt.id}" role="button" aria-expanded="false" style="font-size:var(--textMD);">See Detail</a>
             </div>
         </button>
-    `)
+    `;
+}
+
+const build_layout_trip = (dt) => {
+    if (!dt || !dt.data) return
+
+    const itemsPerSlide = 3
+    const carouselInner = $("#carouselTrip .carousel-inner")
+    const indicators = $("#carouselTrip .carousel-indicators")
+
+    carouselInner.empty()
+    indicators.empty()
+
+    dt.data.forEach((el, i) => {
+        const slideIndex = Math.floor(i / itemsPerSlide)
+
+        if ($(`#carouselTrip .carousel-item[data-slide-index="${slideIndex}"]`).length === 0) {
+            carouselInner.append(`
+                <div class="carousel-item px-2 ${slideIndex === 0 ? "active" : ""}" data-slide-index="${slideIndex}">
+                    <div class="holder"></div>
+                </div>
+            `)
+
+            indicators.append(`
+                <button type="button" data-bs-target="#carouselTrip" data-bs-slide-to="${slideIndex}" 
+                    class="${slideIndex === 0 ? "active" : ""}" aria-current="${slideIndex === 0 ? "true" : "false"}" aria-label="Slide ${slideIndex + 1}"></button>
+            `)
+        }
+
+        const targetSlide = $(`#carouselTrip .carousel-item[data-slide-index="${slideIndex}"] .holder`)
+        targetSlide.append(template_trip_box(el))
+    })
 }

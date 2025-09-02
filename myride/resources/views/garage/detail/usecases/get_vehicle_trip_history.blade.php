@@ -13,14 +13,15 @@
     }
 </style>
 
-<div id="trip-content-holder"></div>
+@php
+    $carouselId = 'carouselTrip';
+@endphp
 
-<script>
-    const build_layout_trip = (dt) => {
-        if(dt){
-            dt.data.forEach(el => {
-                template_trip_box(el,'#trip-content-holder')
-            });
-        }
-    }
-</script>
+<div class="carousel-parent">
+    <div id="{{$carouselId}}" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-indicators"></div>
+        <div class="carousel-inner"></div>
+
+        @include('others.button.button_navigate_carousel', ['carouselId' => $carouselId])
+    </div>
+</div>

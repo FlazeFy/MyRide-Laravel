@@ -16,13 +16,20 @@
     use App\Helpers\Converter;
 ?>
 
-<div id="trip-content-holder"></div>
+@php
+    $carouselId = 'carouselTrip';
+@endphp
+
+<div class="carousel-parent">
+    <div id="{{$carouselId}}" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-indicators"></div>
+        <div class="carousel-inner py-4"></div>
+
+        @include('others.button.button_navigate_carousel', ['carouselId' => $carouselId])
+    </div>
+</div>
 
 <script type="text/javascript">
-    const get_trip_list = (dt) => {
-        template_trip_box(dt, '#trip-content-holder')
-    }
-    
     function show_location(lat1, long1, lat2, long2){
         refresh_map(lat1, long1)
 

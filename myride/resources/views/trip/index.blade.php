@@ -36,9 +36,9 @@
                         markers = []
                         $('#trip-content-holder').empty()
 
+                        build_layout_trip(response.data)
                         data.forEach((dt, idx) => {
                             place_marker(dt)
-                            get_trip_list(dt)
                         });
                         initMap()
                         resolve()
