@@ -51,7 +51,7 @@
     --darkColor : #232323;
     --whiteColor : #f6fbff;
     --greyColor : #656565;
-    --shadowColor : #E0E0E0;
+    --shadowColor : #f2f2f2;
 }
 
 body {
@@ -242,9 +242,12 @@ label, input, textarea, select {
     background: var(--whiteColor);
     position: relative;
 }
-
+.container {
+    width: 100%;
+    margin-inline: 0;
+}
 .form-control, .form-select, .input-group-text {
-    background: transparent !important;
+    background: var(--shadowColor) !important;
     font-size: var(--textXLG);
     padding: var(--spaceMD);
 }
