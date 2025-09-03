@@ -3,6 +3,7 @@
 namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 // Helpers
 use App\Helpers\Query;
@@ -59,6 +60,34 @@ class VehicleModel extends Model
             $res = $res->where('created_by',$user_id);
         }
         $res = $res->orderBy('updated_at','desc')
+            ->orderBy('created_at','desc')
+            ->paginate($limit);
+
+        return $res->isNotEmpty() ? $res : null;
+    }
+
+    public static function getVehicleReadiness($user_id,$limit){
+        $res = VehicleModel::select('id','vehicle_name','vehicle_type','vehicle_status','vehicle_plate_number','vehicle_fuel_status','vehicle_capacity', 'vehicle_transmission',
+                DB::raw("
+                    (CASE vehicle_status
+                        WHEN 'Available' THEN 5
+                        WHEN 'Reserved' THEN 3
+                        WHEN 'Damaged' THEN 0
+                        ELSE 0
+                    END) +
+                    (CASE vehicle_fuel_status
+                        WHEN 'Full' THEN 5
+                        WHEN 'High' THEN 4
+                        WHEN 'Normal' THEN 3
+                        WHEN 'Low' THEN 2
+                        WHEN 'Empty' THEN 0
+                        WHEN 'Not Monitored' THEN 1
+                        ELSE 0
+                    END) as readiness
+                ")
+            )
+            ->where('created_by',$user_id)
+            ->orderBy('readiness','desc')
             ->orderBy('created_at','desc')
             ->paginate($limit);
 

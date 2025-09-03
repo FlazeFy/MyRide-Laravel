@@ -3027,6 +3027,169 @@
                 ]
             }
         },
+        "/api/v1/vehicle/readiness": {
+            "get": {
+                "tags": [
+                    "Vehicle"
+                ],
+                "summary": "Get vehicle readiness",
+                "description": "This request is used to get all vehicle that ready to drive with pagination. This request is using MySql database, and have a protected routes.",
+                "operationId": "62b078376a3f2821bf66ed39b9c7d3ce",
+                "responses": {
+                    "200": {
+                        "description": "vehicle fetched",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "vehicle fetched"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "current_page": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "data": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "string",
+                                                                "format": "uuid",
+                                                                "example": "2d98f524-de02-11ed-b5ea-0242ac120002"
+                                                            },
+                                                            "vehicle_name": {
+                                                                "type": "string",
+                                                                "example": "Brio RS MT"
+                                                            },
+                                                            "vehicle_type": {
+                                                                "type": "string",
+                                                                "example": "City Car"
+                                                            },
+                                                            "vehicle_status": {
+                                                                "type": "string",
+                                                                "example": "Available"
+                                                            },
+                                                            "vehicle_plate_number": {
+                                                                "type": "string",
+                                                                "example": "D 1610 ZBC"
+                                                            },
+                                                            "vehicle_fuel_status": {
+                                                                "type": "string",
+                                                                "example": "Normal"
+                                                            },
+                                                            "vehicle_capacity": {
+                                                                "type": "integer",
+                                                                "example": 5
+                                                            },
+                                                            "vehicle_transmission": {
+                                                                "type": "string",
+                                                                "example": "CVT"
+                                                            },
+                                                            "vehicle_readiness": {
+                                                                "type": "integer",
+                                                                "example": 8
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                },
+                                                "last_page": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "per_page": {
+                                                    "type": "integer",
+                                                    "example": 14
+                                                },
+                                                "total": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "protected route need to include sign in token as authorization bearer",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "you need to include the authorization token from login"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "vehicle failed to fetched",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "vehicle not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "something wrong. please contact admin"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/v1/vehicle/name": {
             "get": {
                 "tags": [

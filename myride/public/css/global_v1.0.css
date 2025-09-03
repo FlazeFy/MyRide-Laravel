@@ -219,11 +219,22 @@ a {
 }
 
 /* Table */
-table th, table tr {
-    color: var(--whiteColor);
+table {
+    border-collapse: collapse;   
+    width: 100%;
+    border: 1.75px solid var(--darkColor) !important;
+}
+th, td {
+    text-align: center;         
+    vertical-align: middle;    
+    border: 1.75px solid var(--darkColor) !important; 
 }
 thead th {
     text-align: center;
+    background: var(--primaryColor) !important;
+    color: var(--whiteColor);
+    letter-spacing: 0.5px;
+    font-weight: 600;
 }
 table tbody p {
     font-size: var(--textXMD);
