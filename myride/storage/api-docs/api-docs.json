@@ -1224,131 +1224,6 @@
                 }
             }
         },
-        "/api/v1/stats/total/trip/{context}": {
-            "get": {
-                "tags": [
-                    "Stats"
-                ],
-                "summary": "Get total trip by context",
-                "description": "This request is used to get total trip by `context`, that can be trip_category, trip_origin_name, and trip_destination_name. This request is using MySql database, and have a protected routes.",
-                "operationId": "c0d553400b7958f3827ae8cd20f5f8a5",
-                "parameters": [
-                    {
-                        "name": "context",
-                        "in": "path",
-                        "description": "Trip Context",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "example": "trip_category"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "stats fetched",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "status": {
-                                            "type": "string",
-                                            "example": "success"
-                                        },
-                                        "message": {
-                                            "type": "string",
-                                            "example": "stats fetched"
-                                        },
-                                        "data": {
-                                            "type": "array",
-                                            "items": {
-                                                "properties": {
-                                                    "context": {
-                                                        "type": "string",
-                                                        "example": "Others"
-                                                    },
-                                                    "total": {
-                                                        "type": "integer",
-                                                        "example": 4
-                                                    }
-                                                },
-                                                "type": "object"
-                                            }
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "protected route need to include sign in token as authorization bearer",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "status": {
-                                            "type": "string",
-                                            "example": "failed"
-                                        },
-                                        "message": {
-                                            "type": "string",
-                                            "example": "you need to include the authorization token from login"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "stats failed to fetched",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "status": {
-                                            "type": "string",
-                                            "example": "failed"
-                                        },
-                                        "message": {
-                                            "type": "string",
-                                            "example": "stats not found"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "status": {
-                                            "type": "string",
-                                            "example": "error"
-                                        },
-                                        "message": {
-                                            "type": "string",
-                                            "example": "something wrong. please contact admin"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
-            }
-        },
         "/api/v1/stats/total/vehicle/{context}": {
             "get": {
                 "tags": [
@@ -1637,6 +1512,10 @@
                                                     "example": 2
                                                 },
                                                 "total_clean": {
+                                                    "type": "integer",
+                                                    "example": 4
+                                                },
+                                                "total_driver": {
                                                     "type": "integer",
                                                     "example": 4
                                                 }

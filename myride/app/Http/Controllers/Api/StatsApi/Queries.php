@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\StatsApi;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 // Helper
 use App\Helpers\Generator;
@@ -14,10 +15,11 @@ use App\Models\UserModel;
 use App\Models\ServiceModel;
 use App\Models\DriverModel;
 use App\Models\CleanModel;
+use App\Models\MultiModel;
 
 class Queries extends Controller
 {
-    /**
+    /**`1
      * @OA\GET(
      *     path="/api/v1/stats/total/trip/{context}",
      *     summary="Get total trip by context",
@@ -312,11 +314,11 @@ class Queries extends Controller
      *             @OA\Property(property="status", type="string", example="success"),
      *             @OA\Property(property="message", type="string", example="stats fetched"),
      *                 @OA\Property(property="data", type="object",
-     *                          @OA\Property(property="total_user", type="integer", example=2),
-     *                          @OA\Property(property="total_vehicle", type="integer", example=3),
-     *                          @OA\Property(property="total_service", type="integer", example=2),
-     *                          @OA\Property(property="total_clean", type="integer", example=4)
-     *                 
+     *                     @OA\Property(property="total_user", type="integer", example=2),
+     *                     @OA\Property(property="total_vehicle", type="integer", example=3),
+     *                     @OA\Property(property="total_service", type="integer", example=2),
+     *                     @OA\Property(property="total_clean", type="integer", example=4),
+     *                     @OA\Property(property="total_driver", type="integer", example=4)
      *             )
      *         )
      *     ),
@@ -346,31 +348,43 @@ class Queries extends Controller
      *     ),
      * )
      */
-    public function getSummaryApps(){
+    public function getSummaryApps(Request $request){
         try{
-            $total_user = UserModel::count();
-            $total_vehicle = VehicleModel::whereNull('deleted_at')->count();
-            $total_clean = CleanModel::count();
-            // $total_driver = DriverModel::count();
-            $total_service = ServiceModel::count();
-            $total_trip = TripModel::whereNull('deleted_at')->count();
+            if ($request->hasHeader('Authorization')) {
+                $user = Auth::guard('sanctum')->user(); 
+                $user_id = $user ? $user->id : null;
+            } else {
+                $user_id = null;
+            }
+
+            $total_vehicle = MultiModel::countTotalContext('vehicle',$user_id);
+            $total_clean = MultiModel::countTotalContext('clean',$user_id);
+            $total_driver = MultiModel::countTotalContext('driver',$user_id);
+            $total_service = MultiModel::countTotalContext('service',$user_id);
+            $total_trip = MultiModel::countTotalContext('trip',$user_id);
+
+            $data = [
+                'total_vehicle' => $total_vehicle,
+                'total_service' => $total_service,
+                'total_clean'   => $total_clean,
+                'total_driver'  => $total_driver,
+                'total_trip'    => $total_trip,
+            ];
+
+            if($user_id == null){
+                $total_user = MultiModel::countTotalContext('users',$user_id);
+                $data['total_user'] = $total_user;
+            }
 
             return response()->json([
                 'status' => 'success',
                 'message' => Generator::getMessageTemplate("fetch", 'stats'),
-                'data' => [
-                    'total_user' => $total_user,
-                    'total_vehicle' => $total_vehicle,
-                    'total_service' => $total_service,
-                    'total_clean' => $total_clean,
-                    // 'total_driver' => $total_driver,
-                    'total_trip' => $total_trip
-                ]
+                'data' => $data
             ], Response::HTTP_OK);
         } catch(\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => Generator::getMessageTemplate("unknown_error", null),
+                'message' => $e->getMessage(),
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }

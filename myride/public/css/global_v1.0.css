@@ -304,3 +304,13 @@ hr {
 .maps-info-box p, .maps-info-box h6 {
     color: var(--textWhite) !important;
 }
+
+/* Summary */
+.summary-label {
+    font-size: var(--textJumbo);
+    font-weight: 600;
+}
+.summary-number {
+    font-size: calc(3*var(--textJumbo));
+    font-weight: 700;
+}

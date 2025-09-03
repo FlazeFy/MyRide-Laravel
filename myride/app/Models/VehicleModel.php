@@ -52,21 +52,26 @@ class VehicleModel extends Model
         return count($res) > 0 ? $res : null;
     }
 
-    public static function getAllVehicleHeader($user_id,$limit){
+    public static function getAllVehicleHeader($user_id = null,$limit){
         $query_header_vehicle = Query::get_select_template('vehicle_header');
-        $res = VehicleModel::selectRaw($query_header_vehicle)
-            ->orderBy('updated_at','desc')
+        $res = VehicleModel::selectRaw($query_header_vehicle);
+        if($user_id){
+            $res = $res->where('created_by',$user_id);
+        }
+        $res = $res->orderBy('updated_at','desc')
             ->orderBy('created_at','desc')
             ->paginate($limit);
 
         return $res->isNotEmpty() ? $res : null;
     }
 
-    public static function getVehicleDetailById($user_id,$id){
-        $res = VehicleModel::where('id',$id)
-            ->where('created_by',$user_id)
-            ->first();
-    
+    public static function getVehicleDetailById($user_id = null,$id){
+        $res = VehicleModel::where('id',$id);
+        if($user_id){
+            $res = $res->where('created_by',$user_id);
+        }
+        $res = $res->first();
+
         unset($res->created_by);
 
         return $res;

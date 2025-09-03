@@ -1,7 +1,13 @@
 @extends('layouts.main_layout')
 
 @section('content')
-    <div class="p-3">
-    
+    <div class="py-3">
+        <div class="row">
+            <div class="col-xl-9 col-lg-8 col-md-7 col-md-7 col-sm-12">
+                <div class='container text-center'>
+                    @include('dashboard.usecases.get_summary')
+                </div>
+            </div>
+        </div>
     </div>
 @endsection
