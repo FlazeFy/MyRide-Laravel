@@ -18,17 +18,8 @@
             </div>
             @include('stats.usecases.get_total_vehicle_by_context')
         </div>
-        <div class="row">
-            <div class="col-lg-6 col-md-6 col-sm-12">
-                <div class="container">
-                    @include('stats.usecases.get_total_trip_by_origin')
-                </div>
-            </div>
-            <div class="col-lg-6 col-md-6 col-sm-12">
-                <div class="container">
-                    @include('stats.usecases.get_total_trip_by_destination')
-                </div>
-            </div>
+        <div class="row" id="stats_bar-holder">
+            @include('stats.usecases.get_total_trip_by_origindes')
         </div>
     </div>
 @endsection

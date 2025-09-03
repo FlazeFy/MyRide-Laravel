@@ -81,28 +81,39 @@ class Queries extends Controller
         try{
             $user_id = $request->user()->id;
 
-            if($context == "trip_category" || $context == "trip_origin_name" || $context == "trip_destination_name"){
-
-                $res = TripModel::getContextTotalStats($context,$user_id);
-                
-                if ($res && count($res) > 0) {
-                    return response()->json([
-                        'status' => 'success',
-                        'message' => Generator::getMessageTemplate("fetch", 'stats'),
-                        'data' => $res
-                    ], Response::HTTP_OK);
-                } else {
-                    return response()->json([
-                        'status' => 'failed',
-                        'message' => Generator::getMessageTemplate("not_found", 'stats'),
-                    ], Response::HTTP_NOT_FOUND);
+            $res = null;
+            if(str_contains($context,",")){
+                $list_context = explode(",",$context);
+                foreach ($list_context as $dt) {
+                    if($dt == "trip_category" || $dt == "trip_origin_name" || $dt == "trip_destination_name"){
+                        $res[] = [
+                            'context' => $dt,
+                            'data' => TripModel::getContextTotalStats($dt,$user_id)
+                        ];
+                    } else {
+                        return response()->json([
+                            'status' => 'failed',
+                            'message' => Generator::getMessageTemplate("custom", "$dt is not available"),
+                        ], Response::HTTP_BAD_REQUEST);
+                    }
                 }
+            } else {
+                $res = TripModel::getContextTotalStats($context,$user_id);
+            }
+                
+            if ($res) {
+                return response()->json([
+                    'status' => 'success',
+                    'message' => Generator::getMessageTemplate("fetch", 'stats'),
+                    'data' => $res
+                ], Response::HTTP_OK);
             } else {
                 return response()->json([
                     'status' => 'failed',
-                    'message' => Generator::getMessageTemplate("custom", "$context is not available"),
-                ], Response::HTTP_BAD_REQUEST);
+                    'message' => Generator::getMessageTemplate("not_found", 'stats'),
+                ], Response::HTTP_NOT_FOUND);
             }
+            
         } catch(\Exception $e) {
             return response()->json([
                 'status' => 'error',
