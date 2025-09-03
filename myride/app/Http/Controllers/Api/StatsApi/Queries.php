@@ -172,33 +172,52 @@ class Queries extends Controller
     {
         try{
             $user_id = $request->user()->id;
-
-            $vehicleContext = ["vehicle_merk","vehicle_type","vehicle_status","vehicle_fuel_status","vehicle_transmission","vehicle_color"];
-            if (in_array($context, $vehicleContext)) {
-                $res = VehicleModel::getContextTotalStats($context,$user_id);
-                
-                if ($res && count($res) > 0) {
-                    return response()->json([
-                        'status' => 'success',
-                        'message' => Generator::getMessageTemplate("fetch", 'stats'),
-                        'data' => $res
-                    ], Response::HTTP_OK);
+            $vehicleContext = ["vehicle_merk","vehicle_type","vehicle_status","vehicle_category","vehicle_fuel_status","vehicle_transmission","vehicle_color"];
+            
+            $res = null;
+            if(str_contains($context, ",")){
+                $context_list = explode(",", $context);
+                $res = [];
+                foreach ($context_list as $dt) {
+                    if (in_array($dt, $vehicleContext)) {
+                        $res[] = [
+                            'context' => $dt,
+                            'data' => VehicleModel::getContextTotalStats($dt,$user_id)
+                        ];
+                    } else {
+                        return response()->json([
+                            'status' => 'failed',
+                            'message' => Generator::getMessageTemplate("custom", "$dt is not available"),
+                        ], Response::HTTP_BAD_REQUEST);
+                    }
+                }
+            } else {
+                if (in_array($context, $vehicleContext)) {
+                    $res = VehicleModel::getContextTotalStats($context,$user_id);
                 } else {
                     return response()->json([
                         'status' => 'failed',
-                        'message' => Generator::getMessageTemplate("not_found", 'stats'),
-                    ], Response::HTTP_NOT_FOUND);
+                        'message' => Generator::getMessageTemplate("custom", "$context is not available"),
+                    ], Response::HTTP_BAD_REQUEST);
                 }
+            }
+            
+            if ($res) {
+                return response()->json([
+                    'status' => 'success',
+                    'message' => Generator::getMessageTemplate("fetch", 'stats'),
+                    'data' => $res
+                ], Response::HTTP_OK);
             } else {
                 return response()->json([
                     'status' => 'failed',
-                    'message' => Generator::getMessageTemplate("custom", "$context is not available"),
-                ], Response::HTTP_BAD_REQUEST);
+                    'message' => Generator::getMessageTemplate("not_found", 'stats'),
+                ], Response::HTTP_NOT_FOUND);
             }
         } catch(\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => Generator::getMessageTemplate("unknown_error", null),
+                'message' => $e->getMessage(),
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }

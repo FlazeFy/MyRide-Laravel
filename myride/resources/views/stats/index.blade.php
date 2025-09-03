@@ -10,20 +10,13 @@
                 
             </div>
         </div>
-        <div class="row text-center">
+        <div class="row text-center" id="stats_comparison-holder">
             <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12">
                 <div class="container">
                     @include('stats.usecases.get_total_trip_by_category')
                 </div>
             </div>
-            <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12">
-                <div class="container">
-                    @include('stats.usecases.get_total_vehicle_by_type')
-                </div>
-            </div>
-            <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12">
-
-            </div>
+            @include('stats.usecases.get_total_vehicle_by_context')
         </div>
         <div class="row">
             <div class="col-lg-6 col-md-6 col-sm-12">
