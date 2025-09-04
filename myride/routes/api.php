@@ -60,6 +60,7 @@ Route::prefix('/v1/stats')->middleware(['auth:sanctum'])->group(function () {
     Route::get('/total/trip/{context}', [QueriesStatsApi::class, 'getTotalTripByContext']);
     Route::get('/total/vehicle/{context}', [QueriesStatsApi::class, 'getTotalVehicleByContext']);
     Route::get('/total/trip/monthly/{year}/{vehicle_id}', [QueriesStatsApi::class, 'getTotalTripByVehiclePerYear']);
+    Route::get('/total/trip/monthly/{year}', [QueriesStatsApi::class, 'getTotalTripPerYear']);
 });
 
 Route::prefix('/v1/trip')->middleware(['auth:sanctum'])->group(function () {

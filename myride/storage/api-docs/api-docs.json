@@ -1349,14 +1349,14 @@
                 ]
             }
         },
-        "/api/v1/stats/total/trip/{year}": {
+        "/api/v1/stats/total/trip/{year}/{vehicle_id}": {
             "get": {
                 "tags": [
                     "Stats"
                 ],
                 "summary": "Get total trip by vehicle per month",
                 "description": "This request is used to get total trip by vehicle per month by given `year`. This request is using MySql database, and have a protected routes.",
-                "operationId": "2e4766d5b75c8361b176a53ddb5fe3f1",
+                "operationId": "272039e94d78c4829f6c2acc439d2ad1",
                 "parameters": [
                     {
                         "name": "year",
@@ -1366,6 +1366,151 @@
                         "schema": {
                             "type": "integer",
                             "example": "2024"
+                        }
+                    },
+                    {
+                        "name": "vehicle_id",
+                        "in": "path",
+                        "description": "Vehicle ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "ab8b8d0e-d74d-11ed-afa1-0242ac120002"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "stats fetched",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "stats fetched"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "context": {
+                                                        "type": "string",
+                                                        "example": "Jan"
+                                                    },
+                                                    "total": {
+                                                        "type": "integer",
+                                                        "example": 3
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "protected route need to include sign in token as authorization bearer",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "you need to include the authorization token from login"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "stats failed to fetched",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "stats not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "something wrong. please contact admin"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/stats/total/trip/{year}": {
+            "get": {
+                "tags": [
+                    "Stats"
+                ],
+                "summary": "Get total trip per month",
+                "description": "This request is used to get total trip per month by given `year`. This request is using MySql database, and have a protected routes.",
+                "operationId": "e113c3600c9fd19089953b6c3647336d",
+                "parameters": [
+                    {
+                        "name": "year",
+                        "in": "path",
+                        "description": "Trip created year",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": "2024"
+                        }
+                    },
+                    {
+                        "name": "vehicle_id",
+                        "in": "path",
+                        "description": "Vehicle ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "ab8b8d0e-d74d-11ed-afa1-0242ac120002"
                         }
                     }
                 ],

@@ -15,7 +15,7 @@ const generate_line_chart = (title, holder, data) => {
                     data: totals
                 }],
                 chart: {
-                    type: 'line',
+                    type: 'area',
                     height: 350,
                     toolbar: {
                         show: false,        
