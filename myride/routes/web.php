@@ -12,6 +12,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\TripController;
 use App\Http\Controllers\AddTripController;
+use App\Http\Controllers\EmbedController;
 
 Route::prefix('/')->group(function () {
     Route::get('/', [WelcomeController::class, 'index'])->name('welcome');
@@ -52,3 +53,6 @@ Route::prefix('/profile')->middleware(['auth_v2:sanctum'])->group(function () {
     Route::get('/', [ProfileController::class, 'index'])->name('profile');
 });
 
+Route::prefix('/embed')->group(function () {
+    Route::get('/app_summary', [EmbedController::class, 'app_summary']);
+});

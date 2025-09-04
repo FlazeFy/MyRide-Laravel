@@ -10,7 +10,7 @@ class MultiModel extends Model
     public static function countTotalContext($context, $user_id = null){
         $query = DB::table($context);
     
-        if($user_id){
+        if($user_id && $context != "user"){
             $query->where($context.'.created_by', $user_id);
         }
     

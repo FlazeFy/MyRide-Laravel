@@ -5,6 +5,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    @php
+        $fullUrl = url()->current(); // Get the full current URL
+        $cleanedUrl = str_replace("http://127.0.0.1:8000/", "", $fullUrl);
+        $route = Route::currentRouteName();
+    @endphp
+
     <title>My Ride</title>
     <link rel="icon" type="image/png" href="{{asset('assets/logo_nocap.png')}}"/>
 
@@ -23,7 +29,9 @@
     <link rel="stylesheet" href="{{ asset('/css/global_v1.0.css') }}"/>
 
     <!-- JS Collection -->
-    <script src="{{ asset('/js/global_v1.0.js')}}"></script>
+    <?php if(preg_match('(stats|embed)', $cleanedUrl)): ?>
+        <script src="{{ asset('/js/global_v1.0.js')}}"></script>
+    <?php endif; ?>
     <script src="{{ asset('/js/chart_v1.0.js')}}"></script>
     <script src="{{ asset('/js/math_v1.0.js')}}"></script>
     <script src="{{ asset('/js/template_v1.0.js')}}"></script>
@@ -36,7 +44,6 @@
     
     <?php 
         // Datatable CDN
-        $route = Route::currentRouteName();
         if($route == 'clean'){
             echo "
                 <!-- Jquery DataTables -->
@@ -59,9 +66,14 @@
     ?>
 </head>
 <body>
-    @include('others.bars.navbar')
+    <?php if(!preg_match('(stats|embed)', $cleanedUrl)): ?>
+        @include('others.bars.navbar')
+    <?php endif; ?>
     <div class="d-flex">
-        @include('others.bars.sidebar')
+        <?php if(!preg_match('(stats|embed)', $cleanedUrl)): ?>
+            @include('others.bars.sidebar')
+        <?php endif; ?>
+
         @include('layouts.post_sign_out')
         <div class="content flex-grow-1">
             @yield('content')
