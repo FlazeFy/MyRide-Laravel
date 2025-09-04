@@ -171,4 +171,43 @@ class TripModel extends Model
 
         return $res;
     }
+
+    public static function getTripDiscovered($user_id = null, $vehicle_id = null)
+    {
+        $res = TripModel::selectRaw("trip_origin_coordinate, trip_destination_coordinate, COUNT(1) as total,MAX(trip.created_at) as last_update")
+            ->join('vehicle', 'vehicle.id', '=', 'trip.vehicle_id');
+
+        if ($vehicle_id) {
+            $res = $res->where('vehicle_id', $vehicle_id);
+        }
+        if ($user_id) {
+            $res = $res->where('trip.created_by', $user_id);
+        }
+
+        $res = $res->groupBy('trip_origin_coordinate', 'trip_destination_coordinate')->get();
+
+        $totalTrip    = 0;
+        $totalDistance = 0;
+        $lastUpdate   = null;
+
+        foreach ($res as $item) {
+            [$originLat, $originLng] = explode(',', $item->trip_origin_coordinate);
+            [$destLat, $destLng]     = explode(',', $item->trip_destination_coordinate);
+
+            $distance = Converter::calculate_distance((float) $originLat,(float) $originLng,(float) $destLat,(float) $destLng,'km');
+
+            $totalTrip    += $item->total;
+            $totalDistance += (float) $distance;
+
+            if (is_null($lastUpdate) || $item->last_update > $lastUpdate) {
+                $lastUpdate = $item->last_update;
+            }
+        }
+
+        return [
+            'total_trip'  => $totalTrip,
+            'distance_km' => number_format($totalDistance, 2),
+            'last_update' => $lastUpdate,
+        ];
+    }
 }
