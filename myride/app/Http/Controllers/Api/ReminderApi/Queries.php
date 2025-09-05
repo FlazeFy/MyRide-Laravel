@@ -76,13 +76,13 @@ class Queries extends Controller
             if ($res) {
                 return response()->json([
                     'status' => 'success',
-                    'message' => Generator::getMessageTemplate("fetch", 'reminder'),
+                    'message' => Generator::getMessageTemplate("fetch", $this->module),
                     'data' => $res
                 ], Response::HTTP_OK);
             } else {
                 return response()->json([
                     'status' => 'failed',
-                    'message' => Generator::getMessageTemplate("not_found", 'reminder'),
+                    'message' => Generator::getMessageTemplate("not_found", $this->module),
                 ], Response::HTTP_NOT_FOUND);
             }
         } catch(\Exception $e) {
@@ -113,6 +113,7 @@ class Queries extends Controller
      *                         @OA\Property(property="id", type="string", format="uuid", example="28668090-5653-dff5-2d8f-af603fc36b45"),
      *                         @OA\Property(property="reminder_title", type="string", example="Routine service"),
      *                         @OA\Property(property="vehicle_plate_number", type="string", example="D 1610 ZBC"),
+     *                         @OA\Property(property="vehicle_type", type="string", example="City Car"),
      *                         @OA\Property(property="reminder_context", type="string", example="Service"),
      *                         @OA\Property(property="reminder_body", type="string", example="Lorem ipsum"),
      *                         @OA\Property(property="reminder_attachment", type="array",

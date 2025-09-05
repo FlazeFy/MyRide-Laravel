@@ -1,10 +1,3 @@
-<style>
-    .map-board {
-        height:300px;
-        border-radius: var(--roundedLG);
-    }
-</style>
-
 <h2>All Clean</h2>
 <table class="table table-bordered">
     <thead>

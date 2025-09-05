@@ -9,8 +9,8 @@
 <table class="table text-center table-bordered">
     <thead>
         <tr>
-            <th scope="col" style="min-width: 240px;">Title</th>
             <th scope="col" style="width: 140px;">Vehicle</th>
+            <th scope="col" style="min-width: 240px;">Title</th>
             <th scope="col">Context & Body</th>
             <th scope="col">Attachment</th>
             <th scope="col" style="width: 160px;">Properties</th>
@@ -99,8 +99,8 @@
 
                     holder.append(`
                         <tr>
-                            <td>${dt.reminder_title}</td>
                             <td>${dt.vehicle_plate_number ? `<span class="plate-number">${dt.vehicle_plate_number}</span>`:'-'}</td>
+                            <td>${dt.reminder_title}</td>
                             <td>
                                 <span class="chip ${class_chip}">${dt.reminder_context}</span>
                                 ${dt.reminder_body}

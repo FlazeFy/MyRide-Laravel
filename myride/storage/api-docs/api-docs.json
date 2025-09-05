@@ -1132,6 +1132,160 @@
                 ]
             }
         },
+        "/api/v1/fuel": {
+            "get": {
+                "tags": [
+                    "Fuel"
+                ],
+                "summary": "Get all fuel",
+                "description": "This request is used to get all fuel purchase history. This request is using MySql database, have a protected routes, and have template pagination.",
+                "operationId": "a6bfc63fd137cb123e444ec1f036d421",
+                "responses": {
+                    "200": {
+                        "description": "Fuel records fetched successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "fuel fetched"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "data": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "string",
+                                                                "example": "6f59235e-c398-8a83-2f95-3f1fbe95ca6e"
+                                                            },
+                                                            "vehicle_plate_number": {
+                                                                "type": "string",
+                                                                "example": "B 1234 CD"
+                                                            },
+                                                            "vehicle_type": {
+                                                                "type": "string",
+                                                                "example": "City Car"
+                                                            },
+                                                            "fuel_volume": {
+                                                                "type": "number",
+                                                                "format": "float",
+                                                                "example": 45.5
+                                                            },
+                                                            "fuel_price_total": {
+                                                                "type": "number",
+                                                                "format": "float",
+                                                                "example": 325000
+                                                            },
+                                                            "fuel_brand": {
+                                                                "type": "string",
+                                                                "example": "Pertamina"
+                                                            },
+                                                            "fuel_type": {
+                                                                "type": "string",
+                                                                "example": "Pertamax"
+                                                            },
+                                                            "fuel_ron": {
+                                                                "type": "integer",
+                                                                "example": 92
+                                                            },
+                                                            "created_at": {
+                                                                "type": "string",
+                                                                "format": "date-time",
+                                                                "example": "2024-09-20 22:53:47"
+                                                            },
+                                                            "fuel_bill": {
+                                                                "type": "string",
+                                                                "format": "uri",
+                                                                "example": "https://example.com/uploads/fuel_bills/bill123.jpg"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "protected route need to include sign in token as authorization bearer",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "you need to include the authorization token from login"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "fuel failed to fetched",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "fuel not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "something wrong. please contact admin"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/v1/history": {
             "get": {
                 "tags": [
@@ -1514,6 +1668,10 @@
                                                             "vehicle_plate_number": {
                                                                 "type": "string",
                                                                 "example": "D 1610 ZBC"
+                                                            },
+                                                            "vehicle_type": {
+                                                                "type": "string",
+                                                                "example": "City Car"
                                                             },
                                                             "reminder_context": {
                                                                 "type": "string",
@@ -4890,6 +5048,68 @@
                 },
                 "type": "object"
             },
+            "Fuel": {
+                "required": [
+                    "id",
+                    "vehicle_id",
+                    "fuel_volume",
+                    "fuel_price_total",
+                    "fuel_brand",
+                    "fuel_type",
+                    "fuel_ron",
+                    "created_at",
+                    "created_by",
+                    "fuel_bill"
+                ],
+                "properties": {
+                    "id": {
+                        "description": "Primary key of the fuel record",
+                        "type": "integer"
+                    },
+                    "vehicle_id": {
+                        "description": "Reference ID of the vehicle",
+                        "type": "integer"
+                    },
+                    "fuel_volume": {
+                        "description": "Total fuel volume filled (in liters)",
+                        "type": "number",
+                        "format": "float"
+                    },
+                    "fuel_price_total": {
+                        "description": "Total price paid for the fuel",
+                        "type": "number",
+                        "format": "float"
+                    },
+                    "fuel_brand": {
+                        "description": "Brand of the fuel",
+                        "type": "string"
+                    },
+                    "fuel_type": {
+                        "description": "Type of fuel",
+                        "type": "string"
+                    },
+                    "fuel_ron": {
+                        "description": "Research Octane Number (RON) of the fuel",
+                        "type": "integer"
+                    },
+                    "fuel_bill": {
+                        "description": "URL or path to the uploaded fuel bill image",
+                        "type": "string",
+                        "format": "uri"
+                    },
+                    "created_at": {
+                        "description": "Timestamp when the fuel record was created",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "created_by": {
+                        "description": "ID of the user who created the fuel record",
+                        "type": "string",
+                        "format": "uuid"
+                    }
+                },
+                "type": "object"
+            },
             "History": {
                 "required": [
                     "id",
@@ -5029,6 +5249,10 @@
         {
             "name": "Dictionary",
             "description": "Dictionary"
+        },
+        {
+            "name": "Fuel",
+            "description": "Fuel"
         },
         {
             "name": "History",

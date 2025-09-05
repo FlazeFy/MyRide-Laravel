@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Api\HistoryApi;
+namespace App\Http\Controllers\Api\FuelApi;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
 
 // Model
-use App\Models\HistoryModel;
+use App\Models\FuelModel;
 use App\Models\AdminModel;
 
 // Helper
@@ -14,29 +14,40 @@ use App\Helpers\Generator;
 
 class Queries extends Controller
 {
+    private $module;
+    public function __construct()
+    {
+        $this->module = "fuel";
+    }
+
     /**
      * @OA\GET(
-     *     path="/api/v1/history",
-     *     summary="Get all history",
-     *     description="This request is used to get all history when user use the App. This request is using MySql database, have a protected routes, and have template pagination.",
-     *     tags={"History"},
+     *     path="/api/v1/fuel",
+     *     summary="Get all fuel",
+     *     description="This request is used to get all fuel purchase history. This request is using MySql database, have a protected routes, and have template pagination.",
+     *     tags={"Fuel"},
      *     security={{"bearerAuth":{}}},
      *     @OA\Response(
      *         response=200,
-     *         description="history fetched",
+     *         description="Fuel records fetched successfully",
      *         @OA\JsonContent(
      *             @OA\Property(property="status", type="string", example="success"),
-     *             @OA\Property(property="message", type="string", example="history fetched"),
+     *             @OA\Property(property="message", type="string", example="fuel fetched"),
      *             @OA\Property(property="data", type="object",
      *                 @OA\Property(property="data", type="array",
      *                     @OA\Items(
      *                         @OA\Property(property="id", type="string", example="6f59235e-c398-8a83-2f95-3f1fbe95ca6e"),
-     *                         @OA\Property(property="history_type", type="string", example="Create"),
-     *                         @OA\Property(property="history_context", type="string", example="Barang bawaan"),
+     *                         @OA\Property(property="vehicle_plate_number", type="string", example="B 1234 CD"),
+     *                         @OA\Property(property="vehicle_type", type="string", example="City Car"),
+     *                         @OA\Property(property="fuel_volume", type="number", format="float", example=45.5),
+     *                         @OA\Property(property="fuel_price_total", type="number", format="float", example=325000),
+     *                         @OA\Property(property="fuel_brand", type="string", example="Pertamina"),
+     *                         @OA\Property(property="fuel_type", type="string", example="Pertamax"),
+     *                         @OA\Property(property="fuel_ron", type="integer", example=92),
      *                         @OA\Property(property="created_at", type="string", format="date-time", example="2024-09-20 22:53:47"),
-     *                         @OA\Property(property="created_by", type="string", example="2d98f524-de02-11ed-b5ea-0242ac120002")
+     *                         @OA\Property(property="fuel_bill", type="string", format="uri", example="https://example.com/uploads/fuel_bills/bill123.jpg")
      *                     )
-     *                 ),
+     *                 )
      *             )
      *         )
      *     ),
@@ -50,10 +61,10 @@ class Queries extends Controller
      *     ),
      *     @OA\Response(
      *         response=404,
-     *         description="history failed to fetched",
+     *         description="fuel failed to fetched",
      *         @OA\JsonContent(
      *             @OA\Property(property="status", type="string", example="failed"),
-     *             @OA\Property(property="message", type="string", example="history not found")
+     *             @OA\Property(property="message", type="string", example="fuel not found")
      *         )
      *     ),
      *     @OA\Response(
@@ -66,19 +77,15 @@ class Queries extends Controller
      *     ),
      * )
      */
-    public function getAllHistory(Request $request)
+    public function getAllFuel(Request $request)
     {
         try{
             $user_id = $request->user()->id;
             $check_admin = AdminModel::find($user_id);
             $paginate = $request->query('per_page_key') ?? 12;
+            $vehicle_id = $request->query('vehicle_id') ?? null;
 
-            if($check_admin){
-                $user_id = $request->query('user_id') ?? null;
-                $res = HistoryModel::getAllHistory('admin', $user_id, $paginate);
-            } else {
-                $res = HistoryModel::getAllHistory('user', $user_id, $paginate);
-            }
+            $res = FuelModel::getAllFuel($user_id, $vehicle_id, $paginate);
             
             if (count($res) > 0) {
                 return response()->json([

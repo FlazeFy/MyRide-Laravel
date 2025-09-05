@@ -15,6 +15,7 @@ use App\Http\Controllers\AddTripController;
 use App\Http\Controllers\EmbedController;
 use App\Http\Controllers\ReminderController;
 use App\Http\Controllers\HistoryController;
+use App\Http\Controllers\FuelController;
 
 Route::prefix('/')->group(function () {
     Route::get('/', [WelcomeController::class, 'index'])->name('welcome');
@@ -51,6 +52,10 @@ Route::prefix('/reminder')->middleware(['auth_v2:sanctum'])->group(function () {
 
 Route::prefix('/history')->middleware(['auth_v2:sanctum'])->group(function () {
     Route::get('/', [HistoryController::class, 'index'])->name('history');
+});
+
+Route::prefix('/fuel')->middleware(['auth_v2:sanctum'])->group(function () {
+    Route::get('/', [FuelController::class, 'index'])->name('fuel');
 });
 
 Route::prefix('/stats')->middleware(['auth_v2:sanctum'])->group(function () {

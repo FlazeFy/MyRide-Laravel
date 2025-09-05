@@ -19,6 +19,7 @@ use App\Http\Controllers\Api\ExportApi\Queries as QueriesExportController;
 use App\Http\Controllers\Api\QuestionApi\FAQQueries as QueriesFAQController;
 use App\Http\Controllers\Api\ReminderApi\Queries as QueriesReminderController;
 use App\Http\Controllers\Api\HistoryApi\Queries as QueriesHistoryController;
+use App\Http\Controllers\Api\FuelApi\Queries as QueriesFuelController;
 
 
 ######################### Public Route #########################
@@ -73,6 +74,10 @@ Route::prefix('/v1/stats')->middleware(['auth:sanctum'])->group(function () {
     Route::get('/total/vehicle/{context}', [QueriesStatsApi::class, 'getTotalVehicleByContext']);
     Route::get('/total/trip/monthly/{year}/{vehicle_id}', [QueriesStatsApi::class, 'getTotalTripByVehiclePerYear']);
     Route::get('/total/trip/monthly/{year}', [QueriesStatsApi::class, 'getTotalTripPerYear']);
+});
+
+Route::prefix('/v1/fuel')->middleware(['auth:sanctum'])->group(function () {
+    Route::get('/', [QueriesFuelController::class, 'getAllFuel']);
 });
 
 Route::prefix('/v1/trip')->middleware(['auth:sanctum'])->group(function () {
