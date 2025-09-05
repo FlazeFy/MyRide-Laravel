@@ -62,5 +62,5 @@
             fetchData()
         }
     }
-    get_total_fuel_monthly(2025,context)
+    get_total_fuel_monthly(year,context)
 </script>

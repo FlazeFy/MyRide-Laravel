@@ -61,5 +61,5 @@
             fetchData()
         }
     }
-    get_total_trip_monthly(2024)
+    get_total_trip_monthly(year)
 </script>

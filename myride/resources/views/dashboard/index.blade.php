@@ -1,6 +1,10 @@
 @extends('layouts.main_layout')
 
 @section('content')
+    <script>
+        let year = <?= session()->get('toogle_select_year') ?>;
+    </script>
+
     <div class="py-3">
         <div class="row">
             <div class="col-xl-9 col-lg-8 col-md-7 col-md-7 col-sm-12">
@@ -25,12 +29,21 @@
             </div>
             <div class="col-xl-9 col-lg-8 col-md-7 col-md-7 col-sm-12">
                 <div class='container'>
+                    <div class="row">
+                        <div class="col-md-6 col-sm-12">
+                            @include('dashboard.usecases.set_filter_year')
+                        </div>
+                    </div>
                     @include('dashboard.usecases.get_total_trip_monthly')
                 </div>
             </div>
             <div class="col-xl-9 col-lg-8 col-md-7 col-md-7 col-sm-12">
                 <div class='container'>
-                    @include('dashboard.usecases.set_filter_fuel_monthly')
+                    <div class="row">
+                        <div class="col-md-6 col-sm-12">
+                            @include('dashboard.usecases.set_filter_fuel_monthly')
+                        </div>
+                    </div>
                     @include('dashboard.usecases.get_total_fuel_monthly')
                 </div>
             </div>

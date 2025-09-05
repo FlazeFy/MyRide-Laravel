@@ -27,6 +27,7 @@ Route::prefix('/')->group(function () {
 Route::prefix('/dashboard')->middleware(['auth_v2:sanctum'])->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
     Route::post('/toogle_view_stats_fuel', [DashboardController::class, 'toogle_view_stats_fuel']);
+    Route::post('/toogle_year', [DashboardController::class, 'toogle_year']);
 });
 
 Route::prefix('/garage')->middleware(['auth_v2:sanctum'])->group(function () {
