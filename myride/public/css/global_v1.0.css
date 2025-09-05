@@ -67,7 +67,7 @@ a {
     text-decoration: none;
     color: var(--darkColor) !important;
 }
-img {
+img:not(.gm-style img) {
     border-radius: var(--roundedLG);
 }
 

@@ -2,9 +2,9 @@
 
 @section('content')
     <div class="position-relative">
-        <div class="d-block mx-auto p-3">
-            <button class="btn btn-danger" onclick="window.location.href='/'"><i class="fa-solid fa-house"></i> Back to Home</button>
-            @include('clean.usecases.get_clean_list')
+        @include('clean.usecases.get_export_clean')
+        <div class="container">
+            @include('clean.usecases.get_all_list_clean')
         </div>
     </div>
 @endsection

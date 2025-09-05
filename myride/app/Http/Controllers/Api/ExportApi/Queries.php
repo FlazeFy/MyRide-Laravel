@@ -45,7 +45,6 @@ class Queries extends Controller {
                     'clean_start_time' => $dt->clean_start_time,
                     'clean_end_time' => $dt->clean_end_time,
                     'is_fill_window_cleaning_water' => $dt->is_fill_window_cleaning_water == 1 ? "Yes" : "No",
-                    'is_fill_fuel' => $dt->is_fill_fuel == 1 ? "Yes" : "No",
                     'is_clean_hollow' => $dt->is_clean_hollow == 1 ? "Yes" : "No",
                     'datetime' => $dt->datetime,
                 ];

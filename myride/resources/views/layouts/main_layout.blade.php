@@ -66,11 +66,11 @@
     ?>
 </head>
 <body>
-    <?php if(!preg_match('(stats|embed)', $cleanedUrl)): ?>
+    <?php if(!preg_match('(embed)', $cleanedUrl)): ?>
         @include('others.bars.navbar')
     <?php endif; ?>
     <div class="d-flex">
-        <?php if(!preg_match('(stats|embed)', $cleanedUrl)): ?>
+        <?php if(!preg_match('(embed)', $cleanedUrl)): ?>
             @include('others.bars.sidebar')
         <?php endif; ?>
 

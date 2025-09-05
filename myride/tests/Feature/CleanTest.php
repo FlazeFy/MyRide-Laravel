@@ -44,7 +44,7 @@ class CleanTest extends TestCase
         foreach ($data['data']['data'] as $dt) {
             $check_object = ["id", "vehicle_name", "vehicle_plate_number", "clean_desc", "clean_by", "clean_tools", "is_clean_body", "is_clean_window", 
                 "is_clean_dashboard", "is_clean_tires", "is_clean_trash", "is_clean_engine", "is_clean_seat", "is_clean_carpet", "is_clean_pillows", "clean_address", 
-                "clean_start_time", "clean_end_time", "is_fill_window_cleaning_water", "is_fill_fuel", "is_clean_hollow", "created_at", "updated_at"];
+                "clean_start_time", "clean_end_time", "is_fill_window_cleaning_water",  "is_clean_hollow", "created_at", "updated_at"];
 
             foreach ($check_object as $col) {
                 $this->assertArrayHasKey($col, $dt);
@@ -64,7 +64,7 @@ class CleanTest extends TestCase
             }
 
             $check_not_null_int = ["is_clean_body", "is_clean_window", "is_clean_dashboard", "is_clean_tires", "is_clean_trash", "is_clean_engine", "is_clean_seat", 
-                "is_clean_carpet", "is_clean_pillows", "is_fill_window_cleaning_water", "is_fill_fuel", "is_clean_hollow"];
+                "is_clean_carpet", "is_clean_pillows", "is_fill_window_cleaning_water", "is_clean_hollow"];
             foreach ($check_not_null_int as $col) {
                 $this->assertNotNull($dt[$col]);
                 $this->assertIsInt($dt[$col]);

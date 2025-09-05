@@ -46,7 +46,6 @@
                                         { key: "is_clean_pillows", label: "Pillow Cleaning" },
                                         { key: "is_clean_hollow", label: "Vehicle Hollow Cleaning" },
                                         { key: "is_fill_window_cleaning_water", label: "Window Cleaning Water Fill" },
-                                        { key: "is_fill_fuel", label: "Fuel Fill" }
                                     ].map(clean => 
                                         dt[clean.key] ? `<span style='font-size:var(--textXMD);'>${clean.label}</span>, ` : ''
                                     ).join('')}

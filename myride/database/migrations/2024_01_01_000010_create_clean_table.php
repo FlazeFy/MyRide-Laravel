@@ -24,7 +24,6 @@ return new class extends Migration
             $table->boolean('is_clean_carpet');
             $table->boolean('is_clean_pillows');
             $table->boolean('is_fill_window_cleaning_water');
-            $table->boolean('is_fill_fuel');
             $table->boolean('is_clean_hollow');
             $table->string('clean_address', 255)->nullable();
             $table->dateTime('clean_start_time', $precision = 0);

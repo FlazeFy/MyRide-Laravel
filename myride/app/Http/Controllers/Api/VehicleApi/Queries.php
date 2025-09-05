@@ -484,7 +484,6 @@ class Queries extends Controller
      *                             @OA\Property(property="clean_start_time", type="string", format="datetime", example="2024-02-29 21:30:00"),
      *                             @OA\Property(property="clean_end_time", type="string", format="datetime", example="2024-02-29 22:20:00"),
      *                             @OA\Property(property="is_fill_window_cleaning_water", type="integer", example=0),
-     *                             @OA\Property(property="is_fill_fuel", type="integer", example=0),
      *                             @OA\Property(property="is_clean_hollow", type="integer", example=1),
      *                             @OA\Property(property="created_at", type="string", format="datetime", example="2024-03-27 12:33:05"),
      *                             @OA\Property(property="updated_at", type="string", nullable=true, example=null)
