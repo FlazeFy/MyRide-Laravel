@@ -15,6 +15,7 @@ use App\Models\UserModel;
 use App\Models\ServiceModel;
 use App\Models\DriverModel;
 use App\Models\CleanModel;
+use App\Models\FuelModel;
 use App\Models\MultiModel;
 
 class Queries extends Controller
@@ -440,6 +441,133 @@ class Queries extends Controller
                     'status' => 'failed',
                     'message' => Generator::getMessageTemplate("not_found", 'stats'),
                 ], Response::HTTP_NOT_FOUND);
+            }
+        } catch(\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => Generator::getMessageTemplate("unknown_error", null),
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
+     * @OA\GET(
+     *     path="/api/v1/stats/total/fuel/{context}/{year}",
+     *     summary="Get total fuel per month",
+     *     description="This request is used to get total fuel per month by given `year` and `context`. This request is using MySql database, and have a protected routes.",
+     *     tags={"Stats"},
+     *     security={{"bearerAuth":{}}},
+     *     @OA\Parameter(
+     *         name="year",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="integer",
+     *             example="2024"
+     *         ),
+     *         description="Fuel consumption created year",
+     *     ),
+     *     @OA\Parameter(
+     *         name="context",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string",
+     *             example="fuel_volume"
+     *         ),
+     *         description="Context can be `fuel_volume` or `fuel_price_total`",
+     *     ),
+     *     @OA\Parameter(
+     *         name="vehicle_id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string",
+     *             example="ab8b8d0e-d74d-11ed-afa1-0242ac120002"
+     *         ),
+     *         description="Vehicle ID",
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="stats fetched",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="message", type="string", example="stats fetched"),
+     *                 @OA\Property(property="data", type="array",
+     *                     @OA\Items(
+     *                          @OA\Property(property="context", type="string", example="Jan"),
+     *                          @OA\Property(property="total", type="integer", example=3)
+     *                 )
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="protected route need to include sign in token as authorization bearer",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="failed"),
+     *             @OA\Property(property="message", type="string", example="you need to include the authorization token from login")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="stats failed to fetched",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="failed"),
+     *             @OA\Property(property="message", type="string", example="stats not found")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal Server Error",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="error"),
+     *             @OA\Property(property="message", type="string", example="something wrong. please contact admin")
+     *         )
+     *     ),
+     * )
+     */
+    public function getTotalFuelPerYear(Request $request, $context, $year)
+    {
+        try{
+            $user_id = $request->user()->id;
+            $vehicle_id = $request->query('vehicle_id') ?? null;
+
+            if($context !== "fuel_volume" || $context !== "fuel_price_total"){
+                $res = FuelModel::getTotalFuelByVehiclePerYear($user_id, $vehicle_id, $context, $year);
+                
+                if ($res && count($res) > 0) {
+                    $res_final = [];
+                    for ($i=1; $i <= 12; $i++) { 
+                        $total = 0;
+                        foreach ($res as $idx => $val) {
+                            if($i == $val->context){
+                                $total = $val->total;
+                                break;
+                            }
+                        }
+                        array_push($res_final, [
+                            'context' => Generator::generateMonthName($i,'short'),
+                            'total' => $total,
+                        ]);
+                    }
+
+                    return response()->json([
+                        'status' => 'success',
+                        'message' => Generator::getMessageTemplate("fetch", 'stats'),
+                        'data' => $res_final
+                    ], Response::HTTP_OK);
+                } else {
+                    return response()->json([
+                        'status' => 'failed',
+                        'message' => Generator::getMessageTemplate("not_found", 'stats'),
+                    ], Response::HTTP_NOT_FOUND);
+                }
+            } else {
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => Generator::getMessageTemplate("validation_failed", 'context must be fuel_volume or fuel_price_total'),
+                ], Response::HTTP_BAD_REQUEST);
             }
         } catch(\Exception $e) {
             return response()->json([

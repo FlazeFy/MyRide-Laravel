@@ -2201,6 +2201,151 @@
                 ]
             }
         },
+        "/api/v1/stats/total/fuel/{context}/{year}": {
+            "get": {
+                "tags": [
+                    "Stats"
+                ],
+                "summary": "Get total fuel per month",
+                "description": "This request is used to get total fuel per month by given `year` and `context`. This request is using MySql database, and have a protected routes.",
+                "operationId": "b4b170f136a5fdbbbfce97e9627b3dd8",
+                "parameters": [
+                    {
+                        "name": "year",
+                        "in": "path",
+                        "description": "Fuel consumption created year",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": "2024"
+                        }
+                    },
+                    {
+                        "name": "context",
+                        "in": "path",
+                        "description": "Context can be `fuel_volume` or `fuel_price_total`",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "fuel_volume"
+                        }
+                    },
+                    {
+                        "name": "vehicle_id",
+                        "in": "path",
+                        "description": "Vehicle ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "ab8b8d0e-d74d-11ed-afa1-0242ac120002"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "stats fetched",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "stats fetched"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "context": {
+                                                        "type": "string",
+                                                        "example": "Jan"
+                                                    },
+                                                    "total": {
+                                                        "type": "integer",
+                                                        "example": 3
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "protected route need to include sign in token as authorization bearer",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "you need to include the authorization token from login"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "stats failed to fetched",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "stats not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "something wrong. please contact admin"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/v1/stats/summary": {
             "get": {
                 "tags": [

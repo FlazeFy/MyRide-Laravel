@@ -28,6 +28,11 @@
                     @include('dashboard.usecases.get_total_trip_monthly')
                 </div>
             </div>
+            <div class="col-xl-9 col-lg-8 col-md-7 col-md-7 col-sm-12">
+                <div class='container'>
+                    @include('dashboard.usecases.get_total_fuel_monthly')
+                </div>
+            </div>
         </div>
     </div>
 @endsection

@@ -47,4 +47,21 @@ class FuelModel extends Model
         return $res->orderby('fuel.created_at','desc')
             ->paginate($paginate);
     } 
+
+    public static function getTotalFuelByVehiclePerYear($user_id = null, $vehicle_id = null, $context, $year){
+        $res = FuelModel::selectRaw("COUNT(1) as total, MONTH(created_at) as context");
+
+        if($vehicle_id){
+            $res = $res->where('vehicle_id',$vehicle_id);
+        }
+        if($user_id){
+            $res = $res->where('created_by',$user_id);
+        }
+
+        $res = $res->whereRaw("YEAR(created_at) = '$year'")
+            ->groupByRaw('MONTH(created_at)')
+            ->get();
+
+        return $res;
+    }
 }
