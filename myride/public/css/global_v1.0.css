@@ -67,6 +67,9 @@ a {
     text-decoration: none;
     color: var(--darkColor) !important;
 }
+img {
+    border-radius: var(--roundedLG);
+}
 
 .container, .form-control, .form-select, .modal-content, .swal2-popup, .popover, .plate-number, .chip {
     border: 2px solid var(--darkColor) !important;

@@ -14,7 +14,7 @@
             });
         }
 
-        const generate_summary = (remind_at,reminder_title,reminder_context,reminder_body) => {
+        const generate_summary = (remind_at,reminder_title,reminder_context,reminder_body,vehicle_plate_number) => {
             const dateObj = new Date(remind_at.replace(" ", "T"))
             const date = dateObj.toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" })
             const time = dateObj.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", hour12: true })
@@ -39,7 +39,10 @@
 
             $(`#${ctx}-holder`).html(`
                 <h4 class="fw-bold">${displayDate}</h4>
-                <h2 class="fw-bold chip ${chipClass} d-inline-block" style="font-size:var(--textJumbo);">${time}</h2>
+                <span class="d-flex justify-align-center justify-content-center">
+                    <h2 class="fw-bold chip ${chipClass} d-inline-block me-0" style="font-size:var(--textJumbo);">${time}</h2>
+                    ${vehicle_plate_number ? `<a class="plate-number">${vehicle_plate_number}</a>` :''}
+                </span>
                 <p class="text-secondary mb-0"><b>Notes:</b> ${reminder_body}</p>
             `)
         }
@@ -57,7 +60,7 @@
                     const data = response.data
                     localStorage.setItem(ctx,JSON.stringify(data))
                     localStorage.setItem(`last-hit-${ctx}`,Date.now())
-                    generate_summary(data.remind_at,data.reminder_title,data.reminder_context,data.reminder_body)
+                    generate_summary(data.remind_at,data.reminder_title,data.reminder_context,data.reminder_body,data.vehicle_plate_number)
                 },
                 error: function(response, jqXHR, textStatus, errorThrown) {
                     Swal.close()
@@ -73,7 +76,7 @@
             if(((now - lastHit) / 1000) < summaryFetchRestTime){
                 const data = JSON.parse(localStorage.getItem(ctx))
                 if(data){
-                    generate_summary(data.remind_at,data.reminder_title,data.reminder_context,data.reminder_body)
+                    generate_summary(data.remind_at,data.reminder_title,data.reminder_context,data.reminder_body,data.vehicle_plate_number)
                     Swal.close()
                 } else {
                     Swal.close()

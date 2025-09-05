@@ -59,6 +59,7 @@ Route::prefix('/v1/clean')->middleware(['auth:sanctum'])->group(function () {
 
 Route::prefix('/v1/reminder')->middleware(['auth:sanctum'])->group(function () {
     Route::get('/next', [QueriesReminderController::class, 'getNextReminder']);
+    Route::get('/', [QueriesReminderController::class, 'getAllReminder']);
 });
 
 Route::prefix('/v1/stats')->middleware(['auth:sanctum'])->group(function () {

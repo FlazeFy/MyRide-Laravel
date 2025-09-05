@@ -29,10 +29,10 @@
     <link rel="stylesheet" href="{{ asset('/css/global_v1.0.css') }}"/>
 
     <!-- JS Collection -->
-    <?php if(preg_match('(stats|embed)', $cleanedUrl)): ?>
-        <script src="{{ asset('/js/global_v1.0.js')}}"></script>
+    <script src="{{ asset('/js/global_v1.0.js')}}"></script>
+    <?php if(preg_match('(stats|embed|detail|dashboard)', $cleanedUrl)): ?>
+        <script src="{{ asset('/js/chart_v1.0.js')}}"></script>
     <?php endif; ?>
-    <script src="{{ asset('/js/chart_v1.0.js')}}"></script>
     <script src="{{ asset('/js/math_v1.0.js')}}"></script>
     <script src="{{ asset('/js/template_v1.0.js')}}"></script>
 
@@ -89,7 +89,7 @@
 <!-- Others JS -->
 <?php 
     $route = Route::currentRouteName();
-    if($route == 'add_trip' || $route == 'trip'){
+    if($route == 'add_trip' || $route == 'trip' || $route == 'reminder'){
         echo "
             <script src='https://maps.googleapis.com/maps/api/js?key=AIzaSyDXu2ivsJ8Hj6Qg1punir1LR2kY9Q_MSq8&callback=initMap&v=weekly' defer></script>
         ";

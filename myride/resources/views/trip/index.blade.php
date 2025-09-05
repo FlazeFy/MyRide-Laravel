@@ -56,6 +56,5 @@
             });
         };
         get_all_trip(page)
-
     </script>
 @endsection

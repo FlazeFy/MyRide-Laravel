@@ -13,6 +13,7 @@ use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\TripController;
 use App\Http\Controllers\AddTripController;
 use App\Http\Controllers\EmbedController;
+use App\Http\Controllers\ReminderController;
 
 Route::prefix('/')->group(function () {
     Route::get('/', [WelcomeController::class, 'index'])->name('welcome');
@@ -41,6 +42,10 @@ Route::prefix('/trip')->middleware(['auth_v2:sanctum'])->group(function () {
     Route::get('/', [TripController::class, 'index'])->name('trip');
 
     Route::get('/add', [AddTripController::class, 'index'])->name('add_trip');
+});
+
+Route::prefix('/reminder')->middleware(['auth_v2:sanctum'])->group(function () {
+    Route::get('/', [ReminderController::class, 'index'])->name('reminder');
 });
 
 Route::prefix('/stats')->middleware(['auth_v2:sanctum'])->group(function () {
