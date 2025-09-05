@@ -110,7 +110,7 @@
                                 <h6 class="mb-0">Remind At</h6>
                                 <p class="mb-0">${dt.remind_at}</p>
                                 <h6 class="mb-0">Created At</h6>
-                                <p class="mb-0 text-secondary">${dt.created_at}</p>
+                                <p class="mb-0 text-secondary">${getDateToContext(dt.created_at,'calendar')}</p>
                             </td>
                             <td><a class="btn btn-warning"><i class="fa-solid fa-pen-to-square"></i></a></td>
                         </tr>

@@ -20,7 +20,7 @@ use App\Http\Controllers\Api\QuestionApi\FAQQueries as QueriesFAQController;
 use App\Http\Controllers\Api\ReminderApi\Queries as QueriesReminderController;
 use App\Http\Controllers\Api\HistoryApi\Queries as QueriesHistoryController;
 use App\Http\Controllers\Api\FuelApi\Queries as QueriesFuelController;
-
+use App\Http\Controllers\Api\InventoryApi\Queries as QueriesInventoryController;
 
 ######################### Public Route #########################
 
@@ -88,6 +88,10 @@ Route::prefix('/v1/trip')->middleware(['auth:sanctum'])->group(function () {
 
 Route::prefix('/v1/trip')->group(function () {
     Route::get('/discovered', [QueriesTripApi::class, 'getTripDiscovered']);
+});
+
+Route::prefix('/v1/inventory')->middleware(['auth:sanctum'])->group(function () {
+    Route::get('/', [QueriesInventoryController::class, 'getAllInventory']);
 });
 
 Route::prefix('/v1/user')->middleware(['auth:sanctum'])->group(function () {

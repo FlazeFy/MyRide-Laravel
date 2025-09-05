@@ -36,7 +36,7 @@
                         <tr>
                             <td>
                                 <span class="plate-number">${dt.vehicle_plate_number}</span>
-                                <p class="text-secondary mt-2 fw-bold">${dt.vehicle_type}</p>
+                                <p class="text-secondary mt-2 mb-0 fw-bold">${dt.vehicle_type}</p>
                             </td>
                             <td class="text-start">
                                 <h6 class="mb-0">Volume</h6>
@@ -67,7 +67,7 @@
                                 }
                             </td>
                             <td class="text-start">
-                                <p class="mb-0">${dt.created_at}</p>
+                                <p class="mb-0">${getDateToContext(dt.created_at,'calendar')}</p>
                             </td>
                             <td>
                                 ${dt.fuel_bill != null ? `<a class="btn btn-primary" style="width:50px;"><i class="fa-solid fa-receipt"></i></a>` : ""}

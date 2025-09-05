@@ -1417,6 +1417,159 @@
                 ]
             }
         },
+        "/api/v1/inventory": {
+            "get": {
+                "tags": [
+                    "Inventory"
+                ],
+                "summary": "Get all inventory",
+                "description": "This request is used to get all inventory purchase history. This request is using MySql database, have a protected routes, and have template pagination.",
+                "operationId": "ba8b3005bed7008380df0cdd8724f8f3",
+                "responses": {
+                    "200": {
+                        "description": "Inventory records fetched successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "inventory fetched"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "data": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "string",
+                                                                "example": "6f59235e-c398-8a83-2f95-3f1fbe95ca6e"
+                                                            },
+                                                            "inventory_name": {
+                                                                "type": "string",
+                                                                "example": "Spare Tire"
+                                                            },
+                                                            "inventory_category": {
+                                                                "type": "string",
+                                                                "example": "Accessories"
+                                                            },
+                                                            "inventory_qty": {
+                                                                "type": "integer",
+                                                                "example": 2
+                                                            },
+                                                            "inventory_storage": {
+                                                                "type": "string",
+                                                                "example": "Trunk"
+                                                            },
+                                                            "inventory_image_url": {
+                                                                "type": "string",
+                                                                "format": "uri",
+                                                                "example": "https://example.com/uploads/inventory/spare_tire.jpg"
+                                                            },
+                                                            "created_at": {
+                                                                "type": "string",
+                                                                "format": "date-time",
+                                                                "example": "2024-09-20 22:53:47"
+                                                            },
+                                                            "updated_at": {
+                                                                "type": "string",
+                                                                "format": "date-time",
+                                                                "example": "2024-09-21 09:15:12"
+                                                            },
+                                                            "vehicle_plate_number": {
+                                                                "type": "string",
+                                                                "example": "B 1234 CD"
+                                                            },
+                                                            "vehicle_type": {
+                                                                "type": "string",
+                                                                "example": "City Car"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "protected route need to include sign in token as authorization bearer",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "you need to include the authorization token from login"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "inventory failed to fetched",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "inventory not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "something wrong. please contact admin"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/v1/question/faq": {
             "get": {
                 "tags": [
@@ -5289,6 +5442,72 @@
                 },
                 "type": "object"
             },
+            "Inventory": {
+                "required": [
+                    "id",
+                    "vehicle_id",
+                    "inventory_name",
+                    "inventory_category",
+                    "inventory_qty",
+                    "inventory_storage",
+                    "created_at",
+                    "created_by"
+                ],
+                "properties": {
+                    "id": {
+                        "description": "Primary key of the inventory record",
+                        "type": "integer"
+                    },
+                    "gudangku_inventory_id": {
+                        "description": "Reference ID from Gudangku system",
+                        "type": "integer",
+                        "nullable": true
+                    },
+                    "vehicle_id": {
+                        "description": "Reference ID of the vehicle",
+                        "type": "integer"
+                    },
+                    "inventory_name": {
+                        "description": "Name of the inventory item",
+                        "type": "string"
+                    },
+                    "inventory_category": {
+                        "description": "Category of the inventory item",
+                        "type": "string"
+                    },
+                    "inventory_qty": {
+                        "description": "Quantity of the inventory item",
+                        "type": "integer"
+                    },
+                    "inventory_storage": {
+                        "description": "Storage location of the inventory item",
+                        "type": "string"
+                    },
+                    "inventory_image_url": {
+                        "description": "URL to the inventory item image",
+                        "type": "string",
+                        "format": "uri",
+                        "nullable": true
+                    },
+                    "created_at": {
+                        "description": "Timestamp when the inventory record was created",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "created_by": {
+                        "description": "ID of the user who created the inventory record",
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "updated_at": {
+                        "description": "Timestamp when the inventory record was last updated",
+                        "type": "string",
+                        "format": "date-time",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
             "User": {
                 "required": [
                     "id",
@@ -5402,6 +5621,10 @@
         {
             "name": "History",
             "description": "History"
+        },
+        {
+            "name": "Inventory",
+            "description": "Inventory"
         },
         {
             "name": "Question",

@@ -74,9 +74,9 @@
                             </td>
                             <td class="text-start">
                                 <h6 class="mb-0">Start At</h6>
-                                <p class="mb-0">${dt.clean_start_time}</p>
+                                <p class="mb-0">${getDateToContext(dt.clean_start_time,'calendar')}</p>
                                 <h6 class="mb-0">Finished At</h6>
-                                <p class="mb-0">${dt.clean_end_time ?? "In Progress"}</p>
+                                <p class="mb-0">${getDateToContext(dt.clean_end_time,'calendar') ?? "In Progress"}</p>
                             </td>
                             <td>
                                 <a class="btn btn-danger w-100"><i class="fa-solid fa-trash"></i></a>
