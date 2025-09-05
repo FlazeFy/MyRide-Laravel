@@ -18,6 +18,8 @@ use App\Http\Controllers\Api\UserApi\Commands as CommandsUserController;
 use App\Http\Controllers\Api\ExportApi\Queries as QueriesExportController;
 use App\Http\Controllers\Api\QuestionApi\FAQQueries as QueriesFAQController;
 use App\Http\Controllers\Api\ReminderApi\Queries as QueriesReminderController;
+use App\Http\Controllers\Api\HistoryApi\Queries as QueriesHistoryController;
+
 
 ######################### Public Route #########################
 
@@ -55,6 +57,10 @@ Route::prefix('/v1/dictionary')->middleware(['auth:sanctum'])->group(function ()
 
 Route::prefix('/v1/clean')->middleware(['auth:sanctum'])->group(function () {
     Route::get('/', [QueriesCleanApi::class, 'getAllCleanHistory']);
+});
+
+Route::prefix('/v1/history')->middleware(['auth:sanctum'])->group(function () {
+    Route::get('/', [QueriesHistoryController::class, 'getAllHistory']);
 });
 
 Route::prefix('/v1/reminder')->middleware(['auth:sanctum'])->group(function () {

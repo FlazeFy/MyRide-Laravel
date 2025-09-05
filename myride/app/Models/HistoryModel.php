@@ -36,4 +36,20 @@ class HistoryModel extends Model
 
         return $res;
     }
+
+    public static function getAllHistory($type, $user_id, $paginate){
+        $select_query = $type == "admin" ? 'history.id, username, history_type, history_context, history.created_at' : '*';
+        
+        $res = HistoryModel::selectRaw($select_query);
+        if($type == "admin"){
+            $res = $res->join('users','users.id','=','history.created_by');
+        }
+        if($type == "user" || $user_id) {
+            $res = $res->where('created_by',$user_id);
+        }    
+        $res = $res->orderby('history.created_at', 'DESC')
+            ->paginate($paginate);
+
+        return $res;
+    }
 }

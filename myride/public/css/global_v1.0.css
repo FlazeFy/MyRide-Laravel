@@ -260,6 +260,9 @@ label, input, textarea, select {
     width: 100%;
     margin-inline: 0;
 }
+.bordered {
+    border: 2px solid var(--greyColor) !important;
+}
 .form-control, .form-select, .input-group-text {
     background: var(--shadowColor) !important;
     font-size: var(--textXLG);

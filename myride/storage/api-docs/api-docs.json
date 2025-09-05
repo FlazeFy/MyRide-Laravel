@@ -627,10 +627,6 @@
                                                                 "type": "integer",
                                                                 "example": 0
                                                             },
-                                                            "is_fill_fuel": {
-                                                                "type": "integer",
-                                                                "example": 0
-                                                            },
                                                             "is_clean_hollow": {
                                                                 "type": "integer",
                                                                 "example": 1
@@ -1136,6 +1132,137 @@
                 ]
             }
         },
+        "/api/v1/history": {
+            "get": {
+                "tags": [
+                    "History"
+                ],
+                "summary": "Get all history",
+                "description": "This request is used to get all history when user use the App. This request is using MySql database, have a protected routes, and have template pagination.",
+                "operationId": "b51b619e3c45ec6458bcca590a3a70e8",
+                "responses": {
+                    "200": {
+                        "description": "history fetched",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "history fetched"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "data": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "string",
+                                                                "example": "6f59235e-c398-8a83-2f95-3f1fbe95ca6e"
+                                                            },
+                                                            "history_type": {
+                                                                "type": "string",
+                                                                "example": "Create"
+                                                            },
+                                                            "history_context": {
+                                                                "type": "string",
+                                                                "example": "Barang bawaan"
+                                                            },
+                                                            "created_at": {
+                                                                "type": "string",
+                                                                "format": "date-time",
+                                                                "example": "2024-09-20 22:53:47"
+                                                            },
+                                                            "created_by": {
+                                                                "type": "string",
+                                                                "example": "2d98f524-de02-11ed-b5ea-0242ac120002"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "protected route need to include sign in token as authorization bearer",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "you need to include the authorization token from login"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "history failed to fetched",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "history not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "something wrong. please contact admin"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/v1/question/faq": {
             "get": {
                 "tags": [
@@ -1349,7 +1476,7 @@
                 ],
                 "summary": "Get all reminder history",
                 "description": "This request is used to get all reminder history with pagination. This request is using MySql database, and have a protected routes.",
-                "operationId": "401d2a631703cc326286f7a4cc2f2b18",
+                "operationId": "0e57a988ebf3ad38c9c240003759a8c0",
                 "responses": {
                     "200": {
                         "description": "reminder fetched",
@@ -4386,10 +4513,6 @@
                                                                         "type": "integer",
                                                                         "example": 0
                                                                     },
-                                                                    "is_fill_fuel": {
-                                                                        "type": "integer",
-                                                                        "example": 0
-                                                                    },
                                                                     "is_clean_hollow": {
                                                                         "type": "integer",
                                                                         "example": 1
@@ -4906,6 +5029,10 @@
         {
             "name": "Dictionary",
             "description": "Dictionary"
+        },
+        {
+            "name": "History",
+            "description": "History"
         },
         {
             "name": "Question",
