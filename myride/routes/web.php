@@ -65,4 +65,5 @@ Route::prefix('/profile')->middleware(['auth_v2:sanctum'])->group(function () {
 
 Route::prefix('/embed')->group(function () {
     Route::get('/app_summary', [EmbedController::class, 'app_summary']);
+    Route::get('/trip_discovered', [EmbedController::class, 'trip_discovered']);
 });

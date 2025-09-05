@@ -78,6 +78,9 @@ Route::prefix('/v1/stats')->middleware(['auth:sanctum'])->group(function () {
 Route::prefix('/v1/trip')->middleware(['auth:sanctum'])->group(function () {
     Route::post('/', [CommandsTripApi::class, 'postTrip']);
     Route::get('/', [QueriesTripApi::class, 'getAllTrip']);
+});
+
+Route::prefix('/v1/trip')->group(function () {
     Route::get('/discovered', [QueriesTripApi::class, 'getTripDiscovered']);
 });
 

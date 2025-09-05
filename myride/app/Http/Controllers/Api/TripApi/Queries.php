@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\TripApi;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 // Models
 use App\Models\TripModel;
@@ -159,7 +160,12 @@ class Queries extends Controller
     public function getTripDiscovered(Request $request)
     {
         try{
-            $user_id = $request->user()->id;
+            if ($request->hasHeader('Authorization')) {
+                $user = Auth::guard('sanctum')->user(); 
+                $user_id = $user ? $user->id : null;
+            } else {
+                $user_id = null;
+            }
             $vehicle_id = $request->query("vehicle_id",null);
 
             // Model

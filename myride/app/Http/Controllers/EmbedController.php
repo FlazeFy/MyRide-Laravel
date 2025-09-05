@@ -9,4 +9,9 @@ class EmbedController extends Controller
     {
         return view('embed.app_summary');
     }
+
+    public function trip_discovered()
+    {
+        return view('embed.trip_discovered');
+    }
 }
