@@ -32,4 +32,10 @@ class DashboardController extends Controller
 
         return redirect('/login')->with('success_message', 'Successfully sign out'); 
     }
+
+    public function toogle_view_stats_fuel(Request $request){
+        $request->session()->put('toogle_total_stats_fuel', $request->toogle_view_stats_fuel);
+
+        return redirect()->back();
+    }
 }

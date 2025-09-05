@@ -4,7 +4,7 @@
     
     const get_total_fuel_monthly = (year,context) => {
         Swal.showLoading()
-        const title = 'Fuel Monthly'
+        const title = `Fuel Consumption Monthly`
         const ctx = `total_fuel_monthly_${context}_temp`
         const ctx_holder = 'stats_total_fuel_monthly_holder'
 

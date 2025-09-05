@@ -19,10 +19,14 @@ use App\Http\Controllers\FuelController;
 
 Route::prefix('/')->group(function () {
     Route::get('/', [WelcomeController::class, 'index'])->name('welcome');
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/login', [LoginController::class, 'index'])->name('login');
     Route::post('/login/validate', [LoginController::class, 'login_auth']);
     Route::post('/sign_out', [DashboardController::class, 'sign_out']);
+});
+
+Route::prefix('/dashboard')->middleware(['auth_v2:sanctum'])->group(function () {
+    Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+    Route::post('/toogle_view_stats_fuel', [DashboardController::class, 'toogle_view_stats_fuel']);
 });
 
 Route::prefix('/garage')->middleware(['auth_v2:sanctum'])->group(function () {

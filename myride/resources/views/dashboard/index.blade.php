@@ -30,6 +30,7 @@
             </div>
             <div class="col-xl-9 col-lg-8 col-md-7 col-md-7 col-sm-12">
                 <div class='container'>
+                    @include('dashboard.usecases.set_filter_fuel_monthly')
                     @include('dashboard.usecases.get_total_fuel_monthly')
                 </div>
             </div>

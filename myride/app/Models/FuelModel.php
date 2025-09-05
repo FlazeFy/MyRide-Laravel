@@ -49,7 +49,7 @@ class FuelModel extends Model
     } 
 
     public static function getTotalFuelByVehiclePerYear($user_id = null, $vehicle_id = null, $context, $year){
-        $res = FuelModel::selectRaw("COUNT(1) as total, MONTH(created_at) as context");
+        $res = FuelModel::selectRaw("SUM($context) as total, MONTH(created_at) as context");
 
         if($vehicle_id){
             $res = $res->where('vehicle_id',$vehicle_id);
