@@ -100,3 +100,31 @@ const build_layout_trip = (dt) => {
         targetSlide.append(template_trip_box(el))
     })
 }
+
+const build_delete_modal = (url, context, token, action) => {
+    Swal.fire({
+        title: "Are you sure?",
+        text: `Do you want to delete this "${context}"?`,
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes, delete it",
+        cancelButtonText: "No, cancel",
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: url,
+                type: 'DELETE',
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("Accept", "application/json")
+                    xhr.setRequestHeader("Authorization", `Bearer ${token}`)
+                },
+                success: function(response) {
+                    Swal.fire("Deleted!", response.message ?? `Your ${context} has been deleted`, "success").then(() => action())
+                },
+                error: function() {
+                    Swal.fire("Error!", `Failed to delete this ${context}`, "error")
+                }
+            });
+        }
+    });
+}

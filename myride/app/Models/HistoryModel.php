@@ -52,4 +52,14 @@ class HistoryModel extends Model
 
         return $res;
     }
+
+    public static function hardDeleteHistory($id, $user_id = null){
+        $res = HistoryModel::where('id',$id);
+
+        if($user_id){
+            $res = $res->where('created_by',$user_id);
+        }
+            
+        return $res->delete();
+    }
 }

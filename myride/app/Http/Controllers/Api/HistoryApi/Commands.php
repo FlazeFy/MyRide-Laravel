@@ -1,49 +1,38 @@
 <?php
 
 namespace App\Http\Controllers\Api\HistoryApi;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use App\Http\Controllers\Controller;
 
 // Model
 use App\Models\HistoryModel;
 use App\Models\AdminModel;
-
 // Helper
 use App\Helpers\Generator;
 
-class Queries extends Controller
+class Commands extends Controller
 {
-    private $module;
-    public function __construct()
-    {
-        $this->module = "history";
-    }
-
     /**
-     * @OA\GET(
-     *     path="/api/v1/history",
-     *     summary="Get all history",
-     *     description="This request is used to get all history when user use the App. This request is using MySql database, have a protected routes, and have template pagination.",
+     * @OA\DELETE(
+     *     path="/api/v1/history/destroy/{id}",
+     *     summary="Delete history by id",
      *     tags={"History"},
      *     security={{"bearerAuth":{}}},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="string"),
+     *         description="History ID",
+     *         example="e1288783-a5d4-1c4c-2cd6-0e92f7cc3bf9",
+     *     ),
      *     @OA\Response(
      *         response=200,
-     *         description="history fetched",
+     *         description="history permentally deleted",
      *         @OA\JsonContent(
      *             @OA\Property(property="status", type="string", example="success"),
-     *             @OA\Property(property="message", type="string", example="history fetched"),
-     *             @OA\Property(property="data", type="object",
-     *                 @OA\Property(property="data", type="array",
-     *                     @OA\Items(
-     *                         @OA\Property(property="id", type="string", example="6f59235e-c398-8a83-2f95-3f1fbe95ca6e"),
-     *                         @OA\Property(property="history_type", type="string", example="Create"),
-     *                         @OA\Property(property="history_context", type="string", example="Barang bawaan"),
-     *                         @OA\Property(property="created_at", type="string", format="date-time", example="2024-09-20 22:53:47"),
-     *                         @OA\Property(property="created_by", type="string", example="2d98f524-de02-11ed-b5ea-0242ac120002")
-     *                     )
-     *                 ),
-     *             )
+     *             @OA\Property(property="message", type="string", example="history permentally deleted")
      *         )
      *     ),
      *     @OA\Response(
@@ -56,7 +45,7 @@ class Queries extends Controller
      *     ),
      *     @OA\Response(
      *         response=404,
-     *         description="history failed to fetched",
+     *         description="history failed to permentally deleted",
      *         @OA\JsonContent(
      *             @OA\Property(property="status", type="string", example="failed"),
      *             @OA\Property(property="message", type="string", example="history not found")
@@ -72,30 +61,26 @@ class Queries extends Controller
      *     ),
      * )
      */
-    public function getAllHistory(Request $request)
+    public function hardDeleteHistoryById(Request $request, $id)
     {
         try{
             $user_id = $request->user()->id;
-            $check_admin = AdminModel::find($user_id);
-            $paginate = $request->query('per_page_key') ?? 12;
 
+            $check_admin = AdminModel::find($user_id);
             if($check_admin){
-                $user_id = $request->query('user_id') ?? null;
-                $res = HistoryModel::getAllHistory('admin', $user_id, $paginate);
-            } else {
-                $res = HistoryModel::getAllHistory('user', $user_id, $paginate);
+                $user_id = null;
             }
-            
-            if (count($res) > 0) {
+
+            $rows = HistoryModel::hardDeleteHistory($id, $user_id);
+            if($rows > 0){
                 return response()->json([
                     'status' => 'success',
-                    'message' => Generator::getMessageTemplate("fetch", $this->module),
-                    'data' => $res
+                    'message' => Generator::getMessageTemplate("permentally delete", 'history'),
                 ], Response::HTTP_OK);
             } else {
                 return response()->json([
                     'status' => 'failed',
-                    'message' => Generator::getMessageTemplate("not_found", $this->module),
+                    'message' => Generator::getMessageTemplate("not_found", 'history'),
                 ], Response::HTTP_NOT_FOUND);
             }
         } catch(\Exception $e) {

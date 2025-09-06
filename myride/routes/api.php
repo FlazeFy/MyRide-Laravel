@@ -19,6 +19,7 @@ use App\Http\Controllers\Api\ExportApi\Queries as QueriesExportController;
 use App\Http\Controllers\Api\QuestionApi\FAQQueries as QueriesFAQController;
 use App\Http\Controllers\Api\ReminderApi\Queries as QueriesReminderController;
 use App\Http\Controllers\Api\HistoryApi\Queries as QueriesHistoryController;
+use App\Http\Controllers\Api\HistoryApi\Commands as CommandsHistoryController;
 use App\Http\Controllers\Api\FuelApi\Queries as QueriesFuelController;
 use App\Http\Controllers\Api\InventoryApi\Queries as QueriesInventoryController;
 
@@ -62,6 +63,7 @@ Route::prefix('/v1/clean')->middleware(['auth:sanctum'])->group(function () {
 
 Route::prefix('/v1/history')->middleware(['auth:sanctum'])->group(function () {
     Route::get('/', [QueriesHistoryController::class, 'getAllHistory']);
+    Route::delete('/destroy/{id}', [CommandsHistoryController::class, 'hardDeleteHistoryById']);
 });
 
 Route::prefix('/v1/reminder')->middleware(['auth:sanctum'])->group(function () {

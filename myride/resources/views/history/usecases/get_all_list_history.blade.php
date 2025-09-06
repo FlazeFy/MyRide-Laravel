@@ -23,12 +23,9 @@
                 data.forEach(dt => {
                     holder.append(`
                         <div class="container bordered p-3">
-                            <div class="d-flex justify-content-between">
-                                <div>
-                                    <h6 class='mb-1'>${dt.history_type} ${dt.history_context}</h6>
-                                    <p class='date-text text-secondary mb-0'>Created At : ${getDateToContext(dt.created_at,'calendar')}</p>
-                                </div>
-                            </div>
+                            <h6 class='mb-1'>${dt.history_type} ${dt.history_context}</h6>
+                            <p class='date-text text-secondary'>Created At : ${getDateToContext(dt.created_at,'calendar')}</p>
+                            <a class="btn btn-danger btn-delete small" data-url="/api/v1/history/destroy/${dt.id}" data-context="History"><i class="fa-solid fa-trash"></i> Delete</a>
                         </div>
                     `)
                 });
@@ -44,4 +41,12 @@
         });
     };
     get_all_history(page)
+
+    $(document).on('click', '.btn-delete', function () {
+        const url = $(this).data('url')
+        const context = $(this).data('context')
+        const token = "<?= session()->get('token_key'); ?>"
+
+        build_delete_modal(url, context, token, () => get_all_history(1))
+    });
 </script>
