@@ -59,7 +59,7 @@
                             </td>
                             <td>
                                 ${dt.inventory_image_url != null ? `<a class="btn btn-primary" style="width:50px;"><i class="fa-solid fa-image"></i></a>` : ""}
-                                <a class="btn btn-danger" style="width:50px;"><i class="fa-solid fa-trash"></i></a>
+                                <a class="btn btn-danger btn-delete" style="width:50px;" data-url="/api/v1/inventory/destroy/${dt.id}" data-context="Inventory"><i class="fa-solid fa-trash"></i></a>
                             </td>
                         </tr>
                     `)

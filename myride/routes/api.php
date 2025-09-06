@@ -23,6 +23,7 @@ use App\Http\Controllers\Api\HistoryApi\Commands as CommandsHistoryController;
 use App\Http\Controllers\Api\FuelApi\Queries as QueriesFuelController;
 use App\Http\Controllers\Api\FuelApi\Commands as CommandsFuelController;
 use App\Http\Controllers\Api\InventoryApi\Queries as QueriesInventoryController;
+use App\Http\Controllers\Api\InventoryApi\Commands as CommandsInventoryController;
 
 ######################### Public Route #########################
 
@@ -96,6 +97,7 @@ Route::prefix('/v1/trip')->group(function () {
 
 Route::prefix('/v1/inventory')->middleware(['auth:sanctum'])->group(function () {
     Route::get('/', [QueriesInventoryController::class, 'getAllInventory']);
+    Route::delete('/destroy/{id}', [CommandsInventoryController::class, 'hardDeleteInventoryById']);
 });
 
 Route::prefix('/v1/user')->middleware(['auth:sanctum'])->group(function () {
