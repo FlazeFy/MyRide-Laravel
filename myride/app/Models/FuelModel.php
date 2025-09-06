@@ -28,6 +28,7 @@ class FuelModel extends Model
 {
     use HasFactory;
     public $timestamps = false;
+    public $incrementing = false;
 
     protected $table = 'fuel';
     protected $primaryKey = 'id';
@@ -63,5 +64,15 @@ class FuelModel extends Model
             ->get();
 
         return $res;
+    }
+
+    public static function hardDeleteFuelById($id, $user_id = null){
+        $res = FuelModel::where('id',$id);
+
+        if($user_id){
+            $res = $res->where('created_by',$user_id);
+        }
+            
+        return $res->delete();
     }
 }

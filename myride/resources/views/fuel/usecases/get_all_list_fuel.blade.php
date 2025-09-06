@@ -71,7 +71,7 @@
                             </td>
                             <td>
                                 ${dt.fuel_bill != null ? `<a class="btn btn-primary" style="width:50px;"><i class="fa-solid fa-receipt"></i></a>` : ""}
-                                <a class="btn btn-danger" style="width:50px;"><i class="fa-solid fa-trash"></i></a>
+                                <a class="btn btn-danger btn-delete" style="width:50px;" data-url="/api/v1/fuel/destroy/${dt.id}" data-context="Fuel"><i class="fa-solid fa-trash"></i></a>
                             </td>
                         </tr>
                     `)

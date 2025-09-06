@@ -6,6 +6,7 @@
             <div class="col-xl-4 col-lg-5 col-md-6 col-sm-12">
                 <div class="container">
                     @include('history.usecases.get_all_list_history')
+                    @include('history.usecases.hard_delete_history')
                 </div>
             </div>
         </div>

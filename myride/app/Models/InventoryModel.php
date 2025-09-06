@@ -29,6 +29,7 @@ class InventoryModel extends Model
 {
     use HasFactory;
     public $timestamps = false;
+    public $incrementing = false;
 
     protected $table = 'inventory';
     protected $primaryKey = 'id';

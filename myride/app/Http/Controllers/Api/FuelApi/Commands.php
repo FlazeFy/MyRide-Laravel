@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Api\HistoryApi;
+namespace App\Http\Controllers\Api\FuelApi;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 // Model
-use App\Models\HistoryModel;
+use App\Models\FuelModel;
 use App\Models\AdminModel;
 // Helper
 use App\Helpers\Generator;
@@ -16,29 +16,29 @@ class Commands extends Controller
     private $module;
     public function __construct()
     {
-        $this->module = "history";
+        $this->module = "fuel";
     }
 
     /**
      * @OA\DELETE(
-     *     path="/api/v1/history/destroy/{id}",
-     *     summary="Delete history by id",
-     *     tags={"History"},
+     *     path="/api/v1/fuel/destroy/{id}",
+     *     summary="Delete fuel by id",
+     *     tags={"Fuel"},
      *     security={{"bearerAuth":{}}},
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
      *         required=true,
      *         @OA\Schema(type="string"),
-     *         description="History ID",
+     *         description="Fuel ID",
      *         example="e1288783-a5d4-1c4c-2cd6-0e92f7cc3bf9",
      *     ),
      *     @OA\Response(
      *         response=200,
-     *         description="history permentally deleted",
+     *         description="fuel permentally deleted",
      *         @OA\JsonContent(
      *             @OA\Property(property="status", type="string", example="success"),
-     *             @OA\Property(property="message", type="string", example="history permentally deleted")
+     *             @OA\Property(property="message", type="string", example="fuel permentally deleted")
      *         )
      *     ),
      *     @OA\Response(
@@ -51,10 +51,10 @@ class Commands extends Controller
      *     ),
      *     @OA\Response(
      *         response=404,
-     *         description="history failed to permentally deleted",
+     *         description="fuel failed to permentally deleted",
      *         @OA\JsonContent(
      *             @OA\Property(property="status", type="string", example="failed"),
-     *             @OA\Property(property="message", type="string", example="history not found")
+     *             @OA\Property(property="message", type="string", example="fuel not found")
      *         )
      *     ),
      *     @OA\Response(
@@ -67,7 +67,7 @@ class Commands extends Controller
      *     ),
      * )
      */
-    public function hardDeleteHistoryById(Request $request, $id)
+    public function hardDeleteFuelById(Request $request, $id)
     {
         try{
             $user_id = $request->user()->id;
@@ -77,7 +77,7 @@ class Commands extends Controller
                 $user_id = null;
             }
 
-            $rows = HistoryModel::hardDeleteHistory($id, $user_id);
+            $rows = FuelModel::hardDeleteFuelById($id, $user_id);
             if($rows > 0){
                 return response()->json([
                     'status' => 'success',
