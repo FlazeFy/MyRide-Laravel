@@ -18,6 +18,7 @@ use App\Http\Controllers\Api\UserApi\Commands as CommandsUserController;
 use App\Http\Controllers\Api\ExportApi\Queries as QueriesExportController;
 use App\Http\Controllers\Api\QuestionApi\FAQQueries as QueriesFAQController;
 use App\Http\Controllers\Api\ReminderApi\Queries as QueriesReminderController;
+use App\Http\Controllers\Api\ReminderApi\Commands as CommandsReminderController;
 use App\Http\Controllers\Api\HistoryApi\Queries as QueriesHistoryController;
 use App\Http\Controllers\Api\HistoryApi\Commands as CommandsHistoryController;
 use App\Http\Controllers\Api\FuelApi\Queries as QueriesFuelController;
@@ -71,6 +72,7 @@ Route::prefix('/v1/history')->middleware(['auth:sanctum'])->group(function () {
 Route::prefix('/v1/reminder')->middleware(['auth:sanctum'])->group(function () {
     Route::get('/next', [QueriesReminderController::class, 'getNextReminder']);
     Route::get('/', [QueriesReminderController::class, 'getAllReminder']);
+    Route::delete('/destroy/{id}', [CommandsReminderController::class, 'hardDeleteReminderById']);
 });
 
 Route::prefix('/v1/stats')->middleware(['auth:sanctum'])->group(function () {

@@ -112,7 +112,9 @@
                                 <h6 class="mb-0">Created At</h6>
                                 <p class="mb-0 text-secondary">${getDateToContext(dt.created_at,'calendar')}</p>
                             </td>
-                            <td><a class="btn btn-warning"><i class="fa-solid fa-pen-to-square"></i></a></td>
+                            <td>
+                                <a class="btn btn-danger btn-delete" style="width:50px;" data-url="/api/v1/reminder/destroy/${dt.id}" data-context="Reminder"><i class="fa-solid fa-trash"></i></a>
+                            </td>
                         </tr>
                     `)
                 });

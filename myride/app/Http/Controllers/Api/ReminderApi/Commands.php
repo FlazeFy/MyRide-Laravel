@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Api\InventoryApi;
+namespace App\Http\Controllers\Api\ReminderApi;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 // Model
-use App\Models\InventoryModel;
+use App\Models\ReminderModel;
 use App\Models\AdminModel;
 // Helper
 use App\Helpers\Generator;
@@ -16,29 +16,29 @@ class Commands extends Controller
     private $module;
     public function __construct()
     {
-        $this->module = "inventory";
+        $this->module = "reminder";
     }
 
     /**
      * @OA\DELETE(
-     *     path="/api/v1/inventory/destroy/{id}",
-     *     summary="Delete inventory by id",
-     *     tags={"Inventory"},
+     *     path="/api/v1/reminder/destroy/{id}",
+     *     summary="Delete reminder by id",
+     *     tags={"Reminder"},
      *     security={{"bearerAuth":{}}},
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
      *         required=true,
      *         @OA\Schema(type="string"),
-     *         description="Inventory ID",
+     *         description="Reminder ID",
      *         example="e1288783-a5d4-1c4c-2cd6-0e92f7cc3bf9",
      *     ),
      *     @OA\Response(
      *         response=200,
-     *         description="inventory permentally deleted",
+     *         description="reminder permentally deleted",
      *         @OA\JsonContent(
      *             @OA\Property(property="status", type="string", example="success"),
-     *             @OA\Property(property="message", type="string", example="inventory permentally deleted")
+     *             @OA\Property(property="message", type="string", example="reminder permentally deleted")
      *         )
      *     ),
      *     @OA\Response(
@@ -51,10 +51,10 @@ class Commands extends Controller
      *     ),
      *     @OA\Response(
      *         response=404,
-     *         description="inventory failed to permentally deleted",
+     *         description="reminder failed to permentally deleted",
      *         @OA\JsonContent(
      *             @OA\Property(property="status", type="string", example="failed"),
-     *             @OA\Property(property="message", type="string", example="inventory not found")
+     *             @OA\Property(property="message", type="string", example="reminder not found")
      *         )
      *     ),
      *     @OA\Response(
@@ -67,7 +67,7 @@ class Commands extends Controller
      *     ),
      * )
      */
-    public function hardDeleteInventoryById(Request $request, $id)
+    public function hardDeleteReminderById(Request $request, $id)
     {
         try{
             $user_id = $request->user()->id;
@@ -77,7 +77,7 @@ class Commands extends Controller
                 $user_id = null;
             }
 
-            $rows = InventoryModel::hardDeleteInventoryById($id, $user_id);
+            $rows = ReminderModel::hardDeleteReminderById($id, $user_id);
             if($rows > 0){
                 // Delete Firebase Uploaded Image
                 // ....

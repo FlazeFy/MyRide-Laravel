@@ -39,4 +39,14 @@ class ReminderModel extends Model
             ->orderBy('remind_at', 'asc')     
             ->paginate($limit);                       
     }
+
+    public static function hardDeleteReminderById($id, $user_id = null){
+        $res = ReminderModel::where('id',$id);
+
+        if($user_id){
+            $res = $res->where('created_by',$user_id);
+        }
+            
+        return $res->delete();
+    }
 }

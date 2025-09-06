@@ -79,6 +79,9 @@ class Commands extends Controller
 
             $rows = FuelModel::hardDeleteFuelById($id, $user_id);
             if($rows > 0){
+                // Delete Firebase Uploaded Image
+                // ....
+                
                 return response()->json([
                     'status' => 'success',
                     'message' => Generator::getMessageTemplate("permentally delete", $this->module),
