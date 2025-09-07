@@ -36,7 +36,7 @@
     }
 
     const get_all_reminder = (page) => {
-        const holder = $('#reminder-holder')
+        const holder = 'reminder-holder'
 
         Swal.showLoading();
         $.ajax({
@@ -45,7 +45,7 @@
             beforeSend: function (xhr) {
                 xhr.setRequestHeader("Accept", "application/json")
                 xhr.setRequestHeader("Authorization", "Bearer <?= session()->get("token_key"); ?>")
-                holder.empty()
+                $(`#${holder}`).empty()
             },
             success: function(response) {
                 Swal.close()
@@ -97,7 +97,7 @@
                         class_chip = 'bg-success'
                     } 
 
-                    holder.append(`
+                    $(`#${holder}`).append(`
                         <tr>
                             <td>${dt.vehicle_plate_number ? `<span class="plate-number">${dt.vehicle_plate_number}</span>`:'-'}</td>
                             <td>${dt.reminder_title}</td>
@@ -121,11 +121,12 @@
             },
             error: function(response, jqXHR, textStatus, errorThrown) {
                 Swal.close()
-                Swal.fire({
-                    title: "Oops!",
-                    text: "Something went wrong",
-                    icon: "error"
-                });
+                if(response.status != 404){
+                    failedMsg('get the reminder')
+                } else {
+                    $(`#${holder}`).html(`<tr><td colspan="6" id="msg-${holder}"></td></tr>`)
+                    template_alert_container(`msg-${holder}`, 'no-data', "No reminder found", 'add a reminder', '<i class="fa-solid fa-clock"></i>','/reminder/add')
+                }
                 reject(errorThrown)
             }
         });

@@ -27,14 +27,6 @@
         Swal.showLoading()
         const ctx = 'summary_apps_private'
 
-        const failedMsg = () => {
-            Swal.fire({
-                title: "Oops!",
-                text: `Failed to get the summary`,
-                icon: "error"
-            });
-        }
-
         const generate_summary = (total_vehicle, total_service, total_clean, total_driver, total_trip) => {
             $('#total_vehicle-holder').text(total_vehicle)
             $('#total_service-holder').text(total_service)
@@ -60,7 +52,7 @@
                 },
                 error: function(response, jqXHR, textStatus, errorThrown) {
                     Swal.close()
-                    failedMsg()
+                    failedMsg('get the summary')
                 }
             });
         }
@@ -76,7 +68,7 @@
                     Swal.close()
                 } else {
                     Swal.close()
-                    failedMsg()
+                    failedMsg('get the summary')
                 }
             } else {
                 fetchData()

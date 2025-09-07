@@ -32,6 +32,7 @@
 
     <!-- JS Collection -->
     <script src="{{ asset('/js/global_v1.0.js')}}"></script>
+    <script src="{{ asset('/js/message_v1.0.js')}}"></script>
     <?php if(preg_match('(stats|embed|detail|dashboard)', $cleanedUrl)): ?>
         <script src="{{ asset('/js/chart_v1.0.js')}}"></script>
     <?php endif; ?>

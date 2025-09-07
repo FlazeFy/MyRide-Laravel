@@ -17,7 +17,7 @@
     let page = 1
 
     const get_all_inventory = (page) => {
-        const holder = $('#inventory-holder')
+        const holder = 'inventory-holder'
 
         Swal.showLoading();
         $.ajax({
@@ -26,14 +26,14 @@
             beforeSend: function (xhr) {
                 xhr.setRequestHeader("Accept", "application/json")
                 xhr.setRequestHeader("Authorization", "Bearer <?= session()->get("token_key"); ?>")
-                holder.empty()
+                $(`#${holder}`).empty()
             },
             success: function(response) {
                 Swal.close()
                 const data = response.data.data
                 
                 data.forEach(dt => {
-                    holder.append(`
+                    $(`#${holder}`).append(`
                         <tr>
                             <td>
                                 <span class="plate-number">${dt.vehicle_plate_number}</span>
@@ -67,11 +67,12 @@
             },
             error: function(response, jqXHR, textStatus, errorThrown) {
                 Swal.close()
-                Swal.fire({
-                    title: "Oops!",
-                    text: "Something went wrong",
-                    icon: "error"
-                });
+                if(response.status != 404){
+                    failedMsg('get the inventory')
+                } else {
+                    $(`#${holder}`).html(`<tr><td colspan="6" id="msg-${holder}"></td></tr>`)
+                    template_alert_container(`msg-${holder}`, 'no-data', "No inventory found", 'add a inventory', '<i class="fa-solid fa-boxes-stacked"></i>','/inventory/add')
+                }
             }
         });
     };

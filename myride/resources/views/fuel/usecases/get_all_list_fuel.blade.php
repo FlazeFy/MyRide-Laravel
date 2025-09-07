@@ -16,7 +16,7 @@
     let page = 1
 
     const get_all_fuel = (page) => {
-        const holder = $('#fuel-holder')
+        const holder = 'fuel-holder'
 
         Swal.showLoading();
         $.ajax({
@@ -25,14 +25,14 @@
             beforeSend: function (xhr) {
                 xhr.setRequestHeader("Accept", "application/json")
                 xhr.setRequestHeader("Authorization", "Bearer <?= session()->get("token_key"); ?>")
-                holder.empty()
+                $(`#${holder}`).empty()
             },
             success: function(response) {
                 Swal.close()
                 const data = response.data.data
                 
                 data.forEach(dt => {
-                    holder.append(`
+                    $(`#${holder}`).append(`
                         <tr>
                             <td>
                                 <span class="plate-number">${dt.vehicle_plate_number}</span>
@@ -79,11 +79,13 @@
             },
             error: function(response, jqXHR, textStatus, errorThrown) {
                 Swal.close()
-                Swal.fire({
-                    title: "Oops!",
-                    text: "Something went wrong",
-                    icon: "error"
-                });
+
+                if(response.status != 404){
+                    failedMsg('get the fuel')
+                } else {
+                    $(`#${holder}`).html(`<tr><td colspan="5" id="msg-${holder}"></td></tr>`)
+                    template_alert_container(`msg-${holder}`, 'no-data', "No fuel found", 'add a trip', '<i class="fa-solid fa-gas-pump"></i>','/fuel/add')
+                }
             }
         });
     };

@@ -6,14 +6,6 @@
         Swal.showLoading()
         const ctx = 'trip_discovered'
 
-        const failedMsg = () => {
-            Swal.fire({
-                title: "Oops!",
-                text: `Failed to get the trip`,
-                icon: "error"
-            });
-        }
-
         const generate_trip_discovered = (total_trip, distance_km, last_updated, ctx) => {
             const dateObj = new Date(last_updated.replace(" ", "T"))
             const date = dateObj.toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" })
@@ -50,7 +42,11 @@
                 },
                 error: function(response, jqXHR, textStatus, errorThrown) {
                     Swal.close()
-                    failedMsg()
+                    if(response.status != 404){
+                        failedMsg(`get the trip`)
+                    } else {
+                        message_short_image(`${ctx}-holder`,`{{asset('assets/empty.png')}}`,`there's no trip history`)
+                    }
                 }
             });
         }
@@ -66,7 +62,7 @@
                     Swal.close()
                 } else {
                     Swal.close()
-                    failedMsg()
+                    failedMsg(`get the trip`)
                 }
             } else {
                 fetchData()

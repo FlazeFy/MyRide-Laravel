@@ -58,7 +58,7 @@ const generate_line_chart = (title, holder, data) => {
         }
     } else {
         $(`#${holder}`).html(`
-            <img src="{{asset('images/nodata.png')}}" class="img nodata-icon">
+            <img src="{{asset('assets/nodata.png')}}" class="img nodata-icon">
             <h6 class="text-center">No Data</h6>
         `)
     }
@@ -103,7 +103,7 @@ const generate_pie_chart = (title, holder, data) => {
         }
     } else {
         $(`#${holder}`).html(`
-            <img src="{{asset('images/nodata.png')}}" class="img nodata-icon">
+            <img src="{{asset('assets/nodata.png')}}" class="img nodata-icon">
             <h6 class="text-center">No Data</h6>
         `)
     }
@@ -165,7 +165,7 @@ const generate_bar_chart = (title, holder, data) => {
         }
     } else {
         $(`#${holder}`).html(`
-            <img src="{{asset('images/nodata.png')}}" class="img nodata-icon">
+            <img src="{{asset('assets/nodata.png')}}" class="img nodata-icon">
             <h6 class="text-center">No Data</h6>
         `)
     }

@@ -40,13 +40,6 @@
         Swal.showLoading()
         const ctx_holder = "vehicle_menu-list"
 
-        const failedMsg = () => {
-            Swal.fire({
-                title: "Oops!",
-                text: `Failed to get the vehicle list`,
-                icon: "error"
-            });
-        }
         const fetchData = () => {
             $.ajax({
                 url: `/api/v1/vehicle/name`,
@@ -65,7 +58,7 @@
                 error: function(response, jqXHR, textStatus, errorThrown) {
                     Swal.close()
                     if(response.status != 404){
-                        failedMsg()
+                        failedMsg(`get the vehicle`)
                     } else {
                         $(`#${ctx_holder}`).prepend(`<li><a href="/garage/add" class="nav-link">Add Vehicle</a></li>`)
                     }
@@ -84,7 +77,7 @@
                     Swal.close()
                 } else {
                     Swal.close()
-                    failedMsg()
+                    failedMsg(`get the vehicle`)
                 }
             } else {
                 fetchData()

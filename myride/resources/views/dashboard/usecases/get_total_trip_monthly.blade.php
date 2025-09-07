@@ -7,13 +7,6 @@
         const ctx_holder = 'stats_total_trip_monthly_holder'
         const type_chart =  '<?= session()->get('toogle_total_stats') ?>'
 
-        const failedMsg = () => {
-            Swal.fire({
-                title: "Oops!",
-                text: `Failed to get the stats ${title}`,
-                icon: "error"
-            });
-        }
         const fetchData = () => {
             $.ajax({
                 url: `/api/v1/stats/total/trip/monthly/${year}`,
@@ -32,7 +25,7 @@
                 error: function(response, jqXHR, textStatus, errorThrown) {
                     Swal.close()
                     if(response.status != 404){
-                        failedMsg()
+                        failedMsg(`get the stats ${title}`)
                     } else {
                         template_alert_container(ctx_holder, 'no-data', "No trip found for this context to generate the stats", 'add a trip', '<i class="fa-solid fa-warehouse"></i>','/trip/add')
                         $(`#${ctx_holder}`).prepend(`<h2 class='title-chart'>${ucEachWord(title)}</h2>`)
@@ -52,7 +45,7 @@
                     Swal.close()
                 } else {
                     Swal.close()
-                    failedMsg()
+                    failedMsg(`get the stats ${title}`)
                 }
             } else {
                 fetchData()

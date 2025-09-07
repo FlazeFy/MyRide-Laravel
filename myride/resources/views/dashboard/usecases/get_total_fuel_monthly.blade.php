@@ -8,13 +8,6 @@
         const ctx = `total_fuel_monthly_${context}_temp`
         const ctx_holder = 'stats_total_fuel_monthly_holder'
 
-        const failedMsg = () => {
-            Swal.fire({
-                title: "Oops!",
-                text: `Failed to get the stats ${title}`,
-                icon: "error"
-            });
-        }
         const fetchData = () => {
             $.ajax({
                 url: `/api/v1/stats/total/fuel/monthly/${context}/${year}`,
@@ -33,7 +26,7 @@
                 error: function(response, jqXHR, textStatus, errorThrown) {
                     Swal.close()
                     if(response.status != 404){
-                        failedMsg()
+                        failedMsg(`get the stats ${title}`)
                     } else {
                         template_alert_container(ctx_holder, 'no-data', "No fuel found for this context to generate the stats", 'add a fuel', '<i class="fa-solid fa-gas-pump"></i>','/fuel/add')
                         $(`#${ctx_holder}`).prepend(`<h2 class='title-chart'>${ucEachWord(title)}</h2>`)
@@ -53,7 +46,7 @@
                     Swal.close()
                 } else {
                     Swal.close()
-                    failedMsg()
+                    failedMsg(`get the stats ${title}`)
                 }
             } else {
                 fetchData()

@@ -338,3 +338,12 @@ hr {
     font-size: calc(3*var(--textJumbo));
     font-weight: 700;
 }
+
+.message.small img {
+    max-width: 160px;
+}
+.message.small p {
+    margin-top: var(--spaceSM);
+    margin-bottom: 0;
+    font-size: var(--textXMD);
+}

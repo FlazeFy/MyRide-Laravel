@@ -6,14 +6,6 @@
         Swal.showLoading()
         const ctx = 'next_reminder'
 
-        const failedMsg = () => {
-            Swal.fire({
-                title: "Oops!",
-                text: `Failed to get the reminder`,
-                icon: "error"
-            });
-        }
-
         const generate_summary = (remind_at,reminder_title,reminder_context,reminder_body,vehicle_plate_number) => {
             const dateObj = new Date(remind_at.replace(" ", "T"))
             const date = dateObj.toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" })
@@ -64,7 +56,12 @@
                 },
                 error: function(response, jqXHR, textStatus, errorThrown) {
                     Swal.close()
-                    failedMsg()
+
+                    if(response.status != 404){
+                        failedMsg('get the reminder')
+                    } else {
+                        message_short_image(`${ctx}-holder`,`{{asset('assets/free.png')}}`,`there's no active reminder`)
+                    }
                 }
             });
         }
@@ -80,7 +77,7 @@
                     Swal.close()
                 } else {
                     Swal.close()
-                    failedMsg()
+                    failedMsg('get the reminder')
                 }
             } else {
                 fetchData()
