@@ -32,20 +32,18 @@ return new class extends Migration
 
             // Props
             $table->dateTime('created_at', $precision = 0);
-            $table->string('created_by', 36);
+            $table->uuid('created_by');
             $table->dateTime('updated_at', $precision = 0)->nullable();
             $table->dateTime('deleted_at', $precision = 0)->nullable();
 
             // References
             $table->foreign('created_by')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('vehicle_merk')->references('dictionary_name')->on('dictionary')->onDelete('cascade');
             $table->foreign('vehicle_type')->references('dictionary_name')->on('dictionary')->onDelete('cascade');
             $table->foreign('vehicle_category')->references('dictionary_name')->on('dictionary')->onDelete('cascade');
             $table->foreign('vehicle_status')->references('dictionary_name')->on('dictionary')->onDelete('cascade');
             $table->foreign('vehicle_default_fuel')->references('dictionary_name')->on('dictionary')->onDelete('cascade');
             $table->foreign('vehicle_transmission')->references('dictionary_name')->on('dictionary')->onDelete('cascade');
             $table->foreign('vehicle_fuel_status')->references('dictionary_name')->on('dictionary')->onDelete('cascade');
-            $table->foreign('vehicle_color')->references('dictionary_name')->on('dictionary')->onDelete('cascade');
         });
     }
 

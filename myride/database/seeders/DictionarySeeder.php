@@ -4,17 +4,19 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Carbon;
 
-# Model
 use App\Models\DictionaryModel;
-# Helper
 use App\Helpers\Generator;
+
+use Illuminate\Support\Facades\DB;
 
 class DictionarySeeder extends Seeder
 {
     public function run(): void
     {
         // Delete All 
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         DictionaryModel::truncate();
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
         $dictionaries = [
             'vehicle_fuel_status' => ['Normal','Full','High','Low','Empty','Not Monitored'],
@@ -29,7 +31,7 @@ class DictionarySeeder extends Seeder
             'trip_category' => [
                 'Culinary Hunting','Business Trip','Family Vacation','Worship','Refreshing','Strolling Around','City Exploration','Nature Retreat',
                 'Cultural Festival','Road Trip','Backpacking','Photography','Shopping','Sport Event',
-            ]
+            ],
         ];
         $now = Carbon::now();
 

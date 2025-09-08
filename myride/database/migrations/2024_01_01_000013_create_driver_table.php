@@ -18,7 +18,7 @@ return new class extends Migration
             $table->boolean('telegram_is_valid');
             $table->string('phone', 16);
             $table->string('notes', 500)->nullable();
-            $table->string('created_by', 36);
+            $table->uuid('created_by');
             $table->string('updated_by', 36)->nullable();
 
             // Props

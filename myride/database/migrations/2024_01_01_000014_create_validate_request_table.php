@@ -13,7 +13,7 @@ return new class extends Migration
             $table->string('request_type', 144);
             $table->string('request_context', 255)->nullable();
             $table->boolean('is_show');
-            $table->string('created_by', 36);           
+            $table->uuid('created_by');           
 
             // Props
             $table->dateTime('created_at', $precision = 0);

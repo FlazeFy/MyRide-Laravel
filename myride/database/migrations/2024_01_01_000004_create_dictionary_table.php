@@ -9,13 +9,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('dictionary', function (Blueprint $table) {
-            $table->increments('id');
+            $table->uuid('id')->primary();
             $table->string('dictionary_type', 36);
             $table->string('dictionary_name', 75)->unique();
 
             // Props
             $table->dateTime('created_at', $precision = 0);
-            $table->string('created_by', 36);
+            $table->uuid('created_by')->nullable();
 
             // References
             $table->foreign('created_by')->references('id')->on('users')->onDelete('cascade');

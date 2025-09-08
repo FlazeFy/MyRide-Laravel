@@ -10,7 +10,7 @@ return new class extends Migration
     {
         Schema::create('trip', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->string('vehicle_id', 36);
+            $table->uuid('vehicle_id');
             $table->string('trip_desc', 500);
             $table->string('trip_category', 36);
             $table->string('trip_person', 255)->nullable();
@@ -21,7 +21,7 @@ return new class extends Migration
 
             // Props
             $table->dateTime('created_at', $precision = 0);
-            $table->string('created_by', 36);
+            $table->uuid('created_by');
             $table->dateTime('updated_at', $precision = 0)->nullable();
             $table->dateTime('deleted_at', $precision = 0)->nullable();
 

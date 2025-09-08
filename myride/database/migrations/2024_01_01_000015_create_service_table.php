@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('service_payment_amount', 9);
             $table->string('service_location', 255);
             $table->string('notes', 1000)->nullable();
-            $table->string('created_by', 36);
+            $table->uuid('created_by');
 
             // Props
             $table->dateTime('created_at', $precision = 0);
