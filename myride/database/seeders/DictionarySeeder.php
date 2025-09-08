@@ -32,6 +32,8 @@ class DictionarySeeder extends Seeder
                 'Culinary Hunting','Business Trip','Family Vacation','Worship','Refreshing','Strolling Around','City Exploration','Nature Retreat',
                 'Cultural Festival','Road Trip','Backpacking','Photography','Shopping','Sport Event',
             ],
+            'fuel_ron' => ['90','92','95','98'],
+            'fuel_brand' => ['Pertamina','Vivo','BP','Shell']
         ];
         $now = Carbon::now();
 
