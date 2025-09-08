@@ -10,6 +10,7 @@ use App\Models\TripModel;
 use App\Models\CleanModel;
 use App\Models\FuelModel;
 use App\Models\HistoryModel;
+use App\Models\InventoryModel;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -25,6 +26,7 @@ class DatabaseSeeder extends Seeder
         CleanModel::truncate();
         FuelModel::truncate();
         HistoryModel::truncate();
+        InventoryModel::truncate();
         VehicleModel::truncate();
         UserModel::truncate();
         AdminModel::truncate();
@@ -40,5 +42,6 @@ class DatabaseSeeder extends Seeder
         CleanModel::factory(300)->create();
         FuelModel::factory(200)->create();
         HistoryModel::factory(200)->create();
+        InventoryModel::factory(200)->create();
     }
 }

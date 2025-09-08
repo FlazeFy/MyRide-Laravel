@@ -33,7 +33,9 @@ class DictionarySeeder extends Seeder
                 'Cultural Festival','Road Trip','Backpacking','Photography','Shopping','Sport Event',
             ],
             'fuel_ron' => ['90','92','95','98'],
-            'fuel_brand' => ['Pertamina','Vivo','BP','Shell']
+            'fuel_brand' => ['Pertamina','Vivo','BP','Shell'],
+            'inventory_category' => ['Safety', 'Maintenance', 'Personal', 'Electronics', 'Documents'],
+            'inventory_storage' => ['Glove Compartment', 'Trunk', 'Dashboard', 'Back Seat Pocket', 'Roof Box'],
         ];
         $now = Carbon::now();
 
