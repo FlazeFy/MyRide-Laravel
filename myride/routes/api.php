@@ -85,6 +85,7 @@ Route::prefix('/v1/stats')->middleware(['auth:sanctum'])->group(function () {
 
 Route::prefix('/v1/fuel')->middleware(['auth:sanctum'])->group(function () {
     Route::get('/', [QueriesFuelController::class, 'getAllFuel']);
+    Route::get('/last', [QueriesFuelController::class, 'getLastFuel']);
     Route::delete('/destroy/{id}', [CommandsFuelController::class, 'hardDeleteFuelById']);
 });
 

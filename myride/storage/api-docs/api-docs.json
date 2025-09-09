@@ -1394,6 +1394,152 @@
                 ]
             }
         },
+        "/api/v1/fuel/last": {
+            "get": {
+                "tags": [
+                    "Fuel"
+                ],
+                "summary": "Get last fuel",
+                "description": "This request is used to get last fuel purchase history. This request is using MySql database, have a protected routes, and have template pagination.",
+                "operationId": "b74450a87831a1450cbe681950c971fb",
+                "responses": {
+                    "200": {
+                        "description": "Fuel record fetched successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "fuel fetched"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "string",
+                                                    "example": "6f59235e-c398-8a83-2f95-3f1fbe95ca6e"
+                                                },
+                                                "vehicle_plate_number": {
+                                                    "type": "string",
+                                                    "example": "B 1234 CD"
+                                                },
+                                                "vehicle_type": {
+                                                    "type": "string",
+                                                    "example": "City Car"
+                                                },
+                                                "fuel_volume": {
+                                                    "type": "number",
+                                                    "format": "float",
+                                                    "example": 45.5
+                                                },
+                                                "fuel_price_total": {
+                                                    "type": "number",
+                                                    "format": "float",
+                                                    "example": 325000
+                                                },
+                                                "fuel_brand": {
+                                                    "type": "string",
+                                                    "example": "Pertamina"
+                                                },
+                                                "fuel_type": {
+                                                    "type": "string",
+                                                    "example": "Pertamax"
+                                                },
+                                                "fuel_ron": {
+                                                    "type": "integer",
+                                                    "example": 92
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2024-09-20 22:53:47"
+                                                },
+                                                "fuel_bill": {
+                                                    "type": "string",
+                                                    "format": "uri",
+                                                    "example": "https://example.com/uploads/fuel_bills/bill123.jpg"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "protected route need to include sign in token as authorization bearer",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "you need to include the authorization token from login"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "fuel failed to fetched",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "fuel not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "something wrong. please contact admin"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/v1/history/destroy/{id}": {
             "delete": {
                 "tags": [
@@ -1980,6 +2126,114 @@
                         }
                     }
                 }
+            }
+        },
+        "/api/v1/reminder/destroy/{id}": {
+            "delete": {
+                "tags": [
+                    "Reminder"
+                ],
+                "summary": "Delete reminder by id",
+                "operationId": "3cfffe0613e3d301333c08a8475a9cbd",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Reminder ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "e1288783-a5d4-1c4c-2cd6-0e92f7cc3bf9"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "reminder permentally deleted",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "reminder permentally deleted"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "protected route need to include sign in token as authorization bearer",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "you need to include the authorization token from login"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "reminder failed to permentally deleted",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "reminder not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "something wrong. please contact admin"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/api/v1/reminder/next": {

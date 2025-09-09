@@ -75,4 +75,17 @@ class FuelModel extends Model
             
         return $res->delete();
     }
+
+    public static function getLastFuel($user_id, $vehicle_id = null){
+        $res = FuelModel::select('fuel.id', 'vehicle_plate_number', 'vehicle_type', 'fuel_volume', 'fuel_price_total', 'fuel_brand', 'fuel_type', 'fuel_ron', 'fuel.created_at', 'fuel_bill')
+            ->join('vehicle','vehicle.id','=','fuel.vehicle_id')
+            ->where('fuel.created_by',$user_id);
+        
+        if($vehicle_id){
+            $res = $res->where('vehicle_id',$vehicle_id);
+        }
+
+        return $res->orderby('fuel.created_at','desc')
+            ->first();
+    }
 }
