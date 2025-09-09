@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+// Helper
+use App\Helpers\Generator;
 
 /**
  * @OA\Schema(
@@ -87,5 +89,13 @@ class FuelModel extends Model
 
         return $res->orderby('fuel.created_at','desc')
             ->first();
+    }
+
+    public static function createFuel($data, $user_id){
+        $data['created_at'] = date('Y-m-d H:i:s');
+        $data['created_by'] = $user_id;
+        $data['id'] = Generator::getUUID();
+            
+        return FuelModel::create($data);
     }
 }

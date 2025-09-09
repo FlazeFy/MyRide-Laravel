@@ -44,11 +44,11 @@
                 </div>
                 <div class="col-lg-3 col-md-3 col-sm-6">
                     <label>Volume (L)</label>
-                    <input class="form-control" name="fuel_ron" id="fuel_ron" type="number" min="1" value="1">
+                    <input class="form-control" name="fuel_volume" id="fuel_volume" type="number" min="1" value="1">
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-12">
                     <label>Total Price</label>
-                    <input class="form-control" name="fuel_ron" id="fuel_ron">
+                    <input class="form-control" name="fuel_price_total" id="fuel_price_total">
                 </div>
             </div>
             <hr>
@@ -259,5 +259,52 @@
                 }
             }
         });
+    }
+
+    const post_fuel = () => {
+        const vehicle_id = $('#vehicle_holder').val()
+        const fuel_brand = $('#fuel_brand_holder').val()
+        const fuel_type = $('#fuel_type_holder').val()
+
+        if(vehicle_id !== "-" && fuel_brand !== "-"){
+            Swal.showLoading();
+            $.ajax({
+                url: `/api/v1/fuel`,
+                type: 'POST',
+                contentType: "application/json",
+                data: JSON.stringify({
+                    vehicle_id: vehicle_id,
+                    fuel_brand: fuel_brand,
+                    fuel_type: fuel_type === "-" ? null : fuel_type,
+                    fuel_ron: $("#fuel_ron").val(),
+                    fuel_volume: $("#fuel_volume").val(),
+                    fuel_price_total: $("#fuel_price_total").val()
+                }),
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("Accept", "application/json")
+                    xhr.setRequestHeader("Authorization", "Bearer <?= session()->get("token_key"); ?>")
+                },
+                success: function(response) {
+                    Swal.close()
+                    Swal.fire({
+                        title: "Success!",
+                        text: response.message,
+                        icon: "success"
+                    }).then(() => {
+                        window.location.href = '/fuel'
+                    });
+                },
+                error: function(response, jqXHR, textStatus, errorThrown) {
+                    Swal.close()
+                    if(response.status != 400){
+                        failedMsg('create fuel')
+                    } else {
+                        // ....
+                    }
+                }
+            });
+        } else {
+            failedMsg('create fuel : you must select an item')
+        }
     }
 </script>

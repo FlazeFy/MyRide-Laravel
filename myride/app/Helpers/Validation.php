@@ -8,6 +8,9 @@ use App\Rules\VehicleTransmissionType;
 use App\Rules\VehicleFuelStatusType;
 use App\Rules\VehicleType;
 use App\Rules\VehicleStatusType;
+use App\Rules\FuelBrandRules;
+use App\Rules\FuelTypeRules;
+use App\Rules\FuelRonRules;
 
 class Validation
 {
@@ -81,6 +84,17 @@ class Validation
             'trip_origin_coordinate' => 'nullable|string|max:144',  
             'trip_destination_name' => 'required|string|max:75|min:2',
             'trip_destination_coordinate' => 'nullable|string|max:144', 
+        ]);
+    }
+
+    public static function getValidateFuel($request){
+        return Validator::make($request->all(), [
+            'vehicle_id' => 'required|string|max:36|min:36', 
+            'fuel_volume' => 'required|integer|min:1|max:99', 
+            'fuel_price_total' => 'required|integer|min:1|max:999999999',  
+            'fuel_brand' => ['required', new FuelBrandRules], 
+            'fuel_type' => 'nullable|string|max:36|min:1',
+            'fuel_ron' => ['required', new FuelRonRules],
         ]);
     }
 
