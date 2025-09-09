@@ -28,7 +28,7 @@ class AddTripController extends Controller
             return view('trip.add.index')
                 ->with('dt_all_vehicle', $dt_all_vehicle)
                 ->with('dt_trip_category', $dt_trip_category)
-                ->with('active_menu','garage');
+                ->with('active_menu','trip');
         } else {
             return redirect("/login");
         }

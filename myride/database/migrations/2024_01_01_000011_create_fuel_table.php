@@ -13,10 +13,10 @@ return new class extends Migration
             $table->uuid('vehicle_id');
             $table->integer('fuel_volume')->length(3);
             $table->integer('fuel_price_total')->length(9);
-            $table->string('fuel_brand', 255);
+            $table->string('fuel_brand', 75);
             $table->string('fuel_type', 75)->nullable();
             $table->integer('fuel_ron')->length(2)->nullable();
-            $table->longText('fuel_bill')->nullable();
+            $table->string('fuel_bill', 1000)->nullable();
 
             // Props
             $table->dateTime('created_at', $precision = 0);

@@ -33,7 +33,11 @@ class DictionarySeeder extends Seeder
                 'Cultural Festival','Road Trip','Backpacking','Photography','Shopping','Sport Event',
             ],
             'fuel_ron' => ['90','92','95','98'],
-            'fuel_brand' => ['Pertamina','Vivo','BP','Shell'],
+            'fuel_brand' => ['Pertamina','Vivo','BP','Shell','Electric'],
+            'fuel_type_Pertamina' => ['Pertalite', 'Pertamax', 'Pertamax Turbo', 'Dexlite', 'Pertamina Dex'],
+            'fuel_type_Vivo' => ['Revvo 89', 'Revvo 92', 'Revvo 95'],
+            'fuel_type_BP' => ['BP 90', 'BP 92', 'BP Ultimate'],
+            'fuel_type_Shell' => ['Shell Super', 'Shell V-Power', 'Shell Diesel'],
             'inventory_category' => ['Safety', 'Maintenance', 'Personal', 'Electronics', 'Documents'],
             'inventory_storage' => ['Glove Compartment', 'Trunk', 'Dashboard', 'Back Seat Pocket', 'Roof Box'],
         ];

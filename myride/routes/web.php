@@ -16,6 +16,7 @@ use App\Http\Controllers\EmbedController;
 use App\Http\Controllers\ReminderController;
 use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\FuelController;
+use App\Http\Controllers\AddFuelController;
 use App\Http\Controllers\InventoryController;
 
 Route::prefix('/')->group(function () {
@@ -66,6 +67,7 @@ Route::prefix('/history')->middleware(['auth_v2:sanctum'])->group(function () {
 
 Route::prefix('/fuel')->middleware(['auth_v2:sanctum'])->group(function () {
     Route::get('/', [FuelController::class, 'index'])->name('fuel');
+    Route::get('/add', [AddFuelController::class, 'index'])->name('add_fuel');
 });
 
 Route::prefix('/stats')->middleware(['auth_v2:sanctum'])->group(function () {
