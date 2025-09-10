@@ -73,8 +73,8 @@ class VehicleTest extends TestCase
             $this->assertEquals(36,strlen($dt['id']));
         }
 
-        Audit::auditRecordText("Test - Get All Inventory", "TC-XXX", "Result : ".json_encode($data));
-        Audit::auditRecordSheet("Test - Get All Inventory", "TC-XXX", 'TC-XXX test_get_all_inventory', json_encode($data));
+        Audit::auditRecordText("Test - Get All Vehicle Header", "TC-XXX", "Result : ".json_encode($data));
+        Audit::auditRecordSheet("Test - Get All Vehicle Header", "TC-XXX", 'TC-XXX test_get_all_vehicle_header', json_encode($data));
     }
 
     public function test_get_vehicle_detail(): void
@@ -153,7 +153,42 @@ class VehicleTest extends TestCase
 
         $this->assertEquals(36,strlen($data['data']['id']));
 
-        Audit::auditRecordText("Test - Get All Inventory", "TC-XXX", "Result : ".json_encode($data));
-        Audit::auditRecordSheet("Test - Get All Inventory", "TC-XXX", 'TC-XXX test_get_all_inventory', json_encode($data));
+        Audit::auditRecordText("Test - Get All Vehicle Detail", "TC-XXX", "Result : ".json_encode($data));
+        Audit::auditRecordSheet("Test - Get All Vehicle Detail", "TC-XXX", 'TC-XXX test_get_all_vehicle_detail', json_encode($data));
+    }
+
+    public function test_get_all_vehicle_name(): void
+    {
+        // Exec
+        $token = $this->login_trait("user");
+        $response = $this->httpClient->get("name", [
+            'headers' => [
+                'Authorization' => "Bearer $token"
+            ]
+        ]);
+
+        $data = json_decode($response->getBody(), true);
+
+        // Test Parameter
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertArrayHasKey('status', $data);
+        $this->assertEquals('success', $data['status']);
+        $this->assertArrayHasKey('message', $data);
+        $this->assertArrayHasKey('data', $data);
+
+        foreach ($data['data'] as $dt) {
+            $check_object = ["id", "vehicle_name", "vehicle_plate_number"];
+
+            foreach ($check_object as $col) {
+                $this->assertArrayHasKey($col, $dt);
+                $this->assertNotNull($dt[$col]);
+                $this->assertIsString($dt[$col]);
+            }
+
+            $this->assertEquals(36,strlen($dt['id']));
+        }
+
+        Audit::auditRecordText("Test - Get All Vehicle Name", "TC-XXX", "Result : ".json_encode($data));
+        Audit::auditRecordSheet("Test - Get All Vehicle Name", "TC-XXX", 'TC-XXX test_get_all_vehicle_name', json_encode($data));
     }
 }
