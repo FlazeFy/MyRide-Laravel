@@ -77,4 +77,28 @@ class CleanTest extends TestCase
         Audit::auditRecordText("Test - Get All Clean History", "TC-XXX", "Result : ".json_encode($data));
         Audit::auditRecordSheet("Test - Get All Clean History", "TC-XXX", 'TC-XXX test_get_all_clean_history', json_encode($data));
     }
+
+    public function test_hard_delete_clean_by_id(): void
+    {
+        // Exec
+        $token = $this->login_trait("user");
+        $id = "ab8b8d0e-d74d-11ed-afa1-0242ac120002";
+        $response = $this->httpClient->delete("destroy/$id", [
+            'headers' => [
+                'Authorization' => "Bearer $token"
+            ]
+        ]);
+
+        $data = json_decode($response->getBody(), true);
+
+        // Test Parameter
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertArrayHasKey('status', $data);
+        $this->assertEquals('success', $data['status']);
+        $this->assertArrayHasKey('message', $data);
+        $this->assertEquals('clean permentally deleted',$data['message']);
+
+        Audit::auditRecordText("Test - Hard Delete Clean By Id", "TC-XXX", "Result : ".json_encode($data));
+        Audit::auditRecordSheet("Test - Hard Delete Clean By Id", "TC-XXX", 'TC-XXX test_hard_delete_clean_by_id', json_encode($data));
+    }
 }
