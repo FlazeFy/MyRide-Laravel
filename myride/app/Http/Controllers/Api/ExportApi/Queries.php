@@ -8,6 +8,7 @@ use Carbon\Carbon;
 // Exports
 use App\Exports\CleanExport;
 use App\Exports\FuelExport;
+use App\Exports\InventoryExport;
 use Maatwebsite\Excel\Facades\Excel;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 // Telegram
@@ -17,6 +18,7 @@ use Telegram\Bot\FileUpload\InputFile;
 use App\Models\CleanModel;
 use App\Models\FuelModel;
 use App\Models\UserModel;
+use App\Models\InventoryModel;
 // Helpers
 use App\Helpers\Generator;
 
@@ -103,7 +105,7 @@ class Queries extends Controller {
             $user_id = $request->user()->id;
             $datetime = date('Y-m-d_H-i-s');
             $user = UserModel::getSocial($user_id);
-            $file_name = "Clean-$user->username-$datetime.xlsx";
+            $file_name = "Fuel-$user->username-$datetime.xlsx";
 
             $res_fuel_history = FuelModel::getExportData($user_id,null)->map(function($dt) {
                 return [
@@ -149,6 +151,73 @@ class Queries extends Controller {
                     'chat_id' => $user->telegram_user_id,
                     'document' => $inputFile,
                     'caption' => "Your fuel export is ready",
+                    'parse_mode' => 'HTML',
+                ]);
+            }
+
+            return response()->download($storagePath, $file_name, [
+                'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                'Content-Disposition' => 'attachment; filename="' . $file_name . '"',
+            ])->deleteFileAfterSend(true);
+        } catch(\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => Generator::getMessageTemplate("unknown_error", null),
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function exportInventory(Request $request){
+        try {
+            $user_id = $request->user()->id;
+            $datetime = date('Y-m-d_H-i-s');
+            $user = UserModel::getSocial($user_id);
+            $file_name = "Inventory-$user->username-$datetime.xlsx";
+
+            $res_inventory = InventoryModel::getExportData($user_id,null)->map(function($dt) {
+                return [
+                    'vehicle_name' => $dt->vehicle_name,
+                    'vehicle_type' => $dt->vehicle_type,
+                    'vehicle_plate_number' => $dt->vehicle_plate_number, 
+                    'inventory_name' => $dt->inventory_name, 
+                    'inventory_category' => $dt->inventory_category, 
+                    'inventory_qty' => $dt->inventory_qty, 
+                    'inventory_storage' => $dt->inventory_storage, 
+                    'created_at' => $dt->created_at, 
+                    'updated_at' => $dt->updated_at,
+                ];
+            });
+
+            Excel::store(new class($res_inventory) implements WithMultipleSheets {
+                private $res_inventory;
+
+                public function __construct($res_inventory)
+                {
+                    $this->res_inventory = $res_inventory;
+                }
+
+                public function sheets(): array
+                {
+                    return [
+                        new InventoryExport($this->res_inventory),
+                    ];
+                }
+            }, $file_name, 'public');
+        
+            $storagePath = storage_path("app/public/$file_name");
+            $publicPath = public_path($file_name);
+            if (!file_exists($storagePath)) {
+                throw new \Exception("File not found: $storagePath");
+            }
+            copy($storagePath, $publicPath);
+
+            if ($user && $user->telegram_is_valid == 1 && $user->telegram_user_id) {
+                $inputFile = InputFile::create($publicPath, $file_name);
+
+                Telegram::sendDocument([
+                    'chat_id' => $user->telegram_user_id,
+                    'document' => $inputFile,
+                    'caption' => "Your inventory export is ready",
                     'parse_mode' => 'HTML',
                 ]);
             }

@@ -58,4 +58,18 @@ class InventoryModel extends Model
             
         return $res->delete();
     }
+
+    public static function getExportData($user_id, $vehicle_id = null){
+        $res = InventoryModel::select("vehicle_name","vehicle_plate_number", "vehicle_type", 'inventory_name', 'inventory_category', 'inventory_qty', 'inventory_storage', 'inventory.created_at', 'inventory.updated_at')
+            ->join('vehicle','vehicle.id','=','inventory.vehicle_id');
+        
+        if($vehicle_id){
+            $res = $res->where('vehicle_id',$vehicle_id);
+        }
+
+        $res = $res->where('inventory.created_by',$user_id)
+            ->orderBy('inventory.created_at');
+
+        return $res->get();
+    }
 }

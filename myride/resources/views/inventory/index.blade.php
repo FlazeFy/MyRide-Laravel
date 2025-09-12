@@ -2,7 +2,8 @@
 
 @section('content')
     <div class="position-relative">
-        <div class="row">
+        @include('inventory.usecases.get_export_inventory')
+        <div class="row mt-2">
             <div class="col-lg-9 col-md-7 col-sm-12">
                 <div class="container">
                     @include('inventory.usecases.get_all_list_inventory')
