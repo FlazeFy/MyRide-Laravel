@@ -1,11 +1,11 @@
-<a class="btn btn-success" id="export_excel"><i class="fa-solid fa-download"></i> Export Excel</a>
+<a class="btn btn-success ms-1" id="export_excel"><i class="fa-solid fa-download"></i> Export Excel</a>
 
 <script>
     $(document).on('click','#export_excel',function(){
-        const get_export_clean = () => {
+        const get_export_fuel = () => {
             Swal.showLoading()
             $.ajax({
-                url: `/api/v1/export/clean`,
+                url: `/api/v1/export/fuel`,
                 type: 'GET',
                 xhrFields: { responseType: 'blob' },
                 beforeSend: function (xhr) {
@@ -15,7 +15,7 @@
                 success: function(response, status, xhr) {
                     Swal.close()
                     
-                    let fileName = "clean_history.xlsx"
+                    let fileName = "fuel_history.xlsx"
                     const disposition = xhr.getResponseHeader('Content-Disposition')
                     if (disposition && disposition.includes('filename=')) {
                         fileName = disposition.split('filename=')[1].trim().replace(/"/g, '')
@@ -45,6 +45,6 @@
                 }
             });
         }
-        get_export_clean()
+        get_export_fuel()
     })
 </script>

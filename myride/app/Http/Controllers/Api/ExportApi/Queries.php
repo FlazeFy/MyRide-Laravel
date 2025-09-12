@@ -7,6 +7,7 @@ use Carbon\Carbon;
 
 // Exports
 use App\Exports\CleanExport;
+use App\Exports\FuelExport;
 use Maatwebsite\Excel\Facades\Excel;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 // Telegram
@@ -14,6 +15,7 @@ use Telegram\Bot\Laravel\Facades\Telegram;
 use Telegram\Bot\FileUpload\InputFile;
 // Models
 use App\Models\CleanModel;
+use App\Models\FuelModel;
 use App\Models\UserModel;
 // Helpers
 use App\Helpers\Generator;
@@ -80,6 +82,73 @@ class Queries extends Controller {
                     'chat_id' => $user->telegram_user_id,
                     'document' => $inputFile,
                     'caption' => "Your clean export is ready",
+                    'parse_mode' => 'HTML',
+                ]);
+            }
+
+            return response()->download($storagePath, $file_name, [
+                'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                'Content-Disposition' => 'attachment; filename="' . $file_name . '"',
+            ])->deleteFileAfterSend(true);
+        } catch(\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => Generator::getMessageTemplate("unknown_error", null),
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function exportFuelHistory(Request $request){
+        try {
+            $user_id = $request->user()->id;
+            $datetime = date('Y-m-d_H-i-s');
+            $user = UserModel::getSocial($user_id);
+            $file_name = "Clean-$user->username-$datetime.xlsx";
+
+            $res_fuel_history = FuelModel::getExportData($user_id,null)->map(function($dt) {
+                return [
+                    'vehicle_name' => $dt->vehicle_name,
+                    'vehicle_type' => $dt->vehicle_type,
+                    'vehicle_plate_number' => $dt->vehicle_plate_number, 
+                    'fuel_volume' => $dt->fuel_volume, 
+                    'fuel_price_total' => $dt->fuel_price_total, 
+                    'fuel_brand' => $dt->fuel_brand, 
+                    'fuel_type' => $dt->fuel_type, 
+                    'fuel_ron' => $dt->fuel_ron, 
+                    'datetime' => $dt->datetime,
+                ];
+            });
+
+            Excel::store(new class($res_fuel_history) implements WithMultipleSheets {
+                private $res_fuel_history;
+
+                public function __construct($res_fuel_history)
+                {
+                    $this->res_fuel_history = $res_fuel_history;
+                }
+
+                public function sheets(): array
+                {
+                    return [
+                        new FuelExport($this->res_fuel_history),
+                    ];
+                }
+            }, $file_name, 'public');
+        
+            $storagePath = storage_path("app/public/$file_name");
+            $publicPath = public_path($file_name);
+            if (!file_exists($storagePath)) {
+                throw new \Exception("File not found: $storagePath");
+            }
+            copy($storagePath, $publicPath);
+
+            if ($user && $user->telegram_is_valid == 1 && $user->telegram_user_id) {
+                $inputFile = InputFile::create($publicPath, $file_name);
+
+                Telegram::sendDocument([
+                    'chat_id' => $user->telegram_user_id,
+                    'document' => $inputFile,
+                    'caption' => "Your fuel export is ready",
                     'parse_mode' => 'HTML',
                 ]);
             }

@@ -3,7 +3,7 @@
 @section('content')
     <div class="position-relative">
         @include('clean.usecases.get_export_clean')
-        <div class="container">
+        <div class="container mt-2">
             @include('clean.usecases.get_all_list_clean')
         </div>
     </div>

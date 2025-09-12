@@ -3,6 +3,7 @@
 @section('content')
     <div class="position-relative">
         <a class="btn btn-success" href='/fuel/add'><i class="fa-solid fa-plus"></i> Add Fuel</a>
+        @include('fuel.usecases.get_export_fuel')
         <div class="row mt-2">
             <div class="col-lg-8 col-md-6 col-sm-12">
                 <div class="container">

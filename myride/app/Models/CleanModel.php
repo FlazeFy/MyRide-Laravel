@@ -57,10 +57,10 @@ class CleanModel extends Model
             ->join('vehicle','vehicle.id','=','clean.vehicle_id');
         
         if($vehicle_id){
-            $res->where('vehicle_id',$vehicle_id);
+            $res = $res->where('vehicle_id',$vehicle_id);
         }
 
-        $res->where('clean.created_by',$user_id)
+        $res = $res->where('clean.created_by',$user_id)
             ->orderBy('clean.created_at');
 
         return $res->get();
