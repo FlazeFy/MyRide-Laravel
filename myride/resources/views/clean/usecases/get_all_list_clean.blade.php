@@ -79,7 +79,7 @@
                                 <p class="mb-0">${getDateToContext(dt.clean_end_time,'calendar') ?? "In Progress"}</p>
                             </td>
                             <td>
-                                <a class="btn btn-danger w-100"><i class="fa-solid fa-trash"></i></a>
+                                <a class="btn btn-danger w-100 btn-delete" data-url="/api/v1/clean/destroy/${dt.id}" data-context="Clean"><i class="fa-solid fa-trash"></i></a>
                                 ${dt.clean_end_time != null ? `<a class="btn btn-success w-100 mt-2"><i class="fa-solid fa-check"></i></a>` : ""}
                             </td>
                         </tr>

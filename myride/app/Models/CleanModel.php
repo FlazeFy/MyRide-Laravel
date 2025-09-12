@@ -65,4 +65,14 @@ class CleanModel extends Model
 
         return $res->get();
     }
+
+    public static function hardDeleteCleanById($id, $user_id = null){
+        $res = CleanModel::where('id',$id);
+
+        if($user_id){
+            $res = $res->where('created_by',$user_id);
+        }
+            
+        return $res->delete();
+    }
 }

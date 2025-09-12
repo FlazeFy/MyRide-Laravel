@@ -7,7 +7,8 @@ use App\Http\Controllers\Api\AuthApi\Commands as CommandAuthApi;
 use App\Http\Controllers\Api\AuthApi\Queries as QueryAuthApi;
 use App\Http\Controllers\Api\VehicleApi\Queries as QueriesVehicleApi;
 use App\Http\Controllers\Api\VehicleApi\Commands as CommandsVehicleApi;
-use App\Http\Controllers\Api\CleanApi\Queries as QueriesCleanApi;
+use App\Http\Controllers\Api\CleanApi\Queries as QueriesCleanController;
+use App\Http\Controllers\Api\CleanApi\Commands as CommandsCleanController;
 use App\Http\Controllers\Api\DictionaryApi\Queries as QueriesDictionaryApi;
 use App\Http\Controllers\Api\DictionaryApi\Commands as CommandsDictionaryApi;
 use App\Http\Controllers\Api\TripApi\Commands as CommandsTripApi;
@@ -61,7 +62,8 @@ Route::prefix('/v1/dictionary')->middleware(['auth:sanctum'])->group(function ()
 });
 
 Route::prefix('/v1/clean')->middleware(['auth:sanctum'])->group(function () {
-    Route::get('/', [QueriesCleanApi::class, 'getAllCleanHistory']);
+    Route::get('/', [QueriesCleanController::class, 'getAllCleanHistory']);
+    Route::delete('/destroy/{id}', [CommandsCleanController::class, 'hardDeleteCleanById']);
 });
 
 Route::prefix('/v1/history')->middleware(['auth:sanctum'])->group(function () {
