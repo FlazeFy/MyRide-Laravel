@@ -421,7 +421,7 @@ class Queries extends Controller
                     $total = 0;
                     foreach ($res as $idx => $val) {
                         if($i == $val->context){
-                            $total = $val->total;
+                            $total = (int)$val->total;
                             break;
                         }
                     }
@@ -542,7 +542,7 @@ class Queries extends Controller
                         $total = 0;
                         foreach ($res as $idx => $val) {
                             if($i == $val->context){
-                                $total = $val->total;
+                                $total = (int)$val->total;
                                 break;
                             }
                         }

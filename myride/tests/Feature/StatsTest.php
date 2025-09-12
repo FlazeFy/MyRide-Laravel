@@ -128,4 +128,86 @@ class StatsTest extends TestCase
         Audit::auditRecordText("Test - Get Summary Apps", "TC-XXX", "Result : ".json_encode($data));
         Audit::auditRecordSheet("Test - Get Summary Apps", "TC-XXX", "TC-XXX test_get_summary_apps", json_encode($data));
     }
+
+    public function test_get_total_fuel_per_year(): void
+    {
+        // Exec
+        $token = $this->login_trait("user");
+        $context = ["fuel_volume","fuel_price_total"];
+        $year = 2025;
+
+        foreach($context as $ctx){
+            // Exec
+            $response = $this->httpClient->get("total/fuel/monthly/$ctx/$year",[
+                'headers' => [
+                    'Authorization' => "Bearer $token"
+                ]
+            ]);
+
+            $data = json_decode($response->getBody(), true);
+
+            // Test Parameter
+            $this->assertEquals(200, $response->getStatusCode());
+            $this->assertArrayHasKey('status', $data);
+            $this->assertEquals('success', $data['status']);
+            $this->assertArrayHasKey('message', $data);
+            $this->assertArrayHasKey('data', $data);
+            $this->assertEquals(12,count($data['data']));
+
+            foreach ($data['data'] as $dt) {
+                $this->assertArrayHasKey('context', $dt);
+                $this->assertArrayHasKey('total', $dt);
+
+                $this->assertNotNull($dt['context']);
+                $this->assertIsString($dt['context']);
+        
+                $this->assertNotNull($dt['total']);
+                $this->assertIsInt($dt['total']);
+                $this->assertGreaterThanOrEqual(0, $dt['total']);
+            }
+
+            $ctx_title = ucwords(str_replace("_"," ",$ctx));
+            Audit::auditRecordText("Test - Get Total Fuel Per Year By $ctx_title", "TC-XXX", "Result : ".json_encode($data));
+            Audit::auditRecordSheet("Test - Get Total Fuel Per Year By $ctx_title", "TC-XXX", "TC-XXX test_get_total_fuel_per_year_by_$ctx", json_encode($data));
+        }
+    }
+
+    public function test_get_total_trip_per_year(): void
+    {
+        // Exec
+        $token = $this->login_trait("user");
+        $year = 2024;
+
+        // Exec
+        $response = $this->httpClient->get("total/trip/monthly/$year",[
+            'headers' => [
+                'Authorization' => "Bearer $token"
+            ]
+        ]);
+
+        $data = json_decode($response->getBody(), true);
+
+        // Test Parameter
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertArrayHasKey('status', $data);
+        $this->assertEquals('success', $data['status']);
+        $this->assertArrayHasKey('message', $data);
+        $this->assertArrayHasKey('data', $data);
+        $this->assertEquals(12,count($data['data']));
+
+        foreach ($data['data'] as $dt) {
+            $this->assertArrayHasKey('context', $dt);
+            $this->assertArrayHasKey('total', $dt);
+
+            $this->assertNotNull($dt['context']);
+            $this->assertIsString($dt['context']);
+    
+            $this->assertNotNull($dt['total']);
+            $this->assertIsInt($dt['total']);
+            $this->assertGreaterThanOrEqual(0, $dt['total']);
+        }
+
+        Audit::auditRecordText("Test - Get Total Trip Per Year", "TC-XXX", "Result : ".json_encode($data));
+        Audit::auditRecordSheet("Test - Get Total Trip Per Year", "TC-XXX", "TC-XXX test_get_total_trip_per_year", json_encode($data));
+    }
 }
