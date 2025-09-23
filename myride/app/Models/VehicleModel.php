@@ -40,6 +40,13 @@ class VehicleModel extends Model
             ->get();
     }
 
+    public static function getAllVehicleFuel($user_id){
+        return VehicleModel::select('id','vehicle_name','vehicle_plate_number','vehicle_fuel_status')
+            ->where('created_by', $user_id)
+            ->orderByRaw("FIELD(vehicle_fuel_status, 'Empty', 'Low', 'Normal', 'High', 'Full', 'Not Monitored')")
+            ->get();
+    }
+
     public static function getContextTotalStats($context,$user_id){
         $res = VehicleModel::selectRaw("$context as context, COUNT(1) as total");
         if($user_id){

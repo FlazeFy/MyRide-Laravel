@@ -191,4 +191,39 @@ class VehicleTest extends TestCase
         Audit::auditRecordText("Test - Get All Vehicle Name", "TC-XXX", "Result : ".json_encode($data));
         Audit::auditRecordSheet("Test - Get All Vehicle Name", "TC-XXX", 'TC-XXX test_get_all_vehicle_name', json_encode($data));
     }
+
+    public function test_get_all_vehicle_fuel(): void
+    {
+        // Exec
+        $token = $this->login_trait("user");
+        $response = $this->httpClient->get("fuel", [
+            'headers' => [
+                'Authorization' => "Bearer $token"
+            ]
+        ]);
+
+        $data = json_decode($response->getBody(), true);
+
+        // Test Parameter
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertArrayHasKey('status', $data);
+        $this->assertEquals('success', $data['status']);
+        $this->assertArrayHasKey('message', $data);
+        $this->assertArrayHasKey('data', $data);
+
+        foreach ($data['data'] as $dt) {
+            $check_object = ["id", "vehicle_name", "vehicle_plate_number", "vehicle_fuel_status"];
+
+            foreach ($check_object as $col) {
+                $this->assertArrayHasKey($col, $dt);
+                $this->assertNotNull($dt[$col]);
+                $this->assertIsString($dt[$col]);
+            }
+
+            $this->assertEquals(36,strlen($dt['id']));
+        }
+
+        Audit::auditRecordText("Test - Get All Vehicle Fuel", "TC-XXX", "Result : ".json_encode($data));
+        Audit::auditRecordSheet("Test - Get All Vehicle Fuel", "TC-XXX", 'TC-XXX test_get_all_vehicle_fuel', json_encode($data));
+    }
 }
