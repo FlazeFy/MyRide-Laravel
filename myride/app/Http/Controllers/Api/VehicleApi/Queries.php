@@ -301,6 +301,7 @@ class Queries extends Controller
      *                     @OA\Property(property="vehicle_name", type="string", example="Brio RS MT"),
      *                     @OA\Property(property="vehicle_plate_number", type="string", example="D 1610 ZBC"),
      *                     @OA\Property(property="vehicle_fuel_status", type="string", example="Normal"),
+     *                     @OA\Property(property="vehicle_fuel_capacity", type="integer", example=40),
      *                 )
      *             )
      *         )

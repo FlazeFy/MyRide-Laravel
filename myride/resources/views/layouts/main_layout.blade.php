@@ -33,7 +33,7 @@
     <!-- JS Collection -->
     <script src="{{ asset('/js/global_v1.0.js')}}"></script>
     <script src="{{ asset('/js/message_v1.0.js')}}"></script>
-    <?php if(preg_match('(stats|embed|detail|dashboard)', $cleanedUrl)): ?>
+    <?php if(preg_match('(stats|embed|detail|dashboard|fuel)', $cleanedUrl)): ?>
         <script src="{{ asset('/js/chart_v1.0.js')}}"></script>
     <?php endif; ?>
     <script src="{{ asset('/js/math_v1.0.js')}}"></script>
@@ -52,7 +52,7 @@
                 <!-- Bootstrap dataTables Javascript -->
                 <script type='text/javascript' language='javascript' src='https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js'></script>
             ";
-        } else if (strpos($route, 'stats') !== false || strpos($route, 'detail') !== false || strpos($route, 'dashboard') !== false) {
+        } else if (strpos($route, 'stats') !== false || strpos($route, 'detail') !== false || strpos($route, 'dashboard') !== false || strpos($route, 'fuel') !== false) {
             echo "
                 <!--Apex Chart-->
                 <script src='https://cdn.jsdelivr.net/npm/apexcharts'></script>

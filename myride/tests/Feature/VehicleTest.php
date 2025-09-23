@@ -220,6 +220,9 @@ class VehicleTest extends TestCase
                 $this->assertIsString($dt[$col]);
             }
 
+            $this->assertIsInt($dt["vehicle_fuel_capacity"]);
+            $this->assertGreaterThan(0, $dt['vehicle_fuel_capacity']);
+
             $this->assertEquals(36,strlen($dt['id']));
         }
 

@@ -41,7 +41,7 @@ class VehicleModel extends Model
     }
 
     public static function getAllVehicleFuel($user_id){
-        return VehicleModel::select('id','vehicle_name','vehicle_plate_number','vehicle_fuel_status')
+        return VehicleModel::select('id','vehicle_name','vehicle_plate_number','vehicle_fuel_status', 'vehicle_fuel_capacity')
             ->where('created_by', $user_id)
             ->orderByRaw("FIELD(vehicle_fuel_status, 'Empty', 'Low', 'Normal', 'High', 'Full', 'Not Monitored')")
             ->get();

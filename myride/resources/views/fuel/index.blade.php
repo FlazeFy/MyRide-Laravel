@@ -11,6 +11,11 @@
                     @include('fuel.usecases.hard_delete_fuel')
                 </div>
             </div>
+            <div class="col-lg-4 col-md-6 col-sm-12">
+                <div class="container">
+                    @include('fuel.usecases.get_all_fuel_monitor')
+                </div>
+            </div>
         </div>
     </div>
 @endsection

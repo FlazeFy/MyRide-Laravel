@@ -170,3 +170,62 @@ const generate_bar_chart = (title, holder, data) => {
         `)
     }
 }
+
+const generate_semi_gauge_chart = (title = null, holder, percentage) => {
+    console.log(percentage)
+    if(title){
+        $(`#${holder}`).before(`<h2 class='title-chart'>${ucEachWord(title)}</h2>`)
+    }
+
+    if (0 >= percentage <= 100) {
+        let fillColor
+
+        if (percentage < 30) {
+            fillColor = "var(--dangerColor)"
+        } else if (percentage < 70) {
+            fillColor = "var(--warningColor)"
+        } else {
+            fillColor = "var(--successColor)"
+        }
+
+        let options = {
+            series: [percentage],
+            chart: {
+                height: 350,
+                type: "radialBar",
+                sparkline: {
+                    enabled: true
+                }
+            },
+            plotOptions: {
+                radialBar: {
+                    startAngle: -90,
+                    endAngle: 90,
+                    hollow: {
+                        margin: 0,
+                        size: "70%",
+                    },
+                    dataLabels: {
+                        name: { show: false},
+                        value: {
+                            show: true,
+                            offsetY: -10, 
+                            fontSize: "calc(1.5*var(--textXJumbo))",
+                            fontWeight: 600,
+                            formatter: (val) => `${val}%`
+                        }
+                    }
+                }
+            },
+            fill: {
+                colors: [fillColor],
+            },
+            labels: [percentage]
+        }
+
+        let chart = new ApexCharts(document.querySelector(`#${holder}`), options)
+        chart.render()
+    } else {
+        $(`#${holder}`).html(`<h6 class="text-center">Data is Not Valid</h6>`)
+    }
+}

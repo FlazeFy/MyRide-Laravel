@@ -5227,6 +5227,132 @@
                 ]
             }
         },
+        "/api/v1/vehicle/fuel": {
+            "get": {
+                "tags": [
+                    "Vehicle"
+                ],
+                "summary": "Get all vehicle fuel",
+                "description": "This request is used to get all vehicle fuel status. This request is using MySql database, and have a protected routes.",
+                "operationId": "bcd5d1f67ba4b2c4941e5ba049f8d719",
+                "responses": {
+                    "200": {
+                        "description": "vehicle fetched",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "vehicle fetched"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "string",
+                                                        "format": "uuid",
+                                                        "example": "2d98f524-de02-11ed-b5ea-0242ac120002"
+                                                    },
+                                                    "vehicle_name": {
+                                                        "type": "string",
+                                                        "example": "Brio RS MT"
+                                                    },
+                                                    "vehicle_plate_number": {
+                                                        "type": "string",
+                                                        "example": "D 1610 ZBC"
+                                                    },
+                                                    "vehicle_fuel_status": {
+                                                        "type": "string",
+                                                        "example": "Normal"
+                                                    },
+                                                    "vehicle_fuel_capacity": {
+                                                        "type": "integer",
+                                                        "example": 40
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "protected route need to include sign in token as authorization bearer",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "you need to include the authorization token from login"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "vehicle failed to fetched",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "vehicle not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "something wrong. please contact admin"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/v1/vehicle/detail/{id}": {
             "get": {
                 "tags": [
