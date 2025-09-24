@@ -120,4 +120,91 @@ class Queries extends Controller
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
+
+    /**
+     * @OA\GET(
+     *     path="/api/v1/clean/last",
+     *     summary="Get last clean",
+     *     description="This request is used to get last clean history by vehicle id. This request is using MySql database, and have a protected routes.",
+     *     tags={"Clean"},
+     *     security={{"bearerAuth":{}}},
+     *     @OA\Response(
+     *         response=200,
+     *         description="clean fetched",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="message", type="string", example="clean fetched"),
+     *             @OA\Property(property="data", type="object",
+     *                         @OA\Property(property="clean_desc", type="string", example="Cuci mobil"),
+     *                         @OA\Property(property="clean_by", type="string", example="Carwash"),
+     *                         @OA\Property(property="is_clean_body", type="integer", example=1),
+     *                         @OA\Property(property="is_clean_window", type="integer", example=1),
+     *                         @OA\Property(property="is_clean_dashboard", type="integer", example=1),
+     *                         @OA\Property(property="is_clean_tires", type="integer", example=1),
+     *                         @OA\Property(property="is_clean_trash", type="integer", example=1),
+     *                         @OA\Property(property="is_clean_engine", type="integer", example=1),
+     *                         @OA\Property(property="is_clean_seat", type="integer", example=1),
+     *                         @OA\Property(property="is_clean_carpet", type="integer", example=1),
+     *                         @OA\Property(property="is_clean_pillows", type="integer", example=0),
+     *                         @OA\Property(property="clean_address", type="string", example="AutoService Jl. Kapten Tandean"),
+     *                         @OA\Property(property="is_fill_window_cleaning_water", type="integer", example=0),
+     *                         @OA\Property(property="is_clean_hollow", type="integer", example=1),
+     *                         @OA\Property(property="created_at", type="string", format="datetime", example="2024-03-27 12:33:05"),
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="protected route need to include sign in token as authorization bearer",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="failed"),
+     *             @OA\Property(property="message", type="string", example="you need to include the authorization token from login")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="clean failed to fetched",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="failed"),
+     *             @OA\Property(property="message", type="string", example="clean history not found")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal Server Error",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="error"),
+     *             @OA\Property(property="message", type="string", example="something wrong. please contact admin")
+     *         )
+     *     ),
+     * )
+     */
+    public function getLastCleanByVehicleId(Request $request){
+        try{
+            $user_id = $request->user()->id;
+            $vehicle_id = $request->query('vehicle_id') ?? null;
+
+            // Model 
+            $res = CleanModel::getLastCleanByVehicleId($user_id,$vehicle_id);
+
+            // Response
+            if($res) {
+                return response()->json([
+                    'status' => 'success',
+                    'message' => Generator::getMessageTemplate("fetch", $this->module),
+                    'data' => $res
+                ], Response::HTTP_OK);
+            } else {
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => Generator::getMessageTemplate("not_found", $this->module),
+                ], Response::HTTP_NOT_FOUND);
+            }
+        } catch(\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => Generator::getMessageTemplate("unknown_error", null),
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
 }

@@ -48,6 +48,17 @@ class CleanModel extends Model
         return $res->isNotEmpty() ? $res : null;
     }
 
+    public static function getLastCleanByVehicleId($user_id,$vehicle_id){
+        return CleanModel::selectRaw("
+                clean_desc, clean_by, clean.created_at,
+                is_clean_body, is_clean_window, is_clean_dashboard, is_clean_tires, is_clean_trash, is_clean_engine, is_clean_seat, is_clean_carpet, 
+                is_clean_pillows, clean_address, is_fill_window_cleaning_water, is_clean_hollow 
+            ")
+            ->where('vehicle_id',$vehicle_id)
+            ->orderBy('clean.created_at','DESC')
+            ->first();
+    }
+
     public static function getExportData($user_id, $vehicle_id = null){
         $res = CleanModel::selectRaw("
                 vehicle_name, clean_desc, clean_by, clean_tools, is_clean_body, is_clean_window, is_clean_dashboard, is_clean_tires, is_clean_trash, 
