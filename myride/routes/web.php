@@ -6,6 +6,7 @@ use App\Http\Controllers\GarageController;
 use App\Http\Controllers\GarageEditController;
 use App\Http\Controllers\GarageDetailController;
 use App\Http\Controllers\CleanController;
+use App\Http\Controllers\AddCleanController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\StatsController;
 use App\Http\Controllers\ProfileController;
@@ -45,6 +46,7 @@ Route::prefix('/clean')->middleware(['auth_v2:sanctum'])->group(function () {
     Route::get('/', [CleanController::class, 'index'])->name('clean');
 
     Route::post('/destroy/{id}', [CleanController::class, 'hard_del_clean']);
+    Route::get('/add', [AddCleanController::class, 'index'])->name('add_clean');
 });
 
 Route::prefix('/trip')->middleware(['auth_v2:sanctum'])->group(function () {

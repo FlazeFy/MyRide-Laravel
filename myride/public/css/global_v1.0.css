@@ -71,7 +71,7 @@ img:not(.gm-style img) {
     border-radius: var(--roundedLG);
 }
 
-.container, .form-control, .form-select, .modal-content, .swal2-popup, .popover, .plate-number, .chip {
+.container, .form-control, .form-select, .modal-content, .swal2-popup, .popover, .plate-number, .chip, .bordered {
     border: 2px solid var(--darkColor) !important;
 }
 .modal-content, .swal2-popup, .popover {
@@ -80,7 +80,7 @@ img:not(.gm-style img) {
 }
 
 /* Container & Button & Input */
-.form-control, .form-select, .btn, .container, .sidebar .nav-link.active, .plate-number, .chip {
+.form-control, .form-select, .btn, .container, .sidebar .nav-link.active, .plate-number, .chip, .bordered {
     border-radius: var(--roundedSM) !important;
 }
 .form-label, label {
@@ -281,7 +281,7 @@ hr {
     background: var(--darkColor);
 }
 
-.btn, .container, .sidebar .nav-link, .hover-grow, .plate-number, .chip{
+.btn, .container, .sidebar .nav-link, .hover-grow, .plate-number, .chip, .bordered {
     -webkit-transition: all 0.4s !important;
     -o-transition: all 0.4s !important;
     transition: all 0.4s !important;
