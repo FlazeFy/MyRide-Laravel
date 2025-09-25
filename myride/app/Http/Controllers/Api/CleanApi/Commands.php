@@ -100,4 +100,57 @@ class Commands extends Controller
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
+
+    public function postTrip(Request $request){
+        try{
+            $user_id = $request->user()->id;
+
+            $validator = Validation::getValidateClean($request);
+            if ($validator->fails()) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => $validator->errors()
+                ], Response::HTTP_BAD_REQUEST);
+            } else {
+                $data = [
+                    'vehicle_id' => $request->vehicle_id, 
+                    'clean_desc' => $request->clean_desc, 
+                    'clean_by' => $request->clean_by, 
+                    'clean_tools' => $request->clean_tools, 
+                    'is_clean_body' => $request->is_clean_body,
+                    'is_clean_window' => $request->is_clean_window,
+                    'is_clean_dashboard' => $request->is_clean_dashboard,
+                    'is_clean_tires' => $request->is_clean_tires,
+                    'is_clean_trash' => $request->is_clean_trash,
+                    'is_clean_engine' => $request->is_clean_engine,
+                    'is_clean_seat' => $request->is_clean_seat,
+                    'is_clean_carpet' => $request->is_clean_carpet,
+                    'is_clean_pillows' => $request->is_clean_pillows,
+                    'clean_address' => $request->clean_address,
+                    'clean_start_time' => $request->clean_start_time,
+                    'clean_end_time' => $request->clean_end_time,
+                    'is_fill_window_cleaning_water' => $request->is_fill_window_cleaning_water,
+                    'is_clean_hollow' => $request->is_clean_hollow
+                ];
+
+                $rows = CleanModel::createClean($data, $user_id);
+                if($rows){
+                    return response()->json([
+                        'status' => 'success',
+                        'message' => Generator::getMessageTemplate("create", $this->module),
+                    ], Response::HTTP_CREATED);
+                } else {
+                    return response()->json([
+                        'status' => 'error',
+                        'message' => Generator::getMessageTemplate("unknown_error", null),
+                    ], Response::HTTP_INTERNAL_SERVER_ERROR);
+                }
+            }
+        } catch(\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => Generator::getMessageTemplate("unknown_error", null),
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
 }

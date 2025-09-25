@@ -105,4 +105,27 @@ class Validation
             'telegram_user_id' => 'nullable|string|max:36|min:2'
         ]);
     }
+
+    public static function getValidateClean($request){
+        return Validator::make($request->all(), [
+            'vehicle_id' => 'required|string|max:36|min:36', 
+            'clean_desc' => 'nullable|string|min:1|max:500',
+            'clean_by' => 'required|string|max:75|min:1', 
+            'clean_tools' => 'nullable|string|max:500|min:1', 
+            'is_clean_body' => 'required|boolean',
+            'is_clean_window' => 'required|boolean',
+            'is_clean_dashboard' => 'required|boolean',
+            'is_clean_tires' => 'required|boolean',
+            'is_clean_trash' => 'required|boolean',
+            'is_clean_engine' => 'required|boolean',
+            'is_clean_seat' => 'required|boolean',
+            'is_clean_carpet' => 'required|boolean',
+            'is_clean_pillows' => 'required|boolean',
+            'clean_address' => 'nullable|string|max:75|min:1', 
+            'clean_start_time' => 'required|date_format:Y-m-d H:i:s',
+            'clean_end_time' => 'nullable|date_format:Y-m-d H:i:s', 
+            'is_fill_window_cleaning_water' => 'required|boolean',
+            'is_clean_hollow' => 'required|boolean'
+        ]);
+    }
 }
