@@ -13,6 +13,9 @@
             </div>
             <div class="col-lg-4 col-md-6 col-sm-12">
                 <div class="container">
+                    @include('fuel.usecases.get_fuel_summary')
+                </div>
+                <div class="container">
                     @include('fuel.usecases.get_all_fuel_monitor')
                 </div>
             </div>
