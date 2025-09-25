@@ -1905,6 +1905,120 @@
                 ]
             }
         },
+        "/api/v1/fuel/summary/{month_year}": {
+            "get": {
+                "tags": [
+                    "Fuel"
+                ],
+                "summary": "Get fuel summary monthly",
+                "description": "This request is used to get summary of fuel consume in the specific month period. This request is using MySql database, and have a protected routes.",
+                "operationId": "0096ab10ab04bf345e337bf46b860b78",
+                "responses": {
+                    "200": {
+                        "description": "Fuel record fetched successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "fuel fetched"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "total_fuel_volume": {
+                                                    "type": "integer",
+                                                    "example": 40
+                                                },
+                                                "total_fuel_price": {
+                                                    "type": "integer",
+                                                    "example": 600000
+                                                },
+                                                "total_refueling": {
+                                                    "type": "integer",
+                                                    "example": 2
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "protected route need to include sign in token as authorization bearer",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "you need to include the authorization token from login"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "fuel failed to fetched",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "fuel not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "something wrong. please contact admin"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/v1/history/destroy/{id}": {
             "delete": {
                 "tags": [
