@@ -8,8 +8,10 @@ use Illuminate\Http\Response;
 // Model
 use App\Models\ReminderModel;
 use App\Models\AdminModel;
+
 // Helper
 use App\Helpers\Generator;
+use App\Helpers\Validation;
 
 class Commands extends Controller
 {
@@ -96,6 +98,87 @@ class Commands extends Controller
             return response()->json([
                 'status' => 'error',
                 'message' => Generator::getMessageTemplate("unknown_error", null),
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
+     * @OA\POST(
+     *     path="/api/v1/reminder",
+     *     summary="Create a reminder",
+     *     tags={"Reminder"},
+     *     security={{"bearerAuth":{}}},
+     *     @OA\Response(
+     *         response=201,
+     *         description="reminder created",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="message", type="string", example="reminder created")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="protected route need to include sign in token as authorization bearer",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="failed"),
+     *             @OA\Property(property="message", type="string", example="you need to include the authorization token from login")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="reminder failed to validated",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="failed"),
+     *             @OA\Property(property="message", type="string", example="[failed validation message]")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal Server Error",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="error"),
+     *             @OA\Property(property="message", type="string", example="something wrong. please contact admin")
+     *         )
+     *     ),
+     * )
+     */
+    public function postReminder(Request $request){
+        try{
+            $user_id = $request->user()->id;
+
+            $validator = Validation::getValidateReminder($request);
+            if ($validator->fails()) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => $validator->errors()
+                ], Response::HTTP_BAD_REQUEST);
+            } else {
+                $data = [
+                    'vehicle_id' => $request->vehicle_id, 
+                    'reminder_title' => $request->reminder_title, 
+                    'reminder_context' => $request->reminder_context,  
+                    'reminder_body' => $request->reminder_body,  
+                    'reminder_attachment' => null,  
+                    'remind_at' => $request->remind_at, 
+                ];
+
+                $rows = ReminderModel::createReminder($data, $user_id);
+                if($rows){
+                    return response()->json([
+                        'status' => 'success',
+                        'message' => Generator::getMessageTemplate("create", $this->module),
+                    ], Response::HTTP_CREATED);
+                } else {
+                    return response()->json([
+                        'status' => 'error',
+                        'message' => Generator::getMessageTemplate("unknown_error", null),
+                    ], Response::HTTP_INTERNAL_SERVER_ERROR);
+                }
+            }
+        } catch(\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage(),
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }

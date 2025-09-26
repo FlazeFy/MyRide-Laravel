@@ -23,10 +23,18 @@
             <div id="attached_reminder-holder"></div>
         </div>
         <div class="col-xl-6 col-lg-12">
-            <label>Reminder Context</label>
-            <select class="form-select" name="reminder_context" id="reminder_context_holder" aria-label="Default select example">
-                <option>-</option>
-            </select>
+            <div class="row">
+                <div class="col-md-6 col-sm-12">
+                    <label>Reminder Context</label>
+                    <select class="form-select" name="reminder_context" id="reminder_context_holder" aria-label="Default select example">
+                        <option>-</option>
+                    </select>
+                </div>
+                <div class="col-md-6 col-sm-12">
+                    <label>Remind At</label>
+                    <input class="form-control" type="datetime-local" name="remind_at" id="remind_at">
+                </div>
+            </div>
             <label>Reminder Title</label>
             <input class="form-control" name="reminder_title" id="reminder_title">
             <label>Reminder Body</label>
@@ -234,6 +242,7 @@
     }
 
     const post_reminder = () => {
+        const vehicle_id = $('#vehicle_holder').val()
         const reminder_context = $('#reminder_context_holder').val()
 
         if(vehicle_id !== "-" && reminder_context !== "-"){
@@ -244,10 +253,10 @@
                 contentType: "application/json",
                 data: JSON.stringify({
                     vehicle_id: vehicle_id,
-                    reminder_title: $('#vehicle_title').val(),
-                    reminder_context: $('#vehicle_context').val(),
+                    reminder_title: $('#reminder_title').val(),
+                    reminder_context: reminder_context,
                     reminder_body: $("#reminder_body").val(),
-                    remind_at: $("#remind_at").val(),
+                    remind_at: formatDateTimeAPI($('#remind_at').val()),
                 }),
                 beforeSend: function (xhr) {
                     xhr.setRequestHeader("Accept", "application/json")

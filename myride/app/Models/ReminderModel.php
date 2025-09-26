@@ -3,12 +3,15 @@
 namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+// Helper
+use App\Helpers\Generator;
 
 class ReminderModel extends Model
 {
     use HasFactory;
     public $incrementing = false;
-
+    public $timestamps = false;
+    
     protected $table = 'reminder';
     protected $primaryKey = 'id';
     protected $fillable = ['id', 'reminder_title', 'reminder_context', 'reminder_body', 'reminder_attachment', 'created_at', 'created_by', 'remind_at', 'vehicle_id'];
@@ -61,5 +64,13 @@ class ReminderModel extends Model
         }
             
         return $res->delete();
+    }
+
+    public static function createReminder($data, $user_id){
+        $data['created_at'] = date('Y-m-d H:i:s');
+        $data['created_by'] = $user_id;
+        $data['id'] = Generator::getUUID();
+            
+        return ReminderModel::create($data);
     }
 }

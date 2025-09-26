@@ -8,6 +8,7 @@ use Illuminate\Http\Response;
 // Model
 use App\Models\CleanModel;
 use App\Models\AdminModel;
+
 // Helper
 use App\Helpers\Generator;
 use App\Helpers\Validation;
@@ -101,7 +102,47 @@ class Commands extends Controller
         }
     }
 
-    public function postTrip(Request $request){
+    /**
+     * @OA\POST(
+     *     path="/api/v1/clean",
+     *     summary="Create a clean",
+     *     tags={"Clean"},
+     *     security={{"bearerAuth":{}}},
+     *     @OA\Response(
+     *         response=201,
+     *         description="clean created",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="message", type="string", example="clean created")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="protected route need to include sign in token as authorization bearer",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="failed"),
+     *             @OA\Property(property="message", type="string", example="you need to include the authorization token from login")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="clean failed to validated",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="failed"),
+     *             @OA\Property(property="message", type="string", example="[failed validation message]")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal Server Error",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="error"),
+     *             @OA\Property(property="message", type="string", example="something wrong. please contact admin")
+     *         )
+     *     ),
+     * )
+     */
+    public function postClean(Request $request){
         try{
             $user_id = $request->user()->id;
 

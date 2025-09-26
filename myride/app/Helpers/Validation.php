@@ -11,6 +11,7 @@ use App\Rules\VehicleStatusType;
 use App\Rules\FuelBrandRules;
 use App\Rules\FuelTypeRules;
 use App\Rules\FuelRonRules;
+use App\Rules\ReminderContextRules;
 
 class Validation
 {
@@ -126,6 +127,16 @@ class Validation
             'clean_end_time' => 'nullable|date_format:Y-m-d H:i:s', 
             'is_fill_window_cleaning_water' => 'required|boolean',
             'is_clean_hollow' => 'required|boolean'
+        ]);
+    }
+
+    public static function getValidateReminder($request){
+        return Validator::make($request->all(), [
+            'vehicle_id' => 'required|string|max:36|min:36', 
+            'reminder_title' => 'required|string|max:75|min:1', 
+            'reminder_context' => ['required', new ReminderContextRules], 
+            'reminder_body' => 'required|string|max:255|min:1',   
+            'remind_at' => 'required|date_format:Y-m-d H:i:s',
         ]);
     }
 }
