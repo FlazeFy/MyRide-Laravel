@@ -15,6 +15,7 @@ use App\Http\Controllers\TripController;
 use App\Http\Controllers\AddTripController;
 use App\Http\Controllers\EmbedController;
 use App\Http\Controllers\ReminderController;
+use App\Http\Controllers\AddReminderController;
 use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\FuelController;
 use App\Http\Controllers\AddFuelController;
@@ -45,7 +46,6 @@ Route::prefix('/garage')->middleware(['auth_v2:sanctum'])->group(function () {
 Route::prefix('/clean')->middleware(['auth_v2:sanctum'])->group(function () {
     Route::get('/', [CleanController::class, 'index'])->name('clean');
 
-    Route::post('/destroy/{id}', [CleanController::class, 'hard_del_clean']);
     Route::get('/add', [AddCleanController::class, 'index'])->name('add_clean');
 });
 
@@ -57,6 +57,7 @@ Route::prefix('/trip')->middleware(['auth_v2:sanctum'])->group(function () {
 
 Route::prefix('/reminder')->middleware(['auth_v2:sanctum'])->group(function () {
     Route::get('/', [ReminderController::class, 'index'])->name('reminder');
+    Route::get('/add', [AddReminderController::class, 'index'])->name('add_reminder');
 });
 
 Route::prefix('/inventory')->middleware(['auth_v2:sanctum'])->group(function () {

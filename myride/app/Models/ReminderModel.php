@@ -40,6 +40,19 @@ class ReminderModel extends Model
             ->paginate($limit);                       
     }
 
+    public static function getReminderByVehicle($user_id = null,$vehicle_id){
+        $res = ReminderModel::select('reminder.id','reminder_title', 'reminder_context', 'reminder_body', 'reminder_attachment', 'reminder.created_at', 'remind_at');
+
+        if($user_id){
+            $res = $res->where('reminder.created_by', $user_id);
+        }
+            
+        return $res->whereNotNull('remind_at')
+            ->where('remind_at', '>=', now()) 
+            ->orderBy('remind_at', 'asc') 
+            ->get();  
+    }
+
     public static function hardDeleteReminderById($id, $user_id = null){
         $res = ReminderModel::where('id',$id);
 

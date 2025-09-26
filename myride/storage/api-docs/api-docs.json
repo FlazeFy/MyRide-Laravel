@@ -3016,6 +3016,155 @@
                 ]
             }
         },
+        "/api/v1/reminder/vehicle/{vehicle_id}": {
+            "get": {
+                "tags": [
+                    "Reminder"
+                ],
+                "summary": "Get reminder by vehicle",
+                "description": "This request is used to get all reminder by specific vehicle. This request is using MySql database, and have a protected routes.",
+                "operationId": "73387d06e291173fd973bab044aa3b38",
+                "responses": {
+                    "200": {
+                        "description": "reminder fetched",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "reminder fetched"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "string",
+                                                        "format": "uuid",
+                                                        "example": "28668090-5653-dff5-2d8f-af603fc36b45"
+                                                    },
+                                                    "reminder_title": {
+                                                        "type": "string",
+                                                        "example": "Routine service"
+                                                    },
+                                                    "reminder_context": {
+                                                        "type": "string",
+                                                        "example": "Service"
+                                                    },
+                                                    "reminder_body": {
+                                                        "type": "string",
+                                                        "example": "Lorem ipsum"
+                                                    },
+                                                    "reminder_attachment": {
+                                                        "type": "array",
+                                                        "items": {
+                                                            "properties": {
+                                                                "attachment_type": {
+                                                                    "type": "string",
+                                                                    "example": "location"
+                                                                },
+                                                                "attachment_value": {
+                                                                    "type": "string",
+                                                                    "example": "-6.223617982933017, 106.84620287273809"
+                                                                }
+                                                            },
+                                                            "type": "object"
+                                                        },
+                                                        "example": [
+                                                            {
+                                                                "attachment_type": "location",
+                                                                "attachment_value": "-6.223617982933017, 106.84620287273809"
+                                                            }
+                                                        ]
+                                                    },
+                                                    "remind_at": {
+                                                        "type": "string",
+                                                        "example": "2025-06-24 10:54:42",
+                                                        "nullable": true
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "protected route need to include sign in token as authorization bearer",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "you need to include the authorization token from login"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "reminder failed to fetched",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "reminder history not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "something wrong. please contact admin"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/v1/stats/total/vehicle/{context}": {
             "get": {
                 "tags": [
