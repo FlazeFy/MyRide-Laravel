@@ -110,6 +110,7 @@ Route::prefix('/v1/trip')->group(function () {
 Route::prefix('/v1/inventory')->middleware(['auth:sanctum'])->group(function () {
     Route::get('/', [QueriesInventoryController::class, 'getAllInventory']);
     Route::delete('/destroy/{id}', [CommandsInventoryController::class, 'hardDeleteInventoryById']);
+    Route::post('/', [CommandsInventoryController::class, 'postInventory']);
 });
 
 Route::prefix('/v1/user')->middleware(['auth:sanctum'])->group(function () {

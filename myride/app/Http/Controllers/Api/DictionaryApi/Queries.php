@@ -82,13 +82,17 @@ class Queries extends Controller
 
             // Model
             $res = DictionaryModel::select('dictionary_name','dictionary_type')
-                ->where('created_by',$user_id)
-                ->orwherenull('created_by');
+                ->where(function($query) use ($user_id){
+                    $query->where('created_by',$user_id)
+                        ->orwhereNull('created_by');
+                });
             if(strpos($type, ',')){
                 $dcts = explode(",", $type);
-                foreach ($dcts as $dt) {
-                    $res = $res->orwhere('dictionary_type',$dt); 
-                }
+                $res = $res->where(function($query) use ($dcts) {
+                    foreach ($dcts as $dt) {
+                        $query->orWhere('dictionary_type', $dt);
+                    }
+                });
             } else {
                 $res = $res->where('dictionary_type',$type); 
             }

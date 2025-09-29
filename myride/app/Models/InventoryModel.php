@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+// Helper
+use App\Helpers\Generator;
 
 /**
  * @OA\Schema(
@@ -71,5 +73,14 @@ class InventoryModel extends Model
             ->orderBy('inventory.created_at');
 
         return $res->get();
+    }
+
+    public static function createInventory($data, $user_id){
+        $data['created_at'] = date('Y-m-d H:i:s');
+        $data['created_by'] = $user_id;
+        $data['updated_at'] = null;
+        $data['id'] = Generator::getUUID();
+            
+        return InventoryModel::create($data);
     }
 }

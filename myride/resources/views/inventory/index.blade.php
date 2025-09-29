@@ -2,6 +2,7 @@
 
 @section('content')
     <div class="position-relative">
+        <a class="btn btn-success" href='/inventory/add'><i class="fa-solid fa-plus"></i> Add Inventory</a>
         @include('inventory.usecases.get_export_inventory')
         <div class="row mt-2">
             <div class="col-lg-9 col-md-7 col-sm-12">

@@ -139,4 +139,15 @@ class Validation
             'remind_at' => 'required|date_format:Y-m-d H:i:s',
         ]);
     }
+    
+    public static function getValidateInventory($request){
+        return Validator::make($request->all(), [
+            'vehicle_id' => 'required|string|max:36|min:36', 
+            'gudangku_inventory_id' => 'nullable|string|max:36|min:36', 
+            'inventory_name' => 'required|string|max:75|min:1', 
+            'inventory_category' => 'required|string|max:36|min:1', 
+            'inventory_qty' => 'required|integer|max:99|min:1', 
+            'inventory_storage' => 'required|string|max:36|min:1', 
+        ]);
+    }
 }
