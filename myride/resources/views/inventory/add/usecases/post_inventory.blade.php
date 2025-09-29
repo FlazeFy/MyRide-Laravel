@@ -1,4 +1,4 @@
-<h2>Add Fuel</h2>
+<h2>Add Inventory</h2>
 <form id="form-add-inventory">
     <div class="row">
         <div class="col-xl-6 col-lg-12 pb-4">
@@ -20,7 +20,19 @@
             </div>
             <hr>
             <label>Attached Inventory</label>
-            <div id="list_attached_inventory-holder"></div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Inventory Name</th>
+                        <th scope="col">Category</th>
+                        <th scope="col">Storage</th>
+                        <th scope="col">Qty</th>
+                    </tr>
+                </thead>
+                <tbody id="list_attached_inventory-holder">
+                    <tr><th scope="row" colspan="4" class="fst-italic fw-normal">- No Inventory Found -</th></tr>
+                </tbody>
+            </table>
         </div>
         <div class="col-xl-6 col-lg-12">
             <div class="row">
@@ -62,6 +74,7 @@
     $(document).on('change','#vehicle_holder', function(){
         const id = $(this).val()
         get_vehicle_detail(id)
+        get_vehicle_attached_inventory(id)
     })
     $(document).on('change','#inventory_category_holder', function(){
         const val = $(this).val()
@@ -135,14 +148,12 @@
             context = context.split(',')
             context.forEach(el => {
                 ctx_holder.push(`${el}_holder`)
-            });
+            })
         } else {
             ctx_holder = `${context}_holder`
         }
-        
 
         const generate_context_list = (holder,data) => {
-            console.log(holder)
             if(Array.isArray(holder)){
                 holder.forEach(dt => {
                     $(`#${dt}`).empty().append(`<option>-</option>`)
@@ -226,6 +237,44 @@
             error: function(response, jqXHR, textStatus, errorThrown) {
                 Swal.close()
                 failedMsg('get the vehicle')
+            }
+        });
+    }
+
+    const get_vehicle_attached_inventory = (id) => {
+        const holder = 'list_attached_inventory-holder'
+        $(`#${holder}`).empty()
+        Swal.showLoading()
+
+        $.ajax({
+            url: `/api/v1/inventory/vehicle/${id}`,
+            type: 'GET',
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Accept", "application/json")
+                xhr.setRequestHeader("Authorization", "Bearer <?= session()->get("token_key"); ?>")
+            },
+            success: function(response) {
+                Swal.close()
+                const data = response.data
+                
+                data.forEach(dt => {
+                    $(`#${holder}`).append(`
+                        <tr>
+                            <td scope="col">${dt.inventory_name}</td>
+                            <td scope="col">${dt.inventory_category}</td>
+                            <td scope="col">${dt.inventory_storage}</td>
+                            <td scope="col">${dt.inventory_qty}</td>
+                        </tr>
+                    `)
+                });
+            },
+            error: function(response, jqXHR, textStatus, errorThrown) {
+                Swal.close()
+                if(response.status != 404){
+                    $(`#${holder}`).html(`<th scope="row" colspan="4" class="fst-italic fw-normal">- No Inventory Found -</th>`)
+                } else {
+                    failedMsg('get the vehicle last fuel')
+                }
             }
         });
     }

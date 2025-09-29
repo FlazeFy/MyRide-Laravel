@@ -109,6 +109,7 @@ Route::prefix('/v1/trip')->group(function () {
 
 Route::prefix('/v1/inventory')->middleware(['auth:sanctum'])->group(function () {
     Route::get('/', [QueriesInventoryController::class, 'getAllInventory']);
+    Route::get('/vehicle/{vehicle_id}', [QueriesInventoryController::class, 'getInventoryByVehicle']);
     Route::delete('/destroy/{id}', [CommandsInventoryController::class, 'hardDeleteInventoryById']);
     Route::post('/', [CommandsInventoryController::class, 'postInventory']);
 });

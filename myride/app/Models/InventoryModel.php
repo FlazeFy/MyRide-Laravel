@@ -75,6 +75,19 @@ class InventoryModel extends Model
         return $res->get();
     }
 
+    public static function getInventoryByVehicle($user_id, $vehicle_id){
+        $res = InventoryModel::select('inventory.id','inventory_name', 'inventory_category', 'inventory_qty', 'inventory_storage', 'inventory.created_at');
+        
+        if($vehicle_id){
+            $res = $res->where('vehicle_id',$vehicle_id);
+        }
+
+        $res = $res->where('inventory.created_by',$user_id)
+            ->orderBy('inventory_name');
+
+        return $res->get();
+    }
+
     public static function createInventory($data, $user_id){
         $data['created_at'] = date('Y-m-d H:i:s');
         $data['created_by'] = $user_id;
