@@ -60,6 +60,10 @@
                             <td>
                                 ${dt.inventory_image_url != null ? `<a class="btn btn-primary" style="width:50px;"><i class="fa-solid fa-image"></i></a>` : ""}
                                 <a class="btn btn-danger btn-delete" style="width:50px;" data-url="/api/v1/inventory/destroy/${dt.id}" data-context="Inventory"><i class="fa-solid fa-trash"></i></a>
+                                <a class="btn btn-warning btn-update" style="width:50px;" 
+                                    data-vehicle-plate-number="${dt.vehicle_plate_number}" data-id="${dt.id}" 
+                                    data-inventory-name="${dt.inventory_name}" data-inventory-qty="${dt.inventory_qty}" 
+                                    data-inventory-category="${dt.inventory_category}" data-inventory-storage="${dt.inventory_storage}"><i class="fa-solid fa-pen-to-square"></i></a>
                             </td>
                         </tr>
                     `)

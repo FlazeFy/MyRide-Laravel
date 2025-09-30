@@ -114,3 +114,8 @@ const generate_api_error = (response, is_list_format) => {
         });
     }
 }
+
+const callModal = (id) => {
+    const modal = new bootstrap.Modal(document.getElementById(id))
+    modal.show()
+}

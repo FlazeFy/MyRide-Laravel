@@ -140,14 +140,19 @@ class Validation
         ]);
     }
     
-    public static function getValidateInventory($request){
-        return Validator::make($request->all(), [
-            'vehicle_id' => 'required|string|max:36|min:36', 
-            'gudangku_inventory_id' => 'nullable|string|max:36|min:36', 
-            'inventory_name' => 'required|string|max:75|min:1', 
-            'inventory_category' => 'required|string|max:36|min:1', 
-            'inventory_qty' => 'required|integer|max:99|min:1', 
-            'inventory_storage' => 'required|string|max:36|min:1', 
-        ]);
+    public static function getValidateInventory($request,$type){
+        $rules = [
+            'vehicle_id' => 'required|string|size:36',
+            'inventory_name' => 'required|string|min:1|max:75',
+            'inventory_category' => 'required|string|min:1|max:36',
+            'inventory_qty' => 'required|integer|min:1|max:99',
+            'inventory_storage' => 'required|string|min:1|max:36',
+        ];
+
+        if ($type === 'create') {
+            $rules['gudangku_inventory_id'] = 'nullable|string|size:36';
+        }
+
+        return Validator::make($request->all(), $rules);
     }
 }

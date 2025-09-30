@@ -96,4 +96,8 @@ class InventoryModel extends Model
             
         return InventoryModel::create($data);
     }
+
+    public static function updateInventoryById($data, $user_id, $id){
+        return InventoryModel::where('created_by',$user_id)->where('id',$id)->update($data);
+    }
 }

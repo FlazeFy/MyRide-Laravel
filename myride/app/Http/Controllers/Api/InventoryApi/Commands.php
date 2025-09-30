@@ -145,7 +145,7 @@ class Commands extends Controller
         try{
             $user_id = $request->user()->id;
 
-            $validator = Validation::getValidateInventory($request);
+            $validator = Validation::getValidateInventory($request,'create');
             if ($validator->fails()) {
                 return response()->json([
                     'status' => 'error',
@@ -167,6 +167,86 @@ class Commands extends Controller
                     return response()->json([
                         'status' => 'success',
                         'message' => Generator::getMessageTemplate("create", $this->module),
+                    ], Response::HTTP_CREATED);
+                } else {
+                    return response()->json([
+                        'status' => 'error',
+                        'message' => Generator::getMessageTemplate("unknown_error", null),
+                    ], Response::HTTP_INTERNAL_SERVER_ERROR);
+                }
+            }
+        } catch(\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => Generator::getMessageTemplate("unknown_error", null),
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
+     * @OA\PUT(
+     *     path="/api/v1/inventory/{id}",
+     *     summary="Update an inventory",
+     *     tags={"Inventory"},
+     *     security={{"bearerAuth":{}}},
+     *     @OA\Response(
+     *         response=200,
+     *         description="inventory updated",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="message", type="string", example="inventory updated")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="protected route need to include sign in token as authorization bearer",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="failed"),
+     *             @OA\Property(property="message", type="string", example="you need to include the authorization token from login")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="inventory failed to validated",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="failed"),
+     *             @OA\Property(property="message", type="string", example="[failed validation message]")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal Server Error",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="error"),
+     *             @OA\Property(property="message", type="string", example="something wrong. please contact admin")
+     *         )
+     *     ),
+     * )
+     */
+    public function updateInventory(Request $request, $id){
+        try{
+            $user_id = $request->user()->id;
+
+            $validator = Validation::getValidateInventory($request,'update');
+            if ($validator->fails()) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => $validator->errors()
+                ], Response::HTTP_BAD_REQUEST);
+            } else {
+                $data = [
+                    'vehicle_id' => $request->vehicle_id, 
+                    'inventory_name' => $request->inventory_name, 
+                    'inventory_category' => $request->inventory_category, 
+                    'inventory_qty' => $request->inventory_qty, 
+                    'inventory_storage' => $request->inventory_storage 
+                ];
+
+                $rows = InventoryModel::updateInventoryById($data, $user_id, $id);
+                if($rows > 0){
+                    return response()->json([
+                        'status' => 'success',
+                        'message' => Generator::getMessageTemplate("update", $this->module),
                     ], Response::HTTP_CREATED);
                 } else {
                     return response()->json([
