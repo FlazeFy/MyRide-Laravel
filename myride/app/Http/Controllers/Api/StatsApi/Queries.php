@@ -13,14 +13,14 @@ use App\Models\TripModel;
 use App\Models\VehicleModel;
 use App\Models\UserModel;
 use App\Models\ServiceModel;
-use App\Models\DriverModel;
+use App\Models\DriverModel; 
 use App\Models\CleanModel;
 use App\Models\FuelModel;
 use App\Models\MultiModel;
 
 class Queries extends Controller
 {
-    /**`1
+    /**
      * @OA\GET(
      *     path="/api/v1/stats/total/trip/{context}",
      *     summary="Get total trip by context",
@@ -89,7 +89,7 @@ class Queries extends Controller
                     if($dt == "trip_category" || $dt == "trip_origin_name" || $dt == "trip_destination_name"){
                         $res[] = [
                             'context' => $dt,
-                            'data' => TripModel::getContextTotalStats($dt,$user_id)
+                            'data' => MultiModel::getContextTotalStats($dt,$user_id,'trip')
                         ];
                     } else {
                         return response()->json([
@@ -99,7 +99,110 @@ class Queries extends Controller
                     }
                 }
             } else {
-                $res = TripModel::getContextTotalStats($context,$user_id);
+                $res = MultiModel::getContextTotalStats($context,$user_id,'trip');
+            }
+                
+            if ($res) {
+                return response()->json([
+                    'status' => 'success',
+                    'message' => Generator::getMessageTemplate("fetch", 'stats'),
+                    'data' => $res
+                ], Response::HTTP_OK);
+            } else {
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => Generator::getMessageTemplate("not_found", 'stats'),
+                ], Response::HTTP_NOT_FOUND);
+            }
+            
+        } catch(\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage(),
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
+     * @OA\GET(
+     *     path="/api/v1/stats/total/inventory/{context}",
+     *     summary="Get total inventory by context",
+     *     description="This request is used to get total inventory by `context`, that can be inventory_category, and inventory_storage. This request is using MySql database, and have a protected routes.",
+     *     tags={"Stats"},
+     *     security={{"bearerAuth":{}}},
+     *     @OA\Parameter(
+     *         name="context",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string",
+     *             example="inventory_category"
+     *         ),
+     *         description="Inventory Context",
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="stats fetched",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="message", type="string", example="stats fetched"),
+     *                 @OA\Property(property="data", type="array",
+     *                     @OA\Items(
+     *                          @OA\Property(property="context", type="string", example="Others"),
+     *                          @OA\Property(property="total", type="integer", example=4)
+     *                 )
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="protected route need to include sign in token as authorization bearer",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="failed"),
+     *             @OA\Property(property="message", type="string", example="you need to include the authorization token from login")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="stats failed to fetched",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="failed"),
+     *             @OA\Property(property="message", type="string", example="stats not found")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal Server Error",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="error"),
+     *             @OA\Property(property="message", type="string", example="something wrong. please contact admin")
+     *         )
+     *     ),
+     * )
+     */
+    public function getTotalInventoryByContext(Request $request, $context)
+    {
+        try{
+            $user_id = $request->user()->id;
+
+            $res = null;
+            if(str_contains($context,",")){
+                $list_context = explode(",",$context);
+                foreach ($list_context as $dt) {
+                    if($dt == "inventory_category" || $dt == "inventory_storage"){
+                        $res[] = [
+                            'context' => $dt,
+                            'data' => MultiModel::getContextTotalStats($dt,$user_id,'inventory')
+                        ];
+                    } else {
+                        return response()->json([
+                            'status' => 'failed',
+                            'message' => Generator::getMessageTemplate("custom", "$dt is not available"),
+                        ], Response::HTTP_BAD_REQUEST);
+                    }
+                }
+            } else {
+                $res = MultiModel::getContextTotalStats($context,$user_id,'inventory');
             }
                 
             if ($res) {
@@ -194,7 +297,7 @@ class Queries extends Controller
                     if (in_array($dt, $vehicleContext)) {
                         $res[] = [
                             'context' => $dt,
-                            'data' => VehicleModel::getContextTotalStats($dt,$user_id)
+                            'data' => MultiModel::getContextTotalStats($dt,$user_id,'vehicle')
                         ];
                     } else {
                         return response()->json([
@@ -205,7 +308,7 @@ class Queries extends Controller
                 }
             } else {
                 if (in_array($context, $vehicleContext)) {
-                    $res = VehicleModel::getContextTotalStats($context,$user_id);
+                    $res = MultiModel::getContextTotalStats($context,$user_id,'vehicle');
                 } else {
                     return response()->json([
                         'status' => 'failed',

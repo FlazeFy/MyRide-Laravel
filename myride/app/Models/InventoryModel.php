@@ -98,6 +98,8 @@ class InventoryModel extends Model
     }
 
     public static function updateInventoryById($data, $user_id, $id){
+        $data['updated_at'] = date('Y-m-d H:i:s');
+        
         return InventoryModel::where('created_by',$user_id)->where('id',$id)->update($data);
     }
 }

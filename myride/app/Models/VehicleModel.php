@@ -47,19 +47,6 @@ class VehicleModel extends Model
             ->get();
     }
 
-    public static function getContextTotalStats($context,$user_id){
-        $res = VehicleModel::selectRaw("$context as context, COUNT(1) as total");
-        if($user_id){
-            $res = $res->where('created_by', $user_id);
-        }
-        $res = $res->groupby($context)
-            ->orderby('total','desc')
-            ->limit(7)
-            ->get();
-        
-        return count($res) > 0 ? $res : null;
-    }
-
     public static function getAllVehicleHeader($user_id = null,$limit){
         $query_header_vehicle = Query::get_select_template('vehicle_header');
         $res = VehicleModel::selectRaw($query_header_vehicle);

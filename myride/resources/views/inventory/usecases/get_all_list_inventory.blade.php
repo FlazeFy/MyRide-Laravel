@@ -42,7 +42,7 @@
                             <td class="text-center">${dt.inventory_name}</td>
                             <td class="text-center">${dt.inventory_qty}</td>
                             <td class="text-start">
-                                <h6 class="mb-0">Cateogry</h6>
+                                <h6 class="mb-0">Category</h6>
                                 <p class="mb-0">${dt.inventory_category}</p>
                                 <h6 class="mb-0">Storage</h6>
                                 <p class="mb-0">${dt.inventory_storage}</p>

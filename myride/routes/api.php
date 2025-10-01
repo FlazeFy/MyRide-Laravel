@@ -84,6 +84,7 @@ Route::prefix('/v1/reminder')->middleware(['auth:sanctum'])->group(function () {
 
 Route::prefix('/v1/stats')->middleware(['auth:sanctum'])->group(function () {
     Route::get('/total/trip/{context}', [QueriesStatsApi::class, 'getTotalTripByContext']);
+    Route::get('/total/inventory/{context}', [QueriesStatsApi::class, 'getTotalInventoryByContext']);
     Route::get('/total/vehicle/{context}', [QueriesStatsApi::class, 'getTotalVehicleByContext']);
     Route::get('/total/fuel/monthly/{context}/{year}', [QueriesStatsApi::class, 'getTotalFuelPerYear']);
     Route::get('/total/trip/monthly/{year}/{vehicle_id}', [QueriesStatsApi::class, 'getTotalTripByVehiclePerYear']);

@@ -14,6 +14,11 @@
                     @include('inventory.usecases.put_inventory')
                 </div>
             </div>
+            <div class="col-lg-3 col-md-5 col-sm-12">
+                <div class="container">
+                    @include('inventory.usecases.get_inventory_category_distribution')
+                </div>
+            </div>
         </div>
     </div>
 @endsection

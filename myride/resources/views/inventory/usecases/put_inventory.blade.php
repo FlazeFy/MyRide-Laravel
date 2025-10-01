@@ -2,6 +2,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-body">
+                <h2>Edit Inventory</h2><hr>
                 <input hidden id="inventory_id">
                 <label>Vehicle Name & Plate Number</label>
                 <select class="form-select" name="vehicle_holder" id="vehicle_holder" aria-label="Default select example">
@@ -19,7 +20,6 @@
                 <input class="form-control" name="inventory_qty" id="inventory_qty" type="number" min="1" value="1">
                 <label>Inventory Name</label>
                 <input class="form-control" name="inventory_name" id="inventory_name">
-                </div>
                 <hr>
                 <button class="btn btn-success rounded-pill px-4" id="submit_update-btn">Save Changes</button>
             </div>
