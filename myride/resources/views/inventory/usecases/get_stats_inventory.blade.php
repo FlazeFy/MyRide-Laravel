@@ -27,7 +27,7 @@
                     localStorage.setItem(ctx,JSON.stringify(data))
                     localStorage.setItem(`last-hit-${ctx}`,Date.now())
                     data.forEach(dt => {
-                        generate_pie_chart(`Most ${dt.context.replaceAll('_',' ')}`,`${dt.context}-holder`,dt.data)
+                        generate_pie_chart(`${dt.context.replaceAll('_',' ')} Distribution`,`${dt.context}-holder`,dt.data)
                     });
                 },
                 error: function(response, jqXHR, textStatus, errorThrown) {

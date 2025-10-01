@@ -26,6 +26,7 @@ use App\Http\Controllers\Api\FuelApi\Queries as QueriesFuelController;
 use App\Http\Controllers\Api\FuelApi\Commands as CommandsFuelController;
 use App\Http\Controllers\Api\InventoryApi\Queries as QueriesInventoryController;
 use App\Http\Controllers\Api\InventoryApi\Commands as CommandsInventoryController;
+use App\Http\Controllers\Api\ServiceApi\Queries as QueriesServiceController;
 
 ######################### Public Route #########################
 
@@ -80,6 +81,10 @@ Route::prefix('/v1/reminder')->middleware(['auth:sanctum'])->group(function () {
     Route::get('/vehicle/{vehicle_id}', [QueriesReminderController::class, 'getReminderByVehicle']);
     Route::delete('/destroy/{id}', [CommandsReminderController::class, 'hardDeleteReminderById']);
     Route::post('/', [CommandsReminderController::class, 'postReminder']);
+});
+
+Route::prefix('/v1/service')->middleware(['auth:sanctum'])->group(function () {
+    Route::get('/', [QueriesServiceController::class, 'getAllService']);
 });
 
 Route::prefix('/v1/stats')->middleware(['auth:sanctum'])->group(function () {
