@@ -21,7 +21,7 @@
                 <label>Inventory Name</label>
                 <input class="form-control" name="inventory_name" id="inventory_name">
                 <hr>
-                <button class="btn btn-success rounded-pill px-4" id="submit_update-btn">Save Changes</button>
+                <button class="btn btn-success rounded-pill px-4" id="submit_update-btn"><i class="fa-solid fa-floppy-disk"></i> Save Changes</button>
             </div>
         </div>
     </div>
