@@ -19,6 +19,7 @@ use App\Http\Controllers\AddReminderController;
 use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\FuelController;
 use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\AddServiceController;
 use App\Http\Controllers\AddFuelController;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\AddInventoryController;
@@ -74,6 +75,7 @@ Route::prefix('/history')->middleware(['auth_v2:sanctum'])->group(function () {
 
 Route::prefix('/service')->middleware(['auth_v2:sanctum'])->group(function () {
     Route::get('/', [ServiceController::class, 'index'])->name('service');
+    Route::get('/add', [AddServiceController::class, 'index'])->name('add_service');
 });
 
 Route::prefix('/fuel')->middleware(['auth_v2:sanctum'])->group(function () {

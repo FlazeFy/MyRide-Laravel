@@ -26,4 +26,15 @@ class ServiceModel extends Model
             ->orderBy('service.created_at', 'desc')     
             ->paginate($limit);                       
     }
+
+    public static function getServiceByVehicle($user_id = null,$vehicle_id){
+        $res = ServiceModel::select('service.id', 'service_category', 'service_price_total', 'service_location', 'service_note', 'service.created_at', 'remind_at');
+
+        if($user_id){
+            $res = $res->where('service.created_by', $user_id);
+        }
+            
+        return $res->orderBy('remind_at', 'asc') 
+            ->get();  
+    }
 }
