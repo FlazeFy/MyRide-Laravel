@@ -48,4 +48,14 @@ class ServiceModel extends Model
             
         return ServiceModel::create($data);
     }
+
+    public static function hardDeleteServiceById($id, $user_id = null){
+        $res = ServiceModel::where('id',$id);
+
+        if($user_id){
+            $res = $res->where('created_by',$user_id);
+        }
+            
+        return $res->delete();
+    }
 }

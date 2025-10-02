@@ -88,6 +88,7 @@ Route::prefix('/v1/service')->middleware(['auth:sanctum'])->group(function () {
     Route::get('/', [QueriesServiceController::class, 'getAllService']);
     Route::get('/vehicle/{vehicle_id}', [QueriesServiceController::class, 'getServiceByVehicle']);
     Route::post('/', [CommandsServiceController::class, 'postService']);
+    Route::delete('/destroy/{id}', [CommandsServiceController::class, 'hardDeleteServiceById']);
 });
 
 Route::prefix('/v1/stats')->middleware(['auth:sanctum'])->group(function () {
