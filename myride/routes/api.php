@@ -27,6 +27,7 @@ use App\Http\Controllers\Api\FuelApi\Commands as CommandsFuelController;
 use App\Http\Controllers\Api\InventoryApi\Queries as QueriesInventoryController;
 use App\Http\Controllers\Api\InventoryApi\Commands as CommandsInventoryController;
 use App\Http\Controllers\Api\ServiceApi\Queries as QueriesServiceController;
+use App\Http\Controllers\Api\ServiceApi\Commands as CommandsServiceController;
 
 ######################### Public Route #########################
 
@@ -86,6 +87,7 @@ Route::prefix('/v1/reminder')->middleware(['auth:sanctum'])->group(function () {
 Route::prefix('/v1/service')->middleware(['auth:sanctum'])->group(function () {
     Route::get('/', [QueriesServiceController::class, 'getAllService']);
     Route::get('/vehicle/{vehicle_id}', [QueriesServiceController::class, 'getServiceByVehicle']);
+    Route::post('/', [CommandsServiceController::class, 'postService']);
 });
 
 Route::prefix('/v1/stats')->middleware(['auth:sanctum'])->group(function () {

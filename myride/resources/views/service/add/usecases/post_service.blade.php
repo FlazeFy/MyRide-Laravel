@@ -290,7 +290,7 @@
                     service_category: $("#service_category_holder").val(),
                     service_location: $("#service_location").val(),
                     service_price_total: $("#service_price_total").val(),
-                    remind_at: $("#remind_at").val()
+                    remind_at: formatDateTimeAPI($("#remind_at").val())
                 }),
                 beforeSend: function (xhr) {
                     xhr.setRequestHeader("Accept", "application/json")

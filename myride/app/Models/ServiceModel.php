@@ -3,6 +3,8 @@
 namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+// Helper
+use App\Helpers\Generator;
 
 class ServiceModel extends Model
 {
@@ -36,5 +38,14 @@ class ServiceModel extends Model
             
         return $res->orderBy('remind_at', 'asc') 
             ->get();  
+    }
+
+    public static function createService($data, $user_id){
+        $data['created_at'] = date('Y-m-d H:i:s');
+        $data['created_by'] = $user_id;
+        $data['updated_at'] = null;
+        $data['id'] = Generator::getUUID();
+            
+        return ServiceModel::create($data);
     }
 }

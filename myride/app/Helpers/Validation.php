@@ -11,6 +11,7 @@ use App\Rules\VehicleStatusType;
 use App\Rules\FuelBrandRules;
 use App\Rules\FuelTypeRules;
 use App\Rules\FuelRonRules;
+use App\Rules\ServiceCategoryRules;
 use App\Rules\ReminderContextRules;
 
 class Validation
@@ -137,6 +138,17 @@ class Validation
             'reminder_context' => ['required', new ReminderContextRules], 
             'reminder_body' => 'required|string|max:255|min:1',   
             'remind_at' => 'required|date_format:Y-m-d H:i:s',
+        ]);
+    }
+
+    public static function getValidateService($request){
+        return Validator::make($request->all(), [
+            'vehicle_id' => 'required|string|max:36|min:36', 
+            'service_note' => 'required|string|min:1', 
+            'service_category' => ['required', new ServiceCategoryRules], 
+            'service_location' => 'required|string|max:75|min:1', 
+            'service_price_total' => 'nullable|integer|max:999999999|min:1',     
+            'remind_at' => 'nullable|date_format:Y-m-d H:i:s',
         ]);
     }
     
