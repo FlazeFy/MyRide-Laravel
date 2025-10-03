@@ -58,6 +58,7 @@
                                 }
                             </td>
                             <td>
+                                <a class="btn btn-danger btn-delete" style="width:50px;" data-url="/api/v1/service/destroy/${dt.id}" data-context="Service"><i class="fa-solid fa-trash"></i></a>
                             </td>
                         </tr>
                     `)
