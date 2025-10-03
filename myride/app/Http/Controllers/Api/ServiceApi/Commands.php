@@ -178,4 +178,85 @@ class Commands extends Controller
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
+
+    /**
+     * @OA\PUT(
+     *     path="/api/v1/service/{id}",
+     *     summary="Update an service",
+     *     tags={"Service"},
+     *     security={{"bearerAuth":{}}},
+     *     @OA\Response(
+     *         response=200,
+     *         description="service updated",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="message", type="string", example="service updated")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="protected route need to include sign in token as authorization bearer",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="failed"),
+     *             @OA\Property(property="message", type="string", example="you need to include the authorization token from login")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="service failed to validated",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="failed"),
+     *             @OA\Property(property="message", type="string", example="[failed validation message]")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal Server Error",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="error"),
+     *             @OA\Property(property="message", type="string", example="something wrong. please contact admin")
+     *         )
+     *     ),
+     * )
+     */
+    public function updateService(Request $request, $id){
+        try{
+            $user_id = $request->user()->id;
+
+            $validator = Validation::getValidateService($request,'update');
+            if ($validator->fails()) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => $validator->errors()
+                ], Response::HTTP_BAD_REQUEST);
+            } else {
+                $data = [
+                    'vehicle_id' => $request->vehicle_id, 
+                    'service_note' => $request->service_note, 
+                    'service_price_total' => $request->service_price_total, 
+                    'service_location' => $request->service_location, 
+                    'service_category' => $request->service_category, 
+                    'remind_at' => $request->remind_at 
+                ];
+
+                $rows = ServiceModel::updateServiceById($data, $user_id, $id);
+                if($rows > 0){
+                    return response()->json([
+                        'status' => 'success',
+                        'message' => Generator::getMessageTemplate("update", $this->module),
+                    ], Response::HTTP_CREATED);
+                } else {
+                    return response()->json([
+                        'status' => 'error',
+                        'message' => Generator::getMessageTemplate("unknown_error", null),
+                    ], Response::HTTP_INTERNAL_SERVER_ERROR);
+                }
+            }
+        } catch(\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage(),
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
 }

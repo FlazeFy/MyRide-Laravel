@@ -5,5 +5,5 @@
     <h4>Where You Can Manage And Monitoring Your Vehicle. From Vehicle Listing, Service & Clean Schedule, Trip History
         Driver, Monitoring Your Stats, Live Tracking, and Many More
     </h4>
-    <a class="btn btn-success mt-3">Get Started</a>
+    <a class="btn btn-success mt-3" href="/login"><i class="fa-solid fa-play"></i> Get Started</a>
 </div>

@@ -1,5 +1,4 @@
 <div style="margin: 10vh 0; max-width: 1080px;" class="d-block mx-auto" id="services_section">
-    <div class="bg-primary text-white rounded-pill px-3 py-2 d-block mx-auto" style="width:140px;">FAQ's</div>
     <br>
     <h1 class="fw-bold" style="font-size:50px;">Most Question They Ask</h1>
     <div class="row mt-4 accordion" id="faq_holder"></div>
@@ -23,11 +22,11 @@
                 data.forEach((dt,idx) => {
                     $('#faq_holder').append(`
                         <div class="col-lg-6 col-md-6 col-sm-12 col-12 mx-auto">
-                            <div class="container-service">
+                            <div class="container-landing bg-warning">
                                 <button class="btn btn-primary pt-3 w-100" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFAQ_${idx}" aria-expanded="false" aria-controls="collapseExample">
                                     <h4>${dt.faq_question}</h4>
                                 </button>
-                                <div class="collapse p-3 text-white mt-3" id="collapseFAQ_${idx}" data-bs-parent="#faq_holder">${dt.faq_answer}</div>
+                                <div class="collapse p-3 mt-3" id="collapseFAQ_${idx}" data-bs-parent="#faq_holder">${dt.faq_answer}</div>
                             </div>
                         </div>
                     `)

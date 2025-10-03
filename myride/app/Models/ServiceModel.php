@@ -77,6 +77,12 @@ class ServiceModel extends Model
         return ServiceModel::create($data);
     }
 
+    public static function updateServiceById($data, $user_id, $id){
+        $data['updated_at'] = date('Y-m-d H:i:s');
+        
+        return ServiceModel::where('created_by',$user_id)->where('id',$id)->update($data);
+    }
+
     public static function hardDeleteServiceById($id, $user_id = null){
         $res = ServiceModel::where('id',$id);
 

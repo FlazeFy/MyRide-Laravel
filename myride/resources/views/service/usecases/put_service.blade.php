@@ -2,27 +2,27 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title fw-bold" id="exampleModalLabel">Edit Inventory</h4>
+                <h4 class="modal-title fw-bold" id="exampleModalLabel">Edit Service</h4>
                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <div class="modal-body">
-                <input hidden id="inventory_id">
+                <input hidden id="service_id">
                 <label>Vehicle Name & Plate Number</label>
                 <select class="form-select" name="vehicle_holder" id="vehicle_holder" aria-label="Default select example">
                     <option>-</option>
                 </select>
-                <label>Inventory Category</label>
-                <select class="form-select" name="inventory_category" id="inventory_category_holder" aria-label="Default select example">
+                <label>Service Category</label>
+                <select class="form-select" name="service_category" id="service_category_holder" aria-label="Default select example">
                     <option>-</option>
                 </select>
-                <label>Inventory Storage</label>
-                <select class="form-select" name="inventory_storage" id="inventory_storage_holder" aria-label="Default select example">
-                    <option>-</option>
-                </select>
-                <label>Qty</label>
-                <input class="form-control" name="inventory_qty" id="inventory_qty" type="number" min="1" value="1">
-                <label>Inventory Name</label>
-                <input class="form-control" name="inventory_name" id="inventory_name">
+                <label>Service Location</label>
+                <input class="form-control" name="service_location" id="service_location">
+                <label>Price Total</label>
+                <input class="form-control" name="service_price_total" id="service_price_total" type="number" min="1" value="1">
+                <label>Service Note</label>
+                <textarea class="form-control" name="service_note" id="service_note"></textarea>
+                <label>Remind At</label>
+                <input class="form-control" type="datetime-local" name="remind_at" id="remind_at">
                 <hr>
                 <button class="btn btn-success rounded-pill px-4" id="submit_update-btn"><i class="fa-solid fa-floppy-disk"></i> Save Changes</button>
             </div>
@@ -35,7 +35,7 @@
         const token = `<?= session()->get("token_key"); ?>`
         callModal('update-modal')
         get_vehicle_name_opt(token)
-        get_context_opt('inventory_category,inventory_storage',token)
+        get_context_opt('service_category,service_storage',token)
 
         $('#vehicle_holder option').each(function () {
             const optionText = $(this).text().trim()
@@ -46,33 +46,35 @@
                 return false
             }
         })
-        $('#inventory_id').val($(this).data('id'))
-        $('#inventory_name').val($(this).data('inventory-name'))
-        $('#inventory_qty').val($(this).data('inventory-qty'))
-        $('#inventory_category_holder').val($(this).data('inventory-category'))
-        $('#inventory_storage_holder').val($(this).data('inventory-storage'))
+        $('#service_id').val($(this).data('id'))
+        $('#service_name').val($(this).data('service-name'))
+        $('#service_price_total').val($(this).data('service-price-total'))
+        $('#service_category_holder').val($(this).data('service-category'))
+        $('#service_note').val($(this).data('service-note'))
+        $('#service_location').val($(this).data('service-location'))
+        $('#remind_at').val($(this).data('remind-at'))
     })
 
     $(document).on('click','#submit_update-btn', function(){
-        const id = $('#inventory_id').val()
-        put_inventory(id)
+        const id = $('#service_id').val()
+        put_service(id)
     })
-    const put_inventory = (id) => {
+    const put_service = (id) => {
         const vehicle_id = $('#vehicle_holder').val()
-        const inventory_category = $('#inventory_category_holder').val()
+        const service_category = $('#service_category_holder').val()
 
-        if(vehicle_id !== "-" && inventory_category !== "-"){
+        if(vehicle_id !== "-" && service_category !== "-"){
             Swal.showLoading();
             $.ajax({
-                url: `/api/v1/inventory/${id}`,
+                url: `/api/v1/service/${id}`,
                 type: 'PUT',
                 contentType: "application/json",
                 data: JSON.stringify({
                     vehicle_id: vehicle_id,
-                    inventory_name: $("#inventory_name").val(),
-                    inventory_category: $("#inventory_category_holder").val(),
-                    inventory_qty: $("#inventory_qty").val(),
-                    inventory_storage: $("#inventory_storage_holder").val()
+                    service_note: $("#service_note").val(),
+                    service_category: $("#service_category_holder").val(),
+                    service_price_total: $("#service_price_total").val(),
+                    service_location: $("#service_location").val()
                 }),
                 beforeSend: function (xhr) {
                     xhr.setRequestHeader("Accept", "application/json")
@@ -85,20 +87,20 @@
                         text: response.message,
                         icon: "success"
                     }).then(() => {
-                        window.location.href = '/inventory'
+                        window.location.href = '/service'
                     });
                 },
                 error: function(response, jqXHR, textStatus, errorThrown) {
                     Swal.close()
                     if(response.status != 400){
-                        failedMsg('create inventory')
+                        failedMsg('create service')
                     } else {
                         // ....
                     }
                 }
             });
         } else {
-            failedMsg('create inventory : you must select an item')
+            failedMsg('create service : you must select an item')
         }
     }
 </script>

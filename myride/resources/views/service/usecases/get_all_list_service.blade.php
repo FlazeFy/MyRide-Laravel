@@ -65,6 +65,10 @@
                             </td>
                             <td>
                                 <a class="btn btn-danger btn-delete" style="width:50px;" data-url="/api/v1/service/destroy/${dt.id}" data-context="Service"><i class="fa-solid fa-trash"></i></a>
+                                <a class="btn btn-warning btn-update" style="width:50px;" 
+                                    data-vehicle-plate-number="${dt.vehicle_plate_number}" data-id="${dt.id}" data-remind-at="${dt.remind_at}"
+                                    data-service-category="${dt.service_category}" data-service-price-total="${dt.service_price_total}" 
+                                    data-service-note="${dt.service_note}" data-service-location="${dt.service_location}"><i class="fa-solid fa-pen-to-square"></i></a>
                             </td>
                         </tr>
                     `)

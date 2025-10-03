@@ -94,7 +94,7 @@ img:not(.gm-style img) {
     font-size: var(--textMD);
 }
 
-.navbar {
+.navbar, .footer {
     border-bottom: 2px solid var(--darkColor);
     padding: var(--spaceLG);
     position: sticky;
@@ -140,6 +140,9 @@ img:not(.gm-style img) {
 .content {
     flex: 1;
     padding: 20px;
+}
+.footer {
+    border-top: 2px solid var(--darkColor);
 }
 
 .btn, .sidebar .nav-link.active, .gm-control-active {
@@ -272,6 +275,13 @@ label, input, textarea, select {
     font-size: var(--textXLG);
     padding: var(--spaceMD);
 }
+.container-landing {
+    border-radius: var(--roundedJumbo);
+    padding: var(--spaceXLG);
+    border: 4px solid transparent;
+    margin-bottom: var(--spaceLG);
+    border: 4px solid var(--whiteColor);
+}
 
 .form-control, .form-select, .input-group-text , .rounded {
     border-radius: var(--roundedLG);   
@@ -289,8 +299,8 @@ hr {
 .btn:hover, .hover-grow:hover {
     transform: scale(1.025);
 }
-.modal-content, .swal2-popup, .popover, .btn:hover {
-    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+.modal-content, .swal2-popup, .popover, .btn:hover, .container-landing {
+    box-shadow: rgba(0, 0, 0, 0.2) 1.975px 1.975px 2.8px;
 }
 
 /* Maps Dialog */

@@ -70,7 +70,7 @@
         @include('others.bars.navbar')
     <?php endif; ?>
     <div class="d-flex">
-        <?php if(!preg_match('(embed)', $cleanedUrl)): ?>
+        <?php if(!preg_match('(embed)', $cleanedUrl) && $route !== "welcome"): ?>
             @include('others.bars.sidebar')
         <?php endif; ?>
 
@@ -79,6 +79,7 @@
             @yield('content')
         </div>
     </div>
+    @include('welcome.usecases.footer')
 </body>
 
 <!--Modal-->
