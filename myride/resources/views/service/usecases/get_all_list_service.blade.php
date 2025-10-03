@@ -56,6 +56,12 @@
                                         <p class="mb-0">${getDateToContext(dt.updated_at,'calendar')}</p>
                                     ` : ''
                                 }
+                                ${
+                                    dt.remind_at ? `
+                                        <h6 class="mb-0">Remind At</h6>
+                                        <p class="mb-0">${getDateToContext(dt.remind_at,'calendar')}</p>
+                                    ` : ''
+                                }
                             </td>
                             <td>
                                 <a class="btn btn-danger btn-delete" style="width:50px;" data-url="/api/v1/service/destroy/${dt.id}" data-context="Service"><i class="fa-solid fa-trash"></i></a>

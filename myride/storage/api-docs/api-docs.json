@@ -3824,6 +3824,208 @@
                         "bearerAuth": []
                     }
                 ]
+            },
+            "post": {
+                "tags": [
+                    "Service"
+                ],
+                "summary": "Create a service",
+                "operationId": "a3b1050e2a104d5b330e35323667da92",
+                "responses": {
+                    "201": {
+                        "description": "service created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "service created"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "protected route need to include sign in token as authorization bearer",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "you need to include the authorization token from login"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "service failed to validated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "[failed validation message]"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "something wrong. please contact admin"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/service/destroy/{id}": {
+            "delete": {
+                "tags": [
+                    "Service"
+                ],
+                "summary": "Delete service by id",
+                "operationId": "e9f3e29a2ccb7cd833a1d6a1b0783aa9",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Service ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "e1288783-a5d4-1c4c-2cd6-0e92f7cc3bf9"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "service permentally deleted",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "service permentally deleted"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "protected route need to include sign in token as authorization bearer",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "you need to include the authorization token from login"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "service failed to permentally deleted",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "service not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "something wrong. please contact admin"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/api/v1/service/vehicle/{vehicle_id}": {
@@ -3877,6 +4079,123 @@
                                                         "type": "string",
                                                         "format": "date-time",
                                                         "example": "2024-09-20 22:53:47"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "protected route need to include sign in token as authorization bearer",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "you need to include the authorization token from login"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "service failed to fetched",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "service not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "something wrong. please contact admin"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/service/spending}": {
+            "get": {
+                "tags": [
+                    "Service"
+                ],
+                "summary": "Get all service spending",
+                "description": "This request is used to get all service spending per vehicle. This request is using MySql database, have a protected routes.",
+                "operationId": "d7d2bfe6b32bbbd59e2da2fa5bd83b7d",
+                "responses": {
+                    "200": {
+                        "description": "Service records fetched successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "service fetched"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "vehicle_plate_number": {
+                                                        "type": "string",
+                                                        "example": "C 800 CN"
+                                                    },
+                                                    "vehicle_type": {
+                                                        "type": "string",
+                                                        "example": "City Car"
+                                                    },
+                                                    "total": {
+                                                        "type": "integer",
+                                                        "example": 35000000
                                                     }
                                                 },
                                                 "type": "object"

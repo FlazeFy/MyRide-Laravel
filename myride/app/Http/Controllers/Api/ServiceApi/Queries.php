@@ -186,4 +186,80 @@ class Queries extends Controller
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
+
+    /**
+     * @OA\GET(
+     *     path="/api/v1/service/spending}",
+     *     summary="Get all service spending",
+     *     description="This request is used to get all service spending per vehicle. This request is using MySql database, have a protected routes.",
+     *     tags={"Service"},
+     *     security={{"bearerAuth":{}}},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Service records fetched successfully",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="message", type="string", example="service fetched"),
+     *             @OA\Property(property="data", type="array",
+     *                  @OA\Items(
+     *                      @OA\Property(property="vehicle_plate_number", type="string", example="C 800 CN"),
+     *                      @OA\Property(property="vehicle_type", type="string", example="City Car"),
+     *                      @OA\Property(property="total", type="integer", example=35000000),
+     *                  )
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="protected route need to include sign in token as authorization bearer",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="failed"),
+     *             @OA\Property(property="message", type="string", example="you need to include the authorization token from login")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="service failed to fetched",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="failed"),
+     *             @OA\Property(property="message", type="string", example="service not found")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal Server Error",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="error"),
+     *             @OA\Property(property="message", type="string", example="something wrong. please contact admin")
+     *         )
+     *     ),
+     * )
+     */
+    public function getAllServiceSpending(Request $request){
+        try{
+            $user_id = $request->user()->id;
+
+            // Model
+            $res = ServiceModel::getAllServiceSpending($user_id);
+
+            // Response
+            if (count($res) > 0) {
+                return response()->json([
+                    'status' => 'success',
+                    'message' => Generator::getMessageTemplate("fetch", $this->module),
+                    'data' => $res
+                ], Response::HTTP_OK);
+            } else {
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => Generator::getMessageTemplate("not_found", $this->module),
+                ], Response::HTTP_NOT_FOUND);
+            }
+        } catch(\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage(),
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
 }
