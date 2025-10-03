@@ -2,6 +2,6 @@
 
 <script>
     $(document).on('click','#export_excel',function(){
-        get_export('fuel','<?= session()->get('token_key'); ?>')
+        get_export('service','<?= session()->get('token_key'); ?>')
     })
 </script>

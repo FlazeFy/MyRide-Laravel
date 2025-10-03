@@ -40,6 +40,20 @@ class ServiceModel extends Model
             ->get();  
     }
 
+    public static function getExportData($user_id, $vehicle_id = null){
+        $res = ServiceModel::select("vehicle_name","vehicle_plate_number", "vehicle_type", 'service_category', 'service_price_total', 'service_location', 'service_note', 'remind_at', 'service.created_at', 'service.updated_at')
+            ->join('vehicle','vehicle.id','=','service.vehicle_id');
+        
+        if($vehicle_id){
+            $res = $res->where('vehicle_id',$vehicle_id);
+        }
+
+        $res = $res->where('service.created_by',$user_id)
+            ->orderBy('service.created_at');
+
+        return $res->get();
+    }
+
     public static function createService($data, $user_id){
         $data['created_at'] = date('Y-m-d H:i:s');
         $data['created_by'] = $user_id;

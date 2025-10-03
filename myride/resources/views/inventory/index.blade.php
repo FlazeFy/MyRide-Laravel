@@ -2,6 +2,7 @@
 
 @section('content')
     <script src="{{ asset('/js/usecases/inventory_v1.0.js')}}"></script>
+    <script src="{{ asset('/js/usecases/export_v1.0.js')}}"></script>
 
     <div class="position-relative">
         <a class="btn btn-success" href='/inventory/add'><i class="fa-solid fa-plus"></i> Add Inventory</a>
