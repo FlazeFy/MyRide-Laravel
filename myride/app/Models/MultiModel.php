@@ -17,8 +17,8 @@ class MultiModel extends Model
         return $query->count();
     }
 
-    public static function getContextTotalStats($context,$user_id,$table){
-        $res = DB::table($table)->select(DB::raw("$context as context, COUNT(1) as total"));
+    public static function getContextTotalStats($context,$user_id,$table,$custom_total = "COUNT(1)"){
+        $res = DB::table($table)->select(DB::raw("$context as context, $custom_total as total"));
         if($user_id){
             $res = $res->where('created_by', $user_id);
         }
