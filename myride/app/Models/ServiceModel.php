@@ -16,6 +16,16 @@ class ServiceModel extends Model
     protected $primaryKey = 'id';
     protected $fillable = ['id', 'vehicle_id', 'service_category', 'service_price_total', 'service_location', 'service_note', 'created_at', 'created_by', 'updated_at', 'remind_at'];
 
+    public static function getNextService($user_id){
+        return ServiceModel::select('service_category', 'service_price_total', 'service_location', 'service_note',"remind_at","vehicle_plate_number")
+            ->leftjoin('vehicle','vehicle.id','=','service.vehicle_id')
+            ->where('service.created_by', $user_id)
+            ->whereNotNull('remind_at')
+            ->where('remind_at', '>=', now()) 
+            ->orderBy('remind_at', 'asc')     
+            ->first();                       
+    }
+
     public static function getAllService($user_id = null, $limit){
         $res = ServiceModel::select('service.id', 'service_category', 'service_price_total', 'service_location', 'service_note', 'service.created_at', 'service.updated_at', 'vehicle_plate_number','vehicle_type','remind_at')
             ->leftjoin('vehicle','vehicle.id','=','service.vehicle_id');

@@ -86,6 +86,7 @@ Route::prefix('/v1/reminder')->middleware(['auth:sanctum'])->group(function () {
 
 Route::prefix('/v1/service')->middleware(['auth:sanctum'])->group(function () {
     Route::get('/', [QueriesServiceController::class, 'getAllService']);
+    Route::get('/next', [QueriesServiceController::class, 'getNextService']);
     Route::get('/spending', [QueriesServiceController::class, 'getAllServiceSpending']);
     Route::get('/vehicle/{vehicle_id}', [QueriesServiceController::class, 'getServiceByVehicle']);
     Route::post('/', [CommandsServiceController::class, 'postService']);
