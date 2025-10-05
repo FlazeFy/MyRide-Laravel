@@ -17,6 +17,9 @@
             </div>
             <div class="col-lg-4 col-md-6 col-sm-12">
                 <div class="container">
+                    @include('service.usecases.get_total_service_price_context')
+                </div>
+                <div class="container">
                     @include('service.usecases.get_list_service_spending_per_vehicle')
                 </div>
             </div>

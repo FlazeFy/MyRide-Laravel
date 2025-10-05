@@ -33,7 +33,7 @@
     <!-- JS Collection -->
     <script src="{{ asset('/js/global_v1.0.js')}}"></script>
     <script src="{{ asset('/js/message_v1.0.js')}}"></script>
-    <?php if(preg_match('(stats|embed|detail|dashboard|fuel|inventory)', $cleanedUrl)): ?>
+    <?php if(preg_match('(stats|embed|detail|dashboard|fuel|inventory|service)', $cleanedUrl)): ?>
         <script src="{{ asset('/js/chart_v1.0.js')}}"></script>
     <?php endif; ?>
     <script src="{{ asset('/js/math_v1.0.js')}}"></script>
@@ -52,7 +52,7 @@
                 <!-- Bootstrap dataTables Javascript -->
                 <script type='text/javascript' language='javascript' src='https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js'></script>
             ";
-        } else if (strpos($route, 'stats') !== false || strpos($route, 'detail') !== false || strpos($route, 'dashboard') !== false || strpos($route, 'fuel') !== false || strpos($route, 'inventory') !== false) {
+        } else if (preg_match('/stats|detail|dashboard|fuel|inventory|service/', $route)) {
             echo "
                 <!--Apex Chart-->
                 <script src='https://cdn.jsdelivr.net/npm/apexcharts'></script>
@@ -79,7 +79,9 @@
             @yield('content')
         </div>
     </div>
-    @include('welcome.usecases.footer')
+    <?php if($route === "welcome"): ?>
+        @include('welcome.usecases.footer')
+    <?php endif; ?>
 </body>
 
 <!--Modal-->
