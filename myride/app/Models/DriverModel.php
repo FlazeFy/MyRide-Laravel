@@ -14,5 +14,16 @@ class DriverModel extends Authenticatable
 
     protected $table = 'driver';
     protected $primaryKey = 'id';
-    protected $fillable = ['id', 'username', 'fullname', 'password', 'email', 'telegram_user_id', 'telegram_is_valid', 'phone', 'notes', 'created_at', 'created_by', 'updated_at', 'updated_by'];
+    protected $fillable = ['id', 'username', 'fullname', 'password', 'email', 'telegram_user_id', 'telegram_is_valid', 'phone', 'notes', 'created_at', 'updated_at', 'created_by'];
+
+    public static function getAllDriver($user_id = null, $limit){
+        $res = DriverModel::select('*');
+
+        if($user_id){
+            $res = $res->where('created_by', $user_id);
+        }
+            
+        return $res->orderBy('created_at', 'desc')     
+            ->paginate($limit);                       
+    }
 }
