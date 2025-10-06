@@ -56,7 +56,7 @@
                                 }
                             </td>
                             <td>
-                                
+                                <a class="btn btn-danger btn-delete" style="width:50px;" data-url="/api/v1/driver/destroy/${dt.id}" data-context="Driver"><i class="fa-solid fa-trash"></i></a>
                             </td>
                         </tr>
                     `)

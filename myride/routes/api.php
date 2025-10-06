@@ -29,6 +29,7 @@ use App\Http\Controllers\Api\InventoryApi\Commands as CommandsInventoryControlle
 use App\Http\Controllers\Api\ServiceApi\Queries as QueriesServiceController;
 use App\Http\Controllers\Api\ServiceApi\Commands as CommandsServiceController;
 use App\Http\Controllers\Api\DriverApi\Queries as QueriesDriverController;
+use App\Http\Controllers\Api\DriverApi\Commands as CommandsDriverController;
 
 ######################### Public Route #########################
 
@@ -97,6 +98,7 @@ Route::prefix('/v1/service')->middleware(['auth:sanctum'])->group(function () {
 
 Route::prefix('/v1/driver')->middleware(['auth:sanctum'])->group(function () {
     Route::get('/', [QueriesDriverController::class, 'getAllDriver']);
+    Route::delete('/destroy/{id}', [CommandsDriverController::class, 'hardDeleteDriverById']);
 });
 
 Route::prefix('/v1/stats')->middleware(['auth:sanctum'])->group(function () {
