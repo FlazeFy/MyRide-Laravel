@@ -29,6 +29,20 @@ class DriverModel extends Authenticatable
             ->paginate($limit);                       
     }
 
+    public static function getDriverVehicle($user_id = null, $limit){
+        $res = DriverModel::selectRaw('username, fullname, email, telegram_user_id, telegram_is_valid, phone, GROUP_CONCAT(CONCAT(vehicle.vehicle_plate_number, "-", vehicle.vehicle_name) SEPARATOR ", ") as vehicle_list')
+            ->leftjoin('driver_vehicle_relation','driver_vehicle_relation.driver_id','=','driver.id')
+            ->leftjoin('vehicle','vehicle.id','=','driver_vehicle_relation.vehicle_id');
+
+        if($user_id){
+            $res = $res->where('driver.created_by', $user_id);
+        }
+            
+        return $res->orderBy('driver_vehicle_relation.created_at', 'desc')  
+            ->groupBy('driver.id', 'driver.username', 'driver.fullname', 'driver.email', 'driver.telegram_user_id', 'driver.telegram_is_valid', 'driver.phone')
+            ->paginate($limit);                       
+    }
+
     public static function hardDeleteDriverById($id, $user_id = null){
         $res = DriverModel::where('id',$id);
 

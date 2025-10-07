@@ -35,7 +35,7 @@
             <a class="btn btn-success rounded-pill py-3 w-100 mt-3" id="submit-add-driver-btn"><i class="fa-solid fa-floppy-disk"></i> Save Driver</a>
         </div>
         <div class="col-xl-6 col-lg-12">
-            
+            @include('driver.add.usecases.get_list_assigned_driver')
         </div>
     </div>
 </form>
