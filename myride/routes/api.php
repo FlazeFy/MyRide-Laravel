@@ -98,6 +98,7 @@ Route::prefix('/v1/service')->middleware(['auth:sanctum'])->group(function () {
 
 Route::prefix('/v1/driver')->middleware(['auth:sanctum'])->group(function () {
     Route::get('/', [QueriesDriverController::class, 'getAllDriver']);
+    Route::post('/', [CommandsDriverController::class, 'postDriver']);
     Route::delete('/destroy/{id}', [CommandsDriverController::class, 'hardDeleteDriverById']);
 });
 

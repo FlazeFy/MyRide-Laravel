@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Api\DriverApi;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Support\Facades\Hash;
 
 // Model
 use App\Models\DriverModel;
@@ -89,6 +91,98 @@ class Commands extends Controller
                     'status' => 'failed',
                     'message' => Generator::getMessageTemplate("not_found", $this->module),
                 ], Response::HTTP_NOT_FOUND);
+            }
+        } catch(\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => Generator::getMessageTemplate("unknown_error", null),
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
+     * @OA\POST(
+     *     path="/api/v1/driver",
+     *     summary="Create a driver",
+     *     tags={"Driver"},
+     *     security={{"bearerAuth":{}}},
+     *     @OA\Response(
+     *         response=201,
+     *         description="driver created",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="message", type="string", example="driver created")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="protected route need to include sign in token as authorization bearer",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="failed"),
+     *             @OA\Property(property="message", type="string", example="you need to include the authorization token from login")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="driver failed to validated",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="failed"),
+     *             @OA\Property(property="message", type="string", example="[failed validation message]")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal Server Error",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="error"),
+     *             @OA\Property(property="message", type="string", example="something wrong. please contact admin")
+     *         )
+     *     ),
+     * )
+     */
+    public function postDriver(Request $request){
+        try{
+            $user_id = $request->user()->id;
+
+            $validator = Validation::getValidateDriver($request,'create');
+            if ($validator->fails()) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => $validator->errors()
+                ], Response::HTTP_BAD_REQUEST);
+            } else {
+                $check = DriverModel::getDriverByUsernameOrEmail($request->username,$request->email);
+                   
+                if(!$check){
+                    $data = [
+                        'username' => $request->username, 
+                        'fullname' => $request->fullname, 
+                        'password' => Hash::make($request->password), 
+                        'email' => $request->email, 
+                        'telegram_user_id' => $request->telegram_user_id, 
+                        'telegram_is_valid' => 0, 
+                        'phone' => $request->phone, 
+                        'notes' => $request->notes,
+                    ];
+
+                    $row = DriverModel::createDriver($data, $user_id);
+                    if($row){
+                        return response()->json([
+                            'status' => 'success',
+                            'message' => Generator::getMessageTemplate("create", $this->module),
+                        ], Response::HTTP_CREATED);
+                    } else {
+                        return response()->json([
+                            'status' => 'error',
+                            'message' => Generator::getMessageTemplate("unknown_error", null),
+                        ], Response::HTTP_INTERNAL_SERVER_ERROR);
+                    }
+                } else {
+                    return response()->json([
+                        'status' => 'failed',
+                        'message' => Generator::getMessageTemplate("conflict", $this->module),
+                    ], Response::HTTP_CONFLICT);
+                }
             }
         } catch(\Exception $e) {
             return response()->json([

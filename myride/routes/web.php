@@ -22,8 +22,9 @@ use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\AddServiceController;
 use App\Http\Controllers\AddFuelController;
 use App\Http\Controllers\InventoryController;
-use App\Http\Controllers\DriverController;
 use App\Http\Controllers\AddInventoryController;
+use App\Http\Controllers\DriverController;
+use App\Http\Controllers\AddDriverController;
 
 Route::prefix('/')->group(function () {
     Route::get('/', [WelcomeController::class, 'index'])->name('welcome');
@@ -76,6 +77,8 @@ Route::prefix('/history')->middleware(['auth_v2:sanctum'])->group(function () {
 
 Route::prefix('/driver')->middleware(['auth_v2:sanctum'])->group(function () {
     Route::get('/', [DriverController::class, 'index'])->name('driver');
+
+    Route::get('/add', [AddDriverController::class, 'index'])->name('add_driver');
 });
 
 Route::prefix('/service')->middleware(['auth_v2:sanctum'])->group(function () {

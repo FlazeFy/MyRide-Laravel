@@ -4,6 +4,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Sanctum\HasApiTokens;
+// Helper
+use App\Helpers\Generator;
 
 class DriverModel extends Authenticatable
 {
@@ -35,6 +37,21 @@ class DriverModel extends Authenticatable
         }
             
         return $res->delete();
+    }
+
+    public static function getDriverByUsernameOrEmail($username,$email){
+        return DriverModel::where('username',$username)
+            ->orWhere('email',$email)
+            ->first();
+    }
+
+    public static function createDriver($data, $user_id){
+        $data['created_at'] = date('Y-m-d H:i:s');
+        $data['created_by'] = $user_id;
+        $data['updated_at'] = null;
+        $data['id'] = Generator::getUUID();
+            
+        return DriverModel::create($data);
     }
 
     public static function getExportData($user_id){

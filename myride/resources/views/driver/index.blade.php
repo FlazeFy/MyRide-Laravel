@@ -4,6 +4,7 @@
     <script src="{{ asset('/js/usecases/export_v1.0.js')}}"></script>
 
     <div class="position-relative">
+        <a class="btn btn-success" href='/driver/add'><i class="fa-solid fa-plus"></i> Add Driver</a>
         @include('driver.usecases.get_export_driver')
         <div class="container mt-2">
             @include('driver.usecases.get_all_list_driver')

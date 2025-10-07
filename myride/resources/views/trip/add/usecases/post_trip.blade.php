@@ -162,7 +162,12 @@
                 });
             },
             error: function(response, jqXHR, textStatus, errorThrown) {
-                generate_api_error(response, true)
+                Swal.close()
+                if(response.status === 500){
+                    failedMsg('create driver')
+                } else {
+                    failedMsg(response.status === 400 ? Object.values(response.responseJSON.message).flat().join('\n') : response.responseJSON.message)
+                }
             }
         });
     }

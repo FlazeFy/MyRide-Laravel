@@ -346,10 +346,10 @@
                 },
                 error: function(response, jqXHR, textStatus, errorThrown) {
                     Swal.close()
-                    if(response.status != 400){
+                    if(response.status === 500){
                         failedMsg('create clean')
                     } else {
-                        // ....
+                        failedMsg(response.status === 400 ? Object.values(response.responseJSON.message).flat().join('\n') : response.responseJSON.message)
                     }
                 }
             });
