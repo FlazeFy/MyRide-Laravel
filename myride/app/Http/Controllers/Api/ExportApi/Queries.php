@@ -10,6 +10,7 @@ use App\Exports\CleanExport;
 use App\Exports\FuelExport;
 use App\Exports\InventoryExport;
 use App\Exports\ServiceExport;
+use App\Exports\DriverExport;
 use Maatwebsite\Excel\Facades\Excel;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 // Telegram
@@ -21,6 +22,7 @@ use App\Models\FuelModel;
 use App\Models\UserModel;
 use App\Models\InventoryModel;
 use App\Models\ServiceModel;
+use App\Models\DriverModel;
 // Helpers
 use App\Helpers\Generator;
 
@@ -288,6 +290,73 @@ class Queries extends Controller {
                     'chat_id' => $user->telegram_user_id,
                     'document' => $inputFile,
                     'caption' => "Your service export is ready",
+                    'parse_mode' => 'HTML',
+                ]);
+            }
+
+            return response()->download($storagePath, $file_name, [
+                'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                'Content-Disposition' => 'attachment; filename="' . $file_name . '"',
+            ])->deleteFileAfterSend(true);
+        } catch(\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => Generator::getMessageTemplate("unknown_error", null),
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function exportDriver(Request $request){
+        try {
+            $user_id = $request->user()->id;
+            $datetime = date('Y-m-d_H-i-s');
+            $user = UserModel::getSocial($user_id);
+            $file_name = "Driver-$user->username-$datetime.xlsx";
+
+            $res_driver = DriverModel::getExportData($user_id,null)->map(function($dt) {
+                return [
+                    'username' => $dt->username, 
+                    'fullname' => $dt->fullname,  
+                    'email' => $dt->email,  
+                    'telegram_user_id' => $dt->telegram_user_id,  
+                    'telegram_is_valid' => $dt->telegram_is_valid,   
+                    'phone' => $dt->phone, 
+                    'notes' => $dt->notes, 
+                    'created_at' => $dt->created_at, 
+                    'updated_at' => $dt->updated_at,
+                ];
+            });
+
+            Excel::store(new class($res_driver) implements WithMultipleSheets {
+                private $res_driver;
+
+                public function __construct($res_driver)
+                {
+                    $this->res_driver = $res_driver;
+                }
+
+                public function sheets(): array
+                {
+                    return [
+                        new DriverExport($this->res_driver),
+                    ];
+                }
+            }, $file_name, 'public');
+        
+            $storagePath = storage_path("app/public/$file_name");
+            $publicPath = public_path($file_name);
+            if (!file_exists($storagePath)) {
+                throw new \Exception("File not found: $storagePath");
+            }
+            copy($storagePath, $publicPath);
+
+            if ($user && $user->telegram_is_valid == 1 && $user->telegram_user_id) {
+                $inputFile = InputFile::create($publicPath, $file_name);
+
+                Telegram::sendDocument([
+                    'chat_id' => $user->telegram_user_id,
+                    'document' => $inputFile,
+                    'caption' => "Your driver export is ready",
                     'parse_mode' => 'HTML',
                 ]);
             }

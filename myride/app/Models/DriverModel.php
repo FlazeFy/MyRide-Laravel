@@ -36,4 +36,11 @@ class DriverModel extends Authenticatable
             
         return $res->delete();
     }
+
+    public static function getExportData($user_id){
+        return DriverModel::select('username', 'fullname', 'email', 'telegram_user_id', 'telegram_is_valid', 'phone', 'notes', 'created_at', 'updated_at')
+            ->where('created_by',$user_id)
+            ->orderBy('created_at')
+            ->get();
+    }
 }
