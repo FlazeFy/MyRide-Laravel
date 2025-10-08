@@ -99,4 +99,60 @@ class DriverTest extends TestCase
         Audit::auditRecordText("Test - Get All Driver", "TC-XXX", "Result : ".json_encode($data));
         Audit::auditRecordSheet("Test - Get All Driver", "TC-XXX", 'TC-XXX test_get_all_driver', json_encode($data));
     }
+
+    public function test_get_driver_vehicle_manage_list(): void
+    {
+        // Exec
+        $token = $this->login_trait("user");
+        $response = $this->httpClient->get("vehicle/list", [
+            'headers' => [
+                'Authorization' => "Bearer $token"
+            ]
+        ]);
+
+        $data = json_decode($response->getBody(), true);
+
+        // Test Parameter
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertArrayHasKey('status', $data);
+        $this->assertEquals('success', $data['status']);
+        $this->assertArrayHasKey('message', $data);
+        $this->assertArrayHasKey('data', $data);
+
+        $check_object_vehicle = ['id', 'vehicle_name', 'vehicle_plate_number'];
+        foreach ($data['data']['vehicle'] as $dt) {
+            foreach ($check_object_vehicle as $col) {
+                $this->assertArrayHasKey($col, $dt);
+                $this->assertNotNull($dt[$col]);
+                $this->assertIsString($dt[$col]);
+                $this->assertEquals(36,strlen($dt['id']));
+            }
+        }
+
+        $check_object_driver = ['id', 'username', 'fullname'];
+        foreach ($data['data']['driver'] as $dt) {
+            foreach ($check_object_driver as $col) {
+                $this->assertArrayHasKey($col, $dt);
+                $this->assertNotNull($dt[$col]);
+                $this->assertIsString($dt[$col]);
+                $this->assertEquals(36,strlen($dt['id']));
+            }
+        }
+
+        $check_object_assigned = ['id', 'vehicle_plate_number', 'vehicle_id', 'driver_id', 'username', 'fullname'];
+        foreach ($data['data']['assigned'] as $dt) {
+            foreach ($check_object_assigned as $col) {
+                $col_ids = ['id','vehicle_id','driver_id'];
+                foreach ($col_ids as $col_id) {
+                    $this->assertEquals(36,strlen($dt[$col_id]));
+                }
+                $this->assertArrayHasKey($col, $dt);
+                $this->assertNotNull($dt[$col]);
+                $this->assertIsString($dt[$col]);
+            }
+        }
+       
+        Audit::auditRecordText("Test - Get Driver Vehicle Manage List", "TC-XXX", "Result : ".json_encode($data));
+        Audit::auditRecordSheet("Test - Get Driver Vehicle Manage List", "TC-XXX", 'TC-XXX test_get_driver_vehicle_manage_listr', json_encode($data));
+    }
 }

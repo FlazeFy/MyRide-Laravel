@@ -18,15 +18,18 @@ class DriverModel extends Authenticatable
     protected $primaryKey = 'id';
     protected $fillable = ['id', 'username', 'fullname', 'password', 'email', 'telegram_user_id', 'telegram_is_valid', 'phone', 'notes', 'created_at', 'updated_at', 'created_by'];
 
-    public static function getAllDriver($user_id = null, $limit){
-        $res = DriverModel::select('*');
+    public static function getAllDriver($user_id = null, $limit, $col = '*'){
+        $res = DriverModel::selectRaw($col);
 
         if($user_id){
             $res = $res->where('created_by', $user_id);
         }
             
-        return $res->orderBy('created_at', 'desc')     
-            ->paginate($limit);                       
+        if($limit !== 0){
+            return $res->orderBy('created_at', 'desc')->paginate($limit); 
+        } else {
+            return $res->orderBy('created_at', 'desc')->get(); 
+        }                     
     }
 
     public static function getDriverVehicle($user_id = null, $limit){
@@ -72,6 +75,14 @@ class DriverModel extends Authenticatable
         return DriverModel::select('username', 'fullname', 'email', 'telegram_user_id', 'telegram_is_valid', 'phone', 'notes', 'created_at', 'updated_at')
             ->where('created_by',$user_id)
             ->orderBy('created_at')
+            ->get();
+    }
+
+    public static function getDriverVehicleManageList($user_id){
+        return DriverModel::select('driver_vehicle_relation.id', 'vehicle_plate_number', 'vehicle.id as vehicle_id', 'driver.id as driver_id', 'username', 'fullname')
+            ->leftjoin('driver_vehicle_relation','driver_vehicle_relation.driver_id','=','driver.id')
+            ->leftjoin('vehicle','vehicle.id','=','driver_vehicle_relation.vehicle_id')
+            ->where('driver.created_by',$user_id)
             ->get();
     }
 }

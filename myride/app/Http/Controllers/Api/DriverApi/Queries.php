@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 
 // Model
 use App\Models\DriverModel;
+use App\Models\VehicleModel;
 use App\Models\AdminModel;
 
 // Helper
@@ -184,6 +185,105 @@ class Queries extends Controller
             return response()->json([
                 'status' => 'error',
                 'message' => Generator::getMessageTemplate("unknown_error", null),
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+     /**
+     * @OA\GET(
+     *     path="/api/v1/driver/vehicle/list",
+     *     summary="Get all driver and vehicle list for management / assigned",
+     *     description="This request is used to get all drivers with their assigned vehicles for management / assigned. This request uses a MySQL database and is a protected route.",
+     *     tags={"Driver"},
+     *     security={{"bearerAuth":{}}},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Driver and vehicle records fetched successfully",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="message", type="string", example="driver fetched"),
+     *             @OA\Property(property="data", type="object",
+     *                 @OA\Property(property="vehicle", type="array",
+     *                     @OA\Items(
+     *                         @OA\Property(property="id", type="string", example="8585ab36-fc67-139c-35c6-608931244634"),
+     *                         @OA\Property(property="vehicle_name", type="string", example="Non dolorum velit corrupti"),
+     *                         @OA\Property(property="vehicle_plate_number", type="string", example="C 80 OON")
+     *                     )
+     *                 ),
+     *                 @OA\Property(property="driver", type="array",
+     *                     @OA\Items(
+     *                         @OA\Property(property="id", type="string", example="a3f743ae-a373-11f0-86ad-3216422910e8"),
+     *                         @OA\Property(property="username", type="string", example="tester_jhona"),
+     *                         @OA\Property(property="fullname", type="string", example="asd")
+     *                     )
+     *                 ),
+     *                 @OA\Property(property="assigned", type="array",
+     *                     @OA\Items(
+     *                         @OA\Property(property="id", type="string", example="1c8a4d88-d9b0-11ed-afa1-0242ac120002"),
+     *                         @OA\Property(property="vehicle_plate_number", type="string", example="C 80 OON"),
+     *                         @OA\Property(property="vehicle_id", type="string", example="8585ab36-fc67-139c-35c6-608931244634"),
+     *                         @OA\Property(property="driver_id", type="string", example="a3f743ae-a373-11f0-86ad-3216422910e8"),
+     *                         @OA\Property(property="username", type="string", example="tester_jhona"),
+     *                         @OA\Property(property="fullname", type="string", example="asd")
+     *                     )
+     *                 )
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Protected route — requires sign-in token as authorization bearer",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="failed"),
+     *             @OA\Property(property="message", type="string", example="you need to include the authorization token from login")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Driver or vehicle not found",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="failed"),
+     *             @OA\Property(property="message", type="string", example="driver not found")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal Server Error",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="error"),
+     *             @OA\Property(property="message", type="string", example="something went wrong. please contact admin")
+     *         )
+     *     )
+     * )
+     */
+    public function getDriverVehicleManageList(Request $request){
+        try{
+            $user_id = $request->user()->id;
+            $res_vehicle = VehicleModel::getAllVehicleName($user_id);
+
+            if (count($res_vehicle) > 0) {
+                $res_driver = DriverModel::getAllDriver($user_id, 0, 'id,username,fullname');
+                $res_assigned = DriverModel::getDriverVehicleManageList($user_id);
+
+                return response()->json([
+                    'status' => 'success',
+                    'message' => Generator::getMessageTemplate("fetch", $this->module),
+                    'data' => [
+                        'vehicle' => $res_vehicle,
+                        'driver' => $res_driver,
+                        'assigned' => $res_assigned,
+                    ]
+                ], Response::HTTP_OK);
+            } else {
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => Generator::getMessageTemplate("not_found", $this->module),
+                ], Response::HTTP_NOT_FOUND);
+            }
+        } catch(\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage(),
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }

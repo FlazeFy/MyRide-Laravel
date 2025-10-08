@@ -1646,6 +1646,14 @@
                                                                 "type": "string",
                                                                 "example": "Jhon Doe"
                                                             },
+                                                            "telegram_user_id": {
+                                                                "type": "string",
+                                                                "example": "123456789"
+                                                            },
+                                                            "telegram_is_valid": {
+                                                                "type": "integer",
+                                                                "example": 1
+                                                            },
                                                             "email": {
                                                                 "type": "string",
                                                                 "example": "jhondoe@gmail.com"
@@ -1828,6 +1836,318 @@
                                         "message": {
                                             "type": "string",
                                             "example": "something wrong. please contact admin"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/driver/vehicle": {
+            "get": {
+                "tags": [
+                    "Driver"
+                ],
+                "summary": "Get all driver and vehicle",
+                "description": "This request is used to get all driver with his assigned vehicle. This request is using MySql database, have a protected routes, and have template pagination.",
+                "operationId": "d70213baf151454426f89de5098a9c89",
+                "responses": {
+                    "200": {
+                        "description": "Driver records fetched successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "driver fetched"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "data": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "username": {
+                                                                "type": "string",
+                                                                "example": "jhondoe"
+                                                            },
+                                                            "fullname": {
+                                                                "type": "string",
+                                                                "example": "Jhon Doe"
+                                                            },
+                                                            "email": {
+                                                                "type": "string",
+                                                                "example": "jhondoe@gmail.com"
+                                                            },
+                                                            "phone": {
+                                                                "type": "string",
+                                                                "example": "08123456780"
+                                                            },
+                                                            "telegram_user_id": {
+                                                                "type": "string",
+                                                                "example": "123456789"
+                                                            },
+                                                            "telegram_is_valid": {
+                                                                "type": "integer",
+                                                                "example": 1
+                                                            },
+                                                            "vehicle_list": {
+                                                                "type": "string",
+                                                                "example": "D 1610 ZBC - Brio RS MT, D 4110 ADC - Toyota Innova"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "protected route need to include sign in token as authorization bearer",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "you need to include the authorization token from login"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "driver failed to fetched",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "driver not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "something wrong. please contact admin"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/driver/vehicle/list": {
+            "get": {
+                "tags": [
+                    "Driver"
+                ],
+                "summary": "Get all driver and vehicle list for management / assigned",
+                "description": "This request is used to get all drivers with their assigned vehicles for management / assigned. This request uses a MySQL database and is a protected route.",
+                "operationId": "63bdd137229f370165b8215f5fdf1b0b",
+                "responses": {
+                    "200": {
+                        "description": "Driver and vehicle records fetched successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "driver fetched"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "vehicle": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "string",
+                                                                "example": "8585ab36-fc67-139c-35c6-608931244634"
+                                                            },
+                                                            "vehicle_name": {
+                                                                "type": "string",
+                                                                "example": "Non dolorum velit corrupti"
+                                                            },
+                                                            "vehicle_plate_number": {
+                                                                "type": "string",
+                                                                "example": "C 80 OON"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                },
+                                                "driver": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "string",
+                                                                "example": "a3f743ae-a373-11f0-86ad-3216422910e8"
+                                                            },
+                                                            "username": {
+                                                                "type": "string",
+                                                                "example": "tester_jhona"
+                                                            },
+                                                            "fullname": {
+                                                                "type": "string",
+                                                                "example": "asd"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                },
+                                                "assigned": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "string",
+                                                                "example": "1c8a4d88-d9b0-11ed-afa1-0242ac120002"
+                                                            },
+                                                            "vehicle_plate_number": {
+                                                                "type": "string",
+                                                                "example": "C 80 OON"
+                                                            },
+                                                            "vehicle_id": {
+                                                                "type": "string",
+                                                                "example": "8585ab36-fc67-139c-35c6-608931244634"
+                                                            },
+                                                            "driver_id": {
+                                                                "type": "string",
+                                                                "example": "a3f743ae-a373-11f0-86ad-3216422910e8"
+                                                            },
+                                                            "username": {
+                                                                "type": "string",
+                                                                "example": "tester_jhona"
+                                                            },
+                                                            "fullname": {
+                                                                "type": "string",
+                                                                "example": "asd"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Protected route — requires sign-in token as authorization bearer",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "you need to include the authorization token from login"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Driver or vehicle not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "driver not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "something went wrong. please contact admin"
                                         }
                                     },
                                     "type": "object"
