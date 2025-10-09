@@ -1,13 +1,12 @@
-<hr><br>
-<h1 class="mb-1" id="vehicle_name"></h1>
-<div class="d-flex justify-content-between">
-    <h4><span class="btn btn-success rounded-pill px-3 me-2" style="font-size:var(--textXMD);" id="vehicle_type"></span><span id="vehicle_merk"></span></h4>
-    <h4 id="vehicle_distance"></h4>
-</div>
-<br>
-<p id="vehicle_desc"></p>
-<br>
-<div class="container bordered">
+<div class="container mt-2">
+    <h1 class="mb-1" id="vehicle_name"></h1>
+    <div class="d-flex justify-content-between">
+        <h4><span class="btn btn-success rounded-pill px-3 me-2" style="font-size:var(--textXMD);" id="vehicle_type"></span><span id="vehicle_merk"></span></h4>
+        <h4 id="vehicle_distance"></h4>
+    </div>
+    <br>
+    <p id="vehicle_desc"></p>
+    <br>
     <h5 class="mb-4">Additional Info</h5><hr>
     <h6>Status : <span id="vehicle_status" class="ms-2"></span></h6>
     <h6>Plate Number : <span class="ms-2" id="vehicle_plate_number"></span></h6>
@@ -15,7 +14,7 @@
     <h6>Color : <span class="text-secondary ms-2" id="vehicle_color"></span></h6>
     <h6>Capacity : <span class="text-secondary ms-2" id="vehicle_capacity"></span></h6>
 </div>
-<div class="container bordered">
+<div class="container">
     <h5 class="mb-4">Fuel Info</h5><hr>
     <div class="row">
         <div class="col-md-6 col-sm-12">

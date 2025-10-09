@@ -100,6 +100,57 @@ class DriverTest extends TestCase
         Audit::auditRecordSheet("Test - Get All Driver", "TC-XXX", 'TC-XXX test_get_all_driver', json_encode($data));
     }
 
+    public function test_get_driver_vehicle(): void
+    {
+        // Exec
+        $token = $this->login_trait("user");
+        $response = $this->httpClient->get("vehicle", [
+            'headers' => [
+                'Authorization' => "Bearer $token"
+            ]
+        ]);
+
+        $data = json_decode($response->getBody(), true);
+
+        // Test Parameter
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertArrayHasKey('status', $data);
+        $this->assertEquals('success', $data['status']);
+        $this->assertArrayHasKey('message', $data);
+        $this->assertArrayHasKey('data', $data);
+
+        foreach ($data['data']['data'] as $dt) {
+            $check_object = ['username', 'fullname', 'email', 'telegram_user_id', 'telegram_is_valid', 'phone', 'vehicle_list'];
+
+            foreach ($check_object as $col) {
+                $this->assertArrayHasKey($col, $dt);
+            }
+
+            $check_not_null_str = ['username', 'fullname', 'email', 'phone','vehicle_list'];
+            foreach ($check_not_null_str as $col) {
+                $this->assertNotNull($dt[$col]);
+                $this->assertIsString($dt[$col]);
+            }
+
+            $check_nullable_str = ['telegram_user_id'];
+            foreach ($check_nullable_str as $col) {
+                if($dt[$col]){
+                    $this->assertNotNull($dt[$col]);
+                    $this->assertIsString($dt[$col]);
+                }
+            }
+
+            $check_not_null_int = ["telegram_is_valid"];
+            foreach ($check_not_null_int as $col) {
+                $this->assertNotNull($dt[$col]);
+                $this->assertIsInt($dt[$col]);
+            }
+        }
+       
+        Audit::auditRecordText("Test - Get Driver Vehicle", "TC-XXX", "Result : ".json_encode($data));
+        Audit::auditRecordSheet("Test - Get Driver Vehicle", "TC-XXX", 'TC-XXX test_get_driver_vehicle', json_encode($data));
+    }
+
     public function test_get_driver_vehicle_manage_list(): void
     {
         // Exec

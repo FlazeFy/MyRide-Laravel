@@ -56,9 +56,14 @@ class DriverModel extends Authenticatable
         return $res->delete();
     }
 
-    public static function getDriverByUsernameOrEmail($username,$email){
-        return DriverModel::where('username',$username)
-            ->orWhere('email',$email)
+    public static function getDriverByUsernameOrEmail($username,$email, $id){
+        return DriverModel::where(function ($query) use ($username, $email) {
+                $query->where('username', $username)
+                    ->orWhere('email', $email);
+            })
+            ->when($id, function ($query, $id) {
+                $query->whereNot('id', $id);
+            })
             ->first();
     }
 

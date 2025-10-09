@@ -151,7 +151,7 @@ class Commands extends Controller
                     'message' => $validator->errors()
                 ], Response::HTTP_BAD_REQUEST);
             } else {
-                $check = DriverModel::getDriverByUsernameOrEmail($request->username,$request->email);
+                $check = DriverModel::getDriverByUsernameOrEmail($request->username,$request->email,null);
                    
                 if(!$check){
                     $data = [
@@ -171,6 +171,95 @@ class Commands extends Controller
                             'status' => 'success',
                             'message' => Generator::getMessageTemplate("create", $this->module),
                         ], Response::HTTP_CREATED);
+                    } else {
+                        return response()->json([
+                            'status' => 'error',
+                            'message' => Generator::getMessageTemplate("unknown_error", null),
+                        ], Response::HTTP_INTERNAL_SERVER_ERROR);
+                    }
+                } else {
+                    return response()->json([
+                        'status' => 'failed',
+                        'message' => Generator::getMessageTemplate("conflict", $this->module),
+                    ], Response::HTTP_CONFLICT);
+                }
+            }
+        } catch(\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => Generator::getMessageTemplate("unknown_error", null),
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
+     * @OA\PUT(
+     *     path="/api/v1/driver/{id}",
+     *     summary="Update an driver",
+     *     tags={"Driver"},
+     *     security={{"bearerAuth":{}}},
+     *     @OA\Response(
+     *         response=200,
+     *         description="driver updated",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="message", type="string", example="driver updated")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="protected route need to include sign in token as authorization bearer",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="failed"),
+     *             @OA\Property(property="message", type="string", example="you need to include the authorization token from login")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="driver failed to validated",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="failed"),
+     *             @OA\Property(property="message", type="string", example="[failed validation message]")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal Server Error",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="error"),
+     *             @OA\Property(property="message", type="string", example="something wrong. please contact admin")
+     *         )
+     *     ),
+     * )
+     */
+    public function updateDriver(Request $request, $id){
+        try{
+            $user_id = $request->user()->id;
+
+            $validator = Validation::getValidateDriver($request,'update');
+            if ($validator->fails()) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => $validator->errors()
+                ], Response::HTTP_BAD_REQUEST);
+            } else {
+                $check = DriverModel::getDriverByUsernameOrEmail($request->username,$request->email,$id);
+                   
+                if(!$check){
+                    $data = [
+                        'username' => $request->username, 
+                        'fullname' => $request->fullname, 
+                        'email' => $request->email, 
+                        'phone' => $request->phone, 
+                        'notes' => $request->notes,
+                    ];
+
+                    $rows = DriverModel::updateDriverById($data, $user_id, $id);
+                    if($rows > 0){
+                        return response()->json([
+                            'status' => 'success',
+                            'message' => Generator::getMessageTemplate("update", $this->module),
+                        ], Response::HTTP_OK);
                     } else {
                         return response()->json([
                             'status' => 'error',
