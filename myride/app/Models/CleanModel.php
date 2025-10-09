@@ -97,4 +97,10 @@ class CleanModel extends Model
             
         return CleanModel::create($data);
     }
+
+    public static function updateCleanById($data, $user_id, $id){
+        $data['updated_at'] = date('Y-m-d H:i:s');
+        
+        return CleanModel::where('created_by',$user_id)->where('id',$id)->update($data);
+    }
 }

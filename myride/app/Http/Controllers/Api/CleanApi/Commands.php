@@ -103,17 +103,17 @@ class Commands extends Controller
     }
 
     /**
-     * @OA\POST(
-     *     path="/api/v1/clean",
-     *     summary="Create a clean",
+     * @OA\PUT(
+     *     path="/api/v1/clean/{id}",
+     *     summary="Update a clean data",
      *     tags={"Clean"},
      *     security={{"bearerAuth":{}}},
      *     @OA\Response(
-     *         response=201,
-     *         description="clean created",
+     *         response=200,
+     *         description="clean updated",
      *         @OA\JsonContent(
      *             @OA\Property(property="status", type="string", example="success"),
-     *             @OA\Property(property="message", type="string", example="clean created")
+     *             @OA\Property(property="message", type="string", example="clean updated")
      *         )
      *     ),
      *     @OA\Response(
@@ -191,6 +191,74 @@ class Commands extends Controller
             return response()->json([
                 'status' => 'error',
                 'message' => Generator::getMessageTemplate("unknown_error", null),
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
+     * @OA\PUT(
+     *     path="/api/v1/clean/{id}",
+     *     summary="Update a clean finish status",
+     *     tags={"Clean"},
+     *     security={{"bearerAuth":{}}},
+     *     @OA\Response(
+     *         response=200,
+     *         description="clean updated",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="message", type="string", example="clean updated")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="protected route need to include sign in token as authorization bearer",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="failed"),
+     *             @OA\Property(property="message", type="string", example="you need to include the authorization token from login")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="clean failed to validated",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="failed"),
+     *             @OA\Property(property="message", type="string", example="[failed validation message]")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal Server Error",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="error"),
+     *             @OA\Property(property="message", type="string", example="something wrong. please contact admin")
+     *         )
+     *     ),
+     * )
+     */
+    public function putFinishClean(Request $request,$id){
+        try{
+            $user_id = $request->user()->id;
+
+            $data = [
+                'clean_end_time' => date('Y-m-d H:i:s'),
+            ];
+
+            $rows = CleanModel::updateCleanById($data, $user_id, $id);
+            if($rows > 0){
+                return response()->json([
+                    'status' => 'success',
+                    'message' => Generator::getMessageTemplate("update", $this->module),
+                ], Response::HTTP_OK);
+            } else {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => Generator::getMessageTemplate("unknown_error", null),
+                ], Response::HTTP_INTERNAL_SERVER_ERROR);
+            }
+        } catch(\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage(),
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }

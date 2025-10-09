@@ -9,6 +9,7 @@
         <div class="container mt-2">
             @include('clean.usecases.get_all_list_clean')
             @include('clean.usecases.hard_delete_clean')
+            @include('clean.usecases.put_finish_clean')
         </div>
     </div>
 @endsection

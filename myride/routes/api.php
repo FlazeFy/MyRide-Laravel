@@ -71,6 +71,7 @@ Route::prefix('/v1/clean')->middleware(['auth:sanctum'])->group(function () {
     Route::delete('/destroy/{id}', [CommandsCleanController::class, 'hardDeleteCleanById']);
     Route::get('/last', [QueriesCleanController::class, 'getLastCleanByVehicleId']);
     Route::post('/', [CommandsCleanController::class, 'postClean']);
+    Route::put('/finish/{id}', [CommandsCleanController::class, 'putFinishClean']);
 });
 
 Route::prefix('/v1/history')->middleware(['auth:sanctum'])->group(function () {

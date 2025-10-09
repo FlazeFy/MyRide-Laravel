@@ -76,11 +76,11 @@
                                 <h6 class="mb-0">Start At</h6>
                                 <p class="mb-0">${getDateToContext(dt.clean_start_time,'calendar')}</p>
                                 <h6 class="mb-0">Finished At</h6>
-                                <p class="mb-0">${getDateToContext(dt.clean_end_time,'calendar') ?? "In Progress"}</p>
+                                <p class="mb-0">${dt.clean_end_time ? getDateToContext(dt.clean_end_time,'calendar') : "In Progress"}</p>
                             </td>
                             <td>
                                 <a class="btn btn-danger w-100 btn-delete" data-url="/api/v1/clean/destroy/${dt.id}" data-context="Clean"><i class="fa-solid fa-trash"></i></a>
-                                ${dt.clean_end_time != null ? `<a class="btn btn-success w-100 mt-2"><i class="fa-solid fa-check"></i></a>` : ""}
+                                ${dt.clean_end_time === null ? `<a class="btn btn-success w-100 mt-2 btn-finish" data-id="${dt.id}"><i class="fa-solid fa-check"></i></a>` : ""}
                             </td>
                         </tr>
                     `)
