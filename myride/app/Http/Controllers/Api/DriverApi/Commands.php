@@ -276,7 +276,7 @@ class Commands extends Controller
         } catch(\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => Generator::getMessageTemplate("unknown_error", null),
+                'message' => $e->getMessage(),
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }

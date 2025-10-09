@@ -34,7 +34,7 @@ class Validation
     }
 
     public static function getValidateDriver($request,$type){
-        if($type === "create"){
+        if ($type === "create") {
             return Validator::make($request->all(), [
                 'username' => 'required|min:6|max:36|string',
                 'password' => 'required|min:6|max:36|string',
@@ -42,7 +42,15 @@ class Validation
                 'email' => 'required|min:10|max:255|string',
                 'telegram_user_id' => 'nullable|string|max:36|min:2',
                 'fullname' => 'required|string|max:50|min:2',
-                'phone' => 'required|string|max:16|min:8', 
+                'phone' => 'required|string|max:16|min:8',
+                'notes' => 'nullable|string|max:500|min:2',
+            ]);
+        } else if ($type === "update") {
+            return Validator::make($request->all(), [
+                'username' => 'required|min:6|max:36|string',
+                'email' => 'required|min:10|max:255|string',
+                'fullname' => 'required|string|max:50|min:2',
+                'phone' => 'required|string|max:16|min:8',
                 'notes' => 'nullable|string|max:500|min:2',
             ]);
         }

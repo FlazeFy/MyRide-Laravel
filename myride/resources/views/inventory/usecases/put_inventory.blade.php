@@ -90,15 +90,15 @@
                 },
                 error: function(response, jqXHR, textStatus, errorThrown) {
                     Swal.close()
-                    if(response.status != 400){
-                        failedMsg('create inventory')
+                    if(response.status === 500){
+                        failedMsg('update inventory')
                     } else {
-                        // ....
+                        failedMsg(response.status === 400 ? Object.values(response.responseJSON.message).flat().join('\n') : response.responseJSON.message)
                     }
                 }
             });
         } else {
-            failedMsg('create inventory : you must select an item')
+            failedMsg('update inventory : you must select an item')
         }
     }
 </script>

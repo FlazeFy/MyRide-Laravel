@@ -90,4 +90,10 @@ class DriverModel extends Authenticatable
             ->where('driver.created_by',$user_id)
             ->get();
     }
+
+    public static function updateDriverById($data, $user_id, $id){
+        $data['updated_at'] = date('Y-m-d H:i:s');
+        
+        return DriverModel::where('created_by',$user_id)->where('id',$id)->update($data);
+    }
 }

@@ -57,6 +57,10 @@
                             </td>
                             <td>
                                 <a class="btn btn-danger btn-delete" style="width:50px;" data-url="/api/v1/driver/destroy/${dt.id}" data-context="Driver"><i class="fa-solid fa-trash"></i></a>
+                                <a class="btn btn-warning btn-update" style="width:50px;" 
+                                    data-username="${dt.username}" data-id="${dt.id}" 
+                                    data-fullname="${dt.fullname}" data-email="${dt.email}" 
+                                    data-notes="${dt.notes}" data-phone="${dt.phone}"><i class="fa-solid fa-pen-to-square"></i></a>
                             </td>
                         </tr>
                     `)

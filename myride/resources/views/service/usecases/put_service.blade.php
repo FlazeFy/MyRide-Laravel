@@ -92,15 +92,15 @@
                 },
                 error: function(response, jqXHR, textStatus, errorThrown) {
                     Swal.close()
-                    if(response.status != 400){
-                        failedMsg('create service')
+                    if(response.status === 500){
+                        failedMsg('update service')
                     } else {
-                        // ....
+                        failedMsg(response.status === 400 ? Object.values(response.responseJSON.message).flat().join('\n') : response.responseJSON.message)
                     }
                 }
             });
         } else {
-            failedMsg('create service : you must select an item')
+            failedMsg('update service : you must select an item')
         }
     }
 </script>
