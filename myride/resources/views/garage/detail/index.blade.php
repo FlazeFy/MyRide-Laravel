@@ -11,6 +11,10 @@
             <div class="col-lg-6 col-md-6 col-sm-12 col-12">
                 @include('garage.detail.usecases.get_vehicle_detail')
                 <div class="container">
+                    <h2>Driver</h2>
+                    @include('garage.detail.usecases.get_vehicle_driver')
+                </div>
+                <div class="container">
                     <h2>Wash History</h2>
                     @include('garage.detail.usecases.get_vehicle_wash_history')
                 </div>

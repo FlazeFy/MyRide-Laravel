@@ -83,6 +83,8 @@ class Commands extends Controller
 
             $rows = DriverModel::hardDeleteDriverById($id, $user_id);
             if($rows > 0){
+                DriverVehicleRelationModel::hardDeleteDriverVehicleRelationByDriverId($id, $user_id);
+                
                 return response()->json([
                     'status' => 'success',
                     'message' => Generator::getMessageTemplate("permentally delete", $this->module),

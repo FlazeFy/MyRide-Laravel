@@ -48,6 +48,7 @@
                 const detail = response.data.detail
                 const trip_data = response.data.trip
                 const clean_data = response.data.clean
+                const driver_data = response.data.driver
                     
                 $('#vehicle_name').html(`${detail.vehicle_year_made} | ${detail.vehicle_name}`)
                 $('#vehicle_merk').html(detail.vehicle_merk)
@@ -65,6 +66,7 @@
 
                 build_layout_trip(trip_data)
                 build_layout_clean(clean_data)
+                build_layout_driver(driver_data)
             },
             error: function(response, jqXHR, textStatus, errorThrown) {
                 Swal.close()

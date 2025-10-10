@@ -28,4 +28,15 @@ class DriverVehicleRelationModel extends Authenticatable
             
         return $res->delete();
     }
+
+    public static function hardDeleteDriverVehicleRelationByDriverId($driver_id, $user_id = null){
+        $res = DriverVehicleRelationModel::where('driver_vehicle_relation.driver_id',$driver_id);
+
+        if($user_id){
+            $res = $res->join('driver','driver.id','=','driver_vehicle_relation.driver_id')
+                ->where('driver.created_by',$user_id);
+        }
+            
+        return $res->delete();
+    }
 }

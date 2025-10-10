@@ -7,10 +7,12 @@
         Swal.fire({
             title: "Are you sure!",
             html: `want remove ${driver} from ${vehicle}?`,
-            icon: "warning"
+            icon: "warning",
+            showCancelButton: true,
+            cancelButtonText: 'Cancel',
         }).then((result) => {
             if (result.isConfirmed) {
-                Swal.showLoading();
+                Swal.showLoading()
                 $.ajax({
                     url: `/api/v1/driver/destroy/relation/${id}`,
                     type: 'DELETE',

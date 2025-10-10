@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Models\VehicleModel;
 use App\Models\TripModel;
 use App\Models\CleanModel;
+use App\Models\DriverModel;
 // Helper
 use App\Helpers\Generator;
 
@@ -541,6 +542,19 @@ class Queries extends Controller
      *                     @OA\Property(property="per_page", type="integer", example=14),
      *                     @OA\Property(property="total", type="integer", example=5)
      *                 ),
+     *                 @OA\Property(property="driver", type="array",
+     *                         @OA\Items(type="object",
+     *                             @OA\Property(property="id", type="string", example="28668090-5653-dff5-2d8f-af603fc36b45"),
+     *                             @OA\Property(property="username", type="string", example="jhondoe"),
+     *                             @OA\Property(property="fullname", type="string", example="test123"),
+     *                             @OA\Property(property="email", type="string", example="jhondoe@gmail.com"),
+     *                             @OA\Property(property="telegram_user_id", type="string", example="123456789"),
+     *                             @OA\Property(property="telegram_is_valid", type="integer", example=1),
+     *                             @OA\Property(property="phone", type="string", example="08123456789"),
+     *                             @OA\Property(property="notes", type="string", nullable=true, example="lorem ipsum"),
+     *                             @OA\Property(property="assigned_at", type="string", format="datetime", example="2025-01-29 16:46:45")
+     *                         )
+     *                 ),
      *                 @OA\Property(property="clean", type="object",
      *                     @OA\Property(property="current_page", type="integer", example=1),
      *                     @OA\Property(property="data", type="array",
@@ -614,6 +628,8 @@ class Queries extends Controller
                 $res_trip = TripModel::getTripByVehicleId($user_id,$id,$limit);
                 // Model : Show Clean History
                 $res_clean = CleanModel::getCleanByVehicleId($user_id,$id,$limit);
+                // Model : Show Driver
+                $res_driver = DriverModel::getDriverByVehicleId($user_id, $id);
                 return response()->json([
                     'status' => 'success',
                     'message' => Generator::getMessageTemplate("fetch", $this->module),
@@ -621,6 +637,7 @@ class Queries extends Controller
                         'detail' => $res,
                         'trip' => $res_trip,
                         'clean' => $res_clean,
+                        'driver' => $res_driver
                     ]
                 ], Response::HTTP_OK);
             } else {

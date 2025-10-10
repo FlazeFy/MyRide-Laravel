@@ -91,6 +91,15 @@ class DriverModel extends Authenticatable
             ->get();
     }
 
+    public static function getDriverByVehicleId($user_id,$vehicle_id){
+        return DriverModel::select('username', 'fullname', 'email', 'telegram_user_id', 'telegram_is_valid', 'phone', 'notes', 'driver_vehicle_relation.created_at as assigned_at')
+            ->leftjoin('driver_vehicle_relation','driver_vehicle_relation.driver_id','=','driver.id')
+            ->where('vehicle_id',$vehicle_id)
+            ->where('driver.created_by',$user_id)
+            ->orderBy('driver.created_at','DESC')
+            ->get();
+    }
+
     public static function updateDriverById($data, $user_id, $id){
         $data['updated_at'] = date('Y-m-d H:i:s');
         
