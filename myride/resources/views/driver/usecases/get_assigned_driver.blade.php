@@ -4,7 +4,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title fw-bold" id="exampleModalLabel">Assigned Driver</h4>
-                <button type="button" class="btn btn-danger" data-bs-dismiss="modal" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+                <button type="buthtml class="btn btn-danger" data-bs-dismiss="modal" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <div class="modal-body">
                 <table>
@@ -44,7 +44,10 @@
                     const listDriver = data.assigned.filter(asg => asg.vehicle_id === dt.id).map(asg => `
                         <div class="d-inline-flex align-items-center pt-2">
                             <div class="text-center">
-                                <span class="plate-number"><i class="fa-solid fa-user-tie"></i> ${asg.username}</span>
+                                <div>
+                                    <span class="plate-number me-0"><i class="fa-solid fa-user-tie"></i> ${asg.username}</span>
+                                    <a class="btn btn-danger p-0 pt-1 btn-remove-assigned-driver" data-id="${asg.id}" data-vehicle="<b>(${dt.vehicle_plate_number})</b> ${dt.vehicle_name}" data-driver="<b>${asg.username}</b>" style="height: var(--spaceJumbo); width: var(--spaceJumbo);"><i class="fa-solid fa-circle-xmark fa-sm"></i></a>
+                                </div>
                                 <p class="text-secondary mt-2 mb-0 fw-bold">${asg.fullname}</p>
                             </div>
                         </div>
@@ -58,7 +61,7 @@
                             </td>
                             <td class="text-start">${listDriver}</td>
                             <td>
-                                
+
                             </td>
                         </tr>
                     `)

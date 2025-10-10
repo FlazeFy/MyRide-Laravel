@@ -44,7 +44,7 @@
                                 <h6 class="mb-0">Phone Number</h6>
                                 <p class="mb-0">${dt.phone ?? '-'}</p>
                             </td>
-                            <td class="text-start">${dt.notes}</td>
+                            <td class="text-start">${dt.notes ?? '-'}</td>
                             <td class="text-start">
                                 <h6 class="mb-0">Created At</h6>
                                 <p class="mb-0">${getDateToContext(dt.created_at,'calendar')}</p>

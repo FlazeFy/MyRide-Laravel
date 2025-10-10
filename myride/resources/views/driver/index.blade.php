@@ -11,6 +11,7 @@
             @include('driver.usecases.get_all_list_driver')
             @include('driver.usecases.hard_delete_driver')
             @include('driver.usecases.put_driver')
+            @include('driver.usecases.hard_delete_driver_from_vehicle')
         </div>
     </div>
 @endsection
