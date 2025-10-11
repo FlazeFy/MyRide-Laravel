@@ -636,8 +636,8 @@ class Queries extends Controller
                     'data' => [
                         'detail' => $res,
                         'trip' => $res_trip,
-                        'clean' => $res_clean,
-                        'driver' => $res_driver
+                        'clean' => $res_clean && count($res_clean) > 0 ? $res_clean : null,
+                        'driver' => $res_driver && count($res_driver) > 0 ? $res_driver : null
                     ]
                 ], Response::HTTP_OK);
             } else {
@@ -742,7 +742,7 @@ class Queries extends Controller
         } catch(\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => Generator::getMessageTemplate("unknown_error", null),
+                'message' => $e->getMessage(),
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }

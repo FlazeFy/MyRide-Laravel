@@ -91,7 +91,7 @@ class Queries extends Controller
             $res = TripModel::getAllTrip($user_id,$limit);
 
             // Response
-            if ($res) {
+            if(count($res) > 0) {
                 return response()->json([
                     'status' => 'success',
                     'message' => Generator::getMessageTemplate("fetch", $this->module),

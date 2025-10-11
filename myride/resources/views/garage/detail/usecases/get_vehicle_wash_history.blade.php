@@ -1,3 +1,10 @@
+<style>
+    #clean_tb tbody h6, #clean_tb tbody p {
+        font-size:var(--textSM) !important;
+        margin-bottom:0;
+    }
+</style>
+
 <table class="table table-bordered" id="clean_tb">
     <thead>
         <tr>
@@ -33,7 +40,7 @@
                             <hr>
                             <div class="row">
                                 <h6 class="mb-0">Clean Detail</h6>
-                                <div>
+                                <p>
                                     ${[
                                         { key: "is_clean_body", label: "Body Cleaning" },
                                         { key: "is_clean_window", label: "Window Cleaning" },
@@ -49,18 +56,24 @@
                                     ].map(clean => 
                                         dt[clean.key] ? `<span style='font-size:var(--textXMD);'>${clean.label}</span>, ` : ''
                                     ).join('')}
-                                </div>
+                                </p>
                             </div>
                         </td>
                         <td>
                             <h6 class="mb-0">Start At</h6>
                             <p>${dt.clean_start_time}</p>
                             <h6 class="mb-0">Finished At</h6>
-                            <p>${dt.clean_end_time ?? "In Progress"}</p>
-                        </td>
+                            <p class="mb-0">${dt.clean_end_time ?? "In Progress"}</p>
+                        </td> 
                     </tr>
                 `)
             });
+        } else {
+            $('#clean_tb tbody').html(`
+                <tr>
+                    <td colspan="3"><p class="m-0 fst-italic text-secondary">- No Wash History -</p></td>
+                </tr>
+            `)
         }
     }
 </script>

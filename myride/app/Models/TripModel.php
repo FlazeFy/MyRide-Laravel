@@ -126,16 +126,19 @@ class TripModel extends Model
             ->get();
 
         $total_distance = 0;
-        foreach ($res as $dt) {
-            $origin_coor = explode(", ", $dt->trip_origin_coordinate);
-            $destination_coor = explode(", ", $dt->trip_destination_coordinate);
-            $lat1 = $origin_coor[0];
-            $lon1 = $origin_coor[1];
-            $lat2 = $destination_coor[0];
-            $lon2 = $destination_coor[1];
 
-            $distance = Converter::calculate_distance($lat1, $lon1, $lat2, $lon2, $unit = 'km');
-            $total_distance = $total_distance + $distance;
+        if(count($res) > 0){
+            foreach ($res as $dt) {
+                $origin_coor = explode(",", $dt->trip_origin_coordinate);
+                $destination_coor = explode(",", $dt->trip_destination_coordinate);
+                $lat1 = $origin_coor[0];
+                $lon1 = $origin_coor[1];
+                $lat2 = $destination_coor[0];
+                $lon2 = $destination_coor[1];
+
+                $distance = Converter::calculate_distance($lat1, $lon1, $lat2, $lon2, $unit = 'km');
+                $total_distance = $total_distance + $distance;
+            }
         }
 
         return $total_distance;

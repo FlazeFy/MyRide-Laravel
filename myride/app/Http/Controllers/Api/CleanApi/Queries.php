@@ -101,7 +101,7 @@ class Queries extends Controller
             $res = CleanModel::getAllCleanHistory($user_id,$limit);
 
             // Response
-            if($res) {
+            if(count($res) > 0) {
                 return response()->json([
                     'status' => 'success',
                     'message' => Generator::getMessageTemplate("fetch", $this->module),

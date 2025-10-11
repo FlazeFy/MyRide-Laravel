@@ -26,6 +26,9 @@
                 <div class='container text-center'>
                     @include('dashboard.usecases.get_trip_discovered')
                 </div>
+                <div class='container text-center'>
+                    @include('dashboard.usecases.get_last_trip')
+                </div>
             </div>
             <div class="col-xl-9 col-lg-8 col-md-7 col-md-7 col-sm-12">
                 <div class='container'>

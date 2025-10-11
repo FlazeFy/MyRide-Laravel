@@ -44,11 +44,12 @@
             },
             error: function(response, jqXHR, textStatus, errorThrown) {
                 Swal.close()
-                Swal.fire({
-                    title: "Oops!",
-                    text: "Something went wrong",
-                    icon: "error"
-                });
+
+                if(response.status !== 404){
+                    failedMsg('get the summary of trip')
+                } else {
+                    
+                }
             }
         });
     }
