@@ -31,25 +31,30 @@ class TripModel extends Model
     }
 
     public static function getTotalTripByCategory($user_id){
-        $res = TripModel::selectRaw('trip_category as context, COUNT(1) as total')
+        return TripModel::selectRaw('trip_category as context, COUNT(1) as total')
             ->where('created_by', $user_id)
             ->orderBy('total','DESC')
             ->groupBy('trip_category')
             ->limit(6)
             ->get();
+    }
 
-        return $res;
+    public static function getLastTrip($user_id){
+        return TripModel::select('trip_destination_name','trip_destination_coordinate','driver.username as driver_username','vehicle_plate_number','trip.created_at')
+            ->join('vehicle','vehicle.id','=','trip.vehicle_id')
+            ->leftjoin('driver','driver.id','=','trip.driver_id')
+            ->where('trip.created_by', $user_id)
+            ->orderBy('trip.created_at','DESC')
+            ->first();
     }
 
     public static function getTotalTripByDestinationOrigion($user_id, $type){
-        $res = TripModel::selectRaw('trip_'.$type.'_name context, COUNT(1) as total')
+        return TripModel::selectRaw('trip_'.$type.'_name context, COUNT(1) as total')
             ->where('created_by', $user_id)
             ->orderBy('total','DESC')
             ->groupBy('trip_'.$type.'_name')
             ->limit(6)
             ->get();
-
-        return $res;
     }
 
     public static function getTripByVehicleId($user_id,$vehicle_id,$limit = null){
@@ -109,13 +114,11 @@ class TripModel extends Model
     }
 
     public static function getMostContext($user_id, $vehicle_id){
-        $res = TripModel::selectRaw("MAX(LOWER(trip_destination_name)) as most_destination, MAX(LOWER(trip_origin_name)) as most_origin, MAX(trip_category) as most_category")
+        return TripModel::selectRaw("MAX(LOWER(trip_destination_name)) as most_destination, MAX(LOWER(trip_origin_name)) as most_origin, MAX(trip_category) as most_category")
             ->where('vehicle_id',$vehicle_id)
             ->where('created_by',$user_id)
             ->whereNull('deleted_at')
             ->first();
-
-        return $res;
     }
 
     public static function getTotalTripDistance($user_id,$vehicle_id){

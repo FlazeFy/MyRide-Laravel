@@ -6,18 +6,17 @@
         Swal.showLoading()
         const ctx = 'last_trip'
 
-        const generate_trip_visualization = (created_at,location,coordinate,vehicle_plate_number,driver_username) => {
-            const dateObj = new Date(remind_at.replace(" ", "T"))
+        const generate_last_trip = (created_at,trip_destination_name,trip_destination_coordinate,vehicle_plate_number,driver_username) => {
+            const dateObj = new Date(created_at.replace(" ", "T"))
             const date = dateObj.toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" })
 
             $(`#${ctx}-holder`).html(`
                 <h4 class="fw-bold">${date}</h4>
                 <span class="d-flex justify-align-center justify-content-center">
-                    <h2 class="fw-bold chip bg-warning d-inline-block me-0" style="font-size:var(--textXMD);"></h2>
-                    ${vehicle_plate_number ? `<a class="plate-number">${vehicle_plate_number}</a>` :''}
-                    ${driver_username ? `<a class="plate-number">${driver_username}</a>` :''}
+                    <a class="plate-number">${vehicle_plate_number}</a>
+                    ${driver_username ? `<a class="plate-number"><i class="fa-solid fa-user-tie"></i> ${driver_username}</a>` :''}
                 </span>
-                <p class="text-secondary mb-0"><b>Locate on:</b> ${coordinate} | ${location}</p>
+                <p class="text-secondary mb-0"><b>Locate on:</b> ${trip_destination_coordinate} | ${trip_destination_name}</p>
             `)
         }
 
@@ -34,7 +33,7 @@
                     const data = response.data
                     localStorage.setItem(ctx,JSON.stringify(data))
                     localStorage.setItem(`last-hit-${ctx}`,Date.now())
-                    generate_trip_visualization(data.created_at,data.location,data.coordinate,data.coordinate,data.vehicle_plate_number,data.driver_username)
+                    generate_last_trip(data.created_at,data.trip_destination_name,data.trip_destination_coordinate,data.vehicle_plate_number,data.driver_username)
                 },
                 error: function(response, jqXHR, textStatus, errorThrown) {
                     Swal.close()
@@ -55,7 +54,7 @@
             if(((now - lastHit) / 1000) < summaryFetchRestTime){
                 const data = JSON.parse(localStorage.getItem(ctx))
                 if(data){
-                    generate_trip_visualization(data.remind_at,data.last_title,data.last_context,data.last_body,data.vehicle_plate_number)
+                    generate_last_trip(data.created_at,data.trip_destination_name,data.trip_destination_coordinate,data.vehicle_plate_number,data.driver_username)
                     Swal.close()
                 } else {
                     Swal.close()

@@ -128,6 +128,7 @@ Route::prefix('/v1/fuel')->middleware(['auth:sanctum'])->group(function () {
 Route::prefix('/v1/trip')->middleware(['auth:sanctum'])->group(function () {
     Route::post('/', [CommandsTripApi::class, 'postTrip']);
     Route::get('/', [QueriesTripApi::class, 'getAllTrip']);
+    Route::get('/last', [QueriesTripApi::class, 'getLastTrip']);
 });
 
 Route::prefix('/v1/trip')->group(function () {

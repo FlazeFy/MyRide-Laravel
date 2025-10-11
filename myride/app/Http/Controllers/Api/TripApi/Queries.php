@@ -113,6 +113,83 @@ class Queries extends Controller
 
     /**
      * @OA\GET(
+     *     path="/api/v1/trip/last",
+     *     summary="Get last trip",
+     *     description="This request is used to get the last trip. This request is using MySql database, and have a protected routes.",
+     *     tags={"Trip"},
+     *     security={{"bearerAuth":{}}},
+     *     @OA\Response(
+     *         response=200,
+     *         description="trip fetched",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="message", type="string", example="trip fetched"),
+     *                 @OA\Property(property="data", type="object",
+     *                     @OA\Property(property="trip_destination_name", type="string", example="Location A"),
+     *                     @OA\Property(property="trip_destination_coordinate", type="string", example="-6.177362076836449,106.79156507985539"),
+     *                     @OA\Property(property="driver_username", type="string", example="jhondoe"),
+     *                     @OA\Property(property="vehicle_plate_number", type="string", example="EY 28 BK"),
+     *                     @OA\Property(property="created_at", type="string", example="2025-09-05 00:00:00"),
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="protected route need to include sign in token as authorization bearer",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="failed"),
+     *             @OA\Property(property="message", type="string", example="you need to include the authorization token from login")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="trip failed to fetched",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="failed"),
+     *             @OA\Property(property="message", type="string", example="trip not found")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal Server Error",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="error"),
+     *             @OA\Property(property="message", type="string", example="something wrong. please contact admin")
+     *         )
+     *     ),
+     * )
+     */
+    public function getLastTrip(Request $request)
+    {
+        try{
+            $user_id = $request->user()->id;
+
+            // Model
+            $res = TripModel::getLastTrip($user_id);
+
+            // Response
+            if($res) {
+                return response()->json([
+                    'status' => 'success',
+                    'message' => Generator::getMessageTemplate("fetch", $this->module),
+                    'data' => $res
+                ], Response::HTTP_OK);
+            } else {
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => Generator::getMessageTemplate("not_found", $this->module),
+                ], Response::HTTP_NOT_FOUND);
+            }
+        } catch(\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => Generator::getMessageTemplate("unknown_error", null),
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
+     * @OA\GET(
      *     path="/api/v1/trip/discovered",
      *     summary="Get trip discovered summary",
      *     description="This request is used to get trip discovered summary. This request is using MySql database, and have a protected routes.",

@@ -197,7 +197,7 @@ class Commands extends Controller
 
     /**
      * @OA\PUT(
-     *     path="/api/v1/clean/{id}",
+     *     path="/api/v1/clean/finish/{id}",
      *     summary="Update a clean finish status",
      *     tags={"Clean"},
      *     security={{"bearerAuth":{}}},
