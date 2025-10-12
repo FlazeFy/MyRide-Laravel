@@ -32,6 +32,13 @@ class DriverModel extends Authenticatable
         }                     
     }
 
+    public static function getAllDriverName($user_id){
+        return DriverModel::select('id', 'username', 'fullname')
+            ->where('driver.created_by',$user_id)
+            ->orderby('fullname','asc')
+            ->get();
+    }
+
     public static function getDriverVehicle($user_id = null, $limit){
         $res = DriverModel::selectRaw('username, fullname, email, telegram_user_id, telegram_is_valid, phone, GROUP_CONCAT(CONCAT(vehicle.vehicle_plate_number, "-", vehicle.vehicle_name) SEPARATOR ", ") as vehicle_list')
             ->leftjoin('driver_vehicle_relation','driver_vehicle_relation.driver_id','=','driver.id')

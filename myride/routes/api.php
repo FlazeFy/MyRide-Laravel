@@ -99,6 +99,7 @@ Route::prefix('/v1/service')->middleware(['auth:sanctum'])->group(function () {
 
 Route::prefix('/v1/driver')->middleware(['auth:sanctum'])->group(function () {
     Route::get('/', [QueriesDriverController::class, 'getAllDriver']);
+    Route::get('/name', [QueriesDriverController::class, 'getAllDriverName']);
     Route::get('/vehicle', [QueriesDriverController::class, 'getDriverVehicle']);
     Route::get('/vehicle/list', [QueriesDriverController::class, 'getDriverVehicleManageList']);
     Route::post('/', [CommandsDriverController::class, 'postDriver']);

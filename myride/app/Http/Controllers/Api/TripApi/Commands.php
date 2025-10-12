@@ -11,6 +11,7 @@ use Telegram\Bot\Laravel\Facades\Telegram;
 use App\Models\VehicleModel;
 use App\Models\TripModel;
 use App\Models\UserModel;
+use App\Models\DriverModel;
 // Helper
 use App\Helpers\Validation;
 use App\Helpers\Generator;
@@ -100,6 +101,11 @@ class Commands extends Controller
             } else {
                 $user_id = $request->user()->id;
                 $vehicle_id = $request->vehicle_id;
+                $driver_id = null;
+
+                if($request->driver_id !== "-"){
+                    $driver_id = $request->driver_id;
+                }
 
                 // Service : Validate existing vehicle and get the identity
                 $vehicle = VehicleModel::getVehicleIdentity($user_id,$vehicle_id);
@@ -113,6 +119,7 @@ class Commands extends Controller
                     $rows = TripModel::create([
                         'id' => Generator::getUUID(), 
                         'vehicle_id' => $vehicle_id, 
+                        'driver_id' => $driver_id,
                         'trip_desc' => $request->trip_desc, 
                         'trip_category' => $request->trip_category, 
                         'trip_person' => $request->trip_person, 
@@ -128,11 +135,23 @@ class Commands extends Controller
 
                     // Respond
                     if($rows){
+                        // Message to User
                         $user = UserModel::getSocial($user_id);
                         $message = "Hello $user->username, your have added trip history from $trip_origin_name to $trip_destination_name using $vehicle_name ($vehicle_plate_number)";
                         if($user->telegram_user_id){
                             $response = Telegram::sendMessage([
                                 'chat_id' => $user->telegram_user_id,
+                                'text' => $message,
+                                'parse_mode' => 'HTML'
+                            ]);
+                        }
+
+                        // Message to Driver
+                        if($driver_id){
+                            $driver = DriverModel::find($driver_id);
+                            $message = "Hello $driver->username, $user->username have added trip history with you as the driver. The trip from $trip_origin_name to $trip_destination_name using $vehicle_name ($vehicle_plate_number)";
+                            $response = Telegram::sendMessage([
+                                'chat_id' => $driver->telegram_user_id,
                                 'text' => $message,
                                 'parse_mode' => 'HTML'
                             ]);

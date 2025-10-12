@@ -57,9 +57,67 @@ const get_vehicle_name_opt = (token) => {
     }
 }
 
+const get_driver_name_opt = (token) => {
+    Swal.showLoading()
+    const ctx = 'driver_name_temp'
+    const ctx_holder = 'driver_holder'
+
+    const generate_driver_list = (holder,data) => {
+        $(`#${holder}`).html(`<option value="-">-</option>`)
+        data.forEach(el => {
+            $(`#${holder}`).append(`<option value="${el.id}">${el.username} - ${el.fullname}</option>`)
+        });
+    }
+
+    const fetchData = () => {
+        $.ajax({
+            url: `/api/v1/driver/name`,
+            type: 'GET',
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Accept", "application/json")
+                xhr.setRequestHeader("Authorization", `Bearer ${token}`)    
+            },
+            success: function(response) {
+                Swal.close()
+                const data = response.data
+                localStorage.setItem(ctx,JSON.stringify(data))
+                localStorage.setItem(`last-hit-${ctx}`,Date.now())
+                generate_driver_list(ctx_holder,data)
+            },
+            error: function(response, jqXHR, textStatus, errorThrown) {
+                Swal.close()
+                if(response.status != 404){
+                    failedMsg(`get the vehicle list`)
+                } else {
+                    // .....
+                }
+            }
+        });
+    }
+
+    if(ctx in localStorage){
+        const lastHit = parseInt(localStorage.getItem(`last-hit-${ctx}`))
+        const now = Date.now()
+
+        if(((now - lastHit) / 1000) < statsFetchRestTime){
+            const data = JSON.parse(localStorage.getItem(ctx))
+            if(data){
+                generate_driver_list(ctx_holder,data)
+                Swal.close()
+            } else {
+                Swal.close()
+                failedMsg(`get the driver list`)
+            }
+        } else {
+            fetchData()
+        }
+    } else {
+        fetchData()
+    }
+}
+
 const get_context_opt = (context,token) => {
     Swal.showLoading()
-    const ctx = `inventory_temp`
     let ctx_holder
 
     if(context.includes(',')){
@@ -99,8 +157,8 @@ const get_context_opt = (context,token) => {
             success: function(response) {
                 Swal.close()
                 const data = response.data
-                localStorage.setItem(ctx,JSON.stringify(data))
-                localStorage.setItem(`last-hit-${ctx}`,Date.now())
+                localStorage.setItem(ctx_holder,JSON.stringify(data))
+                localStorage.setItem(`last-hit-${ctx_holder}`,Date.now())
                 generate_context_list(ctx_holder,data)
             },
             error: function(response, jqXHR, textStatus, errorThrown) {
@@ -114,12 +172,12 @@ const get_context_opt = (context,token) => {
         });
     }
 
-    if(ctx in localStorage){
-        const lastHit = parseInt(localStorage.getItem(`last-hit-${ctx}`))
+    if(ctx_holder in localStorage){
+        const lastHit = parseInt(localStorage.getItem(`last-hit-${ctx_holder}`))
         const now = Date.now()
 
         if(((now - lastHit) / 1000) < statsFetchRestTime){
-            const data = JSON.parse(localStorage.getItem(ctx))
+            const data = JSON.parse(localStorage.getItem(ctx_holder))
             if(data){
                 generate_context_list(ctx_holder,data)
                 Swal.close()

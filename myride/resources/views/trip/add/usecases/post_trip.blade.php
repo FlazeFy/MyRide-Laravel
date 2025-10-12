@@ -17,21 +17,17 @@
         </div>
         <div class="col-xl-6 col-lg-12">
             <div class="row">
-                <div class="col-lg-6 col-md-6 col-sm-12">
+                <div class="col-12">
                     <label>Vehicle Name</label>
-                    <select class="form-select" name="vehicle_id" id="vehicle_id" aria-label="Default select example">
-                        @foreach($dt_all_vehicle as $dt)
-                            <option value="{{$dt->id}}">{{$dt->vehicle_name}}</option>
-                        @endforeach
-                    </select>
+                    <select class="form-select" name="vehicle_id" id="vehicle_holder" aria-label="Default select example"></select>
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-12">
                     <label>Trip Category</label>
-                    <select class="form-select" name="trip_category" id="trip_category" aria-label="Default select example">
-                        @foreach($dt_trip_category as $dt)
-                            <option value="{{$dt->dictionary_name}}">{{$dt->dictionary_name}}</option>
-                        @endforeach
-                    </select>
+                    <select class="form-select" name="trip_category" id="trip_category_holder" aria-label="Default select example"></select>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-12">
+                    <label>Driver</label>
+                    <select class="form-select" name="driver_id" id="driver_holder" aria-label="Default select example"></select>
                 </div>
             </div>
             <div class="row">
@@ -80,6 +76,7 @@
 <script type="text/javascript">
     let map
     let markerCounter = 0
+    const token = `<?= session()->get("token_key"); ?>`
 
     function initMap() {
         map = new google.maps.Map(document.getElementById("map-board"), {
@@ -146,7 +143,7 @@
             data: $('#form-add-trip').serialize(),
             beforeSend: function (xhr) {
                 xhr.setRequestHeader("Accept", "application/json")
-                xhr.setRequestHeader("Authorization", `Bearer <?= session()->get("token_key"); ?>`)    
+                xhr.setRequestHeader("Authorization", `Bearer ${token}`)    
             },
             success: function(response) {
                 Swal.hideLoading()
@@ -171,4 +168,8 @@
             }
         });
     }
+
+    get_vehicle_name_opt(token)
+    get_driver_name_opt(token)
+    get_context_opt('trip_category',token)
 </script>
