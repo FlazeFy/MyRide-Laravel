@@ -5,7 +5,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 // Helpers
-use App\Helpers\Query;
 use App\Helpers\Converter;
 
 class TripModel extends Model
@@ -17,13 +16,13 @@ class TripModel extends Model
 
     protected $table = 'trip';
     protected $primaryKey = 'id';
-    protected $fillable = ['id', 'vehicle_id', 'trip_desc', 'trip_category', 'trip_person', 'trip_origin_name', 'trip_origin_coordinate', 'trip_destination_name', 'trip_destination_coordinate', 'created_at', 'created_by', 'updated_at', 'deleted_at'];
+    protected $fillable = ['id', 'vehicle_id', 'driver_id', 'trip_desc', 'trip_category', 'trip_person', 'trip_origin_name', 'trip_origin_coordinate', 'trip_destination_name', 'trip_destination_coordinate', 'created_at', 'created_by', 'updated_at', 'deleted_at'];
 
     public static function getAllTrip($user_id,$limit){
-        $query_trip_coordinate = Query::get_select_template('trip_coordinate');
-        $res = TripModel::selectRaw("$query_trip_coordinate, trip.created_at")
+        $res = TripModel::select("trip.id", "vehicle_name", "driver.fullname as driver_fullname", "vehicle_plate_number", "trip_desc", "trip_category", "trip_origin_name", "trip_person", "trip_origin_coordinate", "trip_destination_name","trip_destination_coordinate", "trip.created_at")
             ->join('vehicle','vehicle.id','=','trip.vehicle_id')
-            ->orderBy('created_at','desc')
+            ->leftjoin('driver','driver.id','=','trip.driver_id')
+            ->orderBy('trip.created_at','desc')
             ->where('trip.created_by',$user_id)
             ->paginate($limit);
 

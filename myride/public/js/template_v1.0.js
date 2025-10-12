@@ -52,6 +52,14 @@ const template_trip_box = (dt, extra_class = '') => {
                         <p class="mb-0">${dt.trip_category}</p>
                     </div>
                 </div> 
+                ${
+                    dt.driver_fullname ? `
+                        <div class="mt-3">
+                            <h6 class="mb-0">Drive By</h6>
+                            <p class="mb-0">${dt.driver_fullname}</p>
+                        </div> 
+                    ` : ''
+                }                
             </div>
             <hr>
             <div class="d-flex justify-content-between">

@@ -18,17 +18,25 @@ class DriverModel extends Authenticatable
     protected $primaryKey = 'id';
     protected $fillable = ['id', 'username', 'fullname', 'password', 'email', 'telegram_user_id', 'telegram_is_valid', 'phone', 'notes', 'created_at', 'updated_at', 'created_by'];
 
-    public static function getAllDriver($user_id = null, $limit, $col = '*'){
+    public static function getAllDriver($user_id = null, $limit, $col = 'driver.*,COUNT(trip.id) as total_trip'){
         $res = DriverModel::selectRaw($col);
 
+        if($col == 'driver.*,COUNT(trip.id) as total_trip'){
+            $res = $res->leftjoin('trip','trip.driver_id','=','driver.id');
+        }
+
         if($user_id){
-            $res = $res->where('created_by', $user_id);
+            $res = $res->where('driver.created_by', $user_id);
+        }
+
+        if($col == '*,COUNT(trip.id) as total_trip'){
+            $res = $res->groupby('driver.id');
         }
             
         if($limit !== 0){
-            return $res->orderBy('created_at', 'desc')->paginate($limit); 
+            return $res->orderBy('driver.created_at', 'desc')->paginate($limit); 
         } else {
-            return $res->orderBy('created_at', 'desc')->get(); 
+            return $res->orderBy('driver.created_at', 'desc')->get(); 
         }                     
     }
 

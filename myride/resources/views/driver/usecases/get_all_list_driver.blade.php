@@ -5,6 +5,7 @@
             <th scope="col" style="width: 300px;">Username & FullName</th>
             <th scope="col" style="width: 300px;">Contact</th>
             <th scope="col">Notes</th>
+            <th scope="col" style="width: 130px;">Total Trip</th>
             <th scope="col" style="width: 160px;">Properties</th>
             <th scope="col" style="width: 130px;">Action</th>
         </tr>
@@ -45,6 +46,7 @@
                                 <p class="mb-0">${dt.phone ?? '-'}</p>
                             </td>
                             <td class="text-start">${dt.notes ?? '-'}</td>
+                            <td>${dt.total_trip}</td>
                             <td class="text-start">
                                 <h6 class="mb-0">Created At</h6>
                                 <p class="mb-0">${getDateToContext(dt.created_at,'calendar')}</p>

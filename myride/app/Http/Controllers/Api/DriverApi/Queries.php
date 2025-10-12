@@ -44,6 +44,7 @@ class Queries extends Controller
      *                         @OA\Property(property="telegram_is_valid", type="integer", example=1),
      *                         @OA\Property(property="email", type="string", example="jhondoe@gmail.com"),
      *                         @OA\Property(property="phone", type="string", example="08123456780"),
+     *                         @OA\Property(property="total_trip", type="integer", example=10),
      *                         @OA\Property(property="notes", type="string", example="Lorem ipsum"),
      *                         @OA\Property(property="created_at", type="string", format="date-time", example="2024-09-20 22:53:47"),
      *                         @OA\Property(property="updated_at", type="string", format="date-time", example="2024-09-21 09:15:12"),
@@ -102,7 +103,7 @@ class Queries extends Controller
         } catch(\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => Generator::getMessageTemplate("unknown_error", null),
+                'message' => $e->getMessage(),
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
