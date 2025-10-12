@@ -63,6 +63,8 @@
                                     data-username="${dt.username}" data-id="${dt.id}" 
                                     data-fullname="${dt.fullname}" data-email="${dt.email}" 
                                     data-notes="${dt.notes}" data-phone="${dt.phone}"><i class="fa-solid fa-pen-to-square"></i></a>
+                                <a class="btn btn-primary btn-history-trip" style="width:50px;" data-bs-toggle="modal" data-bs-target="#trip_history-modal" 
+                                    data-username="${dt.username}" data-id="${dt.id}"><i class="fa-solid fa-rotate-left"></i></a>
                             </td>
                         </tr>
                     `)
