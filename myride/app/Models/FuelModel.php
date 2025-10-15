@@ -78,6 +78,16 @@ class FuelModel extends Model
         return $res->delete();
     }
 
+    public static function hardDeleteByVehicleId($vehicle_id, $user_id = null){
+        $res = FuelModel::where('vehicle_id',$vehicle_id);
+
+        if($user_id){
+            $res = $res->where('created_by',$user_id);
+        }
+            
+        return $res->delete();
+    }
+
     public static function getLastFuel($user_id, $vehicle_id = null){
         $res = FuelModel::select('fuel.id', 'vehicle_plate_number', 'vehicle_type', 'fuel_volume', 'fuel_price_total', 'fuel_brand', 'fuel_type', 'fuel_ron', 'fuel.created_at', 'fuel_bill')
             ->join('vehicle','vehicle.id','=','fuel.vehicle_id')

@@ -4,6 +4,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 // Helpers
 use App\Helpers\Query;
@@ -119,5 +120,13 @@ class VehicleModel extends Model
         }
         
         return $res;
+    }
+
+    public static function getVehiclePlanDestroy($days){
+        return VehicleModel::select('vehicle.id','vehicle_name','deleted_at','username','telegram_user_id','telegram_is_valid')
+            ->join('users','users.id','=','vehicle.created_by')
+            ->whereDate('deleted_at', '<', Carbon::now()->subDays($days))
+            ->orderby('username','asc')
+            ->get();
     }
 }

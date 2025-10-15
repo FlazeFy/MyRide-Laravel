@@ -66,6 +66,16 @@ class ReminderModel extends Model
         return $res->delete();
     }
 
+    public static function hardDeleteByVehicleId($vehicle_id, $user_id = null){
+        $res = ReminderModel::where('vehicle_id',$vehicle_id);
+
+        if($user_id){
+            $res = $res->where('created_by',$user_id);
+        }
+            
+        return $res->delete();
+    }
+
     public static function createReminder($data, $user_id){
         $data['created_at'] = date('Y-m-d H:i:s');
         $data['created_by'] = $user_id;

@@ -207,4 +207,14 @@ class TripModel extends Model
             'last_update' => $lastUpdate,
         ];
     }
+
+    public static function hardDeleteByVehicleId($vehicle_id, $user_id = null){
+        $res = TripModel::where('vehicle_id',$vehicle_id);
+
+        if($user_id){
+            $res = $res->where('created_by',$user_id);
+        }
+            
+        return $res->delete();
+    }
 }

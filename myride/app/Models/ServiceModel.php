@@ -102,4 +102,14 @@ class ServiceModel extends Model
             
         return $res->delete();
     }
+
+    public static function hardDeleteByVehicleId($vehicle_id, $user_id = null){
+        $res = ServiceModel::where('vehicle_id',$vehicle_id);
+
+        if($user_id){
+            $res = $res->where('created_by',$user_id);
+        }
+            
+        return $res->delete();
+    }
 }
