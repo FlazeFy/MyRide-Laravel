@@ -6,7 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
-// Helpers
+// Helper
+use App\Helpers\Generator;
 use App\Helpers\Query;
 
 class VehicleModel extends Model
@@ -23,6 +24,16 @@ class VehicleModel extends Model
         'vehicle_document' => 'array',
         'vehicle_other_img_url' => 'array'
     ];
+
+    public static function createVehicle($data, $user_id){
+        $data['created_at'] = date('Y-m-d H:i:s');
+        $data['created_by'] = $user_id;
+        $data['updated_at'] = null;
+        $data['deleted_at'] = null;
+        $data['id'] = Generator::getUUID();
+            
+        return VehicleModel::create($data);
+    }
 
     public static function getTotalVehicleByCategory($user_id){
         return VehicleModel::selectRaw('vehicle_category as context, COUNT(1) as total')

@@ -25,6 +25,7 @@ use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\AddInventoryController;
 use App\Http\Controllers\DriverController;
 use App\Http\Controllers\AddDriverController;
+use App\Http\Controllers\GarageAddController;
 
 Route::prefix('/')->group(function () {
     Route::get('/', [WelcomeController::class, 'index'])->name('welcome');
@@ -41,6 +42,7 @@ Route::prefix('/dashboard')->middleware(['auth_v2:sanctum'])->group(function () 
 
 Route::prefix('/garage')->middleware(['auth_v2:sanctum'])->group(function () {
     Route::get('/', [GarageController::class, 'index'])->name('garage');
+    Route::get('/add', [GarageAddController::class, 'index'])->name('add_vehicle');
 
     Route::get('/edit/{id}', [GarageEditController::class, 'index'])->name('edit_garage');
     Route::post('/edit_doc/{id}', [GarageEditController::class, 'edit_vehicle_doc']);

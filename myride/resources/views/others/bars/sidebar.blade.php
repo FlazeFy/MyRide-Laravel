@@ -60,7 +60,7 @@
                     if(response.status != 404){
                         failedMsg(`get the vehicle`)
                     } else {
-                        $(`#${ctx_holder}`).prepend(`<li><a href="/garage/add" class="nav-link">Add Vehicle</a></li>`)
+                        $(`#${ctx_holder}`).prepend(`<li><a href="/garage/add" class="nav-link"><i class="fa-solid fa-plus"></i> Add Vehicle</a></li>`)
                     }
                 }
             });
