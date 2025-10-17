@@ -14,11 +14,19 @@ use Dompdf\Options;
 use Dompdf\Canvas\Factory as CanvasFactory;
 use Dompdf\Options as DompdfOptions;
 use Dompdf\Adapter\CPDF;
+use Amenadiel\JpGraph\Graph\Graph;
+use Amenadiel\JpGraph\Plot\BarPlot;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Str;
 
+// Helper
 use App\Helpers\Generator;
 
+// Model
 use App\Models\ErrorModel;
 use App\Models\AdminModel;
+use App\Models\UserModel;
+use App\Models\VehicleModel;
 
 class AuditSchedule
 {
@@ -104,6 +112,84 @@ class AuditSchedule
                 }
         
                 unlink($pdfFilePath);
+            }
+        }
+    }
+
+    public static function audit_weekly_stats() {
+        $listCols = ["vehicle_fuel_status","vehicle_category","vehicle_status","vehicle_transmission"];
+        $users = UserModel::getUserBroadcastAll();
+    
+        foreach ($users as $us) {
+            $chartFiles = []; 
+    
+            foreach ($listCols as $col) {
+                // Model
+                $res = VehicleModel::getContextTotalStats($col, $us->id);
+    
+                if ($res == null || $res->isEmpty()) continue;
+    
+                // Dataset
+                $labels = $res->pluck('context')->map(fn($c) => Str::upper(str_replace('_', ' ', $c)))->all();
+                $values = $res->pluck('total')->all();
+    
+                // Filename
+                $chartFilename = "bar_chart-$col-$us->id.png";
+                $chartPath = storage_path("app/public/$chartFilename");
+
+                // Generate chart
+                $graph = new Graph(800, 500);
+                $graph->SetScale("textlin");
+                $graph->xaxis->SetTickLabels($labels);
+                $graph->xaxis->SetLabelAngle(35);
+                $graph->xaxis->SetFont(FF_ARIAL, FS_NORMAL, 7);
+                $graph->yaxis->SetFont(FF_ARIAL, FS_NORMAL, 7);
+                $graph->title->SetFont(FF_ARIAL, FS_BOLD, 10);
+                $barPlot = new BarPlot($values);
+                $barPlot->SetFillColor("navy");
+                $graph->Add($barPlot);
+                $graph->title->Set("Total Vehicle By ".Str::headline($col));
+                $graph->Stroke($chartPath);
+
+                $chartFiles[] = $chartFilename;
+            }
+    
+            if (empty($chartFiles)) continue;
+    
+            // Render PDF
+            $generatedDate = now()->format('d F Y');
+            $datetime = now()->format('d M Y h:i');
+            $tmpPdfPath = storage_path("app/public/Weekly Vehicle Audit - ".$us->username.".pdf");
+
+            Pdf::loadView('components.pdf.vehicle_chart', [
+                'charts' => $chartFiles,
+                'date' => $generatedDate,
+                'datetime' => $datetime,
+                'username' => $us->username
+            ])->save($tmpPdfPath);
+
+            // Send Telegram
+            if ($us->telegram_user_id) {
+                $message = "[ADMIN] Hello {$us->username}, here is your weekly vehicle audit report.";
+
+                Telegram::sendDocument([
+                    'chat_id' => $us->telegram_user_id,
+                    'document' => fopen($tmpPdfPath, 'rb'),
+                    'caption' => $message,
+                    'parse_mode' => 'HTML'
+                ]);
+            }
+
+            // Clean up File
+            foreach ($chartFiles as $file) {
+                $chartPath = storage_path("app/public/$file");
+                if (file_exists($chartPath)) {
+                    unlink($chartPath);
+                }
+            }
+
+            if (file_exists($tmpPdfPath)) {
+                unlink($tmpPdfPath);
             }
         }
     }

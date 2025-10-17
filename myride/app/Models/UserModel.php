@@ -61,6 +61,10 @@ class UserModel extends Authenticatable
         return $res;
     }
 
+    public static function getUserBroadcastAll(){
+        return UserModel::select('id','username','telegram_user_id','telegram_is_valid','email')->get();
+    }
+
     public static function getUserById($user_id){
         $select_query = 'id,username,email,telegram_user_id,telegram_is_valid,created_at,updated_at';
 

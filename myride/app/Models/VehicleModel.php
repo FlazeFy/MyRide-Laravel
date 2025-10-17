@@ -121,6 +121,19 @@ class VehicleModel extends Model
         return $res;
     }
 
+    public static function getContextTotalStats($context,$user_id = null){
+        $res = VehicleModel::selectRaw("$context as context, COUNT(1) as total");
+        if($user_id){
+            $res = $res->where('created_by', $user_id);
+        }
+        $res = $res->groupby($context)
+            ->orderby('total','desc')
+            ->limit(7)
+            ->get();
+        
+        return count($res) > 0 ? $res : null;
+    }
+
     // For Seeder
     public static function getRandom($null, $user_id){
         if($null == 0){
