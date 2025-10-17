@@ -68,6 +68,20 @@ class FuelModel extends Model
         return $res;
     }
 
+    public static function getTotalFuelSpendingPerMonth($user_id = null, $year, $is_admin){
+        $res = FuelModel::selectRaw("SUM(fuel_price_total) as total, MONTH(created_at) as context");
+        
+        if($user_id){
+            $res = $res->where('created_by', $user_id);
+        }
+
+        $res = $res->whereRaw("YEAR(created_at) = '$year'")
+            ->groupByRaw('MONTH(created_at)')
+            ->get();
+
+        return $res;
+    }
+
     public static function hardDeleteFuelById($id, $user_id = null){
         $res = FuelModel::where('id',$id);
 
