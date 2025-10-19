@@ -99,9 +99,9 @@ class Validation
         }
     }
 
-    public static function getValidateTrip($request){
-        return Validator::make($request->all(), [
-            'vehicle_id' => 'required|string|max:36|min:36', 
+    public static function getValidateTrip($request,$type){
+        $rules = [
+            'driver_id' => 'nullable|string|max:36|min:36', 
             'trip_desc' => 'nullable|string|max:500', 
             'trip_category' => 'required|string|max:36|min:2',
             'trip_person' => 'nullable|string|max:255', 
@@ -109,7 +109,13 @@ class Validation
             'trip_origin_coordinate' => 'nullable|string|max:144',  
             'trip_destination_name' => 'required|string|max:75|min:2',
             'trip_destination_coordinate' => 'nullable|string|max:144', 
-        ]);
+        ];
+
+        if ($type === 'create') {
+            $rules['vehicle_id'] = 'required|string|max:36|min:36';
+        }
+
+        return Validator::make($request->all(), $rules);
     }
 
     public static function getValidateFuel($request){

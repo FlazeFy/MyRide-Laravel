@@ -4,7 +4,7 @@ const get_vehicle_name_opt = (token) => {
     const ctx_holder = 'vehicle_holder'
 
     const generate_vehicle_list = (holder,data) => {
-        $(`#${holder}`).empty()
+        $(`#${holder}`).empty().append(`<option selected>-</option>`)
         data.forEach(el => {
             $(`#${holder}`).append(`<option value="${el.id}">${el.vehicle_plate_number} - ${el.vehicle_name}</option>`)
         });

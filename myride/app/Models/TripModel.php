@@ -227,4 +227,10 @@ class TripModel extends Model
             
         return $res->delete();
     }
+
+    public static function updateTripById($data, $user_id, $id){
+        $data['updated_at'] = date('Y-m-d H:i:s');
+        
+        return TripModel::where('created_by',$user_id)->where('id',$id)->update($data);
+    }
 }

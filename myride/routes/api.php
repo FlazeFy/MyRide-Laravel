@@ -133,6 +133,7 @@ Route::prefix('/v1/trip')->middleware(['auth:sanctum'])->group(function () {
     Route::get('/last', [QueriesTripApi::class, 'getLastTrip']);
     Route::get('/driver/{driver_id}', [QueriesTripApi::class, 'getAllTripByDriverId']);
     Route::delete('/destroy/{id}', [CommandsTripController::class, 'hardDeleteTripById']);
+    Route::put('/{id}', [CommandsTripController::class, 'updateTripById']);
 });
 
 Route::prefix('/v1/trip')->group(function () {
