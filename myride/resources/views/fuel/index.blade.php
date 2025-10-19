@@ -11,6 +11,7 @@
                 <div class="container">
                     @include('fuel.usecases.get_all_list_fuel')
                     @include('fuel.usecases.hard_delete_fuel')
+                    @include('fuel.usecases.put_fuel')
                 </div>
             </div>
             <div class="col-lg-4 col-md-6 col-sm-12">

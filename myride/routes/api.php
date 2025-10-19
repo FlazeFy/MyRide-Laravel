@@ -125,6 +125,7 @@ Route::prefix('/v1/fuel')->middleware(['auth:sanctum'])->group(function () {
     Route::get('/summary/{month_year}', [QueriesFuelController::class, 'getMonthlyFuelSummary']);
     Route::delete('/destroy/{id}', [CommandsFuelController::class, 'hardDeleteFuelById']);
     Route::post('/', [CommandsFuelController::class, 'postFuel']);
+    Route::put('/{id}', [CommandsFuelController::class, 'updateFuelById']);
 });
 
 Route::prefix('/v1/trip')->middleware(['auth:sanctum'])->group(function () {
