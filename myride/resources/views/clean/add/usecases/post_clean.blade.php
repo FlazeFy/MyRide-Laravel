@@ -33,10 +33,18 @@
             <div id="last_clean-holder"></div>
         </div>
         <div class="col-xl-6 col-lg-12">
-            <label>Clean By</label>
-            <select class="form-select" name="clean_by" id="clean_by_holder" aria-label="Default select example">
-                <option>-</option>
-            </select>
+            <div class="row">
+                <div class="col-md-6 col-sm-12">
+                    <label>Clean By</label>
+                    <select class="form-select" name="clean_by" id="clean_by_holder" aria-label="Default select example">
+                        <option>-</option>
+                    </select>
+                </div>
+                <div class="col-md-6 col-sm-12">
+                    <label>Clean Price</label>
+                    <input class="form-control" type="number" min="1" id="clean_price" name="clean_price">
+                </div>
+            </div>
             <label>Address</label>
             <textarea class="form-control" name="clean_address" id="clean_address" required></textarea>
             <label>Description</label>
@@ -325,6 +333,7 @@
                     is_clean_carpet: $('#is_clean_carpet').is(':checked'),
                     is_clean_pillows: $('#is_clean_pillows').is(':checked'),
                     clean_address: $('#clean_address').val(), 
+                    clean_price: $('#clean_price').val(), 
                     clean_start_time: formatDateTimeAPI($('#clean_start_time').val()), 
                     clean_end_time: clean_end_time ? formatDateTimeAPI(clean_end_time) : null, 
                     is_fill_window_cleaning_water: $('#is_fill_window_cleaning_water').is(':checked'), 

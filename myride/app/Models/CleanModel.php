@@ -14,11 +14,11 @@ class CleanModel extends Model
 
     protected $table = 'clean';
     protected $primaryKey = 'id';
-    protected $fillable = ['id', 'vehicle_id', 'clean_desc', 'clean_by', 'clean_tools', 'is_clean_body', 'is_clean_window', 'is_clean_dashboard', 'is_clean_tires', 'is_clean_trash', 'is_clean_engine', 'is_clean_seat', 'is_clean_carpet', 'is_clean_pillows', 'clean_address', 'clean_start_time', 'clean_end_time', 'is_fill_window_cleaning_water', 'is_clean_hollow', 'created_at', 'created_by', 'updated_at'];
+    protected $fillable = ['id', 'vehicle_id', 'clean_desc', 'clean_by', 'clean_tools', 'is_clean_body', 'is_clean_window', 'is_clean_dashboard', 'is_clean_tires', 'is_clean_trash', 'is_clean_engine', 'is_clean_seat', 'is_clean_carpet', 'is_clean_pillows', 'clean_address', 'clean_start_time', 'clean_end_time', 'is_fill_window_cleaning_water', 'is_clean_hollow', 'clean_price', 'created_at', 'created_by', 'updated_at'];
 
     public static function getAllCleanHistory($user_id,$limit){
         $res = CleanModel::selectRaw("
-                clean.id,vehicle_type, CONCAT(vehicle.vehicle_merk, ' - ', vehicle.vehicle_name)  as vehicle_name, vehicle_plate_number, clean_desc, clean_by, clean_tools, 
+                clean.id,vehicle_type, CONCAT(vehicle.vehicle_merk, ' - ', vehicle.vehicle_name)  as vehicle_name, vehicle_plate_number, clean_desc, clean_by, clean_tools, clean_price, 
                 is_clean_body, is_clean_window, is_clean_dashboard, is_clean_tires, is_clean_trash, is_clean_engine, is_clean_seat, is_clean_carpet, 
                 is_clean_pillows, clean_address, clean_start_time, clean_end_time, is_fill_window_cleaning_water, is_clean_hollow, 
                 clean.created_at, clean.updated_at
@@ -77,6 +77,20 @@ class CleanModel extends Model
             ->orderBy('clean.created_at');
 
         return $res->get();
+    }
+
+    public static function getTotalCleanSpendingPerMonth($user_id = null, $year, $is_admin){
+        $res = CleanModel::selectRaw("SUM(clean_price) as total, MONTH(created_at) as context");
+        
+        if($user_id){
+            $res = $res->where('created_by', $user_id);
+        }
+
+        $res = $res->whereRaw("YEAR(created_at) = '$year'")
+            ->groupByRaw('MONTH(created_at)')
+            ->get();
+
+        return $res;
     }
 
     public static function hardDeleteCleanById($id, $user_id = null){

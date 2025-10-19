@@ -147,6 +147,7 @@ class Validation
             'is_clean_carpet' => 'required|boolean',
             'is_clean_pillows' => 'required|boolean',
             'clean_address' => 'nullable|string|max:75|min:1', 
+            'clean_price' => 'nullable|integer|min:1|max:999999999  ',
             'clean_start_time' => 'required|date_format:Y-m-d H:i:s',
             'clean_end_time' => 'nullable|date_format:Y-m-d H:i:s', 
             'is_fill_window_cleaning_water' => 'required|boolean',

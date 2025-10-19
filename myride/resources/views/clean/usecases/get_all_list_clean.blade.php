@@ -47,6 +47,8 @@
                                 <p>${dt.clean_desc ?? '-'}</p>
                                 <h6 class="mb-0">Tools</h6>
                                 <p>${dt.clean_tools ?? '-'}</p>
+                                <h6 class="mb-0">Clean Price</h6>
+                                <p>${`Rp. ${number_format(dt.clean_price, 0, ',', '.')},00` ?? '-'}</p>
                             </td>
                             <td style="max-width:var(--tcolMinLG);">
                                 <div class="row text-start">

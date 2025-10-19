@@ -170,6 +170,7 @@ class Commands extends Controller
                     'clean_address' => $request->clean_address,
                     'clean_start_time' => $request->clean_start_time,
                     'clean_end_time' => $request->clean_end_time,
+                    'clean_price' => $request->clean_price,
                     'is_fill_window_cleaning_water' => $request->is_fill_window_cleaning_water,
                     'is_clean_hollow' => $request->is_clean_hollow
                 ];

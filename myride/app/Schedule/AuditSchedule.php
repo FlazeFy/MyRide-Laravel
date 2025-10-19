@@ -28,6 +28,7 @@ use App\Models\AdminModel;
 use App\Models\UserModel;
 use App\Models\VehicleModel;
 use App\Models\FuelModel;
+use App\Models\CleanModel;
 
 class AuditSchedule
 {
@@ -195,6 +196,28 @@ class AuditSchedule
         }
     }
 
+    private static function generateBarChart($label, $value, $context, $year, $user_id){
+        // Filename
+        $chartFilename = "bar_chart_".$context."_monthly_$year-$user_id.png";
+        $chartPath = storage_path("app/public/$chartFilename");
+
+        // Generate chart
+        $graph = new Graph(800, 500);
+        $graph->SetScale("textlin");
+        $graph->xaxis->SetTickLabels($label);
+        $graph->xaxis->SetLabelAngle(35);
+        $graph->xaxis->SetFont(FF_ARIAL, FS_NORMAL, 7);
+        $graph->yaxis->SetFont(FF_ARIAL, FS_NORMAL, 7);
+        $graph->title->SetFont(FF_ARIAL, FS_BOLD, 10);
+        $barPlot = new BarPlot($value);
+        $barPlot->SetFillColor("navy");
+        $graph->Add($barPlot);
+        $graph->title->Set("Total $context Spending Per Month ($year)");
+        $graph->Stroke($chartPath);
+
+        return $chartFilename;
+    }
+
     public static function audit_yearly_stats() {
         $users = UserModel::getUserBroadcastAll();
         $year = 2025;
@@ -225,33 +248,43 @@ class AuditSchedule
             // Dataset
             $labels_fuel_monthly = collect($res_final_fuel_monthly)->pluck('context')->map(fn($c) => Str::upper(str_replace('_', ' ', $c)))->all();
             $values_fuel_monthly = collect($res_final_fuel_monthly)->pluck('total')->all();
-
-            // Filename
-            $chartFilename = "bar_chart_fuel_monthly_$year-$us->id.png";
-            $chartPath = storage_path("app/public/$chartFilename");
-
-            // Generate chart
-            $graph = new Graph(800, 500);
-            $graph->SetScale("textlin");
-            $graph->xaxis->SetTickLabels($labels_fuel_monthly);
-            $graph->xaxis->SetLabelAngle(35);
-            $graph->xaxis->SetFont(FF_ARIAL, FS_NORMAL, 7);
-            $graph->yaxis->SetFont(FF_ARIAL, FS_NORMAL, 7);
-            $graph->title->SetFont(FF_ARIAL, FS_BOLD, 10);
-            $barPlot = new BarPlot($values_fuel_monthly);
-            $barPlot->SetFillColor("navy");
-            $graph->Add($barPlot);
-            $graph->title->Set("Total Fuel Spending Per Month ($year)");
-            $graph->Stroke($chartPath);
-
-            $chartFiles[] = $chartFilename;
+            $fuelChartFilename = self::generateBarChart($labels_fuel_monthly, $values_fuel_monthly, "fuel", $year, $us->id);
     
+            $chartFiles[] = $fuelChartFilename;
+            if (empty($chartFiles)) continue;
+
+            // Total Clean Spending Per Month
+            // Model
+            $res_clean_monthly = CleanModel::getTotalCleanSpendingPerMonth($us->id, $year, false);
+
+            if ($res_clean_monthly == null || $res_clean_monthly->isEmpty()) continue;
+            $res_final_clean_monthly = [];
+            for ($i=1; $i <= 12; $i++) { 
+                $total = 0;
+                foreach ($res_clean_monthly as $idx => $val) {
+                    if($i == $val->context){
+                        $total = $val->total;
+                        break;
+                    }
+                }
+                array_push($res_final_clean_monthly, [
+                    'context' => Generator::generateMonthName($i,'short'),
+                    'total' => $total,
+                ]);
+            }
+
+            // Dataset
+            $labels_clean_monthly = collect($res_final_clean_monthly)->pluck('context')->map(fn($c) => Str::upper(str_replace('_', ' ', $c)))->all();
+            $values_clean_monthly = collect($res_final_clean_monthly)->pluck('total')->all();
+            $cleanChartFilename = self::generateBarChart($labels_clean_monthly, $values_clean_monthly, "clean", $year, $us->id);
+    
+            $chartFiles[] = $cleanChartFilename;
             if (empty($chartFiles)) continue;
     
             // Render PDF
             $generatedDate = now()->format('d F Y');
             $datetime = now()->format('d M Y h:i');
-            $tmpPdfPath = storage_path("app/public/Yearly Fuel Audit - ".$us->username.".pdf");
+            $tmpPdfPath = storage_path("app/public/Yearly Fuel & Clean Audit - ".$us->username.".pdf");
 
             Pdf::loadView('components.pdf.vehicle_chart', [
                 'charts' => $chartFiles,
