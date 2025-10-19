@@ -30,31 +30,45 @@
 </div>
 
 <script type="text/javascript">
-    function show_location(lat1, long1, lat2, long2){
-        refresh_map(lat1, long1)
+    let page = 1
+    var markers = []
+    var dt_all_trip_location = []
 
-        place_marker_and_pan_to(lat1, long1, map)
-        place_marker_and_pan_to(lat2, long2, map)
-    }
+    const get_all_trip = (page) => {
+        return new Promise((resolve, reject) => {
+            Swal.showLoading();
+            $.ajax({
+                url: `/api/v1/trip`,
+                type: 'GET',
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("Accept", "application/json")
+                    xhr.setRequestHeader("Authorization", "Bearer <?= session()->get("token_key"); ?>")
+                },
+                success: function(response) {
+                    Swal.close()
+                    const data = response.data.data
+                    dt_all_trip_location = data
+                    markers = []
+                    $('#trip-content-holder').empty()
 
-    function refresh_map(lat, long) {
-        map = new google.maps.Map(document.getElementById("map-board"), {
-            center: { lat: lat, lng: long},
-            zoom: 12,
+                    build_layout_trip(response.data)
+                    data.forEach((dt, idx) => {
+                        place_marker(dt)
+                    });
+                    initMap()
+                    resolve()
+                },
+                error: function(response, jqXHR, textStatus, errorThrown) {
+                    Swal.close()
+                    if(response.status != 404){
+                        reject(errorThrown)
+                        failedMsg('get the trip')
+                    } else {
+                        template_alert_container(`<?= $carouselId ?>`, 'no-data', "No trip found", 'add a trip', '<i class="fa-solid fa-luggage"></i>','/trip/add')
+                    }
+                }
+            });
         });
-    }
-
-    function place_marker_and_pan_to(lat, long, map) {
-        const latLong = { lat: lat, lng: long}
-
-        new google.maps.Marker({
-            position: latLong,
-            map: map,
-            icon: {
-                url: 'https://maps.google.com/mapfiles/ms/icons/orange-dot.png',
-                scaledSize: new google.maps.Size(40, 40),
-            }
-        });
-        map.panTo(latLong)
-    }
+    };
+    get_all_trip(page)
 </script>

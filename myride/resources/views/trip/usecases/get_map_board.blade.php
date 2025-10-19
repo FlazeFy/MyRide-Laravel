@@ -84,5 +84,34 @@
         }
     }
 
+
+    function show_location(lat1, long1, lat2, long2){
+        refresh_map(lat1, long1)
+
+        place_marker_and_pan_to(lat1, long1, map)
+        place_marker_and_pan_to(lat2, long2, map)
+    }
+
+    function refresh_map(lat, long) {
+        map = new google.maps.Map(document.getElementById("map-board"), {
+            center: { lat: lat, lng: long},
+            zoom: 12,
+        });
+    }
+
+    function place_marker_and_pan_to(lat, long, map) {
+        const latLong = { lat: lat, lng: long}
+
+        new google.maps.Marker({
+            position: latLong,
+            map: map,
+            icon: {
+                url: 'https://maps.google.com/mapfiles/ms/icons/orange-dot.png',
+                scaledSize: new google.maps.Size(40, 40),
+            }
+        });
+        map.panTo(latLong)
+    }
+
     window.initMap = initMap;
 </script>

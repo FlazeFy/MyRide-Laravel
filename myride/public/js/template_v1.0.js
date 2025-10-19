@@ -72,7 +72,14 @@ const template_trip_box = (dt, extra_class = '') => {
                         <h6 class="mb-0 text-secondary">Updated At</h6>
                         <p class="mb-0 text-secondary">${dt.updated_at}</p>
                     </div>` : ""}
-                <a class="btn btn-primary pt-2 pb-1 px-3 ms-2" data-bs-toggle="collapse" href="#collapseDetailTrip${dt.id}" role="button" aria-expanded="false" style="font-size:var(--textMD);">See Detail</a>
+                <div>
+                    <a class="btn btn-danger pt-2 pb-1 px-3 ms-2 btn-delete" data-url="/api/v1/trip/destroy/${dt.id}" data-context="Trip" style="font-size:var(--textMD);">
+                        <i class="fa-solid fa-trash"></i>
+                    </a>
+                    <a class="btn btn-primary pt-2 pb-1 px-3 ms-2" data-bs-toggle="collapse" href="#collapseDetailTrip${dt.id}" role="button" aria-expanded="false" style="font-size:var(--textMD);">
+                        <i class="fa-solid fa-up-right-and-down-left-from-center"></i>
+                    </a>
+                </div>
             </div>
         </button>
     `;

@@ -11,7 +11,7 @@ use App\Http\Controllers\Api\CleanApi\Queries as QueriesCleanController;
 use App\Http\Controllers\Api\CleanApi\Commands as CommandsCleanController;
 use App\Http\Controllers\Api\DictionaryApi\Queries as QueriesDictionaryApi;
 use App\Http\Controllers\Api\DictionaryApi\Commands as CommandsDictionaryApi;
-use App\Http\Controllers\Api\TripApi\Commands as CommandsTripApi;
+use App\Http\Controllers\Api\TripApi\Commands as CommandsTripController;
 use App\Http\Controllers\Api\TripApi\Queries as QueriesTripApi;
 use App\Http\Controllers\Api\StatsApi\Queries as QueriesStatsApi;
 use App\Http\Controllers\Api\UserApi\Queries as QueriesUserController;
@@ -128,10 +128,11 @@ Route::prefix('/v1/fuel')->middleware(['auth:sanctum'])->group(function () {
 });
 
 Route::prefix('/v1/trip')->middleware(['auth:sanctum'])->group(function () {
-    Route::post('/', [CommandsTripApi::class, 'postTrip']);
+    Route::post('/', [CommandsTripController::class, 'postTrip']);
     Route::get('/', [QueriesTripApi::class, 'getAllTrip']);
     Route::get('/last', [QueriesTripApi::class, 'getLastTrip']);
     Route::get('/driver/{driver_id}', [QueriesTripApi::class, 'getAllTripByDriverId']);
+    Route::delete('/destroy/{id}', [CommandsTripController::class, 'hardDeleteTripById']);
 });
 
 Route::prefix('/v1/trip')->group(function () {

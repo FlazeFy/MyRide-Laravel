@@ -217,4 +217,14 @@ class TripModel extends Model
             
         return $res->delete();
     }
+
+    public static function hardDeleteTripById($id, $user_id = null){
+        $res = TripModel::where('id',$id);
+
+        if($user_id){
+            $res = $res->where('created_by',$user_id);
+        }
+            
+        return $res->delete();
+    }
 }
