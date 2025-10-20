@@ -5,9 +5,7 @@
             <div class="row">
                 <div class="col-12">
                     <label>Vehicle Name & Plate Number</label>
-                    <select class="form-select" name="vehicle_holder" id="vehicle_holder" aria-label="Default select example">
-                        <option>-</option>
-                    </select>
+                    <select class="form-select" name="vehicle_holder" id="vehicle_holder" aria-label="Default select example"></select>
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-12">
                     <label>Type</label>
@@ -38,15 +36,11 @@
             <div class="row">
                 <div class="col-lg-6 col-md-6 col-sm-12">
                     <label>Inventory Category</label>
-                    <select class="form-select" name="inventory_category" id="inventory_category_holder" aria-label="Default select example">
-                        <option>-</option>
-                    </select>
+                    <select class="form-select" name="inventory_category" id="inventory_category_holder" aria-label="Default select example"></select>
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-12">
                     <label>Inventory Storage</label>
-                    <select class="form-select" name="inventory_storage" id="inventory_storage_holder" aria-label="Default select example">
-                        <option>-</option>
-                    </select>
+                    <select class="form-select" name="inventory_storage" id="inventory_storage_holder" aria-label="Default select example"></select>
                 </div>
             </div>
             <div class="row">

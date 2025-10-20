@@ -3,6 +3,10 @@
 <script src="{{ asset('/js/chart_v1.0.js')}}"></script>
 
 @section('content')
+    @php
+        $carouselId = 'carouselTrip';
+    @endphp
+
     <div class="d-block mx-auto p-3">
         <div class="d-flex justify-content-between">
             <button class="btn btn-danger" onclick="window.location.href='/garage'"><i class="fa-solid fa-house"></i> Back to Garage</button><br>

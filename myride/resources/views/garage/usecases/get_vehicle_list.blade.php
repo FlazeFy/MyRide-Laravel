@@ -54,14 +54,10 @@
     }
 </style>
 
-@php
-    $carouselId = 'carouselVehicle';
-@endphp
-
 <div id="carouselVehicle" class="carousel carousel-dark slide" data-bs-ride="carousel">
     <div class="carousel-indicators" id="vehicle-nav-list"></div>
     <div class="carousel-inner" id="vehicle-content-list"></div>
-    @include('others.button.button_navigate_carousel', ['carouselId' => $carouselId])
+    <div id="carousel-nav-holder"></div>
 </div>
 
 <script>
@@ -136,6 +132,10 @@
                     `)
                     ext_class = ''
                 })
+
+                if(data.length > 3){
+                    template_carousel_navigation("carousel-nav-holder", "<?= $carouselId ?>")
+                }
                     
             },
             error: function(response, jqXHR, textStatus, errorThrown) {

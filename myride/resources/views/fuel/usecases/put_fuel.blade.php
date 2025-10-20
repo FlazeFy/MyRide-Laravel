@@ -9,21 +9,15 @@
                 <input hidden id="fuel_id">
                 <form id="form-update-fuel">
                     <label>Vehicle Name & Plate Number</label>
-                    <select class="form-select" name="vehicle_holder" id="vehicle_holder" aria-label="Default select example">
-                        <option>-</option>
-                    </select>
+                    <select class="form-select" name="vehicle_holder" id="vehicle_holder" aria-label="Default select example"></select>
                     <div class="row">
                         <div class="col-lg-6 col-md-6 col-sm-12">
                             <label>Fuel Brand</label>
-                            <select class="form-select" name="fuel_brand" id="fuel_brand_holder" aria-label="Default select example">
-                                <option>-</option>
-                            </select>
+                            <select class="form-select" name="fuel_brand" id="fuel_brand_holder" aria-label="Default select example"></select>
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-12">
                             <label>Fuel Type</label>
-                            <select class="form-select" name="fuel_type" id="fuel_type_holder" aria-label="Default select example">
-                                <option>-</option>
-                            </select>
+                            <select class="form-select" name="fuel_type" id="fuel_type_holder" aria-label="Default select example"></select>
                         </div>
                     </div>
                     <div class="row">
@@ -50,7 +44,6 @@
 
 <script>
     $(document).on('click','.btn-update',function(){
-        const token = `<?= session()->get("token_key"); ?>`
         callModal('update-modal')
         get_vehicle_name_opt(token)
         get_context_opt('fuel_type,fuel_brand',token)
@@ -71,6 +64,12 @@
         $('#fuel_type_holder').val($(this).data('fuel-type'))
         $('#fuel_price_total').val($(this).data('fuel-price-total'))
         $('#fuel_volume').val($(this).data('fuel-volume'))
+        get_context_opt(`fuel_type_${$(this).data('fuel-brand')}`,token)
+    })
+
+    $(document).on('change','#fuel_brand_holder', function(){
+        const val = $(this).val()
+        get_context_opt(`fuel_type_${val}`,token)
     })
 
     $(document).on('click','#submit_update-btn', function(){

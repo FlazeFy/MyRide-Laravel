@@ -24,8 +24,7 @@
     <div id="{{$carouselId}}" class="carousel slide" data-bs-ride="carousel">
         <div class="carousel-indicators"></div>
         <div class="carousel-inner py-4"></div>
-
-        @include('others.button.button_navigate_carousel', ['carouselId' => $carouselId])
+        <div id="carousel-holder"></div>
     </div>
 </div>
 
@@ -57,6 +56,10 @@
                     });
                     initMap()
                     resolve()
+
+                    if(data.length > 3){
+                        template_carousel_navigation("carousel-nav-holder", "<?= $carouselId ?>")
+                    }
                 },
                 error: function(response, jqXHR, textStatus, errorThrown) {
                     Swal.close()

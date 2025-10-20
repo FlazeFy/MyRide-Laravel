@@ -67,6 +67,10 @@
                 build_layout_trip(trip_data)
                 build_layout_clean(clean_data)
                 build_layout_driver(driver_data)
+
+                if(trip_data.data.length > 3){
+                    template_carousel_navigation("carousel-nav-holder", "<?= $carouselId ?>")
+                }
             },
             error: function(response, jqXHR, textStatus, errorThrown) {
                 Swal.close()

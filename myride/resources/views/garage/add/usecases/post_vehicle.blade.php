@@ -5,43 +5,31 @@
             <div class="row">
                 <div class="col-lg-6 col-md-6 col-sm-12">
                     <label>Category</label>
-                    <select class="form-select" name="vehicle_category" id="vehicle_category_holder" aria-label="Default select example">
-                        <option>-</option>
-                    </select>
+                    <select class="form-select" name="vehicle_category" id="vehicle_category_holder" aria-label="Default select example"></select>
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-12">
                     <label>Type</label>
-                    <select class="form-select" name="vehicle_type" id="vehicle_type_holder" aria-label="Default select example">
-                        <option>-</option>
-                    </select>
+                    <select class="form-select" name="vehicle_type" id="vehicle_type_holder" aria-label="Default select example"></select>
                 </div>
             </div>
             <div class="row">
                 <div class="col-lg-6 col-md-6 col-sm-12">
                     <label>Transmission</label>
-                    <select class="form-select" name="vehicle_transmission" id="vehicle_transmission_holder" aria-label="Default select example">
-                        <option>-</option>
-                    </select>
+                    <select class="form-select" name="vehicle_transmission" id="vehicle_transmission_holder" aria-label="Default select example"></select>
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-12">
                     <label>Status</label>
-                    <select class="form-select" name="vehicle_status" id="vehicle_status_holder" aria-label="Default select example">
-                        <option>-</option>
-                    </select>
+                    <select class="form-select" name="vehicle_status" id="vehicle_status_holder" aria-label="Default select example"></select>
                 </div>
             </div>
             <div class="row">
                 <div class="col-lg-6 col-md-6 col-sm-12">
                     <label>Fuel Status</label>
-                    <select class="form-select" name="vehicle_fuel_status" id="vehicle_fuel_status_holder" aria-label="Default select example">
-                        <option>-</option>
-                    </select>
+                    <select class="form-select" name="vehicle_fuel_status" id="vehicle_fuel_status_holder" aria-label="Default select example"></select>
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-12">
                     <label>Default Fuel</label>
-                    <select class="form-select" name="vehicle_default_fuel" id="vehicle_default_fuel_holder" aria-label="Default select example">
-                        <option>-</option>
-                    </select>
+                    <select class="form-select" name="vehicle_default_fuel" id="vehicle_default_fuel_holder" aria-label="Default select example"></select>
                 </div>
             </div>
             <div class="row">

@@ -5,9 +5,7 @@
             <div class="row">
                 <div class="col-12">
                     <label>Vehicle Name & Plate Number</label>
-                    <select class="form-select" name="vehicle_holder" id="vehicle_holder" aria-label="Default select example">
-                        <option>-</option>
-                    </select>
+                    <select class="form-select" name="vehicle_holder" id="vehicle_holder" aria-label="Default select example"></select>
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-12">
                     <label>Type</label>
@@ -26,15 +24,11 @@
             <div class="row">
                 <div class="col-lg-6 col-md-6 col-sm-12">
                     <label>Fuel Brand</label>
-                    <select class="form-select" name="fuel_brand" id="fuel_brand_holder" aria-label="Default select example">
-                        <option>-</option>
-                    </select>
+                    <select class="form-select" name="fuel_brand" id="fuel_brand_holder" aria-label="Default select example"></select>
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-12">
                     <label>Fuel Type</label>
-                    <select class="form-select" name="fuel_type" id="fuel_type_holder" aria-label="Default select example">
-                        <option>-</option>
-                    </select>
+                    <select class="form-select" name="fuel_type" id="fuel_type_holder" aria-label="Default select example"></select>
                 </div>
             </div>
             <div class="row">
@@ -73,125 +67,8 @@
         get_context_opt(`fuel_type_${val}`)
     })
 
-    const get_vehicle_name_opt = () => {
-        Swal.showLoading()
-        const ctx = 'vehicle_name_temp'
-        const ctx_holder = 'vehicle_holder'
-
-        const generate_vehicle_list = (holder,data) => {
-            data.forEach(el => {
-                $(`#${holder}`).append(`<option value="${el.id}">${el.vehicle_plate_number} - ${el.vehicle_name}</option>`)
-            });
-        }
-
-        const fetchData = () => {
-            $.ajax({
-                url: `/api/v1/vehicle/name`,
-                type: 'GET',
-                beforeSend: function (xhr) {
-                    xhr.setRequestHeader("Accept", "application/json")
-                    xhr.setRequestHeader("Authorization", "Bearer <?= session()->get("token_key"); ?>")    
-                },
-                success: function(response) {
-                    Swal.close()
-                    const data = response.data
-                    localStorage.setItem(ctx,JSON.stringify(data))
-                    localStorage.setItem(`last-hit-${ctx}`,Date.now())
-                    generate_vehicle_list(ctx_holder,data)
-                },
-                error: function(response, jqXHR, textStatus, errorThrown) {
-                    Swal.close()
-                    if(response.status != 404){
-                        failedMsg(`get the vehicle list`)
-                    } else {
-                        // .....
-                    }
-                }
-            });
-        }
-
-        if(ctx in localStorage){
-            const lastHit = parseInt(localStorage.getItem(`last-hit-${ctx}`))
-            const now = Date.now()
-
-            if(((now - lastHit) / 1000) < statsFetchRestTime){
-                const data = JSON.parse(localStorage.getItem(ctx))
-                if(data){
-                    generate_vehicle_list(ctx_holder,data)
-                    Swal.close()
-                } else {
-                    Swal.close()
-                    failedMsg(`get the vehicle list`)
-                }
-            } else {
-                fetchData()
-            }
-        } else {
-            fetchData()
-        }
-    }
-
-    const get_context_opt = (context) => {
-        Swal.showLoading()
-        const ctx = `${context}_temp`
-        const ctx_holder = `${context}_holder`
-
-        const generate_context_list = (holder,data) => {
-            $(`#${holder}`).empty().append(`<option>-</option>`)
-            data.forEach(el => {
-                $(`#${holder}`).append(`<option value="${el.dictionary_name}">${el.dictionary_name}</option>`)
-            });
-        }
-
-        const fetchData = () => {
-            $.ajax({
-                url: `/api/v1/dictionary/type/${context}`,
-                type: 'GET',
-                beforeSend: function (xhr) {
-                    xhr.setRequestHeader("Accept", "application/json")
-                    xhr.setRequestHeader("Authorization", "Bearer <?= session()->get("token_key"); ?>")    
-                },
-                success: function(response) {
-                    Swal.close()
-                    const data = response.data
-                    localStorage.setItem(ctx,JSON.stringify(data))
-                    localStorage.setItem(`last-hit-${ctx}`,Date.now())
-                    generate_context_list(ctx_holder.includes('fuel_type') ? 'fuel_type_holder' : ctx_holder,data)
-                },
-                error: function(response, jqXHR, textStatus, errorThrown) {
-                    Swal.close()
-                    if(response.status != 404){
-                        failedMsg(`get the ${context} list`)
-                    } else {
-                        // .....
-                    }
-                }
-            });
-        }
-
-        if(ctx in localStorage){
-            const lastHit = parseInt(localStorage.getItem(`last-hit-${ctx}`))
-            const now = Date.now()
-
-            if(((now - lastHit) / 1000) < statsFetchRestTime){
-                const data = JSON.parse(localStorage.getItem(ctx))
-                if(data){
-                    generate_context_list(ctx_holder.includes('fuel_type') ? 'fuel_type_holder' : ctx_holder,data)
-                    Swal.close()
-                } else {
-                    Swal.close()
-                    failedMsg(`get the ${context} list`)
-                }
-            } else {
-                fetchData()
-            }
-        } else {
-            fetchData()
-        }
-    }
-
-    get_vehicle_name_opt()
-    get_context_opt('fuel_brand')
+    get_vehicle_name_opt(token)
+    get_context_opt('fuel_brand',token)
 
     const get_vehicle_detail = (id) => {
         Swal.showLoading();

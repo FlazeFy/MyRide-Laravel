@@ -5,9 +5,7 @@
             <div class="row">
                 <div class="col-12">
                     <label>Vehicle Name & Plate Number</label>
-                    <select class="form-select" name="vehicle_holder" id="vehicle_holder" aria-label="Default select example">
-                        <option>-</option>
-                    </select>
+                    <select class="form-select" name="vehicle_holder" id="vehicle_holder" aria-label="Default select example"></select>
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-12">
                     <label>Type</label>
@@ -37,9 +35,7 @@
             <div class="row">
                 <div class="col-lg-6 col-md-6 col-sm-12">
                     <label>Service Category</label>
-                    <select class="form-select" name="service_category" id="service_category_holder" aria-label="Default select example">
-                        <option>-</option>
-                    </select>
+                    <select class="form-select" name="service_category" id="service_category_holder" aria-label="Default select example"></select>
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-12">
                     <label>Total Price</label>

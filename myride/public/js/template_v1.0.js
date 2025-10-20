@@ -14,6 +14,21 @@ const template_alert_container = (target, type, msg, btn_title, icon, href) => {
     `)
 }
 
+const template_carousel_navigation = (holder, carouselId) => {
+    $(`#${holder}`).html(`
+        <div class="carousel-button-holder">
+            <button class="btn btn-primary carousel-control-prev ms-2" type="button" data-bs-target="#${carouselId}" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="btn btn-primary carousel-control-next" type="button" data-bs-target="#${carouselId}" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+    `)
+}
+
 const template_trip_box = (dt, extra_class = '') => {
     const coorOrigin = dt.trip_origin_coordinate.split(",").map(Number)
     const coorDestination = dt.trip_destination_coordinate.split(",").map(Number)
@@ -110,10 +125,12 @@ const build_layout_trip = (dt) => {
                 </div>
             `)
 
-            indicators.append(`
-                <button type="button" data-bs-target="#carouselTrip" data-bs-slide-to="${slideIndex}" 
-                    class="${slideIndex === 0 ? "active" : ""}" aria-current="${slideIndex === 0 ? "true" : "false"}" aria-label="Slide ${slideIndex + 1}"></button>
-            `)
+            if(dt.data.length > 3){
+                indicators.append(`
+                    <button type="button" data-bs-target="#carouselTrip" data-bs-slide-to="${slideIndex}" 
+                        class="${slideIndex === 0 ? "active" : ""}" aria-current="${slideIndex === 0 ? "true" : "false"}" aria-label="Slide ${slideIndex + 1}"></button>
+                `)
+            }
         }
 
         const targetSlide = $(`#carouselTrip .carousel-item[data-slide-index="${slideIndex}"] .holder`)

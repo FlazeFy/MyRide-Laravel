@@ -8,17 +8,13 @@
             <div class="modal-body">
                 <input hidden id="inventory_id">
                 <label>Vehicle Name & Plate Number</label>
-                <select class="form-select" name="vehicle_holder" id="vehicle_holder" aria-label="Default select example">
-                    <option>-</option>
-                </select>
+                <select class="form-select" name="vehicle_holder" id="vehicle_holder" aria-label="Default select example"></select>
                 <label>Inventory Category</label>
                 <select class="form-select" name="inventory_category" id="inventory_category_holder" aria-label="Default select example">
                     <option>-</option>
                 </select>
                 <label>Inventory Storage</label>
-                <select class="form-select" name="inventory_storage" id="inventory_storage_holder" aria-label="Default select example">
-                    <option>-</option>
-                </select>
+                <select class="form-select" name="inventory_storage" id="inventory_storage_holder" aria-label="Default select example"></select>
                 <label>Qty</label>
                 <input class="form-control" name="inventory_qty" id="inventory_qty" type="number" min="1" value="1">
                 <label>Inventory Name</label>

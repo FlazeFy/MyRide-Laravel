@@ -8,13 +8,9 @@
             <div class="modal-body">
                 <input hidden id="service_id">
                 <label>Vehicle Name & Plate Number</label>
-                <select class="form-select" name="vehicle_holder" id="vehicle_holder" aria-label="Default select example">
-                    <option>-</option>
-                </select>
+                <select class="form-select" name="vehicle_holder" id="vehicle_holder" aria-label="Default select example"></select>
                 <label>Service Category</label>
-                <select class="form-select" name="service_category" id="service_category_holder" aria-label="Default select example">
-                    <option>-</option>
-                </select>
+                <select class="form-select" name="service_category" id="service_category_holder" aria-label="Default select example"></select>
                 <label>Service Location</label>
                 <input class="form-control" name="service_location" id="service_location">
                 <label>Price Total</label>

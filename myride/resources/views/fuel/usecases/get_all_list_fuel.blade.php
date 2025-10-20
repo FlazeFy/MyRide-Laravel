@@ -72,7 +72,7 @@
                             <td>
                                 ${dt.fuel_bill != null ? `<a class="btn btn-primary" style="width:50px;"><i class="fa-solid fa-receipt"></i></a>` : ""}
                                 <a class="btn btn-danger btn-delete" style="width:50px;" data-url="/api/v1/fuel/destroy/${dt.id}" data-context="Fuel"><i class="fa-solid fa-trash"></i></a>
-                                <a class="btn btn-warning btn-update" style="width:50px;" data-context="Fuel" data-vehicle-plate-number="${dt.vehicle_plate_number}" data-id="${dt.id}"
+                                <a class="btn btn-warning btn-update" style="width:50px;" data-vehicle-plate-number="${dt.vehicle_plate_number}" data-id="${dt.id}"
                                     data-fuel-type="${dt.fuel_type}" data-fuel-brand="${dt.fuel_brand}" data-fuel-volume="${dt.fuel_volume}" data-fuel-price-total="${dt.fuel_price_total}" data-fuel-ron="${dt.fuel_ron}"><i class="fa-solid fa-pen-to-square"></i></a>
                             </td>
                         </tr>

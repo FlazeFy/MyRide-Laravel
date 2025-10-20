@@ -5,9 +5,7 @@
             <div class="row">
                 <div class="col-12">
                     <label>Vehicle Name & Plate Number</label>
-                    <select class="form-select" name="vehicle_holder" id="vehicle_holder" aria-label="Default select example">
-                        <option>-</option>
-                    </select>
+                    <select class="form-select" name="vehicle_holder" id="vehicle_holder" aria-label="Default select example"></select>
                 </div>
                 <div class="col-md-6 col-sm-12">
                     <label>Type</label>
