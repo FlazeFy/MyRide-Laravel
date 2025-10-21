@@ -1868,6 +1868,10 @@
                                                                 "type": "string",
                                                                 "example": "08123456780"
                                                             },
+                                                            "total_trip": {
+                                                                "type": "integer",
+                                                                "example": 10
+                                                            },
                                                             "notes": {
                                                                 "type": "string",
                                                                 "example": "Lorem ipsum"
@@ -2118,6 +2122,123 @@
                                         "message": {
                                             "type": "string",
                                             "example": "[failed validation message]"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "something wrong. please contact admin"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/driver/name": {
+            "get": {
+                "tags": [
+                    "Driver"
+                ],
+                "summary": "Get all driver name",
+                "description": "This request is used to get all driver name. This request is using MySql database, have a protected routes, and have template pagination.",
+                "operationId": "af44aedd656296e46329da0d5a837e7e",
+                "responses": {
+                    "200": {
+                        "description": "Driver records fetched successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "driver fetched"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "string",
+                                                        "example": "6f59235e-c398-8a83-2f95-3f1fbe95ca6e"
+                                                    },
+                                                    "username": {
+                                                        "type": "string",
+                                                        "example": "jhondoe"
+                                                    },
+                                                    "fullname": {
+                                                        "type": "string",
+                                                        "example": "Jhon Doe"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "protected route need to include sign in token as authorization bearer",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "you need to include the authorization token from login"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "driver failed to fetched",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "driver not found"
                                         }
                                     },
                                     "type": "object"
@@ -2786,6 +2907,102 @@
                                         "message": {
                                             "type": "string",
                                             "example": "fuel not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "something wrong. please contact admin"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/fuel/{id}": {
+            "put": {
+                "tags": [
+                    "Fuel"
+                ],
+                "summary": "Update an fuel",
+                "operationId": "197240b06afa4c99bfb2322feaa42da4",
+                "responses": {
+                    "200": {
+                        "description": "fuel updated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "fuel updated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "protected route need to include sign in token as authorization bearer",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "you need to include the authorization token from login"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "fuel failed to validated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "[failed validation message]"
                                         }
                                     },
                                     "type": "object"
@@ -6539,6 +6756,10 @@
                                                                 "type": "string",
                                                                 "example": "D 1610 ZBC"
                                                             },
+                                                            "driver_name": {
+                                                                "type": "string",
+                                                                "example": "Jhon Doe"
+                                                            },
                                                             "trip_desc": {
                                                                 "type": "string",
                                                                 "example": "jalan2"
@@ -6794,6 +7015,378 @@
                                         "message": {
                                             "type": "string",
                                             "example": "vehicle not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "something wrong. please contact admin"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/trip/destroy/{id}": {
+            "delete": {
+                "tags": [
+                    "Trip"
+                ],
+                "summary": "Delete trip by id",
+                "operationId": "9202c856718c282d08ebb5ef6a1c76f2",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Trip ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "e1288783-a5d4-1c4c-2cd6-0e92f7cc3bf9"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "trip permentally deleted",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "trip permentally deleted"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "protected route need to include sign in token as authorization bearer",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "you need to include the authorization token from login"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "trip failed to permentally deleted",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "trip not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "something wrong. please contact admin"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/trip/{id}": {
+            "put": {
+                "tags": [
+                    "Trip"
+                ],
+                "summary": "Update an trip",
+                "operationId": "6aa90fb5999d7e68edd0d15cfe5fb53f",
+                "responses": {
+                    "200": {
+                        "description": "trip updated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "trip updated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "protected route need to include sign in token as authorization bearer",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "you need to include the authorization token from login"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "trip failed to validated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "[failed validation message]"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "something wrong. please contact admin"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/trip/driver/{driver_id}": {
+            "get": {
+                "tags": [
+                    "Trip"
+                ],
+                "summary": "Get all trip history by driver id",
+                "description": "This request is used to get all trip history by driver id with pagination. This request is using MySql database, and have a protected routes.",
+                "operationId": "fde3fbb8bdaa557655de11856f8eca74",
+                "responses": {
+                    "200": {
+                        "description": "trip fetched",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "trip fetched"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "current_page": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "data": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "vehicle_name": {
+                                                                "type": "string",
+                                                                "example": "Brio RS MT"
+                                                            },
+                                                            "vehicle_plate_number": {
+                                                                "type": "string",
+                                                                "example": "D 1610 ZBC"
+                                                            },
+                                                            "trip_desc": {
+                                                                "type": "string",
+                                                                "example": "jalan2"
+                                                            },
+                                                            "trip_category": {
+                                                                "type": "string",
+                                                                "example": "Others"
+                                                            },
+                                                            "trip_origin_name": {
+                                                                "type": "string",
+                                                                "example": "Budi House"
+                                                            },
+                                                            "trip_person": {
+                                                                "type": "string",
+                                                                "example": "Budi",
+                                                                "nullable": true
+                                                            },
+                                                            "trip_origin_coordinate": {
+                                                                "type": "string",
+                                                                "example": "-6.252640549671855, 106.76424433238519"
+                                                            },
+                                                            "trip_destination_name": {
+                                                                "type": "string",
+                                                                "example": "Central Park"
+                                                            },
+                                                            "trip_destination_coordinate": {
+                                                                "type": "string",
+                                                                "example": "-6.177464532426197, 106.7912179194768"
+                                                            },
+                                                            "created_at": {
+                                                                "type": "string",
+                                                                "format": "datetime",
+                                                                "example": "2025-06-19 07:54:42"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                },
+                                                "last_page": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "per_page": {
+                                                    "type": "integer",
+                                                    "example": 14
+                                                },
+                                                "total": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "protected route need to include sign in token as authorization bearer",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "you need to include the authorization token from login"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "trip failed to fetched",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "trip history not found"
                                         }
                                     },
                                     "type": "object"
@@ -7930,6 +8523,334 @@
                     },
                     "404": {
                         "description": "vehicle failed to fetched",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "vehicle not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "something wrong. please contact admin"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/vehicle": {
+            "put": {
+                "tags": [
+                    "Vehicle"
+                ],
+                "summary": "Post vehicle",
+                "description": "Create a new vehicle using `vehicle_name`, `vehicle_merk`, `vehicle_type`, `vehicle_price`, `vehicle_distance`, `vehicle_category`, `vehicle_status`, `vehicle_year_made`, `vehicle_plate_number`, `vehicle_fuel_status`, `vehicle_default_fuel`, `vehicle_color`, `vehicle_transmission`, and `vehicle_capacity`. This request is using MySQL database and send Telegram Message.",
+                "operationId": "84aedd7cfe098c421cec5246d6131883",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "vehicle_name",
+                                    "vehicle_merk",
+                                    "vehicle_type",
+                                    "vehicle_price",
+                                    "vehicle_distance",
+                                    "vehicle_category",
+                                    "vehicle_status",
+                                    "vehicle_year_made",
+                                    "vehicle_plate_number",
+                                    "vehicle_fuel_status",
+                                    "vehicle_default_fuel",
+                                    "vehicle_color",
+                                    "vehicle_transmission",
+                                    "vehicle_capacity"
+                                ],
+                                "properties": {
+                                    "vehicle_name": {
+                                        "type": "string",
+                                        "example": "Kijang Innova 2.0 Type G MT"
+                                    },
+                                    "vehicle_merk": {
+                                        "type": "string",
+                                        "example": "Toyota"
+                                    },
+                                    "vehicle_type": {
+                                        "type": "string",
+                                        "example": "Minibus"
+                                    },
+                                    "vehicle_price": {
+                                        "type": "integer",
+                                        "example": 275000000
+                                    },
+                                    "vehicle_desc": {
+                                        "type": "string",
+                                        "example": "sudah jarang digunakan 2"
+                                    },
+                                    "vehicle_distance": {
+                                        "type": "integer",
+                                        "example": 90000
+                                    },
+                                    "vehicle_category": {
+                                        "type": "string",
+                                        "example": "Parents Car"
+                                    },
+                                    "vehicle_status": {
+                                        "type": "string",
+                                        "example": "Available"
+                                    },
+                                    "vehicle_year_made": {
+                                        "type": "integer",
+                                        "example": 2011
+                                    },
+                                    "vehicle_plate_number": {
+                                        "type": "string",
+                                        "example": "PA 1234 ZX"
+                                    },
+                                    "vehicle_fuel_status": {
+                                        "type": "string",
+                                        "example": "Not Monitored"
+                                    },
+                                    "vehicle_fuel_capacity": {
+                                        "type": "integer",
+                                        "example": 50
+                                    },
+                                    "vehicle_default_fuel": {
+                                        "type": "string",
+                                        "example": "Pertamina Pertalite"
+                                    },
+                                    "vehicle_color": {
+                                        "type": "string",
+                                        "example": "White"
+                                    },
+                                    "vehicle_transmission": {
+                                        "type": "string",
+                                        "example": "Manual"
+                                    },
+                                    "vehicle_capacity": {
+                                        "type": "integer",
+                                        "example": 8
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Vehicle create successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "vehicle create"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Validation failed",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "oneOf": [
+                                        {
+                                            "properties": {
+                                                "status": {
+                                                    "type": "string",
+                                                    "example": "failed"
+                                                },
+                                                "message": {
+                                                    "type": "string",
+                                                    "example": "vehicle name must be at least 2 characters"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        {
+                                            "properties": {
+                                                "status": {
+                                                    "type": "string",
+                                                    "example": "failed"
+                                                },
+                                                "message": {
+                                                    "type": "string",
+                                                    "example": "vehicle type is a required field"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        {
+                                            "properties": {
+                                                "status": {
+                                                    "type": "string",
+                                                    "example": "failed"
+                                                },
+                                                "message": {
+                                                    "type": "string",
+                                                    "example": "vehicle type must be one of the following values City Car, Minibus, Motorcycle, Hatchback, Sedan, SUV, Pickup Truck, Convertible, Coupe, Van, Wagon, Crossover, Electric"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "vehicle failed to fetched",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "vehicle not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "something wrong. please contact admin"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/vehicle/delete/{id}": {
+            "delete": {
+                "tags": [
+                    "Vehicle"
+                ],
+                "summary": "Soft Delete vehicle by Id",
+                "operationId": "62ec8eeb4dfd622e0469731b1fb09ad1",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Vehicle ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "e1288783-a5d4-1c4c-2cd6-0e92f7cc3bf9"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "vehicle deleted",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "vehicle deleted"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "protected route need to include sign in token as authorization bearer",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "you need to include the authorization token from login"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "vehicle failed to deleted",
                         "content": {
                             "application/json": {
                                 "schema": {

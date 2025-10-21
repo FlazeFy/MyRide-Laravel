@@ -134,6 +134,15 @@ class VehicleModel extends Model
         return count($res) > 0 ? $res : null;
     }
 
+    public static function softDeleteVehicleById($user_id = null,$id){
+        $res = VehicleModel::whereNull("deleted_at")->where('id',$id);
+        if($user_id){
+            $res = $res->where('created_by',$user_id);
+        }
+
+        return $res->update(['deleted_at'=>date("Y-m-d H:i")]);
+    }
+
     // For Seeder
     public static function getRandom($null, $user_id){
         if($null == 0){

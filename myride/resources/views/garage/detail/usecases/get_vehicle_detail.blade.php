@@ -1,4 +1,4 @@
-<div class="container mt-2">
+<div class="container">
     <h1 class="mb-1" id="vehicle_name"></h1>
     <div class="d-flex justify-content-between">
         <h4><span class="btn btn-success rounded-pill px-3 me-2" style="font-size:var(--textXMD);" id="vehicle_type"></span><span id="vehicle_merk"></span></h4>

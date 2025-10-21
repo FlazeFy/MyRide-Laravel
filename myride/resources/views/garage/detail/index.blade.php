@@ -8,8 +8,9 @@
     @endphp
 
     <div class="d-block mx-auto p-3">
-        <div class="d-flex justify-content-between">
-            <button class="btn btn-danger" onclick="window.location.href='/garage'"><i class="fa-solid fa-house"></i> Back to Garage</button><br>
+        <div class="d-flex justify-content-start mb-2">
+            <button class="btn btn-danger me-2" onclick="window.location.href='/garage'"><i class="fa-solid fa-house"></i> Back to Garage</button><br>
+            @include('garage.detail.usecases.delete_vehicle')
         </div>
         <div class="row">
             <div class="col-lg-6 col-md-6 col-sm-12 col-12">
