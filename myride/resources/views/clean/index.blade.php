@@ -2,6 +2,9 @@
 
 @section('content')
     <script src="{{ asset('/js/usecases/export_v1.0.js')}}"></script>
+    <script>
+        const token = `<?= session()->get("token_key"); ?>`
+    </script>
 
     <div class="position-relative">
         <a class="btn btn-success" href='/clean/add'><i class="fa-solid fa-plus"></i> Add Clean</a>

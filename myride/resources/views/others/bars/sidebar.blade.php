@@ -30,7 +30,12 @@
             $(`#${ctx_holder}`).append(`
                 <li>
                     <span class="plate-number mb-0">${dt.vehicle_plate_number}</span>
-                    <a href="/garage/detail/${dt.id}" class="nav-link container p-2 mb-2" style="font-size:var(--textXMD);">${dt.vehicle_name}</a>
+                    <a href="/garage/detail/${dt.id}" class="nav-link container p-2 mb-2" style="font-size:var(--textXMD);">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span>${dt.vehicle_name}</span> 
+                            ${dt.deleted_at ? '<span class="chip-mini bg-danger">Deleted</span>' : ''}
+                        </div>
+                    </a>
                 </li>
             `)
         });

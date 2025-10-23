@@ -116,6 +116,38 @@ const get_driver_name_opt = (token) => {
     }
 }
 
+const clean_select_opt = (target) => {
+    target.forEach(dt => {
+        $(`#${dt}`).val('')
+    });
+}
+
+const get_vehicle_detail = (id) => {
+    if(id !== "-"){
+        Swal.showLoading()
+        $.ajax({
+            url: `/api/v1/vehicle/detail/${id}`,
+            type: 'GET',
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Accept", "application/json")
+                xhr.setRequestHeader("Authorization", `Bearer ${token}`)
+            },
+            success: function(response) {
+                Swal.close()
+                const data = response.data
+                $('#vehicle_type').val(data.vehicle_type)
+                $('#vehicle_category').val(data.vehicle_category)
+            },
+            error: function(response, jqXHR, textStatus, errorThrown) {
+                Swal.close()
+                failedMsg('get the vehicle')
+            }
+        });
+    } else {
+        clean_select_opt(['vehicle_type','vehicle_category'])
+    }
+}
+
 const get_context_opt = (context,token) => {
     Swal.showLoading()
     let ctx_holder

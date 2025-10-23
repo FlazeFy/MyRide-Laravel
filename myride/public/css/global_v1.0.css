@@ -67,6 +67,13 @@ a {
     text-decoration: none;
     color: var(--darkColor) !important;
 }
+.no-msg-text {
+    color: var(--greyColor);
+    text-align: center !important;
+    font-style: italic;
+    font-size: var(--textMD);
+}
+
 img:not(.gm-style img) {
     border-radius: var(--roundedLG);
 }
@@ -221,10 +228,19 @@ img:not(.gm-style img) {
     background:var(--warningColor) !important; 
     z-index: 999;
 }
-.chip, .plate-number {
+.chip-mini {
+    font-size:var(--textSM); 
+    border-radius: var(--roundedLG);
+    color: var(--whiteColor);
+    font-weight: 600;
+    margin-inline: var(--spaceXXSM);
+}
+.chip, .plate-number, .chip-mini {
     padding: var(--spaceMini) var(--spaceSM) !important;
-    margin-inline: var(--spaceSM);
+}
+.chip, .plate-number {
     font-weight: bold;
+    margin-inline: var(--spaceSM);
     font-size:var(--textMD); 
 }
 
@@ -291,7 +307,7 @@ hr {
     background: var(--darkColor);
 }
 
-.btn, .container, .sidebar .nav-link, .hover-grow, .plate-number, .chip, .bordered {
+.btn, .container, .sidebar .nav-link, .hover-grow, .plate-number, .chip, .bordered, .chip-mini {
     -webkit-transition: all 0.4s !important;
     -o-transition: all 0.4s !important;
     transition: all 0.4s !important;

@@ -28,7 +28,6 @@
 
 <script>
     $(document).on('click','.btn-update',function(){
-        const token = `<?= session()->get("token_key"); ?>`
         callModal('update-modal')
         get_vehicle_name_opt(token)
         get_context_opt('service_category,service_storage',token)
@@ -74,7 +73,7 @@
                 }),
                 beforeSend: function (xhr) {
                     xhr.setRequestHeader("Accept", "application/json")
-                    xhr.setRequestHeader("Authorization", "Bearer <?= session()->get("token_key"); ?>")
+                    xhr.setRequestHeader("Authorization", `Bearer ${token}`)
                 },
                 success: function(response) {
                     Swal.close()

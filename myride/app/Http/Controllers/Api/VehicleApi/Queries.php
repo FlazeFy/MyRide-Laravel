@@ -143,6 +143,7 @@ class Queries extends Controller
      *                         @OA\Property(property="vehicle_capacity", type="integer", example=5),
      *                         @OA\Property(property="vehicle_transmission", type="string", example="CVT"),
      *                         @OA\Property(property="vehicle_readiness", type="integer", example=8),
+     *                         @OA\Property(property="deleted_at", type="string", format="datetime", example="2025-01-29 15:04:18")
      *                     )
      *                 ),
      *                 @OA\Property(property="last_page", type="integer", example=1),
@@ -225,6 +226,7 @@ class Queries extends Controller
      *                     @OA\Property(property="id", type="string", format="uuid", example="2d98f524-de02-11ed-b5ea-0242ac120002"),
      *                     @OA\Property(property="vehicle_name", type="string", example="Brio RS MT"),
      *                     @OA\Property(property="vehicle_plate_number", type="string", example="D 1610 ZBC"),
+     *                     @OA\Property(property="deleted_at", type="string", format="datetime", nullable=true, example="2025-01-29 15:04:18"),
      *                 )
      *             )
      *         )

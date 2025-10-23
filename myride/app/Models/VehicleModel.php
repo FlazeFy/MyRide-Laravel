@@ -45,8 +45,9 @@ class VehicleModel extends Model
     }
 
     public static function getAllVehicleName($user_id){
-        return VehicleModel::select('id','vehicle_name','vehicle_plate_number')
+        return VehicleModel::select('id','vehicle_name','vehicle_plate_number','deleted_at')
             ->where('created_by', $user_id)
+            ->orderBy('deleted_at','ASC')
             ->orderBy('vehicle_name','DESC')
             ->orderBy('vehicle_plate_number','DESC')
             ->get();
@@ -73,7 +74,7 @@ class VehicleModel extends Model
     }
 
     public static function getVehicleReadiness($user_id,$limit){
-        $res = VehicleModel::select('id','vehicle_name','vehicle_type','vehicle_status','vehicle_plate_number','vehicle_fuel_status','vehicle_capacity', 'vehicle_transmission',
+        $res = VehicleModel::select('id','vehicle_name','vehicle_type','vehicle_status','vehicle_plate_number','vehicle_fuel_status','vehicle_capacity', 'vehicle_transmission', 'deleted_at',
                 DB::raw("
                     (CASE vehicle_status
                         WHEN 'Available' THEN 5

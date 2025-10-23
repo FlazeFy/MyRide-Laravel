@@ -34,7 +34,10 @@
                         <tr>
                             <td><span class="plate-number">${dt.vehicle_plate_number}</span></td>
                             <td class="text-start">
-                                <p class="mb-0" style="font-weight:500;">${dt.vehicle_name} ${dt.vehicle_transmission == 'Automatic' ? 'AT' : dt.vehicle_transmission == 'Manual' ? 'MT' : dt.vehicle_transmission}</p>
+                                <p class="mb-0" style="font-weight:500;">
+                                    ${dt.vehicle_name} ${dt.vehicle_transmission == 'Automatic' ? 'AT' : dt.vehicle_transmission == 'Manual' ? 'MT' : dt.vehicle_transmission}
+                                    ${dt.deleted_at ? '<span class="chip-mini bg-danger">Deleted</span>' : ''}
+                                </p>
                                 <p class="mb-0 text-secondary">${dt.vehicle_type}</p>
                             </td>
                             <td><span class="chip bg-${dt.vehicle_status == 'Available' ? 'success': dt.vehicle_status == 'Reserved' ? 'warning':'danger'}">${dt.vehicle_status}</span></td>

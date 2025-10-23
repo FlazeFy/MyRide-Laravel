@@ -6,9 +6,7 @@
             <th scope="col">Vehicle</th>
         </tr>
     </thead>
-    <tbody id="list_assigned_driver-holder">
-        <tr><th scope="row" colspan="4" class="fst-italic fw-normal">- No Driver Found -</th></tr>
-    </tbody>
+    <tbody id="list_assigned_driver-holder"></tbody>
 </table>
 
 <script>
@@ -31,10 +29,10 @@
                 const data = response.data.data
                 
                 data.forEach(dt => {
-                    const vehicleList = dt.vehicle_list.split(', ').map(vh => {
+                    const vehicleList = dt.vehicle_list ? dt.vehicle_list.split(', ').map(vh => {
                         const [plate, name] = vh.split('-')
                         return `<li><span class="plate-number">${plate.trim()}</span> ${name.trim()}</li>`
-                    });
+                    }) : '<span class="no-msg-text">- No Vehicle Assigned -</span>';
 
                     $(`#${holder}`).append(`
                         <tr>
@@ -57,8 +55,7 @@
                 if(response.status != 404){
                     failedMsg('get the driver')
                 } else {
-                    $(`#${holder}`).html(`<tr><td colspan="5" id="msg-${holder}"></td></tr>`)
-                    template_alert_container(`msg-${holder}`, 'no-data', "No driver found", 'add a trip', '<i class="fa-solid fa-gas-pump"></i>','/driver/add')
+                    $(`#${holder}`).html(`<tr><td colspan="5" id="msg-${holder}" class="no-msg-text">- No Driver Found -</td></tr>`)
                 }
             }
         });

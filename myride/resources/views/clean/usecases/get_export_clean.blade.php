@@ -2,6 +2,6 @@
 
 <script>
     $(document).on('click','#export_excel',function(){
-        get_export('clean','<?= session()->get('token_key'); ?>')
+        get_export('clean',`Bearer ${token}`)
     })
 </script>

@@ -17,19 +17,7 @@
                 </div>
             </div>
             <hr>
-            <label>Service History</label>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th scope="col">Notes</th>
-                        <th scope="col">Category</th>
-                        <th scope="col">Info</th>
-                    </tr>
-                </thead>
-                <tbody id="list_service_history">
-                    <tr><th scope="row" colspan="4" class="fst-italic fw-normal">- No Service Found -</th></tr>
-                </tbody>
-            </table>
+            @include('service.add.usecases.get_service_history')
         </div>
         <div class="col-xl-6 col-lg-12">
             <div class="row">
@@ -67,208 +55,8 @@
         const val = $(this).val()
     })
 
-    const get_vehicle_name_opt = () => {
-        Swal.showLoading()
-        const ctx = 'vehicle_name_temp'
-        const ctx_holder = 'vehicle_holder'
-
-        const generate_vehicle_list = (holder,data) => {
-            data.forEach(el => {
-                $(`#${holder}`).append(`<option value="${el.id}">${el.vehicle_plate_number} - ${el.vehicle_name}</option>`)
-            });
-        }
-
-        const fetchData = () => {
-            $.ajax({
-                url: `/api/v1/vehicle/name`,
-                type: 'GET',
-                beforeSend: function (xhr) {
-                    xhr.setRequestHeader("Accept", "application/json")
-                    xhr.setRequestHeader("Authorization", "Bearer <?= session()->get("token_key"); ?>")    
-                },
-                success: function(response) {
-                    Swal.close()
-                    const data = response.data
-                    localStorage.setItem(ctx,JSON.stringify(data))
-                    localStorage.setItem(`last-hit-${ctx}`,Date.now())
-                    generate_vehicle_list(ctx_holder,data)
-                },
-                error: function(response, jqXHR, textStatus, errorThrown) {
-                    Swal.close()
-                    if(response.status != 404){
-                        failedMsg(`get the vehicle list`)
-                    } else {
-                        // .....
-                    }
-                }
-            });
-        }
-
-        if(ctx in localStorage){
-            const lastHit = parseInt(localStorage.getItem(`last-hit-${ctx}`))
-            const now = Date.now()
-
-            if(((now - lastHit) / 1000) < statsFetchRestTime){
-                const data = JSON.parse(localStorage.getItem(ctx))
-                if(data){
-                    generate_vehicle_list(ctx_holder,data)
-                    Swal.close()
-                } else {
-                    Swal.close()
-                    failedMsg(`get the vehicle list`)
-                }
-            } else {
-                fetchData()
-            }
-        } else {
-            fetchData()
-        }
-    }
-
-    const get_context_opt = (context) => {
-        Swal.showLoading()
-        const ctx = `service_temp`
-        let ctx_holder
-
-        if(context.includes(',')){
-            ctx_holder = []
-            context = context.split(',')
-            context.forEach(el => {
-                ctx_holder.push(`${el}_holder`)
-            })
-        } else {
-            ctx_holder = `${context}_holder`
-        }
-
-        const generate_context_list = (holder,data) => {
-            if(Array.isArray(holder)){
-                holder.forEach(dt => {
-                    $(`#${dt}`).empty().append(`<option>-</option>`)
-                    data.forEach(el => {
-                        el.dictionary_type === dt.replace('_holder','') && $(`#${dt}`).append(`<option value="${el.dictionary_name}">${el.dictionary_name}</option>`)
-                    });
-                });
-            } else {
-                $(`#${holder}`).empty().append(`<option>-</option>`)
-                data.forEach(el => {
-                    $(`#${holder}`).append(`<option value="${el.dictionary_name}">${el.dictionary_name}</option>`)
-                });
-            }
-        }
-
-        const fetchData = () => {
-            $.ajax({
-                url: `/api/v1/dictionary/type/${context}`,
-                type: 'GET',
-                beforeSend: function (xhr) {
-                    xhr.setRequestHeader("Accept", "application/json")
-                    xhr.setRequestHeader("Authorization", "Bearer <?= session()->get("token_key"); ?>")    
-                },
-                success: function(response) {
-                    Swal.close()
-                    const data = response.data
-                    localStorage.setItem(ctx,JSON.stringify(data))
-                    localStorage.setItem(`last-hit-${ctx}`,Date.now())
-                    generate_context_list(ctx_holder,data)
-                },
-                error: function(response, jqXHR, textStatus, errorThrown) {
-                    Swal.close()
-                    if(response.status != 404){
-                        failedMsg(`get the ${context} list`)
-                    } else {
-                        // .....
-                    }
-                }
-            });
-        }
-
-        if(ctx in localStorage){
-            const lastHit = parseInt(localStorage.getItem(`last-hit-${ctx}`))
-            const now = Date.now()
-
-            if(((now - lastHit) / 1000) < statsFetchRestTime){
-                const data = JSON.parse(localStorage.getItem(ctx))
-                if(data){
-                    generate_context_list(ctx_holder,data)
-                    Swal.close()
-                } else {
-                    Swal.close()
-                    failedMsg(`get the ${context} list`)
-                }
-            } else {
-                fetchData()
-            }
-        } else {
-            fetchData()
-        }
-    }
-
-    get_vehicle_name_opt()
-    get_context_opt('service_category')
-
-    const get_vehicle_detail = (id) => {
-        Swal.showLoading();
-        $.ajax({
-            url: `/api/v1/vehicle/detail/${id}`,
-            type: 'GET',
-            beforeSend: function (xhr) {
-                xhr.setRequestHeader("Accept", "application/json")
-                xhr.setRequestHeader("Authorization", "Bearer <?= session()->get("token_key"); ?>")
-            },
-            success: function(response) {
-                Swal.close()
-                const data = response.data
-                $('#vehicle_type').val(data.vehicle_type)
-                $('#vehicle_category').val(data.vehicle_category)
-            },
-            error: function(response, jqXHR, textStatus, errorThrown) {
-                Swal.close()
-                failedMsg('get the vehicle')
-            }
-        });
-    }
-
-    const get_vehicle_service_history = (id) => {
-        const holder = 'list_service_history'
-        $(`#${holder}`).empty()
-        Swal.showLoading()
-
-        $.ajax({
-            url: `/api/v1/service/vehicle/${id}`,
-            type: 'GET',
-            beforeSend: function (xhr) {
-                xhr.setRequestHeader("Accept", "application/json")
-                xhr.setRequestHeader("Authorization", "Bearer <?= session()->get("token_key"); ?>")
-            },
-            success: function(response) {
-                Swal.close()
-                const data = response.data
-                
-                data.forEach(dt => {
-                    $(`#${holder}`).append(`
-                        <tr>
-                            <td scope="col">${dt.service_note}</td>
-                            <td scope="col" style="width:120px;">${dt.service_category}</td>
-                            <td scope="col" class="text-start" style="width:150px;">
-                                <h6>Price</h6>
-                                <p>Rp. ${number_format(dt.service_price_total, 0, ',', '.')},00</p>
-                                <h6>Location</h6>
-                                <p>${dt.service_location}</p>
-                            </td>
-                        </tr>
-                    `)
-                });
-            },
-            error: function(response, jqXHR, textStatus, errorThrown) {
-                Swal.close()
-                if(response.status != 404){
-                    $(`#${holder}`).html(`<th scope="row" colspan="4" class="fst-italic fw-normal">- No Service Found -</th>`)
-                } else {
-                    failedMsg('get the vehicle service history')
-                }
-            }
-        });
-    }
+    get_vehicle_name_opt(token)
+    get_context_opt('service_category,service_type',token)
 
     const post_service = () => {
         const vehicle_id = $('#vehicle_holder').val()
@@ -290,7 +78,7 @@
                 }),
                 beforeSend: function (xhr) {
                     xhr.setRequestHeader("Accept", "application/json")
-                    xhr.setRequestHeader("Authorization", "Bearer <?= session()->get("token_key"); ?>")
+                    xhr.setRequestHeader("Authorization", `Bearer ${token}`)
                 },
                 success: function(response) {
                     Swal.close()

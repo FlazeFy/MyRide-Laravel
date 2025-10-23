@@ -17,8 +17,7 @@
                 </div>
             </div>
             <hr>
-            <label>Attached Reminder</label>
-            <div id="attached_reminder-holder"></div>
+            @include('reminder.add.usecases.get_attached_reminder')
         </div>
         <div class="col-xl-6 col-lg-12">
             <div class="row">
@@ -41,86 +40,16 @@
 </form>
 
 <script type="text/javascript">
-    const token = `<?= session()->get("token_key"); ?>`
-
     $(document).on('click','#submit-add-reminder-btn', function(){
         post_reminder()
     })
     $(document).on('change','#vehicle_holder', function(){
         const id = $(this).val()
         get_vehicle_detail(id)
-        get_vehicle_attached_reminder(id)
     })
 
     get_vehicle_name_opt(token)
     get_context_opt('reminder_context',token)
-
-    const get_vehicle_detail = (id) => {
-        Swal.showLoading();
-        $.ajax({
-            url: `/api/v1/vehicle/detail/${id}`,
-            type: 'GET',
-            beforeSend: function (xhr) {
-                xhr.setRequestHeader("Accept", "application/json")
-                xhr.setRequestHeader("Authorization", "Bearer <?= session()->get("token_key"); ?>")
-            },
-            success: function(response) {
-                Swal.close()
-                const data = response.data
-                $('#vehicle_type').val(data.vehicle_type)
-                $('#vehicle_category').val(data.vehicle_category)
-            },
-            error: function(response, jqXHR, textStatus, errorThrown) {
-                Swal.close()
-                failedMsg('get the vehicle')
-            }
-        });
-    }
-
-    const get_vehicle_attached_reminder = (id) => {
-        const holder = 'attached_reminder-holder'
-        Swal.showLoading();
-        $.ajax({
-            url: `/api/v1/reminder/vehicle/${id}`,
-            type: 'GET',
-            beforeSend: function (xhr) {
-                xhr.setRequestHeader("Accept", "application/json")
-                xhr.setRequestHeader("Authorization", "Bearer <?= session()->get("token_key"); ?>")
-            },
-            success: function(response) {
-                Swal.close()
-                const data = response.data
-                
-                data.forEach(dt => {
-                    $(`#${holder}`).append(`
-                        <div class="container bg-success">
-                            <div class="d-flex justify-content-between">
-                                <div>
-                                    <h5 class="mb-0">${dt.reminder_title}</h5>
-                                    <p class="text-secondary text-dark">Reminder at ${getDateToContext(dt.remind_at,'calendar')}</p>
-                                </div>
-                                <h5 class="chip bg-info">${dt.reminder_context}</h5>
-                            </div>
-                            <h6 class="chip bg-warning d-inline" style="font-size:var(--textXLG);">${dt.reminder_body}</h6>
-                        </div>
-                    `)
-                })
-            },
-            error: function(response, jqXHR, textStatus, errorThrown) {
-                Swal.close()
-                if(response.status != 404){
-                    failedMsg('get the vehicle last reminder')
-                } else {
-                    $(`#${holder}`).html(`
-                        <div class="container bg-danger">
-                            <h6><i class="fa-solid fa-triangle-exclamation"></i> Alert</h6>
-                            <p class="mb-0">No active reminder attached to this vehicle</p>
-                        </div>
-                    `)
-                }
-            }
-        });
-    }
 
     const post_reminder = () => {
         const vehicle_id = $('#vehicle_holder').val()
@@ -141,7 +70,7 @@
                 }),
                 beforeSend: function (xhr) {
                     xhr.setRequestHeader("Accept", "application/json")
-                    xhr.setRequestHeader("Authorization", "Bearer <?= session()->get("token_key"); ?>")
+                    xhr.setRequestHeader("Authorization", `Bearer ${token}`)
                 },
                 success: function(response) {
                     Swal.close()
