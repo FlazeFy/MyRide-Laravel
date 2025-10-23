@@ -60,6 +60,7 @@ Route::prefix('/v1/vehicle')->middleware(['auth:sanctum'])->group(function () {
     Route::get('/trip/summary/{id}', [QueriesVehicleApi::class, 'getVehicleTripSummaryById']);
     Route::put('/detail/{id}', [CommandsVehicleApi::class, 'putVehicleDetailById']);
     Route::delete('/delete/{id}', [CommandsVehicleApi::class, 'softDeleteVehicleById']);
+    Route::delete('/destroy/{id}', [CommandsVehicleApi::class, 'hardDeleteVehicleById']);
 });
 
 Route::prefix('/v1/dictionary')->middleware(['auth:sanctum'])->group(function () {

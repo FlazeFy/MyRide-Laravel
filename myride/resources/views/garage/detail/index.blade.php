@@ -6,6 +6,9 @@
     @php
         $carouselId = 'carouselTrip';
     @endphp
+    <script>
+        const token = "<?= session()->get('token_key'); ?>"
+    </script>
 
     <div class="d-block mx-auto p-3">
         <div class="d-flex justify-content-start mb-2">

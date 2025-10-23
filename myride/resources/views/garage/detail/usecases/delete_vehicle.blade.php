@@ -1,10 +1,11 @@
-<a class="btn btn-danger btn-delete" data-context="Vehicle" data-url="/api/v1/vehicle/delete/<?= $id ?>"><i class="fa-solid fa-trash"></i> Delete</a>
+<div id="delete_vehicle_button-holder"></div>
 <script>
     $(document).on('click', '.btn-delete', function () {
         const url = $(this).data('url')
         const context = $(this).data('context')
-        const token = "<?= session()->get('token_key'); ?>"
+        const type_delete = $(this).data('type-delete')
+        const redirect_url = type_delete === 'hard' ? '/garage' : `/garage/detail/<?= $id ?>`
 
-        build_delete_modal(url, context, token, () => window.location.href='/garage')
+        build_delete_modal(url, context, token, () => window.location.href=redirect_url)
     });
 </script>

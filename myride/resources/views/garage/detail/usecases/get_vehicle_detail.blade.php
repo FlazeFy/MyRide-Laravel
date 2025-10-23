@@ -8,11 +8,30 @@
     <p id="vehicle_desc"></p>
     <br>
     <h5 class="mb-4">Additional Info</h5><hr>
-    <h6>Status : <span id="vehicle_status" class="ms-2"></span></h6>
-    <h6>Plate Number : <span class="ms-2" id="vehicle_plate_number"></span></h6>
-    <h6>Category : <span class="text-secondary ms-2" id="vehicle_category"></span></h6>
-    <h6>Color : <span class="text-secondary ms-2" id="vehicle_color"></span></h6>
-    <h6>Capacity : <span class="text-secondary ms-2" id="vehicle_capacity"></span></h6>
+    <div class="row mb-3">
+        <div class="col-md-6 col-sm-12">
+            <h6 class="mb-2">Plate Number</h6>
+            <span id="vehicle_plate_number"></span>
+        </div>
+        <div class="col-md-6 col-sm-12">
+            <h6 class="mb-0">Status</h6>
+            <span id="vehicle_status" class="ms-2"></span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-4 col-md-6 col-sm-12">
+            <h6 class="mb-0">Category</h6>
+            <span class="text-secondary" id="vehicle_category"></span>
+        </div>
+        <div class="col-lg-4 col-md-6 col-sm-12">
+            <h6 class="mb-0">Color</h6>
+            <span class="text-secondary" id="vehicle_color"></span>
+        </div>
+        <div class="col-lg-4 col-md-6 col-sm-12">
+            <h6 class="mb-0">Capacity</h6>
+            <span class="text-secondary" id="vehicle_capacity"></span>
+        </div>
+    </div>
 </div>
 <div class="container">
     <h5 class="mb-4">Fuel Info</h5><hr>
@@ -41,7 +60,7 @@
             type: 'GET',
             beforeSend: function (xhr) {
                 xhr.setRequestHeader("Accept", "application/json")
-                xhr.setRequestHeader("Authorization", "Bearer <?= session()->get("token_key"); ?>")    
+                xhr.setRequestHeader("Authorization", `Bearer ${token}`)    
             },
             success: function(response) {
                 Swal.close()
@@ -59,7 +78,10 @@
                 $('#vehicle_default_fuel').html(detail.vehicle_default_fuel)
                 $('#vehicle_fuel_status').html(detail.vehicle_fuel_status)
                 $('#vehicle_capacity').html(`${detail.vehicle_capacity} person`)
-                $('#vehicle_status').html(`<span class="btn btn-success rounded-pill px-2 py-1 me-2" style="font-size:var(--textMD);">${detail.vehicle_status}</span>`)
+                $('#vehicle_status').html(
+                    `${detail.deleted_at ? `<span class="btn btn-danger rounded-pill px-2 py-1 me-2" style="font-size:var(--textMD);">Deleted at <span class="date-holder">${getDateToContext(detail.deleted_at,'calendar')}</span></span>` :''}
+                    <span class="btn btn-success rounded-pill px-2 py-1 me-2" style="font-size:var(--textMD);">${detail.vehicle_status}</span>`
+                )
                 $('#vehicle_distance').html(`${detail.vehicle_distance} Km`)
                 $('#vehicle_desc').html(detail.vehilce_desc ?? '<span class="fst-italic">- No Description Provided -</span>')
                 $('#vehicle_fuel_capacity').html(`${detail.vehicle_fuel_capacity} Ltr`)
@@ -67,6 +89,12 @@
                 build_layout_trip(trip_data)
                 build_layout_clean(clean_data)
                 build_layout_driver(driver_data)
+
+                if(detail.deleted_at){
+                    $('#delete_vehicle_button-holder').html(`<a class="btn btn-danger btn-delete" data-type-delete="hard" data-context="Vehicle" data-url="/api/v1/vehicle/destroy/<?= $id ?>"><i class="fa-solid fa-fire"></i> Permanentelly Delete</a>`)
+                } else {
+                    $('#delete_vehicle_button-holder').html(`<a class="btn btn-danger btn-delete" data-type-delete="soft" data-context="Vehicle" data-url="/api/v1/vehicle/delete/<?= $id ?>"><i class="fa-solid fa-trash"></i> Delete</a>`)
+                }
 
                 if(trip_data.data.length > 3){
                     template_carousel_navigation("carousel-nav-holder", "<?= $carouselId ?>")

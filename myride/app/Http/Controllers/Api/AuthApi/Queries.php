@@ -54,20 +54,12 @@ class Queries extends Controller
             $check = AdminModel::where('id', $user_id)->first();
 
             // Response
-            if($check == null){
-                $request->user()->currentAccessToken()->delete();
-                return response()->json([
-                    'status' => 'success',
-                    'message' => 'logout success'
-                ], Response::HTTP_OK);
-            } else {
-                // Admin
-                $request->user()->currentAccessToken()->delete();
-                return response()->json([
-                    'status' => 'success',
-                    'message' => 'logout success'
-                ], Response::HTTP_OK);
-            }
+            session()->flush();
+            $request->user()->currentAccessToken()->delete();
+            return response()->json([
+                'status' => 'success',
+                'message' => 'logout success'
+            ], Response::HTTP_OK);
         } catch(\Exception $e) {
             return response()->json([
                 'status' => 'error',
