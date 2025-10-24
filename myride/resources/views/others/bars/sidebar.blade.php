@@ -1,16 +1,8 @@
 <div class="sidebar p-3">
     <h5 class="group-menu">Menu</h5>
-    <ul class="nav nav-pills flex-column">
+    <ul class="nav nav-pills flex-column" id="sidebar_menu-holder">
         <li><a href="/dashboard" class="nav-link <?= $active_menu == "dashboard" ? "active" : "" ?>"><i class="fa-solid fa-table"></i> Dashboard</a></li>
         <li><a href="/garage" class="nav-link <?= $active_menu == "garage" ? "active" : "" ?>"><i class="fa-solid fa-warehouse"></i> My Garage</a></li>
-        <li><a href="/trip" class="nav-link <?= $active_menu == "trip" ? "active" : "" ?>"><i class="fa-solid fa-suitcase"></i> Trip</a></li>
-        <li><a href="/fuel" class="nav-link <?= $active_menu == "fuel" ? "active" : "" ?>"><i class="fa-solid fa-gas-pump"></i> Fuel</a></li>
-        <li><a href="/clean" class="nav-link <?= $active_menu == "clean" ? "active" : "" ?>"><i class="fa-solid fa-soap"></i> Cleanliness</a></li>
-        <li><a href="/service" class="nav-link <?= $active_menu == "service" ? "active" : "" ?>"><i class="fa-solid fa-screwdriver-wrench"></i> Service</a></li>
-        <li><a href="/reminder" class="nav-link <?= $active_menu == "reminder" ? "active" : "" ?>"><i class="fa-solid fa-clock"></i> Reminder</a></li>
-        <li><a href="/stats" class="nav-link <?= $active_menu == "stats" ? "active" : "" ?>"><i class="fa-solid fa-chart-simple"></i> Statistic</a></li>
-        <li><a href="/driver" class="nav-link <?= $active_menu == "driver" ? "active" : "" ?>"><i class="fa-solid fa-users"></i> Driver</a></li>
-        <li><a href="/inventory" class="nav-link <?= $active_menu == "inventory" ? "active" : "" ?>"><i class="fa-solid fa-boxes-stacked"></i> Inventory</a></li>
     </ul>
     <h5 class="group-menu">Vehicle</h5>
     <ul class="nav nav-pills flex-column" id="vehicle_menu-list"></ul>
@@ -41,6 +33,23 @@
         });
     }
 
+    const generate_menu = (is_have_vehicle, holder) => {
+        if(is_have_vehicle){
+            $(`#${holder}`).append(`
+                <li><a href="/trip" class="nav-link <?= $active_menu == "trip" ? "active" : "" ?>"><i class="fa-solid fa-suitcase"></i> Trip</a></li>
+                <li><a href="/fuel" class="nav-link <?= $active_menu == "fuel" ? "active" : "" ?>"><i class="fa-solid fa-gas-pump"></i> Fuel</a></li>
+                <li><a href="/clean" class="nav-link <?= $active_menu == "clean" ? "active" : "" ?>"><i class="fa-solid fa-soap"></i> Cleanliness</a></li>
+                <li><a href="/service" class="nav-link <?= $active_menu == "service" ? "active" : "" ?>"><i class="fa-solid fa-screwdriver-wrench"></i> Service</a></li>
+                <li><a href="/reminder" class="nav-link <?= $active_menu == "reminder" ? "active" : "" ?>"><i class="fa-solid fa-clock"></i> Reminder</a></li>
+                <li><a href="/stats" class="nav-link <?= $active_menu == "stats" ? "active" : "" ?>"><i class="fa-solid fa-chart-simple"></i> Statistic</a></li>
+                <li><a href="/driver" class="nav-link <?= $active_menu == "driver" ? "active" : "" ?>"><i class="fa-solid fa-users"></i> Driver</a></li>
+                <li><a href="/inventory" class="nav-link <?= $active_menu == "inventory" ? "active" : "" ?>"><i class="fa-solid fa-boxes-stacked"></i> Inventory</a></li>
+            `)
+        } else {
+            $(`#${holder}`).prepend(`<li><a href="/garage/add" class="nav-link"><i class="fa-solid fa-plus"></i> Add Vehicle</a></li>`)
+        }
+    }
+
     const get_vehicle_name = (year) => {
         Swal.showLoading()
         const ctx_holder = "vehicle_menu-list"
@@ -58,6 +67,7 @@
                     const data = response.data
                     localStorage.setItem(ctx_holder,JSON.stringify(data))
                     localStorage.setItem(`last-hit-${ctx_holder}`,Date.now())
+                    generate_menu(true, 'sidebar_menu-holder')
                     generate_vehicle_list(data,ctx_holder)
                 },
                 error: function(response, jqXHR, textStatus, errorThrown) {
@@ -65,7 +75,7 @@
                     if(response.status != 404){
                         failedMsg(`get the vehicle`)
                     } else {
-                        $(`#${ctx_holder}`).prepend(`<li><a href="/garage/add" class="nav-link"><i class="fa-solid fa-plus"></i> Add Vehicle</a></li>`)
+                        generate_menu(false, ctx_holder)
                     }
                 }
             });
@@ -78,6 +88,7 @@
             if(((now - lastHit) / 1000) < listVehicleNameFetchRestTime){
                 const data = JSON.parse(localStorage.getItem(ctx_holder))
                 if(data){
+                    generate_menu(true, 'sidebar_menu-holder')
                     generate_vehicle_list(data,ctx_holder)
                     Swal.close()
                 } else {

@@ -346,7 +346,7 @@ class Queries extends Controller
             $res = TripModel::getTripDiscovered($user_id,$vehicle_id);
 
             // Response
-            if ($res) {
+            if ($res && $res['last_update']) {
                 return response()->json([
                     'status' => 'success',
                     'message' => Generator::getMessageTemplate("fetch", $this->module),
@@ -361,7 +361,7 @@ class Queries extends Controller
         } catch(\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => Generator::getMessageTemplate("unknown_error", null),
+                'message' => $e->getMessage(),
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }

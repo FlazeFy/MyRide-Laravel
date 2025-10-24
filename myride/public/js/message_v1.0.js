@@ -14,3 +14,20 @@ const failedMsg = (context) => {
         icon: "error"
     });
 }
+
+const failedRoute = (context,url_home) => {
+    Swal.fire({
+        title: "Failed to see detail",
+        text: `Do you want to keep open this "${context}"?`,
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "To home page",
+        cancelButtonText: "No, try again",
+    }).then((result) => {
+        if (result.isConfirmed) {
+            window.location.href = url_home
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+            window.location.reload()
+        }
+    });
+}

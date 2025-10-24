@@ -1,5 +1,14 @@
 const colorPalleteChart = ['#46dca2', '#f55d86', '#FFC352', '#00b8ff']
 
+const warning_no_data_visualize = (holder) => {
+    $(`#${holder}`).html(`
+        <div class="container bg-warning">
+            <h6><i class="fa-solid fa-triangle-exclamation"></i> Warning</h6>
+            <p class="mb-0">No enough data to visualize</p>
+        </div>
+    `)
+}
+
 const generate_line_chart = (title, holder, data) => {
     $(`#${holder}`).before(`<h2>${ucEachWord(title)}</h2>`)
 
@@ -52,22 +61,17 @@ const generate_line_chart = (title, holder, data) => {
             let chart = new ApexCharts(document.querySelector(`#${holder}`), options)
             chart.render()
         } else {
-            $(`#${holder}`).html(`
-                <h6 class="text-center">Data is Not Valid</h6>
-            `)
+            warning_no_data_visualize(holder)
         }
     } else {
-        $(`#${holder}`).html(`
-            <img src="{{asset('assets/nodata.png')}}" class="img nodata-icon">
-            <h6 class="text-center">No Data</h6>
-        `)
+        warning_no_data_visualize(holder)
     }
 }
 
 const generate_pie_chart = (title, holder, data) => {
     $(`#${holder}`).before(`<h2>${ucEachWord(title)}</h2>`)
 
-    if(data.length > 0){
+    if(data && data.length > 0){
         let keys = Object.keys(data[0])
         if(keys.length == 2 && (typeof data[0][keys[0]] === 'string' && Number.isInteger(data[0][keys[1]]) || typeof data[0][keys[1]] === 'string' && Number.isInteger(data[0][keys[0]]))){
             const totals = data.map(c => c[Number.isInteger(data[0][keys[1]]) ? keys[1] : keys[0]])
@@ -99,18 +103,14 @@ const generate_pie_chart = (title, holder, data) => {
             let chart = new ApexCharts(document.querySelector(`#${holder}`), options)
             chart.render()
         } else {
-            $(`#${holder}`).html(`<h6 class="text-center">Data is Not Valid</h6>`)
+            warning_no_data_visualize(holder)
         }
     } else {
-        $(`#${holder}`).html(`
-            <img src="{{asset('assets/nodata.png')}}" class="img nodata-icon">
-            <h6 class="text-center">No Data</h6>
-        `)
+        warning_no_data_visualize(holder)
     }
 }
 
 const generate_bar_chart = (title, holder, data) => {
-    console.log(data)
     $(`#${holder}`).before(`<h2>${ucEachWord(title)}</h2>`)
 
     if(data.length > 0){
@@ -161,18 +161,14 @@ const generate_bar_chart = (title, holder, data) => {
             let chart = new ApexCharts(document.querySelector(`#${holder}`), options)
             chart.render()
         } else {
-            $(`#${holder}`).html(`<h6 class="text-center">Data is Not Valid</h6>`)
+            warning_no_data_visualize(holder)
         }
     } else {
-        $(`#${holder}`).html(`
-            <img src="{{asset('assets/nodata.png')}}" class="img nodata-icon">
-            <h6 class="text-center">No Data</h6>
-        `)
+        warning_no_data_visualize(holder)
     }
 }
 
 const generate_semi_gauge_chart = (title = null, holder, percentage) => {
-    console.log(percentage)
     if(title){
         $(`#${holder}`).before(`<h2 class='title-chart'>${ucEachWord(title)}</h2>`)
     }
@@ -226,6 +222,6 @@ const generate_semi_gauge_chart = (title = null, holder, percentage) => {
         let chart = new ApexCharts(document.querySelector(`#${holder}`), options)
         chart.render()
     } else {
-        $(`#${holder}`).html(`<h6 class="text-center">Data is Not Valid</h6>`)
+        warning_no_data_visualize(holder)
     }
 }

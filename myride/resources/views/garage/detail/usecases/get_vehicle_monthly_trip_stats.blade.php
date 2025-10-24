@@ -33,5 +33,4 @@
             }
         });
     }
-    get_vehicle_monthly_trip_stats(<?= date('Y') ?>,"<?= $id ?>")
 </script>

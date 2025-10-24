@@ -1,6 +1,10 @@
 @extends('layouts.main_layout')
 
 @section('content')
+    <script>
+        const token = `<?= session()->get("token_key"); ?>`
+    </script>
+
     <div class="position-relative">
         <a class="btn btn-success" href='/reminder/add'><i class="fa-solid fa-plus"></i> Add Reminder</a>
         <div class="container mt-2">

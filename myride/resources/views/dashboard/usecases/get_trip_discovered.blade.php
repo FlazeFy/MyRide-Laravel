@@ -31,7 +31,7 @@
                 type: 'GET',
                 beforeSend: function (xhr) {
                     xhr.setRequestHeader("Accept", "application/json")
-                    xhr.setRequestHeader("Authorization", "Bearer <?= session()->get("token_key"); ?>")    
+                    xhr.setRequestHeader("Authorization", `Bearer ${token}`)    
                 },
                 success: function(response) {
                     Swal.close()
@@ -42,7 +42,7 @@
                 },
                 error: function(response, jqXHR, textStatus, errorThrown) {
                     Swal.close()
-                    if(response.status != 404){
+                    if(response.status !== 404){
                         failedMsg(`get the trip`)
                     } else {
                         message_short_image(`${ctx}-holder`,`{{asset('assets/empty.png')}}`,`there's no trip history`)

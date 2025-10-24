@@ -134,7 +134,7 @@
                 })
 
                 if(data.length > 3){
-                    template_carousel_navigation("carousel-nav-holder", "<?= $carouselId ?>")
+                    template_carousel_navigation("carousel-nav-holder", "carouselVehicle")
                 }
                     
             },

@@ -44,7 +44,7 @@
                     failedMsg('get the service')
                 } else {
                     $(`#${holder}`).html(`<tr><td colspan="6" id="msg-${holder}"></td></tr>`)
-                    template_alert_container(`msg-${holder}`, 'no-data', "No service found", 'add a service', '<i class="fa-solid fa-boxes-stacked"></i>','/service/add')
+                    template_alert_container(`msg-${holder}`, 'no-data', "No service found", 'add a service', '<i class="fa-solid fa-screwdriver-wrench"></i>','/service/add')
                 }
             }
         });

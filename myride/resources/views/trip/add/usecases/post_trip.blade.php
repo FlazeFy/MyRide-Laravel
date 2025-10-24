@@ -76,7 +76,6 @@
 <script type="text/javascript">
     let map
     let markerCounter = 0
-    const token = `<?= session()->get("token_key"); ?>`
 
     function initMap() {
         map = new google.maps.Map(document.getElementById("map-board"), {

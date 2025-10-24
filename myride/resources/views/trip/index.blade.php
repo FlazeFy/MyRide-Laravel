@@ -2,6 +2,9 @@
 
 @section('content')
     <script src="{{ asset('/js/usecases/inventory_v1.0.js')}}"></script>
+    <script>
+        const token = `<?= session()->get("token_key"); ?>`
+    </script>
 
     <div class="position-relative">
         <button class="btn btn-danger me-2" onclick="initMap()"><i class="fa-solid fa-refresh"></i> Show All Trip</button>

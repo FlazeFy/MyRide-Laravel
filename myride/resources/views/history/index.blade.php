@@ -1,6 +1,10 @@
 @extends('layouts.main_layout')
 
 @section('content')
+    <script>
+        const token = `<?= session()->get("token_key"); ?>`
+    </script>
+
     <div class="position-relative">
         <div class="row">
             <div class="col-xl-4 col-lg-5 col-md-6 col-sm-12">

@@ -2,7 +2,8 @@
 
 @section('content')
     <script>
-        let year = <?= session()->get('toogle_select_year') ?>;
+        const year = <?= session()->get('toogle_select_year') ?>;
+        const token = `<?= session()->get("token_key"); ?>`
     </script>
 
     <div class="py-3">

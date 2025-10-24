@@ -86,7 +86,8 @@
                 $('#vehicle_desc').html(detail.vehilce_desc ?? '<span class="fst-italic">- No Description Provided -</span>')
                 $('#vehicle_fuel_capacity').html(`${detail.vehicle_fuel_capacity} Ltr`)
 
-                build_layout_trip(trip_data)
+                trip_data ? build_layout_trip(trip_data) : template_alert_container(`<?= $carouselId ?>`, 'no-data', "No trip found", 'add a trip', '<i class="fa-solid fa-luggage"></i>','/trip/add')
+
                 build_layout_clean(clean_data)
                 build_layout_driver(driver_data)
 
@@ -96,17 +97,20 @@
                     $('#delete_vehicle_button-holder').html(`<a class="btn btn-danger btn-delete" data-type-delete="soft" data-context="Vehicle" data-url="/api/v1/vehicle/delete/<?= $id ?>"><i class="fa-solid fa-trash"></i> Delete</a>`)
                 }
 
-                if(trip_data.data.length > 3){
+                if(trip_data && trip_data.data.length > 3){
                     template_carousel_navigation("carousel-nav-holder", "<?= $carouselId ?>")
                 }
+
+                get_vehicle_monthly_trip_stats(<?= date('Y') ?>,"<?= $id ?>")
+                get_vehicle_summary_trip_by_id("<?= $id ?>")
             },
             error: function(response, jqXHR, textStatus, errorThrown) {
                 Swal.close()
-                Swal.fire({
-                    title: "Oops!",
-                    text: "Something went wrong",
-                    icon: "error"
-                });
+                if(response.status !== 404){
+                    failedMsg(`get the vehicle`)
+                } else {
+                    failedRoute('vehicle','/garage')
+                }
             }
         });
     }

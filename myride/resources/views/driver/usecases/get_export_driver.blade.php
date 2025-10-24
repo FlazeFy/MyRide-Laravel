@@ -2,6 +2,6 @@
 
 <script>
     $(document).on('click','#export_excel',function(){
-        get_export('driver','<?= session()->get('token_key'); ?>')
+        get_export('driver',token)
     })
 </script>

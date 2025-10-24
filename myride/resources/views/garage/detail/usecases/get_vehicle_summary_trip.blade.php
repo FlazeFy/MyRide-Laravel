@@ -53,5 +53,4 @@
             }
         });
     }
-    get_vehicle_summary_trip_by_id("<?= $id ?>")
 </script>

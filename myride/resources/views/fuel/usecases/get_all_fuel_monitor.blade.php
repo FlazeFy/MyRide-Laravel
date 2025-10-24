@@ -56,7 +56,7 @@
                 if(response.status != 404){
                     failedMsg('get the fuel')
                 } else {
-                    template_alert_container(holder, 'no-data', "No vehicle found", 'add a vehicle', '<i class="fa-solid fa-car"></i>','/vehicle/add')
+                    template_alert_container(holder, 'no-data', "No vehicle found", 'add a vehicle', '<i class="fa-solid fa-gas-pump"></i>','/vehicle/add')
                 }
             }
         });

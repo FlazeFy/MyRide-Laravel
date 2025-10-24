@@ -47,7 +47,7 @@
                 type: 'GET',
                 beforeSend: function (xhr) {
                     xhr.setRequestHeader("Accept", "application/json")
-                    xhr.setRequestHeader("Authorization", "Bearer <?= session()->get("token_key"); ?>")    
+                    xhr.setRequestHeader("Authorization", `Bearer ${token}`)    
                 },
                 success: function(response) {
                     Swal.close()
@@ -62,7 +62,7 @@
                     if(response.status != 404){
                         failedMsg('get the service')
                     } else {
-                        message_short_image(`${ctx}-holder`,`{{asset('assets/free.png')}}`,`there's no active service`)
+                        message_short_image(`${ctx}-holder`,`{{asset('assets/empty.png')}}`,`there's no active service`)
                     }
                 }
             });
