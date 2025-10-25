@@ -93,6 +93,7 @@
 
                 if(detail.deleted_at){
                     $('#delete_vehicle_button-holder').html(`<a class="btn btn-danger btn-delete" data-type-delete="hard" data-context="Vehicle" data-url="/api/v1/vehicle/destroy/<?= $id ?>"><i class="fa-solid fa-fire"></i> Permanentelly Delete</a>`)
+                    $('#recover_vehicle_button-holder').html(`<a class="btn btn-success btn-recover ms-2" data-context="Vehicle" data-url="/api/v1/vehicle/recover/<?= $id ?>"><i class="fa-solid fa-rotate-left"></i> Recover</a>`)
                 } else {
                     $('#delete_vehicle_button-holder').html(`<a class="btn btn-danger btn-delete" data-type-delete="soft" data-context="Vehicle" data-url="/api/v1/vehicle/delete/<?= $id ?>"><i class="fa-solid fa-trash"></i> Delete</a>`)
                 }

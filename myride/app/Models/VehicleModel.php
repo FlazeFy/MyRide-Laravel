@@ -144,6 +144,15 @@ class VehicleModel extends Model
         return $res->update(['deleted_at'=>date("Y-m-d H:i")]);
     }
 
+    public static function recoverVehicleById($user_id = null,$id){
+        $res = VehicleModel::whereNotNull("deleted_at")->where('id',$id);
+        if($user_id){
+            $res = $res->where('created_by',$user_id);
+        }
+
+        return $res->update(['deleted_at'=>null]);
+    }
+
     public static function hardDeleteVehicleById($user_id = null,$id){
         $res = VehicleModel::whereNotNull("deleted_at")->where('id',$id);
         if($user_id){
