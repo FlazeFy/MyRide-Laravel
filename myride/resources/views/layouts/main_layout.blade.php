@@ -29,6 +29,7 @@
 
     <!-- CSS Collection -->
     <link rel="stylesheet" href="{{ asset('/css/global_v1.0.css') }}"/>
+    <link rel="stylesheet" href="{{ asset('/css/bar_v1.0.css') }}"/>
 
     <!-- JS Collection -->
     <script src="{{ asset('/js/global_v1.0.js')}}"></script>

@@ -26,7 +26,7 @@
     <!-- Jquery -->
     <script type="text/javascript" language="javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
 </head>
-<body style="background:var(--warningColor);">
+<body style="background:var(--warningColor);" class="px-2">
     <div class="container d-block mx-auto" style="max-width: 500px; margin-top: 20vh;">
         <h2 class="fw-bold" style="font-size:36px;">You are at MyRide Apps</h2>
         <h6>Management Apps for your vehicle</h6><br>

@@ -115,35 +115,6 @@ img:not(.gm-style img) {
     font-weight: 700;
     font-size: calc(var(--textJumbo)*1.25);
 }
-.sidebar {
-    width: 250px;
-    min-height: 100vh;
-    background-color: var(--whiteColor);
-    border-right: 2px solid var(--darkColor);
-    position: sticky !important;
-    top: 400px !important;
-}
-.sidebar .group-menu {
-    font-weight: 600;
-    margin-top: var(--spaceMD);
-}
-.sidebar .nav-link {
-    border: 2px solid transparent;
-    color: var(--darkColor);
-    margin-bottom: var(--spaceMini);
-}
-.sidebar .nav-link i {
-    margin-right: var(--spaceXXSM);
-}
-.sidebar .nav-link.active {
-    background: var(--primaryColor) !important  ;
-    border-bottom: var(--spaceXXSM) solid var(--secondaryPrimaryColor);
-}
-.sidebar .nav-link:hover {
-    background: var(--whiteColor);
-    border: 2px solid var(--secondaryPrimaryColor);
-    border-bottom: var(--spaceXXSM) solid var(--secondaryPrimaryColor);
-}
 .content {
     flex: 1;
     padding: 20px;

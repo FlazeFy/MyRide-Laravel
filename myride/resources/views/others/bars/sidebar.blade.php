@@ -1,21 +1,43 @@
-<div class="sidebar p-3">
+<div class="sidebar p-3" id="sidebar">
+    <button class="sidebar-toggle" id="sidebarToggle">
+        <i class="fa-solid fa-bars"></i>
+    </button>
     <h5 class="group-menu">Menu</h5>
     <ul class="nav nav-pills flex-column" id="sidebar_menu-holder">
-        <li><a href="/dashboard" class="nav-link <?= $active_menu == "dashboard" ? "active" : "" ?>"><i class="fa-solid fa-table"></i> Dashboard</a></li>
-        <li><a href="/garage" class="nav-link <?= $active_menu == "garage" ? "active" : "" ?>"><i class="fa-solid fa-warehouse"></i> My Garage</a></li>
+        <li><a href="/dashboard" class="nav-link <?= $active_menu == "dashboard" ? "active" : "" ?>"><i class="fa-solid fa-table"></i> <span>Dashboard</span></a></li>
+        <li><a href="/garage" class="nav-link <?= $active_menu == "garage" ? "active" : "" ?>"><i class="fa-solid fa-warehouse"></i> <span>My Garage</span></a></li>
     </ul>
     <h5 class="group-menu">Vehicle</h5>
     <ul class="nav nav-pills flex-column" id="vehicle_menu-list"></ul>
     <h5 class="group-menu">Others</h5>
     <ul class="nav nav-pills flex-column">
-        <li><a href="/setting" class="nav-link <?= $active_menu == "setting" ? "active" : "" ?>"><i class="fa-solid fa-gear"></i> Setting</a></li>
-        <li><a href="/history" class="nav-link <?= $active_menu == "history" ? "active" : "" ?>"><i class="fa-solid fa-clock-rotate-left"></i> History</a></li>
-        <li><a href="/help" class="nav-link <?= $active_menu == "help" ? "active" : "" ?>"><i class="fa-solid fa-headset"></i> Help Center</a></li>
-        <li><a href="/about" class="nav-link <?= $active_menu == "about" ? "active" : "" ?>"><i class="fa-solid fa-circle-info"></i> About Us</a></li>
+        <li><a href="/setting" class="nav-link <?= $active_menu == "setting" ? "active" : "" ?>"><i class="fa-solid fa-gear"></i> <span>Setting</span></a></li>
+        <li><a href="/history" class="nav-link <?= $active_menu == "history" ? "active" : "" ?>"><i class="fa-solid fa-clock-rotate-left"></i> <span>History</span></a></li>
+        <li><a href="/help" class="nav-link <?= $active_menu == "help" ? "active" : "" ?>"><i class="fa-solid fa-headset"></i> <span>Help Center</span></a></li>
+        <li><a href="/about" class="nav-link <?= $active_menu == "about" ? "active" : "" ?>"><i class="fa-solid fa-circle-info"></i> <span>About Us</span></a></li>
     </ul>
 </div>
 
+
 <script>
+    $(document).ready(function() {
+        $('#sidebarToggle').on('click', function() {
+            $('#sidebar').toggleClass('collapsed')
+        })
+
+        const handleSidebar = () =>  {
+            if ($(window).width() <= 1023) {
+                $('#sidebar').addClass('collapsed')
+            } else {
+                $('#sidebar').removeClass('collapsed')
+            }
+        }
+
+        handleSidebar()
+        $(window).on('resize', handleSidebar)
+    })
+
+
     const generate_vehicle_list = (data,ctx_holder) => {
         $(`#${ctx_holder}`).empty()
         data.forEach(dt => {
