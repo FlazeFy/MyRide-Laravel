@@ -6,10 +6,13 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Support\Facades\Hash;
+use Telegram\Bot\Laravel\Facades\Telegram;
 
 // Model
 use App\Models\DriverModel;
 use App\Models\AdminModel;
+use App\Models\VehicleModel;
+use App\Models\UserModel;
 use App\Models\DriverVehicleRelationModel;
 // Helper
 use App\Helpers\Generator;
@@ -358,6 +361,105 @@ class Commands extends Controller
             return response()->json([
                 'status' => 'error',
                 'message' => Generator::getMessageTemplate("unknown_error", null),
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
+     * @OA\POST(
+     *     path="/api/v1/driver/vehicle",
+     *     summary="Create a driver vehicle relation",
+     *     tags={"Driver"},
+     *     security={{"bearerAuth":{}}},
+     *     @OA\Response(
+     *         response=201,
+     *         description="driver relation created",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="message", type="string", example="driver assigned")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="protected route need to include sign in token as authorization bearer",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="failed"),
+     *             @OA\Property(property="message", type="string", example="you need to include the authorization token from login")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="driver failed to validated",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="failed"),
+     *             @OA\Property(property="message", type="string", example="[failed validation message]")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal Server Error",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="error"),
+     *             @OA\Property(property="message", type="string", example="something wrong. please contact admin")
+     *         )
+     *     ),
+     * )
+     */
+    public function postDriverVehicle(Request $request){
+        try{
+            $validator = Validation::getValidateDriver($request,'create_relation');
+            if ($validator->fails()) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => $validator->errors()
+                ], Response::HTTP_BAD_REQUEST);
+            } else {
+                $check = DriverVehicleRelationModel::getRelationByVehicleAndDriver($request->vehicle_id,$request->driver_id);
+                   
+                if(!$check){
+                    $data = [
+                        'vehicle_id' => $request->vehicle_id, 
+                        'driver_id' => $request->driver_id, 
+                        'relation_note' => $request->relation_note,
+                    ];
+
+                    $row = DriverVehicleRelationModel::createDriverVehicleRelation($data);
+                    if($row){
+                        $driver = DriverModel::getDriverContact($request->driver_id);
+                        if($driver->telegram_user_id){
+                            $user_id = $request->user()->id;
+                            $user = UserModel::getSocial($user_id);
+                            $vehicle = VehicleModel::getVehicleDetailById(null,$request->vehicle_id);
+                            $message = "Hello $driver->username, you have been assigned by $user->username to become the driver of '$vehicle->vehicle_plate_number'";
+
+                            $response = Telegram::sendMessage([
+                                'chat_id' => $driver->telegram_user_id,
+                                'text' => $message,
+                                'parse_mode' => 'HTML'
+                            ]);
+                        }
+
+                        return response()->json([
+                            'status' => 'success',
+                            'message' => Generator::getMessageTemplate("create", "$this->module relation"),
+                        ], Response::HTTP_CREATED);
+                    } else {
+                        return response()->json([
+                            'status' => 'error',
+                            'message' => Generator::getMessageTemplate("unknown_error", null),
+                        ], Response::HTTP_INTERNAL_SERVER_ERROR);
+                    }
+                } else {
+                    return response()->json([
+                        'status' => 'failed',
+                        'message' => Generator::getMessageTemplate("conflict", $this->module),
+                    ], Response::HTTP_CONFLICT);
+                }
+            }
+        } catch(\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage(),
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }

@@ -13,6 +13,7 @@ class DriverVehicleRelationModel extends Authenticatable
     //use HasUuids;
     use HasApiTokens;
     public $incrementing = false;
+    public $timestamps = false;
 
     protected $table = 'driver_vehicle_relation';
     protected $primaryKey = 'id';
@@ -27,6 +28,20 @@ class DriverVehicleRelationModel extends Authenticatable
         }
             
         return $res->delete();
+    }
+
+    public static function getRelationByVehicleAndDriver($vehicle_id,$driver_id){
+        return DriverVehicleRelationModel::select('driver_vehicle_relation.id')
+            ->where('driver_vehicle_relation.driver_id',$driver_id)
+            ->where('driver_vehicle_relation.vehicle_id',$vehicle_id)
+            ->first();
+    }
+
+    public static function createDriverVehicleRelation($data){
+        $data['created_at'] = date('Y-m-d H:i:s');
+        $data['id'] = Generator::getUUID();
+            
+        return DriverVehicleRelationModel::create($data);
     }
 
     public static function hardDeleteDriverVehicleRelationByDriverId($driver_id, $user_id = null){

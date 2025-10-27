@@ -37,7 +37,6 @@
         $(window).on('resize', handleSidebar)
     })
 
-
     const generate_vehicle_list = (data,ctx_holder) => {
         $(`#${ctx_holder}`).empty()
         data.forEach(dt => {

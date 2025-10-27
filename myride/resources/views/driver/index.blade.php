@@ -16,6 +16,7 @@
             @include('driver.usecases.put_driver')
             @include('driver.usecases.hard_delete_driver_from_vehicle')
             @include('driver.usecases.get_trip_history')
+            @include('driver.usecases.post_vehicle_driver')
         </div>
     </div>
 @endsection

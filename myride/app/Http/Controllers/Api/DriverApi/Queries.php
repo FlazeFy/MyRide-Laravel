@@ -346,7 +346,7 @@ class Queries extends Controller
                     'data' => [
                         'vehicle' => $res_vehicle,
                         'driver' => $res_driver,
-                        'assigned' => $res_assigned,
+                        'assigned' => count($res_assigned) > 0 ? $res_assigned : null,
                     ]
                 ], Response::HTTP_OK);
             } else {

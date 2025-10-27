@@ -53,6 +53,12 @@ class Validation
                 'phone' => 'required|string|max:16|min:8',
                 'notes' => 'nullable|string|max:500|min:2',
             ]);
+        } else if ($type === "create_relation") {
+            return Validator::make($request->all(), [
+                'driver_id' => 'required|string|max:36|min:36', 
+                'vehicle_id' => 'required|string|max:36|min:36', 
+                'relation_note' => 'nullable|string|max:255|min:2',
+            ]);
         }
     }
 

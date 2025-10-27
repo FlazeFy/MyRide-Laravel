@@ -101,9 +101,15 @@ class DriverModel extends Authenticatable
     public static function getDriverVehicleManageList($user_id){
         return DriverModel::select('driver_vehicle_relation.id', 'vehicle_plate_number', 'vehicle.id as vehicle_id', 'driver.id as driver_id', 'username', 'fullname')
             ->leftjoin('driver_vehicle_relation','driver_vehicle_relation.driver_id','=','driver.id')
-            ->leftjoin('vehicle','vehicle.id','=','driver_vehicle_relation.vehicle_id')
+            ->join('vehicle','vehicle.id','=','driver_vehicle_relation.vehicle_id')
             ->where('driver.created_by',$user_id)
             ->get();
+    }
+
+    public static function getDriverContact($driver_id){
+        return DriverModel::select('username','email', 'telegram_user_id', 'telegram_is_valid', 'phone')
+            ->where('driver.id',$driver_id)
+            ->first();
     }
 
     public static function getDriverByVehicleId($user_id,$vehicle_id){
