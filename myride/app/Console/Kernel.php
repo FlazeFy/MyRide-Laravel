@@ -21,6 +21,7 @@ class Kernel extends ConsoleKernel
         // $schedule->call([new AuditSchedule, 'audit_apps'])->weeklyOn(1, '5:00');	
         // $schedule->call([new AuditSchedule, 'audit_weekly_stats'])->weeklyOn(1, '6:00');	
         // $schedule->call([new AuditSchedule, 'audit_yearly_stats'])->yearlyOn(1, 3, '01:15');		
+        // $schedule->call([new AuditSchedule, 'audit_dashboard'])->weeklyOn(2, '1:50');
         // $schedule->call([new CleanSchedule, 'clean_history'])->dailyAt('01:00');
         // $schedule->call([new CleanSchedule, 'clean_reminder'])->dailyAt('01:30');
         // $schedule->call([new CleanSchedule, 'clean_deleted_vehicle'])->dailyAt('02:00');
@@ -30,6 +31,7 @@ class Kernel extends ConsoleKernel
         // $schedule->command(AuditSchedule::audit_apps())->everyMinute();
         // $schedule->command(AuditSchedule::audit_weekly_stats())->everyMinute();
         // $schedule->command(AuditSchedule::audit_yearly_stats())->everyMinute();
+        // $schedule->command(AuditSchedule::audit_dashboard())->everyMinute();
         // $schedule->command(CleanSchedule::clean_history())->everyMinute();
         // $schedule->command(CleanSchedule::clean_reminder())->everyMinute();
         // $schedule->command(CleanSchedule::clean_deleted_vehicle())->everyMinute();

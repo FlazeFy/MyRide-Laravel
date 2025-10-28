@@ -29,6 +29,7 @@ use App\Models\UserModel;
 use App\Models\VehicleModel;
 use App\Models\FuelModel;
 use App\Models\CleanModel;
+use App\Models\MultiModel;
 
 class AuditSchedule
 {
@@ -330,6 +331,31 @@ class AuditSchedule
             foreach($admin as $dt){
                 $message_template = "[ADMIN] Hello $dt->username, here's the apps summary for the last $days days:";
                 $message = "$message_template\n\n- Vehicle Created: $summary->vehicle_created\n- Inventory Created: $summary->inventory_created\n- New User : $summary->new_user\n- Trip Created : $summary->trip_created\n- Fuel Created : $summary->fuel_created\n- Service Created : $summary->service_created\n- Clean Created : $summary->clean_created\n- Error Happen : $summary->error_happen";
+
+                if($dt->telegram_user_id && $dt->telegram_is_valid == 1){
+                    $response = Telegram::sendMessage([
+                        'chat_id' => $dt->telegram_user_id,
+                        'text' => $message,
+                        'parse_mode' => 'HTML'
+                    ]);
+                }
+            }
+        }
+    }
+
+    public static function audit_dashboard(){
+        $users = UserModel::getUserBroadcastAll();
+
+        if($users && count($users) > 0){
+            foreach($users as $index => $dt){
+                $total_vehicle = MultiModel::countTotalContext('vehicle',$dt->id);
+                $total_clean = MultiModel::countTotalContext('clean',$dt->id);
+                $total_driver = MultiModel::countTotalContext('driver',$dt->id);
+                $total_service = MultiModel::countTotalContext('service',$dt->id);
+                $total_trip = MultiModel::countTotalContext('trip',$dt->id);
+                
+                $message_template = "Hello $dt->username, here's the weekly dashboard we've gathered so far from your account :";
+                $message = "$message_template\n\n- Total Vehicle : $total_vehicle\n- Total Clean : $total_clean\n- Total Driver : $total_driver\n- Total Service : $total_service\n- Total Trip : $total_trip";
 
                 if($dt->telegram_user_id && $dt->telegram_is_valid == 1){
                     $response = Telegram::sendMessage([
