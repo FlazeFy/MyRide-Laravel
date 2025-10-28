@@ -3,6 +3,7 @@
 namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 // Helper
 use App\Helpers\Generator;
 
@@ -74,6 +75,10 @@ class ReminderModel extends Model
         }
             
         return $res->delete();
+    }
+
+    public static function deleteReminderForLastNDays($days){
+        return ReminderModel::whereDate('remind_at', '<', Carbon::now()->subDays($days))->delete();
     }
 
     public static function createReminder($data, $user_id){

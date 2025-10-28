@@ -31,10 +31,7 @@ class HistoryModel extends Model
     protected $fillable = ['id', 'history_type', 'history_context', 'created_at', 'created_by'];
 
     public static function deleteHistoryForLastNDays($days){
-        $res = HistoryModel::whereDate('created_at', '<', Carbon::now()->subDays($days))
-            ->delete();
-
-        return $res;
+        return HistoryModel::whereDate('created_at', '<', Carbon::now()->subDays($days))->delete();
     }
 
     public static function getAllHistory($type, $user_id, $paginate){

@@ -479,6 +479,7 @@ class Commands extends Controller
             if($rows > 0){
                 return response()->json([
                     'status' => 'success',
+                    'rows_affected' => $rows,
                     'message' => Generator::getMessageTemplate("recover", $this->module),
                 ], Response::HTTP_OK);
             } else {

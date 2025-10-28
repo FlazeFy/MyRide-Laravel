@@ -39,6 +39,27 @@ class CleanSchedule
         }
     }
 
+    public static function clean_reminder()
+    {
+        $days = 7;
+        $total = ReminderModel::deleteReminderForLastNDays($days);
+        $admin = AdminModel::getAllContact();
+
+        if($admin){
+            foreach($admin as $dt){
+                $message = "[ADMIN] Hello $dt->username, the system just run a clean reminder, with result of $total reminder executed";
+
+                if($dt->telegram_user_id && $dt->telegram_is_valid == 1){
+                    $response = Telegram::sendMessage([
+                        'chat_id' => $dt->telegram_user_id,
+                        'text' => $message,
+                        'parse_mode' => 'HTML'
+                    ]);
+                }
+            }
+        }
+    }
+
     public static function clean_deleted_vehicle()
     {
         $days = 30;
