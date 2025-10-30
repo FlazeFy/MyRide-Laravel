@@ -24,6 +24,7 @@ use App\Http\Controllers\AddFuelController;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\AddInventoryController;
 use App\Http\Controllers\DriverController;
+use App\Http\Controllers\AboutController;
 use App\Http\Controllers\AddDriverController;
 use App\Http\Controllers\GarageAddController;
 
@@ -101,6 +102,10 @@ Route::prefix('/stats')->middleware(['auth_v2:sanctum'])->group(function () {
 
 Route::prefix('/profile')->middleware(['auth_v2:sanctum'])->group(function () {
     Route::get('/', [ProfileController::class, 'index'])->name('profile');
+});
+
+Route::prefix('/about')->group(function () {
+    Route::get('/', [AboutController::class, 'index'])->name('about');
 });
 
 Route::prefix('/embed')->group(function () {
