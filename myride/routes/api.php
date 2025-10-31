@@ -42,6 +42,7 @@ Route::prefix('/v1/stats')->group(function () {
     Route::get('/total/trip/monthly/{year}', [QueriesStatsApi::class, 'getTotalTripPerYear']);
     Route::get('/total/fuel/monthly/{context}/{year}', [QueriesStatsApi::class, 'getTotalFuelPerYear']);
     Route::get('/total/service/monthly/{context}/{year}', [QueriesStatsApi::class, 'getTotalServicePerYear']);
+    Route::get('/total/clean/monthly/{context}/{year}', [QueriesStatsApi::class, 'getTotalCleanPerYear']);
 });
 
 Route::prefix('/v1/vehicle')->group(function () {

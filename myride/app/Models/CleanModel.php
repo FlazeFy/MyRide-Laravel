@@ -93,6 +93,34 @@ class CleanModel extends Model
         return $res;
     }
 
+    public static function getTotalCleanPerYear($user_id = null, $vehicle_id = null, $context, $year){
+        switch ($context) {
+            case 'total_item':
+                $context = 'COUNT(id)';
+                break;
+            case 'SUM(clean_price)':
+                break;
+            default:
+                return [];
+                break;
+        }
+
+        $res = CleanModel::selectRaw("$context as total, MONTH(created_at) as context");
+        
+        if($user_id){
+            $res = $res->where('created_by',$user_id);
+        }
+        if($vehicle_id){
+            $res = $res->where('vehicle_id',$vehicle_id);
+        }
+
+        $res = $res->whereRaw("YEAR(created_at) = '$year'")
+            ->groupByRaw('MONTH(created_at)')
+            ->get();
+
+        return $res;
+    }
+
     public static function hardDeleteCleanById($id, $user_id = null){
         $res = CleanModel::where('id',$id);
 
