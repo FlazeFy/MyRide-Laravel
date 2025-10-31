@@ -163,6 +163,7 @@ img:not(.gm-style img) {
 .bg-danger {
     background: var(--dangerColor) !important;
 }
+
 .btn.small {
     font-size: var(--textSM);
     padding: var(--spaceXSM) var(--spaceMD);

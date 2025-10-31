@@ -151,7 +151,7 @@ class TripModel extends Model
         return $total_distance;
     }
 
-    public static function getTotalTripByVehiclePerYear($user_id, $vehicle_id = null, $year = null){
+    public static function getTotalTripByVehiclePerYear($user_id = null, $vehicle_id = null, $year = null){
         if($year == null){
             $year = date('Y');
         }
@@ -160,9 +160,11 @@ class TripModel extends Model
         if($vehicle_id){
             $res = $res->where('vehicle_id',$vehicle_id);
         }
+        if($user_id){
+            $res = $res->where('created_by',$user_id);
+        }
 
-        $res = $res->where('created_by',$user_id)
-            ->whereRaw("YEAR(trip.created_at) = '$year'")
+        $res = $res->whereRaw("YEAR(trip.created_at) = '$year'")
             ->groupByRaw('MONTH(trip.created_at)')
             ->get();
 

@@ -26,6 +26,7 @@
                 Swal.close()
                 const data = response.data
                 
+                $(`#${reminder_holder}`).empty()
                 data.forEach(dt => {
                     $(`#${reminder_holder}`).append(`
                         <div class="container bg-success">

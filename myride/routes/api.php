@@ -39,6 +39,13 @@ Route::post('/v1/register/validate', [CommandAuthApi::class, 'validate_register'
 
 Route::prefix('/v1/stats')->group(function () {
     Route::get('/summary', [QueriesStatsApi::class, 'getSummaryApps']);
+    Route::get('/total/trip/monthly/{year}', [QueriesStatsApi::class, 'getTotalTripPerYear']);
+    Route::get('/total/fuel/monthly/{context}/{year}', [QueriesStatsApi::class, 'getTotalFuelPerYear']);
+    Route::get('/total/service/monthly/{context}/{year}', [QueriesStatsApi::class, 'getTotalServicePerYear']);
+});
+
+Route::prefix('/v1/vehicle')->group(function () {
+    Route::get('/readiness', [QueriesVehicleApi::class, 'getVehicleReadiness']);
 });
 
 Route::prefix('/v1/question')->group(function () {
@@ -54,7 +61,6 @@ Route::prefix('/v1/vehicle')->middleware(['auth:sanctum'])->group(function () {
     Route::get('/header', [QueriesVehicleApi::class, 'getAllVehicleHeader']);
     Route::get('/name', [QueriesVehicleApi::class, 'getAllVehicleName']);
     Route::get('/fuel', [QueriesVehicleApi::class, 'getAllVehicleFuel']);
-    Route::get('/readiness', [QueriesVehicleApi::class, 'getVehicleReadiness']);
     Route::get('/detail/{id}', [QueriesVehicleApi::class, 'getVehicleDetailById']);
     Route::get('/detail/full/{id}', [QueriesVehicleApi::class, 'getVehicleFullDetailById']);
     Route::get('/trip/summary/{id}', [QueriesVehicleApi::class, 'getVehicleTripSummaryById']);
@@ -118,9 +124,7 @@ Route::prefix('/v1/stats')->middleware(['auth:sanctum'])->group(function () {
     Route::get('/total/inventory/{context}', [QueriesStatsApi::class, 'getTotalInventoryByContext']);
     Route::get('/total/vehicle/{context}', [QueriesStatsApi::class, 'getTotalVehicleByContext']);
     Route::get('/total/service/{context}', [QueriesStatsApi::class, 'getTotalServicePriceByContext']);
-    Route::get('/total/fuel/monthly/{context}/{year}', [QueriesStatsApi::class, 'getTotalFuelPerYear']);
     Route::get('/total/trip/monthly/{year}/{vehicle_id}', [QueriesStatsApi::class, 'getTotalTripByVehiclePerYear']);
-    Route::get('/total/trip/monthly/{year}', [QueriesStatsApi::class, 'getTotalTripPerYear']);
 });
 
 Route::prefix('/v1/fuel')->middleware(['auth:sanctum'])->group(function () {

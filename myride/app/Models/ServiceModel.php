@@ -64,6 +64,31 @@ class ServiceModel extends Model
             ->get();  
     }
 
+    public static function getTotalServicePerYear($user_id = null, $context, $year){
+        switch ($context) {
+            case 'total_item':
+                $context = 'COUNT(id)';
+                break;
+            case 'SUM(service_price_total)':
+                break;
+            default:
+                return [];
+                break;
+        }
+
+        $res = ServiceModel::selectRaw("$context as total, MONTH(created_at) as context");
+        
+        if($user_id){
+            $res = $res->where('created_by',$user_id);
+        }
+
+        $res = $res->whereRaw("YEAR(created_at) = '$year'")
+            ->groupByRaw('MONTH(created_at)')
+            ->get();
+
+        return $res;
+    }
+
     public static function getExportData($user_id, $vehicle_id = null){
         $res = ServiceModel::select("vehicle_name","vehicle_plate_number", "vehicle_type", 'service_category', 'service_price_total', 'service_location', 'service_note', 'remind_at', 'service.created_at', 'service.updated_at')
             ->join('vehicle','vehicle.id','=','service.vehicle_id');

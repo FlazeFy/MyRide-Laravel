@@ -181,7 +181,12 @@ class Queries extends Controller
     public function getVehicleReadiness(Request $request)
     {
         try{
-            $user_id = $request->user()->id;
+            if ($request->hasHeader('Authorization')) {
+                $user = Auth::guard('sanctum')->user(); 
+                $user_id = $user ? $user->id : null;
+            } else {
+                $user_id = null;
+            }
             $limit = $request->query("limit",14);
 
             // Model

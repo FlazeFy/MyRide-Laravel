@@ -73,7 +73,7 @@ class VehicleModel extends Model
         return $res->isNotEmpty() ? $res : null;
     }
 
-    public static function getVehicleReadiness($user_id,$limit){
+    public static function getVehicleReadiness($user_id = null,$limit){
         $res = VehicleModel::select('id','vehicle_name','vehicle_type','vehicle_status','vehicle_plate_number','vehicle_fuel_status','vehicle_capacity', 'vehicle_transmission', 'deleted_at',
                 DB::raw("
                     (CASE vehicle_status
@@ -92,9 +92,13 @@ class VehicleModel extends Model
                         ELSE 0
                     END) as readiness
                 ")
-            )
-            ->where('created_by',$user_id)
-            ->orderBy('readiness','desc')
+            );
+        
+        if($user_id){
+            $res = $res->where('created_by',$user_id);
+        }
+
+        $res = $res->orderBy('readiness','desc')
             ->orderBy('created_at','desc')
             ->paginate($limit);
 

@@ -617,7 +617,12 @@ class Queries extends Controller
     public function getTotalTripPerYear(Request $request, $year)
     {
         try{
-            $user_id = $request->user()->id;
+            if ($request->hasHeader('Authorization')) {
+                $user = Auth::guard('sanctum')->user(); 
+                $user_id = $user ? $user->id : null;
+            } else {
+                $user_id = null;
+            }
             $res = TripModel::getTotalTripByVehiclePerYear($user_id, null, $year);
             
             if ($res && count($res) > 0) {
@@ -735,7 +740,12 @@ class Queries extends Controller
     public function getTotalFuelPerYear(Request $request, $context, $year)
     {
         try{
-            $user_id = $request->user()->id;
+            if ($request->hasHeader('Authorization')) {
+                $user = Auth::guard('sanctum')->user(); 
+                $user_id = $user ? $user->id : null;
+            } else {
+                $user_id = null;
+            }
             $vehicle_id = $request->query('vehicle_id') ?? null;
 
             if($context !== "fuel_volume" || $context !== "fuel_price_total"){
@@ -772,6 +782,137 @@ class Queries extends Controller
                 return response()->json([
                     'status' => 'failed',
                     'message' => Generator::getMessageTemplate("validation_failed", 'context must be fuel_volume or fuel_price_total'),
+                ], Response::HTTP_BAD_REQUEST);
+            }
+        } catch(\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => Generator::getMessageTemplate("unknown_error", null),
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
+     * @OA\GET(
+     *     path="/api/v1/stats/total/service/{context}/{year}",
+     *     summary="Get total service per month",
+     *     description="This request is used to get total service per month by given `year` and `context`. This request is using MySql database.",
+     *     tags={"Stats"},
+     *     security={{"bearerAuth":{}}},
+     *     @OA\Parameter(
+     *         name="year",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="integer",
+     *             example="2024"
+     *         ),
+     *         description="Service created year",
+     *     ),
+     *     @OA\Parameter(
+     *         name="context",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string",
+     *             example="total_item"
+     *         ),
+     *         description="Context can be `total_item` or `total_price`",
+     *     ),
+     *     @OA\Parameter(
+     *         name="vehicle_id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string",
+     *             example="ab8b8d0e-d74d-11ed-afa1-0242ac120002"
+     *         ),
+     *         description="Vehicle ID",
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="stats fetched",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="message", type="string", example="stats fetched"),
+     *                 @OA\Property(property="data", type="array",
+     *                     @OA\Items(
+     *                          @OA\Property(property="context", type="string", example="Jan"),
+     *                          @OA\Property(property="total", type="integer", example=3)
+     *                 )
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="protected route need to include sign in token as authorization bearer",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="failed"),
+     *             @OA\Property(property="message", type="string", example="you need to include the authorization token from login")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="stats failed to fetched",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="failed"),
+     *             @OA\Property(property="message", type="string", example="stats not found")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal Server Error",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="error"),
+     *             @OA\Property(property="message", type="string", example="something wrong. please contact admin")
+     *         )
+     *     ),
+     * )
+     */
+    public function getTotalServicePerYear(Request $request, $context, $year)
+    {
+        try{
+            if ($request->hasHeader('Authorization')) {
+                $user = Auth::guard('sanctum')->user(); 
+                $user_id = $user ? $user->id : null;
+            } else {
+                $user_id = null;
+            }
+
+            if($context !== "total_item" || $context !== "total_price"){
+                $res = ServiceModel::getTotalServicePerYear($user_id, $context, $year);
+                
+                if ($res && count($res) > 0) {
+                    $res_final = [];
+                    for ($i=1; $i <= 12; $i++) { 
+                        $total = 0;
+                        foreach ($res as $idx => $val) {
+                            if($i == $val->context){
+                                $total = (int)$val->total;
+                                break;
+                            }
+                        }
+                        array_push($res_final, [
+                            'context' => Generator::generateMonthName($i,'short'),
+                            'total' => $total,
+                        ]);
+                    }
+
+                    return response()->json([
+                        'status' => 'success',
+                        'message' => Generator::getMessageTemplate("fetch", 'stats'),
+                        'data' => $res_final
+                    ], Response::HTTP_OK);
+                } else {
+                    return response()->json([
+                        'status' => 'failed',
+                        'message' => Generator::getMessageTemplate("not_found", 'stats'),
+                    ], Response::HTTP_NOT_FOUND);
+                }
+            } else {
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => Generator::getMessageTemplate("validation_failed", 'context must be total_item or total_service'),
                 ], Response::HTTP_BAD_REQUEST);
             }
         } catch(\Exception $e) {
