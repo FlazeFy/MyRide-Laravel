@@ -43,7 +43,7 @@
                             <td><span class="chip bg-${dt.vehicle_status == 'Available' ? 'success': dt.vehicle_status == 'Reserved' ? 'warning':'danger'}">${dt.vehicle_status}</span></td>
                             <td><span class="chip bg-${dt.vehicle_fuel_status == 'Full' || dt.vehicle_fuel_status == 'High' ? 'success': dt.vehicle_fuel_status == 'Normal' ? 'warning':'danger'}">${dt.vehicle_fuel_status}</span></td>
                             <td><i class="fa-solid fa-users"></i> ${dt.vehicle_capacity}</td>
-                            <td><a class="btn btn-success px-4"><i class="fa-solid fa-play"></i></a></td>
+                            <td><a class="btn btn-success px-4 btn-action-readiness" data-id="${dt.id}" data-vehicle_name="${dt.vehicle_name}" data-vehicle_plate_number="${dt.vehicle_plate_number}"><i class="fa-solid fa-play"></i></a></td>
                         </tr>
                     `)
                 });

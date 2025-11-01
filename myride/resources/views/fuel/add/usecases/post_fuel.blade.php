@@ -68,7 +68,20 @@
         get_context_opt(`fuel_type_${val}`)
     })
 
-    get_vehicle_name_opt(token)
+    const init_vehicle_page = async (token) => {
+        await get_vehicle_name_opt(token)
+
+        if ($('#vehicle_holder').val() !== "-") {
+            let params = new URLSearchParams(window.location.search)
+            let vehicle_id = params.get('vehicle_id')
+
+            if (vehicle_id) {
+            get_vehicle_detail(vehicle_id)
+            get_vehicle_last_fuel(vehicle_id)
+            }
+        }
+    }
+    init_vehicle_page(token)
     get_context_opt('fuel_brand',token)
 
     const post_fuel = () => {

@@ -32,7 +32,7 @@
             $(`#${ctx}-holder`).html(`
                 <h4 class="fw-bold">${displayDate}</h4>
                 <span class="d-flex justify-align-center justify-content-center">
-                    <h2 class="fw-bold chip ${chipClass} d-inline-block me-0" style="font-size:var(--textJumbo);">${time}</h2>
+                    <h2 class="fw-bold chip ${chipClass} d-inline-block me-0">${time}</h2>
                     ${vehicle_plate_number ? `<a class="plate-number">${vehicle_plate_number}</a>` :''}
                 </span>
                 <p class="text-secondary mb-0"><b>Notes:</b> ${reminder_body}</p>

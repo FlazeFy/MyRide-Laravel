@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\VehicleApi;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 // Models
 use App\Models\VehicleModel;

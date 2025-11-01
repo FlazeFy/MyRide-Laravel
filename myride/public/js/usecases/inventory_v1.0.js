@@ -8,6 +8,12 @@ const get_vehicle_name_opt = (token) => {
         data.forEach(el => {
             $(`#${holder}`).append(`<option value="${el.id}">${el.vehicle_plate_number} - ${el.vehicle_name}</option>`)
         });
+
+        let params = new URLSearchParams(window.location.search)
+        let vehicle_id = params.get('vehicle_id')
+        if(vehicle_id){
+            $(`#${holder}`).val(vehicle_id)
+        }
     }
 
     const fetchData = () => {

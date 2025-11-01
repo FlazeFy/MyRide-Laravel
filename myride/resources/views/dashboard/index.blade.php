@@ -14,6 +14,7 @@
                 </div>
                 <div class='container'>
                     @include('dashboard.usecases.get_vehicle_readiness')
+                    @include('dashboard.usecases.set_action_readiness')
                 </div>
                 <div class='container'>
                     <div class="row">
