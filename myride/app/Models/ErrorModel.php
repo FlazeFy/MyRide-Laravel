@@ -41,4 +41,12 @@ class ErrorModel extends Model
 
         return count($res) > 0 ? $res : null;
     } 
+
+    public static function getAllError($paginate){
+        $res = ErrorModel::selectRaw('*')
+            ->orderby('created_at','asc')
+            ->paginate($paginate);
+
+        return count($res) > 0 ? $res : null;
+    }
 }
