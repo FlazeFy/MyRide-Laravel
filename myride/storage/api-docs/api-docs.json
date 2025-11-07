@@ -7976,6 +7976,10 @@
                                                     "type": "string",
                                                     "example": "jhondoe"
                                                 },
+                                                "vehicle_type": {
+                                                    "type": "string",
+                                                    "example": "City Car"
+                                                },
                                                 "vehicle_plate_number": {
                                                     "type": "string",
                                                     "example": "EY 28 BK"

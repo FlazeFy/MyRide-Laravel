@@ -30,27 +30,29 @@ const template_carousel_navigation = (holder, carouselId) => {
 }
 
 const template_trip_box = (dt, extra_class = '') => {
-    const coorOrigin = dt.trip_origin_coordinate.split(",").map(Number)
-    const coorDestination = dt.trip_destination_coordinate.split(",").map(Number)
+    const coorOrigin = dt.trip_origin_coordinate ? dt.trip_origin_coordinate.split(",").map(Number) : null
+    const coorDestination = dt.trip_destination_coordinate ? dt.trip_destination_coordinate.split(",").map(Number) : null
     const deletedStyle = dt.deleted_at ? "background-color: rgba(221, 0, 33, 0.3);" : ""
     const deletedTitle = dt.deleted_at ? "title='Deleted Item'" : ""
+    const clickFunc = coorOrigin ? `onclick="show_location(${coorOrigin[0]}, ${coorOrigin[1]}, ${coorDestination[0]}, ${coorDestination[1]})"` : ''
 
     return `
-        <button class="container text-start mb-4 ${extra_class}" style="${deletedStyle}" ${deletedTitle} 
-            onclick="show_location(${coorOrigin[0]}, ${coorOrigin[1]}, ${coorDestination[0]}, ${coorDestination[1]})">
+        <button class="container text-start mb-4 ${extra_class}" style="${deletedStyle}" ${deletedTitle} ${clickFunc}>
             ${dt.vehicle_plate_number ? `<a class="plate-number position-absolute" style="top:calc(-2*var(--spaceSM)); left:calc(-2*var(--spaceSM)); width: fit-content;">${dt.vehicle_plate_number}</a>`:''}
             ${dt.vehicle_name ? `<h6 class="mb-2">${dt.vehicle_name}</h6>`:''}
-            <p class="text-secondary">${dt.trip_desc}</p>
+            <p class="text-secondary">${dt.trip_desc ?? '- No Description Provided -'}</p>
             <hr>
             <div class="mt-3 d-flex justify-content-between">
                 <div>
                     <h6 class="mb-0">From</h6>
                     <p class="mb-0">${dt.trip_origin_name}</p>
                 </div>
-                <div class="text-center">
-                    <a><i class="fa-solid fa-arrow-right fa-xs"></i></a>
-                    <p class="mb-0" style="font-size:var(--textMD);">${calculate_distance(coorOrigin[0], coorOrigin[1], coorDestination[0], coorDestination[1])} Km</p>
-                </div>
+                ${ coorOrigin ? `
+                    <div class="text-center">
+                        <a><i class="fa-solid fa-arrow-right fa-xs"></i></a>
+                        <p class="mb-0" style="font-size:var(--textMD);">${calculate_distance(coorOrigin[0], coorOrigin[1], coorDestination[0], coorDestination[1])} Km</p>
+                    </div>`: ''
+                }
                 <div class="text-end">
                     <h6 class="mb-0">Destination</h6>
                     <p class="mb-0">${dt.trip_destination_name}</p>
@@ -58,17 +60,21 @@ const template_trip_box = (dt, extra_class = '') => {
             </div>
             <div class="collapse" id="collapseDetailTrip${dt.id}">
                 <div class="d-flex justify-content-between mt-3">
+                    ${dt.trip_person ? `
+                        <div>
+                            <h6 class="mb-0">Person With</h6>
+                            ${dt.trip_person ? `<p class="mb-0">${dt.trip_person}</p>` : "-"}
+                        </div>`:''
+                    }
                     <div>
-                        <h6 class="mb-0">Person With</h6>
-                        ${dt.trip_person ? `<p class="mb-0">${dt.trip_person}</p>` : ""}
-                    </div>
-                    <div class="text-end">
                         <h6 class="mb-0">Category</h6>
                         <p class="mb-0">${dt.trip_category}</p>
                     </div>
                 </div> 
                 ${dt.driver_fullname ? `<div class="mt-3"><h6 class="mb-0">Drive By</h6><p class="mb-0">${dt.driver_fullname}</p></div>` : ''}    
-                <a class="btn btn-success py-1 mt-2 btn-set-route" data-trip-origin-coordinate="${dt.trip_origin_coordinate}" data-trip-destination-coordinate="${dt.trip_destination_coordinate}" data-vehicle-type="${dt.vehicle_type}">Set Route on Maps</a>       
+                ${ coorOrigin ? `
+                    <a class="btn btn-success py-1 mt-2 btn-set-route" data-trip-origin-coordinate="${dt.trip_origin_coordinate}" data-trip-destination-coordinate="${dt.trip_destination_coordinate}" data-vehicle-type="${dt.vehicle_type}">Set Route on Maps</a>`: ''
+                }      
             </div>
             <hr>
             <div class="d-flex justify-content-between">

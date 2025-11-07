@@ -226,6 +226,7 @@ class Queries extends Controller
      *                     @OA\Property(property="trip_destination_name", type="string", example="Location A"),
      *                     @OA\Property(property="trip_destination_coordinate", type="string", example="-6.177362076836449,106.79156507985539"),
      *                     @OA\Property(property="driver_username", type="string", example="jhondoe"),
+     *                     @OA\Property(property="vehicle_type", type="string", example="City Car"),
      *                     @OA\Property(property="vehicle_plate_number", type="string", example="EY 28 BK"),
      *                     @OA\Property(property="created_at", type="string", example="2025-09-05 00:00:00"),
      *             )
@@ -362,7 +363,7 @@ class Queries extends Controller
         } catch(\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => $e->getMessage(),
+                'message' => Generator::getMessageTemplate("unknown_error", null),
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }

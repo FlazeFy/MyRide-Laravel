@@ -6,7 +6,7 @@
         Swal.showLoading()
         const ctx = 'last_trip'
 
-        const generate_last_trip = (created_at,trip_destination_name,trip_destination_coordinate,vehicle_plate_number,driver_username) => {
+        const generate_last_trip = (created_at,trip_destination_name,trip_destination_coordinate,vehicle_plate_number,driver_username,vehicle_type) => {
             const dateObj = new Date(created_at.replace(" ", "T"))
             const date = dateObj.toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" })
 
@@ -16,7 +16,10 @@
                     <a class="plate-number">${vehicle_plate_number}</a>
                     ${driver_username ? `<a class="plate-number"><i class="fa-solid fa-user-tie"></i> ${driver_username}</a>` :''}
                 </span>
-                <p class="text-secondary mb-0"><b>Locate on:</b> ${trip_destination_coordinate} | ${trip_destination_name}</p>
+                <p class="text-secondary mb-0"><b>Locate on:</b> ${trip_destination_coordinate ? `${trip_destination_coordinate} | `:''}${trip_destination_name}</p>
+                ${trip_destination_coordinate ? `
+                    <a class="btn btn-success py-1 mt-2 btn-set-route" data-trip-origin-coordinate="now" data-trip-destination-coordinate="${trip_destination_coordinate}" data-vehicle-type="${vehicle_type}">Set Route on Maps</a> 
+                `:''}
             `)
         }
 

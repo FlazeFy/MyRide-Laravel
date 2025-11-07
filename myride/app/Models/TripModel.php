@@ -44,7 +44,7 @@ class TripModel extends Model
     }
 
     public static function getLastTrip($user_id){
-        return TripModel::select('trip_destination_name','trip_destination_coordinate','driver.username as driver_username','vehicle_plate_number','trip.created_at')
+        return TripModel::select('trip_destination_name','trip_destination_coordinate','driver.username as driver_username','vehicle_plate_number','trip.created_at','vehicle_type')
             ->join('vehicle','vehicle.id','=','trip.vehicle_id')
             ->leftjoin('driver','driver.id','=','trip.driver_id')
             ->where('trip.created_by', $user_id)
@@ -130,6 +130,8 @@ class TripModel extends Model
             ->where('vehicle_id',$vehicle_id)
             ->where('created_by',$user_id)
             ->whereNull('deleted_at')
+            ->whereNotNull("trip_origin_coordinate")
+            ->whereNotNull("trip_destination_coordinate")
             ->get();
 
         $total_distance = 0;
@@ -190,17 +192,19 @@ class TripModel extends Model
         $lastUpdate   = null;
 
         foreach ($res as $item) {
-            [$originLat, $originLng] = explode(',', $item->trip_origin_coordinate);
-            [$destLat, $destLng]     = explode(',', $item->trip_destination_coordinate);
+            if($item->trip_origin_coordinate && $item->trip_destination_coordinate){
+                [$originLat, $originLng] = explode(',', $item->trip_origin_coordinate);
+                [$destLat, $destLng]     = explode(',', $item->trip_destination_coordinate);
 
-            $distance = Converter::calculate_distance((float) $originLat,(float) $originLng,(float) $destLat,(float) $destLng,'km');
+                $distance = Converter::calculate_distance((float) $originLat,(float) $originLng,(float) $destLat,(float) $destLng,'km');
 
-            $totalTrip    += $item->total;
-            $totalDistance += (float) $distance;
+                $totalDistance += (float) $distance;
 
-            if (is_null($lastUpdate) || $item->last_update > $lastUpdate) {
-                $lastUpdate = $item->last_update;
+                if (is_null($lastUpdate) || $item->last_update > $lastUpdate) {
+                    $lastUpdate = $item->last_update;
+                }
             }
+            $totalTrip += $item->total;
         }
 
         return [
