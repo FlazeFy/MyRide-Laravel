@@ -7265,6 +7265,10 @@
                                                                 "type": "string",
                                                                 "example": "Brio RS MT"
                                                             },
+                                                            "vehicle_type": {
+                                                                "type": "string",
+                                                                "example": "City Car"
+                                                            },
                                                             "vehicle_plate_number": {
                                                                 "type": "string",
                                                                 "example": "D 1610 ZBC"

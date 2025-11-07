@@ -119,3 +119,18 @@ const callModal = (id) => {
     const modal = new bootstrap.Modal(document.getElementById(id))
     modal.show()
 }
+
+const buttonSetRoute = () => {
+    $(document).on('click','.btn-set-route', function(){
+        const coorDestination = $(this).data('trip-destination-coordinate')
+        const coorOrigin = $(this).data('trip-origin-coordinate')
+        const travelMode = $(this).data('vehicle-type') === 'Motorcycle' ? 'two-wheeler' :'driving'
+
+        const url = `https://www.google.com/maps/dir/?api=1&origin=${coorOrigin}&destination=${coorDestination}&travelmode=${travelMode}`
+        window.open(url, '_blank')
+    })
+}
+
+$(document).ready(() => {
+    buttonSetRoute()
+})

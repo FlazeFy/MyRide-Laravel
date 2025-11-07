@@ -93,6 +93,10 @@ class Commands extends Controller
     public function postTrip(Request $request)
     {
         try{
+            if ($request->driver_id == "-") {
+                $request->merge(['driver_id' => null]);
+            }
+
             $validator = Validation::getValidateTrip($request,"create");
             if ($validator->fails()) {
                 return response()->json([
