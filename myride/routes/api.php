@@ -31,6 +31,7 @@ use App\Http\Controllers\Api\ServiceApi\Commands as CommandsServiceController;
 use App\Http\Controllers\Api\DriverApi\Queries as QueriesDriverController;
 use App\Http\Controllers\Api\DriverApi\Commands as CommandsDriverController;
 use App\Http\Controllers\Api\ErrorApi\Queries as QueriesErrorController;
+use App\Http\Controllers\Api\ErrorApi\Commands as CommandsErrorController;
 
 ######################### Public Route #########################
 
@@ -93,6 +94,7 @@ Route::prefix('/v1/history')->middleware(['auth:sanctum'])->group(function () {
 
 Route::prefix('/v1/error')->middleware(['auth:sanctum'])->group(function () {
     Route::get('/', [QueriesErrorController::class, 'getAllError']);
+    Route::delete('/destroy/{id}', [CommandsErrorController::class, 'hard_delete_error_by_id']);
 });
 
 Route::prefix('/v1/reminder')->middleware(['auth:sanctum'])->group(function () {

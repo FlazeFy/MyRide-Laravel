@@ -49,4 +49,8 @@ class ErrorModel extends Model
 
         return count($res) > 0 ? $res : null;
     }
+
+    public static function hardDeleteErrorByMessage($message){
+        return ErrorModel::where('message',$message)->delete();
+    }
 }
