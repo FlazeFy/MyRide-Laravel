@@ -117,38 +117,34 @@
             const data = response
             Swal.hideLoading()
 
-            $('#start-browsing-holder-btn').html(`<a class='btn btn-success ms-1 mb-1' href='/'><i class="fa-solid fa-arrow-right"></i> Start Browsing</a>`)
-            $('#token-section').html(`
-                <h6 class="text-center mb-4">Account is validated. Welcome to MyRide</h6>
-                <a class='btn btn-success ms-1 mb-1' href='/'><i class="fa-solid fa-arrow-right"></i> Start Browsing</a>
-            `).attr('style', 'height: auto !important; min-height: auto !important;')
-
-            $('#service_section').css({
-                "display":"block"
-            })
             localStorage.setItem('token_key',response.token)
 
-            $('.step .title').text("Stay Updated!")
-            $('.step .caption').text('Sync your account to another Platform. Like Telegram and Line')
-            $('.progress-bar').css('width', '66%').attr('aria-valuenow', 66) 
-            $('.step .caption').html(`
-                <div class="d-flex flex-wrap gap-2 mt-2">
-                    <a class="btn btn-success px-2 py-1" href='/dashboard'>
-                        <i class="fa-solid fa-arrow-right"></i> Go to Dashboard
-                    </a>
-                    <a class="btn btn-success px-2 py-1" href='/login'>
-                        <i class="fa-solid fa-house"></i> Back to Login
-                    </a>
-                    <a class="btn btn-primary px-2 py-1">
-                        <i class="fa-solid fa-mobile-screen"></i> Get Mobile Version
-                    </a>
-                </div>
-            `)
-        
             Swal.fire({
                 title: "Success!",
                 text: data.message,
-                icon: "success"
+                icon: "success",
+                allowOutsideClick: false
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $('.step .title').text("Stay Updated!")
+                    $('.step .caption').text('Sync your Telegram with our app to receive instant updates, alerts, and messages without missing a single update.')
+                    $('.progress-bar').css('width', '66%').attr('aria-valuenow', 66) 
+                    $('.step .caption').after(`
+                        <hr>
+                        <p>You have finished your registration process. You can skip this part if you wanted</p>
+                        <div class="d-flex flex-wrap gap-2">
+                            <a class="btn btn-success px-2 py-1" href='/dashboard'>
+                                <i class="fa-solid fa-arrow-right"></i> Dashboard
+                            </a>
+                            <a class="btn btn-primary px-2 py-1">
+                                <i class="fa-solid fa-mobile-screen"></i> Get Mobile Version
+                            </a>
+                        </div>
+                    `)
+                    $('#token-section').addClass('d-none').removeClass('d-block')
+                    $('#service-section').addClass('d-block').removeClass('d-none')
+                    $('#back-button').html('<i class="fa-solid fa-house mx-1"></i> Login').attr('data-current-step', 'service').attr('href','/login')
+                }
             });
         })
         .fail(function (response, xhr, ajaxOptions, thrownError) {

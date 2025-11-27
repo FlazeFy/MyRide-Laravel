@@ -102,7 +102,7 @@ class Commands extends Controller
 
                     $response = Telegram::sendMessage([
                         'chat_id' => $new_telegram_id,
-                        'text' => "Hello,\n\nWe received a request to validate GudangKu apps's account with username <b>$user->username</b> to sync with this Telegram account. If you initiated this request, please confirm that this account belongs to you by clicking the button YES.\n\nAlso we provided the Token :\n$token\n\nIf you did not request this, please press button NO.\n\nThank you, GudangKu",
+                        'text' => "Hello,\n\nWe received a request to validate MyRide apps's account with username <b>$user->username</b> to sync with this Telegram account. If you initiated this request, please confirm that this account belongs to you by clicking the button YES.\n\nAlso we provided the Token :\n$token\n\nIf you did not request this, please press button NO.\n\nThank you, MyRide",
                         'parse_mode' => 'HTML'
                     ]);
 
@@ -308,7 +308,7 @@ class Commands extends Controller
 
                         $response = Telegram::sendMessage([
                             'chat_id' => $new_telegram_id,
-                            'text' => "Hello,\n\nWe received a request to validate GudangKu apps's account with username <b>$old_data->username</b> to sync with this Telegram account. If you initiated this request, please confirm that this account belongs to you by clicking the button YES.\n\nAlso we provided the Token :\n$token\n\nIf you did not request this, please press button NO.\n\nThank you, GudangKu",
+                            'text' => "Hello,\n\nWe received a request to validate MyRide apps's account with username <b>$old_data->username</b> to sync with this Telegram account. If you initiated this request, please confirm that this account belongs to you by clicking the button YES.\n\nAlso we provided the Token :\n$token\n\nIf you did not request this, please press button NO.\n\nThank you, MyRide",
                             'parse_mode' => 'HTML'
                         ]);
                     }

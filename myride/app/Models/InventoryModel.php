@@ -14,7 +14,7 @@ use App\Helpers\Generator;
  *     required={"id","vehicle_id","inventory_name","inventory_category","inventory_qty","inventory_storage","created_at","created_by"},
  *
  *     @OA\Property(property="id", type="integer", description="Primary key of the inventory record"),
- *     @OA\Property(property="gudangku_inventory_id", type="integer", nullable=true, description="Reference ID from Gudangku system"),
+ *     @OA\Property(property="gudangku_inventory_id", type="integer", nullable=true, description="Reference ID from MyRide system"),
  *     @OA\Property(property="vehicle_id", type="integer", description="Reference ID of the vehicle"),
  *     @OA\Property(property="inventory_name", type="string", description="Name of the inventory item"),
  *     @OA\Property(property="inventory_category", type="string", description="Category of the inventory item"),

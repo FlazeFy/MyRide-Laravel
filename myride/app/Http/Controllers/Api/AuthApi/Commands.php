@@ -585,7 +585,7 @@ class Commands extends Controller
                             // Send email
                             $ctx = 'Register new account';
                             $email = $request->email;
-                            $data = "Welcome to GudangKu, happy explore!";
+                            $data = "Welcome to MyRide, happy explore!";
 
                             dispatch(new UserJob($ctx, $data, $username, $email));
 
@@ -685,7 +685,7 @@ class Commands extends Controller
                         // Send email
                         $ctx = 'Generate registration token';
                         $email = $request->email;
-                        $data = "You almost finish your registration process. We provided you with this token <br><h5>$token</h5> to make sure this account is yours.<br>If you're the owner just paste this token into the Token's Field. If its not, just leave this message<br>Thank You, Gudangku";
+                        $data = "You almost finish your registration process. We provided you with this token <br><h5>$token</h5> to make sure this account is yours.<br>If you're the owner just paste this token into the Token's Field. If its not, just leave this message<br>Thank You, MyRide";
 
                         dispatch(new UserJob($ctx, $data, $username, $email));
 
@@ -713,7 +713,7 @@ class Commands extends Controller
                     // Send email
                     $ctx = 'Generate registration token';
                     $email = $request->email;
-                    $data = "You almost finish your registration process. We provided you with this token <br><h5>$token</h5> to make sure this account is yours.<br>If you're the owner just paste this token into the Token's Field. If its not, just leave this message<br>Thank You, Gudangku";
+                    $data = "You almost finish your registration process. We provided you with this token <br><h5>$token</h5> to make sure this account is yours.<br>If you're the owner just paste this token into the Token's Field. If its not, just leave this message<br>Thank You, MyRide";
 
                     dispatch(new UserJob($ctx, $data, $username, $email));
 
