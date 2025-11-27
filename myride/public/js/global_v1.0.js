@@ -121,6 +121,19 @@ const generate_api_error = (response, is_list_format) => {
     }
 }
 
+const validateInput = (type, id, max, min) => {
+    if(type == "text"){
+        const check = $(`#${id}`).val()
+        const check_len = check.trim().length
+    
+        if(check && check_len > 0 && check_len <= max && check_len >= min){
+            return true
+        } else {
+            return false
+        }
+    }
+}
+
 const callModal = (id) => {
     const modal = new bootstrap.Modal(document.getElementById(id))
     modal.show()

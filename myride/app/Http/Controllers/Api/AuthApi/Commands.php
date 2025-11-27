@@ -406,4 +406,333 @@ class Commands extends Controller
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
+
+    /**
+     * @OA\POST(
+     *     path="/api/v1/register/token",
+     *     summary="Check and send validation token to the user who in registration process",
+     *     tags={"User"},
+     *     @OA\Response(
+     *         response=200,
+     *         description="the validation token has been sended to {email} email account",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="message", type="string", example="the validation token has been sended to flazen.edu@gmail.com email account")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=409,
+     *         description="there already a request with same username / username has been used. try another",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="failed"),
+     *             @OA\Property(property="message", type="string", example="there already a request with same username")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal Server Error",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="error"),
+     *             @OA\Property(property="message", type="string", example="something wrong. please contact admin")
+     *         )
+     *     ),
+     * )
+     */
+    public function get_register_validation_token(Request $request)
+    {
+        try{
+            $username = $request->username;
+            $check_user = UserModel::selectRaw('1')
+                ->where('username',$username)
+                ->first();
+
+            if(!$check_user){
+                $valid = ValidateRequestModel::selectRaw('1')
+                    ->where('request_type','register')
+                    ->where('created_by',$username)
+                    ->first();
+
+                if(!$valid){
+                    $token_length = 6;
+                    $token = Generator::getTokenValidation($token_length);
+
+                    $data_req = (object)[
+                        'request_type' => 'register',
+                        'request_context' => $token
+                    ];
+                    $valid_insert = ValidateRequestModel::createValidateRequest($data_req, $username);
+
+                    if($valid_insert){
+                        // Send email
+                        $ctx = 'Generate registration token';
+                        $email = $request->email;
+                        $data = "You almost finish your registration process. We provided you with this token <br><h5>$token</h5> to make sure this account is yours.<br>If you're the owner just paste this token into the Token's Field. If its not, just leave this message<br>Thank You, MyRide";
+
+                        dispatch(new UserJob($ctx, $data, $username, $email));
+
+                        return response()->json([
+                            'status' => 'success',
+                            'message' => Generator::getMessageTemplate("custom", "the validation token has been sended to $email email account"),
+                        ], Response::HTTP_OK);
+                    } else {
+                        return response()->json([
+                            'status' => 'failed',
+                            'message' => Generator::getMessageTemplate("unknown_error", null),
+                        ], Response::HTTP_INTERNAL_SERVER_ERROR);
+                    }
+                } else {
+                    return response()->json([
+                        'status' => 'failed',
+                        'message' => Generator::getMessageTemplate("custom", 'there already a request with same username'),
+                    ], Response::HTTP_CONFLICT);
+                }
+            } else {
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => Generator::getMessageTemplate("conflict", 'username'),
+                ], Response::HTTP_CONFLICT);
+            }
+        } catch(\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage(),
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
+     * @OA\POST(
+     *     path="/api/v1/register/account",
+     *     summary="Register account and accept validation",
+     *     tags={"User"},
+     *     @OA\Response(
+     *         response=200,
+     *         description="account is registered",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="message", type="string", example="account is registered"),
+     *             @OA\Property(property="is_signed_in", type="bool", example=true),
+     *             @OA\Property(property="token", type="string", example="123456ABCD")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Token is invalid",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="failed"),
+     *             @OA\Property(property="message", type="string", example="token is invalid")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=409,
+     *         description="username already used",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="failed"),
+     *             @OA\Property(property="message", type="string", example="username has been used. try another")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="{validation_msg}",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="failed"),
+     *             @OA\Property(property="message", type="string", example="{field validation message}")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal Server Error",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="error"),
+     *             @OA\Property(property="message", type="string", example="something wrong. please contact admin")
+     *         )
+     *     ),
+     * )
+     */
+    public function post_validate_register(Request $request)
+    {
+        try{
+            $validator = Validation::getValidateUser($request,'create');
+            if ($validator->fails()) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => $validator->errors()
+                ], Response::HTTP_UNPROCESSABLE_ENTITY);
+            } else {
+                $username = $request->username;
+                $valid = ValidateRequestModel::selectRaw('id')
+                    ->where('request_type','register')
+                    ->where('request_context',$request->token)
+                    ->where('created_by',$username)
+                    ->first();
+
+                if($valid){
+                    $check_user = UserModel::selectRaw('1')
+                        ->where('username',$username)
+                        ->first();
+
+                    if(!$check_user){
+                        ValidateRequestModel::destroy($valid->id);
+
+                        $data = (object)[
+                            'username' => $request->username,
+                            'password' => $request->password,
+                            'email' => $request->email,
+                            'telegram_user_id' => $request->telegram_user_id
+                        ];
+                        $user = UserModel::createUser($data);
+                        if($user){
+                            // Send email
+                            $ctx = 'Register new account';
+                            $email = $request->email;
+                            $data = "Welcome to GudangKu, happy explore!";
+
+                            dispatch(new UserJob($ctx, $data, $username, $email));
+
+                            if(Hash::check($request->password, $user->password)){
+                                $token = $user->createToken('login')->plainTextToken;
+
+                                return response()->json([
+                                    'is_signed_in' => true,
+                                    'token' => $token,
+                                    'status' => 'success',
+                                    'message' => Generator::getMessageTemplate("custom", "account is registered"),
+                                ], Response::HTTP_OK);   
+                            } else {
+                                return response()->json([
+                                    'is_signed_in' => false,
+                                    'status' => 'success',
+                                    'message' => Generator::getMessageTemplate("custom", "account is registered"),
+                                ], Response::HTTP_OK);   
+                            }
+                        } else {
+                            return response()->json([
+                                'status' => 'failed',
+                                'message' => Generator::getMessageTemplate("unknown_error", null),
+                            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+                        }
+                    } else {
+                        return response()->json([
+                            'status' => 'failed',
+                            'message' => Generator::getMessageTemplate("conflict", 'username'),
+                        ], Response::HTTP_CONFLICT);
+                    }
+                } else {
+                    return response()->json([
+                        'status' => 'failed',
+                        'message' => Generator::getMessageTemplate("custom", 'token is invalid'),
+                    ], Response::HTTP_NOT_FOUND);
+                }
+            }
+        } catch(\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage(),
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
+     * @OA\POST(
+     *     path="/api/v1/register/regen_token",
+     *     summary="Regenerate registration token",
+     *     tags={"User"},
+     *     @OA\Response(
+     *         response=200,
+     *         description="the validation token has been sended to {email} email account",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="message", type="string", example="the validation token has been sended to flazen.edu@gmail.com email account")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="request not found",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="failed"),
+     *             @OA\Property(property="message", type="string", example="the validation token has been sended to flazen.edu@gmail.com email account")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal Server Error",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="error"),
+     *             @OA\Property(property="message", type="string", example="something wrong. please contact admin")
+     *         )
+     *     ),
+     * )
+     */
+    public function regenerate_register_token(Request $request)
+    {
+        try{
+            $username = $request->username;
+            $valid = ValidateRequestModel::select('id')
+                ->where('request_type','register')
+                ->where('created_by',$username)
+                ->first();
+
+            $token_length = 6;
+            $token = Generator::getTokenValidation($token_length);
+
+            if($valid){
+                $delete = ValidateRequestModel::destroy($valid->id);
+
+                if($delete > 0){
+                    $valid_insert = ValidateRequestModel::createValidateRequest('register', $token, $username);
+
+                    if($valid_insert){
+                        // Send email
+                        $ctx = 'Generate registration token';
+                        $email = $request->email;
+                        $data = "You almost finish your registration process. We provided you with this token <br><h5>$token</h5> to make sure this account is yours.<br>If you're the owner just paste this token into the Token's Field. If its not, just leave this message<br>Thank You, Gudangku";
+
+                        dispatch(new UserJob($ctx, $data, $username, $email));
+
+                        return response()->json([
+                            'status' => 'success',
+                            'message' => Generator::getMessageTemplate("custom", "the validation token has been sended to $email email account"),
+                        ], Response::HTTP_OK);
+                    } else {
+                        return response()->json([
+                            'status' => 'failed',
+                            'message' => Generator::getMessageTemplate("unknown_error", null),
+                        ], Response::HTTP_INTERNAL_SERVER_ERROR);
+                    }
+                } else {
+                    return response()->json([
+                        'status' => 'error',
+                        'message' => Generator::getMessageTemplate("not_found", 'request'),
+                    ], Response::HTTP_NOT_FOUND);
+                }
+            } else {
+                // already deleted
+                $valid_insert = ValidateRequestModel::createValidateRequest('register', $token, $username);
+
+                if($valid_insert){
+                    // Send email
+                    $ctx = 'Generate registration token';
+                    $email = $request->email;
+                    $data = "You almost finish your registration process. We provided you with this token <br><h5>$token</h5> to make sure this account is yours.<br>If you're the owner just paste this token into the Token's Field. If its not, just leave this message<br>Thank You, Gudangku";
+
+                    dispatch(new UserJob($ctx, $data, $username, $email));
+
+                    return response()->json([
+                        'status' => 'success',
+                        'message' => Generator::getMessageTemplate("custom", "the validation token has been sended to $email email account"),
+                    ], Response::HTTP_OK);
+                } else {
+                    return response()->json([
+                        'status' => 'failed',
+                        'message' => Generator::getMessageTemplate("unknown_error", null),
+                    ], Response::HTTP_INTERNAL_SERVER_ERROR);
+                }
+            }
+        } catch(\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => Generator::getMessageTemplate("unknown_error", null),
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
 }

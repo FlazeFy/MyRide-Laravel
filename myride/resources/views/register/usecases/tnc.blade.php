@@ -16,7 +16,7 @@
                 $('.progress-bar').css('width', '33%').attr('aria-valuenow', 33) 
                 $('#tnc-section').addClass('d-none').removeClass('d-block')
                 $('#profile-section').addClass('d-block').removeClass('d-none')
-                $('#back-button').html('<i class="fa-solid fa-arrow-left mx-1"></i> Terms & Condition')
+                $('#back-button').html('<i class="fa-solid fa-arrow-left mx-1"></i> Terms & Condition').attr('data-current-step', 'profile')
             } else {
                 $('.step .title').text("Hello There!")
                 $('.step .caption').text('Do you aggree with our terms & condition?')

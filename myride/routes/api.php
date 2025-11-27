@@ -36,8 +36,12 @@ use App\Http\Controllers\Api\ErrorApi\Commands as CommandsErrorController;
 ######################### Public Route #########################
 
 Route::post('/v1/login', [CommandAuthApi::class, 'login']);
-Route::post('/v1/register', [CommandAuthApi::class, 'register']);
-Route::post('/v1/register/validate', [CommandAuthApi::class, 'validate_register']);
+
+Route::prefix('/v1/register')->group(function () {
+    Route::post('/token', [CommandAuthApi::class, 'get_register_validation_token']);
+    Route::post('/account', [CommandAuthApi::class, 'post_validate_register']);
+    Route::post('/regen_token', [CommandAuthApi::class, 'regenerate_register_token']);
+});
 
 Route::prefix('/v1/stats')->group(function () {
     Route::get('/summary', [QueriesStatsApi::class, 'getSummaryApps']);

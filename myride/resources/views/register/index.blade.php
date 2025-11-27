@@ -9,5 +9,8 @@
         <div class="d-none" id="profile-section">
             @include('register.usecases.profile')
         </div>
+        <div class="d-none" id="token-section">
+            @include('register.usecases.token')
+        </div>
     </div>
 @endsection
