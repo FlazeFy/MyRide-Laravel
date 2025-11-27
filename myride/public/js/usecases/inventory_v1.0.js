@@ -32,12 +32,7 @@ const get_vehicle_name_opt = (token) => {
                 generate_vehicle_list(ctx_holder,data)
             },
             error: function(response, jqXHR, textStatus, errorThrown) {
-                Swal.close()
-                if(response.status != 404){
-                    failedMsg(`get the vehicle list`)
-                } else {
-                    // .....
-                }
+                generate_api_error(response, true)
             }
         });
     }
@@ -91,12 +86,7 @@ const get_driver_name_opt = (token) => {
                 generate_driver_list(ctx_holder,data)
             },
             error: function(response, jqXHR, textStatus, errorThrown) {
-                Swal.close()
-                if(response.status != 404){
-                    failedMsg(`get the vehicle list`)
-                } else {
-                    // .....
-                }
+                generate_api_error(response, true)
             }
         });
     }
@@ -145,8 +135,7 @@ const get_vehicle_detail = (id) => {
                 $('#vehicle_category').val(data.vehicle_category)
             },
             error: function(response, jqXHR, textStatus, errorThrown) {
-                Swal.close()
-                failedMsg('get the vehicle')
+                generate_api_error(response, true)
             }
         });
     } else {
@@ -200,12 +189,7 @@ const get_context_opt = (context,token) => {
                 generate_context_list(ctx_holder,data)
             },
             error: function(response, jqXHR, textStatus, errorThrown) {
-                Swal.close()
-                if(response.status != 404){
-                    failedMsg(`get the ${context} list`)
-                } else {
-                    // .....
-                }
+                generate_api_error(response, true)
             }
         });
     }

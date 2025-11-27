@@ -1,41 +1,41 @@
 <div style="margin: 10vh 0; max-width: 1080px;" class="d-block mx-auto">
     <br>
-    <h1 class="fw-bold" style="font-size:50px;">Facts About Us</h1>
+    <h2 class="fw-bold" style="font-size:50px;">Facts About Us</h2>
     <div class="row mt-4">
-        <div class="col-lg-4 col-md-6 col-12 mx-auto">
+        <div class="col-lg-4 col-md-4 col-6 mx-auto">
             <div class="container-landing bg-danger">
                 <h2 id="total_user">-</h2>
-                <h5>Total User</h5>
+                <h5>User</h5>
             </div>
         </div>
-        <div class="col-lg-4 col-md-6 col-12 mx-auto">
+        <div class="col-lg-4 col-md-4 col-6 mx-auto">
             <div class="container-landing bg-danger">
                 <h2 id="total_vehicle">-</h2>
-                <h5>Total Vehicle</h5>
+                <h5>Vehicle</h5>
             </div>
         </div>
-        <div class="col-lg-4 col-md-6 col-12 mx-auto">
+        <div class="col-lg-4 col-md-4 col-6 mx-auto">
             <div class="container-landing bg-danger">
                 <h2 id="total_trip">-</h2>
-                <h5>Total Trip</h5>
+                <h5>Trip</h5>
             </div>
         </div>
-        <div class="col-lg-4 col-md-6 col-12 mx-auto">
+        <div class="col-lg-4 col-md-4 col-6 mx-auto">
             <div class="container-landing bg-danger">
                 <h2 id="total_clean">-</h2>
-                <h5>Total Clean History</h5>
+                <h5>Clean History</h5>
             </div>
         </div>
-        <div class="col-lg-4 col-md-6 col-12 mx-auto">
+        <div class="col-lg-4 col-md-4 col-6 mx-auto">
             <div class="container-landing bg-danger">
                 <h2 id="total_service">-</h2>
-                <h5>Total Service History</h5>
+                <h5>Service History</h5>
             </div>
         </div>
-        <div class="col-lg-4 col-md-6 col-12 mx-auto">
+        <div class="col-lg-4 col-md-4 col-6 mx-auto">
             <div class="container-landing bg-danger">
                 <h2 id="total_driver">-</h2>
-                <h5>Total Driver</h5>
+                <h5>Driver</h5>
             </div>
         </div>
     </div>
@@ -61,12 +61,7 @@
                 $('#total_trip').text(data.total_trip)
             },
             error: function(response, jqXHR, textStatus, errorThrown) {
-                Swal.close()
-                Swal.fire({
-                    title: "Oops!",
-                    text: `Something went wrong`,
-                    icon: "error"
-                });
+                generate_api_error(response, true)
             }
         });
     }

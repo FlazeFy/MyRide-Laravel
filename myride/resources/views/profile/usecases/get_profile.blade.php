@@ -42,12 +42,7 @@
                 telegram_req_holder(data_telegram)
             },
             error: function(response, jqXHR, textStatus, errorThrown) {
-                Swal.close()
-                Swal.fire({
-                    title: "Oops!",
-                    text: "Something went wrong",
-                    icon: "error"
-                });
+                generate_api_error(response, true)
             }
         });
     }
@@ -79,7 +74,6 @@
                 });
             },
             error: function(response, textStatus, errorThrown) {
-                Swal.close()
                 generate_api_error(response, true)
             }
         });
@@ -117,7 +111,6 @@
                 });
             },
             error: function(response, textStatus, errorThrown) {
-                Swal.close()
                 generate_api_error(response, true)
             }
         });

@@ -94,6 +94,10 @@ img:not(.gm-style img) {
     font-weight: 500;
 }
 
+.rounded-3 {
+    border-radius: var(--roundedLG) !important;
+}
+
 /* Typography */
 .text-secondary {
     font-style: italic;

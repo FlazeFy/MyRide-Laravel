@@ -53,7 +53,7 @@
                 Swal.close()
 
                 if(response.status != 404){
-                    failedMsg('get the driver')
+                    generate_api_error(response, true)
                 } else {
                     $(`#${holder}`).html(`<tr><td colspan="5" id="msg-${holder}" class="no-msg-text">- No Driver Found -</td></tr>`)
                 }

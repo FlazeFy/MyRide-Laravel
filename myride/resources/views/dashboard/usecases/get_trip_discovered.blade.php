@@ -43,7 +43,7 @@
                 error: function(response, jqXHR, textStatus, errorThrown) {
                     Swal.close()
                     if(response.status !== 404){
-                        failedMsg(`get the trip`)
+                        generate_api_error(response, true)
                     } else {
                         message_short_image(`${ctx}-holder`,`{{asset('assets/empty.png')}}`,`there's no trip history`)
                     }

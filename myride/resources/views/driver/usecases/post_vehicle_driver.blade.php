@@ -78,8 +78,8 @@
                     success: function(response) {
                         Swal.fire("Success!", "Driver has successfully assigned", "success").then(() => window.location.reload())
                     },
-                    error: function() {
-                        Swal.fire("Error!", `Failed to delete this ${context}`, "error")
+                    error: function(response, jqXHR, textStatus, errorThrown) {
+                        generate_api_error(response, true)
                     }
                 });
             }

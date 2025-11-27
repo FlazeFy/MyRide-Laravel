@@ -44,8 +44,7 @@
                         generate_trip_discovered(data.total_trip,data.distance_km,data.last_update,ctx)
                     },
                     error: function(response, jqXHR, textStatus, errorThrown) {
-                        Swal.close()
-                        failedMsg(`get the trip`)
+                        generate_api_error(response, true)
                     }
                 });
             }

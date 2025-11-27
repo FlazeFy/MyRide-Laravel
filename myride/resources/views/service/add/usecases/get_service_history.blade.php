@@ -47,7 +47,7 @@
             error: function(response, jqXHR, textStatus, errorThrown) {
                 Swal.close()
                 if(response.status !== 404){
-                    failedMsg('get the service')
+                    generate_api_error(response, true)
                 } else {
                     $(`#${holder}`).html(`<th scope="row" colspan="3" class="no-msg-text">- No Service Found -</th>`)
                 }

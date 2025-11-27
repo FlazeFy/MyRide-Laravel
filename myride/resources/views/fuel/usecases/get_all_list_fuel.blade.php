@@ -83,7 +83,7 @@
                 Swal.close()
 
                 if(response.status != 404){
-                    failedMsg('get the fuel')
+                    generate_api_error(response, true)
                 } else {
                     $(`#${holder}`).html(`<tr><td colspan="5" id="msg-${holder}"></td></tr>`)
                     template_alert_container(`msg-${holder}`, 'no-data', "No fuel found", 'add a trip', '<i class="fa-solid fa-gas-pump"></i>','/fuel/add')

@@ -122,7 +122,7 @@
             error: function(response, jqXHR, textStatus, errorThrown) {
                 Swal.close()
                 if(response.status != 404){
-                    failedMsg('get the reminder')
+                    generate_api_error(response, true)
                 } else {
                     $(`#${holder}`).html(`<tr><td colspan="6" id="msg-${holder}"></td></tr>`)
                     template_alert_container(`msg-${holder}`, 'no-data', "No reminder found", 'add a reminder', '<i class="fa-solid fa-clock"></i>','/reminder/add')

@@ -45,7 +45,7 @@
             error: function(response, jqXHR, textStatus, errorThrown) {
                 Swal.close()
                 if(response.status !== 404){
-                    failedMsg('get the vehicle last fuel')
+                    generate_api_error(response, true)
                 } else {
                     $(`#${holder_fuel}`).html(`
                         <div class="container bg-danger">

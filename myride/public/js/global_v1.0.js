@@ -106,6 +106,12 @@ const generate_api_error = (response, is_list_format) => {
             html: msg,
             icon: "error"
         });
+    } else if(response.status === 404){
+        Swal.fire({
+            title: "Oops!",
+            html: "Data not found",
+            icon: "error"
+        });
     } else {
         Swal.fire({
             title: "Oops!",

@@ -58,7 +58,7 @@
                     Swal.close()
 
                     if(response.status != 404){
-                        failedMsg('get the reminder')
+                        generate_api_error(response, true)
                     } else {
                         message_short_image(`${ctx}-holder`,`{{asset('assets/free.png')}}`,`there's no active reminder`)
                     }

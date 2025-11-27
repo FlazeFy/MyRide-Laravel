@@ -65,7 +65,7 @@
                     Swal.close()
                     if(response.status != 404){
                         reject(errorThrown)
-                        failedMsg('get the trip')
+                        generate_api_error(response, true)
                     } else {
                         template_alert_container(`<?= $carouselId ?>`, 'no-data', "No trip found", 'add a trip', '<i class="fa-solid fa-luggage"></i>','/trip/add')
                     }

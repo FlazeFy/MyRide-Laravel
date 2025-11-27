@@ -42,7 +42,7 @@
                     Swal.close()
 
                     if(response.status != 404){
-                        failedMsg('get the last trip')
+                        generate_api_error(response, true)
                     } else {
                         message_short_image(`${ctx}-holder`,`{{asset('assets/empty.png')}}`,`there's no last the trip history`)
                     }

@@ -80,7 +80,7 @@
             error: function(response, jqXHR, textStatus, errorThrown) {
                 Swal.close()
                 if(response.status != 404){
-                    failedMsg('get the vehicle last clean')
+                    generate_api_error(response, true)
                 } else {
                     $(`#${clean_holder}`).html(`
                         <div class="container bg-danger">

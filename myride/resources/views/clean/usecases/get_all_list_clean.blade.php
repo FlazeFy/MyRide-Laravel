@@ -92,7 +92,7 @@
                 Swal.close()
 
                 if(response.status != 404){
-                    failedMsg('get the clean history')
+                    generate_api_error(response, true)
                 } else {
                     $(`#${holder}`).html(`<tr><td colspan="5" id="msg-${holder}"></td></tr>`)
                     template_alert_container(`msg-${holder}`, 'no-data', "No clean found", 'add a clean history', '<i class="fa-solid fa-soap"></i>','/clean/add')

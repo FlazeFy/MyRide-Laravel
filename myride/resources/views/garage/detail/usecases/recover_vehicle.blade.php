@@ -32,8 +32,8 @@
                         })
 
                     },
-                    error: function() {
-                        Swal.fire("Error!", `Failed to recover this vehicle`, "error")
+                    error: function(response, jqXHR, textStatus, errorThrown) {
+                        generate_api_error(response, true)
                     }
                 });
             }

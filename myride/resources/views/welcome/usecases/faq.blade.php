@@ -1,6 +1,6 @@
 <div style="margin: 10vh 0; max-width: 1080px;" class="d-block mx-auto" id="services_section">
     <br>
-    <h1 class="fw-bold" style="font-size:50px;">Most Question They Ask</h1>
+    <h2 class="fw-bold" style="font-size:50px;">Most Question They Ask</h2>
     <div class="row mt-4 accordion" id="faq_holder"></div>
 </div>
 
@@ -33,12 +33,7 @@
                 });
             },
             error: function(response, jqXHR, textStatus, errorThrown) {
-                Swal.close()
-                Swal.fire({
-                    title: "Oops!",
-                    text: `Something went wrong`,
-                    icon: "error"
-                });
+                generate_api_error(response, true)
             }
         });
     }

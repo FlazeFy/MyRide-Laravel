@@ -42,8 +42,7 @@
                     generate_summary(data.total_fuel_price, data.total_fuel_volume, data.total_refueling)
                 },
                 error: function(response, jqXHR, textStatus, errorThrown) {
-                    Swal.close()
-                    failedMsg('get the summary')
+                    generate_api_error(response, true)
                 }
             });
         }

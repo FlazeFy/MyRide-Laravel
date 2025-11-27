@@ -108,7 +108,7 @@
             error: function(response, jqXHR, textStatus, errorThrown) {
                 Swal.close()
                 if(response.status !== 404){
-                    failedMsg(`get the vehicle`)
+                    generate_api_error(response, true)
                 } else {
                     failedRoute('vehicle','/garage')
                 }

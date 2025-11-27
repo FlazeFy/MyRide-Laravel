@@ -51,8 +51,7 @@
                     generate_summary(data.total_vehicle, data.total_service, data.total_clean, data.total_driver, data.total_trip)
                 },
                 error: function(response, jqXHR, textStatus, errorThrown) {
-                    Swal.close()
-                    failedMsg('get the summary')
+                    generate_api_error(response, true)
                 }
             });
         }

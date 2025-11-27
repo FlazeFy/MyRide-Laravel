@@ -43,13 +43,7 @@
                 $('#vehicle_total_trip_distance').text(`${data.vehicle_total_trip_distance ?? '-'} Km`)
             },
             error: function(response, jqXHR, textStatus, errorThrown) {
-                Swal.close()
-
-                if(response.status !== 404){
-                    failedMsg('get the summary of trip')
-                } else {
-                    
-                }
+                generate_api_error(response, true)
             }
         });
     }

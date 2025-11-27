@@ -1,19 +1,21 @@
 <nav class="navbar navbar-expand-lg">
     <div class="container-fluid">
-        <h2 class="navbar-brand mb-0" href="/">MyRide</h2>
+        <h2 class="navbar-brand mb-0"><a href="/">MyRide</a></h2>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" 
                 data-bs-target="#navbarNav" aria-controls="navbarNav" 
                 aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         
+        @if(session()->get('token_key'))
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
-                <li class="nav-item"><a class="btn btn-primary me-3" href="/profile"><i class="fa-solid fa-user"></i> My Profile</a></li>
+                <li class="nav-item"><a class="btn btn-primary me-3" href="<?= Route::current()->uri() === "/" ? "/dashboard" : "/profile"?>"><i class="fa-solid fa-user"></i> {{session()->get('username_key')}}</a></li>
                 <li class="nav-item"><a class="btn btn-success px-3 me-3" href="#"><i class="fa-solid fa-bell fa-lg"></i></a></li>
                 <li class="nav-item"><a class="btn btn-danger px-3" data-bs-target="#modalSignOut" data-bs-toggle="modal"><i class="fa-solid fa-right-from-bracket fa-lg"></i></a></li>
             </ul>
         </div>
+        @endif
     </div>
 </nav>
 

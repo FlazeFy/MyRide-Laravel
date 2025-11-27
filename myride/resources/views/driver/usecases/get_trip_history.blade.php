@@ -35,12 +35,7 @@
                 });
             },
             error: function(response, jqXHR, textStatus, errorThrown) {
-                Swal.close()
-                Swal.fire({
-                    title: "Oops!",
-                    text: "Something went wrong",
-                    icon: "error"
-                });
+                generate_api_error(response, true)
             }
         });
     })

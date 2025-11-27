@@ -21,11 +21,7 @@
             error: function(response, jqXHR, textStatus, errorThrown) {
                 Swal.close()
                 if(response.status != 404){
-                    Swal.fire({
-                        title: "Oops!",
-                        text: `Failed to get the stats ${title}`,
-                        icon: "error"
-                    });
+                    generate_api_error(response, true)
                 } else {
                     template_alert_container(ctx_holder, 'no-data', "No trip found for this context to generate the stats", 'add a trip', '<i class="fa-solid fa-car"></i>','/trip/add')
                     $(`#${ctx_holder}`).prepend(`<h2 class='title-chart'>${ucEachWord(title)}</h2>`)

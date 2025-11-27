@@ -35,7 +35,7 @@
                 error: function(response, jqXHR, textStatus, errorThrown) {
                     Swal.close()
                     if(response.status != 404){
-                        failedMsg(`get the stats ${title}`)
+                        generate_api_error(response, true)
                     } else {
                         template_alert_container(ctx_holder, 'no-data', "No vehicle found for this context to generate the stats", 'add a vehicle', '<i class="fa-solid fa-warehouse"></i>','/vehicle/add')
                         $(`#${ctx_holder}`).prepend(`<h2 class='title-chart'>${ucEachWord(title)}</h2>`)
