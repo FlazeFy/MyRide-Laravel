@@ -27,9 +27,11 @@ use App\Http\Controllers\DriverController;
 use App\Http\Controllers\AboutController;
 use App\Http\Controllers\AddDriverController;
 use App\Http\Controllers\GarageAddController;
+use App\Http\Controllers\RegisterController;
 
 Route::prefix('/')->group(function () {
     Route::get('/', [WelcomeController::class, 'index'])->name('welcome');
+    Route::get('/register', [RegisterController::class, 'index'])->name('register');
     Route::get('/login', [LoginController::class, 'index'])->name('login');
     Route::post('/login/validate', [LoginController::class, 'login_auth']);
     Route::post('/sign_out', [DashboardController::class, 'sign_out']);

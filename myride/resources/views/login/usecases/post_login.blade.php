@@ -11,13 +11,22 @@
         <input type="password" name="password" id="password" class="form-control" id="exampleInputPassword1">
         <a class="error_input" id="pass_msg"></a>
     </div>
-    <a class="error_input" id="all_msg"></a><br>
+    <a class="error_input" id="all_msg"></a>
 
     <input hidden name="token" value="" id="token">
     <input hidden name="email" value="" id="email">
     <input hidden name="role" value="" id="role">
     <input hidden name="profile_pic" value="" id="profile_pic">
-    <a onclick="login()" class="btn btn-success border-0 py-2 px-3 rounded-pill"><i class="fa-solid fa-arrow-right-to-bracket mx-1"></i> Enter the Garage</a>
+    <a onclick="login()" class="btn btn-success w-100 mb-3"><i class="fa-solid fa-arrow-right-to-bracket mx-1"></i> Enter the Garage</a>
+    <hr>
+    <div class="row">
+        <div class="col-md-6 col-sm-12 p-1">
+            <a href="/" class="btn btn-danger w-100"><i class="fa-solid fa-arrow-left mx-1"></i> Back to Landing</a>
+        </div>
+        <div class="col-md-6 col-sm-12 p-1">
+            <a href="/register" class="btn btn-primary w-100"><i class="fa-solid fa-arrow-right-to-bracket mx-1"></i> Register</a>
+        </div>
+    </div>
 </form>
 
 <script>

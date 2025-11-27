@@ -191,6 +191,9 @@ img:not(.gm-style img) {
     margin-top: 0; 
     position: relative; 
 }
+.progress-bar {
+    background: var(--successColor);
+}
 
 .btn-menu-landing, .carousel-indicators button{
     background-position: center;
