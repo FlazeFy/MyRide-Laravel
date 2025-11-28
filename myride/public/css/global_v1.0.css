@@ -205,7 +205,7 @@ img:not(.gm-style img) {
 
 .plate-number {
     background:var(--warningColor) !important; 
-    z-index: 999;
+    z-index: 998;
 }
 .chip-mini {
     font-size:var(--textSM); 
@@ -340,8 +340,9 @@ hr {
     font-weight: 600;
 }
 .summary-number {
-    font-size: calc(3*var(--textJumbo));
+    font-size: calc(2*var(--textJumbo));
     font-weight: 700;
+    margin: 0;
 }
 
 .message.small img {

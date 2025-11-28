@@ -5,15 +5,17 @@
     }
 </style>
 
-<table class="table table-bordered" id="clean_tb">
-    <thead>
-        <tr>
-            <th scope="col">Cleaning Info & Detail</th>
-            <th scope="col" style="width: 200px;">Time</th>
-        </tr>
-    </thead>
-    <tbody></tbody>
-</table>
+<div class="table-responsive">
+    <table class="table table-bordered" id="clean_tb">
+        <thead>
+            <tr>
+                <th scope="col">Cleaning Info & Detail</th>
+                <th scope="col" style="width: 200px;">Time</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
 
 <script>
     const build_layout_clean = (data) => {

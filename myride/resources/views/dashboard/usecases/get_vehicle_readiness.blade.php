@@ -1,17 +1,19 @@
 <h2>Vehicle Readiness</h2>
-<table class="table text-center table-bordered">
-    <thead>
-        <tr>
-            <th scope="col" style="width: 140px;">Plate Number</th>
-            <th scope="col">Vehicle Name & Type</th>
-            <th scope="col">Status</th>
-            <th scope="col">Fuel</th>
-            <th scope="col">Capacity</th>
-            <th scope="col">Action</th>
-        </tr>
-    </thead>
-    <tbody id="vehicle_readiness-holder"></tbody>
-</table>
+<div class="table-responsive">
+    <table class="table text-center table-bordered">
+        <thead>
+            <tr>
+                <th scope="col" style="min-width: 160px;">Plate Number</th>
+                <th scope="col" style="min-width: 160px;">Vehicle Name & Type</th>
+                <th scope="col" style="min-width: 160px;">Status</th>
+                <th scope="col" style="min-width: 160px;">Fuel</th>
+                <th scope="col">Capacity</th>
+                <th scope="col">Action</th>
+            </tr>
+        </thead>
+        <tbody id="vehicle_readiness-holder"></tbody>
+    </table>
+</div>
 
 <script>
     const get_all_trip = () => {
@@ -54,7 +56,7 @@
                     generate_api_error(response, true)
                 } else {
                     $(`#${holder}`).html(`<tr><td colspan="6" id="msg-${holder}"></td></tr>`)
-                    template_alert_container(`msg-${holder}`, 'no-data', "No vehicle found", 'add a trip', '<i class="fa-solid fa-car"></i>','/vehicle/add')
+                    template_alert_container(`msg-${holder}`, 'no-data', "No vehicle found", 'add a vehicle', '<i class="fa-solid fa-car"></i>','/vehicle/add')
                 }
             }
         });

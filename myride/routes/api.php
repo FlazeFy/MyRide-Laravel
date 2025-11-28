@@ -59,6 +59,10 @@ Route::prefix('/v1/question')->group(function () {
     Route::get('/faq', [QueriesFAQController::class, 'getShowingFAQ']);
 });
 
+Route::prefix('/v1/dictionary')->group(function () {
+    Route::get('/type/{type}', [QueriesDictionaryApi::class, 'getDictionaryByType']);
+});
+
 ######################### Private Route #########################
 
 Route::post('/v1/logout', [QueryAuthApi::class, 'logout'])->middleware(['auth:sanctum']);
@@ -78,7 +82,6 @@ Route::prefix('/v1/vehicle')->middleware(['auth:sanctum'])->group(function () {
 });
 
 Route::prefix('/v1/dictionary')->middleware(['auth:sanctum'])->group(function () {
-    Route::get('/type/{type}', [QueriesDictionaryApi::class, 'getDictionaryByType']);
     Route::post('/', [CommandsDictionaryApi::class, 'postCreateDictionary']);
     Route::delete('/{id}', [CommandsDictionaryApi::class, 'hardDeleteDictionaryById']);
 });

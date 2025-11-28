@@ -1,24 +1,24 @@
 <h2>Summary</h2>
 <div class="row">
-    <div class="col-xl-2 col-lg-4 col-md-6 col-sm-6 col-xs-12 mx-auto">
-        <h1 class="summary-number" id="total_vehicle-holder">0</h1>
-        <h4 class="summary-label">Vehicle</h4>
+    <div class="col-xl-2 col-lg-3 col-md-4 col-6 mx-auto">
+        <h3 class="summary-number" id="total_vehicle-holder">0</h3>
+        <h6 class="summary-label">Vehicle</h6>
     </div>
-    <div class="col-xl-2 col-lg-4 col-md-6 col-sm-6 col-xs-12 mx-auto">
-        <h1 class="summary-number" id="total_service-holder">0</h1>
-        <h4 class="summary-label">Service</h4>
+    <div class="col-xl-2 col-lg-3 col-md-4 col-6 mx-auto">
+        <h3 class="summary-number" id="total_service-holder">0</h3>
+        <h6 class="summary-label">Service</h6>
     </div>
-    <div class="col-xl-2 col-lg-4 col-md-6 col-sm-6 col-xs-12 mx-auto">
-        <h1 class="summary-number" id="total_clean-holder">0</h1>
-        <h4 class="summary-label">Clean</h4>
+    <div class="col-xl-2 col-lg-3 col-md-4 col-6 mx-auto">
+        <h3 class="summary-number" id="total_clean-holder">0</h3>
+        <h6 class="summary-label">Clean</h6>
     </div>
-    <div class="col-xl-2 col-lg-4 col-md-6 col-sm-6 col-xs-12 mx-auto">
-        <h1 class="summary-number" id="total_driver-holder">0</h1>
-        <h4 class="summary-label">Driver</h4>
+    <div class="col-xl-2 col-lg-3 col-md-4 col-6 mx-auto">
+        <h3 class="summary-number" id="total_driver-holder">0</h3>
+        <h6 class="summary-label">Driver</h6>
     </div>
-    <div class="col-xl-2 col-lg-4 col-md-6 col-sm-6 col-xs-12 mx-auto">
-        <h1 class="summary-number" id="total_trip-holder">0</h1>
-        <h4 class="summary-label">Trip</h4>
+    <div class="col-xl-2 col-lg-3 col-md-4 col-6 mx-auto">
+        <h3 class="summary-number" id="total_trip-holder">0</h3>
+        <h6 class="summary-label">Trip</h6>
     </div>
 </div>
 

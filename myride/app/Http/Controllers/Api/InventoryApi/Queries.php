@@ -166,7 +166,7 @@ class Queries extends Controller
             $res = InventoryModel::getInventoryByVehicle($user_id,$vehicle_id);
 
             // Response
-            if ($res) {
+            if ($res && count($res) > 0) {
                 return response()->json([
                     'status' => 'success',
                     'message' => Generator::getMessageTemplate("fetch", $this->module),

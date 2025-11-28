@@ -76,8 +76,8 @@
             let vehicle_id = params.get('vehicle_id')
 
             if (vehicle_id) {
-            get_vehicle_detail(vehicle_id)
-            get_vehicle_last_fuel(vehicle_id)
+                get_vehicle_detail(vehicle_id)
+                get_vehicle_last_fuel(vehicle_id)
             }
         }
     }

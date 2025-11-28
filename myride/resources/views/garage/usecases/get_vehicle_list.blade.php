@@ -63,11 +63,12 @@
 <script>
     let page = 1
     const get_all_vehicle = (page) => {
-        Swal.showLoading()
+        const holder = 'carouselVehicle'
         $.ajax({
             url: `/api/v1/vehicle/header`,
             type: 'GET',
             beforeSend: function (xhr) {
+                Swal.showLoading()
                 xhr.setRequestHeader("Accept", "application/json")
                 xhr.setRequestHeader("Authorization", "Bearer <?= session()->get("token_key"); ?>")    
             },
@@ -139,7 +140,12 @@
                     
             },
             error: function(response, jqXHR, textStatus, errorThrown) {
-                generate_api_error(response, true)
+                if(response.status != 404){
+                    generate_api_error(response, true)
+                } else {
+                    $(`#${holder}`).css('margin-top','0')
+                    template_alert_container(holder, 'no-data', "No vehicle found", 'add a vehicle', '<i class="fa-solid fa-car"></i>','/vehicle/add')
+                }
             }
         });
     }

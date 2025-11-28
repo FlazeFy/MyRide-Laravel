@@ -1,16 +1,18 @@
 <label>Service History</label>
-<table class="table">
-    <thead>
-        <tr>
-            <th scope="col">Notes</th>
-            <th scope="col">Category</th>
-            <th scope="col">Info</th>
-        </tr>
-    </thead>
-    <tbody id="list_service_history">
-        <tr><th scope="row" colspan="4" class="fst-italic fw-normal">- No Service Found -</th></tr>
-    </tbody>
-</table>
+<div class="table-responsive">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Notes</th>
+                <th scope="col">Category</th>
+                <th scope="col">Info</th>
+            </tr>
+        </thead>
+        <tbody id="list_service_history">
+            <tr><th scope="row" colspan="4" class="fst-italic fw-normal">- No Service Found -</th></tr>
+        </tbody>
+    </table>
+</div>
 
 <script>
     const get_vehicle_service_history = (id) => {

@@ -7,16 +7,18 @@
                 <button class="btn btn-danger" data-bs-dismiss="modal" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <div class="modal-body">
-                <table>
-                    <thead>
-                        <tr>
-                            <th style="width: 180px;">Vehicle</th>
-                            <th>Driver</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody id="assigned_driver-holder"></tbody>
-                </table>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th style="width: 180px;">Vehicle</th>
+                                <th>Driver</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="assigned_driver-holder"></tbody>
+                    </table>
+                </div>
                 <hr>
             </div>
         </div>

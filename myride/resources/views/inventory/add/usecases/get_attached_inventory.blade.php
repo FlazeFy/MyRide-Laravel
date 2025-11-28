@@ -1,17 +1,19 @@
 <label>Attached Inventory</label>
-<table class="table">
-    <thead>
-        <tr>
-            <th scope="col">Inventory Name</th>
-            <th scope="col">Category</th>
-            <th scope="col">Storage</th>
-            <th scope="col">Qty</th>
-        </tr>
-    </thead>
-    <tbody id="list_attached_inventory-holder">
-        <tr><th scope="row" colspan="4" class="fst-italic fw-normal">- No Inventory Found -</th></tr>
-    </tbody>
-</table>
+<div class="table-responsive">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Inventory Name</th>
+                <th scope="col">Category</th>
+                <th scope="col">Storage</th>
+                <th scope="col">Qty</th>
+            </tr>
+        </thead>
+        <tbody id="list_attached_inventory-holder">
+            <tr><th scope="row" colspan="4" class="fst-italic fw-normal">- No Inventory Found -</th></tr>
+        </tbody>
+    </table>
+</div>
 
 <script>
     $(document).on('change','#vehicle_holder', function(){

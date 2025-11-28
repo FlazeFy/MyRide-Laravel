@@ -1,13 +1,15 @@
 <h2>Vehicle Service Spending</h2>
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <th scope="col" style="width: 140px;">Vehicle</th>
-            <th scope="col">Price Total</th>
-        </tr>
-    </thead>
-    <tbody id="service_spending-holder"></tbody>
-</table>
+<div class="table-responsive">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th scope="col" style="width: 140px;">Vehicle</th>
+                <th scope="col">Price Total</th>
+            </tr>
+        </thead>
+        <tbody id="service_spending-holder"></tbody>
+    </table>
+</div>
 
 <script>
     const get_service_spending = () => {

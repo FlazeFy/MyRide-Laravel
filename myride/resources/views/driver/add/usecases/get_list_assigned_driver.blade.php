@@ -1,13 +1,15 @@
 <label>Assigned Driver</label>
-<table class="table">
-    <thead>
-        <tr>
-            <th scope="col" style="min-width:150px;">Driver</th>
-            <th scope="col">Vehicle</th>
-        </tr>
-    </thead>
-    <tbody id="list_assigned_driver-holder"></tbody>
-</table>
+<div class="table-responsive">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col" style="min-width:150px;">Driver</th>
+                <th scope="col">Vehicle</th>
+            </tr>
+        </thead>
+        <tbody id="list_assigned_driver-holder"></tbody>
+    </table>
+</div>
 
 <script>
     let page = 1

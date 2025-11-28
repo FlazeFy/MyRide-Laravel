@@ -1,7 +1,4 @@
-<div class="sidebar p-3" id="sidebar">
-    <button class="sidebar-toggle" id="sidebarToggle">
-        <i class="fa-solid fa-bars"></i>
-    </button>
+<div id="sidebar" class="sidebar">
     <h5 class="group-menu">Menu</h5>
     <ul class="nav nav-pills flex-column" id="sidebar_menu-holder">
         <li><a href="/dashboard" class="nav-link <?= $active_menu == "dashboard" ? "active" : "" ?>"><i class="fa-solid fa-table"></i> <span>Dashboard</span></a></li>
@@ -18,24 +15,26 @@
     </ul>
 </div>
 
-
 <script>
     $(document).ready(function() {
-        $('#sidebarToggle').on('click', function() {
-            $('#sidebar').toggleClass('collapsed')
-        })
-
-        const handleSidebar = () =>  {
-            if ($(window).width() <= 1023) {
-                $('#sidebar').addClass('collapsed')
+        $(".toogle_nav-button").on("click", function() {
+            if($(this).hasClass("close")){
+                $('#sidebar').css({
+                    width: "250px",
+                    paddingInline: 'var(--spaceMD)',
+                    boxShadow: 'rgba(0, 0, 0, 0.5) 0px 7px 17.5px'
+                })
+                $(this).addClass('open').removeClass('close')
             } else {
-                $('#sidebar').removeClass('collapsed')
+                $('#sidebar').css({
+                    width: "0",
+                    paddingInline: '0',
+                    boxShadow: 'none'
+                })
+                $(this).addClass('close').removeClass('open')
             }
-        }
-
-        handleSidebar()
-        $(window).on('resize', handleSidebar)
-    })
+        });
+    });
 
     const generate_vehicle_list = (data,ctx_holder) => {
         $(`#${ctx_holder}`).empty()

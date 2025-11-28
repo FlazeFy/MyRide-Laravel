@@ -1,16 +1,18 @@
 <h2>All Fuel</h2>
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <th scope="col" style="width: 140px;">Vehicle</th>
-            <th scope="col" style="width: 240px;">Fuel Info</th>
-            <th scope="col">Type / Brand</th>
-            <th scope="col" style="width: 160px;">Fuel At</th>
-            <th scope="col" style="width: 130px;">Action</th>
-        </tr>
-    </thead>
-    <tbody id="fuel-holder"></tbody>
-</table>
+<div class="table-responsive">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th scope="col" style="min-width: 160px;">Vehicle</th>
+                <th scope="col" style="min-width: 160px;">Fuel Info</th>
+                <th scope="col" style="min-width: 160px;">Type / Brand</th>
+                <th scope="col" style="min-width: 160px;">Fuel At</th>
+                <th scope="col" style="width: 130px;">Action</th>
+            </tr>
+        </thead>
+        <tbody id="fuel-holder"></tbody>
+    </table>
+</div>
 
 <script>
     let page = 1
@@ -18,11 +20,11 @@
     const get_all_fuel = (page) => {
         const holder = 'fuel-holder'
 
-        Swal.showLoading();
         $.ajax({
             url: `/api/v1/fuel`,
             type: 'GET',
             beforeSend: function (xhr) {
+                Swal.showLoading()
                 xhr.setRequestHeader("Accept", "application/json")
                 xhr.setRequestHeader("Authorization", "Bearer <?= session()->get("token_key"); ?>")
                 $(`#${holder}`).empty()
@@ -70,10 +72,12 @@
                                 <p class="mb-0">${getDateToContext(dt.created_at,'calendar')}</p>
                             </td>
                             <td>
-                                ${dt.fuel_bill != null ? `<a class="btn btn-primary" style="width:50px;"><i class="fa-solid fa-receipt"></i></a>` : ""}
-                                <a class="btn btn-danger btn-delete" style="width:50px;" data-url="/api/v1/fuel/destroy/${dt.id}" data-context="Fuel"><i class="fa-solid fa-trash"></i></a>
-                                <a class="btn btn-warning btn-update" style="width:50px;" data-vehicle-plate-number="${dt.vehicle_plate_number}" data-id="${dt.id}"
-                                    data-fuel-type="${dt.fuel_type}" data-fuel-brand="${dt.fuel_brand}" data-fuel-volume="${dt.fuel_volume}" data-fuel-price-total="${dt.fuel_price_total}" data-fuel-ron="${dt.fuel_ron}"><i class="fa-solid fa-pen-to-square"></i></a>
+                                <div class='d-flex flex-wrap gap-2'>
+                                    ${dt.fuel_bill != null ? `<a class="btn btn-primary" style="width:50px;"><i class="fa-solid fa-receipt"></i></a>` : ""}
+                                    <a class="btn btn-danger btn-delete" style="width:50px;" data-url="/api/v1/fuel/destroy/${dt.id}" data-context="Fuel"><i class="fa-solid fa-trash"></i></a>
+                                    <a class="btn btn-warning btn-update" style="width:50px;" data-vehicle-plate-number="${dt.vehicle_plate_number}" data-id="${dt.id}"
+                                        data-fuel-type="${dt.fuel_type}" data-fuel-brand="${dt.fuel_brand}" data-fuel-volume="${dt.fuel_volume}" data-fuel-price-total="${dt.fuel_price_total}" data-fuel-ron="${dt.fuel_ron}"><i class="fa-solid fa-pen-to-square"></i></a>
+                                </div>
                             </td>
                         </tr>
                     `)
@@ -86,7 +90,7 @@
                     generate_api_error(response, true)
                 } else {
                     $(`#${holder}`).html(`<tr><td colspan="5" id="msg-${holder}"></td></tr>`)
-                    template_alert_container(`msg-${holder}`, 'no-data', "No fuel found", 'add a trip', '<i class="fa-solid fa-gas-pump"></i>','/fuel/add')
+                    template_alert_container(`msg-${holder}`, 'no-data', "No fuel found", 'add a fuel', '<i class="fa-solid fa-gas-pump"></i>','/fuel/add')
                 }
             }
         });

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\DictionaryApi;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 
 // Model
 use App\Models\DictionaryModel;
@@ -78,7 +79,12 @@ class Queries extends Controller
     public function getDictionaryByType(Request $request,$type)
     {
         try{
-            $user_id = $request->user()->id;
+            if ($request->hasHeader('Authorization')) {
+                $user = Auth::guard('sanctum')->user(); 
+                $user_id = $user ? $user->id : null;
+            } else {
+                $user_id = null;
+            }
 
             // Model
             $res = DictionaryModel::select('dictionary_name','dictionary_type')
@@ -117,7 +123,7 @@ class Queries extends Controller
         } catch(\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => Generator::getMessageTemplate("unknown_error", null),
+                'message' => $e->getMessage(),
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }

@@ -70,15 +70,13 @@
     <?php if(!preg_match('(embed)', $cleanedUrl)): ?>
         @include('others.bars.navbar')
     <?php endif; ?>
-    <div class="d-flex">
-        <?php if(!preg_match('(embed)', $cleanedUrl) && $route !== "welcome"): ?>
-            @include('others.bars.sidebar')
-        <?php endif; ?>
+    <?php if(!preg_match('(embed)', $cleanedUrl) && $route !== "welcome"): ?>
+        @include('others.bars.sidebar')
+    <?php endif; ?>
 
-        @include('layouts.post_sign_out')
-        <div class="content flex-grow-1">
-            @yield('content')
-        </div>
+    @include('layouts.post_sign_out')
+    <div class="content flex-grow-1">
+        @yield('content')
     </div>
     <?php if($route === "welcome"): ?>
         @include('welcome.usecases.footer')

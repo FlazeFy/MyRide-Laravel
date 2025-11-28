@@ -1,11 +1,7 @@
 <nav class="navbar navbar-expand-lg">
-    <div class="container-fluid">
+    <div class="container-fluid flex flex-wrap gap-3">
+        <button class="toogle_nav-button btn btn-primary px-3 close"><i class="fa-solid fa-bars"></i></button>
         <h2 class="navbar-brand mb-0"><a href="/">MyRide</a></h2>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" 
-                data-bs-target="#navbarNav" aria-controls="navbarNav" 
-                aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
         
         @if(session()->get('token_key'))
         <div class="collapse navbar-collapse" id="navbarNav">

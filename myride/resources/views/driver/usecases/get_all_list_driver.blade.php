@@ -1,17 +1,19 @@
 <h2>All Driver</h2>
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <th scope="col" style="width: 300px;">Username & FullName</th>
-            <th scope="col" style="width: 300px;">Contact</th>
-            <th scope="col">Notes</th>
-            <th scope="col" style="width: 130px;">Total Trip</th>
-            <th scope="col" style="width: 160px;">Properties</th>
-            <th scope="col" style="width: 130px;">Action</th>
-        </tr>
-    </thead>
-    <tbody id="driver-holder"></tbody>
-</table>
+<div class="table-responsive">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th scope="col" style="min-width: 240px;">Username & FullName</th>
+                <th scope="col" style="min-width: 240px;">Contact</th>
+                <th scope="col" style="min-width: 200px;">Notes</th>
+                <th scope="col" style="min-width: 140px;">Total Trip</th>
+                <th scope="col" style="min-width: 140px;">Properties</th>
+                <th scope="col" style="min-width: 140px;">Action</th>
+            </tr>
+        </thead>
+        <tbody id="driver-holder"></tbody>
+    </table>
+</div>
 
 <script>
     let page = 1
@@ -58,13 +60,15 @@
                                 }
                             </td>
                             <td>
-                                <a class="btn btn-danger btn-delete" style="width:50px;" data-url="/api/v1/driver/destroy/${dt.id}" data-context="Driver"><i class="fa-solid fa-trash"></i></a>
-                                <a class="btn btn-warning btn-update" style="width:50px;" 
-                                    data-username="${dt.username}" data-id="${dt.id}" 
-                                    data-fullname="${dt.fullname}" data-email="${dt.email}" 
-                                    data-notes="${dt.notes}" data-phone="${dt.phone}"><i class="fa-solid fa-pen-to-square"></i></a>
-                                <a class="btn btn-primary btn-history-trip" style="width:50px;" data-bs-toggle="modal" data-bs-target="#trip_history-modal" 
-                                    data-username="${dt.username}" data-id="${dt.id}"><i class="fa-solid fa-rotate-left"></i></a>
+                                <div class="d-flex flex-wrap gap-2">
+                                    <a class="btn btn-danger btn-delete" style="width:50px;" data-url="/api/v1/driver/destroy/${dt.id}" data-context="Driver"><i class="fa-solid fa-trash"></i></a>
+                                    <a class="btn btn-warning btn-update" style="width:50px;" 
+                                        data-username="${dt.username}" data-id="${dt.id}" 
+                                        data-fullname="${dt.fullname}" data-email="${dt.email}" 
+                                        data-notes="${dt.notes}" data-phone="${dt.phone}"><i class="fa-solid fa-pen-to-square"></i></a>
+                                    <a class="btn btn-primary btn-history-trip" style="width:50px;" data-bs-toggle="modal" data-bs-target="#trip_history-modal" 
+                                        data-username="${dt.username}" data-id="${dt.id}"><i class="fa-solid fa-rotate-left"></i></a>
+                                </div>
                             </td>
                         </tr>
                     `)

@@ -1,16 +1,18 @@
 <h2>All Clean</h2>
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <th scope="col" style="width: 140px;">Vehicle</th>
-            <th scope="col" style="width: 240px;">Cleaning Info</th>
-            <th scope="col">Cleaning Detail</th>
-            <th scope="col" style="width: 160px;">Properties</th>
-            <th scope="col" style="width: 60px;">Action</th>
-        </tr>
-    </thead>
-    <tbody id="clean-holder"></tbody>
-</table>
+<div class="table-responsive">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th scope="col" style="min-width: 160px;">Vehicle</th>
+                <th scope="col" style="min-width: 200px;">Cleaning Info</th>
+                <th scope="col" style="min-width: 240px;">Cleaning Detail</th>
+                <th scope="col" style="min-width: 160px;">Properties</th>
+                <th scope="col">Action</th>
+            </tr>
+        </thead>
+        <tbody id="clean-holder"></tbody>
+    </table>
+</div>
 
 <script>
     let page = 1
@@ -18,11 +20,11 @@
     const get_all_clean = (page) => {
         const holder = 'clean-holder'
 
-        Swal.showLoading();
         $.ajax({
             url: `/api/v1/clean`,
             type: 'GET',
             beforeSend: function (xhr) {
+                Swal.showLoading()
                 xhr.setRequestHeader("Accept", "application/json")
                 xhr.setRequestHeader("Authorization", `Bearer ${token}`)
                 $(`#${holder}`).empty()

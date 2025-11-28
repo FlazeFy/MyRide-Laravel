@@ -5,23 +5,23 @@
     let page = 1
 
     const get_all_history = (page) => {
-        const holder = $('#history-holder')
+        const holder = 'history-holder'
 
-        Swal.showLoading();
         $.ajax({
             url: `/api/v1/history`,
             type: 'GET',
             beforeSend: function (xhr) {
+                Swal.showLoading()
                 xhr.setRequestHeader("Accept", "application/json")
                 xhr.setRequestHeader("Authorization", `Bearer ${token}`)
-                holder.empty()
+                $(`#${holder}`).empty()
             },
             success: function(response) {
                 Swal.close()
                 const data = response.data.data
                 
                 data.forEach(dt => {
-                    holder.append(`
+                    $(`#${holder}`).append(`
                         <div class="container bordered p-3">
                             <h6 class='mb-1'>${dt.history_type} ${dt.history_context}</h6>
                             <p class='date-text text-secondary'>Created At : ${getDateToContext(dt.created_at,'calendar')}</p>
@@ -31,7 +31,11 @@
                 });
             },
             error: function(response, jqXHR, textStatus, errorThrown) {
-                generate_api_error(response, true)
+                if(response.status != 404){
+                    generate_api_error(response, true)
+                } else {
+                    template_alert_container(holder, 'no-data', "No history found", null, '<i class="fa-solid fa-rotate-left"></i>',null)
+                }
             }
         });
     };

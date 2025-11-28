@@ -154,7 +154,7 @@ const get_context_opt = (context,token) => {
             ctx_holder.push(`${el}_holder`)
         })
     } else {
-        ctx_holder = `${context}_holder`
+        ctx_holder = context.includes('fuel_type_') ? 'fuel_type_holder' : `${context}_holder`
     }
 
     const generate_context_list = (holder,data) => {

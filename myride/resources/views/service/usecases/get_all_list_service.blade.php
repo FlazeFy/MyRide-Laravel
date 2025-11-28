@@ -1,17 +1,19 @@
 <h2>All Service</h2>
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <th scope="col" style="width: 140px;">Vehicle</th>
-            <th scope="col">Category</th>
-            <th scope="col">Info</th>
-            <th scope="col" style="width: 240px;">Notes</th>
-            <th scope="col" style="width: 160px;">Properties</th>
-            <th scope="col" style="width: 130px;">Action</th>
-        </tr>
-    </thead>
-    <tbody id="service-holder"></tbody>
-</table>
+<div class="table-responsive">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th scope="col" style="min-width: 160px;">Vehicle</th>
+                <th scope="col" style="min-width: 160px;">Category</th>
+                <th scope="col" style="min-width: 160px;">Info</th>
+                <th scope="col" style="min-width: 160px;">Notes</th>
+                <th scope="col" style="min-width: 160px;">Properties</th>
+                <th scope="col" style="width: 130px;">Action</th>
+            </tr>
+        </thead>
+        <tbody id="service-holder"></tbody>
+    </table>
+</div>
 
 <script>
     let page = 1
@@ -64,11 +66,13 @@
                                 }
                             </td>
                             <td>
-                                <a class="btn btn-danger btn-delete" style="width:50px;" data-url="/api/v1/service/destroy/${dt.id}" data-context="Service"><i class="fa-solid fa-trash"></i></a>
-                                <a class="btn btn-warning btn-update" style="width:50px;" 
-                                    data-vehicle-plate-number="${dt.vehicle_plate_number}" data-id="${dt.id}" data-remind-at="${dt.remind_at}"
-                                    data-service-category="${dt.service_category}" data-service-price-total="${dt.service_price_total}" 
-                                    data-service-note="${dt.service_note}" data-service-location="${dt.service_location}"><i class="fa-solid fa-pen-to-square"></i></a>
+                                <div class="d-flex flex-wrap gap-2">
+                                    <a class="btn btn-danger btn-delete" style="width:50px;" data-url="/api/v1/service/destroy/${dt.id}" data-context="Service"><i class="fa-solid fa-trash"></i></a>
+                                    <a class="btn btn-warning btn-update" style="width:50px;" 
+                                        data-vehicle-plate-number="${dt.vehicle_plate_number}" data-id="${dt.id}" data-remind-at="${dt.remind_at}"
+                                        data-service-category="${dt.service_category}" data-service-price-total="${dt.service_price_total}" 
+                                        data-service-note="${dt.service_note}" data-service-location="${dt.service_location}"><i class="fa-solid fa-pen-to-square"></i></a>
+                                </div>
                             </td>
                         </tr>
                     `)

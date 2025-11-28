@@ -1,13 +1,15 @@
-<table class="table table-bordered" id="driver_tb">
-    <thead>
-        <tr>
-            <th scope="col">Driver</th>
-            <th scope="col">Notes</th>
-            <th scope="col">Action</th>
-        </tr>
-    </thead>
-    <tbody></tbody>
-</table>
+<div class="table-responsive">
+    <table class="table table-bordered" id="driver_tb">
+        <thead>
+            <tr>
+                <th scope="col">Driver</th>
+                <th scope="col">Notes</th>
+                <th scope="col">Action</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
 
 <script>
     const build_layout_driver = (data) => {
