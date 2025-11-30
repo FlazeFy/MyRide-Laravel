@@ -58,6 +58,7 @@ const generate_line_chart = (title, holder, data) => {
                 }]
             }
 
+            $(`#${holder}`).wrap("<div style='overflow-x:auto;'><div style='min-width:560px;'></div></div>")
             let chart = new ApexCharts(document.querySelector(`#${holder}`), options)
             chart.render()
         } else {
@@ -158,6 +159,7 @@ const generate_bar_chart = (title, holder, data) => {
                 }]
             };
 
+            $(`#${holder}`).wrap("<div style='overflow-x:auto;'><div style='min-width:560px;'></div></div>")
             let chart = new ApexCharts(document.querySelector(`#${holder}`), options)
             chart.render()
         } else {

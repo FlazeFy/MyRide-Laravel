@@ -35,19 +35,19 @@ const template_trip_box = (dt, extra_class = '') => {
     const clickFunc = coorOrigin ? `onclick="show_location(${coorOrigin[0]}, ${coorOrigin[1]}, ${coorDestination[0]}, ${coorDestination[1]})"` : ''
 
     return `
-        <button class="container text-start mb-4 ${extra_class}" style="${deletedStyle}" ${deletedTitle} ${clickFunc}>
+        <button class="container-fluid text-start mb-4 ${extra_class}" style="${deletedStyle}" ${deletedTitle} ${clickFunc}>
             ${dt.vehicle_plate_number ? `<a class="plate-number position-absolute" style="top:calc(-2*var(--spaceSM)); left:calc(-2*var(--spaceSM)); width: fit-content;">${dt.vehicle_plate_number}</a>`:''}
             ${dt.vehicle_name ? `<h6 class="mb-2">${dt.vehicle_name}</h6>`:''}
             <p class="text-secondary">${dt.trip_desc ?? '- No Description Provided -'}</p>
             <hr>
-            <div class="mt-3 d-flex justify-content-between">
+            <div class="mt-3 d-flex justify-content-between flex-wrap align-items-center">
                 <div>
                     <h6 class="mb-0">From</h6>
                     <p class="mb-0">${dt.trip_origin_name}</p>
                 </div>
                 ${ coorOrigin ? `
                     <div class="text-center">
-                        <a><i class="fa-solid fa-arrow-right fa-xs"></i></a>
+                        <a><i class="fa-solid fa-arrow-right"></i></a>
                         <p class="mb-0" style="font-size:var(--textMD);">${calculate_distance(coorOrigin[0], coorOrigin[1], coorDestination[0], coorDestination[1])} Km</p>
                     </div>`: ''
                 }
@@ -75,7 +75,7 @@ const template_trip_box = (dt, extra_class = '') => {
                 }      
             </div>
             <hr>
-            <div class="d-flex justify-content-between">
+            <div class="d-flex justify-content-between flex-wrap align-items-center gap-1">
                 <div>
                     <h6 class="mb-0 text-secondary">Created At</h6>
                     <p class="mb-0 text-secondary">${dt.created_at}</p>
@@ -86,15 +86,15 @@ const template_trip_box = (dt, extra_class = '') => {
                         <p class="mb-0 text-secondary">${dt.updated_at}</p>
                     </div>` : ""}
                 <div>
-                    <a class="btn btn-warning pt-2 pb-1 px-3 ms-2 btn-update" style="font-size:var(--textMD);" data-vehicle-plate-number="${dt.vehicle_plate_number}" data-id="${dt.id}"
+                    <a class="btn btn-warning py-2 px-3 btn-update" style="font-size:var(--textMD);" data-vehicle-plate-number="${dt.vehicle_plate_number}" data-id="${dt.id}"
                         data-trip-category="${dt.trip_category}" data-trip-person="${dt.trip_person}" data-trip-destination-name="${dt.trip_destination_name}" data-trip-origin-name="${dt.trip_origin_name}"
                         data-trip-desc="${dt.trip_desc}" data-trip-origin-coordinate="${dt.trip_origin_coordinate}" data-trip-destination-coordinate="${dt.trip_destination_coordinate}">
                         <i class="fa-solid fa-pen-to-square"></i>
                     </a>
-                    <a class="btn btn-danger pt-2 pb-1 px-3 ms-2 btn-delete" data-url="/api/v1/trip/destroy/${dt.id}" data-context="Trip" style="font-size:var(--textMD);">
+                    <a class="btn btn-danger py-2 px-3 ms-2 btn-delete" data-url="/api/v1/trip/destroy/${dt.id}" data-context="Trip" style="font-size:var(--textMD);">
                         <i class="fa-solid fa-trash"></i>
                     </a>
-                    <a class="btn btn-primary pt-2 pb-1 px-3 ms-2" data-bs-toggle="collapse" href="#collapseDetailTrip${dt.id}" role="button" aria-expanded="false" style="font-size:var(--textMD);">
+                    <a class="btn btn-primary py-2 px-3 ms-2" data-bs-toggle="collapse" href="#collapseDetailTrip${dt.id}" role="button" aria-expanded="false" style="font-size:var(--textMD);">
                         <i class="fa-solid fa-up-right-and-down-left-from-center"></i>
                     </a>
                 </div>

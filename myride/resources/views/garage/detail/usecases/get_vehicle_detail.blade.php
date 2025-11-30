@@ -1,52 +1,47 @@
-<div class="container">
-    <h1 class="mb-1" id="vehicle_name"></h1>
-    <div class="d-flex justify-content-between">
-        <h4><span class="btn btn-success rounded-pill px-3 me-2" style="font-size:var(--textXMD);" id="vehicle_type"></span><span id="vehicle_merk"></span></h4>
-        <h4 id="vehicle_distance"></h4>
+<h1 id="vehicle_name"></h1><hr>
+<div class="d-flex justify-content-between align-items-center">
+    <h6><span class="btn btn-success rounded-pill px-3 py-1 me-2" style="font-size:var(--textXMD);" id="vehicle_type"></span><span id="vehicle_merk"></span></h6>
+    <h6 id="vehicle_distance"></h6>
+</div>
+<p id="vehicle_desc"></p>
+<br>
+<h3 class="mb-2">Additional Info</h3><hr>
+<div class="row d-flex flex-wrap align-items-center">
+    <div class="col-xl-3 col-md-4 col-sm-6 col-6 pb-3">
+        <h6 class="mb-2">Plate Number</h6>
+        <span id="vehicle_plate_number"></span>
     </div>
-    <br>
-    <p id="vehicle_desc"></p>
-    <br>
-    <h3 class="mb-2">Additional Info</h3><hr>
-    <div class="row mb-3">
-        <div class="col-md-6 col-sm-12">
-            <h6 class="mb-2">Plate Number</h6>
-            <span id="vehicle_plate_number"></span>
-        </div>
-        <div class="col-md-6 col-sm-12">
-            <h6 class="mb-0">Status</h6>
-            <span id="vehicle_status" class="ms-2"></span>
-        </div>
+    <div class="col-xl-3 col-md-4 col-sm-6 col-6 pb-2">
+        <h6 class="mb-0">Status</h6>
+        <span id="vehicle_status"></span>
     </div>
-    <div class="row mb-4">
-        <div class="col-lg-4 col-md-6 col-sm-12">
-            <h6 class="mb-0">Category</h6>
-            <span class="text-secondary" id="vehicle_category"></span>
-        </div>
-        <div class="col-lg-4 col-md-6 col-sm-12">
-            <h6 class="mb-0">Color</h6>
-            <span class="text-secondary" id="vehicle_color"></span>
-        </div>
-        <div class="col-lg-4 col-md-6 col-sm-12">
-            <h6 class="mb-0">Capacity</h6>
-            <span class="text-secondary" id="vehicle_capacity"></span>
-        </div>
+    <div class="col-xl-2 col-md-4 col-sm-6 col-6 pb-2">
+        <h6 class="mb-0">Category</h6>
+        <span class="text-secondary" id="vehicle_category"></span>
     </div>
-    <br>
-    <h3 class="mb-2">Fuel Info</h3><hr>
-    <div class="row">
-        <div class="col-md-6 col-sm-12">
-            <h5>Capacity</h5>
-            <h4 class="fw-bold" id="vehicle_fuel_capacity"></h4>
-            <h5>Status</h5>
-            <h4 class="fw-bold" id="vehicle_fuel_status"></h4>
-        </div>
-        <div class="col-md-6 col-sm-12 d-flex align-items-center">
-            <div>
-                <h5>Default Fuel</h5>
-                <h4 class="fw-bold" id="vehicle_default_fuel"></h4>
-            </div>
-        </div>
+    <div class="col-xl-2 col-md-4 col-sm-6 col-6 pb-2">
+        <h6 class="mb-0">Color</h6>
+        <span class="text-secondary" id="vehicle_color"></span>
+    </div>
+    <div class="col-xl-2 col-md-4 col-sm-6 col-6 pb-2">
+        <h6 class="mb-0">Capacity</h6>
+        <span class="text-secondary" id="vehicle_capacity"></span>
+    </div>
+</div>
+<br>
+<h3 class="mb-2">Fuel Info</h3><hr>
+<div class="row">
+    <div class="col-xl-3 col-md-3 col-sm-6 col-4">
+        <h5 class="mb-0">Capacity</h5>
+        <h5 class="fw-bold" id="vehicle_fuel_capacity"></h5>
+    </div>
+    <div class="col-xl-4 col-md-5 col-sm-6 col-8">
+        <h5 class="mb-0">Status</h5>
+        <h5 class="fw-bold" id="vehicle_fuel_status"></h5>
+    </div>
+    <div class="col-xl-5 col-md-4 col-sm-6 col-12">
+        <h5 class="mb-0">Default Fuel</h5>
+        <h5 class="fw-bold" id="vehicle_default_fuel"></h5>
     </div>
 </div>
 
@@ -72,14 +67,14 @@
                 $('#vehicle_merk').html(detail.vehicle_merk)
                 $('#vehicle_type').html(detail.vehicle_type)
                 $('#vehicle_category').html(detail.vehicle_category)
-                $('#vehicle_plate_number').html(`<span class="plate-number mb-0">${detail.vehicle_plate_number}</span>`)
+                $('#vehicle_plate_number').html(`<span class="plate-number m-0">${detail.vehicle_plate_number}</span>`)
                 $('#vehicle_color').html(detail.vehicle_color)
                 $('#vehicle_default_fuel').html(detail.vehicle_default_fuel)
                 $('#vehicle_fuel_status').html(detail.vehicle_fuel_status)
                 $('#vehicle_capacity').html(`${detail.vehicle_capacity} person`)
                 $('#vehicle_status').html(
-                    `${detail.deleted_at ? `<span class="btn btn-danger rounded-pill px-2 py-1 me-2" style="font-size:var(--textMD);">Deleted at <span class="date-holder">${getDateToContext(detail.deleted_at,'calendar')}</span></span>` :''}
-                    <span class="btn btn-success rounded-pill px-2 py-1 me-2" style="font-size:var(--textMD);">${detail.vehicle_status}</span>`
+                    `${detail.deleted_at ? `<span class="btn btn-danger rounded-pill px-2 py-1 m-0" style="font-size:var(--textMD);">Deleted at <span class="date-holder">${getDateToContext(detail.deleted_at,'calendar')}</span></span>` :''}
+                    <span class="btn btn-success rounded-pill px-2 py-1 m-0" style="font-size:var(--textMD);">${detail.vehicle_status}</span>`
                 )
                 $('#vehicle_distance').html(`${detail.vehicle_distance} Km`)
                 $('#vehicle_desc').html(detail.vehilce_desc ?? '<span class="fst-italic">- No Description Provided -</span>')

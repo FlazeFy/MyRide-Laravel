@@ -121,8 +121,14 @@ img:not(.gm-style img) {
 }
 .content {
     flex: 1;
-    padding: 20px;
+    padding: var(--spaceMD);
 }
+@media (max-width: 575px) {
+    .content {
+        padding: var(--spaceMini);
+    } 
+}
+
 .footer {
     border-top: 2px solid var(--darkColor);
 }
@@ -257,6 +263,11 @@ label, input, textarea, select {
     margin-bottom: var(--spaceLG);
     background: var(--whiteColor);
     position: relative;
+}
+@media (max-width: 575px) {
+    .container, .modal-content, .swal2-popup, .popover, .container-fluid {
+        padding: var(--spaceXMD);
+    } 
 }
 .container, .container-fluid {
     width: 100%;
