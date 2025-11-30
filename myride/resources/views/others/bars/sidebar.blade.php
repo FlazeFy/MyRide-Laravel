@@ -24,15 +24,16 @@
                     paddingInline: 'var(--spaceMD)',
                     boxShadow: 'rgba(0, 0, 0, 0.5) 0px 7px 17.5px'
                 })
-                $(this).addClass('open').removeClass('close')
             } else {
                 $('#sidebar').css({
                     width: "0",
                     paddingInline: '0',
                     boxShadow: 'none'
                 })
-                $(this).addClass('close').removeClass('open')
             }
+            $(this).find('i').toggleClass('fa-bars fa-circle-xmark')
+            $(this).toggleClass('open close') 
+            $(this).toggleClass('btn-primary btn-danger')                        
         });
     });
 
@@ -66,7 +67,7 @@
                 <li><a href="/inventory" class="nav-link <?= $active_menu == "inventory" ? "active" : "" ?>"><i class="fa-solid fa-boxes-stacked"></i> Inventory</a></li>
             `)
         } else {
-            $(`#${holder}`).prepend(`<li><a href="/garage/add" class="nav-link"><i class="fa-solid fa-plus"></i> Add Vehicle</a></li>`)
+            $(`#${holder}`).prepend(`<li><a href="/garage/add" class="nav-link"><i class="fa-solid fa-plus"></i> Vehicle</a></li>`)
         }
     }
 

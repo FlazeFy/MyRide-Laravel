@@ -7,18 +7,18 @@
     </script>
 
     <div class="position-relative">
-        <a class="btn btn-success" href='/clean/add'><i class="fa-solid fa-plus"></i> Add Clean</a>
+        <a class="btn btn-success" href='/clean/add'><i class="fa-solid fa-plus"></i> Clean</a>
         @include('clean.usecases.get_export_clean')
         <div class="row mt-3">
             <div class="col-xl-9 col-lg-8 col-md-12">
-                <div class="container">
+                <div class="container-fluid">
                     @include('clean.usecases.get_all_list_clean')
                     @include('clean.usecases.hard_delete_clean')
                     @include('clean.usecases.put_finish_clean')
                 </div>
             </div>
             <div class="col-xl-3 col-lg-4 col-md-12">
-                <div class="container">
+                <div class="container-fluid">
                     @include('clean.usecases.get_clean_summary')
                 </div>
             <div>

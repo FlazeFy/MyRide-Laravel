@@ -3,9 +3,9 @@
     <table class="table">
         <thead>
             <tr>
-                <th scope="col">Inventory Name</th>
-                <th scope="col">Category</th>
-                <th scope="col">Storage</th>
+                <th scope="col" style='min-width: 240px;'>Inventory Name</th>
+                <th scope="col" style='min-width: 160px;'>Category</th>
+                <th scope="col" style='min-width: 160px;'>Storage</th>
                 <th scope="col">Qty</th>
             </tr>
         </thead>

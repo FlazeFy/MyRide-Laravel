@@ -2,7 +2,7 @@
 <form action="/garage/edit_doc/{{$id}}" method="POST">
     @csrf
     <div>
-        <a class="btn btn-add-att mb-2 text-white" style="float:none;" id="add_att_btn" onclick="addAttachmentForm()"><i class="fa-solid fa-plus"></i> Add Attachment</a>
+        <a class="btn btn-add-att mb-2 text-white" style="float:none;" id="add_att_btn" onclick="addAttachmentForm()"><i class="fa-solid fa-plus"></i> Attachment</a>
         <div class="attachment-holder" id="attachment-holder">
         </div>
         <input hidden id="vehicle_document" name="vehicle_document">

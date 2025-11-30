@@ -18,7 +18,7 @@
                 <label>Notes</label>
                 <textarea class="form-control" name="notes" id="notes"></textarea>
                 <hr>
-                <button class="btn btn-success rounded-pill px-4" id="submit_update-btn"><i class="fa-solid fa-floppy-disk"></i> Save Changes</button>
+                <button class="btn btn-success rounded-pill px-4 w-100" id="submit_update-btn"><i class="fa-solid fa-floppy-disk"></i> Save Changes</button>
             </div>
         </div>
     </div>

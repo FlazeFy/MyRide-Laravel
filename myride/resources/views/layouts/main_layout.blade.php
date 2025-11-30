@@ -11,7 +11,30 @@
         $route = Route::currentRouteName();
     @endphp
 
-    <title>My Ride</title>
+    <title>
+        @php
+            $path = request()->path();
+            
+            if ($path === '/' || $path === '') {
+                echo "MyRide";
+            } else {
+                $segments = explode('/', trim($path, '/'));
+                $titleParts = ["MyRide"];
+
+                foreach ($segments as $segment) {
+                    // Skip UUID
+                    if (preg_match('/^[0-9a-fA-F-]{36}$/', $segment)) {
+                        continue;
+                    }
+
+                    $clean = str_replace(['-', '_'], ' ', $segment);
+                    $titleParts[] = ucwords($clean);
+                }
+
+                echo implode(' | ', $titleParts);
+            }
+        @endphp
+    </title>
     <link rel="icon" type="image/png" href="{{asset('assets/logo_nocap.png')}}"/>
 
     <!-- Fonts -->

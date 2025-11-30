@@ -50,7 +50,9 @@
             <div class="bordered rounded p-3">
                 <div class="row" id="checklist-holder"></div>
             </div>
-            <a class="btn btn-success rounded-pill py-3 w-100 mt-3" id="submit-add-clean-btn"><i class="fa-solid fa-floppy-disk"></i> Save Clean</a>
+            <div class="d-grid d-md-inline-block">
+                <a class="btn btn-success rounded-pill p-3 w-100 w-md-auto mt-3" id="submit-add-clean-btn"><i class="fa-solid fa-floppy-disk"></i> Save Clean</a>
+            </div>
         </div>
     </div>
 </form>

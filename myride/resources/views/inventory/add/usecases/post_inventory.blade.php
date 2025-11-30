@@ -42,8 +42,10 @@
             </div>
             <hr>
             <label>Inventory Image</label>
-            <input type="file">
-            <a class="btn btn-success rounded-pill py-3 w-100 mt-3" id="submit-add-inventory-btn"><i class="fa-solid fa-floppy-disk"></i> Save Inventory</a>
+            <input type="file"><br>
+            <div class="d-grid d-md-inline-block">
+                <a class="btn btn-success rounded-pill p-3 w-100 w-md-auto mt-3" id="submit-add-inventory-btn"><i class="fa-solid fa-floppy-disk"></i> Save Inventory</a>
+            </div>
         </div>
     </div>
 </form>

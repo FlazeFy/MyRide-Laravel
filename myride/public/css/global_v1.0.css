@@ -121,11 +121,16 @@ img:not(.gm-style img) {
 }
 .content {
     flex: 1;
-    padding: var(--spaceMD);
+    padding: var(--spaceLG);
+}
+@media (min-width: 768px) and (max-width: 991px) {
+    .content {
+        padding: var(--spaceMD);
+    }  
 }
 @media (max-width: 575px) {
     .content {
-        padding: var(--spaceMini);
+        padding: var(--spaceSM);
     } 
 }
 
@@ -265,8 +270,18 @@ label, input, textarea, select {
     position: relative;
 }
 @media (max-width: 575px) {
-    .container, .modal-content, .swal2-popup, .popover, .container-fluid {
-        padding: var(--spaceXMD);
+    .container, .popover, .container-fluid {
+        padding: var(--spaceXMD) !important;
+    } 
+}
+@media (min-width: 768px) and (max-width: 991px) {
+    .modal-content, .swal2-popup {
+        padding: var(--spaceXSM) !important;
+    }  
+}
+@media (max-width: 575px) {
+    .modal-content, .swal2-popup {
+        padding: var(--spaceMini) !important;
     } 
 }
 .container, .container-fluid {

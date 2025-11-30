@@ -8,7 +8,7 @@
 
     <div class="position-relative">
         <button class="btn btn-danger me-2" onclick="initMap()"><i class="fa-solid fa-refresh"></i> Show All Trip</button>
-        <button class="btn btn-success" onclick="window.location.href='/trip/add'"><i class="fa-solid fa-plus"></i> Add Trip</button>
+        <button class="btn btn-success" onclick="window.location.href='/trip/add'"><i class="fa-solid fa-plus"></i> Trip</button>
         <div class="row mt-3">
             <div class="col-lg-8 col-md-7 col-sm-12">
                 @include('trip.usecases.get_map_board')

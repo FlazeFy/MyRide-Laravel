@@ -10,11 +10,11 @@
     <table class="table text-center table-bordered">
         <thead>
             <tr>
-                <th scope="col" style="width: 140px;">Vehicle</th>
+                <th scope="col" style="min-width: 160px;">Vehicle</th>
                 <th scope="col" style="min-width: 240px;">Title</th>
-                <th scope="col">Context & Body</th>
+                <th scope="col" style="min-width: 240px;">Context & Body</th>
                 <th scope="col">Attachment</th>
-                <th scope="col" style="width: 160px;">Properties</th>
+                <th scope="col" style="min-width: 160px;">Properties</th>
                 <th scope="col">Action</th>
             </tr>
         </thead>

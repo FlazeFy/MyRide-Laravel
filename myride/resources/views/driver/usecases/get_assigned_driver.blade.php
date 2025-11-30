@@ -11,8 +11,8 @@
                     <table>
                         <thead>
                             <tr>
-                                <th style="width: 180px;">Vehicle</th>
-                                <th>Driver</th>
+                                <th style="min-width: 180px;">Vehicle</th>
+                                <th style="min-width: 400px;">Driver</th>
                                 <th>Action</th>
                             </tr>
                         </thead>

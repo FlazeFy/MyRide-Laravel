@@ -10,7 +10,7 @@
         const token = "<?= session()->get('token_key'); ?>"
     </script>
 
-    <div class="d-block mx-auto p-3">
+    <div class="d-block mx-auto">
         <div class="d-flex justify-content-start mb-3">
             <a class="btn btn-danger me-2 pt-3" href='/garage'>
                 <i class="fa-solid fa-house"></i><span class="d-none d-lg-inline"> Back to Garage</span>

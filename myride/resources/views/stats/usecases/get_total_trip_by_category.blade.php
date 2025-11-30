@@ -1,4 +1,4 @@
-<div id="stats_total_trip_by_category_holder"></div>
+<div id="stats_total_trip_by_category_holder" class="d-flex flex-wrap justify-content-center"></div>
 <script>
     const get_total_trip_by_category = () => {
         Swal.showLoading()

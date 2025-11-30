@@ -3,8 +3,8 @@
     <table class="table">
         <thead>
             <tr>
-                <th scope="col" style="min-width:150px;">Driver</th>
-                <th scope="col">Vehicle</th>
+                <th scope="col" style="min-width:160px;">Driver</th>
+                <th scope="col" style="min-width:280px;">Vehicle</th>
             </tr>
         </thead>
         <tbody id="list_assigned_driver-holder"></tbody>

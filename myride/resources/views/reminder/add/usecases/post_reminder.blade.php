@@ -34,7 +34,9 @@
             <input class="form-control" name="reminder_title" id="reminder_title">
             <label>Reminder Body</label>
             <textarea class="form-control" name="reminder_body" id="reminder_body"></textarea>
-            <a class="btn btn-success rounded-pill py-3 w-100 mt-3" id="submit-add-reminder-btn"><i class="fa-solid fa-floppy-disk"></i> Save Reminder</a>
+            <div class="d-grid d-md-inline-block">
+                <a class="btn btn-success rounded-pill p-3 w-100 w-md-auto mt-3" id="submit-add-reminder-btn"><i class="fa-solid fa-floppy-disk"></i> Save Reminder</a>
+            </div>
         </div>
     </div>
 </form>
