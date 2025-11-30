@@ -90,6 +90,7 @@ Route::prefix('/v1/clean')->middleware(['auth:sanctum'])->group(function () {
     Route::get('/', [QueriesCleanController::class, 'getAllCleanHistory']);
     Route::delete('/destroy/{id}', [CommandsCleanController::class, 'hardDeleteCleanById']);
     Route::get('/last', [QueriesCleanController::class, 'getLastCleanByVehicleId']);
+    Route::get('/summary', [QueriesCleanController::class, 'getCleanSummaryByVehicleId']);
     Route::post('/', [CommandsCleanController::class, 'postClean']);
     Route::put('/finish/{id}', [CommandsCleanController::class, 'putFinishClean']);
 });

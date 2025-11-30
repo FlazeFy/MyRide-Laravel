@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-lg">
-    <div class="container-fluid flex flex-wrap gap-3">
+    <div class="d-inline-block w-100 d-flex flex-wrap gap-3">
         <button class="toogle_nav-button btn btn-primary px-3 close"><i class="fa-solid fa-bars"></i></button>
-        <h2 class="navbar-brand mb-0"><a href="/">MyRide</a></h2>
+        <h2 class="navbar-brand mb-0 mt-2"><a href="/">MyRide</a></h2>
         
         @if(session()->get('token_key'))
         <div class="collapse navbar-collapse" id="navbarNav">

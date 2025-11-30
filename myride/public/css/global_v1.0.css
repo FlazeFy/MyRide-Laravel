@@ -78,7 +78,7 @@ img:not(.gm-style img) {
     border-radius: var(--roundedLG);
 }
 
-.container, .form-control, .form-select, .modal-content, .swal2-popup, .popover, .plate-number, .chip, .bordered {
+.container, .form-control, .form-select, .modal-content, .swal2-popup, .popover, .plate-number, .chip, .bordered, .container-fluid {
     border: 2px solid var(--darkColor) !important;
 }
 .modal-content, .swal2-popup, .popover {
@@ -87,7 +87,7 @@ img:not(.gm-style img) {
 }
 
 /* Container & Button & Input */
-.form-control, .form-select, .btn, .container, .sidebar .nav-link.active, .plate-number, .chip, .bordered {
+.form-control, .form-select, .btn, .container, .sidebar .nav-link.active, .plate-number, .chip, .bordered, .container-fluid {
     border-radius: var(--roundedSM) !important;
 }
 .form-label, label {
@@ -251,14 +251,14 @@ label, input, textarea, select {
 }
 
 /* Container */
-.container, .modal-content, .swal2-popup, .popover, .plate-number, .chip {
+.container, .modal-content, .swal2-popup, .popover, .plate-number, .chip, .container-fluid {
     border-bottom: var(--spaceXXSM) solid var(--darkColor) !important;
     padding: var(--spaceXLG);
     margin-bottom: var(--spaceLG);
     background: var(--whiteColor);
     position: relative;
 }
-.container {
+.container, .container-fluid {
     width: 100%;
     margin-inline: 0;
 }
@@ -286,7 +286,7 @@ hr {
     background: var(--darkColor);
 }
 
-.btn, .container, .sidebar .nav-link, .hover-grow, .plate-number, .chip, .bordered, .chip-mini {
+.btn, .container, .sidebar .nav-link, .hover-grow, .plate-number, .chip, .bordered, .chip-mini, .container-fluid {
     -webkit-transition: all 0.4s !important;
     -o-transition: all 0.4s !important;
     transition: all 0.4s !important;

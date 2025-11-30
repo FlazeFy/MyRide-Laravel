@@ -57,8 +57,37 @@ class CleanModel extends Model
                 is_clean_pillows, clean_address, is_fill_window_cleaning_water, is_clean_hollow 
             ")
             ->where('vehicle_id',$vehicle_id)
+            ->where('created_by',$user_id)
             ->orderBy('clean.created_at','DESC')
             ->first();
+    }
+
+    public static function getCleanSummaryByVehicleId($user_id,$vehicle_id){
+        $res = CleanModel::selectRaw("
+            vehicle_type, CONCAT(vehicle.vehicle_merk, ' - ', vehicle.vehicle_name) as vehicle_name, vehicle_plate_number,
+            COUNT(*) AS total_clean,
+            CAST(SUM(is_clean_body) as INT) AS total_clean_body,
+            CAST(SUM(is_clean_window) as INT) AS total_clean_window,
+            CAST(SUM(is_clean_dashboard) as INT) AS total_clean_dashboard,
+            CAST(SUM(is_clean_tires) as INT) AS total_clean_tires,
+            CAST(SUM(is_clean_trash) as INT) AS total_clean_trash,
+            CAST(SUM(is_clean_engine) as INT) AS total_clean_engine,
+            CAST(SUM(is_clean_seat) as INT) AS total_clean_seat,
+            CAST(SUM(is_clean_carpet) as INT) AS total_clean_carpet,
+            CAST(SUM(is_clean_pillows) as INT) AS total_clean_pillows,
+            CAST(SUM(is_fill_window_cleaning_water) as INT) AS total_fill_window_cleaning_water,
+            CAST(SUM(is_clean_hollow) as INT) AS total_clean_hollow,
+            CAST(SUM(clean_price) as INT) AS total_price,
+            CAST(AVG(clean_price) as INT) AS avg_price_per_clean
+        ")->where('vehicle.created_by',$user_id);
+
+        if($vehicle_id){
+            $res = $res->where('vehicle_id',$vehicle_id);
+        }
+        $res = $res->join('vehicle','vehicle.id','=','clean.vehicle_id')
+            ->groupby('vehicle_id');
+
+        return $res->get();
     }
 
     public static function getExportData($user_id, $vehicle_id = null){

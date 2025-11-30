@@ -1,15 +1,20 @@
-<div id="stats_inventory_holder"></div>
+<div id="stats_inventory_holder" class="row"></div>
 
 <script>
     const get_total_inventory_by_context = () => {
-        Swal.showLoading()
         const ctx = 'total_inventory_by_context_temp'
         const ctx_holder = 'stats_inventory_holder'
         const list_context = ['inventory_category','inventory_storage']
         $(`#${ctx_holder}`).children().not(':first').remove()
 
         list_context.forEach(el => {
-            $(`#${ctx_holder}`).append(`<div class="container"><div id="${el}-holder"></div></div></div>`)
+            $(`#${ctx_holder}`).append(`
+                <div class="col-lg-12 col-md-6">
+                    <div class="container">
+                        <div id="${el}-holder"></div>
+                    </div>
+                </div>
+            `)
         });
 
         const fetchData = () => {
@@ -18,6 +23,7 @@
                 url: `/api/v1/stats/total/inventory/${context}`,
                 type: 'GET',
                 beforeSend: function (xhr) {
+                    Swal.showLoading()
                     xhr.setRequestHeader("Accept", "application/json")
                     xhr.setRequestHeader("Authorization", `Bearer ${token}`)    
                 },
@@ -28,7 +34,7 @@
                     localStorage.setItem(`last-hit-${ctx}`,Date.now())
                     data.forEach(dt => {
                         generate_pie_chart(`${dt.context.replaceAll('_',' ')} Distribution`,`${dt.context}-holder`,dt.data)
-                    });
+                    })
                 },
                 error: function(response, jqXHR, textStatus, errorThrown) {
                     Swal.close()

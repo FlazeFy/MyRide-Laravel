@@ -1458,6 +1458,179 @@
                 ]
             }
         },
+        "/api/v1/clean/summary": {
+            "get": {
+                "tags": [
+                    "Clean"
+                ],
+                "summary": "Get clean summary",
+                "description": "This request is used to get clean summary by vehicle id or all vehicle. This request is using MySql database, and have a protected routes.",
+                "operationId": "138dccdaec678e9b6507e012fcc1f4c6",
+                "responses": {
+                    "200": {
+                        "description": "clean fetched",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "clean fetched"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "vehicle_name": {
+                                                        "type": "string",
+                                                        "example": "Honda - Brio RS MT"
+                                                    },
+                                                    "vehicle_plate_number": {
+                                                        "type": "string",
+                                                        "example": "D 1610 ZRB"
+                                                    },
+                                                    "vehicle_type": {
+                                                        "type": "string",
+                                                        "example": "City Car"
+                                                    },
+                                                    "total_clean": {
+                                                        "type": "integer",
+                                                        "example": 5
+                                                    },
+                                                    "is_clean_body": {
+                                                        "type": "integer",
+                                                        "example": 5
+                                                    },
+                                                    "is_clean_window": {
+                                                        "type": "integer",
+                                                        "example": 5
+                                                    },
+                                                    "is_clean_dashboard": {
+                                                        "type": "integer",
+                                                        "example": 4
+                                                    },
+                                                    "is_clean_tires": {
+                                                        "type": "integer",
+                                                        "example": 5
+                                                    },
+                                                    "is_clean_trash": {
+                                                        "type": "integer",
+                                                        "example": 5
+                                                    },
+                                                    "is_clean_engine": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "is_clean_seat": {
+                                                        "type": "integer",
+                                                        "example": 4
+                                                    },
+                                                    "is_clean_carpet": {
+                                                        "type": "integer",
+                                                        "example": 4
+                                                    },
+                                                    "is_clean_pillows": {
+                                                        "type": "integer",
+                                                        "example": 0
+                                                    },
+                                                    "is_fill_window_cleaning_water": {
+                                                        "type": "integer",
+                                                        "example": 5
+                                                    },
+                                                    "is_clean_hollow": {
+                                                        "type": "integer",
+                                                        "example": 3
+                                                    },
+                                                    "total_price": {
+                                                        "type": "integer",
+                                                        "example": 475000
+                                                    },
+                                                    "avg_price_per_clean": {
+                                                        "type": "integer",
+                                                        "example": 95000
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "protected route need to include sign in token as authorization bearer",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "you need to include the authorization token from login"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "clean failed to fetched",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "clean summary not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "something wrong. please contact admin"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/v1/dictionary/{id}": {
             "delete": {
                 "tags": [
