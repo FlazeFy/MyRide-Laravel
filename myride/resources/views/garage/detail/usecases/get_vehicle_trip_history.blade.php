@@ -13,6 +13,7 @@
     }
 </style>
 
+<h2 class="mb-3">Trip History</h2><hr>
 <div class="carousel-parent">
     <div id="{{$carouselId}}" class="carousel slide" data-bs-ride="carousel">
         <div class="carousel-indicators"></div>

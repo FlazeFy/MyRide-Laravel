@@ -7,7 +7,7 @@
     <br>
     <p id="vehicle_desc"></p>
     <br>
-    <h5 class="mb-4">Additional Info</h5><hr>
+    <h3 class="mb-2">Additional Info</h3><hr>
     <div class="row mb-3">
         <div class="col-md-6 col-sm-12">
             <h6 class="mb-2">Plate Number</h6>
@@ -18,7 +18,7 @@
             <span id="vehicle_status" class="ms-2"></span>
         </div>
     </div>
-    <div class="row">
+    <div class="row mb-4">
         <div class="col-lg-4 col-md-6 col-sm-12">
             <h6 class="mb-0">Category</h6>
             <span class="text-secondary" id="vehicle_category"></span>
@@ -32,20 +32,19 @@
             <span class="text-secondary" id="vehicle_capacity"></span>
         </div>
     </div>
-</div>
-<div class="container">
-    <h5 class="mb-4">Fuel Info</h5><hr>
+    <br>
+    <h3 class="mb-2">Fuel Info</h3><hr>
     <div class="row">
         <div class="col-md-6 col-sm-12">
             <h5>Capacity</h5>
-            <h2 class="fw-bold" id="vehicle_fuel_capacity"></h2>
+            <h4 class="fw-bold" id="vehicle_fuel_capacity"></h4>
             <h5>Status</h5>
-            <h2 class="fw-bold" id="vehicle_fuel_status"></h2>
+            <h4 class="fw-bold" id="vehicle_fuel_status"></h4>
         </div>
         <div class="col-md-6 col-sm-12 d-flex align-items-center">
             <div>
                 <h5>Default Fuel</h5>
-                <h2 class="fw-bold" id="vehicle_default_fuel"></h2>
+                <h4 class="fw-bold" id="vehicle_default_fuel"></h4>
             </div>
         </div>
     </div>
@@ -92,10 +91,22 @@
                 build_layout_driver(driver_data)
 
                 if(detail.deleted_at){
-                    $('#delete_vehicle_button-holder').html(`<a class="btn btn-danger btn-delete" data-type-delete="hard" data-context="Vehicle" data-url="/api/v1/vehicle/destroy/<?= $id ?>"><i class="fa-solid fa-fire"></i> Permanentelly Delete</a>`)
-                    $('#recover_vehicle_button-holder').html(`<a class="btn btn-success btn-recover ms-2" data-context="Vehicle" data-url="/api/v1/vehicle/recover/<?= $id ?>"><i class="fa-solid fa-rotate-left"></i> Recover</a>`)
+                    $('#delete_vehicle_button-holder').html(`
+                    <a class="btn btn-danger btn-delete h-100 px-3 pt-3" data-type-delete="hard" data-context="Vehicle" data-url="/api/v1/vehicle/destroy/<?= $id ?>">
+                        <i class="fa-solid fa-fire"></i> 
+                        <span class="d-none d-md-inline"> Permanentelly Delete</span>
+                    </a>`)
+                    $('#recover_vehicle_button-holder').html(`
+                        <a class="btn btn-success btn-recover ms-2 h-100 px-3 pt-3" data-context="Vehicle" data-url="/api/v1/vehicle/recover/<?= $id ?>">
+                        <i class="fa-solid fa-rotate-left"></i>
+                        <span class="d-none d-md-inline"> Recover</span>
+                    </a>`)
                 } else {
-                    $('#delete_vehicle_button-holder').html(`<a class="btn btn-danger btn-delete" data-type-delete="soft" data-context="Vehicle" data-url="/api/v1/vehicle/delete/<?= $id ?>"><i class="fa-solid fa-trash"></i> Delete</a>`)
+                    $('#delete_vehicle_button-holder').html(`
+                        <a class="btn btn-danger btn-delete h-100 px-3 pt-3" data-type-delete="soft" data-context="Vehicle" data-url="/api/v1/vehicle/delete/<?= $id ?>">
+                        <i class="fa-solid fa-trash"></i>
+                        <span class="d-none d-md-inline"> Delete</span>
+                    </a>`)
                 }
 
                 if(trip_data && trip_data.data.length > 3){

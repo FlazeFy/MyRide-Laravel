@@ -1,9 +1,10 @@
+<h2 class="mb-3">Assigned Driver</h2><hr>
 <div class="table-responsive">
     <table class="table table-bordered" id="driver_tb">
         <thead>
             <tr>
-                <th scope="col">Driver</th>
-                <th scope="col">Notes</th>
+                <th scope="col" style="min-width: 160px;">Driver</th>
+                <th scope="col" style="min-width: 160px;">Notes</th>
                 <th scope="col">Action</th>
             </tr>
         </thead>

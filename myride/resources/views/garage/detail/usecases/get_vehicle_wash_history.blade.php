@@ -5,12 +5,13 @@
     }
 </style>
 
+<h2 class="mb-3">Wash History</h2><hr>
 <div class="table-responsive">
     <table class="table table-bordered" id="clean_tb">
         <thead>
             <tr>
-                <th scope="col">Cleaning Info & Detail</th>
-                <th scope="col" style="width: 200px;">Time</th>
+                <th scope="col" style="min-width: 240px;">Cleaning Info & Detail</th>
+                <th scope="col" style="min-width: 160px;">Time</th>
             </tr>
         </thead>
         <tbody></tbody>
@@ -42,7 +43,7 @@
                             <hr>
                             <div class="row">
                                 <h6 class="mb-0">Clean Detail</h6>
-                                <p>
+                                <p class='mb-0'>
                                     ${[
                                         { key: "is_clean_body", label: "Body Cleaning" },
                                         { key: "is_clean_window", label: "Window Cleaning" },
@@ -56,7 +57,7 @@
                                         { key: "is_clean_hollow", label: "Vehicle Hollow Cleaning" },
                                         { key: "is_fill_window_cleaning_water", label: "Window Cleaning Water Fill" },
                                     ].map(clean => 
-                                        dt[clean.key] ? `<span style='font-size:var(--textXMD);'>${clean.label}</span>, ` : ''
+                                        dt[clean.key] ? `<span style='font-size:var(--textMD);'>${clean.label}</span>, ` : ''
                                     ).join('')}
                                 </p>
                             </div>
