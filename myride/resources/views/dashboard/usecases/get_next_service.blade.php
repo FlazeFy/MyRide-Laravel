@@ -1,4 +1,4 @@
-<h4>Next Service</h4>
+<h2>Next Service</h2><hr>
 <div id="next_service-holder"></div>
 
 <script>

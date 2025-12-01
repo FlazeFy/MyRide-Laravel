@@ -1,4 +1,4 @@
-<h2>Add Service</h2>
+<h2>Add Service</h2><hr>
 <form id="form-add-service">
     <div class="row">
         <div class="col-xl-6 col-lg-12 pb-4">

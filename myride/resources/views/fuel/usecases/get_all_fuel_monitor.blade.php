@@ -1,4 +1,4 @@
-<h2>Fuel Monitor</h2>
+<h2>Fuel Monitor</h2><hr>
 <div id="stats_fuel_status_holder" class="row"></div>
 
 <script>

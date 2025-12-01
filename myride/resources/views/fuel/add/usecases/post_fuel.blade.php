@@ -1,4 +1,4 @@
-<h2>Add Fuel</h2>
+<h2>Add Fuel</h2><hr>
 <form id="form-add-fuel">
     <div class="row">
         <div class="col-xl-6 col-lg-12 pb-4">

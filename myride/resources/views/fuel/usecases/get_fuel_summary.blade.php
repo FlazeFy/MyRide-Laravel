@@ -1,4 +1,4 @@
-<h2>Summary</h2>
+<h2>Summary</h2><hr>
 <div class="row">
     <div class="col-md-6 col-6">
         <h5 class="summary-number" id="total_fuel_volume-holder">0L</h5>

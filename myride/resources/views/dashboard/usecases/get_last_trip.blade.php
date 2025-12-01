@@ -1,4 +1,4 @@
-<h4>Last Trip</h4>
+<h2>Last Trip</h2><hr>
 <div id="last_trip-holder"></div>
 
 <script>

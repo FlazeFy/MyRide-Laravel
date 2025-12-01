@@ -1,4 +1,4 @@
-<h4>Next Reminder</h4>
+<h2>Next Reminder</h2><hr>
 <div id="next_reminder-holder"></div>
 
 <script>

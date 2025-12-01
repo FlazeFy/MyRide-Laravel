@@ -1,4 +1,4 @@
-<h4>Trip Discovered</h4>
+<h2>Trip Discovered</h2><hr>
 <div id="trip_discovered-holder"></div>
 
 <script>

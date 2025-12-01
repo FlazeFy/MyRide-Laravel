@@ -1,4 +1,4 @@
-<h2>My Profile</h2><br>
+<h2>My Profile</h2><hr>
 <label>Username</label>
 <input class="form-control" type="text" name="username" id="username" required>
 <label>Email</label>
@@ -15,16 +15,16 @@
 <script>
     let current_telegram_id
     const get_profile = () => {
-        Swal.showLoading()
         $.ajax({
             url: `/api/v1/user/my_profile`,
             type: 'GET',
             beforeSend: function (xhr) {
+                Swal.showLoading()
                 xhr.setRequestHeader("Accept", "application/json")
                 xhr.setRequestHeader("Authorization", "Bearer <?= session()->get("token_key"); ?>")    
             },
             success: function(response) {
-                Swal.close()
+                Swal.hideLoading()
                 const data = response.data
                 const data_telegram = response.telegram_data
 

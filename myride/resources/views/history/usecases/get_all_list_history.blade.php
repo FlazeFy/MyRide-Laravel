@@ -1,4 +1,4 @@
-<h2>All History</h2>
+<h2>All History</h2><hr>
 <div id="history-holder"></div>
 
 <script>

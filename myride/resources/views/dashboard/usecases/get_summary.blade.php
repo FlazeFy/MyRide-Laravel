@@ -1,4 +1,4 @@
-<h2>Summary</h2>
+<h2>Summary</h2><hr>
 <div class="row">
     <div class="col-xl-2 col-lg-3 col-md-4 col-6 mx-auto">
         <h3 class="summary-number" id="total_vehicle-holder">0</h3>

@@ -18,22 +18,33 @@
 <script>
     $(document).ready(function() {
         $(".toogle_nav-button").on("click", function() {
+            let width = $(window).width()
             if($(this).hasClass("close")){
                 $('#sidebar').css({
                     width: "250px",
                     paddingInline: 'var(--spaceMD)',
                     boxShadow: 'rgba(0, 0, 0, 0.5) 0px 7px 17.5px'
                 })
+                
+                if (width < 577) {
+                    $('.navbar-collapse-mobile').css({display:'flex',marginTop:'var(--spaceMini)'})   
+                    $('.navbar .navbar-brand').css({fontSize:'var(--textMD)',marginBottom:0})   
+                }            
             } else {
                 $('#sidebar').css({
                     width: "0",
                     paddingInline: '0',
                     boxShadow: 'none'
                 })
+                if (width < 577) {
+                    $('.navbar-collapse-mobile').css({display:'none',marginTop:0})   
+                    $('.navbar .navbar-brand').css({fontSize:'var(--textXLG)',marginBottom:'var(--spaceXXSM)'})       
+                }                              
             }
+            
             $(this).find('i').toggleClass('fa-bars fa-circle-xmark')
             $(this).toggleClass('open close') 
-            $(this).toggleClass('btn-primary btn-danger')                        
+            $(this).toggleClass('btn-primary btn-danger')  
         });
     });
 

@@ -1,4 +1,4 @@
-<h2>Add Reminder</h2>
+<h2>Add Reminder</h2><hr>
 <form id="form-add-reminder">
     <div class="row">
         <div class="col-xl-6 col-lg-12 pb-4">

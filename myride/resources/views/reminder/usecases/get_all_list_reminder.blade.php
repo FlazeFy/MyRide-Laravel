@@ -5,7 +5,7 @@
     }
 </style>
 
-<h2>All Reminder</h2>
+<h2>All Reminder</h2><hr>
 <div class="table-responsive">
     <table class="table text-center table-bordered">
         <thead>

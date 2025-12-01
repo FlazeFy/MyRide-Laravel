@@ -150,6 +150,24 @@ const buttonSetRoute = () => {
     })
 }
 
+const checkScreenSize = (width) => {
+    if (width < 320) {
+        Swal.fire({
+            title: "Warning!",
+            text: "Your device has a small screen width, so some content may not display properly",
+            icon: "warning"
+        });
+    }
+}
+
 $(document).ready(() => {
+    let width = $(window).width()
+
     buttonSetRoute()
+    checkScreenSize(width)
+
+    $(window).on('resize', function() {
+        width = $(window).width()
+        checkScreenSize(width)
+    });
 })

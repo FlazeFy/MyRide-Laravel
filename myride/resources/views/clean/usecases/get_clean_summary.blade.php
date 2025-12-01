@@ -1,7 +1,5 @@
-<div>
-    <h2>Clean Summary</h2>
-    <div id="clean_summary-holder" class="row"></div>
-</div>
+<h2>Clean Summary</h2><hr>
+<div id="clean_summary-holder" class="row"></div>
 
 <script>
     const get_clean_summary = () => {

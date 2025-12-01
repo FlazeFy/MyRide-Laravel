@@ -1,4 +1,4 @@
-<h2>Our Futures</h2>
+<h2>Our Futures</h2><hr>
 <ul>
     <li><b>Manage Vehicle</b> You can add your vehicle details such as brand, type, category, and other specifications. Based on this data, you can track fuel consumption, set service or cleaning schedules, and much more.</li>
     <li><b>Assign Driver</b> Easily assign drivers to specific vehicles and monitor their usage, making it ideal for families, teams, or fleet operations.</li>

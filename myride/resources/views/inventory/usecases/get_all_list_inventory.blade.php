@@ -1,4 +1,4 @@
-<h2>All Inventory</h2>
+<h2>All Inventory</h2><hr>
 <div class="table-responsive">
     <table class="table table-bordered">
         <thead>

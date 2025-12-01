@@ -10,7 +10,7 @@
         list_context.forEach(el => {
             $(`#${ctx_holder}`).append(`
                 <div class="col-lg-12 col-md-6">
-                    <div class="container">
+                    <div class="container-fluid d-flex flex-wrap justify-content-center">
                         <div id="${el}-holder"></div>
                     </div>
                 </div>
