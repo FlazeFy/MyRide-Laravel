@@ -78,7 +78,7 @@ img:not(.gm-style img) {
     border-radius: var(--roundedLG);
 }
 
-.container, .form-control, .form-select, .modal-content, .swal2-popup, .popover, .plate-number, .chip, .bordered, .container-fluid {
+.container, .form-control, .form-select, .modal-content, .swal2-popup, .popover, .plate-number, .chip, .bordered, .container-fluid, .input-group-text {
     border: 2px solid var(--darkColor) !important;
 }
 .modal-content, .swal2-popup, .popover {
@@ -87,7 +87,7 @@ img:not(.gm-style img) {
 }
 
 /* Container & Button & Input */
-.form-control, .form-select, .btn, .container, .sidebar .nav-link.active, .plate-number, .chip, .bordered, .container-fluid {
+.form-control, .form-select, .btn, .container, .sidebar .nav-link.active, .plate-number, .chip, .bordered, .container-fluid, .input-group-text {
     border-radius: var(--roundedSM) !important;
 }
 .form-label, label {
@@ -326,7 +326,6 @@ label, input, textarea, select {
 .form-control, .form-select, .input-group-text {
     background: var(--shadowColor) !important;
     font-size: var(--textXLG);
-    padding: var(--spaceMD);
 }
 .container-landing {
     border-radius: var(--roundedJumbo);
@@ -335,9 +334,35 @@ label, input, textarea, select {
     margin-bottom: var(--spaceLG);
     border: 4px solid var(--whiteColor);
 }
-
 .form-control, .form-select, .input-group-text , .rounded {
     border-radius: var(--roundedLG);   
+}
+
+/* Input Group */
+.input-group .input-group-text {
+    padding: var(--spaceSM);
+    background: var(--warningColor) !important;
+}
+.input-group .form-control {
+    margin:0;
+}
+.input-group .input-group-text:first-child + .form-control {
+    border-radius: 0 !important;  
+}
+.input-group > .form-control:first-child:not(:last-child) {
+    border-top-right-radius: 0 !important;  
+    border-bottom-right-radius: 0 !important;
+}
+.input-group .form-control + .input-group-text {
+    border-top-left-radius: 0 !important;  
+    border-bottom-left-radius: 0 !important;
+}
+.input-group > .input-group-text:first-child:not(:last-child) {
+    border-top-right-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+}
+.input-group > .form-control:first-child:not(:last-child), .input-group .input-group-text:first-child + .form-control, .input-group > .input-group-text:first-child:not(:last-child) {
+    border-right:1px solid var(--darkColor) !important;
 }
 
 hr {

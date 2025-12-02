@@ -1,22 +1,16 @@
 @extends('layouts.main_layout')
 
 @section('content')
-    <div class="d-block mx-auto p-3">
-        <div class="d-flex justify-content-between">
-            <button class="btn btn-danger" onclick="window.location.href='/garage'"><i class="fa-solid fa-house"></i> Back to Garage</button><br>
-            @include('garage.edit.usecases.get_props')
-        </div>
-        <h2>Edit Vehicle</h2><br>
-        <div class="row">
-            <div class="col-lg-6 col-md-6 col-sm-12 col-12">
-                @include('garage.edit.usecases.put_vehicle_data')
-            </div>
-            <div class="col-lg-6 col-md-6 col-sm-12 col-12">
-                @include('garage.edit.usecases.put_vehicle_doc')
-            </div>
-        </div>
-    </div>
-
+@include('garage.back_garage_button')
+<div class="p-2">
+    @include('garage.edit.usecases.get_props')
+</div>
+<div class="container-fluid">
+    @include('garage.edit.usecases.put_vehicle_data')
+</div>
+<div class="container-fluid">
+    @include('garage.edit.usecases.put_vehicle_doc')
+</div>
 
 <script>
     const get_vehicle = (id) => {
@@ -57,7 +51,12 @@
                 $('#deleted_at').text(data.deleted_at ?? '-')
             },
             error: function(response, jqXHR, textStatus, errorThrown) {
-                generate_api_error(response, true)
+                Swal.close()
+                if(response.status !== 404){
+                    generate_api_error(response, true)
+                } else {
+                    failedRoute('vehicle','/garage')
+                }
             }
         });
     }

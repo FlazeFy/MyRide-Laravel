@@ -1,4 +1,4 @@
-<h6>Documents</h6>
+<h2>Attached Document</h2>
 <form action="/garage/edit_doc/{{$id}}" method="POST">
     @csrf
     <div>

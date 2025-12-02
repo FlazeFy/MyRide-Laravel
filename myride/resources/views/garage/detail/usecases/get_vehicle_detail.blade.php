@@ -1,7 +1,11 @@
 <h1 id="vehicle_name"></h1><hr>
-<div class="d-flex justify-content-between align-items-center">
-    <h6><span class="btn btn-success rounded-pill px-3 py-1 me-2" style="font-size:var(--textXMD);" id="vehicle_type"></span><span id="vehicle_merk"></span></h6>
-    <h6 id="vehicle_distance"></h6>
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div class="d-flex flex-wrap gap-2 align-items-center">
+        <span class="btn btn-primary rounded-pill px-3 py-1" id="vehicle_type"></span>
+        <span class="btn btn-success rounded-pill px-3 py-1" id="vehicle_transmission"></span>
+        <h6 id="vehicle_merk" class="mb-0"></h6>
+    </div>
+    <h6 id="vehicle_distance" class="mb-0"></h6>
 </div>
 <p id="vehicle_desc"></p>
 <br>
@@ -66,6 +70,7 @@
                 $('#vehicle_name').html(`${detail.vehicle_year_made} | ${detail.vehicle_name}`)
                 $('#vehicle_merk').html(detail.vehicle_merk)
                 $('#vehicle_type').html(detail.vehicle_type)
+                $('#vehicle_transmission').html(detail.vehicle_transmission)
                 $('#vehicle_category').html(detail.vehicle_category)
                 $('#vehicle_plate_number').html(`<span class="plate-number m-0">${detail.vehicle_plate_number}</span>`)
                 $('#vehicle_color').html(detail.vehicle_color)
@@ -87,18 +92,18 @@
 
                 if(detail.deleted_at){
                     $('#delete_vehicle_button-holder').html(`
-                    <a class="btn btn-danger btn-delete h-100 px-3 pt-3" data-type-delete="hard" data-context="Vehicle" data-url="/api/v1/vehicle/destroy/<?= $id ?>">
+                    <a class="btn btn-danger btn-delete" data-type-delete="hard" data-context="Vehicle" data-url="/api/v1/vehicle/destroy/<?= $id ?>">
                         <i class="fa-solid fa-fire"></i> 
                         <span class="d-none d-md-inline"> Permanentelly Delete</span>
                     </a>`)
                     $('#recover_vehicle_button-holder').html(`
-                        <a class="btn btn-success btn-recover ms-2 h-100 px-3 pt-3" data-context="Vehicle" data-url="/api/v1/vehicle/recover/<?= $id ?>">
+                        <a class="btn btn-success btn-recover" data-context="Vehicle" data-url="/api/v1/vehicle/recover/<?= $id ?>">
                         <i class="fa-solid fa-rotate-left"></i>
                         <span class="d-none d-md-inline"> Recover</span>
                     </a>`)
                 } else {
                     $('#delete_vehicle_button-holder').html(`
-                        <a class="btn btn-danger btn-delete h-100 px-3 pt-3" data-type-delete="soft" data-context="Vehicle" data-url="/api/v1/vehicle/delete/<?= $id ?>">
+                        <a class="btn btn-danger btn-delete" data-type-delete="soft" data-context="Vehicle" data-url="/api/v1/vehicle/delete/<?= $id ?>">
                         <i class="fa-solid fa-trash"></i>
                         <span class="d-none d-md-inline"> Delete</span>
                     </a>`)

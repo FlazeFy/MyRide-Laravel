@@ -4,7 +4,7 @@
     <script src="{{ asset('/js/usecases/inventory_v1.0.js')}}"></script>
 
     <div class="position-relative">
-        <a class="btn btn-danger" href='/garage'><i class="fa-solid fa-arrow-left"></i> Back</a>
+        @include('garage.back_garage_button')
         <div class="container-fluid mt-2">
             @include('garage.add.usecases.post_vehicle')
         </div>
