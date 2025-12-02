@@ -12,6 +12,7 @@ use Telegram\Bot\Laravel\Facades\Telegram;
 // Helper
 use App\Helpers\Generator;
 use App\Helpers\Validation;
+use App\Helpers\TelegramMessage;
 // Models
 use App\Models\UserModel;
 use App\Models\AdminModel;
@@ -75,52 +76,59 @@ class Commands extends Controller
             $user_id = $request->user()->id;
             $new_telegram_id = $request->telegram_user_id;
 
-            $check = UserModel::selectRaw('1')
-                ->where('telegram_user_id', $new_telegram_id)
-                ->first();
+            if(TelegramMessage::checkTelegramID($request->telegram_user_id)){
+                $check = UserModel::selectRaw('1')
+                    ->where('telegram_user_id', $new_telegram_id)
+                    ->first();
 
-            if($check == null){
-                $res = UserModel::where('id',$user_id)
-                    ->update([
-                        'telegram_user_id' => $new_telegram_id,
-                        'telegram_is_valid' => 0
-                    ]);
-                
-                if ($res) {
-                    $token_length = 6;
-                    $token = Generator::getTokenValidation($token_length);
+                if($check == null){
+                    $res = UserModel::where('id',$user_id)
+                        ->update([
+                            'telegram_user_id' => $new_telegram_id,
+                            'telegram_is_valid' => 0
+                        ]);
+                    
+                    if ($res) {
+                        $token_length = 6;
+                        $token = Generator::getTokenValidation($token_length);
 
-                    ValidateRequestModel::create([
-                        'id' => Generator::getUUID(), 
-                        'request_type' => 'telegram_id_validation',
-                        'request_context' => $token, 
-                        'created_at' => date('Y-m-d H:i:s'), 
-                        'created_by' => $user_id
-                    ]);
+                        ValidateRequestModel::create([
+                            'id' => Generator::getUUID(), 
+                            'request_type' => 'telegram_id_validation',
+                            'request_context' => $token, 
+                            'created_at' => date('Y-m-d H:i:s'), 
+                            'created_by' => $user_id
+                        ]);
 
-                    $user = UserModel::find($user_id);
+                        $user = UserModel::find($user_id);
 
-                    $response = Telegram::sendMessage([
-                        'chat_id' => $new_telegram_id,
-                        'text' => "Hello,\n\nWe received a request to validate MyRide apps's account with username <b>$user->username</b> to sync with this Telegram account. If you initiated this request, please confirm that this account belongs to you by clicking the button YES.\n\nAlso we provided the Token :\n$token\n\nIf you did not request this, please press button NO.\n\nThank you, MyRide",
-                        'parse_mode' => 'HTML'
-                    ]);
+                        $response = Telegram::sendMessage([
+                            'chat_id' => $new_telegram_id,
+                            'text' => "Hello,\n\nWe received a request to validate MyRide apps's account with username <b>$user->username</b> to sync with this Telegram account. If you initiated this request, please confirm that this account belongs to you by clicking the button YES.\n\nAlso we provided the Token :\n$token\n\nIf you did not request this, please press button NO.\n\nThank you, MyRide",
+                            'parse_mode' => 'HTML'
+                        ]);
 
-                    return response()->json([
-                        'status' => 'success',
-                        'message' => Generator::getMessageTemplate("custom", 'telegram id updated! and validation has been sended to you'),
-                    ], Response::HTTP_OK);
+                        return response()->json([
+                            'status' => 'success',
+                            'message' => Generator::getMessageTemplate("custom", 'telegram id updated! and validation has been sended to you'),
+                        ], Response::HTTP_OK);
+                    } else {
+                        return response()->json([
+                            'status' => 'failed',
+                            'message' => Generator::getMessageTemplate("not_found", 'user'),
+                        ], Response::HTTP_NOT_FOUND);
+                    }
                 } else {
                     return response()->json([
                         'status' => 'failed',
-                        'message' => Generator::getMessageTemplate("not_found", 'user'),
-                    ], Response::HTTP_NOT_FOUND);
+                        'message' => Generator::getMessageTemplate("conflict", 'telegram ID'),
+                    ], Response::HTTP_CONFLICT);
                 }
             } else {
                 return response()->json([
                     'status' => 'failed',
-                    'message' => Generator::getMessageTemplate("conflict", 'telegram ID'),
-                ], Response::HTTP_CONFLICT);
+                    'message' => Generator::getMessageTemplate("not_found", 'Telegram ID'),
+                ], Response::HTTP_NOT_FOUND);
             }
         } catch(\Exception $e) {
             return response()->json([
@@ -174,16 +182,23 @@ class Commands extends Controller
                         'telegram_is_valid' => 1
                     ]);
 
-                $response = Telegram::sendMessage([
-                    'chat_id' => $user->telegram_user_id,
-                    'text' => "Validation success.\nWelcome <b>{$user->username}</b>!,",
-                    'parse_mode' => 'HTML'
-                ]);
+                if(TelegramMessage::checkTelegramID($user->telegram_user_id)){
+                    $response = Telegram::sendMessage([
+                        'chat_id' => $user->telegram_user_id,
+                        'text' => "Validation success.\nWelcome <b>{$user->username}</b>!,",
+                        'parse_mode' => 'HTML'
+                    ]);
 
-                return response()->json([
-                    'status' => 'success',
-                    'message' => Generator::getMessageTemplate("custom", 'telegram id has been validated'),
-                ], Response::HTTP_OK);
+                    return response()->json([
+                        'status' => 'success',
+                        'message' => Generator::getMessageTemplate("custom", 'Telegram ID has been validated'),
+                    ], Response::HTTP_OK);
+                } else {
+                    return response()->json([
+                        'status' => 'failed',
+                        'message' => Generator::getMessageTemplate("custom", 'Telegram ID is invalid'),
+                    ], Response::HTTP_NOT_FOUND);
+                }
             } else {
                 return response()->json([
                     'status' => 'failed',
@@ -306,22 +321,30 @@ class Commands extends Controller
                             }
                         }
 
-                        $response = Telegram::sendMessage([
-                            'chat_id' => $new_telegram_id,
-                            'text' => "Hello,\n\nWe received a request to validate MyRide apps's account with username <b>$old_data->username</b> to sync with this Telegram account. If you initiated this request, please confirm that this account belongs to you by clicking the button YES.\n\nAlso we provided the Token :\n$token\n\nIf you did not request this, please press button NO.\n\nThank you, MyRide",
-                            'parse_mode' => 'HTML'
-                        ]);
+                        if(TelegramMessage::checkTelegramID($new_telegram_id)){
+                            $response = Telegram::sendMessage([
+                                'chat_id' => $new_telegram_id,
+                                'text' => "Hello,\n\nWe received a request to validate MyRide apps's account with username <b>$old_data->username</b> to sync with this Telegram account. If you initiated this request, please confirm that this account belongs to you by clicking the button YES.\n\nAlso we provided the Token :\n$token\n\nIf you did not request this, please press button NO.\n\nThank you, MyRide",
+                                'parse_mode' => 'HTML'
+                            ]);
+                        } else {
+                            // remove invalid telegram account
+                        }
                     }
                     
                     if ($res) {
                         $user = UserModel::getSocial($user_id);
 
                         if($user->telegram_is_valid == 1 && !$is_telegram_updated){
-                            $response = Telegram::sendMessage([
-                                'chat_id' => $user->telegram_user_id,
-                                'text' => "Hello,\n\nYour profile has been updated$extra_msg",
-                                'parse_mode' => 'HTML'
-                            ]);
+                            if(TelegramMessage::checkTelegramID($new_telegram_id)){
+                                $response = Telegram::sendMessage([
+                                    'chat_id' => $new_telegram_id,
+                                    'text' => "Hello,\n\nYour profile has been updated$extra_msg",
+                                    'parse_mode' => 'HTML'
+                                ]);
+                            } else {
+                                // remove invalid telegram account
+                            }
                         }
 
                         return response()->json([

@@ -16,6 +16,8 @@ use App\Models\InventoryModel;
 use App\Models\FuelModel;
 use App\Models\ReminderModel;
 
+use App\Helpers\TelegramMessage;
+
 class CleanSchedule
 {
     public static function clean_history()
@@ -29,11 +31,15 @@ class CleanSchedule
                 $message = "[ADMIN] Hello $dt->username, the system just run a clean history, with result of $total history executed";
 
                 if($dt->telegram_user_id && $dt->telegram_is_valid == 1){
-                    $response = Telegram::sendMessage([
-                        'chat_id' => $dt->telegram_user_id,
-                        'text' => $message,
-                        'parse_mode' => 'HTML'
-                    ]);
+                    if(TelegramMessage::checkTelegramID($dt->telegram_user_id)){
+                        $response = Telegram::sendMessage([
+                            'chat_id' => $dt->telegram_user_id,
+                            'text' => $message,
+                            'parse_mode' => 'HTML'
+                        ]);
+                    } else {
+                        // remove invalid telegram account
+                    }
                 }
             }
         }
@@ -50,11 +56,15 @@ class CleanSchedule
                 $message = "[ADMIN] Hello $dt->username, the system just run a clean reminder, with result of $total reminder executed";
 
                 if($dt->telegram_user_id && $dt->telegram_is_valid == 1){
-                    $response = Telegram::sendMessage([
-                        'chat_id' => $dt->telegram_user_id,
-                        'text' => $message,
-                        'parse_mode' => 'HTML'
-                    ]);
+                    if(TelegramMessage::checkTelegramID($dt->telegram_user_id)){
+                        $response = Telegram::sendMessage([
+                            'chat_id' => $dt->telegram_user_id,
+                            'text' => $message,
+                            'parse_mode' => 'HTML'
+                        ]);
+                    } else {
+                        // remove invalid telegram account
+                    }
                 }
             }
         }
@@ -86,11 +96,15 @@ class CleanSchedule
             
                     // Report to user & execute destroy
                     if($vh->telegram_user_id){
-                        $response = Telegram::sendMessage([
-                            'chat_id' => $vh->telegram_user_id,
-                            'text' => $message,
-                            'parse_mode' => 'HTML'
-                        ]);
+                        if(TelegramMessage::checkTelegramID($vh->telegram_user_id)){
+                            $response = Telegram::sendMessage([
+                                'chat_id' => $vh->telegram_user_id,
+                                'text' => $message,
+                                'parse_mode' => 'HTML'
+                            ]);
+                        } else {
+                            // remove invalid telegram account
+                        }
                     }
 
                     // Destroy vehicle items
@@ -112,11 +126,15 @@ class CleanSchedule
                 $message_admin = "[ADMIN] Hello $dt->username, the system just run a clean vehicle, here's the detail:\n\n$summary_exec";
 
                 if($dt->telegram_user_id){
-                    $response = Telegram::sendMessage([
-                        'chat_id' => $dt->telegram_user_id,
-                        'text' => $message_admin,
-                        'parse_mode' => 'HTML'
-                    ]);
+                    if(TelegramMessage::checkTelegramID($dt->telegram_user_id)){
+                        $response = Telegram::sendMessage([
+                            'chat_id' => $dt->telegram_user_id,
+                            'text' => $message_admin,
+                            'parse_mode' => 'HTML'
+                        ]);
+                    } else {
+                        // remove invalid telegram account
+                    }
                 }
             }
         }

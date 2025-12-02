@@ -21,6 +21,7 @@ use Illuminate\Support\Str;
 
 // Helper
 use App\Helpers\Generator;
+use App\Helpers\TelegramMessage;
 
 // Model
 use App\Models\ErrorModel;
@@ -105,12 +106,16 @@ class AuditSchedule
                     $message = "[ADMIN] Hello $dt->username, the system just run an audit error, with result of $total error found. Here's the document";
                     
                     if($dt->telegram_user_id && $dt->telegram_is_valid == 1){
-                        $response = Telegram::sendDocument([
-                            'chat_id' => $dt->telegram_user_id,
-                            'document' => $inputFile,
-                            'caption' => $message,
-                            'parse_mode' => 'HTML'
-                        ]);
+                        if(TelegramMessage::checkTelegramID($dt->telegram_user_id)){
+                            $response = Telegram::sendDocument([
+                                'chat_id' => $dt->telegram_user_id,
+                                'document' => $inputFile,
+                                'caption' => $message,
+                                'parse_mode' => 'HTML'
+                            ]);
+                        } else {
+                            // remove invalid telegram account
+                        }
                     }
                 }
         
@@ -173,14 +178,18 @@ class AuditSchedule
 
             // Send Telegram
             if ($us->telegram_user_id) {
-                $message = "[ADMIN] Hello {$us->username}, here is your weekly vehicle audit report.";
+                if(TelegramMessage::checkTelegramID($us->telegram_user_id)){
+                    $message = "[ADMIN] Hello {$us->username}, here is your weekly vehicle audit report.";
 
-                Telegram::sendDocument([
-                    'chat_id' => $us->telegram_user_id,
-                    'document' => fopen($tmpPdfPath, 'rb'),
-                    'caption' => $message,
-                    'parse_mode' => 'HTML'
-                ]);
+                    Telegram::sendDocument([
+                        'chat_id' => $us->telegram_user_id,
+                        'document' => fopen($tmpPdfPath, 'rb'),
+                        'caption' => $message,
+                        'parse_mode' => 'HTML'
+                    ]);
+                } else {
+                    // remove invalid telegram account
+                }
             }
 
             // Clean up File
@@ -296,14 +305,18 @@ class AuditSchedule
 
             // Send Telegram
             if ($us->telegram_user_id) {
-                $message = "[ADMIN] Hello {$us->username}, here is your yearly fuel audit report.";
+                if(TelegramMessage::checkTelegramID($us->telegram_user_id)){
+                    $message = "[ADMIN] Hello {$us->username}, here is your yearly fuel audit report.";
 
-                Telegram::sendDocument([
-                    'chat_id' => $us->telegram_user_id,
-                    'document' => fopen($tmpPdfPath, 'rb'),
-                    'caption' => $message,
-                    'parse_mode' => 'HTML'
-                ]);
+                    Telegram::sendDocument([
+                        'chat_id' => $us->telegram_user_id,
+                        'document' => fopen($tmpPdfPath, 'rb'),
+                        'caption' => $message,
+                        'parse_mode' => 'HTML'
+                    ]);
+                } else {
+                    // remove invalid telegram account
+                }
             }
 
             // Clean up File
@@ -329,15 +342,19 @@ class AuditSchedule
             $admin = AdminModel::getAllContact();
 
             foreach($admin as $dt){
-                $message_template = "[ADMIN] Hello $dt->username, here's the apps summary for the last $days days:";
-                $message = "$message_template\n\n- Vehicle Created: $summary->vehicle_created\n- Inventory Created: $summary->inventory_created\n- New User : $summary->new_user\n- Trip Created : $summary->trip_created\n- Fuel Created : $summary->fuel_created\n- Service Created : $summary->service_created\n- Clean Created : $summary->clean_created\n- Error Happen : $summary->error_happen";
-
                 if($dt->telegram_user_id && $dt->telegram_is_valid == 1){
-                    $response = Telegram::sendMessage([
-                        'chat_id' => $dt->telegram_user_id,
-                        'text' => $message,
-                        'parse_mode' => 'HTML'
-                    ]);
+                    if(TelegramMessage::checkTelegramID($dt->telegram_user_id)){    
+                        $message_template = "[ADMIN] Hello $dt->username, here's the apps summary for the last $days days:";
+                        $message = "$message_template\n\n- Vehicle Created: $summary->vehicle_created\n- Inventory Created: $summary->inventory_created\n- New User : $summary->new_user\n- Trip Created : $summary->trip_created\n- Fuel Created : $summary->fuel_created\n- Service Created : $summary->service_created\n- Clean Created : $summary->clean_created\n- Error Happen : $summary->error_happen";
+
+                        $response = Telegram::sendMessage([
+                            'chat_id' => $dt->telegram_user_id,
+                            'text' => $message,
+                            'parse_mode' => 'HTML'
+                        ]);
+                    } else {
+                        // remove invalid telegram account
+                    }
                 }
             }
         }
@@ -354,15 +371,19 @@ class AuditSchedule
                 $total_service = MultiModel::countTotalContext('service',$dt->id);
                 $total_trip = MultiModel::countTotalContext('trip',$dt->id);
                 
-                $message_template = "Hello $dt->username, here's the weekly dashboard we've gathered so far from your account :";
-                $message = "$message_template\n\n- Total Vehicle : $total_vehicle\n- Total Clean : $total_clean\n- Total Driver : $total_driver\n- Total Service : $total_service\n- Total Trip : $total_trip";
-
                 if($dt->telegram_user_id && $dt->telegram_is_valid == 1){
-                    $response = Telegram::sendMessage([
-                        'chat_id' => $dt->telegram_user_id,
-                        'text' => $message,
-                        'parse_mode' => 'HTML'
-                    ]);
+                    if(TelegramMessage::checkTelegramID($dt->telegram_user_id)){    
+                        $message_template = "Hello $dt->username, here's the weekly dashboard we've gathered so far from your account :";
+                        $message = "$message_template\n\n- Total Vehicle : $total_vehicle\n- Total Clean : $total_clean\n- Total Driver : $total_driver\n- Total Service : $total_service\n- Total Trip : $total_trip";        
+
+                        $response = Telegram::sendMessage([
+                            'chat_id' => $dt->telegram_user_id,
+                            'text' => $message,
+                            'parse_mode' => 'HTML'
+                        ]);
+                    } else {
+                        // remove invalid telegram account
+                    }
                 }
             }
         }

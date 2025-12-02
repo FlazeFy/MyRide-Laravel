@@ -53,7 +53,7 @@
             <input class="form-control" type="number" name="vehicle_year_made" id="vehicle_year_made" min="1000" max="date('Y')" required>
         </div>
         <div class="col-xl-3 col-lg-4 col-md-4 col-sm-6 col-6">
-            <label>Plate</label>
+            <label>Plate Number</label>
             <input class="form-control" type="text" name="vehicle_plate_number" id="vehicle_plate_number" required>
         </div>
         <div class="col-xl-3 col-lg-4 col-md-5 col-sm-6 col-12">

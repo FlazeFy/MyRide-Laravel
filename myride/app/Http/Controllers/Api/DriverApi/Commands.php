@@ -17,6 +17,7 @@ use App\Models\DriverVehicleRelationModel;
 // Helper
 use App\Helpers\Generator;
 use App\Helpers\Validation;
+use App\Helpers\TelegramMessage;
 
 class Commands extends Controller
 {
@@ -426,17 +427,21 @@ class Commands extends Controller
                     $row = DriverVehicleRelationModel::createDriverVehicleRelation($data);
                     if($row){
                         $driver = DriverModel::getDriverContact($request->driver_id);
-                        if($driver->telegram_user_id){
-                            $user_id = $request->user()->id;
-                            $user = UserModel::getSocial($user_id);
-                            $vehicle = VehicleModel::getVehicleDetailById(null,$request->vehicle_id);
-                            $message = "Hello $driver->username, you have been assigned by $user->username to become the driver of '$vehicle->vehicle_plate_number'";
+                        if($driver->telegram_user_id && $driver->telegram_is_valid === 1){
+                            if(TelegramMessage::checkTelegramID($driver->telegram_user_id)){
+                                $user_id = $request->user()->id;
+                                $user = UserModel::getSocial($user_id);
+                                $vehicle = VehicleModel::getVehicleDetailById(null,$request->vehicle_id);
+                                $message = "Hello $driver->username, you have been assigned by $user->username to become the driver of '$vehicle->vehicle_plate_number'";
 
-                            $response = Telegram::sendMessage([
-                                'chat_id' => $driver->telegram_user_id,
-                                'text' => $message,
-                                'parse_mode' => 'HTML'
-                            ]);
+                                $response = Telegram::sendMessage([
+                                    'chat_id' => $driver->telegram_user_id,
+                                    'text' => $message,
+                                    'parse_mode' => 'HTML'
+                                ]);
+                            } else {
+                                // remove invalid telegram account
+                            }
                         }
 
                         return response()->json([

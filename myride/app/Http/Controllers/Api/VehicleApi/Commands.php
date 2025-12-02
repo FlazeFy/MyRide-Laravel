@@ -20,6 +20,7 @@ use App\Models\CleanModel;
 // Helper
 use App\Helpers\Validation;
 use App\Helpers\Generator;
+use App\Helpers\TelegramMessage;
 
 class Commands extends Controller
 {
@@ -159,11 +160,15 @@ class Commands extends Controller
                     $user = UserModel::getSocial($user_id);
                     $message = "Hello $user->username, your vehicle with name $vehicle_name ($vehicle_plate_number) data has been updated";
                     if($user->telegram_user_id){
-                        $response = Telegram::sendMessage([
-                            'chat_id' => $user->telegram_user_id,
-                            'text' => $message,
-                            'parse_mode' => 'HTML'
-                        ]);
+                        if(TelegramMessage::checkTelegramID($user->telegram_user_id)){
+                            $response = Telegram::sendMessage([
+                                'chat_id' => $user->telegram_user_id,
+                                'text' => $message,
+                                'parse_mode' => 'HTML'
+                            ]);
+                        } else {
+                            // remove invalid telegram account
+                        }
                     }
                     
                     return response()->json([
@@ -276,43 +281,55 @@ class Commands extends Controller
                 $user_id = $request->user()->id;
                 $vehicle_name = $request->vehicle_name." ".$request->vehicle_transmission_code;
                 $vehicle_plate_number = $request->vehicle_plate_number;
+                $extra_msg = null;
 
                 // Service : Update
                 $rows = VehicleModel::createVehicle([
-                        'vehicle_name' => $vehicle_name,
-                        'vehicle_merk' => $request->vehicle_merk,
-                        'vehicle_type' => $request->vehicle_type,
-                        'vehicle_price' => $request->vehicle_price,
-                        'vehicle_desc' => $request->vehicle_desc,
-                        'vehicle_distance' => $request->vehicle_distance,
-                        'vehicle_category' => $request->vehicle_category,
-                        'vehicle_status' => $request->vehicle_status,
-                        'vehicle_year_made' => $request->vehicle_year_made,
-                        'vehicle_plate_number' => $vehicle_plate_number,
-                        'vehicle_fuel_status' => $request->vehicle_fuel_status,
-                        'vehicle_fuel_capacity' => $request->vehicle_fuel_capacity,
-                        'vehicle_default_fuel' => $request->vehicle_default_fuel,
-                        'vehicle_color' => $request->vehicle_color,
-                        'vehicle_transmission' => $request->vehicle_transmission,
-                        'vehicle_capacity' => $request->vehicle_capacity,
-                    ], $user_id);
+                    'vehicle_name' => $vehicle_name,
+                    'vehicle_merk' => $request->vehicle_merk,
+                    'vehicle_type' => $request->vehicle_type,
+                    'vehicle_price' => $request->vehicle_price,
+                    'vehicle_desc' => $request->vehicle_desc,
+                    'vehicle_distance' => $request->vehicle_distance,
+                    'vehicle_category' => $request->vehicle_category,
+                    'vehicle_status' => $request->vehicle_status,
+                    'vehicle_year_made' => $request->vehicle_year_made,
+                    'vehicle_plate_number' => $vehicle_plate_number,
+                    'vehicle_fuel_status' => $request->vehicle_fuel_status,
+                    'vehicle_fuel_capacity' => $request->vehicle_fuel_capacity,
+                    'vehicle_default_fuel' => $request->vehicle_default_fuel,
+                    'vehicle_color' => $request->vehicle_color,
+                    'vehicle_transmission' => $request->vehicle_transmission,
+                    'vehicle_capacity' => $request->vehicle_capacity,
+                ], $user_id);
 
                 // Respond
                 if($rows){
                     $user = UserModel::getSocial($user_id);
-                    $message = "Hello $user->username, your vehicle with name $vehicle_name ($vehicle_plate_number) data has been created";
                     if($user->telegram_user_id){
-                        $response = Telegram::sendMessage([
-                            'chat_id' => $user->telegram_user_id,
-                            'text' => $message,
-                            'parse_mode' => 'HTML'
-                        ]);
+                        if(TelegramMessage::checkTelegramID($user->telegram_user_id)){
+                            $message = "Hello $user->username, your vehicle with name $vehicle_name ($vehicle_plate_number) data has been created";
+                            $response = Telegram::sendMessage([
+                                'chat_id' => $user->telegram_user_id,
+                                'text' => $message,
+                                'parse_mode' => 'HTML'
+                            ]);
+                        } else {
+                            $extra_msg = ' Telegram ID is invalid. Please check your Telegram ID';
+                        }
                     }
                     
-                    return response()->json([
-                        'status' => 'success',
-                        'message' => Generator::getMessageTemplate("create", $this->module),
-                    ], Response::HTTP_CREATED);
+                    if($extra_msg){
+                        return response()->json([
+                            'status' => 'success',
+                            'message' => Generator::getMessageTemplate("custom", "vehicle created, but$message"),
+                        ], Response::HTTP_CREATED);
+                    } else {
+                        return response()->json([
+                            'status' => 'success',
+                            'message' => Generator::getMessageTemplate("create", $this->module),
+                        ], Response::HTTP_CREATED);
+                    }
                 } else {
                     return response()->json([
                         'status' => 'failed',
@@ -390,13 +407,17 @@ class Commands extends Controller
             if($rows > 0){
                 $user = UserModel::getSocial($user_id);
                 $vehicle = VehicleModel::find($id);
-                $message = "Hello $user->username, your vehicle with name $vehicle->vehicle_name ($vehicle->vehicle_plate_number) data has been deleted. You can still recovered deleted vehicle before 30 days after deletion process";
                 if($user->telegram_user_id){
-                    $response = Telegram::sendMessage([
-                        'chat_id' => $user->telegram_user_id,
-                        'text' => $message,
-                        'parse_mode' => 'HTML'
-                    ]);
+                    if(TelegramMessage::checkTelegramID($user->telegram_user_id)){
+                        $message = "Hello $user->username, your vehicle with name $vehicle->vehicle_name ($vehicle->vehicle_plate_number) data has been deleted. You can still recovered deleted vehicle before 30 days after deletion process";
+                        $response = Telegram::sendMessage([
+                            'chat_id' => $user->telegram_user_id,
+                            'text' => $message,
+                            'parse_mode' => 'HTML'
+                        ]);
+                    } else {
+                        // remove invalid telegram account
+                    }
                 }
                 
                 return response()->json([
@@ -566,13 +587,17 @@ class Commands extends Controller
 
                 $user = UserModel::getSocial($user_id);
                 if($user->telegram_user_id){
-                    $message = "Hello $user->username, your vehicle $vehicle->vehicle_name ($vehicle->vehicle_plate_number) is permanently deleted";
-                    // Report to user
-                    $response = Telegram::sendMessage([
-                        'chat_id' => $user->telegram_user_id,
-                        'text' => $message,
-                        'parse_mode' => 'HTML'
-                    ]);
+                    if(TelegramMessage::checkTelegramID($user->telegram_user_id)){
+                        $message = "Hello $user->username, your vehicle $vehicle->vehicle_name ($vehicle->vehicle_plate_number) is permanently deleted";
+                        // Report to user
+                        $response = Telegram::sendMessage([
+                            'chat_id' => $user->telegram_user_id,
+                            'text' => $message,
+                            'parse_mode' => 'HTML'
+                        ]);
+                    } else {
+                        // remove invalid telegram account
+                    }
                 }
 
                 return response()->json([

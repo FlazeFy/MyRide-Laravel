@@ -12,7 +12,7 @@
         @include('fuel.usecases.get_export_fuel')
         <div class="row mt-2">
             <div class="col-lg-8 col-md-12">
-                <div class="container">
+                <div class="container-fluid">
                     @include('fuel.usecases.get_all_list_fuel')
                     @include('fuel.usecases.hard_delete_fuel')
                     @include('fuel.usecases.put_fuel')
@@ -21,12 +21,12 @@
             <div class="col-lg-4 col-md-12">
                 <div class="row">
                     <div class="col-lg-12 col-md-6">
-                        <div class="container">
+                        <div class="container-fluid">
                             @include('fuel.usecases.get_fuel_summary')
                         </div>
                     </div>
                     <div class="col-lg-12 col-md-6">
-                        <div class="container">
+                        <div class="container-fluid">
                             @include('fuel.usecases.get_all_fuel_monitor')
                         </div>
                     </div>

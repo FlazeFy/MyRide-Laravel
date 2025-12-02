@@ -11,7 +11,7 @@
             type: 'GET',
             beforeSend: function (xhr) {
                 xhr.setRequestHeader("Accept", "application/json")
-                xhr.setRequestHeader("Authorization", "Bearer <?= session()->get("token_key"); ?>")
+                xhr.setRequestHeader("Authorization", `Bearer ${token}`)
                 $(`#${holder}`).empty()
             },
             success: function(response) {
@@ -19,15 +19,17 @@
                 const data = response.data
                 
                 data.forEach(dt => {
-                    $(`#${holder}`).append(`
-                        <div class="col-xl-6 col-lg-12 text-center d-block mx-auto">
-                            <p class="text-secondary mb-0">Max Cap : <b>${dt.vehicle_fuel_capacity}L</b></p>
-                            <div id="stats_${dt.id}" class="mb-3"></div>
-                            <span class="plate-number">${dt.vehicle_plate_number}</span>
-                        </div>
-                    `)
-
                     if(dt.vehicle_fuel_status !== 'Not Monitored'){
+                        $(`#${holder}`).append(`
+                            <div class="col-xl-6 col-lg-12 text-center mx-auto">
+                                <div id="stats_${dt.id}" class="mb-2"></div>
+                                <div class="d-flex flex-wrap justify-content-center align-items-center mb-3">
+                                    <div class="plate-number d-inline-block mb-0">${dt.vehicle_plate_number}</div>
+                                    <p class="text-secondary mb-0">Max Cap : <b>${dt.vehicle_fuel_capacity}L</b></p>
+                                </div>
+                            </div>
+                        `)
+                        
                         let percentage
 
                         if(dt.vehicle_fuel_status === 'Fuel'){
@@ -43,11 +45,7 @@
                         }
 
                         generate_semi_gauge_chart(null, `stats_${dt.id}`, percentage)
-                    } else {
-                        $(`#stats_${dt.id}`).append(`
-                            <div class="alert alert-danger">Not Monitored</div>
-                        `)
-                    }
+                    } 
                 });
             },
             error: function(response, jqXHR, textStatus, errorThrown) {

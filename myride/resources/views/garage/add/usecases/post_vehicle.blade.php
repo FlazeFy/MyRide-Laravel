@@ -1,86 +1,83 @@
-<h2>Add Vehicle</h2>
 <form id="form-add-vehicle">
+    <h2>Add Vehicle</h2>
     <div class="row">
-        <div class="col-xl-6 col-lg-12 pb-4">
-            <div class="row">
-                <div class="col-lg-6 col-md-6 col-sm-12">
-                    <label>Category</label>
-                    <select class="form-select" name="vehicle_category" id="vehicle_category_holder" aria-label="Default select example"></select>
-                </div>
-                <div class="col-lg-6 col-md-6 col-sm-12">
-                    <label>Type</label>
-                    <select class="form-select" name="vehicle_type" id="vehicle_type_holder" aria-label="Default select example"></select>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-6 col-md-6 col-sm-12">
-                    <label>Transmission</label>
-                    <select class="form-select" name="vehicle_transmission" id="vehicle_transmission_holder" aria-label="Default select example"></select>
-                </div>
-                <div class="col-lg-6 col-md-6 col-sm-12">
-                    <label>Status</label>
-                    <select class="form-select" name="vehicle_status" id="vehicle_status_holder" aria-label="Default select example"></select>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-6 col-md-6 col-sm-12">
-                    <label>Fuel Status</label>
-                    <select class="form-select" name="vehicle_fuel_status" id="vehicle_fuel_status_holder" aria-label="Default select example"></select>
-                </div>
-                <div class="col-lg-6 col-md-6 col-sm-12">
-                    <label>Default Fuel</label>
-                    <select class="form-select" name="vehicle_default_fuel" id="vehicle_default_fuel_holder" aria-label="Default select example"></select>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-6 col-md-6 col-sm-12">
-                    <label>Merk</label>
-                    <input class="form-control" name="vehicle_merk" id="vehicle_merk">
-                </div>
-                <div class="col-lg-6 col-md-6 col-sm-12">
-                    <label>Year Made</label>
-                    <input class="form-control" name="vehicle_year_made" id="vehicle_year_made" type="number">
-                </div>
-            </div>
-            <label>Description</label>
-            <textarea class="form-control" name="vehicle_desc" id="vehicle_desc" style="min-height:120px;"></textarea>
-        </div>
-        <div class="col-xl-6 col-lg-12">
+        <div class="col-xl-4 col-lg-4 col-md-8 col-sm-7 col-12">
             <label>Vehicle Name</label>
-            <input class="form-control" name="vehicle_name" id="vehicle_name">
-            <div class="row">
-                <div class="col-lg-6 col-md-6 col-sm-12">
-                    <label>Travel Distance</label>
-                    <input class="form-control" name="vehicle_distance" id="vehicle_distance" type="number">
-                </div>
-                <div class="col-lg-6 col-md-6 col-sm-12">
-                    <label>Price</label>
-                    <input class="form-control" name="vehicle_price" id="vehicle_price" type="number">
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-3 col-md-3 col-sm-6">
-                    <label>Fuel Capacity</label>
-                    <input class="form-control" name="vehicle_fuel_capacity" id="vehicle_fuel_capacity" type="number">
-                </div>
-                <div class="col-lg-3 col-md-3 col-sm-6">
-                    <label>Capacity</label>
-                    <input class="form-control" name="vehicle_capacity" id="vehicle_capacity" type="number">
-                </div>
-                <div class="col-lg-6 col-md-6 col-sm-12">
-                    <label>Plate Number</label>
-                    <input class="form-control" name="vehicle_plate_number" id="vehicle_plate_number">
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-6 col-md-6 col-sm-12">
-                    <label>Color</label>
-                    <input class="form-control" name="vehicle_color" id="vehicle_color">
-                </div>
-            </div>
-            <hr>
-            <a class="btn btn-success rounded-pill py-3 w-100 mt-3" id="submit-add-vehicle-btn"><i class="fa-solid fa-floppy-disk"></i> Save Vehicle</a>
+            <input class="form-control" name="vehicle_name" id="vehicle_name" required>
         </div>
+        <div class="col-xl-2 col-lg-4 col-md-4 col-sm-5 col-12">
+            <label>Transmission</label>
+            <select class="form-select" name="vehicle_transmission" id="vehicle_transmission_holder" aria-label="Default select example"></select>
+        </div>
+        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-7 col-12">
+            <label>Merk</label>
+            <input class="form-control" name="vehicle_merk" id="vehicle_merk">
+        </div>
+        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-5 col-12">
+            <label>Type</label>
+            <select class="form-select" name="vehicle_type" id="vehicle_type_holder" aria-label="Default select example"></select>
+        </div>
+        <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12">
+            <label>Price</label>
+            <div class="input-group mb-3">
+                <span class="input-group-text">Rp. </span>
+                <input class="form-control" type="number" name="vehicle_price" id="vehicle_price" min="1" required>
+                <span class="input-group-text">.00</span>
+            </div>
+        </div>
+        <div class="col-lg-12 col-md-12 col-sm-12">
+            <label>Description</label>
+            <textarea class="form-control" name="vehicle_desc" id="vehicle_desc"></textarea>
+        </div>
+        <div class="col-xl-3 col-lg-4 col-md-4 col-sm-6 col-12">
+            <label>Distance</label>
+            <div class="input-group mb-3">
+                <input class="form-control" type="number" name="vehicle_distance" id="vehicle_distance" min="1" required>
+                <span class="input-group-text">Km</span>
+            </div>
+        </div>
+        <div class="col-xl-3 col-lg-4 col-md-4 col-sm-6 col-6">
+            <label>Category</label>
+            <select class="form-select" name="vehicle_category" id="vehicle_category_holder" aria-label="Default select example"></select>
+        </div>
+        <div class="col-xl-3 col-lg-4 col-md-4 col-sm-6 col-6">
+            <label>Status</label>
+            <select class="form-select" name="vehicle_status" id="vehicle_status_holder" aria-label="Default select example"></select>
+        </div>
+        <div class="col-xl-3 col-lg-4 col-md-3 col-sm-6 col-6">
+            <label>Year Made</label>
+            <input class="form-control" name="vehicle_year_made" id="vehicle_year_made" type="number">
+        </div>
+        <div class="col-xl-3 col-lg-4 col-md-4 col-sm-6 col-6">
+            <label>Plate Number</label>
+            <input class="form-control" name="vehicle_plate_number" id="vehicle_plate_number">
+        </div>
+        <div class="col-xl-3 col-lg-4 col-md-5 col-sm-6 col-12">
+            <label>Default Fuel</label>
+            <select class="form-select" name="vehicle_default_fuel" id="vehicle_default_fuel_holder" aria-label="Default select example"></select>
+        </div>
+        <div class="col-xl-3 col-lg-4 col-md-3 col-sm-6 col-6">
+            <label>Fuel Capacity</label>
+            <div class="input-group mb-3">
+                <input class="form-control" type="number" name="vehicle_fuel_capacity" id="vehicle_fuel_capacity"  min="1" max="100" required>
+                <span class="input-group-text">Liter</span>
+            </div>
+        </div>
+        <div class="col-xl-3 col-lg-4 col-md-4 col-sm-6 col-6">
+            <label>Fuel Status</label>
+            <select class="form-select" name="vehicle_fuel_status" id="vehicle_fuel_status_holder" aria-label="Default select example"></select>
+        </div>
+        <div class="col-xl-3 col-lg-4 col-md-5 col-sm-6 col-6">
+            <label>Color</label>
+            <input class="form-control" name="vehicle_color" id="vehicle_color">
+        </div>
+        <div class="col-xl-3 col-lg-4 col-md-3 col-sm-6 col-6">
+            <label>Passanger Capacity</label>
+            <input class="form-control" name="vehicle_capacity" id="vehicle_capacity" type="number">
+        </div>
+    </div>
+    <div class="d-grid d-md-inline-block">
+        <a class="btn btn-success rounded-pill w-100 mt-3" id="submit-add-vehicle-btn"><i class="fa-solid fa-floppy-disk"></i> Save Vehicle</a>
     </div>
 </form>
 

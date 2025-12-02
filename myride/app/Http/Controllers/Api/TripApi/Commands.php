@@ -16,6 +16,7 @@ use App\Models\AdminModel;
 // Helper
 use App\Helpers\Validation;
 use App\Helpers\Generator;
+use App\Helpers\TelegramMessage;
 
 class Commands extends Controller
 {
@@ -142,24 +143,30 @@ class Commands extends Controller
                     if($rows){
                         // Message to User
                         $user = UserModel::getSocial($user_id);
-                        $message = "Hello $user->username, your have added trip history from $trip_origin_name to $trip_destination_name using $vehicle_name ($vehicle_plate_number)";
-                        if($user->telegram_user_id){
+                        if($user->telegram_user_id && TelegramMessage::checkTelegramID($driver->telegram_user_id)){
+                            $message = "Hello $user->username, your have added trip history from $trip_origin_name to $trip_destination_name using $vehicle_name ($vehicle_plate_number)";
                             $response = Telegram::sendMessage([
                                 'chat_id' => $user->telegram_user_id,
                                 'text' => $message,
                                 'parse_mode' => 'HTML'
                             ]);
+                        } else {
+                            // remove invalid telegram account
                         }
 
                         // Message to Driver
                         if($driver_id){
                             $driver = DriverModel::find($driver_id);
-                            $message = "Hello $driver->username, $user->username have added trip history with you as the driver. The trip from $trip_origin_name to $trip_destination_name using $vehicle_name ($vehicle_plate_number)";
-                            $response = Telegram::sendMessage([
-                                'chat_id' => $driver->telegram_user_id,
-                                'text' => $message,
-                                'parse_mode' => 'HTML'
-                            ]);
+                            if($driver->telegram_user_id && TelegramMessage::checkTelegramID($driver->telegram_user_id)){
+                                $message = "Hello $driver->username, $user->username have added trip history with you as the driver. The trip from $trip_origin_name to $trip_destination_name using $vehicle_name ($vehicle_plate_number)";
+                                $response = Telegram::sendMessage([
+                                    'chat_id' => $driver->telegram_user_id,
+                                    'text' => $message,
+                                    'parse_mode' => 'HTML'
+                                ]);
+                            } else {
+                                // remove invalid telegram account
+                            }
                         }
                         
                         return response()->json([

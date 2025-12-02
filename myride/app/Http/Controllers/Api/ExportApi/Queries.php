@@ -25,6 +25,7 @@ use App\Models\ServiceModel;
 use App\Models\DriverModel;
 // Helpers
 use App\Helpers\Generator;
+use App\Helpers\TelegramMessage;
 
 class Queries extends Controller {
     public function exportCleanHistory(Request $request){
@@ -82,14 +83,18 @@ class Queries extends Controller {
             copy($storagePath, $publicPath);
 
             if ($user && $user->telegram_is_valid == 1 && $user->telegram_user_id) {
-                $inputFile = InputFile::create($publicPath, $file_name);
+                if(TelegramMessage::checkTelegramID($user->telegram_user_id)){
+                    $inputFile = InputFile::create($publicPath, $file_name);
 
-                Telegram::sendDocument([
-                    'chat_id' => $user->telegram_user_id,
-                    'document' => $inputFile,
-                    'caption' => "Your clean export is ready",
-                    'parse_mode' => 'HTML',
-                ]);
+                    Telegram::sendDocument([
+                        'chat_id' => $user->telegram_user_id,
+                        'document' => $inputFile,
+                        'caption' => "Your clean export is ready",
+                        'parse_mode' => 'HTML',
+                    ]);
+                } else {
+                    // remove invalid telegram account
+                }
             }
 
             return response()->download($storagePath, $file_name, [
@@ -149,14 +154,18 @@ class Queries extends Controller {
             copy($storagePath, $publicPath);
 
             if ($user && $user->telegram_is_valid == 1 && $user->telegram_user_id) {
-                $inputFile = InputFile::create($publicPath, $file_name);
+                if(TelegramMessage::checkTelegramID($user->telegram_user_id)){
+                    $inputFile = InputFile::create($publicPath, $file_name);
 
-                Telegram::sendDocument([
-                    'chat_id' => $user->telegram_user_id,
-                    'document' => $inputFile,
-                    'caption' => "Your fuel export is ready",
-                    'parse_mode' => 'HTML',
-                ]);
+                    Telegram::sendDocument([
+                        'chat_id' => $user->telegram_user_id,
+                        'document' => $inputFile,
+                        'caption' => "Your fuel export is ready",
+                        'parse_mode' => 'HTML',
+                    ]);
+                } else {
+                    // remove invalid telegram account
+                }
             }
 
             return response()->download($storagePath, $file_name, [
@@ -215,15 +224,19 @@ class Queries extends Controller {
             }
             copy($storagePath, $publicPath);
 
-            if ($user && $user->telegram_is_valid == 1 && $user->telegram_user_id) {
-                $inputFile = InputFile::create($publicPath, $file_name);
+            if ($user && $user->telegram_is_valid == 1 && $user->telegram_user_id){
+                if(TelegramMessage::checkTelegramID($user->telegram_user_id)){
+                    $inputFile = InputFile::create($publicPath, $file_name);
 
-                Telegram::sendDocument([
-                    'chat_id' => $user->telegram_user_id,
-                    'document' => $inputFile,
-                    'caption' => "Your inventory export is ready",
-                    'parse_mode' => 'HTML',
-                ]);
+                    Telegram::sendDocument([
+                        'chat_id' => $user->telegram_user_id,
+                        'document' => $inputFile,
+                        'caption' => "Your inventory export is ready",
+                        'parse_mode' => 'HTML',
+                    ]);
+                } else {
+                    // remove invalid telegram account
+                }
             }
 
             return response()->download($storagePath, $file_name, [
@@ -283,16 +296,20 @@ class Queries extends Controller {
             }
             copy($storagePath, $publicPath);
 
-            if ($user && $user->telegram_is_valid == 1 && $user->telegram_user_id) {
-                $inputFile = InputFile::create($publicPath, $file_name);
+            if ($user && $user->telegram_is_valid == 1 && $user->telegram_user_id){
+                if(TelegramMessage::checkTelegramID($user->telegram_user_id)){
+                    $inputFile = InputFile::create($publicPath, $file_name);
 
-                Telegram::sendDocument([
-                    'chat_id' => $user->telegram_user_id,
-                    'document' => $inputFile,
-                    'caption' => "Your service export is ready",
-                    'parse_mode' => 'HTML',
-                ]);
-            }
+                    Telegram::sendDocument([
+                        'chat_id' => $user->telegram_user_id,
+                        'document' => $inputFile,
+                        'caption' => "Your service export is ready",
+                        'parse_mode' => 'HTML',
+                    ]);
+                } else {
+                    // remove invalid telegram account
+                }
+            } 
 
             return response()->download($storagePath, $file_name, [
                 'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
@@ -350,16 +367,20 @@ class Queries extends Controller {
             }
             copy($storagePath, $publicPath);
 
-            if ($user && $user->telegram_is_valid == 1 && $user->telegram_user_id) {
-                $inputFile = InputFile::create($publicPath, $file_name);
+            if ($user && $user->telegram_is_valid == 1 && $user->telegram_user_id){
+                if(TelegramMessage::checkTelegramID($user->telegram_user_id)){
+                    $inputFile = InputFile::create($publicPath, $file_name);
 
-                Telegram::sendDocument([
-                    'chat_id' => $user->telegram_user_id,
-                    'document' => $inputFile,
-                    'caption' => "Your driver export is ready",
-                    'parse_mode' => 'HTML',
-                ]);
-            }
+                    Telegram::sendDocument([
+                        'chat_id' => $user->telegram_user_id,
+                        'document' => $inputFile,
+                        'caption' => "Your driver export is ready",
+                        'parse_mode' => 'HTML',
+                    ]);
+                } else {
+                    // remove invalid telegram account
+                }
+            } 
 
             return response()->download($storagePath, $file_name, [
                 'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
