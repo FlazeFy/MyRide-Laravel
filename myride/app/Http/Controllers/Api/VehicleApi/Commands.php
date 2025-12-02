@@ -167,7 +167,7 @@ class Commands extends Controller
                                 'parse_mode' => 'HTML'
                             ]);
                         } else {
-                            // remove invalid telegram account
+                            UserModel::updateUserById([ 'telegram_user_id' => null, 'telegram_is_valid' => 0],$user_id);
                         }
                     }
                     
@@ -416,7 +416,7 @@ class Commands extends Controller
                             'parse_mode' => 'HTML'
                         ]);
                     } else {
-                        // remove invalid telegram account
+                        UserModel::updateUserById([ 'telegram_user_id' => null, 'telegram_is_valid' => 0],$user_id);
                     }
                 }
                 
@@ -596,7 +596,7 @@ class Commands extends Controller
                             'parse_mode' => 'HTML'
                         ]);
                     } else {
-                        // remove invalid telegram account
+                        UserModel::updateUserById([ 'telegram_user_id' => null, 'telegram_is_valid' => 0],$user_id);
                     }
                 }
 

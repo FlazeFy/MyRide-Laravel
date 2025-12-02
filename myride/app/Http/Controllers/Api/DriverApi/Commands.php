@@ -428,8 +428,8 @@ class Commands extends Controller
                     if($row){
                         $driver = DriverModel::getDriverContact($request->driver_id);
                         if($driver->telegram_user_id && $driver->telegram_is_valid === 1){
+                            $user_id = $request->user()->id;
                             if(TelegramMessage::checkTelegramID($driver->telegram_user_id)){
-                                $user_id = $request->user()->id;
                                 $user = UserModel::getSocial($user_id);
                                 $vehicle = VehicleModel::getVehicleDetailById(null,$request->vehicle_id);
                                 $message = "Hello $driver->username, you have been assigned by $user->username to become the driver of '$vehicle->vehicle_plate_number'";
@@ -440,7 +440,7 @@ class Commands extends Controller
                                     'parse_mode' => 'HTML'
                                 ]);
                             } else {
-                                // remove invalid telegram account
+                                $res = UserModel::updateUserById([ 'telegram_user_id' => null, 'telegram_is_valid' => 0],$user_id);
                             }
                         }
 

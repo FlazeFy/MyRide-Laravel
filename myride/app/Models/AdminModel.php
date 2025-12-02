@@ -15,6 +15,7 @@ use App\Models\ServiceModel;
 use App\Models\TripModel;
 use App\Models\UserModel;
 use App\Models\FuelModel;
+use App\Models\AdminModel;
 
 /**
  * @OA\Schema(
@@ -96,5 +97,10 @@ class AdminModel extends Authenticatable
         ];
 
         return $final_res;
+    }
+
+    public static function updateAdminById($data,$id){
+        $data['updated_at'] = date('Y-m-d H:i:s');
+        return AdminModel::where('id',$id)->update($data);
     }
 }

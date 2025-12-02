@@ -122,7 +122,7 @@ class UserModel extends Authenticatable
     }
 
     public static function createUser($data){
-        $res = UserModel::create([
+        return UserModel::create([
             'id' => Generator::getUUID(), 
             'username' => $data->username, 
             'password' => Hash::make($data->password),
@@ -132,8 +132,11 @@ class UserModel extends Authenticatable
             'created_at' => date('Y-m-d H:i:s'), 
             'updated_at' => null
         ]);
+    }
 
-        return $res;
+    public static function updateUserById($data,$id){
+        $data['updated_at'] = date('Y-m-d H:i:s');
+        return UserModel::where('id',$id)->update($data);
     }
 
     public static function getCheckUserByUsernameAndEmail($username, $email){

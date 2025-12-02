@@ -5,12 +5,10 @@
         if(data){
             $('#req_holder').html(`
                 <div class="alert alert-success telegram-request" role="alert">
-                    There is a request for <b class='text-dark'>Telegram verification</b>. We have sended the token to your Telegram, please type the token and validate it
-                    <div class='d-flex justify-content-start'>
-                        <div class="input-group mt-2">
-                            <input class="form-control" type="text" style='color:var(--darkColor) !important;' name="telegram_request_context" id="telegram_request_context" required>
-                            <a class='btn btn-success pt-3' id='validate-telegram-req-btn'>Validate</a>
-                        </div>
+                    <p>There is a request for <b class='text-dark'>Telegram verification</b>. We have sended the token to your Telegram, please type the token and validate it</p>
+                    <div class='d-flex justify-content-start gap-2'>
+                        <input class="form-control mb-0" type="text" style='color:var(--darkColor) !important;' name="telegram_request_context" id="telegram_request_context" required>
+                        <a class='btn btn-success' id='validate-telegram-req-btn'>Validate</a>
                     </div>
                 </div>
             `)
@@ -39,6 +37,7 @@
                     allowOutsideClick: false
                 }).then((result) => {
                     if (result.isConfirmed) {
+                        get_profile()
                         $('#req_holder .telegram-request').remove()
                     }
                 });

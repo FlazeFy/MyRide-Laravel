@@ -286,15 +286,15 @@ class Commands extends Controller
                     $is_telegram_updated = false;
                     $old_data = UserModel::find($user_id);
                     $extra_msg = "";
+                    $new_telegram_id = $request->telegram_user_id;
 
-                    $res = UserModel::where('id',$user_id)
-                        ->update([
-                            'email' => $request->email,
-                            'username' => $request->username
-                        ]);
+                    $res = UserModel::updateUserById([
+                        'email' => $request->email,
+                        'username' => $request->username
+                    ],$user_id);
 
                     // If there is a change in telegram ID
-                    if($old_data->telegram_user_id != $request->telegram_user_id){
+                    if($old_data->telegram_user_id != $new_telegram_id){
                         $is_telegram_updated = true;
                         $token_length = 6;
                         $token = Generator::getTokenValidation($token_length);
@@ -312,7 +312,7 @@ class Commands extends Controller
                         if($create_new_req){
                             $res_update_user_token = UserModel::where('id',$user_id)
                                 ->update([
-                                    'telegram_user_id' => $request->telegram_user_id,
+                                    'telegram_user_id' => $new_telegram_id,
                                     'telegram_is_valid' => 0
                                 ]);
 
@@ -328,7 +328,7 @@ class Commands extends Controller
                                 'parse_mode' => 'HTML'
                             ]);
                         } else {
-                            // remove invalid telegram account
+                            UserModel::updateUserById([ 'telegram_user_id' => null, 'telegram_is_valid' => 0],$user_id);
                         }
                     }
                     
@@ -343,7 +343,7 @@ class Commands extends Controller
                                     'parse_mode' => 'HTML'
                                 ]);
                             } else {
-                                // remove invalid telegram account
+                                UserModel::updateUserById([ 'telegram_user_id' => null, 'telegram_is_valid' => 0],$user_id);
                             }
                         }
 

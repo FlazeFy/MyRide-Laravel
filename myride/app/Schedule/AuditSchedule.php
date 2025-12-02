@@ -114,7 +114,7 @@ class AuditSchedule
                                 'parse_mode' => 'HTML'
                             ]);
                         } else {
-                            // remove invalid telegram account
+                            AdminModel::updateAdminById([ 'telegram_user_id' => null, 'telegram_is_valid' => 0],$dt->id);
                         }
                     }
                 }
@@ -188,7 +188,7 @@ class AuditSchedule
                         'parse_mode' => 'HTML'
                     ]);
                 } else {
-                    // remove invalid telegram account
+                    UserModel::updateUserById([ 'telegram_user_id' => null, 'telegram_is_valid' => 0],$us->id);
                 }
             }
 
@@ -315,7 +315,7 @@ class AuditSchedule
                         'parse_mode' => 'HTML'
                     ]);
                 } else {
-                    // remove invalid telegram account
+                    UserModel::updateUserById([ 'telegram_user_id' => null, 'telegram_is_valid' => 0],$us->id);
                 }
             }
 
@@ -353,7 +353,7 @@ class AuditSchedule
                             'parse_mode' => 'HTML'
                         ]);
                     } else {
-                        // remove invalid telegram account
+                        AdminModel::updateAdminById([ 'telegram_user_id' => null, 'telegram_is_valid' => 0],$dt->id);
                     }
                 }
             }
@@ -382,7 +382,7 @@ class AuditSchedule
                             'parse_mode' => 'HTML'
                         ]);
                     } else {
-                        // remove invalid telegram account
+                        UserModel::updateUserById([ 'telegram_user_id' => null, 'telegram_is_valid' => 0],$dt->id);
                     }
                 }
             }
