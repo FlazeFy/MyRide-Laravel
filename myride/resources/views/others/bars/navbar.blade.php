@@ -1,13 +1,16 @@
+@php
+    $path = request()->path();
+@endphp
 <nav class="navbar navbar-expand-lg">
     <div class="d-inline-block w-100 d-flex flex-wrap gap-3 align-items-center">
-        <div class="d-inline-block">
-            <button class="toogle_nav-button btn btn-primary px-3 close"><i class="fa-solid fa-bars"></i></button>
-        </div>
+        @if($path !== '/')
+            <div class="d-inline-block">
+                <button class="toogle_nav-button btn btn-primary px-3 close"><i class="fa-solid fa-bars"></i></button>
+            </div>
+        @endif
         <div>
             <h5 class="navbar-brand"><a href="/">
                 @php
-                    $path = request()->path();
-                    
                     if ($path === '/' || $path === '') {
                         echo "MyRide";
                     } else {
