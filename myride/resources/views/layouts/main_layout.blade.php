@@ -111,6 +111,13 @@
 @include('others.popup.failed')
 @include('others.popup.success_mini')
 
+<script>
+    var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
+    var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+        return new bootstrap.Popover(popoverTriggerEl)
+    })
+</script>
+
 <!-- Others JS -->
 <?php 
     $route = Route::currentRouteName();

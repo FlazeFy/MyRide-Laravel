@@ -381,6 +381,13 @@ hr {
     box-shadow: rgba(0, 0, 0, 0.2) 1.975px 1.975px 2.8px;
 }
 
+.popover {
+    padding: 0 !important;
+}
+.popover-header {
+    background: transparent;
+}
+
 /* Maps Dialog */
 .gm-ui-hover-effect {
     background: black !important;

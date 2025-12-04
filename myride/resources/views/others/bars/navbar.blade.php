@@ -33,7 +33,9 @@
             </a></h5>
             <div class="navbar-collapse-mobile flex-wrap gap-2">
                 <a class="btn btn-primary px-3" href="<?= Route::current()->uri() === "/" ? "/dashboard" : "/profile"?>"><i class="fa-solid fa-user"></i><span class="button-text"> {{session()->get('username_key')}}</span></a>
-                <a class="btn btn-success px-3" href="#"><i class="fa-solid fa-bell"></i></a>
+                <a class="btn btn-success px-3 open-notification-btn" data-bs-toggle="popover" title="Reminder" data-bs-placement="left" data-bs-html="true" 
+                    data-bs-content="<div id='reminder-holder-1'></div>"><i class="fa-solid fa-bell"></i>
+                </a>
                 <a class="btn btn-danger px-3" data-bs-target="#modalSignOut" data-bs-toggle="modal"><i class="fa-solid fa-right-from-bracket"></i></a>
             </div>
         </div>
@@ -42,11 +44,16 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto gap-2">
                 <li class="nav-item"><a class="btn btn-primary px-3" href="<?= Route::current()->uri() === "/" ? "/dashboard" : "/profile"?>"><i class="fa-solid fa-user"></i><span class="button-text"> {{session()->get('username_key')}}</span></a></li>
-                <li class="nav-item"><a class="btn btn-success px-3" href="#"><i class="fa-solid fa-bell"></i></a></li>
+                <li class="nav-item">
+                    <a class="btn btn-success px-3 open-notification-btn" data-bs-toggle="popover" title="Reminder" data-bs-placement="left" data-bs-html="true" data-bs-content="<div id='reminder-holder-2'></div>">
+                        <i class="fa-solid fa-bell"></i>
+                    </a>
+                </li>
                 <li class="nav-item"><a class="btn btn-danger px-3" data-bs-target="#modalSignOut" data-bs-toggle="modal"><i class="fa-solid fa-right-from-bracket"></i></a></li>
             </ul>
         </div>
         @endif
+        @include('others.notification')
     </div>
 </nav>
 
