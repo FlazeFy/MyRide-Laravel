@@ -143,7 +143,7 @@ class Commands extends Controller
                     if($rows){
                         // Message to User
                         $user = UserModel::getSocial($user_id);
-                        if($user->telegram_user_id && TelegramMessage::checkTelegramID($driver->telegram_user_id)){
+                        if($user->telegram_user_id && TelegramMessage::checkTelegramID($user->telegram_user_id)){
                             $message = "Hello $user->username, your have added trip history from $trip_origin_name to $trip_destination_name using $vehicle_name ($vehicle_plate_number)";
                             $response = Telegram::sendMessage([
                                 'chat_id' => $user->telegram_user_id,

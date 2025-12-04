@@ -21,7 +21,7 @@
 @endphp
 
 <div class="carousel-parent">
-    <div id="{{$carouselId}}" class="carousel slide" data-bs-ride="carousel">
+    <div id="{{$carouselId}}" class="carousel slide" data-bs-ride="carousel" data-bs-interval="15000">
         <div class="carousel-indicators"></div>
         <div class="carousel-inner py-4"></div>
         <div id="carousel-holder"></div>

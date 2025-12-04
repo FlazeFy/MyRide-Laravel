@@ -17,7 +17,7 @@
     </div>
     <div class="col-xl-3 col-md-4 col-sm-6 col-6 pb-2">
         <h6 class="mb-0">Status</h6>
-        <span id="vehicle_status"></span>
+        <span id="vehicle_status" class="d-flex flex-wrap gap-1"></span>
     </div>
     <div class="col-xl-2 col-md-4 col-sm-6 col-6 pb-2">
         <h6 class="mb-0">Category</h6>
@@ -78,7 +78,7 @@
                 $('#vehicle_fuel_status').html(detail.vehicle_fuel_status)
                 $('#vehicle_capacity').html(`${detail.vehicle_capacity} person`)
                 $('#vehicle_status').html(
-                    `${detail.deleted_at ? `<span class="btn btn-danger rounded-pill px-2 py-1 m-0" style="font-size:var(--textMD);">Deleted at <span class="date-holder">${getDateToContext(detail.deleted_at,'calendar')}</span></span>` :''}
+                    `${detail.deleted_at ? `<span class="btn btn-danger rounded-pill px-2 py-1 m-0" style="font-size:var(--textXSM);">Deleted at <span class="date-holder">${getDateToContext(detail.deleted_at,'calendar')}</span></span>` :''}
                     <span class="btn btn-success rounded-pill px-2 py-1 m-0" style="font-size:var(--textMD);">${detail.vehicle_status}</span>`
                 )
                 $('#vehicle_distance').html(`${detail.vehicle_distance} Km`)

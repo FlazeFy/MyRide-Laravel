@@ -70,7 +70,7 @@ const generate_line_chart = (title, holder, data) => {
 }
 
 const generate_pie_chart = (title, holder, data) => {
-    $(`#${holder}`).before(`<h2>${ucEachWord(title)}</h2>`)
+    $(`#${holder}`).before(`<h2 class="text-center">${ucEachWord(title)}</h2><hr>`)
 
     if(data && data.length > 0){
         let keys = Object.keys(data[0])
@@ -112,7 +112,7 @@ const generate_pie_chart = (title, holder, data) => {
 }
 
 const generate_bar_chart = (title, holder, data) => {
-    $(`#${holder}`).before(`<h2>${ucEachWord(title)}</h2>`)
+    $(`#${holder}`).before(`<h2 class="text-center">${ucEachWord(title)}</h2><hr>`)
 
     if(data.length > 0){
         let keys = Object.keys(data[0])

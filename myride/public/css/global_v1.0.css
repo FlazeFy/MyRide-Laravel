@@ -225,7 +225,7 @@ img:not(.gm-style img) {
     top: calc(-1.5*var(--spaceJumbo));       
     right: var(--spaceMD);      
     display: flex;
-    gap: 8px;         
+    gap: var(--spaceSM);         
 }
 .carousel-control-prev, .carousel-control-next {
     height: calc(var(--spaceJumbo) * 1.25);
@@ -248,7 +248,7 @@ img:not(.gm-style img) {
 
 .plate-number {
     background:var(--warningColor) !important; 
-    z-index: 998;
+    z-index: 98;
 }
 .chip-mini {
     font-size:var(--textSM); 
@@ -404,14 +404,14 @@ hr {
     right: -15px;
 }
 .maps-toolbar {
-    border-radius: 20px;
-    border: 5px solid var(--darkColor);
+    border-radius: var(--roundedLG);
+    border: 3px solid var(--darkColor);
     padding: 0 !important;
     background: var(--darkColor);
 }
 .maps-toolbar button {
-    margin: 10px !important;
-    border-radius: 10px !important;
+    margin: var(--spaceMD) !important;
+    border-radius: var(--roundedMD) !important;
 }
 .maps-info-box p, .maps-info-box h6 {
     color: var(--textWhite) !important;

@@ -1,18 +1,16 @@
 <style>
     #map-board {
         height:50vh;
-        border-radius: 20px;
-        margin-bottom: 6px;
-        border: 5px solid black;
     }
 </style>
 
 <h2>Add Trip</h2>
+<hr>
 <form id="form-add-trip">
     <div class="row">
         <div class="col-xl-6 col-lg-12 pb-4">
             <div class="position-relative">
-                <div id="map-board"></div>
+                <div id="map-board" class="maps-toolbar"></div>
             </div>
         </div>
         <div class="col-xl-6 col-lg-12">

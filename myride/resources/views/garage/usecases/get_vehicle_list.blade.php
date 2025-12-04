@@ -204,7 +204,7 @@
                                             <h2>${dt.vehicle_merk} - ${dt.vehicle_name}</h2>
                                         </div>
                                         <div class="d-flex flex-wrap gap-2">
-                                            <span class="plate-number mb-0 ms-0">${dt.vehicle_plate_number}</span>
+                                            <span class="plate-number m-0">${dt.vehicle_plate_number}</span>
                                             <span class="chip bg-info">${dt.vehicle_type}</span>
                                             <span class="chip bg-info"><i class="fa-solid fa-car"></i> ${dt.vehicle_category}</span>
                                             <span class="chip bg-${markFuel}"><i class="fa-solid fa-gas-pump"></i> ${dt.vehicle_fuel_status}</span>
