@@ -2,13 +2,13 @@
     @csrf
     <div class="mb-3">
         <label for="exampleInputEmail1" class="form-label">Email address / Username</label>
-        <input type="text" name="username" id="username" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+        <input type="text" name="username" id="username" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" onkeydown="return submitOnEnter(event)">
         <div id="emailHelp" class="form-text">We'll never share your email with anyone else</div>
         <a class="error_input" id="username_msg"></a>
     </div>
     <div class="mb-3">
         <label for="exampleInputPassword1" class="form-label">Password</label>
-        <input type="password" name="password" id="password" class="form-control" id="exampleInputPassword1">
+        <input type="password" name="password" id="password" class="form-control" id="exampleInputPassword1" onkeydown="return submitOnEnter(event)">
         <a class="error_input" id="pass_msg"></a>
     </div>
     <a class="error_input" id="all_msg"></a>
@@ -30,20 +30,17 @@
 </form>
 
 <script>
-    var pwd_input = document.getElementById("password")
-    var btn_pwd = document.getElementById("btn-toogle-pwd")
-
-    function viewPassword(){
-        if(pwd_input.getAttribute('type') == "text"){
-            pwd_input.setAttribute('type', 'password')
-            btn_pwd.innerHTML = '<i class="fa-sharp fa-solid fa-eye-slash"></i>'
+    const viewPassword = () => {
+        if($("#password").getAttribute('type') == "text"){
+            $("#password").setAttribute('type', 'password')
+            $("#btn-toogle-pwd").html('<i class="fa-sharp fa-solid fa-eye-slash"></i>')
         } else {
-            pwd_input.setAttribute('type', 'text')
-            btn_pwd.innerHTML = '<i class="fa-sharp fa-solid fa-eye"></i>'
+            $("#password").setAttribute('type', 'text')
+            $("#btn-toogle-pwd").html('<i class="fa-sharp fa-solid fa-eye"></i>')
         }
     }
 
-    function login(){
+    const login = () => {
         $('#username_msg').html("")
         $('#pass_msg').html("")
         $('#all_msg').html("")
@@ -115,7 +112,41 @@
         });
     }
 
-    function submitOnEnter(event) {
+    const auto_login = () => {
+        if(localStorage.getItem('token_key') !== null){
+            const token = localStorage.getItem('token_key')
+            Swal.showLoading()
+            $.ajax({
+                url: `/api/v1/user/my_profile`,
+                type: 'GET',
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("Accept", "application/json")
+                    xhr.setRequestHeader("Authorization", `Bearer ${token}`)    
+                },
+                success: function(response) {
+                    Swal.close()
+                    const data = response.data
+                    $('#token').val(token)
+                    $('#role').val(data.role)
+                    $('#email').val(data.email)
+                    $('#id').val(data.id)
+                    is_submit = true
+                    $('#form-login').submit()
+                },
+                error: function(response, jqXHR, textStatus, errorThrown) {
+                    sessionStorage.clear()
+                    localStorage.clear()
+                    generate_api_error(response, true)
+                }
+            });
+        } else {
+            sessionStorage.clear()
+            localStorage.clear()
+        }
+    }
+    auto_login()
+
+    const submitOnEnter = (event) => {
         if (event.keyCode === 13) { 
             event.preventDefault() 
             login()
