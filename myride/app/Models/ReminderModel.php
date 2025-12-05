@@ -39,8 +39,21 @@ class ReminderModel extends Model
         }
             
         return $res->whereNotNull('remind_at')
-            ->where('remind_at', '>=', now()) 
-            ->orderBy('remind_at', 'asc')     
+            ->orderBy('remind_at', 'desc')   
+            ->paginate($limit);                       
+    }
+
+    public static function getRecentlyReminder($user_id = null, $limit){
+        $res = ReminderModel::select('reminder.id','reminder_title', 'reminder_context', 'reminder_body', 'remind_at', 'vehicle_plate_number')
+            ->leftjoin('vehicle','vehicle.id','=','reminder.vehicle_id');
+
+        if($user_id){
+            $res = $res->where('reminder.created_by', $user_id);
+        }
+            
+        return $res->whereNotNull('remind_at')
+            ->whereBetween('remind_at', [now()->subDays(3), now()])
+            ->orderBy('remind_at', 'desc')     
             ->paginate($limit);                       
     }
 

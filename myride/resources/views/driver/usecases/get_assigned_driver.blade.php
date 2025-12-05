@@ -13,7 +13,7 @@
                             <tr>
                                 <th style="min-width: 180px;">Vehicle</th>
                                 <th style="min-width: 400px;">Driver</th>
-                                <th>Action</th>
+                                <th style="min-width: 120px;">Action</th>
                             </tr>
                         </thead>
                         <tbody id="assigned_driver-holder"></tbody>
@@ -61,14 +61,13 @@
                                 <span class="plate-number">${dt.vehicle_plate_number}</span>
                                 <p class="text-secondary mt-2 mb-0 fw-bold">${dt.vehicle_name}</p>
                             </td>
-                            <td class="text-start">${listDriver ?? `<span class="no-msg-text">- No Driver Has Assigned -</span>`}</td>
+                            <td class="text-start">${listDriver === "" ? `<span class="no-msg-text mx-2">- No driver has assigned -</span>` : listDriver}</td>
                             <td>
                                 ${
-                                    listDriver === null && data.driver && data.driver.length > 0 ?
+                                    listDriver === "" && data.driver && data.driver.length > 0 ?
                                     `<a class="btn btn-success pt-2 pb-1 px-3 ms-2 btn-assigned-driver-vehicle" data-vehicle_id="${dt.id}" data-vehicle="<b>(${dt.vehicle_plate_number})</b> ${dt.vehicle_name}" style="font-size:var(--textMD);"
                                         data-driver='${JSON.stringify(data.driver)}' data-vehicle_plate_number="${dt.vehicle_plate_number}"
-                                        ><i class="fa-solid fa-plus"></i></a>`:
-                                    ''
+                                        ><i class="fa-solid fa-plus"></i> Driver</a>`: "<p class='no-msg-text mx-2'>- Assigned -</p>"
                                 }
                             </td>
                         </tr>
