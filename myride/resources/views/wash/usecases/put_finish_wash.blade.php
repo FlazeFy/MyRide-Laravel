@@ -1,10 +1,8 @@
 <script>
     $(document).on('click','.btn-finish',function(){
-        const token = `<?= session()->get("token_key"); ?>`
-
         Swal.fire({
             title: 'Are you sure?',
-            text: 'Do you really want to mark this clean data as finished?',
+            text: 'Do you really want to mark this wash data as finished?',
             icon: 'warning',
             showCancelButton: true,
             confirmButtonText: 'Yes, finish it!',
@@ -12,15 +10,15 @@
             reverseButtons: true
         }).then((result) => {
             if (result.isConfirmed) {
-                put_clean($(this).data('id'))
+                put_wash($(this).data('id'))
             }
         });
     })
 
-    const put_clean = (id) => {
+    const put_wash = (id) => {
         Swal.showLoading();
         $.ajax({
-            url: `/api/v1/clean/finish/${id}`,
+            url: `/api/v1/wash/finish/${id}`,
             type: 'PUT',
             contentType: "application/json",
             beforeSend: function (xhr) {
@@ -34,7 +32,7 @@
                     text: response.message,
                     icon: "success"
                 }).then(() => {
-                    window.location.href = '/clean'
+                    window.location.href = '/wash'
                 });
             },
             error: function(response, jqXHR, textStatus, errorThrown) {

@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 // Models
 use App\Models\VehicleModel;
 use App\Models\TripModel;
-use App\Models\CleanModel;
+use App\Models\WashModel;
 use App\Models\DriverModel;
 // Helper
 use App\Helpers\Generator;
@@ -486,7 +486,7 @@ class Queries extends Controller
      * @OA\GET(
      *     path="/api/v1/vehicle/detail/full/{id}",
      *     summary="Get vehicle full detail by id",
-     *     description="This request is used to get vehicle detail by id, it comes with Clean and Trip History. This request is using MySql database, and have a protected routes.",
+     *     description="This request is used to get vehicle detail by id, it comes with Wash and Trip History. This request is using MySql database, and have a protected routes.",
      *     tags={"Vehicle"},
      *     security={{"bearerAuth":{}}},
      *     @OA\Parameter(
@@ -563,28 +563,28 @@ class Queries extends Controller
      *                             @OA\Property(property="assigned_at", type="string", format="datetime", example="2025-01-29 16:46:45")
      *                         )
      *                 ),
-     *                 @OA\Property(property="clean", type="object",
+     *                 @OA\Property(property="wash", type="object",
      *                     @OA\Property(property="current_page", type="integer", example=1),
      *                     @OA\Property(property="data", type="array",
      *                         @OA\Items(type="object",
      *                             @OA\Property(property="id", type="string", example="ab8b8d0e-d74d-11ed-afa1-0242ac120002"),
-     *                             @OA\Property(property="clean_desc", type="string", example="Cuci mobil"),
-     *                             @OA\Property(property="clean_by", type="string", example="Carwash"),
-     *                             @OA\Property(property="clean_tools", type="string", nullable=true, example=null),
-     *                             @OA\Property(property="is_clean_body", type="integer", example=1),
-     *                             @OA\Property(property="is_clean_window", type="integer", example=1),
-     *                             @OA\Property(property="is_clean_dashboard", type="integer", example=1),
-     *                             @OA\Property(property="is_clean_tires", type="integer", example=1),
-     *                             @OA\Property(property="is_clean_trash", type="integer", example=1),
-     *                             @OA\Property(property="is_clean_engine", type="integer", example=1),
-     *                             @OA\Property(property="is_clean_seat", type="integer", example=1),
-     *                             @OA\Property(property="is_clean_carpet", type="integer", example=1),
-     *                             @OA\Property(property="is_clean_pillows", type="integer", example=0),
-     *                             @OA\Property(property="clean_address", type="string", example="AutoService Jl. Kapten Tandean"),
-     *                             @OA\Property(property="clean_start_time", type="string", format="datetime", example="2024-02-29 21:30:00"),
-     *                             @OA\Property(property="clean_end_time", type="string", format="datetime", example="2024-02-29 22:20:00"),
-     *                             @OA\Property(property="is_fill_window_cleaning_water", type="integer", example=0),
-     *                             @OA\Property(property="is_clean_hollow", type="integer", example=1),
+     *                             @OA\Property(property="wash_desc", type="string", example="Cuci mobil"),
+     *                             @OA\Property(property="wash_by", type="string", example="Carwash"),
+     *                             @OA\Property(property="wash_tools", type="string", nullable=true, example=null),
+     *                             @OA\Property(property="is_wash_body", type="integer", example=1),
+     *                             @OA\Property(property="is_wash_window", type="integer", example=1),
+     *                             @OA\Property(property="is_wash_dashboard", type="integer", example=1),
+     *                             @OA\Property(property="is_wash_tires", type="integer", example=1),
+     *                             @OA\Property(property="is_wash_trash", type="integer", example=1),
+     *                             @OA\Property(property="is_wash_engine", type="integer", example=1),
+     *                             @OA\Property(property="is_wash_seat", type="integer", example=1),
+     *                             @OA\Property(property="is_wash_carpet", type="integer", example=1),
+     *                             @OA\Property(property="is_wash_pillows", type="integer", example=0),
+     *                             @OA\Property(property="wash_address", type="string", example="AutoService Jl. Kapten Tandean"),
+     *                             @OA\Property(property="wash_start_time", type="string", format="datetime", example="2024-02-29 21:30:00"),
+     *                             @OA\Property(property="wash_end_time", type="string", format="datetime", example="2024-02-29 22:20:00"),
+     *                             @OA\Property(property="is_fill_window_washing_water", type="integer", example=0),
+     *                             @OA\Property(property="is_wash_hollow", type="integer", example=1),
      *                             @OA\Property(property="created_at", type="string", format="datetime", example="2024-03-27 12:33:05"),
      *                             @OA\Property(property="updated_at", type="string", nullable=true, example=null)
      *                         )
@@ -634,8 +634,8 @@ class Queries extends Controller
             if ($res) {
                 // Model : Show Trip History
                 $res_trip = TripModel::getTripByVehicleId($user_id,$id,$limit);
-                // Model : Show Clean History
-                $res_clean = CleanModel::getCleanByVehicleId($user_id,$id,$limit);
+                // Model : Show Wash History
+                $res_wash = WashModel::getWashByVehicleId($user_id,$id,$limit);
                 // Model : Show Driver
                 $res_driver = DriverModel::getDriverByVehicleId($user_id, $id);
                 return response()->json([
@@ -644,7 +644,7 @@ class Queries extends Controller
                     'data' => [
                         'detail' => $res,
                         'trip' => $res_trip,
-                        'clean' => $res_clean && count($res_clean) > 0 ? $res_clean : null,
+                        'wash' => $res_wash && count($res_wash) > 0 ? $res_wash : null,
                         'driver' => $res_driver && count($res_driver) > 0 ? $res_driver : null
                     ]
                 ], Response::HTTP_OK);

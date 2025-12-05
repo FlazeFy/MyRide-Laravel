@@ -28,7 +28,6 @@
 
 <script>
     $(document).on('click','.btn-update',function(){
-        const token = `<?= session()->get("token_key"); ?>`
         callModal('update-modal')
         get_vehicle_name_opt(token)
         get_context_opt('inventory_category,inventory_storage',token)

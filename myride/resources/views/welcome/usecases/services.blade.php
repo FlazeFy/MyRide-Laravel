@@ -19,8 +19,8 @@
         <div class="col-lg-4 col-md-6 col-sm-12 col-12 mx-auto">
             <div class="container-landing bg-success">
                 <i class="fa-solid fa-broom mb-4" style="font-size:34px;"></i>
-                <h3>Clean Schedule</h3>
-                <p>Schedule and monitor vehicle cleaning tasks with ease</p>
+                <h3>Wash Schedule</h3>
+                <p>Schedule and monitor vehicle washing tasks with ease</p>
             </div>
         </div>
         <div class="col-lg-4 col-md-6 col-sm-12 col-12 mx-auto">

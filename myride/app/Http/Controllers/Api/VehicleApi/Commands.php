@@ -16,7 +16,7 @@ use App\Models\ServiceModel;
 use App\Models\InventoryModel;
 use App\Models\FuelModel;
 use App\Models\ReminderModel;
-use App\Models\CleanModel;
+use App\Models\WashModel;
 // Helper
 use App\Helpers\Validation;
 use App\Helpers\Generator;
@@ -578,7 +578,7 @@ class Commands extends Controller
             $vehicle = VehicleModel::find($id);
             $rows = VehicleModel::hardDeleteVehicleById($user_id,$id);
             if($rows > 0){
-                CleanModel::hardDeleteByVehicleId($id);
+                WashModel::hardDeleteByVehicleId($id);
                 FuelModel::hardDeleteByVehicleId($id);
                 InventoryModel::hardDeleteByVehicleId($id);
                 ReminderModel::hardDeleteByVehicleId($id);

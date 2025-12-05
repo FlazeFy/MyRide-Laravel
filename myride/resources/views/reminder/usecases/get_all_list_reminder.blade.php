@@ -95,7 +95,7 @@
 
                     if(dt.reminder_context == 'Service'){
                         class_chip = 'bg-danger'
-                    } else if(dt.reminder_context == 'Cleaning' || dt.reminder_context == 'Trip'){
+                    } else if(dt.reminder_context == 'Washing' || dt.reminder_context == 'Trip'){
                         class_chip = 'bg-success'
                     } 
 

@@ -34,7 +34,7 @@ https://docs.google.com/spreadsheets/d/1waMk940fnZddBjjoQZJ8tIeI1wHz94vkwucoLIoG
 
 ## 🎯 Product Overview
 - **Manage Vehicle**
-You can add your vehicle details such as brand, type, category, and other specifications. Based on this data, you can track fuel consumption, set service or cleaning schedules, and much more.
+You can add your vehicle details such as brand, type, category, and other specifications. Based on this data, you can track fuel consumption, set service or washing schedules, and much more.
 
 - **Assign Driver**
 Easily assign drivers to specific vehicles and monitor their usage, making it ideal for families, teams, or fleet operations.
@@ -46,7 +46,7 @@ Track fuel volume, brand, type, and cost to analyze consumption patterns and opt
 Log your travel routes, visited places, and trip durations to keep a complete journey history.
 
 - **Dashboard & Analytics**
-Get a visual overview of your vehicle usage, fuel stats, service & clean schedules, and travel history all in one place.
+Get a visual overview of your vehicle usage, fuel stats, service & wash schedules, and travel history all in one place.
 
 - **Services Schedule**
 Set up and manage routine service appointments like oil changes, tire rotations, and inspections with timely reminders.
@@ -54,8 +54,8 @@ Set up and manage routine service appointments like oil changes, tire rotations,
 - **Set Reminder**
 Create custom reminders for anything vehicle-related things. Such as insurance renewals, document updates, travel plan, or personal notes.
 
-- **Clean Schedule**
-Plan and track your vehicle cleaning routines to keep it fresh and well-maintained.
+- **Wash Schedule**
+Plan and track your vehicle washing routines to keep it fresh and well-maintained.
 
 ## 🚀 Target Users
 
@@ -82,7 +82,7 @@ Professional or personal drivers who want to log their trips, monitor fuel usage
 1. People often **forget vehicle details**, such as service history, fuel usage, or driver assignments, leading to **missed maintenance** and **inefficient tracking**.
 2. It's difficult to **monitor fuel consumption and costs** over time, which can result in unnecessary expenses and **poor planning**.
 3. Without a centralized system, users rely on **manual notes** or memory to manage vehicles, drivers, and trips—causing **disorganization** and errors.
-4. Scheduling **routine services or cleanings** is often neglected, which affects vehicle performance and longevity.
+4. Scheduling **routine services or washings** is often neglected, which affects vehicle performance and longevity.
 5. Users lack tools to **analyze vehicle usage**, **track trip history**, or **generate reports**, making it hard to gain insights or optimize operations.
 
 ## 💡 Solution
@@ -90,7 +90,7 @@ Professional or personal drivers who want to log their trips, monitor fuel usage
 1. Provide a way to **store and manage detailed vehicle** data, including brand, type, category, and specifications, enabling smarter tracking and planning.
 2. Allow users to **monitor fuel consumption**, including volume, brand, type, and cost, to help optimize fuel efficiency and budgeting.
 3. Offer a **cross-platform solution (Web, Mobile App, Telegram Bot)** that lets users sync and manage vehicle data seamlessly.
-4. Enable users to **schedule services and cleanings**, with smart reminders to ensure timely maintenance and upkeep.
+4. Enable users to **schedule services and washings**, with smart reminders to ensure timely maintenance and upkeep.
 5. Include tools to **record trip history**, **assign drivers**, and analyze vehicle usage through **dashboards and reports** for better decision-making.
 
 ## 🔗 Features
@@ -293,8 +293,8 @@ To set up the environment variables, just create the `.env` file in the root lev
 - 📦 **Comprehensive Vehicle Management**: Effortlessly manage vehicle with details like name, category, type, brand, fuel consumption, service schedule, and the driver.
 - 🤖 **Bot Integration**: Integrated with Telegram for real-time reminders to user's messaging application.
 - 📊 **Insightful Reports & Analysis**: View visual vehicle, fuel consumption, trip history, and other related data to summaries and generate PDF/Excel reports for audits, or future plans.
-- 🔔 **Smart Reminders**: Schedule reminders for services, cleaning, or travel agenda.
-- 🧱 **Built with Laravel**: Clean, modular, and testable code using Laravel’s MVC structure, making it robust and easy to extend.
+- 🔔 **Smart Reminders**: Schedule reminders for services, washing, or travel agenda.
+- 🧱 **Built with Laravel**: Wash, modular, and testable code using Laravel’s MVC structure, making it robust and easy to extend.
 
 ---
 

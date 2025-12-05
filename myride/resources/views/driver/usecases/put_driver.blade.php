@@ -26,7 +26,6 @@
 
 <script>
     $(document).on('click','.btn-update',function(){
-        const token = `<?= session()->get("token_key"); ?>`
         callModal('update-modal')
 
         $('#driver_id').val($(this).data('id'))

@@ -27,7 +27,7 @@
                 const data = response.data
                 
                 $(`#${holder_fuel}`).html(`
-                    <div class="container bg-success">
+                    <div class="container-fluid bg-success">
                         <div class="d-flex justify-content-between">
                             <div>
                                 <h5 class="mb-0">${data.fuel_brand} | ${data.fuel_type}</h5>
@@ -48,7 +48,7 @@
                     generate_api_error(response, true)
                 } else {
                     $(`#${holder_fuel}`).html(`
-                        <div class="container bg-danger">
+                        <div class="container-fluid bg-danger">
                             <h6><i class="fa-solid fa-triangle-exclamation"></i> Alert</h6>
                             <p class="mb-0">You never by a fuel with this vehicle</p>
                         </div>

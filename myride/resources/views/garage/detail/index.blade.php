@@ -36,7 +36,7 @@
                     @include('garage.detail.usecases.get_vehicle_monthly_trip_stats')
                 </div>
                 <div class="container-fluid">
-                    @include('garage.detail.usecases.get_vehicle_clean_summary')
+                    @include('garage.detail.usecases.get_vehicle_wash_summary')
                 </div>
                 <div class="container-fluid">
                     @include('garage.detail.usecases.get_vehicle_summary_trip')

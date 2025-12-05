@@ -1,7 +1,7 @@
 @extends('layouts.main_layout')
 
 @section('content')
-<div class="container text-center" style="width:300px;">
+<div class="container-fluid text-center" style="width:300px;">
     <h4>Trip Discovered</h4>
     <div id="trip_discovered-holder"></div>
 

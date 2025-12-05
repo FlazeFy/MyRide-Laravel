@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 // Helpers
 use App\Helpers\Generator;
 
-class AddCleanController extends Controller
+class AddWashController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,8 +17,8 @@ class AddCleanController extends Controller
         $user_id = Generator::getUserId(session()->get('role_key'));
 
         if($user_id != null){
-            return view('clean.add.index')
-                ->with('active_menu','clean');
+            return view('wash.add.index')
+                ->with('active_menu','wash');
         } else {
             return redirect("/login");
         }

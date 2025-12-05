@@ -7,19 +7,21 @@
     </script>
 
     <div class="position-relative">
-        <a class="btn btn-success" href='/clean/add'><i class="fa-solid fa-plus"></i> Clean</a>
-        @include('clean.usecases.get_export_clean')
+        <div class="d-flex flex-wrap gap-2">
+            <a class="btn btn-success" href='/wash/add'><i class="fa-solid fa-plus"></i> Wash</a>
+            @include('wash.usecases.get_export_wash')
+        </div>
         <div class="row mt-3">
             <div class="col-xl-9 col-lg-8 col-md-12">
                 <div class="container-fluid">
-                    @include('clean.usecases.get_all_list_clean')
-                    @include('clean.usecases.hard_delete_clean')
-                    @include('clean.usecases.put_finish_clean')
+                    @include('wash.usecases.get_all_list_wash')
+                    @include('wash.usecases.hard_delete_wash')
+                    @include('wash.usecases.put_finish_wash')
                 </div>
             </div>
             <div class="col-xl-3 col-lg-4 col-md-12">
                 <div class="container-fluid">
-                    @include('clean.usecases.get_clean_summary')
+                    @include('wash.usecases.get_wash_summary')
                 </div>
             <div>
         </div>

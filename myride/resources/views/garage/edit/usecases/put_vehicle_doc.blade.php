@@ -138,7 +138,7 @@
 
                             var preview_elmt = `
                                 <div class='collapse' id='collapsePreview-${id}'> 
-                                    <div class='container w-100 m-0 p-0'> 
+                                    <div class='container-fluid m-0 p-0'> 
                                         ${att_preview_elmt}
                                     </div>
                                 </div>
@@ -152,7 +152,7 @@
                             attach_list[objIndex]['attach_url'] = att_url
                             validateFailedAtt()
 
-                            var modifiedList = cleanAddMoreStatus(attach_list);
+                            var modifiedList = washAddMoreStatus(attach_list);
                             document.getElementById('vehicle_document').value = JSON.stringify(modifiedList)
                         })
                     })
@@ -205,7 +205,7 @@
             var att_url = null
         }
 
-        var modifiedList = cleanAddMoreStatus(attach_list)
+        var modifiedList = washAddMoreStatus(attach_list)
         document.getElementById('vehicle_document').value = JSON.stringify(modifiedList)
     }
 
@@ -236,7 +236,7 @@
         attach_list = removeAttachment(att_type, attach_list, index)
         validateFailedAtt()
 
-        var modifiedList = cleanAddMoreStatus(attach_list)
+        var modifiedList = washAddMoreStatus(attach_list)
         document.getElementById('vehicle_document').value = JSON.stringify(attach_list)
     }
 </script>

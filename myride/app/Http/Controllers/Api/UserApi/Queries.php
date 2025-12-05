@@ -192,7 +192,7 @@ class Queries extends Controller
      * @OA\GET(
      *     path="/api/v1/user/my_year",
      *     summary="Get my year content",
-     *     description="This request is used to get list of year in which the user has created content (Vehicle, Trip, Service, and Clean History). This request is using MySql database, and have a protected routes.",
+     *     description="This request is used to get list of year in which the user has created content (Vehicle, Trip, Service, and Wash History). This request is using MySql database, and have a protected routes.",
      *     tags={"User"},
      *     security={{"bearerAuth":{}}},
      *     @OA\Response(

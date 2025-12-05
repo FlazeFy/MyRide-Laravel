@@ -2,6 +2,6 @@
 
 <script>
     $(document).on('click','#export_excel',function(){
-        get_export('clean',token)
+        get_export('wash',token)
     })
 </script>

@@ -81,9 +81,7 @@
     </div>
 </form>
 
-<script type="text/javascript">
-    const token = '<?= session()->get("token_key"); ?>'
-
+<script>
     $(document).on('click','#submit-add-vehicle-btn', function(){
         post_vehicle()
     })

@@ -22,8 +22,8 @@
         </div>
         <div class="col-lg-4 col-md-4 col-6 mx-auto">
             <div class="container-landing bg-danger">
-                <h2 id="total_clean">-</h2>
-                <h5>Clean History</h5>
+                <h2 id="total_wash">-</h2>
+                <h5>Wash History</h5>
             </div>
         </div>
         <div class="col-lg-4 col-md-4 col-6 mx-auto">
@@ -55,7 +55,7 @@
                 const data = response.data
                 $('#total_user').text(data.total_user)
                 $('#total_vehicle').text(data.total_vehicle)
-                $('#total_clean').text(data.total_clean)
+                $('#total_wash').text(data.total_wash)
                 $('#total_service').text(data.total_service)
                 $('#total_driver').text(data.total_driver)
                 $('#total_trip').text(data.total_trip)

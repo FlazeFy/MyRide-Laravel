@@ -10,7 +10,7 @@ use Carbon\Carbon;
 use App\Models\ErrorModel;
 use App\Models\InventoryModel;
 use App\Models\VehicleModel;
-use App\Models\CleanModel;
+use App\Models\WashModel;
 use App\Models\ServiceModel;
 use App\Models\TripModel;
 use App\Models\UserModel;
@@ -77,7 +77,7 @@ class AdminModel extends Authenticatable
             ->whereDate('created_at', '>=', Carbon::now()->subDays($days))
             ->first();
         
-        $res_clean = CleanModel::selectRaw('count(1) as total')
+        $res_wash = WashModel::selectRaw('count(1) as total')
             ->whereDate('created_at', '>=', Carbon::now()->subDays($days))
             ->first();
 
@@ -92,7 +92,7 @@ class AdminModel extends Authenticatable
             'trip_created' => $res_trip->total,
             'fuel_created' => $res_fuel->total,
             'service_created' => $res_service->total,
-            'clean_created' => $res_clean->total,
+            'wash_created' => $res_wash->total,
             'error_happen' => $res_error->total,
         ];
 

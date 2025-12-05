@@ -64,7 +64,7 @@
                 Swal.close()
                 const detail = response.data.detail
                 const trip_data = response.data.trip
-                const clean_data = response.data.clean
+                const wash_data = response.data.wash
                 const driver_data = response.data.driver
                     
                 $('#vehicle_name').html(`${detail.vehicle_year_made} | ${detail.vehicle_name}`)
@@ -87,7 +87,7 @@
 
                 trip_data ? build_layout_trip(trip_data) : template_alert_container(`<?= $carouselId ?>`, 'no-data', "No trip found", 'add a trip', '<i class="fa-solid fa-luggage"></i>','/trip/add')
 
-                build_layout_clean(clean_data)
+                build_layout_wash(wash_data)
                 build_layout_driver(driver_data)
 
                 if(detail.deleted_at){

@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Api\CleanApi;
+namespace App\Http\Controllers\Api\WashApi;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 // Model
-use App\Models\CleanModel;
+use App\Models\WashModel;
 use App\Models\AdminModel;
 
 // Helper
@@ -18,29 +18,29 @@ class Commands extends Controller
     private $module;
     public function __construct()
     {
-        $this->module = "clean";
+        $this->module = "wash";
     }
 
     /**
      * @OA\DELETE(
-     *     path="/api/v1/clean/destroy/{id}",
-     *     summary="Delete clean by id",
-     *     tags={"Clean"},
+     *     path="/api/v1/wash/destroy/{id}",
+     *     summary="Delete wash by id",
+     *     tags={"Wash"},
      *     security={{"bearerAuth":{}}},
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
      *         required=true,
      *         @OA\Schema(type="string"),
-     *         description="Clean ID",
+     *         description="Wash ID",
      *         example="e1288783-a5d4-1c4c-2cd6-0e92f7cc3bf9",
      *     ),
      *     @OA\Response(
      *         response=200,
-     *         description="clean permentally deleted",
+     *         description="wash permentally deleted",
      *         @OA\JsonContent(
      *             @OA\Property(property="status", type="string", example="success"),
-     *             @OA\Property(property="message", type="string", example="clean permentally deleted")
+     *             @OA\Property(property="message", type="string", example="wash permentally deleted")
      *         )
      *     ),
      *     @OA\Response(
@@ -53,10 +53,10 @@ class Commands extends Controller
      *     ),
      *     @OA\Response(
      *         response=404,
-     *         description="clean failed to permentally deleted",
+     *         description="wash failed to permentally deleted",
      *         @OA\JsonContent(
      *             @OA\Property(property="status", type="string", example="failed"),
-     *             @OA\Property(property="message", type="string", example="clean not found")
+     *             @OA\Property(property="message", type="string", example="wash not found")
      *         )
      *     ),
      *     @OA\Response(
@@ -69,7 +69,7 @@ class Commands extends Controller
      *     ),
      * )
      */
-    public function hardDeleteCleanById(Request $request, $id)
+    public function hardDeleteWashById(Request $request, $id)
     {
         try{
             $user_id = $request->user()->id;
@@ -79,7 +79,7 @@ class Commands extends Controller
                 $user_id = null;
             }
 
-            $rows = CleanModel::hardDeleteCleanById($id, $user_id);
+            $rows = WashModel::hardDeleteWashById($id, $user_id);
             if($rows > 0){
                 // Delete Firebase Uploaded Image
                 // ....
@@ -104,16 +104,16 @@ class Commands extends Controller
 
     /**
      * @OA\PUT(
-     *     path="/api/v1/clean/{id}",
-     *     summary="Update a clean data",
-     *     tags={"Clean"},
+     *     path="/api/v1/wash/{id}",
+     *     summary="Update a wash data",
+     *     tags={"Wash"},
      *     security={{"bearerAuth":{}}},
      *     @OA\Response(
      *         response=200,
-     *         description="clean updated",
+     *         description="wash updated",
      *         @OA\JsonContent(
      *             @OA\Property(property="status", type="string", example="success"),
-     *             @OA\Property(property="message", type="string", example="clean updated")
+     *             @OA\Property(property="message", type="string", example="wash updated")
      *         )
      *     ),
      *     @OA\Response(
@@ -126,7 +126,7 @@ class Commands extends Controller
      *     ),
      *     @OA\Response(
      *         response=400,
-     *         description="clean failed to validated",
+     *         description="wash failed to validated",
      *         @OA\JsonContent(
      *             @OA\Property(property="status", type="string", example="failed"),
      *             @OA\Property(property="message", type="string", example="[failed validation message]")
@@ -142,11 +142,11 @@ class Commands extends Controller
      *     ),
      * )
      */
-    public function postClean(Request $request){
+    public function postWash(Request $request){
         try{
             $user_id = $request->user()->id;
 
-            $validator = Validation::getValidateClean($request);
+            $validator = Validation::getValidateWash($request);
             if ($validator->fails()) {
                 return response()->json([
                     'status' => 'error',
@@ -155,27 +155,27 @@ class Commands extends Controller
             } else {
                 $data = [
                     'vehicle_id' => $request->vehicle_id, 
-                    'clean_desc' => $request->clean_desc, 
-                    'clean_by' => $request->clean_by, 
-                    'clean_tools' => $request->clean_tools, 
-                    'is_clean_body' => $request->is_clean_body,
-                    'is_clean_window' => $request->is_clean_window,
-                    'is_clean_dashboard' => $request->is_clean_dashboard,
-                    'is_clean_tires' => $request->is_clean_tires,
-                    'is_clean_trash' => $request->is_clean_trash,
-                    'is_clean_engine' => $request->is_clean_engine,
-                    'is_clean_seat' => $request->is_clean_seat,
-                    'is_clean_carpet' => $request->is_clean_carpet,
-                    'is_clean_pillows' => $request->is_clean_pillows,
-                    'clean_address' => $request->clean_address,
-                    'clean_start_time' => $request->clean_start_time,
-                    'clean_end_time' => $request->clean_end_time,
-                    'clean_price' => $request->clean_price,
-                    'is_fill_window_cleaning_water' => $request->is_fill_window_cleaning_water,
-                    'is_clean_hollow' => $request->is_clean_hollow
+                    'wash_desc' => $request->wash_desc, 
+                    'wash_by' => $request->wash_by, 
+                    'wash_tools' => $request->wash_tools, 
+                    'is_wash_body' => $request->is_wash_body,
+                    'is_wash_window' => $request->is_wash_window,
+                    'is_wash_dashboard' => $request->is_wash_dashboard,
+                    'is_wash_tires' => $request->is_wash_tires,
+                    'is_wash_trash' => $request->is_wash_trash,
+                    'is_wash_engine' => $request->is_wash_engine,
+                    'is_wash_seat' => $request->is_wash_seat,
+                    'is_wash_carpet' => $request->is_wash_carpet,
+                    'is_wash_pillows' => $request->is_wash_pillows,
+                    'wash_address' => $request->wash_address,
+                    'wash_start_time' => $request->wash_start_time,
+                    'wash_end_time' => $request->wash_end_time,
+                    'wash_price' => $request->wash_price,
+                    'is_fill_window_washing_water' => $request->is_fill_window_washing_water,
+                    'is_wash_hollow' => $request->is_wash_hollow
                 ];
 
-                $rows = CleanModel::createClean($data, $user_id);
+                $rows = WashModel::createWash($data, $user_id);
                 if($rows){
                     return response()->json([
                         'status' => 'success',
@@ -198,16 +198,16 @@ class Commands extends Controller
 
     /**
      * @OA\PUT(
-     *     path="/api/v1/clean/finish/{id}",
-     *     summary="Update a clean finish status",
-     *     tags={"Clean"},
+     *     path="/api/v1/wash/finish/{id}",
+     *     summary="Update a wash finish status",
+     *     tags={"Wash"},
      *     security={{"bearerAuth":{}}},
      *     @OA\Response(
      *         response=200,
-     *         description="clean updated",
+     *         description="wash updated",
      *         @OA\JsonContent(
      *             @OA\Property(property="status", type="string", example="success"),
-     *             @OA\Property(property="message", type="string", example="clean updated")
+     *             @OA\Property(property="message", type="string", example="wash updated")
      *         )
      *     ),
      *     @OA\Response(
@@ -220,7 +220,7 @@ class Commands extends Controller
      *     ),
      *     @OA\Response(
      *         response=400,
-     *         description="clean failed to validated",
+     *         description="wash failed to validated",
      *         @OA\JsonContent(
      *             @OA\Property(property="status", type="string", example="failed"),
      *             @OA\Property(property="message", type="string", example="[failed validation message]")
@@ -236,15 +236,15 @@ class Commands extends Controller
      *     ),
      * )
      */
-    public function putFinishClean(Request $request,$id){
+    public function putFinishWash(Request $request,$id){
         try{
             $user_id = $request->user()->id;
 
             $data = [
-                'clean_end_time' => date('Y-m-d H:i:s'),
+                'wash_end_time' => date('Y-m-d H:i:s'),
             ];
 
-            $rows = CleanModel::updateCleanById($data, $user_id, $id);
+            $rows = WashModel::updateWashById($data, $user_id, $id);
             if($rows > 0){
                 return response()->json([
                     'status' => 'success',

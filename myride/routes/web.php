@@ -5,8 +5,8 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\GarageController;
 use App\Http\Controllers\GarageEditController;
 use App\Http\Controllers\GarageDetailController;
-use App\Http\Controllers\CleanController;
-use App\Http\Controllers\AddCleanController;
+use App\Http\Controllers\WashController;
+use App\Http\Controllers\AddWashController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\StatsController;
 use App\Http\Controllers\ProfileController;
@@ -53,10 +53,10 @@ Route::prefix('/garage')->middleware(['auth_v2:sanctum'])->group(function () {
     Route::get('/detail/{id}', [GarageDetailController::class, 'index'])->name('detail_garage');
 });
 
-Route::prefix('/clean')->middleware(['auth_v2:sanctum'])->group(function () {
-    Route::get('/', [CleanController::class, 'index'])->name('clean');
+Route::prefix('/wash')->middleware(['auth_v2:sanctum'])->group(function () {
+    Route::get('/', [WashController::class, 'index'])->name('wash');
 
-    Route::get('/add', [AddCleanController::class, 'index'])->name('add_clean');
+    Route::get('/add', [AddWashController::class, 'index'])->name('add_wash');
 });
 
 Route::prefix('/trip')->middleware(['auth_v2:sanctum'])->group(function () {

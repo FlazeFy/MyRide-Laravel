@@ -143,27 +143,27 @@ class Validation
         ]);
     }
 
-    public static function getValidateClean($request){
+    public static function getValidateWash($request){
         return Validator::make($request->all(), [
             'vehicle_id' => 'required|string|max:36|min:36', 
-            'clean_desc' => 'nullable|string|min:1|max:500',
-            'clean_by' => 'required|string|max:75|min:1', 
-            'clean_tools' => 'nullable|string|max:500|min:1', 
-            'is_clean_body' => 'required|boolean',
-            'is_clean_window' => 'required|boolean',
-            'is_clean_dashboard' => 'required|boolean',
-            'is_clean_tires' => 'required|boolean',
-            'is_clean_trash' => 'required|boolean',
-            'is_clean_engine' => 'required|boolean',
-            'is_clean_seat' => 'required|boolean',
-            'is_clean_carpet' => 'required|boolean',
-            'is_clean_pillows' => 'required|boolean',
-            'clean_address' => 'nullable|string|max:75|min:1', 
-            'clean_price' => 'nullable|integer|min:1|max:999999999  ',
-            'clean_start_time' => 'required|date_format:Y-m-d H:i:s',
-            'clean_end_time' => 'nullable|date_format:Y-m-d H:i:s', 
-            'is_fill_window_cleaning_water' => 'required|boolean',
-            'is_clean_hollow' => 'required|boolean'
+            'wash_desc' => 'nullable|string|min:1|max:500',
+            'wash_by' => 'required|string|max:75|min:1', 
+            'wash_tools' => 'nullable|string|max:500|min:1', 
+            'is_wash_body' => 'required|boolean',
+            'is_wash_window' => 'required|boolean',
+            'is_wash_dashboard' => 'required|boolean',
+            'is_wash_tires' => 'required|boolean',
+            'is_wash_trash' => 'required|boolean',
+            'is_wash_engine' => 'required|boolean',
+            'is_wash_seat' => 'required|boolean',
+            'is_wash_carpet' => 'required|boolean',
+            'is_wash_pillows' => 'required|boolean',
+            'wash_address' => 'nullable|string|max:75|min:1', 
+            'wash_price' => 'nullable|integer|min:1|max:999999999  ',
+            'wash_start_time' => 'required|date_format:Y-m-d H:i:s',
+            'wash_end_time' => 'nullable|date_format:Y-m-d H:i:s', 
+            'is_fill_window_washing_water' => 'required|boolean',
+            'is_wash_hollow' => 'required|boolean'
         ]);
     }
 

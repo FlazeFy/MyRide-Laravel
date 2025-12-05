@@ -7,7 +7,7 @@
 
     @php
         $fullUrl = url()->current(); // Get the full current URL
-        $cleanedUrl = str_replace("http://127.0.0.1:8000/", "", $fullUrl);
+        $washedUrl = str_replace("http://127.0.0.1:8000/", "", $fullUrl);
         $route = Route::currentRouteName();
     @endphp
 
@@ -27,8 +27,8 @@
                         continue;
                     }
 
-                    $clean = str_replace(['-', '_'], ' ', $segment);
-                    $titleParts[] = ucwords($clean);
+                    $wash = str_replace(['-', '_'], ' ', $segment);
+                    $titleParts[] = ucwords($wash);
                 }
 
                 echo implode(' | ', $titleParts);
@@ -57,7 +57,7 @@
     <!-- JS Collection -->
     <script src="{{ asset('/js/global_v1.0.js')}}"></script>
     <script src="{{ asset('/js/message_v1.0.js')}}"></script>
-    <?php if(preg_match('(stats|embed|detail|dashboard|fuel|inventory|service)', $cleanedUrl)): ?>
+    <?php if(preg_match('(stats|embed|detail|dashboard|fuel|inventory|service)', $washedUrl)): ?>
         <script src="{{ asset('/js/chart_v1.0.js')}}"></script>
     <?php endif; ?>
     <script src="{{ asset('/js/math_v1.0.js')}}"></script>
@@ -68,7 +68,7 @@
     
     <?php 
         // Datatable CDN
-        if($route == 'clean'){
+        if($route == 'wash'){
             echo "
                 <!-- Jquery DataTables -->
                 <script type='text/javascript' language='javascript' src='https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js'></script>
@@ -90,10 +90,10 @@
     ?>
 </head>
 <body>
-    <?php if(!preg_match('(embed)', $cleanedUrl)): ?>
+    <?php if(!preg_match('(embed)', $washedUrl)): ?>
         @include('others.bars.navbar')
     <?php endif; ?>
-    <?php if(!preg_match('(embed)', $cleanedUrl) && $route !== "welcome"): ?>
+    <?php if(!preg_match('(embed)', $washedUrl) && $route !== "welcome"): ?>
         @include('others.bars.sidebar')
     <?php endif; ?>
 

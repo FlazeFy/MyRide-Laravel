@@ -1,5 +1,5 @@
-<h2>Add Clean</h2><hr>
-<form id="form-add-clean">
+<h2>Add wash</h2><hr>
+<form id="form-add-wash">
     <div class="row">
         <div class="col-xl-6 col-lg-12 pb-4">
             <div class="row">
@@ -19,47 +19,47 @@
             <div class="row">
                 <div class="col-md-6 col-sm-12">
                     <label>Start At</label>
-                    <input class="form-control" type="datetime-local" name="clean_start_time" id="clean_start_time">
+                    <input class="form-control" type="datetime-local" name="wash_start_time" id="wash_start_time">
                 </div>
                 <div class="col-md-6 col-sm-12">
                     <label>End At</label>
-                    <input class="form-control" type="datetime-local" name="clean_end_time" id="clean_end_time">
+                    <input class="form-control" type="datetime-local" name="wash_end_time" id="wash_end_time">
                 </div>
             </div>
             <hr>
-            @include('clean.add.usecases.get_vehicle_last_clean')
+            @include('wash.add.usecases.get_vehicle_last_wash')
         </div>
         <div class="col-xl-6 col-lg-12">
             <div class="row">
                 <div class="col-md-6 col-sm-12">
-                    <label>Clean By</label>
-                    <select class="form-select" name="clean_by" id="clean_by_holder" aria-label="Default select example">
+                    <label>wash By</label>
+                    <select class="form-select" name="wash_by" id="wash_by_holder" aria-label="Default select example">
                         <option>-</option>
                     </select>
                 </div>
                 <div class="col-md-6 col-sm-12">
-                    <label>Clean Price</label>
-                    <input class="form-control" type="number" min="1" id="clean_price" name="clean_price">
+                    <label>wash Price</label>
+                    <input class="form-control" type="number" min="1" id="wash_price" name="wash_price">
                 </div>
             </div>
             <label>Address</label>
-            <textarea class="form-control" name="clean_address" id="clean_address" required></textarea>
+            <textarea class="form-control" name="wash_address" id="wash_address" required></textarea>
             <label>Description</label>
-            <textarea class="form-control" name="clean_desc" id="clean_desc" required></textarea>
+            <textarea class="form-control" name="wash_desc" id="wash_desc" required></textarea>
             <label>Checklist</label>
             <div class="bordered rounded p-3">
                 <div class="row" id="checklist-holder"></div>
             </div>
             <div class="d-grid d-md-inline-block">
-                <a class="btn btn-success rounded-pill p-3 w-100 w-md-auto mt-3" id="submit-add-clean-btn"><i class="fa-solid fa-floppy-disk"></i> Save Clean</a>
+                <a class="btn btn-success rounded-pill p-3 w-100 w-md-auto mt-3" id="submit-add-wash-btn"><i class="fa-solid fa-floppy-disk"></i> Save wash</a>
             </div>
         </div>
     </div>
 </form>
 
 <script type="text/javascript">
-    $(document).on('click','#submit-add-clean-btn', function(){
-        post_clean()
+    $(document).on('click','#submit-add-wash-btn', function(){
+        post_wash()
     })
     $(document).on('change','#vehicle_holder', function(){
         const id = $(this).val()
@@ -67,7 +67,7 @@
     })
 
     const set_checklist_holder = () => {
-        const list_checklist = ['is_clean_body', 'is_clean_window', 'is_clean_dashboard', 'is_clean_tires', 'is_clean_trash', 'is_clean_engine', 'is_clean_seat', 'is_clean_carpet', 'is_clean_pillows', 'is_fill_window_cleaning_water', 'is_clean_hollow']
+        const list_checklist = ['is_wash_body', 'is_wash_window', 'is_wash_dashboard', 'is_wash_tires', 'is_wash_trash', 'is_wash_engine', 'is_wash_seat', 'is_wash_carpet', 'is_wash_pillows', 'is_fill_window_washing_water', 'is_wash_hollow']
 
         $('#checklist-holder').empty()
         list_checklist.forEach(dt => {
@@ -84,39 +84,39 @@
     set_checklist_holder()
 
     get_vehicle_name_opt(token)
-    get_context_opt('clean_by',token)
+    get_context_opt('wash_by',token)
 
-    const post_clean = () => {
+    const post_wash = () => {
         const vehicle_id = $('#vehicle_holder').val()
 
-        if(vehicle_id !== "-" && $('#clean_by').val() !== "-"){
-            const clean_end_time = $('#clean_end_time').val()
+        if(vehicle_id !== "-" && $('#wash_by').val() !== "-"){
+            const wash_end_time = $('#wash_end_time').val()
 
             Swal.showLoading();
             $.ajax({
-                url: `/api/v1/clean`,
+                url: `/api/v1/wash`,
                 type: 'POST',
                 contentType: "application/json",
                 data: JSON.stringify({
                     vehicle_id: vehicle_id,
-                    clean_desc: $('#clean_desc').val(),  
-                    clean_by: $('#clean_by_holder').val(), 
-                    clean_tools: null,  
-                    is_clean_body: $('#is_clean_body').is(':checked'), 
-                    is_clean_window: $('#is_clean_window').is(':checked'), 
-                    is_clean_dashboard: $('#is_clean_dashboard').is(':checked'), 
-                    is_clean_tires: $('#is_clean_tires').is(':checked'), 
-                    is_clean_trash: $('#is_clean_trash').is(':checked'), 
-                    is_clean_engine: $('#is_clean_engine').is(':checked'), 
-                    is_clean_seat: $('#is_clean_seat').is(':checked'),
-                    is_clean_carpet: $('#is_clean_carpet').is(':checked'),
-                    is_clean_pillows: $('#is_clean_pillows').is(':checked'),
-                    clean_address: $('#clean_address').val(), 
-                    clean_price: $('#clean_price').val(), 
-                    clean_start_time: formatDateTimeAPI($('#clean_start_time').val()), 
-                    clean_end_time: clean_end_time ? formatDateTimeAPI(clean_end_time) : null, 
-                    is_fill_window_cleaning_water: $('#is_fill_window_cleaning_water').is(':checked'), 
-                    is_clean_hollow: $('#is_clean_hollow').is(':checked')
+                    wash_desc: $('#wash_desc').val(),  
+                    wash_by: $('#wash_by_holder').val(), 
+                    wash_tools: null,  
+                    is_wash_body: $('#is_wash_body').is(':checked'), 
+                    is_wash_window: $('#is_wash_window').is(':checked'), 
+                    is_wash_dashboard: $('#is_wash_dashboard').is(':checked'), 
+                    is_wash_tires: $('#is_wash_tires').is(':checked'), 
+                    is_wash_trash: $('#is_wash_trash').is(':checked'), 
+                    is_wash_engine: $('#is_wash_engine').is(':checked'), 
+                    is_wash_seat: $('#is_wash_seat').is(':checked'),
+                    is_wash_carpet: $('#is_wash_carpet').is(':checked'),
+                    is_wash_pillows: $('#is_wash_pillows').is(':checked'),
+                    wash_address: $('#wash_address').val(), 
+                    wash_price: $('#wash_price').val(), 
+                    wash_start_time: formatDateTimeAPI($('#wash_start_time').val()), 
+                    wash_end_time: wash_end_time ? formatDateTimeAPI(wash_end_time) : null, 
+                    is_fill_window_washing_water: $('#is_fill_window_washing_water').is(':checked'), 
+                    is_wash_hollow: $('#is_wash_hollow').is(':checked')
                 }),
                 beforeSend: function (xhr) {
                     xhr.setRequestHeader("Accept", "application/json")
@@ -129,7 +129,7 @@
                         text: response.message,
                         icon: "success"
                     }).then(() => {
-                        window.location.href = '/clean'
+                        window.location.href = '/wash'
                     });
                 },
                 error: function(response, jqXHR, textStatus, errorThrown) {
@@ -137,7 +137,7 @@
                 }
             });
         } else {
-            failedMsg('create clean : you must select an item')
+            failedMsg('create wash : you must select an item')
         }
     }
 </script>

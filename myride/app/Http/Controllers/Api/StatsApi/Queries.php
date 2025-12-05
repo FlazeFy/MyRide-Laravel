@@ -14,7 +14,7 @@ use App\Models\VehicleModel;
 use App\Models\UserModel;
 use App\Models\ServiceModel;
 use App\Models\DriverModel; 
-use App\Models\CleanModel;
+use App\Models\WashModel;
 use App\Models\FuelModel;
 use App\Models\MultiModel;
 
@@ -915,9 +915,9 @@ class Queries extends Controller
 
     /**
      * @OA\GET(
-     *     path="/api/v1/stats/total/clean/{context}/{year}",
-     *     summary="Get total clean per month",
-     *     description="This request is used to get total clean per month by given `year` and `context`. This request is using MySql database.",
+     *     path="/api/v1/stats/total/wash/{context}/{year}",
+     *     summary="Get total wash per month",
+     *     description="This request is used to get total wash per month by given `year` and `context`. This request is using MySql database.",
      *     tags={"Stats"},
      *     security={{"bearerAuth":{}}},
      *     @OA\Parameter(
@@ -928,7 +928,7 @@ class Queries extends Controller
      *             type="integer",
      *             example="2024"
      *         ),
-     *         description="Clean created year",
+     *         description="Wash created year",
      *     ),
      *     @OA\Parameter(
      *         name="context",
@@ -990,7 +990,7 @@ class Queries extends Controller
      *     ),
      * )
      */
-    public function getTotalCleanPerYear(Request $request, $context, $year)
+    public function getTotalWashPerYear(Request $request, $context, $year)
     {
         try{
             if ($request->hasHeader('Authorization')) {
@@ -1002,7 +1002,7 @@ class Queries extends Controller
             $vehicle_id = $request->query('vehicle_id') ?? null;
 
             if($context !== "total_item" || $context !== "total_price"){
-                $res = CleanModel::getTotalCleanPerYear($user_id, $vehicle_id, $context, $year);
+                $res = WashModel::getTotalWashPerYear($user_id, $vehicle_id, $context, $year);
                 
                 if ($res && count($res) > 0) {
                     $res_final = [];
@@ -1061,7 +1061,7 @@ class Queries extends Controller
      *                     @OA\Property(property="total_user", type="integer", example=2),
      *                     @OA\Property(property="total_vehicle", type="integer", example=3),
      *                     @OA\Property(property="total_service", type="integer", example=2),
-     *                     @OA\Property(property="total_clean", type="integer", example=4),
+     *                     @OA\Property(property="total_wash", type="integer", example=4),
      *                     @OA\Property(property="total_driver", type="integer", example=4)
      *             )
      *         )
@@ -1102,7 +1102,7 @@ class Queries extends Controller
             }
 
             $total_vehicle = MultiModel::countTotalContext('vehicle',$user_id);
-            $total_clean = MultiModel::countTotalContext('clean',$user_id);
+            $total_wash = MultiModel::countTotalContext('wash',$user_id);
             $total_driver = MultiModel::countTotalContext('driver',$user_id);
             $total_service = MultiModel::countTotalContext('service',$user_id);
             $total_trip = MultiModel::countTotalContext('trip',$user_id);
@@ -1110,7 +1110,7 @@ class Queries extends Controller
             $data = [
                 'total_vehicle' => $total_vehicle,
                 'total_service' => $total_service,
-                'total_clean'   => $total_clean,
+                'total_wash'   => $total_wash,
                 'total_driver'  => $total_driver,
                 'total_trip'    => $total_trip,
             ];

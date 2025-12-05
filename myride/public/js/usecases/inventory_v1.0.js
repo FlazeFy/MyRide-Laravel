@@ -112,7 +112,7 @@ const get_driver_name_opt = (token) => {
     }
 }
 
-const clean_select_opt = (target) => {
+const wash_select_opt = (target) => {
     target.forEach(dt => {
         $(`#${dt}`).val('')
     });
@@ -139,7 +139,7 @@ const get_vehicle_detail = (id) => {
             }
         });
     } else {
-        clean_select_opt(['vehicle_type','vehicle_category'])
+        wash_select_opt(['vehicle_type','vehicle_category'])
     }
 }
 

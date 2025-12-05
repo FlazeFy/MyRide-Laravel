@@ -45,7 +45,7 @@ function getAttachmentInput(index, val){
     }
 }
 
-function cleanAddMoreStatus(list){
+function washAddMoreStatus(list){
     var final = list.map(function(obj) {
         delete obj.is_add_more;
         return obj;

@@ -2,7 +2,7 @@ const colorPalleteChart = ['#46dca2', '#f55d86', '#FFC352', '#00b8ff']
 
 const warning_no_data_visualize = (holder) => {
     $(`#${holder}`).html(`
-        <div class="container bg-warning">
+        <div class="container-fluid bg-warning">
             <h6><i class="fa-solid fa-triangle-exclamation"></i> Warning</h6>
             <p class="mb-0">No enough data to visualize</p>
         </div>

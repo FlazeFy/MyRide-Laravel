@@ -2,6 +2,9 @@
 
 @section('content')
     <script src="{{ asset('/js/usecases/inventory_v1.0.js')}}"></script>
+    <script>
+        const token = `<?= session()->get("token_key"); ?>`
+    </script>
 
     <div class="position-relative">
         @include('garage.back_garage_button')

@@ -6,15 +6,15 @@ use Illuminate\Http\Request;
 // Helpers
 use App\Helpers\Generator;
 
-class CleanController extends Controller
+class WashController extends Controller
 {
     public function index()
     {
         $user_id = Generator::getUserId(session()->get('role_key'));
 
         if($user_id != null){
-            return view('clean.index')
-                ->with('active_menu','clean');
+            return view('wash.index')
+                ->with('active_menu','wash');
         } else {
             return redirect("/login");
         }

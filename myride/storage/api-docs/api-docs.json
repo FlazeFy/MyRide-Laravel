@@ -775,862 +775,6 @@
                 ]
             }
         },
-        "/api/v1/clean/destroy/{id}": {
-            "delete": {
-                "tags": [
-                    "Clean"
-                ],
-                "summary": "Delete clean by id",
-                "operationId": "34d121ecbecf675c96173c14771546e6",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "description": "Clean ID",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        },
-                        "example": "e1288783-a5d4-1c4c-2cd6-0e92f7cc3bf9"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "clean permentally deleted",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "status": {
-                                            "type": "string",
-                                            "example": "success"
-                                        },
-                                        "message": {
-                                            "type": "string",
-                                            "example": "clean permentally deleted"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "protected route need to include sign in token as authorization bearer",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "status": {
-                                            "type": "string",
-                                            "example": "failed"
-                                        },
-                                        "message": {
-                                            "type": "string",
-                                            "example": "you need to include the authorization token from login"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "clean failed to permentally deleted",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "status": {
-                                            "type": "string",
-                                            "example": "failed"
-                                        },
-                                        "message": {
-                                            "type": "string",
-                                            "example": "clean not found"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "status": {
-                                            "type": "string",
-                                            "example": "error"
-                                        },
-                                        "message": {
-                                            "type": "string",
-                                            "example": "something wrong. please contact admin"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
-            }
-        },
-        "/api/v1/clean/{id}": {
-            "put": {
-                "tags": [
-                    "Clean"
-                ],
-                "summary": "Update a clean data",
-                "operationId": "2baa2d80bc004516bb4444ef675f7230",
-                "responses": {
-                    "200": {
-                        "description": "clean updated",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "status": {
-                                            "type": "string",
-                                            "example": "success"
-                                        },
-                                        "message": {
-                                            "type": "string",
-                                            "example": "clean updated"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "protected route need to include sign in token as authorization bearer",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "status": {
-                                            "type": "string",
-                                            "example": "failed"
-                                        },
-                                        "message": {
-                                            "type": "string",
-                                            "example": "you need to include the authorization token from login"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "clean failed to validated",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "status": {
-                                            "type": "string",
-                                            "example": "failed"
-                                        },
-                                        "message": {
-                                            "type": "string",
-                                            "example": "[failed validation message]"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "status": {
-                                            "type": "string",
-                                            "example": "error"
-                                        },
-                                        "message": {
-                                            "type": "string",
-                                            "example": "something wrong. please contact admin"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
-            }
-        },
-        "/api/v1/clean/finish/{id}": {
-            "put": {
-                "tags": [
-                    "Clean"
-                ],
-                "summary": "Update a clean finish status",
-                "operationId": "e3b25c6611ffaf34ffc0a972b9bcb321",
-                "responses": {
-                    "200": {
-                        "description": "clean updated",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "status": {
-                                            "type": "string",
-                                            "example": "success"
-                                        },
-                                        "message": {
-                                            "type": "string",
-                                            "example": "clean updated"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "protected route need to include sign in token as authorization bearer",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "status": {
-                                            "type": "string",
-                                            "example": "failed"
-                                        },
-                                        "message": {
-                                            "type": "string",
-                                            "example": "you need to include the authorization token from login"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "clean failed to validated",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "status": {
-                                            "type": "string",
-                                            "example": "failed"
-                                        },
-                                        "message": {
-                                            "type": "string",
-                                            "example": "[failed validation message]"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "status": {
-                                            "type": "string",
-                                            "example": "error"
-                                        },
-                                        "message": {
-                                            "type": "string",
-                                            "example": "something wrong. please contact admin"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
-            }
-        },
-        "/api/v1/clean": {
-            "get": {
-                "tags": [
-                    "Clean"
-                ],
-                "summary": "Get all clean history",
-                "description": "This request is used to get all clean history with pagination. This request is using MySql database, and have a protected routes.",
-                "operationId": "6f51553a069b144e1f6ac9f846443e20",
-                "responses": {
-                    "200": {
-                        "description": "clean fetched",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "status": {
-                                            "type": "string",
-                                            "example": "success"
-                                        },
-                                        "message": {
-                                            "type": "string",
-                                            "example": "clean fetched"
-                                        },
-                                        "data": {
-                                            "properties": {
-                                                "current_page": {
-                                                    "type": "integer",
-                                                    "example": 1
-                                                },
-                                                "data": {
-                                                    "type": "array",
-                                                    "items": {
-                                                        "properties": {
-                                                            "id": {
-                                                                "type": "string",
-                                                                "format": "uuid",
-                                                                "example": "ab8b8d0e-d74d-11ed-afa1-0242ac120002"
-                                                            },
-                                                            "vehicle_name": {
-                                                                "type": "string",
-                                                                "example": "Honda - Brio RS MT"
-                                                            },
-                                                            "vehicle_plate_number": {
-                                                                "type": "string",
-                                                                "example": "D 1610 ZRB"
-                                                            },
-                                                            "clean_desc": {
-                                                                "type": "string",
-                                                                "example": "Cuci mobil"
-                                                            },
-                                                            "clean_by": {
-                                                                "type": "string",
-                                                                "example": "Carwash"
-                                                            },
-                                                            "clean_tools": {
-                                                                "type": "string",
-                                                                "example": null,
-                                                                "nullable": true
-                                                            },
-                                                            "is_clean_body": {
-                                                                "type": "integer",
-                                                                "example": 1
-                                                            },
-                                                            "is_clean_window": {
-                                                                "type": "integer",
-                                                                "example": 1
-                                                            },
-                                                            "is_clean_dashboard": {
-                                                                "type": "integer",
-                                                                "example": 1
-                                                            },
-                                                            "is_clean_tires": {
-                                                                "type": "integer",
-                                                                "example": 1
-                                                            },
-                                                            "is_clean_trash": {
-                                                                "type": "integer",
-                                                                "example": 1
-                                                            },
-                                                            "is_clean_engine": {
-                                                                "type": "integer",
-                                                                "example": 1
-                                                            },
-                                                            "is_clean_seat": {
-                                                                "type": "integer",
-                                                                "example": 1
-                                                            },
-                                                            "is_clean_carpet": {
-                                                                "type": "integer",
-                                                                "example": 1
-                                                            },
-                                                            "is_clean_pillows": {
-                                                                "type": "integer",
-                                                                "example": 0
-                                                            },
-                                                            "clean_address": {
-                                                                "type": "string",
-                                                                "example": "AutoService Jl. Kapten Tandean"
-                                                            },
-                                                            "clean_start_time": {
-                                                                "type": "string",
-                                                                "format": "datetime",
-                                                                "example": "2024-02-29 21:30:00"
-                                                            },
-                                                            "clean_end_time": {
-                                                                "type": "string",
-                                                                "format": "datetime",
-                                                                "example": "2024-02-29 22:20:00"
-                                                            },
-                                                            "is_fill_window_cleaning_water": {
-                                                                "type": "integer",
-                                                                "example": 0
-                                                            },
-                                                            "is_clean_hollow": {
-                                                                "type": "integer",
-                                                                "example": 1
-                                                            },
-                                                            "created_at": {
-                                                                "type": "string",
-                                                                "format": "datetime",
-                                                                "example": "2024-03-27 12:33:05"
-                                                            },
-                                                            "updated_at": {
-                                                                "type": "string",
-                                                                "example": null,
-                                                                "nullable": true
-                                                            }
-                                                        },
-                                                        "type": "object"
-                                                    }
-                                                },
-                                                "last_page": {
-                                                    "type": "integer",
-                                                    "example": 1
-                                                },
-                                                "per_page": {
-                                                    "type": "integer",
-                                                    "example": 14
-                                                },
-                                                "total": {
-                                                    "type": "integer",
-                                                    "example": 1
-                                                }
-                                            },
-                                            "type": "object"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "protected route need to include sign in token as authorization bearer",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "status": {
-                                            "type": "string",
-                                            "example": "failed"
-                                        },
-                                        "message": {
-                                            "type": "string",
-                                            "example": "you need to include the authorization token from login"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "clean failed to fetched",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "status": {
-                                            "type": "string",
-                                            "example": "failed"
-                                        },
-                                        "message": {
-                                            "type": "string",
-                                            "example": "clean history not found"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "status": {
-                                            "type": "string",
-                                            "example": "error"
-                                        },
-                                        "message": {
-                                            "type": "string",
-                                            "example": "something wrong. please contact admin"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
-            }
-        },
-        "/api/v1/clean/last": {
-            "get": {
-                "tags": [
-                    "Clean"
-                ],
-                "summary": "Get last clean",
-                "description": "This request is used to get last clean history by vehicle id. This request is using MySql database, and have a protected routes.",
-                "operationId": "1778b34053bc508ee0c6e1a503de8f6e",
-                "responses": {
-                    "200": {
-                        "description": "clean fetched",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "status": {
-                                            "type": "string",
-                                            "example": "success"
-                                        },
-                                        "message": {
-                                            "type": "string",
-                                            "example": "clean fetched"
-                                        },
-                                        "data": {
-                                            "properties": {
-                                                "clean_desc": {
-                                                    "type": "string",
-                                                    "example": "Cuci mobil"
-                                                },
-                                                "clean_by": {
-                                                    "type": "string",
-                                                    "example": "Carwash"
-                                                },
-                                                "is_clean_body": {
-                                                    "type": "integer",
-                                                    "example": 1
-                                                },
-                                                "is_clean_window": {
-                                                    "type": "integer",
-                                                    "example": 1
-                                                },
-                                                "is_clean_dashboard": {
-                                                    "type": "integer",
-                                                    "example": 1
-                                                },
-                                                "is_clean_tires": {
-                                                    "type": "integer",
-                                                    "example": 1
-                                                },
-                                                "is_clean_trash": {
-                                                    "type": "integer",
-                                                    "example": 1
-                                                },
-                                                "is_clean_engine": {
-                                                    "type": "integer",
-                                                    "example": 1
-                                                },
-                                                "is_clean_seat": {
-                                                    "type": "integer",
-                                                    "example": 1
-                                                },
-                                                "is_clean_carpet": {
-                                                    "type": "integer",
-                                                    "example": 1
-                                                },
-                                                "is_clean_pillows": {
-                                                    "type": "integer",
-                                                    "example": 0
-                                                },
-                                                "clean_address": {
-                                                    "type": "string",
-                                                    "example": "AutoService Jl. Kapten Tandean"
-                                                },
-                                                "is_fill_window_cleaning_water": {
-                                                    "type": "integer",
-                                                    "example": 0
-                                                },
-                                                "is_clean_hollow": {
-                                                    "type": "integer",
-                                                    "example": 1
-                                                },
-                                                "created_at": {
-                                                    "type": "string",
-                                                    "format": "datetime",
-                                                    "example": "2024-03-27 12:33:05"
-                                                }
-                                            },
-                                            "type": "object"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "protected route need to include sign in token as authorization bearer",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "status": {
-                                            "type": "string",
-                                            "example": "failed"
-                                        },
-                                        "message": {
-                                            "type": "string",
-                                            "example": "you need to include the authorization token from login"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "clean failed to fetched",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "status": {
-                                            "type": "string",
-                                            "example": "failed"
-                                        },
-                                        "message": {
-                                            "type": "string",
-                                            "example": "clean history not found"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "status": {
-                                            "type": "string",
-                                            "example": "error"
-                                        },
-                                        "message": {
-                                            "type": "string",
-                                            "example": "something wrong. please contact admin"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
-            }
-        },
-        "/api/v1/clean/summary": {
-            "get": {
-                "tags": [
-                    "Clean"
-                ],
-                "summary": "Get clean summary",
-                "description": "This request is used to get clean summary by vehicle id or all vehicle. This request is using MySql database, and have a protected routes.",
-                "operationId": "138dccdaec678e9b6507e012fcc1f4c6",
-                "responses": {
-                    "200": {
-                        "description": "clean fetched",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "status": {
-                                            "type": "string",
-                                            "example": "success"
-                                        },
-                                        "message": {
-                                            "type": "string",
-                                            "example": "clean fetched"
-                                        },
-                                        "data": {
-                                            "type": "array",
-                                            "items": {
-                                                "properties": {
-                                                    "vehicle_name": {
-                                                        "type": "string",
-                                                        "example": "Honda - Brio RS MT"
-                                                    },
-                                                    "vehicle_plate_number": {
-                                                        "type": "string",
-                                                        "example": "D 1610 ZRB"
-                                                    },
-                                                    "vehicle_type": {
-                                                        "type": "string",
-                                                        "example": "City Car"
-                                                    },
-                                                    "total_clean": {
-                                                        "type": "integer",
-                                                        "example": 5
-                                                    },
-                                                    "is_clean_body": {
-                                                        "type": "integer",
-                                                        "example": 5
-                                                    },
-                                                    "is_clean_window": {
-                                                        "type": "integer",
-                                                        "example": 5
-                                                    },
-                                                    "is_clean_dashboard": {
-                                                        "type": "integer",
-                                                        "example": 4
-                                                    },
-                                                    "is_clean_tires": {
-                                                        "type": "integer",
-                                                        "example": 5
-                                                    },
-                                                    "is_clean_trash": {
-                                                        "type": "integer",
-                                                        "example": 5
-                                                    },
-                                                    "is_clean_engine": {
-                                                        "type": "integer",
-                                                        "example": 1
-                                                    },
-                                                    "is_clean_seat": {
-                                                        "type": "integer",
-                                                        "example": 4
-                                                    },
-                                                    "is_clean_carpet": {
-                                                        "type": "integer",
-                                                        "example": 4
-                                                    },
-                                                    "is_clean_pillows": {
-                                                        "type": "integer",
-                                                        "example": 0
-                                                    },
-                                                    "is_fill_window_cleaning_water": {
-                                                        "type": "integer",
-                                                        "example": 5
-                                                    },
-                                                    "is_clean_hollow": {
-                                                        "type": "integer",
-                                                        "example": 3
-                                                    },
-                                                    "total_price": {
-                                                        "type": "integer",
-                                                        "example": 475000
-                                                    },
-                                                    "avg_price_per_clean": {
-                                                        "type": "integer",
-                                                        "example": 95000
-                                                    }
-                                                },
-                                                "type": "object"
-                                            }
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "protected route need to include sign in token as authorization bearer",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "status": {
-                                            "type": "string",
-                                            "example": "failed"
-                                        },
-                                        "message": {
-                                            "type": "string",
-                                            "example": "you need to include the authorization token from login"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "clean failed to fetched",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "status": {
-                                            "type": "string",
-                                            "example": "failed"
-                                        },
-                                        "message": {
-                                            "type": "string",
-                                            "example": "clean summary not found"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "status": {
-                                            "type": "string",
-                                            "example": "error"
-                                        },
-                                        "message": {
-                                            "type": "string",
-                                            "example": "something wrong. please contact admin"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
-            }
-        },
         "/api/v1/dictionary/{id}": {
             "delete": {
                 "tags": [
@@ -7503,19 +6647,19 @@
                 ]
             }
         },
-        "/api/v1/stats/total/clean/{context}/{year}": {
+        "/api/v1/stats/total/wash/{context}/{year}": {
             "get": {
                 "tags": [
                     "Stats"
                 ],
-                "summary": "Get total clean per month",
-                "description": "This request is used to get total clean per month by given `year` and `context`. This request is using MySql database.",
-                "operationId": "6fba81996e3b8342dff6859b6853086c",
+                "summary": "Get total wash per month",
+                "description": "This request is used to get total wash per month by given `year` and `context`. This request is using MySql database.",
+                "operationId": "502d13bbd681d7ff0831f99750098ff4",
                 "parameters": [
                     {
                         "name": "year",
                         "in": "path",
-                        "description": "Clean created year",
+                        "description": "Wash created year",
                         "required": true,
                         "schema": {
                             "type": "integer",
@@ -7685,7 +6829,7 @@
                                                     "type": "integer",
                                                     "example": 2
                                                 },
-                                                "total_clean": {
+                                                "total_wash": {
                                                     "type": "integer",
                                                     "example": 4
                                                 },
@@ -9309,7 +8453,7 @@
                     "User"
                 ],
                 "summary": "Get my year content",
-                "description": "This request is used to get list of year in which the user has created content (Vehicle, Trip, Service, and Clean History). This request is using MySql database, and have a protected routes.",
+                "description": "This request is used to get list of year in which the user has created content (Vehicle, Trip, Service, and Wash History). This request is using MySql database, and have a protected routes.",
                 "operationId": "8f8d65302095f16adbc3960a60221f37",
                 "responses": {
                     "200": {
@@ -11022,7 +10166,7 @@
                     "Vehicle"
                 ],
                 "summary": "Get vehicle full detail by id",
-                "description": "This request is used to get vehicle detail by id, it comes with Clean and Trip History. This request is using MySql database, and have a protected routes.",
+                "description": "This request is used to get vehicle detail by id, it comes with Wash and Trip History. This request is using MySql database, and have a protected routes.",
                 "operationId": "093cfdf4530576f08b4f9c4b7c063627",
                 "parameters": [
                     {
@@ -11270,7 +10414,7 @@
                                                         "type": "object"
                                                     }
                                                 },
-                                                "clean": {
+                                                "wash": {
                                                     "properties": {
                                                         "current_page": {
                                                             "type": "integer",
@@ -11284,74 +10428,74 @@
                                                                         "type": "string",
                                                                         "example": "ab8b8d0e-d74d-11ed-afa1-0242ac120002"
                                                                     },
-                                                                    "clean_desc": {
+                                                                    "wash_desc": {
                                                                         "type": "string",
                                                                         "example": "Cuci mobil"
                                                                     },
-                                                                    "clean_by": {
+                                                                    "wash_by": {
                                                                         "type": "string",
                                                                         "example": "Carwash"
                                                                     },
-                                                                    "clean_tools": {
+                                                                    "wash_tools": {
                                                                         "type": "string",
                                                                         "example": null,
                                                                         "nullable": true
                                                                     },
-                                                                    "is_clean_body": {
+                                                                    "is_wash_body": {
                                                                         "type": "integer",
                                                                         "example": 1
                                                                     },
-                                                                    "is_clean_window": {
+                                                                    "is_wash_window": {
                                                                         "type": "integer",
                                                                         "example": 1
                                                                     },
-                                                                    "is_clean_dashboard": {
+                                                                    "is_wash_dashboard": {
                                                                         "type": "integer",
                                                                         "example": 1
                                                                     },
-                                                                    "is_clean_tires": {
+                                                                    "is_wash_tires": {
                                                                         "type": "integer",
                                                                         "example": 1
                                                                     },
-                                                                    "is_clean_trash": {
+                                                                    "is_wash_trash": {
                                                                         "type": "integer",
                                                                         "example": 1
                                                                     },
-                                                                    "is_clean_engine": {
+                                                                    "is_wash_engine": {
                                                                         "type": "integer",
                                                                         "example": 1
                                                                     },
-                                                                    "is_clean_seat": {
+                                                                    "is_wash_seat": {
                                                                         "type": "integer",
                                                                         "example": 1
                                                                     },
-                                                                    "is_clean_carpet": {
+                                                                    "is_wash_carpet": {
                                                                         "type": "integer",
                                                                         "example": 1
                                                                     },
-                                                                    "is_clean_pillows": {
+                                                                    "is_wash_pillows": {
                                                                         "type": "integer",
                                                                         "example": 0
                                                                     },
-                                                                    "clean_address": {
+                                                                    "wash_address": {
                                                                         "type": "string",
                                                                         "example": "AutoService Jl. Kapten Tandean"
                                                                     },
-                                                                    "clean_start_time": {
+                                                                    "wash_start_time": {
                                                                         "type": "string",
                                                                         "format": "datetime",
                                                                         "example": "2024-02-29 21:30:00"
                                                                     },
-                                                                    "clean_end_time": {
+                                                                    "wash_end_time": {
                                                                         "type": "string",
                                                                         "format": "datetime",
                                                                         "example": "2024-02-29 22:20:00"
                                                                     },
-                                                                    "is_fill_window_cleaning_water": {
+                                                                    "is_fill_window_washing_water": {
                                                                         "type": "integer",
                                                                         "example": 0
                                                                     },
-                                                                    "is_clean_hollow": {
+                                                                    "is_wash_hollow": {
                                                                         "type": "integer",
                                                                         "example": 1
                                                                     },
@@ -11565,6 +10709,862 @@
                                         "message": {
                                             "type": "string",
                                             "example": "vehicle not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "something wrong. please contact admin"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/wash/destroy/{id}": {
+            "delete": {
+                "tags": [
+                    "Wash"
+                ],
+                "summary": "Delete wash by id",
+                "operationId": "1718c8e5ea70292a45deba1b664ac3b0",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Wash ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "e1288783-a5d4-1c4c-2cd6-0e92f7cc3bf9"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "wash permentally deleted",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "wash permentally deleted"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "protected route need to include sign in token as authorization bearer",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "you need to include the authorization token from login"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "wash failed to permentally deleted",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "wash not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "something wrong. please contact admin"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/wash/{id}": {
+            "put": {
+                "tags": [
+                    "Wash"
+                ],
+                "summary": "Update a wash data",
+                "operationId": "70488201290cfcef19b570f2553d6d7c",
+                "responses": {
+                    "200": {
+                        "description": "wash updated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "wash updated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "protected route need to include sign in token as authorization bearer",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "you need to include the authorization token from login"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "wash failed to validated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "[failed validation message]"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "something wrong. please contact admin"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/wash/finish/{id}": {
+            "put": {
+                "tags": [
+                    "Wash"
+                ],
+                "summary": "Update a wash finish status",
+                "operationId": "f11a368a53de5b987f852c44f301ba63",
+                "responses": {
+                    "200": {
+                        "description": "wash updated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "wash updated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "protected route need to include sign in token as authorization bearer",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "you need to include the authorization token from login"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "wash failed to validated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "[failed validation message]"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "something wrong. please contact admin"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/wash": {
+            "get": {
+                "tags": [
+                    "Wash"
+                ],
+                "summary": "Get all wash history",
+                "description": "This request is used to get all wash history with pagination. This request is using MySql database, and have a protected routes.",
+                "operationId": "e4734ff42a78318e53bfbd0de0202ad6",
+                "responses": {
+                    "200": {
+                        "description": "wash fetched",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "wash fetched"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "current_page": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "data": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "string",
+                                                                "format": "uuid",
+                                                                "example": "ab8b8d0e-d74d-11ed-afa1-0242ac120002"
+                                                            },
+                                                            "vehicle_name": {
+                                                                "type": "string",
+                                                                "example": "Honda - Brio RS MT"
+                                                            },
+                                                            "vehicle_plate_number": {
+                                                                "type": "string",
+                                                                "example": "D 1610 ZRB"
+                                                            },
+                                                            "wash_desc": {
+                                                                "type": "string",
+                                                                "example": "Cuci mobil"
+                                                            },
+                                                            "wash_by": {
+                                                                "type": "string",
+                                                                "example": "Carwash"
+                                                            },
+                                                            "wash_tools": {
+                                                                "type": "string",
+                                                                "example": null,
+                                                                "nullable": true
+                                                            },
+                                                            "is_wash_body": {
+                                                                "type": "integer",
+                                                                "example": 1
+                                                            },
+                                                            "is_wash_window": {
+                                                                "type": "integer",
+                                                                "example": 1
+                                                            },
+                                                            "is_wash_dashboard": {
+                                                                "type": "integer",
+                                                                "example": 1
+                                                            },
+                                                            "is_wash_tires": {
+                                                                "type": "integer",
+                                                                "example": 1
+                                                            },
+                                                            "is_wash_trash": {
+                                                                "type": "integer",
+                                                                "example": 1
+                                                            },
+                                                            "is_wash_engine": {
+                                                                "type": "integer",
+                                                                "example": 1
+                                                            },
+                                                            "is_wash_seat": {
+                                                                "type": "integer",
+                                                                "example": 1
+                                                            },
+                                                            "is_wash_carpet": {
+                                                                "type": "integer",
+                                                                "example": 1
+                                                            },
+                                                            "is_wash_pillows": {
+                                                                "type": "integer",
+                                                                "example": 0
+                                                            },
+                                                            "wash_address": {
+                                                                "type": "string",
+                                                                "example": "AutoService Jl. Kapten Tandean"
+                                                            },
+                                                            "wash_start_time": {
+                                                                "type": "string",
+                                                                "format": "datetime",
+                                                                "example": "2024-02-29 21:30:00"
+                                                            },
+                                                            "wash_end_time": {
+                                                                "type": "string",
+                                                                "format": "datetime",
+                                                                "example": "2024-02-29 22:20:00"
+                                                            },
+                                                            "is_fill_window_washing_water": {
+                                                                "type": "integer",
+                                                                "example": 0
+                                                            },
+                                                            "is_wash_hollow": {
+                                                                "type": "integer",
+                                                                "example": 1
+                                                            },
+                                                            "created_at": {
+                                                                "type": "string",
+                                                                "format": "datetime",
+                                                                "example": "2024-03-27 12:33:05"
+                                                            },
+                                                            "updated_at": {
+                                                                "type": "string",
+                                                                "example": null,
+                                                                "nullable": true
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                },
+                                                "last_page": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "per_page": {
+                                                    "type": "integer",
+                                                    "example": 14
+                                                },
+                                                "total": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "protected route need to include sign in token as authorization bearer",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "you need to include the authorization token from login"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "wash failed to fetched",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "wash history not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "something wrong. please contact admin"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/wash/last": {
+            "get": {
+                "tags": [
+                    "Wash"
+                ],
+                "summary": "Get last wash",
+                "description": "This request is used to get last wash history by vehicle id. This request is using MySql database, and have a protected routes.",
+                "operationId": "0c5fba425fa3728731386fb25e95d028",
+                "responses": {
+                    "200": {
+                        "description": "wash fetched",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "wash fetched"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "wash_desc": {
+                                                    "type": "string",
+                                                    "example": "Cuci mobil"
+                                                },
+                                                "wash_by": {
+                                                    "type": "string",
+                                                    "example": "Carwash"
+                                                },
+                                                "is_wash_body": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "is_wash_window": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "is_wash_dashboard": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "is_wash_tires": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "is_wash_trash": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "is_wash_engine": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "is_wash_seat": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "is_wash_carpet": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "is_wash_pillows": {
+                                                    "type": "integer",
+                                                    "example": 0
+                                                },
+                                                "wash_address": {
+                                                    "type": "string",
+                                                    "example": "AutoService Jl. Kapten Tandean"
+                                                },
+                                                "is_fill_window_washing_water": {
+                                                    "type": "integer",
+                                                    "example": 0
+                                                },
+                                                "is_wash_hollow": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "format": "datetime",
+                                                    "example": "2024-03-27 12:33:05"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "protected route need to include sign in token as authorization bearer",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "you need to include the authorization token from login"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "wash failed to fetched",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "wash history not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "something wrong. please contact admin"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/wash/summary": {
+            "get": {
+                "tags": [
+                    "Wash"
+                ],
+                "summary": "Get wash summary",
+                "description": "This request is used to get wash summary by vehicle id or all vehicle. This request is using MySql database, and have a protected routes.",
+                "operationId": "ea534c33a246d1186c2319727c55c72d",
+                "responses": {
+                    "200": {
+                        "description": "wash fetched",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "wash fetched"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "vehicle_name": {
+                                                        "type": "string",
+                                                        "example": "Honda - Brio RS MT"
+                                                    },
+                                                    "vehicle_plate_number": {
+                                                        "type": "string",
+                                                        "example": "D 1610 ZRB"
+                                                    },
+                                                    "vehicle_type": {
+                                                        "type": "string",
+                                                        "example": "City Car"
+                                                    },
+                                                    "total_wash": {
+                                                        "type": "integer",
+                                                        "example": 5
+                                                    },
+                                                    "is_wash_body": {
+                                                        "type": "integer",
+                                                        "example": 5
+                                                    },
+                                                    "is_wash_window": {
+                                                        "type": "integer",
+                                                        "example": 5
+                                                    },
+                                                    "is_wash_dashboard": {
+                                                        "type": "integer",
+                                                        "example": 4
+                                                    },
+                                                    "is_wash_tires": {
+                                                        "type": "integer",
+                                                        "example": 5
+                                                    },
+                                                    "is_wash_trash": {
+                                                        "type": "integer",
+                                                        "example": 5
+                                                    },
+                                                    "is_wash_engine": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "is_wash_seat": {
+                                                        "type": "integer",
+                                                        "example": 4
+                                                    },
+                                                    "is_wash_carpet": {
+                                                        "type": "integer",
+                                                        "example": 4
+                                                    },
+                                                    "is_wash_pillows": {
+                                                        "type": "integer",
+                                                        "example": 0
+                                                    },
+                                                    "is_fill_window_washing_water": {
+                                                        "type": "integer",
+                                                        "example": 5
+                                                    },
+                                                    "is_wash_hollow": {
+                                                        "type": "integer",
+                                                        "example": 3
+                                                    },
+                                                    "total_price": {
+                                                        "type": "integer",
+                                                        "example": 475000
+                                                    },
+                                                    "avg_price_per_wash": {
+                                                        "type": "integer",
+                                                        "example": 95000
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "protected route need to include sign in token as authorization bearer",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "you need to include the authorization token from login"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "wash failed to fetched",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "wash summary not found"
                                         }
                                     },
                                     "type": "object"
@@ -11993,10 +11993,6 @@
             "description": "User"
         },
         {
-            "name": "Clean",
-            "description": "Clean"
-        },
-        {
             "name": "Dictionary",
             "description": "Dictionary"
         },
@@ -12043,6 +12039,10 @@
         {
             "name": "Vehicle",
             "description": "Vehicle"
+        },
+        {
+            "name": "Wash",
+            "description": "Wash"
         }
     ]
 }

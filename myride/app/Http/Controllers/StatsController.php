@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use App\Helpers\Generator;
 
 // Models
-use App\Models\CleanModel;
+use App\Models\WashModel;
 use App\Models\TripModel;
 use App\Models\VehicleModel;
 
@@ -54,8 +54,8 @@ class StatsController extends Controller
                 ->where('created_by', $user_id)
                 ->orderBy('created_at', 'DESC')
                 ->get();
-        } else if($request->module == 'Clean'){
-            $data = CleanModel::select('*')
+        } else if($request->module == 'Wash'){
+            $data = WashModel::select('*')
                 ->where('created_by', $user_id)
                 ->orderBy('created_at', 'DESC')
                 ->get();

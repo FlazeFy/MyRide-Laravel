@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Models\AdminModel;
 use App\Models\TripModel;
 use App\Models\VehicleModel;
-use App\Models\CleanModel;
+use App\Models\WashModel;
 // Helper 
 use App\Helpers\Generator;
 
@@ -99,11 +99,11 @@ class UserModel extends Authenticatable
         }
         $res_trip = $res_trip->groupBy('year')->get();
 
-        $res_clean = CleanModel::selectRaw('YEAR(created_at) as year');
+        $res_wash = WashModel::selectRaw('YEAR(created_at) as year');
         if (!$is_admin) {
-            $res_clean = $res_clean->where('created_by', $user_id);
+            $res_wash = $res_wash->where('created_by', $user_id);
         }
-        $res_clean = $res_clean->groupBy('year')->get();
+        $res_wash = $res_wash->groupBy('year')->get();
 
         $res_service = ServiceModel::selectRaw('YEAR(created_at) as year');
         if (!$is_admin) {
@@ -112,7 +112,7 @@ class UserModel extends Authenticatable
         $res_service = $res_service->groupBy('year')->get();
     
         $res = $res_vehicle->concat($res_trip)
-            ->concat($res_clean)
+            ->concat($res_wash)
             ->concat($res_service)
             ->unique('year') 
             ->sortBy('year')

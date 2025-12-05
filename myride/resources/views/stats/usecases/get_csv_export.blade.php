@@ -8,7 +8,7 @@
                 <select class="form-select py-1 mb-0" name="module" aria-label="Default select example">
                     <option value="Vehicle">Garage / Vehicle</option>
                     <option value="Trip">Trip</option>
-                    <option value="Clean">Clean</option>
+                    <option value="Wash">Wash</option>
                 </select>
             </div>
             <div>

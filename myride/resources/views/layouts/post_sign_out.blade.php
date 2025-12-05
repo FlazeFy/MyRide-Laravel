@@ -17,22 +17,24 @@
 </div>
 
 <script>
-    function sign_out() {
+    const sign_out = () => {
         $.ajax({
             url: "/api/v1/logout",
             type: "POST",
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": "Bearer <?= session()->get("token_key"); ?>"
+                "Authorization": `Bearer ${token}`
             },
             success: function(data, textStatus, jqXHR) {
-                sessionStorage.clear();
-                $('#form-sign-out').submit();
+                sessionStorage.clear()
+                localStorage.clear()
+                $('#form-sign-out').submit()
             },
             error: function(jqXHR, textStatus, errorThrown) {
                 if (jqXHR.status == 401) {
-                    sessionStorage.clear();
-                    window.location.href = "/login";
+                    sessionStorage.clear()
+                    localStorage.clear()
+                    window.location.href = "/login"
                 }
             }
         });

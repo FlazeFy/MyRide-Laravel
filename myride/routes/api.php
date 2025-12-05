@@ -7,8 +7,8 @@ use App\Http\Controllers\Api\AuthApi\Commands as CommandAuthApi;
 use App\Http\Controllers\Api\AuthApi\Queries as QueryAuthApi;
 use App\Http\Controllers\Api\VehicleApi\Queries as QueriesVehicleApi;
 use App\Http\Controllers\Api\VehicleApi\Commands as CommandsVehicleApi;
-use App\Http\Controllers\Api\CleanApi\Queries as QueriesCleanController;
-use App\Http\Controllers\Api\CleanApi\Commands as CommandsCleanController;
+use App\Http\Controllers\Api\WashApi\Queries as QueriesWashController;
+use App\Http\Controllers\Api\WashApi\Commands as CommandsWashController;
 use App\Http\Controllers\Api\DictionaryApi\Queries as QueriesDictionaryApi;
 use App\Http\Controllers\Api\DictionaryApi\Commands as CommandsDictionaryApi;
 use App\Http\Controllers\Api\TripApi\Commands as CommandsTripController;
@@ -48,7 +48,7 @@ Route::prefix('/v1/stats')->group(function () {
     Route::get('/total/trip/monthly/{year}', [QueriesStatsApi::class, 'getTotalTripPerYear']);
     Route::get('/total/fuel/monthly/{context}/{year}', [QueriesStatsApi::class, 'getTotalFuelPerYear']);
     Route::get('/total/service/monthly/{context}/{year}', [QueriesStatsApi::class, 'getTotalServicePerYear']);
-    Route::get('/total/clean/monthly/{context}/{year}', [QueriesStatsApi::class, 'getTotalCleanPerYear']);
+    Route::get('/total/wash/monthly/{context}/{year}', [QueriesStatsApi::class, 'getTotalWashPerYear']);
 });
 
 Route::prefix('/v1/vehicle')->group(function () {
@@ -86,13 +86,13 @@ Route::prefix('/v1/dictionary')->middleware(['auth:sanctum'])->group(function ()
     Route::delete('/{id}', [CommandsDictionaryApi::class, 'hardDeleteDictionaryById']);
 });
 
-Route::prefix('/v1/clean')->middleware(['auth:sanctum'])->group(function () {
-    Route::get('/', [QueriesCleanController::class, 'getAllCleanHistory']);
-    Route::delete('/destroy/{id}', [CommandsCleanController::class, 'hardDeleteCleanById']);
-    Route::get('/last', [QueriesCleanController::class, 'getLastCleanByVehicleId']);
-    Route::get('/summary', [QueriesCleanController::class, 'getCleanSummaryByVehicleId']);
-    Route::post('/', [CommandsCleanController::class, 'postClean']);
-    Route::put('/finish/{id}', [CommandsCleanController::class, 'putFinishClean']);
+Route::prefix('/v1/wash')->middleware(['auth:sanctum'])->group(function () {
+    Route::get('/', [QueriesWashController::class, 'getAllWashHistory']);
+    Route::delete('/destroy/{id}', [CommandsWashController::class, 'hardDeleteWashById']);
+    Route::get('/last', [QueriesWashController::class, 'getLastWashByVehicleId']);
+    Route::get('/summary', [QueriesWashController::class, 'getWashSummaryByVehicleId']);
+    Route::post('/', [CommandsWashController::class, 'postWash']);
+    Route::put('/finish/{id}', [CommandsWashController::class, 'putFinishWash']);
 });
 
 Route::prefix('/v1/history')->middleware(['auth:sanctum'])->group(function () {
@@ -183,7 +183,7 @@ Route::prefix('/v1/user')->middleware(['auth:sanctum'])->group(function () {
 });
 
 Route::prefix('/v1/export')->middleware(['auth:sanctum'])->group(function () {
-    Route::get('/clean', [QueriesExportController::class, 'exportCleanHistory']);
+    Route::get('/wash', [QueriesExportController::class, 'exportWashHistory']);
     Route::get('/fuel', [QueriesExportController::class, 'exportFuelHistory']);
     Route::get('/inventory', [QueriesExportController::class, 'exportInventory']);
     Route::get('/service', [QueriesExportController::class, 'exportService']);

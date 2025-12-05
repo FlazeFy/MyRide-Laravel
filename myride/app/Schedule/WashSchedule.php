@@ -9,7 +9,7 @@ use Telegram\Bot\Laravel\Facades\Telegram;
 use App\Models\HistoryModel;
 use App\Models\AdminModel;
 use App\Models\VehicleModel;
-use App\Models\CleanModel;
+use App\Models\WashModel;
 use App\Models\TripModel;
 use App\Models\ServiceModel;
 use App\Models\InventoryModel;
@@ -18,9 +18,9 @@ use App\Models\ReminderModel;
 
 use App\Helpers\TelegramMessage;
 
-class CleanSchedule
+class WashSchedule
 {
-    public static function clean_history()
+    public static function wash_history()
     {
         $days = 30;
         $total = HistoryModel::deleteHistoryForLastNDays($days);
@@ -28,7 +28,7 @@ class CleanSchedule
 
         if($admin){
             foreach($admin as $dt){
-                $message = "[ADMIN] Hello $dt->username, the system just run a clean history, with result of $total history executed";
+                $message = "[ADMIN] Hello $dt->username, the system just run a wash history, with result of $total history executed";
 
                 if($dt->telegram_user_id && $dt->telegram_is_valid == 1){
                     if(TelegramMessage::checkTelegramID($dt->telegram_user_id)){
@@ -45,7 +45,7 @@ class CleanSchedule
         }
     }
 
-    public static function clean_reminder()
+    public static function wash_reminder()
     {
         $days = 7;
         $total = ReminderModel::deleteReminderForLastNDays($days);
@@ -53,7 +53,7 @@ class CleanSchedule
 
         if($admin){
             foreach($admin as $dt){
-                $message = "[ADMIN] Hello $dt->username, the system just run a clean reminder, with result of $total reminder executed";
+                $message = "[ADMIN] Hello $dt->username, the system just run a wash reminder, with result of $total reminder executed";
 
                 if($dt->telegram_user_id && $dt->telegram_is_valid == 1){
                     if(TelegramMessage::checkTelegramID($dt->telegram_user_id)){
@@ -70,7 +70,7 @@ class CleanSchedule
         }
     }
 
-    public static function clean_deleted_vehicle()
+    public static function wash_deleted_vehicle()
     {
         $days = 30;
         $summary = VehicleModel::getVehiclePlanDestroy($days);
@@ -109,7 +109,7 @@ class CleanSchedule
 
                     // Destroy vehicle items
                     VehicleModel::destroy($vh->id);
-                    CleanModel::hardDeleteByVehicleId($vh->id);
+                    WashModel::hardDeleteByVehicleId($vh->id);
                     FuelModel::hardDeleteByVehicleId($vh->id);
                     InventoryModel::hardDeleteByVehicleId($vh->id);
                     ReminderModel::hardDeleteByVehicleId($vh->id);
@@ -123,7 +123,7 @@ class CleanSchedule
 
             // Report to admin
             foreach($admin as $dt){
-                $message_admin = "[ADMIN] Hello $dt->username, the system just run a clean vehicle, here's the detail:\n\n$summary_exec";
+                $message_admin = "[ADMIN] Hello $dt->username, the system just run a wash vehicle, here's the detail:\n\n$summary_exec";
 
                 if($dt->telegram_user_id){
                     if(TelegramMessage::checkTelegramID($dt->telegram_user_id)){

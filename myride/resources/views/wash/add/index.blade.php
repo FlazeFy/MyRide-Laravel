@@ -7,9 +7,9 @@
     </script>
 
     <div class="position-relative">
-        <a class="btn btn-danger" href='/clean'><i class="fa-solid fa-arrow-left"></i> Back</a>
+        <a class="btn btn-danger" href='/wash'><i class="fa-solid fa-arrow-left"></i> Back</a>
         <div class="container-fluid mt-2">
-            @include('clean.add.usecases.post_clean')
+            @include('wash.add.usecases.post_wash')
         </div>
     </div>
 @endsection

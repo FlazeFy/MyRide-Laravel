@@ -29,7 +29,7 @@ use App\Models\AdminModel;
 use App\Models\UserModel;
 use App\Models\VehicleModel;
 use App\Models\FuelModel;
-use App\Models\CleanModel;
+use App\Models\WashModel;
 use App\Models\MultiModel;
 
 class AuditSchedule
@@ -192,7 +192,7 @@ class AuditSchedule
                 }
             }
 
-            // Clean up File
+            // Wash up File
             foreach ($chartFiles as $file) {
                 $chartPath = storage_path("app/public/$file");
                 if (file_exists($chartPath)) {
@@ -263,38 +263,38 @@ class AuditSchedule
             $chartFiles[] = $fuelChartFilename;
             if (empty($chartFiles)) continue;
 
-            // Total Clean Spending Per Month
+            // Total Wash Spending Per Month
             // Model
-            $res_clean_monthly = CleanModel::getTotalCleanSpendingPerMonth($us->id, $year, false);
+            $res_wash_monthly = WashModel::getTotalWashSpendingPerMonth($us->id, $year, false);
 
-            if ($res_clean_monthly == null || $res_clean_monthly->isEmpty()) continue;
-            $res_final_clean_monthly = [];
+            if ($res_wash_monthly == null || $res_wash_monthly->isEmpty()) continue;
+            $res_final_wash_monthly = [];
             for ($i=1; $i <= 12; $i++) { 
                 $total = 0;
-                foreach ($res_clean_monthly as $idx => $val) {
+                foreach ($res_wash_monthly as $idx => $val) {
                     if($i == $val->context){
                         $total = $val->total;
                         break;
                     }
                 }
-                array_push($res_final_clean_monthly, [
+                array_push($res_final_wash_monthly, [
                     'context' => Generator::generateMonthName($i,'short'),
                     'total' => $total,
                 ]);
             }
 
             // Dataset
-            $labels_clean_monthly = collect($res_final_clean_monthly)->pluck('context')->map(fn($c) => Str::upper(str_replace('_', ' ', $c)))->all();
-            $values_clean_monthly = collect($res_final_clean_monthly)->pluck('total')->all();
-            $cleanChartFilename = self::generateBarChart($labels_clean_monthly, $values_clean_monthly, "clean", $year, $us->id);
+            $labels_wash_monthly = collect($res_final_wash_monthly)->pluck('context')->map(fn($c) => Str::upper(str_replace('_', ' ', $c)))->all();
+            $values_wash_monthly = collect($res_final_wash_monthly)->pluck('total')->all();
+            $washChartFilename = self::generateBarChart($labels_wash_monthly, $values_wash_monthly, "wash", $year, $us->id);
     
-            $chartFiles[] = $cleanChartFilename;
+            $chartFiles[] = $washChartFilename;
             if (empty($chartFiles)) continue;
     
             // Render PDF
             $generatedDate = now()->format('d F Y');
             $datetime = now()->format('d M Y h:i');
-            $tmpPdfPath = storage_path("app/public/Yearly Fuel & Clean Audit - ".$us->username.".pdf");
+            $tmpPdfPath = storage_path("app/public/Yearly Fuel & Wash Audit - ".$us->username.".pdf");
 
             Pdf::loadView('components.pdf.vehicle_chart', [
                 'charts' => $chartFiles,
@@ -319,7 +319,7 @@ class AuditSchedule
                 }
             }
 
-            // Clean up File
+            // Wash up File
             foreach ($chartFiles as $file) {
                 $chartPath = storage_path("app/public/$file");
                 if (file_exists($chartPath)) {
@@ -345,7 +345,7 @@ class AuditSchedule
                 if($dt->telegram_user_id && $dt->telegram_is_valid == 1){
                     if(TelegramMessage::checkTelegramID($dt->telegram_user_id)){    
                         $message_template = "[ADMIN] Hello $dt->username, here's the apps summary for the last $days days:";
-                        $message = "$message_template\n\n- Vehicle Created: $summary->vehicle_created\n- Inventory Created: $summary->inventory_created\n- New User : $summary->new_user\n- Trip Created : $summary->trip_created\n- Fuel Created : $summary->fuel_created\n- Service Created : $summary->service_created\n- Clean Created : $summary->clean_created\n- Error Happen : $summary->error_happen";
+                        $message = "$message_template\n\n- Vehicle Created: $summary->vehicle_created\n- Inventory Created: $summary->inventory_created\n- New User : $summary->new_user\n- Trip Created : $summary->trip_created\n- Fuel Created : $summary->fuel_created\n- Service Created : $summary->service_created\n- Wash Created : $summary->wash_created\n- Error Happen : $summary->error_happen";
 
                         $response = Telegram::sendMessage([
                             'chat_id' => $dt->telegram_user_id,
@@ -366,7 +366,7 @@ class AuditSchedule
         if($users && count($users) > 0){
             foreach($users as $index => $dt){
                 $total_vehicle = MultiModel::countTotalContext('vehicle',$dt->id);
-                $total_clean = MultiModel::countTotalContext('clean',$dt->id);
+                $total_wash = MultiModel::countTotalContext('wash',$dt->id);
                 $total_driver = MultiModel::countTotalContext('driver',$dt->id);
                 $total_service = MultiModel::countTotalContext('service',$dt->id);
                 $total_trip = MultiModel::countTotalContext('trip',$dt->id);
@@ -374,7 +374,7 @@ class AuditSchedule
                 if($dt->telegram_user_id && $dt->telegram_is_valid == 1){
                     if(TelegramMessage::checkTelegramID($dt->telegram_user_id)){    
                         $message_template = "Hello $dt->username, here's the weekly dashboard we've gathered so far from your account :";
-                        $message = "$message_template\n\n- Total Vehicle : $total_vehicle\n- Total Clean : $total_clean\n- Total Driver : $total_driver\n- Total Service : $total_service\n- Total Trip : $total_trip";        
+                        $message = "$message_template\n\n- Total Vehicle : $total_vehicle\n- Total Wash : $total_wash\n- Total Driver : $total_driver\n- Total Service : $total_service\n- Total Trip : $total_trip";        
 
                         $response = Telegram::sendMessage([
                             'chat_id' => $dt->telegram_user_id,

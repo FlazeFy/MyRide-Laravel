@@ -1,5 +1,5 @@
 <style>
-    #clean_tb tbody h6, #clean_tb tbody p {
+    #wash_tb tbody h6, #wash_tb tbody p {
         font-size:var(--textSM) !important;
         margin-bottom:0;
     }
@@ -7,10 +7,10 @@
 
 <h2 class="mb-3">Wash History</h2><hr>
 <div class="table-responsive">
-    <table class="table table-bordered" id="clean_tb">
+    <table class="table table-bordered" id="wash_tb">
         <thead>
             <tr>
-                <th scope="col" style="min-width: 240px;">Cleaning Info & Detail</th>
+                <th scope="col" style="min-width: 240px;">Washing Info & Detail</th>
                 <th scope="col" style="min-width: 160px;">Time</th>
             </tr>
         </thead>
@@ -19,60 +19,60 @@
 </div>
 
 <script>
-    const build_layout_clean = (data) => {
-        $('#clean_tb tbody').empty()
+    const build_layout_wash = (data) => {
+        $('#wash_tb tbody').empty()
         if(data){
             data.data.forEach((dt, idx) => {
-                $('#clean_tb tbody').append(`
+                $('#wash_tb tbody').append(`
                     <tr>
                         <td>
                             <div class="row">
                                 <div class="col-6">
-                                    <h6 class="mb-0">Clean By</h6>
-                                    <p>${dt.clean_by ?? '-'}</p>
+                                    <h6 class="mb-0">Wash By</h6>
+                                    <p>${dt.wash_by ?? '-'}</p>
                                 </div>
                                 <div class="col-6">
                                     <h6 class="mb-0">Address</h6>
-                                    <p>${dt.clean_address ?? '-'}</p>
+                                    <p>${dt.wash_address ?? '-'}</p>
                                 </div>
                             </div>
                             <h6 class="mb-0">Description</h6>
-                            <p>${dt.clean_desc ?? '-'}</p>
+                            <p>${dt.wash_desc ?? '-'}</p>
                             <h6 class="mb-0">Tools</h6>
-                            <p>${dt.clean_tools ?? '-'}</p>
+                            <p>${dt.wash_tools ?? '-'}</p>
                             <hr>
                             <div class="row">
-                                <h6 class="mb-0">Clean Detail</h6>
+                                <h6 class="mb-0">Wash Detail</h6>
                                 <p class='mb-0'>
                                     ${[
-                                        { key: "is_clean_body", label: "Body Cleaning" },
-                                        { key: "is_clean_window", label: "Window Cleaning" },
-                                        { key: "is_clean_dashboard", label: "Dashboard Cleaning" },
-                                        { key: "is_clean_tires", label: "Tires Cleaning" },
-                                        { key: "is_clean_trash", label: "Trash Cleaning" },
-                                        { key: "is_clean_engine", label: "Engine Cleaning" },
-                                        { key: "is_clean_seat", label: "Seat Cleaning" },
-                                        { key: "is_clean_carpet", label: "Carpet Cleaning" },
-                                        { key: "is_clean_pillows", label: "Pillow Cleaning" },
-                                        { key: "is_clean_hollow", label: "Vehicle Hollow Cleaning" },
-                                        { key: "is_fill_window_cleaning_water", label: "Window Cleaning Water Fill" },
-                                    ].map(clean => 
-                                        dt[clean.key] ? `<span style='font-size:var(--textMD);'>${clean.label}</span>, ` : ''
+                                        { key: "is_wash_body", label: "Body Washing" },
+                                        { key: "is_wash_window", label: "Window Washing" },
+                                        { key: "is_wash_dashboard", label: "Dashboard Washing" },
+                                        { key: "is_wash_tires", label: "Tires Washing" },
+                                        { key: "is_wash_trash", label: "Trash Washing" },
+                                        { key: "is_wash_engine", label: "Engine Washing" },
+                                        { key: "is_wash_seat", label: "Seat Washing" },
+                                        { key: "is_wash_carpet", label: "Carpet Washing" },
+                                        { key: "is_wash_pillows", label: "Pillow Washing" },
+                                        { key: "is_wash_hollow", label: "Vehicle Hollow Washing" },
+                                        { key: "is_fill_window_washing_water", label: "Window Washing Water Fill" },
+                                    ].map(wash => 
+                                        dt[wash.key] ? `<span style='font-size:var(--textMD);'>${wash.label}</span>, ` : ''
                                     ).join('')}
                                 </p>
                             </div>
                         </td>
                         <td>
                             <h6 class="mb-0">Start At</h6>
-                            <p>${dt.clean_start_time}</p>
+                            <p>${dt.wash_start_time}</p>
                             <h6 class="mb-0">Finished At</h6>
-                            <p class="mb-0">${dt.clean_end_time ?? "In Progress"}</p>
+                            <p class="mb-0">${dt.wash_end_time ?? "In Progress"}</p>
                         </td> 
                     </tr>
                 `)
             });
         } else {
-            $('#clean_tb tbody').html(`
+            $('#wash_tb tbody').html(`
                 <tr>
                     <td colspan="3"><p class="m-0 fst-italic text-secondary">- No Wash History -</p></td>
                 </tr>

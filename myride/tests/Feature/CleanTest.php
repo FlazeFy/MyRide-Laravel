@@ -8,7 +8,7 @@ use GuzzleHttp\Client;
 use Tests\TestCase;
 use App\Helpers\Audit;
 
-class CleanTest extends TestCase
+class WashTest extends TestCase
 {
     protected $httpClient;
     use LoginHelperTrait;
@@ -17,12 +17,12 @@ class CleanTest extends TestCase
     {
         parent::setUp();
         $this->httpClient = new Client([
-            'base_uri' => 'http://127.0.0.1:8000/api/v1/clean/',
+            'base_uri' => 'http://127.0.0.1:8000/api/v1/wash/',
             'http_errors' => false
         ]);
     }
 
-    public function test_get_all_clean_history(): void
+    public function test_get_all_wash_history(): void
     {
         // Exec
         $token = $this->login_trait("user");
@@ -42,29 +42,29 @@ class CleanTest extends TestCase
         $this->assertArrayHasKey('data', $data);
 
         foreach ($data['data']['data'] as $dt) {
-            $check_object = ["id", "vehicle_name", "vehicle_plate_number", "clean_desc", "clean_by", "clean_tools", "is_clean_body", "is_clean_window", 
-                "is_clean_dashboard", "is_clean_tires", "is_clean_trash", "is_clean_engine", "is_clean_seat", "is_clean_carpet", "is_clean_pillows", "clean_address", 
-                "clean_start_time", "clean_end_time", "is_fill_window_cleaning_water",  "is_clean_hollow", "created_at", "updated_at"];
+            $check_object = ["id", "vehicle_name", "vehicle_plate_number", "wash_desc", "wash_by", "wash_tools", "is_wash_body", "is_wash_window", 
+                "is_wash_dashboard", "is_wash_tires", "is_wash_trash", "is_wash_engine", "is_wash_seat", "is_wash_carpet", "is_wash_pillows", "wash_address", 
+                "wash_start_time", "wash_end_time", "is_fill_window_washing_water",  "is_wash_hollow", "created_at", "updated_at"];
 
             foreach ($check_object as $col) {
                 $this->assertArrayHasKey($col, $dt);
             }
 
-            $check_not_null_str = ["id", "vehicle_name", "vehicle_plate_number", "clean_start_time", "created_at"];
+            $check_not_null_str = ["id", "vehicle_name", "vehicle_plate_number", "wash_start_time", "created_at"];
             foreach ($check_not_null_str as $col) {
                 $this->assertNotNull($dt[$col]);
                 $this->assertIsString($dt[$col]);
             }
 
-            $check_nullable_str = ["clean_desc", "clean_by", "clean_tools", "clean_address", "clean_end_time", "updated_at"];
+            $check_nullable_str = ["wash_desc", "wash_by", "wash_tools", "wash_address", "wash_end_time", "updated_at"];
             foreach ($check_nullable_str as $col) {
                 if (!is_null($dt[$col])) {
                     $this->assertIsString($dt[$col]);
                 }
             }
 
-            $check_not_null_int = ["is_clean_body", "is_clean_window", "is_clean_dashboard", "is_clean_tires", "is_clean_trash", "is_clean_engine", "is_clean_seat", 
-                "is_clean_carpet", "is_clean_pillows", "is_fill_window_cleaning_water", "is_clean_hollow"];
+            $check_not_null_int = ["is_wash_body", "is_wash_window", "is_wash_dashboard", "is_wash_tires", "is_wash_trash", "is_wash_engine", "is_wash_seat", 
+                "is_wash_carpet", "is_wash_pillows", "is_fill_window_washing_water", "is_wash_hollow"];
             foreach ($check_not_null_int as $col) {
                 $this->assertNotNull($dt[$col]);
                 $this->assertIsInt($dt[$col]);
@@ -74,11 +74,11 @@ class CleanTest extends TestCase
             $this->assertEquals(36,strlen($dt['id']));
         }
 
-        Audit::auditRecordText("Test - Get All Clean History", "TC-XXX", "Result : ".json_encode($data));
-        Audit::auditRecordSheet("Test - Get All Clean History", "TC-XXX", 'TC-XXX test_get_all_clean_history', json_encode($data));
+        Audit::auditRecordText("Test - Get All Wash History", "TC-XXX", "Result : ".json_encode($data));
+        Audit::auditRecordSheet("Test - Get All Wash History", "TC-XXX", 'TC-XXX test_get_all_wash_history', json_encode($data));
     }
 
-    public function test_hard_delete_clean_by_id(): void
+    public function test_hard_delete_wash_by_id(): void
     {
         // Exec
         $token = $this->login_trait("user");
@@ -96,9 +96,9 @@ class CleanTest extends TestCase
         $this->assertArrayHasKey('status', $data);
         $this->assertEquals('success', $data['status']);
         $this->assertArrayHasKey('message', $data);
-        $this->assertEquals('clean permentally deleted',$data['message']);
+        $this->assertEquals('wash permentally deleted',$data['message']);
 
-        Audit::auditRecordText("Test - Hard Delete Clean By Id", "TC-XXX", "Result : ".json_encode($data));
-        Audit::auditRecordSheet("Test - Hard Delete Clean By Id", "TC-XXX", 'TC-XXX test_hard_delete_clean_by_id', json_encode($data));
+        Audit::auditRecordText("Test - Hard Delete Wash By Id", "TC-XXX", "Result : ".json_encode($data));
+        Audit::auditRecordSheet("Test - Hard Delete Wash By Id", "TC-XXX", 'TC-XXX test_hard_delete_wash_by_id', json_encode($data));
     }
 }

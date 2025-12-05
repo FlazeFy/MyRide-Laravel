@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 
 // Exports
-use App\Exports\CleanExport;
+use App\Exports\WashExport;
 use App\Exports\FuelExport;
 use App\Exports\InventoryExport;
 use App\Exports\ServiceExport;
@@ -17,7 +17,7 @@ use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 use Telegram\Bot\Laravel\Facades\Telegram;
 use Telegram\Bot\FileUpload\InputFile;
 // Models
-use App\Models\CleanModel;
+use App\Models\WashModel;
 use App\Models\FuelModel;
 use App\Models\UserModel;
 use App\Models\InventoryModel;
@@ -28,49 +28,49 @@ use App\Helpers\Generator;
 use App\Helpers\TelegramMessage;
 
 class Queries extends Controller {
-    public function exportCleanHistory(Request $request){
+    public function exportWashHistory(Request $request){
         try {
             $user_id = $request->user()->id;
             $datetime = date('Y-m-d_H-i-s');
             $user = UserModel::getSocial($user_id);
-            $file_name = "Clean-$user->username-$datetime.xlsx";
+            $file_name = "Wash-$user->username-$datetime.xlsx";
 
-            $res_clean_history = CleanModel::getExportData($user_id,null)->map(function($dt) {
+            $res_wash_history = WashModel::getExportData($user_id,null)->map(function($dt) {
                 return [
                     'vehicle_name' => $dt->vehicle_name,
-                    'clean_desc' => $dt->clean_desc,
-                    'clean_by' => $dt->clean_by,
-                    'clean_tools' => $dt->clean_tools,
-                    'is_clean_body' => $dt->is_clean_body == 1 ? "Yes" : "No",
-                    'is_clean_window' => $dt->is_clean_window == 1 ? "Yes" : "No",
-                    'is_clean_dashboard' => $dt->is_clean_dashboard == 1 ? "Yes" : "No",
-                    'is_clean_tires' => $dt->is_clean_tires == 1 ? "Yes" : "No",
-                    'is_clean_trash' => $dt->is_clean_trash == 1 ? "Yes" : "No",
-                    'is_clean_engine' => $dt->is_clean_engine == 1 ? "Yes" : "No",
-                    'is_clean_seat' => $dt->is_clean_seat == 1 ? "Yes" : "No",
-                    'is_clean_carpet' => $dt->is_clean_carpet == 1 ? "Yes" : "No",
-                    'is_clean_pillows' => $dt->is_clean_pillows == 1 ? "Yes" : "No",
-                    'clean_address' => $dt->clean_address,
-                    'clean_start_time' => $dt->clean_start_time,
-                    'clean_end_time' => $dt->clean_end_time,
-                    'is_fill_window_cleaning_water' => $dt->is_fill_window_cleaning_water == 1 ? "Yes" : "No",
-                    'is_clean_hollow' => $dt->is_clean_hollow == 1 ? "Yes" : "No",
+                    'wash_desc' => $dt->wash_desc,
+                    'wash_by' => $dt->wash_by,
+                    'wash_tools' => $dt->wash_tools,
+                    'is_wash_body' => $dt->is_wash_body == 1 ? "Yes" : "No",
+                    'is_wash_window' => $dt->is_wash_window == 1 ? "Yes" : "No",
+                    'is_wash_dashboard' => $dt->is_wash_dashboard == 1 ? "Yes" : "No",
+                    'is_wash_tires' => $dt->is_wash_tires == 1 ? "Yes" : "No",
+                    'is_wash_trash' => $dt->is_wash_trash == 1 ? "Yes" : "No",
+                    'is_wash_engine' => $dt->is_wash_engine == 1 ? "Yes" : "No",
+                    'is_wash_seat' => $dt->is_wash_seat == 1 ? "Yes" : "No",
+                    'is_wash_carpet' => $dt->is_wash_carpet == 1 ? "Yes" : "No",
+                    'is_wash_pillows' => $dt->is_wash_pillows == 1 ? "Yes" : "No",
+                    'wash_address' => $dt->wash_address,
+                    'wash_start_time' => $dt->wash_start_time,
+                    'wash_end_time' => $dt->wash_end_time,
+                    'is_fill_window_washing_water' => $dt->is_fill_window_washing_water == 1 ? "Yes" : "No",
+                    'is_wash_hollow' => $dt->is_wash_hollow == 1 ? "Yes" : "No",
                     'datetime' => $dt->datetime,
                 ];
             });
 
-            Excel::store(new class($res_clean_history) implements WithMultipleSheets {
-                private $res_clean_history;
+            Excel::store(new class($res_wash_history) implements WithMultipleSheets {
+                private $res_wash_history;
 
-                public function __construct($res_clean_history)
+                public function __construct($res_wash_history)
                 {
-                    $this->res_clean_history = $res_clean_history;
+                    $this->res_wash_history = $res_wash_history;
                 }
 
                 public function sheets(): array
                 {
                     return [
-                        new CleanExport($this->res_clean_history),
+                        new WashExport($this->res_wash_history),
                     ];
                 }
             }, $file_name, 'public');
@@ -89,7 +89,7 @@ class Queries extends Controller {
                     Telegram::sendDocument([
                         'chat_id' => $user->telegram_user_id,
                         'document' => $inputFile,
-                        'caption' => "Your clean export is ready",
+                        'caption' => "Your wash export is ready",
                         'parse_mode' => 'HTML',
                     ]);
                 } else {

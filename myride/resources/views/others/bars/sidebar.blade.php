@@ -8,14 +8,13 @@
     <ul class="nav nav-pills flex-column" id="vehicle_menu-list"></ul>
     <h5 class="group-menu">Others</h5>
     <ul class="nav nav-pills flex-column">
-        <li><a href="/setting" class="nav-link <?= $active_menu == "setting" ? "active" : "" ?>"><i class="fa-solid fa-gear"></i> <span>Setting</span></a></li>
         <li><a href="/history" class="nav-link <?= $active_menu == "history" ? "active" : "" ?>"><i class="fa-solid fa-clock-rotate-left"></i> <span>History</span></a></li>
         <li><a href="/help" class="nav-link <?= $active_menu == "help" ? "active" : "" ?>"><i class="fa-solid fa-headset"></i> <span>Help Center</span></a></li>
         <li><a href="/about" class="nav-link <?= $active_menu == "about" ? "active" : "" ?>"><i class="fa-solid fa-circle-info"></i> <span>About Us</span></a></li>
     </ul>
 </div>
 
-<script>
+<script>    
     $(document).ready(function() {
         $(".toogle_nav-button").on("click", function() {
             let width = $(window).width()
@@ -70,7 +69,7 @@
             $(`#${holder}`).append(`
                 <li><a href="/trip" class="nav-link <?= $active_menu == "trip" ? "active" : "" ?>"><i class="fa-solid fa-suitcase"></i> Trip</a></li>
                 <li><a href="/fuel" class="nav-link <?= $active_menu == "fuel" ? "active" : "" ?>"><i class="fa-solid fa-gas-pump"></i> Fuel</a></li>
-                <li><a href="/clean" class="nav-link <?= $active_menu == "clean" ? "active" : "" ?>"><i class="fa-solid fa-soap"></i> Cleanliness</a></li>
+                <li><a href="/wash" class="nav-link <?= $active_menu == "wash" ? "active" : "" ?>"><i class="fa-solid fa-soap"></i> Wash</a></li>
                 <li><a href="/service" class="nav-link <?= $active_menu == "service" ? "active" : "" ?>"><i class="fa-solid fa-screwdriver-wrench"></i> Service</a></li>
                 <li><a href="/reminder" class="nav-link <?= $active_menu == "reminder" ? "active" : "" ?>"><i class="fa-solid fa-clock"></i> Reminder</a></li>
                 <li><a href="/stats" class="nav-link <?= $active_menu == "stats" ? "active" : "" ?>"><i class="fa-solid fa-chart-simple"></i> Statistic</a></li>
@@ -85,6 +84,7 @@
     const get_vehicle_name = (year) => {
         Swal.showLoading()
         const ctx_holder = "vehicle_menu-list"
+        const token = "<?= session()->get('token_key'); ?>"
 
         const fetchData = () => {
             $.ajax({
@@ -92,7 +92,7 @@
                 type: 'GET',
                 beforeSend: function (xhr) {
                     xhr.setRequestHeader("Accept", "application/json")
-                    xhr.setRequestHeader("Authorization", "Bearer <?= session()->get("token_key"); ?>")    
+                    xhr.setRequestHeader("Authorization", `Bearer ${token}`)    
                 },
                 success: function(response) {
                     Swal.close()

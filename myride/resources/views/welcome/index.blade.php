@@ -1,6 +1,10 @@
 @extends('layouts.main_layout')
 
 @section('content')
+    <script>
+        const token = `<?= session()->get("token_key"); ?>`
+    </script>
+
     <div class="position-relative text-center">
         @include('welcome.usecases.welcoming')
         <br><br>

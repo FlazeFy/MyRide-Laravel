@@ -1,38 +1,38 @@
-<h2>Clean Summary</h2><hr>
-<div id="clean_summary-holder" class="row"></div>
+<h2>Wash Summary</h2><hr>
+<div id="wash_summary-holder" class="row"></div>
 
 <script>
-    const get_clean_summary = () => {
+    const get_wash_summary = () => {
         Swal.showLoading()
-        const ctx = 'summary_clean'
+        const ctx = 'summary_wash'
 
         const generate_summary = (data) => {
             data.forEach((dt,idx) => {
-                $('#clean_summary-holder').append(`
+                $('#wash_summary-holder').append(`
                     <div class="col-lg-12 col-md-6 col-sm-12">
-                        <button class="btn btn-primary w-100 text-start" type="button" data-bs-toggle="collapse" data-bs-target="#clean_${dt.vehicle_plate_number.replaceAll(' ','_')}_summary-collapse" aria-expanded="false" aria-controls="collapseExample">
+                        <button class="btn btn-primary w-100 text-start" type="button" data-bs-toggle="collapse" data-bs-target="#wash_${dt.vehicle_plate_number.replaceAll(' ','_')}_summary-collapse" aria-expanded="false" aria-controls="collapseExample">
                             <div class="d-flex flex-wrap align-items-center gap-2">
                                 <span class="plate-number m-0">${dt.vehicle_plate_number}</span>
                                 <p class="text-white mb-0 fw-bold">${dt.vehicle_type}</p>
                             </div>
                             <p class="text-white mt-2 mb-0">${dt.vehicle_name}</p>
                         </button>
-                        <div class="collapse mt-2" style='font-size: var(--textMD)' id='clean_${dt.vehicle_plate_number.replaceAll(' ','_')}_summary-collapse'>
+                        <div class="collapse mt-2" style='font-size: var(--textMD)' id='wash_${dt.vehicle_plate_number.replaceAll(' ','_')}_summary-collapse'>
                             <ul class="ps-3">
-                                <li>Total Clean : ${dt.total_clean}</li>
+                                <li>Total Wash : ${dt.total_wash}</li>
                                 <li>Total Spend : Rp.${number_format(dt.total_price,0,',','.')}</li>
-                                <li>Avg Spend per Clean : Rp.${number_format(dt.avg_price_per_clean,0,',','.')}</li>
-                                <li><b>${dt.total_clean_body} body cleanings</b> out of ${dt.total_clean} total cleans</li>
-                                <li><b>${dt.total_clean_window} window cleanings</b> out of ${dt.total_clean} total cleans</li>
-                                <li><b>${dt.total_clean_dashboard} dashboard cleanings</b> out of ${dt.total_clean} total cleans</li>
-                                <li><b>${dt.total_clean_tires} tire cleanings</b> out of ${dt.total_clean} total cleans</li>
-                                <li><b>${dt.total_clean_trash} trash removals</b> out of ${dt.total_clean} total cleans</li>
-                                <li><b>${dt.total_clean_engine} engine cleanings</b> out of ${dt.total_clean} total cleans</li>
-                                <li><b>${dt.total_clean_seat} seat cleanings</b> out of ${dt.total_clean} total cleans</li>
-                                <li><b>${dt.total_clean_carpet} carpet cleanings</b> out of ${dt.total_clean} total cleans</li>
-                                <li><b>${dt.total_clean_pillows} pillow cleanings</b> out of ${dt.total_clean} total cleans</li>
-                                <li><b>${dt.total_fill_window_cleaning_water} window water refills</b> out of ${dt.total_clean} total cleans</li>
-                                <li><b>${dt.total_clean_hollow} hollow cleanings</b> out of ${dt.total_clean} total cleans</li>
+                                <li>Avg Spend per Wash : Rp.${number_format(dt.avg_price_per_wash,0,',','.')}</li>
+                                <li><b>${dt.total_wash_body} body washings</b> out of ${dt.total_wash} total washs</li>
+                                <li><b>${dt.total_wash_window} window washings</b> out of ${dt.total_wash} total washs</li>
+                                <li><b>${dt.total_wash_dashboard} dashboard washings</b> out of ${dt.total_wash} total washs</li>
+                                <li><b>${dt.total_wash_tires} tire washings</b> out of ${dt.total_wash} total washs</li>
+                                <li><b>${dt.total_wash_trash} trash removals</b> out of ${dt.total_wash} total washs</li>
+                                <li><b>${dt.total_wash_engine} engine washings</b> out of ${dt.total_wash} total washs</li>
+                                <li><b>${dt.total_wash_seat} seat washings</b> out of ${dt.total_wash} total washs</li>
+                                <li><b>${dt.total_wash_carpet} carpet washings</b> out of ${dt.total_wash} total washs</li>
+                                <li><b>${dt.total_wash_pillows} pillow washings</b> out of ${dt.total_wash} total washs</li>
+                                <li><b>${dt.total_fill_window_washing_water} window water refills</b> out of ${dt.total_wash} total washs</li>
+                                <li><b>${dt.total_wash_hollow} hollow washings</b> out of ${dt.total_wash} total washs</li>
                             </ul>
                         </div>
                     </div>
@@ -42,7 +42,7 @@
 
         const fetchData = () => {
             $.ajax({
-                url: `/api/v1/clean/summary`,
+                url: `/api/v1/wash/summary`,
                 type: 'GET',
                 beforeSend: function (xhr) {
                     xhr.setRequestHeader("Accept", "application/json")
@@ -81,5 +81,5 @@
             fetchData()
         }
     }
-    get_clean_summary()
+    get_wash_summary()
 </script>

@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use App\Helpers\Generator;
 
 // Models
-use App\Models\CleanModel;
+use App\Models\WashModel;
 use App\Models\TripModel;
 
 class ProfileController extends Controller

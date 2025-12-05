@@ -9,8 +9,8 @@
         <h6 class="summary-label">Service</h6>
     </div>
     <div class="col-xl-2 col-lg-3 col-md-4 col-6 mx-auto">
-        <h3 class="summary-number" id="total_clean-holder">0</h3>
-        <h6 class="summary-label">Clean</h6>
+        <h3 class="summary-number" id="total_wash-holder">0</h3>
+        <h6 class="summary-label">Wash</h6>
     </div>
     <div class="col-xl-2 col-lg-3 col-md-4 col-6 mx-auto">
         <h3 class="summary-number" id="total_driver-holder">0</h3>
@@ -27,10 +27,10 @@
         Swal.showLoading()
         const ctx = 'summary_apps_private'
 
-        const generate_summary = (total_vehicle, total_service, total_clean, total_driver, total_trip) => {
+        const generate_summary = (total_vehicle, total_service, total_wash, total_driver, total_trip) => {
             $('#total_vehicle-holder').text(total_vehicle)
             $('#total_service-holder').text(total_service)
-            $('#total_clean-holder').text(total_clean)
+            $('#total_wash-holder').text(total_wash)
             $('#total_driver-holder').text(total_driver)
             $('#total_trip-holder').text(total_trip)
         }
@@ -48,7 +48,7 @@
                     const data = response.data
                     localStorage.setItem(ctx,JSON.stringify(data))
                     localStorage.setItem(`last-hit-${ctx}`,Date.now())
-                    generate_summary(data.total_vehicle, data.total_service, data.total_clean, data.total_driver, data.total_trip)
+                    generate_summary(data.total_vehicle, data.total_service, data.total_wash, data.total_driver, data.total_trip)
                 },
                 error: function(response, jqXHR, textStatus, errorThrown) {
                     generate_api_error(response, true)
@@ -63,7 +63,7 @@
             if(((now - lastHit) / 1000) < summaryFetchRestTime){
                 const data = JSON.parse(localStorage.getItem(ctx))
                 if(data){
-                    generate_summary(data.total_vehicle, data.total_service, data.total_clean, data.total_driver, data.total_trip)
+                    generate_summary(data.total_vehicle, data.total_service, data.total_wash, data.total_driver, data.total_trip)
                     Swal.close()
                 } else {
                     Swal.close()

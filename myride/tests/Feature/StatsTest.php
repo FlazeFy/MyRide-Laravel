@@ -196,7 +196,7 @@ class StatsTest extends TestCase
         $this->assertArrayHasKey('message', $data);
         $this->assertArrayHasKey('data', $data);
 
-        $int_col = ["total_vehicle","total_service","total_clean","total_driver","total_trip"];
+        $int_col = ["total_vehicle","total_service","total_wash","total_driver","total_trip"];
 
         foreach ($int_col as $col) {
             $this->assertArrayHasKey($col, $data['data']);

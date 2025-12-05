@@ -26,7 +26,7 @@
     <img src="{{asset('assets/logo_nocap.png')}}" style='width:30vh;'>
     <h2 class="fw-bold">One App, Total Vehicle Care</h2>
     <hr>
-    <p>Where You Can Manage And Monitoring Your Vehicle. From Vehicle Listing, Service & Clean Schedule, Trip History
+    <p>Where You Can Manage And Monitoring Your Vehicle. From Vehicle Listing, Service & Wash Schedule, Trip History
         Driver, Monitoring Your Stats, Live Tracking, and Many More
     </p>
     <div class="d-flex flex-wrap gap-2 gap-md-4 justify-content-center align-items-center">

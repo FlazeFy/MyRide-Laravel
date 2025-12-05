@@ -7,7 +7,7 @@ use App\Models\UserModel;
 use App\Models\FAQModel;
 use App\Models\VehicleModel;
 use App\Models\TripModel;
-use App\Models\CleanModel;
+use App\Models\WashModel;
 use App\Models\FuelModel;
 use App\Models\HistoryModel;
 use App\Models\InventoryModel;
@@ -23,7 +23,7 @@ class DatabaseSeeder extends Seeder
         DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         TripModel::truncate();
         FAQModel::truncate();
-        CleanModel::truncate();
+        WashModel::truncate();
         FuelModel::truncate();
         HistoryModel::truncate();
         InventoryModel::truncate();
@@ -39,7 +39,7 @@ class DatabaseSeeder extends Seeder
         FAQModel::factory(10)->state(['is_show' => 0])->create();
         VehicleModel::factory(45)->create();
         TripModel::factory(300)->create();
-        CleanModel::factory(300)->create();
+        WashModel::factory(300)->create();
         FuelModel::factory(200)->create();
         HistoryModel::factory(200)->create();
         InventoryModel::factory(200)->create();

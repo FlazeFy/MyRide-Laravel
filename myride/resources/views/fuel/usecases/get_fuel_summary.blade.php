@@ -20,8 +20,8 @@
         const ctx = 'summary_fuel'
 
         const generate_summary = (total_fuel_price, total_fuel_volume, total_refueling) => {
-            $('#total_fuel_price-holder').text(`Rp. ${number_format(total_fuel_price, 0, ',', '.')},00`)
-            $('#total_fuel_volume-holder').text(`${total_fuel_volume}L`)
+            $('#total_fuel_price-holder').text(`Rp. ${total_fuel_price > 0 ? `${number_format(total_fuel_price, 0, ',', '.')},00` : '-'}`)
+            $('#total_fuel_volume-holder').text(`${total_fuel_volume ?? 0}L`)
             $('#total_refueling-holder').text(total_refueling)
         }
 
@@ -32,7 +32,7 @@
                 type: 'GET',
                 beforeSend: function (xhr) {
                     xhr.setRequestHeader("Accept", "application/json")
-                    xhr.setRequestHeader("Authorization", "Bearer <?= session()->get("token_key"); ?>")    
+                    xhr.setRequestHeader("Authorization", `Bearer ${token}`)    
                 },
                 success: function(response) {
                     Swal.close()
