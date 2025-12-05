@@ -121,7 +121,7 @@
 <!-- Others JS -->
 <?php 
     $route = Route::currentRouteName();
-    if($route == 'add_trip' || $route == 'trip' || $route == 'reminder'){
+    if($route == 'add_trip' || $route == 'trip' || $route == 'reminder' || $route == 'add_reminder'){
         echo "
             <script src='https://maps.googleapis.com/maps/api/js?key=AIzaSyDXu2ivsJ8Hj6Qg1punir1LR2kY9Q_MSq8&callback=initMap&v=weekly' defer></script>
         ";

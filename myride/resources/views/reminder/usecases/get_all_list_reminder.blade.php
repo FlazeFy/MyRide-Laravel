@@ -65,18 +65,16 @@
                                     ${at.attachment_title}
                                     <div class="modal fade" id="attachment_${idx}-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                         <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <div class="text-start">
-                                                    ${
-                                                        at.attachment_type == 'image' ? `<img src="${at.attachment_value}" class="img-fluid mb-2" alt="attachment">` :
-                                                        at.attachment_type == 'location' ? `<div class="map-board" id="map_${idx}-holder"></div>`:''
-                                                    }
-                                                    <hr>
-                                                    <h6 class="mb-0">Attachment</h6>
-                                                    <p class="mb-0">${at.attachment_value}</p>
-                                                    <h6 class="mb-0">Title</h6>
-                                                    <p class="mb-0">${at.attachment_title}</p>
-                                                </div>
+                                            <div class="modal-content text-start">
+                                                ${
+                                                    at.attachment_type == 'image' ? `<img src="${at.attachment_value}" class="img-fluid mb-2" alt="attachment">` :
+                                                    at.attachment_type == 'location' ? `<div class="map-board" id="map_${idx}-holder"></div>`:''
+                                                }
+                                                <hr>
+                                                <h6 class="mb-0">Attachment</h6>
+                                                <p class="mb-0">${at.attachment_value}</p>
+                                                <h6 class="mb-0">Title</h6>
+                                                <p class="mb-0">${at.attachment_title}</p>
                                             </div>
                                         </div>
                                     </div>
