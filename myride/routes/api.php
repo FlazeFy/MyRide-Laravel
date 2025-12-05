@@ -184,6 +184,7 @@ Route::prefix('/v1/user')->middleware(['auth:sanctum'])->group(function () {
 
 Route::prefix('/v1/export')->middleware(['auth:sanctum'])->group(function () {
     Route::get('/wash', [QueriesExportController::class, 'exportWashHistory']);
+    Route::get('/trip', [QueriesExportController::class, 'exportTripHistory']);
     Route::get('/fuel', [QueriesExportController::class, 'exportFuelHistory']);
     Route::get('/inventory', [QueriesExportController::class, 'exportInventory']);
     Route::get('/service', [QueriesExportController::class, 'exportService']);

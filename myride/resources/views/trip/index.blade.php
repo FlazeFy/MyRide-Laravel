@@ -2,6 +2,7 @@
 
 @section('content')
     <script src="{{ asset('/js/usecases/inventory_v1.0.js')}}"></script>
+    <script src="{{ asset('/js/usecases/export_v1.0.js')}}"></script>
     <script>
         const token = `<?= session()->get("token_key"); ?>`
     </script>
@@ -21,6 +22,7 @@
     <div class="position-relative">
         <div class="d-flex flex-wrap gap-2">
             <a class="btn btn-success" href='/trip/add'><i class="fa-solid fa-plus"></i> Trip</a>
+            @include('trip.usecases.get_export_trip')
             <button class="btn btn-danger" onclick="initMap()"><i class="fa-solid fa-refresh"></i><span class="d-none d-md-inline"> Show All Trip</span></button>
             <div id="carousel-nav-holder"></div>
         </div>

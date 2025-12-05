@@ -214,6 +214,24 @@ class TripModel extends Model
         ];
     }
 
+    public static function getExportData($user_id, $vehicle_id = null){
+        $res = TripModel::selectRaw("
+                vehicle_name, vehicle_type, vehicle_plate_number, driver.fullname as driver_name, trip_desc, trip_category, trip_person, trip_origin_name, trip_origin_coordinate, 
+                trip_destination_name, trip_destination_coordinate, trip.created_at, trip.updated_at
+            ")
+            ->join('vehicle','vehicle.id','=','trip.vehicle_id')
+            ->leftjoin('driver','driver.id','=','trip.driver_id');
+        
+        if($vehicle_id){
+            $res = $res->where('vehicle_id',$vehicle_id);
+        }
+
+        $res = $res->where('trip.created_by',$user_id)
+            ->orderBy('trip.created_at');
+
+        return $res->get();
+    }
+
     public static function hardDeleteByVehicleId($vehicle_id, $user_id = null){
         $res = TripModel::where('vehicle_id',$vehicle_id);
 

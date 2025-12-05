@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\ExportApi;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Carbon\Carbon;
 
 // Exports
@@ -11,6 +12,7 @@ use App\Exports\FuelExport;
 use App\Exports\InventoryExport;
 use App\Exports\ServiceExport;
 use App\Exports\DriverExport;
+use App\Exports\TripExport;
 use Maatwebsite\Excel\Facades\Excel;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 // Telegram
@@ -23,6 +25,7 @@ use App\Models\UserModel;
 use App\Models\InventoryModel;
 use App\Models\ServiceModel;
 use App\Models\DriverModel;
+use App\Models\TripModel;
 // Helpers
 use App\Helpers\Generator;
 use App\Helpers\TelegramMessage;
@@ -80,11 +83,10 @@ class Queries extends Controller {
             if (!file_exists($storagePath)) {
                 throw new \Exception("File not found: $storagePath");
             }
-            copy($storagePath, $publicPath);
 
             if ($user && $user->telegram_is_valid == 1 && $user->telegram_user_id) {
                 if(TelegramMessage::checkTelegramID($user->telegram_user_id)){
-                    $inputFile = InputFile::create($publicPath, $file_name);
+                    $inputFile = InputFile::create($storagePath, $file_name);
 
                     Telegram::sendDocument([
                         'chat_id' => $user->telegram_user_id,
@@ -151,11 +153,10 @@ class Queries extends Controller {
             if (!file_exists($storagePath)) {
                 throw new \Exception("File not found: $storagePath");
             }
-            copy($storagePath, $publicPath);
 
             if ($user && $user->telegram_is_valid == 1 && $user->telegram_user_id) {
                 if(TelegramMessage::checkTelegramID($user->telegram_user_id)){
-                    $inputFile = InputFile::create($publicPath, $file_name);
+                    $inputFile = InputFile::create($storagePath, $file_name);
 
                     Telegram::sendDocument([
                         'chat_id' => $user->telegram_user_id,
@@ -222,11 +223,10 @@ class Queries extends Controller {
             if (!file_exists($storagePath)) {
                 throw new \Exception("File not found: $storagePath");
             }
-            copy($storagePath, $publicPath);
 
             if ($user && $user->telegram_is_valid == 1 && $user->telegram_user_id){
                 if(TelegramMessage::checkTelegramID($user->telegram_user_id)){
-                    $inputFile = InputFile::create($publicPath, $file_name);
+                    $inputFile = InputFile::create($storagePath, $file_name);
 
                     Telegram::sendDocument([
                         'chat_id' => $user->telegram_user_id,
@@ -294,11 +294,10 @@ class Queries extends Controller {
             if (!file_exists($storagePath)) {
                 throw new \Exception("File not found: $storagePath");
             }
-            copy($storagePath, $publicPath);
 
             if ($user && $user->telegram_is_valid == 1 && $user->telegram_user_id){
                 if(TelegramMessage::checkTelegramID($user->telegram_user_id)){
-                    $inputFile = InputFile::create($publicPath, $file_name);
+                    $inputFile = InputFile::create($storagePath, $file_name);
 
                     Telegram::sendDocument([
                         'chat_id' => $user->telegram_user_id,
@@ -365,16 +364,89 @@ class Queries extends Controller {
             if (!file_exists($storagePath)) {
                 throw new \Exception("File not found: $storagePath");
             }
-            copy($storagePath, $publicPath);
 
             if ($user && $user->telegram_is_valid == 1 && $user->telegram_user_id){
                 if(TelegramMessage::checkTelegramID($user->telegram_user_id)){
-                    $inputFile = InputFile::create($publicPath, $file_name);
+                    $inputFile = InputFile::create($storagePath, $file_name);
 
                     Telegram::sendDocument([
                         'chat_id' => $user->telegram_user_id,
                         'document' => $inputFile,
                         'caption' => "Your driver export is ready",
+                        'parse_mode' => 'HTML',
+                    ]);
+                } else {
+                    UserModel::updateUserById([ 'telegram_user_id' => null, 'telegram_is_valid' => 0],$user_id);
+                }
+            } 
+
+            return response()->download($storagePath, $file_name, [
+                'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                'Content-Disposition' => 'attachment; filename="' . $file_name . '"',
+            ])->deleteFileAfterSend(true);
+        } catch(\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => Generator::getMessageTemplate("unknown_error", null),
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function exportTripHistory(Request $request){
+        try {
+            $user_id = $request->user()->id;
+            $datetime = date('Y-m-d_H-i-s');
+            $user = UserModel::getSocial($user_id);
+            $file_name = "Trip-$user->username-$datetime.xlsx";
+
+            $res_trip = TripModel::getExportData($user_id,null)->map(function($dt) {
+                return [
+                    'vehicle_name' => $dt->vehicle_name,
+                    'vehicle_type' => $dt->vehicle_type,
+                    'vehicle_plate_number' => $dt->vehicle_plate_number, 
+                    'driver_name' => $dt->driver_name, 
+                    'trip_desc' => $dt->trip_desc, 
+                    'trip_category' => $dt->trip_category, 
+                    'trip_person' => $dt->trip_person, 
+                    'trip_origin_name' => $dt->trip_origin_name, 
+                    'trip_origin_coordinate' => $dt->trip_origin_coordinate, 
+                    'trip_destination_name' => $dt->trip_destination_name, 
+                    'trip_destination_coordinate' => $dt->trip_destination_coordinate,
+                    'created_at' => $dt->created_at, 
+                    'updated_at' => $dt->updated_at,
+                ];
+            });
+
+            Excel::store(new class($res_trip) implements WithMultipleSheets {
+                private $res_trip;
+
+                public function __construct($res_trip)
+                {
+                    $this->res_trip = $res_trip;
+                }
+
+                public function sheets(): array
+                {
+                    return [
+                        new TripExport($this->res_trip),
+                    ];
+                }
+            }, $file_name, 'public');
+        
+            $storagePath = storage_path("app/public/$file_name");
+            $publicPath = public_path($file_name);
+            if (!file_exists($storagePath)) {
+                throw new \Exception("File not found: $storagePath");
+            }
+
+            if ($user && $user->telegram_is_valid == 1 && $user->telegram_user_id){
+                if(TelegramMessage::checkTelegramID($user->telegram_user_id)){
+                    $inputFile = InputFile::create($storagePath, $file_name);
+
+                    Telegram::sendDocument([
+                        'chat_id' => $user->telegram_user_id,
+                        'document' => $inputFile,
+                        'caption' => "Your trip export is ready",
                         'parse_mode' => 'HTML',
                     ]);
                 } else {
