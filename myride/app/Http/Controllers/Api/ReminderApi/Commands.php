@@ -4,21 +4,29 @@ namespace App\Http\Controllers\Api\ReminderApi;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Kreait\Firebase\Factory;
 
 // Model
 use App\Models\ReminderModel;
 use App\Models\AdminModel;
+use App\Models\UserModel;
 
 // Helper
 use App\Helpers\Generator;
 use App\Helpers\Validation;
+use App\Helpers\Firebase;
 
 class Commands extends Controller
 {
     private $module;
+    private $max_size_file;
+    private $allowed_file_type;
+
     public function __construct()
     {
         $this->module = "reminder";
+        $this->max_size_file = 5000000; // 10 Mb
+        $this->allowed_file_type = ['jpg','jpeg','gif','png'];
     }
 
     /**
@@ -144,6 +152,7 @@ class Commands extends Controller
      */
     public function postReminder(Request $request){
         try{
+            $factory = (new Factory)->withServiceAccount(base_path('/firebase/myride-a0077-firebase-adminsdk-7x7j4-6b7da5321a.json'));
             $user_id = $request->user()->id;
 
             $validator = Validation::getValidateReminder($request);
@@ -153,12 +162,62 @@ class Commands extends Controller
                     'message' => $validator->errors()
                 ], Response::HTTP_BAD_REQUEST);
             } else {
+                $reminder_image = null;
+                if ($request->hasFile('reminder_image')) {
+                    $file = $request->file('reminder_image');
+                    if ($file->isValid()) {
+                        $file_ext = $file->getClientOriginalExtension();
+                        // Validate file type
+                        if (!in_array($file_ext, $this->allowed_file_type)) {
+                            return response()->json([
+                                'status' => 'failed',
+                                'message' => Generator::getMessageTemplate("custom", 'The file must be a '.implode(', ', $this->allowed_file_type).' file type'),
+                            ], Response::HTTP_UNPROCESSABLE_ENTITY);
+                        }
+                        // Validate file size
+                        if ($file->getSize() > $this->max_size_file) {
+                            return response()->json([
+                                'status' => 'failed',
+                                'message' => Generator::getMessageTemplate("custom", 'The file size must be under '.($this->max_size_file/1000000).' Mb'),
+                            ], Response::HTTP_UNPROCESSABLE_ENTITY);
+                        }
+        
+                        // Helper: Upload reminder image
+                        try {
+                            $user = UserModel::find($user_id);
+                            $reminder_image = Firebase::uploadFile('reminder', $user_id, $user->username, $file, $file_ext); 
+                        } catch (\Exception $e) {
+                            return response()->json([
+                                'status' => 'error',
+                                'message' => Generator::getMessageTemplate("unknown_error", null),
+                            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+                        }
+                    }
+                }
+
+                $reminder_attachment = [];
+                if ($reminder_image) {
+                    $reminder_attachment[] = (object)[
+                        'attachment_type' => 'image',
+                        'attachment_value' => $reminder_image,
+                    ];
+                }
+                if ($request->reminder_location) {
+                    $reminder_attachment[] = (object)[
+                        'attachment_type' => 'location',
+                        'attachment_value' => $request->reminder_location,
+                    ];
+                }
+                if (empty($reminder_attachment)) {
+                    $reminder_attachment = null;
+                }
+
                 $data = [
                     'vehicle_id' => $request->vehicle_id, 
                     'reminder_title' => $request->reminder_title, 
                     'reminder_context' => $request->reminder_context,  
                     'reminder_body' => $request->reminder_body,  
-                    'reminder_attachment' => null,  
+                    'reminder_attachment' => $reminder_attachment,  
                     'remind_at' => $request->remind_at, 
                 ];
 

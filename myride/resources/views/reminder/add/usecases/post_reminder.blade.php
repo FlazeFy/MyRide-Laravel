@@ -42,14 +42,12 @@
             <textarea class="form-control" name="reminder_body" id="reminder_body"></textarea>
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <label class="mb-0">Reminder Attachment</label>
-                <div class="d-flex flex-wrap gap-2">
+                <div class="d-flex flex-wrap gap-2" id="reminder_attachment_button-holder">
                     <a class="btn btn-primary py-1" id="add_image-button"><i class="fa-solid fa-image"></i><span class="d-none d-md-inline"> Add Image</span></a>
                     <a class="btn btn-primary py-1" id="add_location-button"><i class="fa-solid fa-map"></i><span class="d-none d-md-inline"> Add Map</span></a>
                 </div>
             </div>
-            <div id="reminder_image_attachment-holder"></div>
-            <div id="reminder_location_attachment-holder"></div>
-            <br>
+            <div id="reminder_attachment-holder"></div>
             <div class="d-grid d-md-inline-block">
                 <a class="btn btn-success rounded-pill p-3 w-100 w-md-auto mt-3" id="submit-add-reminder-btn"><i class="fa-solid fa-floppy-disk"></i> Save Reminder</a>
             </div>
@@ -75,13 +73,13 @@
             marker = new google.maps.Marker({ position: e.latLng, map: map })
             const c = e.latLng.toJSON()
 
-            $('#reminder_coordinate').val(`${c.lat}, ${c.lng}`)
+            $('#reminder_location').val(`${c.lat}, ${c.lng}`)
         })
     }
 
     window.initMap = initMap
 
-    $(document).on('blur', '#reminder_coordinate', function () {
+    $(document).on('blur', '#reminder_location', function () {
         const value = $(this).val().trim()
         if (!value) return
 
@@ -111,39 +109,76 @@
         get_vehicle_detail(id)
     })
 
+    const cleanAlertContainer = () => {
+        $("#reminder_attachment-holder .alert-container").remove()
+    }
+    const addClearButton = () => {
+        if($('#reminder_attachment_button-holder').find('#clear_attachment-button').length === 0){
+            $('#reminder_attachment_button-holder').prepend(`
+                <a class="btn btn-danger py-1" id="clear_attachment-button"><i class="fa-solid fa-circle-xmark"></i><span class="d-none d-md-inline"> Clear</span></a>
+            `)
+        }
+    }
+
     $(document).ready(function() {
-        $(document).on('click','#add_image-button',function(){
-            $('#reminder_image_attachment-holder').html(`
-                <div class='container-fluid'>
-                    <input type="file" id="image-input" accept="image/jpeg,image/png,image/gif"><br>
+        $(document).on('click', '#clear_attachment-button', function(){
+            $('#reminder_attachment_button-holder').find(this).remove()
+            template_alert_container('reminder_attachment-holder', 'no-data', "No attachment selected", null, '<i class="fa-solid fa-link"></i>', null)
+        })
+
+        $(document).on('click', '#add_image-button', function () {
+            cleanAlertContainer()
+
+            if ($("#reminder_attachment-holder .reminder-image-holder").length > 0) {
+                Swal.fire({
+                    title: "Error!",
+                    text: "You can only add one image as attachment",
+                    icon: "error"
+                })
+                return
+            }
+            addClearButton()
+
+            $("#reminder_attachment-holder").append(`
+                <div class="container-fluid reminder-image-holder mt-2">
+                    <input type="file" id="reminder_image" accept="image/jpeg,image/png,image/gif"><br>
                     <img id="image-preview" class="mt-2 d-none" style="max-width: 200px;">
                 </div>
             `)
         })
+
         $(document).on('click','#add_location-button',function(){
-            $('#reminder_location_attachment-holder').html(`
-                <div class='container-fluid'>
+            cleanAlertContainer()
+
+            if ($("#reminder_attachment-holder .reminder-location-holder").length > 0) {
+                Swal.fire({
+                    title: "Error!",
+                    text: "You can only add one location as attachment",
+                    icon: "error"
+                })
+                return
+            }
+            addClearButton()
+
+            $("#reminder_attachment-holder").append(`
+                <div class="container-fluid reminder-location-holder">
                     <div id="map-board" class="maps-toolbar"></div>
                     <label>Coordinate</label>
-                    <input class="form-control" name="reminder_coordinate" id="reminder_coordinate" requried>
+                    <input class="form-control" name="reminder_location" id="reminder_location" required>
                 </div>
             `)
 
             setTimeout(() => initMap(), 100)
         })
 
-        $(document).on('change', '#image-input', function(e) {
+        $(document).on('change', '#reminder_image', function(e) {
             const file = e.target.files[0]
             if (!file) return
 
             const maxSize = 5 * 1024 * 1024
 
             if (file.size > maxSize) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'File too large',
-                    text: 'Maximum file size is 5 MB'
-                })
+                failedMsg('File too large. Maximum file size is 5 MB')
 
                 $(this).val('')
                 $('#image-preview').addClass('d-none').attr('src', '')
@@ -162,42 +197,78 @@
     get_context_opt('reminder_context',token)
 
     const post_reminder = () => {
+        const remindAt = $('#remind_at').val()
+        if (remindAt === "") {
+            failedMsg('you must select specific date and time')
+            return
+        }
+
+        const remindAtDate = new Date(remindAt)
+        const now = new Date()
+        if (remindAtDate <= now) {
+            failedMsg('the reminder date & time must be in the future')
+            return
+        }
+
         const vehicle_id = $('#vehicle_holder').val()
         const reminder_context = $('#reminder_context_holder').val()
 
-        if(vehicle_id !== "-" && reminder_context !== "-"){
-            Swal.showLoading();
-            $.ajax({
-                url: `/api/v1/reminder`,
-                type: 'POST',
-                contentType: "application/json",
-                data: JSON.stringify({
-                    vehicle_id: vehicle_id,
-                    reminder_title: $('#reminder_title').val(),
-                    reminder_context: reminder_context,
-                    reminder_body: $("#reminder_body").val(),
-                    remind_at: formatDateTimeAPI($('#remind_at').val()),
-                }),
-                beforeSend: function (xhr) {
-                    xhr.setRequestHeader("Accept", "application/json")
-                    xhr.setRequestHeader("Authorization", `Bearer ${token}`)
-                },
-                success: function(response) {
-                    Swal.close()
-                    Swal.fire({
-                        title: "Success!",
-                        text: response.message,
-                        icon: "success"
-                    }).then(() => {
-                        window.location.href = '/reminder'
-                    });
-                },
-                error: function(response, jqXHR, textStatus, errorThrown) {
-                    generate_api_error(response, true)
-                }
-            });
-        } else {
+        if (vehicle_id === "-" || reminder_context === "-") {
             failedMsg('create reminder : you must select an item')
+            return
         }
+
+        const fd = new FormData()
+
+        fd.append("vehicle_id", vehicle_id)
+        fd.append("reminder_title", $('#reminder_title').val())
+        fd.append("reminder_context", reminder_context)
+        fd.append("reminder_body", $('#reminder_body').val())
+        fd.append("remind_at", formatDateTimeAPI(remindAt))
+
+        const hasImage = $("#reminder_attachment-holder .reminder-image-holder").length > 0
+        const hasLocation = $("#reminder_attachment-holder .reminder-location-holder").length > 0
+
+        if (hasImage) {
+            const img = $("#reminder_image")[0].files[0]
+            if (img) fd.append("reminder_image", img)
+            else fd.append("reminder_image", null)
+        } else {
+            fd.append("reminder_image", null)
+        }
+
+        if (hasLocation) {
+            const coor = $("#reminder_coordinate").val()
+            fd.append("reminder_location", coor ? coor : null)
+        } else {
+            fd.append("reminder_location", null)
+        }
+
+        Swal.showLoading()
+
+        $.ajax({
+            url: `/api/v1/reminder`,
+            type: 'POST',
+            processData: false,
+            contentType: false,
+            data: fd,
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Accept", "application/json")
+                xhr.setRequestHeader("Authorization", `Bearer ${token}`)
+            },
+            success: function (response) {
+                Swal.close()
+                Swal.fire({
+                    title: "Success!",
+                    text: response.message,
+                    icon: "success"
+                }).then(() => {
+                    window.location.href = '/reminder'
+                })
+            },
+            error: function (response) {
+                generate_api_error(response, true)
+            }
+        })
     }
 </script>
