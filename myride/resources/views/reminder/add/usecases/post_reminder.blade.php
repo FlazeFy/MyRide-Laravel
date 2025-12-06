@@ -238,7 +238,7 @@
         }
 
         if (hasLocation) {
-            const coor = $("#reminder_coordinate").val()
+            const coor = $("#reminder_location").val()
             fd.append("reminder_location", coor ? coor : null)
         } else {
             fd.append("reminder_location", null)

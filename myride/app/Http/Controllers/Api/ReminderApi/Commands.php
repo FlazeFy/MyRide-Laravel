@@ -87,10 +87,25 @@ class Commands extends Controller
                 $user_id = null;
             }
 
+            $old_reminder = ReminderModel::find($id);
             $rows = ReminderModel::hardDeleteReminderById($id, $user_id);
             if($rows > 0){
                 // Delete Firebase Uploaded Image
-                // ....
+                if($old_reminder->reminder_attachment){
+                    $attachments = $old_reminder->reminder_attachment;
+                    foreach ($attachments as $att) {
+                        if ($att['attachment_type'] === 'image') {
+                            $image_url = $att['attachment_value'];
+                            if(!Firebase::deleteFile($image_url)){
+                                return response()->json([
+                                    'status' => 'failed',
+                                    'message' => Generator::getMessageTemplate("not_found", 'failed to delete reminder image'),
+                                ], Response::HTTP_NOT_FOUND);
+                            }
+                            break;
+                        }
+                    }
+                }
 
                 return response()->json([
                     'status' => 'success',
@@ -105,7 +120,7 @@ class Commands extends Controller
         } catch(\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => Generator::getMessageTemplate("unknown_error", null),
+                'message' => $e->getMessage(),
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }

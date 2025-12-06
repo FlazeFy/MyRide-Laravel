@@ -60,21 +60,16 @@
                     if(dt.reminder_attachment){
                         dt.reminder_attachment.forEach((at,idx) => {
                             reminder_attachment_el += `
-                                <a class="chip bg-info fw-normal" data-bs-toggle="modal" data-bs-target="#attachment_${idx}-modal">
+                                <a class="chip bg-info fw-normal m-0" data-bs-toggle="modal" data-bs-target="#attachment_${dt.id}_${idx}-modal">
                                     <i class="fa-solid ${at.attachment_type == 'location' ? 'fa-location-dot' : at.attachment_type == 'driver' ? 'fa-user' : 'fa-image'}"></i>
-                                    ${at.attachment_title}
-                                    <div class="modal fade" id="attachment_${idx}-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    ${ucFirst(at.attachment_type)}
+                                    <div class="modal fade" id="attachment_${dt.id}_${idx}-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                         <div class="modal-dialog">
-                                            <div class="modal-content text-start">
+                                            <div class="modal-content">
                                                 ${
                                                     at.attachment_type == 'image' ? `<img src="${at.attachment_value}" class="img-fluid mb-2" alt="attachment">` :
-                                                    at.attachment_type == 'location' ? `<div class="map-board" id="map_${idx}-holder"></div>`:''
+                                                    at.attachment_type == 'location' ? `<div class="map-board" id="map_${dt.id}_${idx}-holder"></div>`:''
                                                 }
-                                                <hr>
-                                                <h6 class="mb-0">Attachment</h6>
-                                                <p class="mb-0">${at.attachment_value}</p>
-                                                <h6 class="mb-0">Title</h6>
-                                                <p class="mb-0">${at.attachment_title}</p>
                                             </div>
                                         </div>
                                     </div>
@@ -84,8 +79,8 @@
                             if (at.attachment_type === "location") {
                                 const coords = at.attachment_value.split(",").map(Number)
 
-                                $(document).on("shown.bs.modal", `#attachment_${idx}-modal`, function () {
-                                    initDynamicMap(`map_${idx}-holder`, coords);
+                                $(document).on("shown.bs.modal", `#attachment_${dt.id}_${idx}-modal`, function () {
+                                    initDynamicMap(`map_${dt.id}_${idx}-holder`, coords);
                                 });
                             }
                         });
@@ -105,7 +100,7 @@
                                 <span class="chip ${class_chip}">${dt.reminder_context}</span>
                                 ${dt.reminder_body}
                             </td>
-                            <td>${dt.reminder_attachment ? reminder_attachment_el :`-`}</td>
+                            <td>${dt.reminder_attachment ? `<div class="d-flex flex-wrap gap-2 justify-content-center">${reminder_attachment_el}</div>` :`-`}</td>
                             <td class="text-start">
                                 <h6 class="mb-0">Remind At</h6>
                                 <p class="mb-0">${dt.remind_at}</p>
