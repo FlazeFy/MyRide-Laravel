@@ -3,15 +3,22 @@ namespace App\Helpers;
 use App\Helpers\Generator;
 use Kreait\Firebase\Factory;
 use Illuminate\Support\Facades\Storage;
+use Kreait\Firebase\ServiceAccount;
 
 class Firebase
 {
     private static $factory;
+    private static $database;
 
     public static function init()
     {
         if (!self::$factory) {
-            self::$factory = (new Factory)->withServiceAccount(base_path('/firebase/myride-a0077-firebase-adminsdk-7x7j4-6b7da5321a.json'));
+            self::$factory = (new Factory)
+                ->withServiceAccount(base_path('/firebase/myride-a0077-firebase-adminsdk-7x7j4-6b7da5321a.json'))
+                ->withDatabaseUri('https://myride-a0077-default-rtdb.firebaseio.com/');
+        }
+        if (!self::$database) {
+            self::$database = self::$factory->createDatabase();
         }
     }
 
@@ -58,5 +65,13 @@ class Firebase
         }
 
         return false; 
+    }
+
+    public function insert_command($path, $data)
+    {
+        self::init(); 
+        $data['created_at'] = date('Y-m-d H:i:s');
+        $reference = self::$database->getReference($path);
+        $reference->set($data);
     }
 }
