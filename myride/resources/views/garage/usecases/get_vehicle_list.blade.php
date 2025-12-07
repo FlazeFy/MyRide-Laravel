@@ -169,9 +169,11 @@
                     let width = $(window).width()
 
                     data.forEach((dt,idx) => {
+                        const imageUrl = dt.vehicle_img_url ?? `{{ asset('assets/car_default.jpg') }}`
+                        
                         $('#vehicle-nav-list').append(`
                             <button data-bs-target="#${holder}" data-bs-slide-to="${idx}" class="${idx === 0 ? 'active' : ''}">
-                                <div class="indicator-box" style="background-image:url('{{ asset('assets/car_default.jpg') }}')">
+                                <div class="indicator-box" style="background-image:url('${imageUrl}')">
                                     <div class="indicator-content">
                                         <h5 class="text-dark">${dt.vehicle_name}</h5>
                                         <p class="text-dark">${dt.vehicle_type}</p>
@@ -197,7 +199,7 @@
                             <div class="carousel-item ${idx === 0 ? "active" : ""}" data-bs-interval="10000">
                                 <div class="row">
                                     <div class="col-xl-4 col-lg-5 col-md-6">
-                                        <img src="${dt.vehicle_image || "/assets/car_default.jpg"}" class="d-block w-100" alt="Vehicle Image">
+                                        <img src="${imageUrl}" class="d-block w-100" alt="Vehicle Image">
                                     </div>
                                     <div class="col-xl-8 col-lg-7 col-md-6">
                                         <div class="d-flex justify-content-between position-relative">

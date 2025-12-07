@@ -85,6 +85,13 @@
                 $('#vehicle_desc').html(detail.vehilce_desc ?? '<span class="fst-italic">- No Description Provided -</span>')
                 $('#vehicle_fuel_capacity').html(`${detail.vehicle_fuel_capacity} Ltr`)
 
+                detail.vehicle_img_url && $('#vehicle_img_url-holder').html(`
+                    <div class="container-fluid">
+                        <h2>Vehicle Image</h2><hr>
+                        <img class="img img-fluid" alt="${detail.vehicle_img_url}" src="${detail.vehicle_img_url}">
+                    </div>
+                `)
+
                 trip_data ? build_layout_trip(trip_data) : template_alert_container(`<?= $carouselId ?>`, 'no-data', "No trip found", 'add a trip', '<i class="fa-solid fa-luggage"></i>','/trip/add')
 
                 build_layout_wash(wash_data)

@@ -619,6 +619,16 @@ class Commands extends Controller
             $vehicle = VehicleModel::find($id);
             $rows = VehicleModel::hardDeleteVehicleById($user_id,$id);
             if($rows > 0){
+                // Delete Firebase Uploaded Image
+                if($vehicle->vehicle_img_url){
+                    if(!Firebase::deleteFile($vehicle->vehicle_img_url)){
+                        return response()->json([
+                            'status' => 'failed',
+                            'message' => Generator::getMessageTemplate("not_found", 'failed to delete vehicle image'),
+                        ], Response::HTTP_NOT_FOUND);
+                    }
+                }
+
                 WashModel::hardDeleteByVehicleId($id);
                 FuelModel::hardDeleteByVehicleId($id);
                 InventoryModel::hardDeleteByVehicleId($id);
