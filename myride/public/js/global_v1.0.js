@@ -160,6 +160,18 @@ const checkScreenSize = (width) => {
     }
 }
 
+const applyAutoTheme = () => {
+    const hour = new Date().getHours()
+
+    if (hour >= 18 || hour < 6) {
+        $("body").removeClass("light").addClass("dark")
+        localStorage.setItem("theme", "dark")
+    } else {
+        $("body").removeClass("dark").addClass("light")
+        localStorage.setItem("theme", "light")
+    }
+}
+
 $(document).ready(() => {
     let width = $(window).width()
 

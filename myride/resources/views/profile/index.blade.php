@@ -14,6 +14,8 @@
         </div>
         <div class="col-lg-6 col-md-12">
             <div class="container-fluid">
+                <h2>Setting</h2><hr>
+                @include('profile.usecases.set_auto_bg_mode')
                 @include('profile.usecases.set_light_dark_mode')
             </div>
         </div>

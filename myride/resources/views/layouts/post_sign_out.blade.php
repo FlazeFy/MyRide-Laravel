@@ -26,8 +26,15 @@
                 "Authorization": `Bearer ${token}`
             },
             success: function(data, textStatus, jqXHR) {
+                const autoTheme = localStorage.getItem("autoTheme")
+
                 sessionStorage.clear()
                 localStorage.clear()
+
+                if (autoTheme !== null) {
+                    localStorage.setItem("autoTheme", autoTheme)
+                }
+
                 $('#form-sign-out').submit()
             },
             error: function(jqXHR, textStatus, errorThrown) {

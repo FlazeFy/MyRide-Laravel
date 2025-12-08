@@ -32,5 +32,14 @@
     <div style="margin-top: 10vh;">
         @yield('content')
     </div>
+
+    <script>
+        $(document).ready(function () {
+            const theme = localStorage.getItem("theme") || "light"
+            $("body").addClass(theme)
+
+            applyAutoTheme()
+        });
+    </script>
 </body>
 </html>
