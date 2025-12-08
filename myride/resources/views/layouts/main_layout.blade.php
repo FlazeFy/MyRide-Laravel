@@ -89,7 +89,7 @@
         }
     ?>
 </head>
-<body>
+<body class="light">
     <?php if(!preg_match('(embed)', $washedUrl)): ?>
         @include('others.bars.navbar')
     <?php endif; ?>
@@ -116,6 +116,11 @@
     var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
         return new bootstrap.Popover(popoverTriggerEl)
     })
+
+    $(document).ready(function () {
+        const theme = localStorage.getItem("theme") || "light"
+        $("body").addClass(theme)
+    });
 </script>
 
 <!-- Others JS -->

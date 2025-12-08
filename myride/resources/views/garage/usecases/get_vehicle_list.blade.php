@@ -7,8 +7,8 @@
         visibility: hidden;
         opacity: 0;
         padding: var(--spaceLG);
-        border: 2px solid var(--darkColor);
-        border-bottom: var(--spaceXXSM) solid var(--darkColor);
+        border: 2px solid var(--secondaryColor);
+        border-bottom: var(--spaceXXSM) solid var(--secondaryColor);
         border-radius:var(--roundedLG);
     }
     .carousel-item img {

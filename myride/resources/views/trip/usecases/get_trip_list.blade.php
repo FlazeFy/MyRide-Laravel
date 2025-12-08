@@ -4,7 +4,7 @@
         margin-bottom: var(--spaceLG);
         width: 100%;
         text-align: left !important;
-        border: 1.5px solid var(--whiteColor) !important;
+        border: 1.5px solid var(--firstColor) !important;
         border-radius: var(--roundedMD) !important;
     }
     .btn-trip-box:hover {

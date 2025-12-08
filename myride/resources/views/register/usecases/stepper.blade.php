@@ -2,8 +2,8 @@
     .step {
         position: sticky;
         top: var(--spaceMD);
-        background: var(--whiteColor);
-        border: 2px solid var(--darkColor);
+        background: var(--firstColor);
+        border: 2px solid var(--secondaryColor);
         padding: var(--spaceLG);
         z-index: 999;
         width: 100%;

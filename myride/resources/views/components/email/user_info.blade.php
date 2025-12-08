@@ -3,7 +3,7 @@
     <head>
         <style>
             .bg{
-                background: var(--primaryColor);
+                background: var(--blueColor);
                 width: 100vh;
                 padding: 30px 20px;
             }
@@ -18,7 +18,7 @@
                 background: #FFFFFF;
                 box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
                 text-align: center;
-                color: var(--darkColor);
+                color: var(--secondaryColor);
             }
             h5{
                 font-size:22px;

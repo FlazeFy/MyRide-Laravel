@@ -186,8 +186,8 @@
                         warningAttMsg.style = "color: var(--successBG) !important;"
                         warningAttMsg.innerHTML = "URL is valid"
                     } else {
-                        att_cont.style = "border-left: 3.5px solid var(--primaryColor) !important; --circle-attach-color-var:var(--primaryColor) !important;"
-                        warningAttMsg.style = "color: var(--primaryColor) !important;"
+                        att_cont.style = "border-left: 3.5px solid var(--blueColor) !important; --circle-attach-color-var:var(--blueColor) !important;"
+                        warningAttMsg.style = "color: var(--blueColor) !important;"
                         warningAttMsg.innerHTML = "URL isn't not valid!"
                     }
                     validateFailedAtt();

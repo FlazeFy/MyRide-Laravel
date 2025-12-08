@@ -13,7 +13,9 @@
             </div>
         </div>
         <div class="col-lg-6 col-md-12">
-            
+            <div class="container-fluid">
+                @include('profile.usecases.set_light_dark_mode')
+            </div>
         </div>
     </div>
 @endsection

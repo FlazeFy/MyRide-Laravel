@@ -13,8 +13,8 @@
             $(`#${ctx}-holder`).html(`
                 <h4 class="fw-bold">${date}</h4>
                 <span class="d-flex justify-align-center justify-content-center">
-                    <a class="plate-number">${vehicle_plate_number}</a>
-                    ${driver_username ? `<a class="plate-number"><i class="fa-solid fa-user-tie"></i> ${driver_username}</a>` :''}
+                    <div class="plate-number">${vehicle_plate_number}</div>
+                    ${driver_username ? `<div class="plate-number"><i class="fa-solid fa-user-tie"></i> ${driver_username}</div>` :''}
                 </span>
                 <p class="text-secondary mb-0"><b>Locate on:</b> ${trip_destination_coordinate ? `${trip_destination_coordinate} | `:''}${trip_destination_name}</p>
                 ${trip_destination_coordinate ? `

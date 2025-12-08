@@ -179,7 +179,7 @@ class VehicleModel extends Model
     }
 
     public static function getVehiclePlanDestroy($days){
-        return VehicleModel::select('vehicle.id','vehicle_name','deleted_at','username','telegram_user_id','telegram_is_valid')
+        return VehicleModel::select('vehicle.id','vehicle_name','deleted_at','username','telegram_user_id','telegram_is_valid','created_by','vehicle_plate_number','vehicle_merk','vehicle_img_url')
             ->join('users','users.id','=','vehicle.created_by')
             ->whereDate('deleted_at', '<', Carbon::now()->subDays($days))
             ->orderby('username','asc')

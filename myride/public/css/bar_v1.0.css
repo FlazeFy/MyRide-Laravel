@@ -9,8 +9,8 @@
     overflow-x: hidden;
     transition: 0.5s;
     padding-top: calc(var(--spaceJumbo)*3);
-    background-color: var(--whiteColor);
-    border-right: 2px solid var(--darkColor);
+    background-color: var(--firstColor);
+    border-right: 2px solid var(--secondaryColor);
 }
 
 .sidebar .group-menu {
@@ -21,7 +21,7 @@
 
 .sidebar .nav-link {
     border: 2px solid transparent;
-    color: var(--darkColor);
+    color: var(--secondaryColor);
     margin-bottom: var(--spaceMini);
     display: flex;
     align-items: center;
@@ -41,14 +41,14 @@
 }
 
 .sidebar .nav-link.active {
-    background: var(--primaryColor) !important;
-    border-bottom: var(--spaceXXSM) solid var(--secondaryPrimaryColor);
+    background: var(--blueColor) !important;
+    border-bottom: var(--spaceXXSM) solid var(--secondaryBlueColor);
 }
 
 .sidebar .nav-link:hover {
-    background: var(--whiteColor);
-    border: 2px solid var(--secondaryPrimaryColor);
-    border-bottom: var(--spaceXXSM) solid var(--secondaryPrimaryColor);
+    background: var(--firstColor);
+    border: 2px solid var(--secondaryBlueColor);
+    border-bottom: var(--spaceXXSM) solid var(--secondaryBlueColor);
 }
   
 .sidebar .closebtn {

@@ -1,16 +1,16 @@
 <style>
     .popover-header {
         font-size: var(--textXLG);
-        background: var(--primaryColor);
-        color: var(--whiteColor);
+        background: var(--blueColor);
+        color: var(--firstColor);
         border-radius: var(--roundedMD) var(--roundedMD) 0 0;
     }
     .wide-popover {
         min-width: 400px !important;
     }
     .box-reminder-recently {
-        color: var(--darkColor);
-        background: var(--whiteColor);
+        color: var(--secondaryColor);
+        background: var(--firstColor);
         border-radius: var(--roundedLG);
         text-align: start;
         padding: var(--spaceSM);

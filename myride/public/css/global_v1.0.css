@@ -46,25 +46,44 @@
     --secondaryWarningColor: #e0a840;  
     --infoColor: #00b8ff;
     --secondaryInfoColor: #0095cc;    
-    --primaryColor: #2d94ff;
-    --secondaryPrimaryColor: #1f6fd1;
-    --darkColor : #232323;
-    --whiteColor : #f6fbff;
-    --greyColor : #656565;
+    --blueColor: #2d94ff;
+    --secondaryBlueColor: #1f6fd1;
     --shadowColor : #f2f2f2;
+    --darkColor: #232323;
+    --whiteColor: #f6fbff;
+}
+
+body.light {
+    --secondaryColor : #232323;
+    --firstColor : #f6fbff;
+    --greyColor : #656565;
+}
+
+body.dark {
+    --secondaryColor : #f6fbff;
+    --firstColor : #232323;
+    --greyColor : #aaaaaa;
 }
 
 body {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    background: var(--whiteColor);
+    background: var(--firstColor);
+    color: var(--secondaryColor);
     min-height: 75vh;
     font-family: 'Poppins';
 }
 
+td, th {
+    color: var(--secondaryColor);
+}
+
 a {
     text-decoration: none;
+    color: var(--secondaryColor) !important;
+}
+nav a {
     color: var(--darkColor) !important;
 }
 .no-msg-text {
@@ -79,7 +98,7 @@ img:not(.gm-style img) {
 }
 
 .container, .form-control, .form-select, .modal-content, .swal2-popup, .popover, .plate-number, .chip, .bordered, .container-fluid, .input-group-text {
-    border: 2px solid var(--darkColor) !important;
+    border: 2px solid var(--secondaryColor) !important;
 }
 .modal-content, .swal2-popup, .popover {
     border-radius: var(--roundedLG);
@@ -101,12 +120,12 @@ img:not(.gm-style img) {
 /* Typography */
 .text-secondary {
     font-style: italic;
-    color: var(--greyColor);
+    color: var(--greyColor) !important;
     font-size: var(--textMD);
 }
 
 .navbar, .footer {
-    border-bottom: 2px solid var(--darkColor);
+    border-bottom: 2px solid var(--secondaryColor);
     padding: var(--spaceLG);
     position: sticky;
     top: 0;
@@ -114,7 +133,6 @@ img:not(.gm-style img) {
     z-index: 1000;
 }
 .navbar .navbar-brand {
-    color: var(--darkColor);
     font-weight: 700;
     font-size: calc(var(--textJumbo)*1.15);
     margin-bottom: var(--spaceXXSM) !important;
@@ -167,7 +185,7 @@ img:not(.gm-style img) {
 }
 
 .footer {
-    border-top: 2px solid var(--darkColor);
+    border-top: 2px solid var(--secondaryColor);
 }
 
 .btn, .sidebar .nav-link.active, .gm-control-active {
@@ -180,8 +198,8 @@ img:not(.gm-style img) {
 }
 
 .btn.btn-primary, .gm-control-active{
-    background: var(--primaryColor) !important;
-    border-bottom: var(--spaceXXSM) solid var(--secondaryPrimaryColor) !important;
+    background: var(--blueColor) !important;
+    border-bottom: var(--spaceXXSM) solid var(--secondaryBlueColor) !important;
 }
 .btn.btn-success{
     background: var(--successColor) !important;
@@ -196,7 +214,7 @@ img:not(.gm-style img) {
     border-bottom: var(--spaceXXSM) solid var(--secondaryWarningColor) !important;
 }
 .bg-primary {
-    background: var(--primaryColor) !important;
+    background: var(--blueColor) !important;
 }
 .bg-info {
     background: var(--infoColor) !important;
@@ -243,7 +261,7 @@ img:not(.gm-style img) {
     background-repeat:no-repeat;
     position: relative;
     background-size: cover;
-    background-color: var(--darkColor);
+    background-color: var(--secondaryColor);
 }
 
 .plate-number {
@@ -253,7 +271,6 @@ img:not(.gm-style img) {
 .chip-mini {
     font-size:var(--textSM); 
     border-radius: var(--roundedLG);
-    color: var(--whiteColor);
     font-weight: 600;
     margin-inline: var(--spaceXXSM);
 }
@@ -265,22 +282,25 @@ img:not(.gm-style img) {
     margin-inline: var(--spaceSM);
     font-size:var(--textMD); 
 }
+.chip, .plate-number, .chip-mini {
+    color: var(--darkColor);
+}
 
 /* Table */
 table {
     border-collapse: collapse;   
     width: 100%;
-    border: 1.75px solid var(--darkColor) !important;
+    border: 1.75px solid var(--secondaryColor) !important;
 }
 th, td {
     text-align: center;         
     vertical-align: middle;    
-    border: 1.75px solid var(--darkColor) !important; 
+    border: 1.75px solid var(--secondaryColor) !important; 
 }
 thead th {
     text-align: center;
-    background: var(--primaryColor) !important;
-    color: var(--whiteColor);
+    background: var(--blueColor) !important;
+    color: var(--firstColor);
     letter-spacing: 0.5px;
     font-weight: 600;
 }
@@ -295,10 +315,10 @@ label, input, textarea, select {
 
 /* Container */
 .container, .modal-content, .swal2-popup, .popover, .plate-number, .chip, .container-fluid {
-    border-bottom: var(--spaceXXSM) solid var(--darkColor) !important;
+    border-bottom: var(--spaceXXSM) solid var(--secondaryColor) !important;
     padding: var(--spaceXLG);
     margin-bottom: var(--spaceLG);
-    background: var(--whiteColor);
+    background: var(--firstColor);
     position: relative;
 }
 @media (max-width: 575px) {
@@ -324,15 +344,19 @@ label, input, textarea, select {
     border: 2px solid var(--greyColor) !important;
 }
 .form-control, .form-select, .input-group-text {
-    background: var(--shadowColor) !important;
+    background: transparent !important;
     font-size: var(--textXLG);
+    color: var(--secondaryColor);
+}
+.input-group-text {
+    color: var(--firstColor);
 }
 .container-landing {
     border-radius: var(--roundedJumbo);
     padding: var(--spaceXLG);
     border: 4px solid transparent;
     margin-bottom: var(--spaceLG);
-    border: 4px solid var(--whiteColor);
+    border: 4px solid var(--firstColor);
 }
 .form-control, .form-select, .input-group-text , .rounded {
     border-radius: var(--roundedLG);   
@@ -362,11 +386,11 @@ label, input, textarea, select {
     border-bottom-right-radius: 0 !important;
 }
 .input-group > .form-control:first-child:not(:last-child), .input-group .input-group-text:first-child + .form-control, .input-group > .input-group-text:first-child:not(:last-child) {
-    border-right:1px solid var(--darkColor) !important;
+    border-right:1px solid var(--secondaryColor) !important;
 }
 
 hr {
-    background: var(--darkColor);
+    background: var(--secondaryColor);
 }
 
 .btn, .container, .sidebar .nav-link, .hover-grow, .plate-number, .chip, .bordered, .chip-mini, .container-fluid, .navbar-brand {
@@ -397,10 +421,10 @@ hr {
     top: 6px !important;
 }
 .gm-ui-hover-effect span {
-    color: var(--whiteColor) !important;
+    color: var(--firstColor) !important;
 }
 .gm-control-active {
-    fill: var(--whiteColor) !important;
+    fill: var(--firstColor) !important;
     border-radius: var(--roundedSM) !important;
 }
 .gmnoprint div{
@@ -412,9 +436,9 @@ hr {
 }
 .maps-toolbar {
     border-radius: var(--roundedLG);
-    border: 3px solid var(--darkColor);
+    border: 3px solid var(--secondaryColor);
     padding: 0 !important;
-    background: var(--darkColor);
+    background: var(--secondaryColor);
 }
 .maps-toolbar button {
     margin: var(--spaceMD) !important;
@@ -451,7 +475,7 @@ hr {
     justify-content:center;
 } 
 .pin-code input { 
-    border: 1.75px solid var(--whiteColor); 
+    border: 1.75px solid var(--firstColor); 
     text-align: center; 
     width: 48px;
     height:48px;
@@ -460,6 +484,6 @@ hr {
     margin-right:5px;
 } 
 .pin-code input:focus { 
-    border: 1px solid var(--darkColor);
+    border: 1px solid var(--secondaryColor);
     outline:none;
 } 

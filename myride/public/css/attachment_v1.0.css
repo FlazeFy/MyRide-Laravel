@@ -25,7 +25,7 @@
     border-radius: calc(var(--roundedJumbo) + var(--roundedMini));
     left: -13px;
     top: 36%;
-    background: var(--whiteColor);
+    background: var(--firstColor);
     border: 3px solid var(--circle-attach-color-var);
 }
 .btn-icon-delete{
@@ -34,7 +34,7 @@
 }
 .btn-icon-delete:hover{
     background: var(--warningBG) !important;
-    color: var(--whiteColor) !important;
+    color: var(--firstColor) !important;
 }
 .btn-icon-preview{
     color: var(--shadowColor) !important;
@@ -46,9 +46,9 @@
     width: 100px;
 }
 .btn-add-att{
-    color: var(--whiteColor) !important;
+    color: var(--firstColor) !important;
     border-radius: var(--roundedMini);
-    border: solid 2px var(--primaryColor);
+    border: solid 2px var(--blueColor);
     opacity: 1;
     cursor: pointer;
 }
@@ -56,8 +56,8 @@
     cursor: normal;
 }
 .btn-add-att:hover{
-    color: var(--whiteColor) !important;
-    background: var(--primaryColor);
+    color: var(--firstColor) !important;
+    background: var(--blueColor);
 }
 .attach-upload-status, #content_loc_msg{
     text-decoration: none;

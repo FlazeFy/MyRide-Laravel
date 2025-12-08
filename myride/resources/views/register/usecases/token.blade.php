@@ -68,7 +68,7 @@
             } else if(type == "regenerate"){
                 e.disabled = false
                 e.value = ""
-                e.style = "background: var(--whiteColor);"
+                e.style = "background: var(--firstColor);"
             } else if(type == "invalid"){
                 e.value = ""
                 e.style = "border: 1.5px solid var(--warningBG); "
