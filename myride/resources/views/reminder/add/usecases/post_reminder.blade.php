@@ -33,7 +33,7 @@
                 </div>
                 <div class="col-md-6 col-sm-12">
                     <label>Remind At</label>
-                    <input class="form-control" type="datetime-local" name="remind_at" id="remind_at">
+                    <input class="form-control form-validator" data-validator="must_future" type="datetime-local" name="remind_at" id="remind_at">
                 </div>
             </div>
             <label>Reminder Title</label>

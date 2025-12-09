@@ -172,11 +172,44 @@ const applyAutoTheme = () => {
     }
 }
 
+const validatorInput = () => {
+    $('input.form-validator').each(function() {
+        const $el = $(this);
+        const validator = $el.attr('data-validator');
+
+        if (typeof validator === 'undefined' || validator.trim() === '') {
+            failedMsg(`Input with id="${$el.attr('id')}" is missing or has empty data-validator`)
+        }
+
+        if (validator && validator.trim() === 'must_future') {
+            $el.on('blur', function() {
+                const type = $el.attr('type')
+                const val = $el.val()
+
+                if(!val) return
+                let chosenDate, now = new Date()
+
+                if(type === 'datetime-local') {
+                    chosenDate = new Date(val)
+                } else if (type === 'date') {
+                    chosenDate = new Date(val + 'T00:00:00')
+                }
+
+                if(chosenDate && chosenDate <= now) {
+                    failedMsg('Please choose a future date/time')
+                    $(this).val(null)
+                }
+            });
+        }
+    });
+}
+
 $(document).ready(() => {
     let width = $(window).width()
 
     buttonSetRoute()
     checkScreenSize(width)
+    validatorInput()
 
     $(window).on('resize', function() {
         width = $(window).width()

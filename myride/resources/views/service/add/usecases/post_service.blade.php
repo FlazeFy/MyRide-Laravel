@@ -33,7 +33,7 @@
             <label>Service Location</label>
             <input class="form-control" name="service_location" id="service_location">
             <label>Remind At</label>
-            <input class="form-control" type="datetime-local" name="remind_at" id="remind_at">
+            <input class="form-control form-validator" data-validator="must_future" type="datetime-local" name="remind_at" id="remind_at">
             <label>Service Notes</label>
             <textarea class="form-control" name="service_note" id="service_note" style="min-height:120px;"></textarea>
             <hr>

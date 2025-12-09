@@ -20,7 +20,7 @@
 
             $(`#${ctx}-holder`).html(`
                 <h4 class="fw-bold">${total_trip} Trip</h4>
-                <h2 class="fw-bold chip ${chipClass} d-inline-block" style="font-size:var(--textJumbo);">${distance_km} km</h2>
+                <h3 class="fw-bold chip ${chipClass} d-inline-block mb-2" style="font-size:var(--textJumbo);">${distance_km} km</h3>
                 <p class="text-secondary mb-0"><b>Last Updated:</b> ${date}</p>
             `)
         }
