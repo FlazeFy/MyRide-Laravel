@@ -15,6 +15,8 @@
         text-align: start;
         padding: var(--spaceSM);
         width: 100%;
+        border: 2px solid var(--secondaryColor);
+        margin-bottom: var(--spaceMD);
     }
     @media (max-width: 767px) {
         .wide-popover {

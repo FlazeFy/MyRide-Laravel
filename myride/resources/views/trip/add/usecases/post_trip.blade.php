@@ -35,7 +35,7 @@
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-12">
                     <label>Person</label>
-                    <textarea class="form-control" name="trip_person" id="trip_person" required></textarea>
+                    <textarea class="form-control form-validator" data-validator="tidy_up_comma" name="trip_person" id="trip_person" required></textarea>
                 </div>
             </div>
             <hr>
@@ -52,11 +52,11 @@
             <div class="row">
                 <div class="col-lg-6 col-md-6 col-sm-12">
                     <label>Trip Origin Coordinate</label>
-                    <input class="form-control" name="trip_origin_coordinate" id="trip_origin_coordinate" requried>
+                    <input class="form-control form-validator" data-validator="must_coordinate" name="trip_origin_coordinate" id="trip_origin_coordinate" requried>
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-12">
                     <label>Trip Destination Coordinate</label>
-                    <input class="form-control" name="trip_destination_coordinate" id="trip_destination_coordinate" requried>
+                    <input class="form-control form-validator" data-validator="must_coordinate" name="trip_destination_coordinate" id="trip_destination_coordinate" requried>
                 </div>
             </div>
             <div class="row">

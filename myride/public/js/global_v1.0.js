@@ -173,15 +173,15 @@ const applyAutoTheme = () => {
 }
 
 const validatorInput = () => {
-    $('input.form-validator').each(function() {
-        const $el = $(this);
-        const validator = $el.attr('data-validator');
+    $('.form-validator').each(function() {
+        const $el = $(this)
+        const validator = $el.attr('data-validator')
 
-        if (typeof validator === 'undefined' || validator.trim() === '') {
+        if(typeof validator === 'undefined' || validator.trim() === '') {
             failedMsg(`Input with id="${$el.attr('id')}" is missing or has empty data-validator`)
         }
 
-        if (validator && validator.trim() === 'must_future') {
+        if(validator && validator.trim() === 'must_future') {
             $el.on('blur', function() {
                 const type = $el.attr('type')
                 const val = $el.val()
@@ -199,8 +199,51 @@ const validatorInput = () => {
                     failedMsg('Please choose a future date/time')
                     $(this).val(null)
                 }
-            });
+            })
         }
+
+        if(validator && validator.trim() === 'must_coordinate') {
+            $el.on('blur', function() {
+                const val = $(this).val()
+                if (!val) return
+
+                const parts = val.split(',')
+                if (parts.length !== 2) {
+                    failedMsg('Coordinate must be in "lat,lon" format')
+                    $(this).val(null)
+                    return
+                }
+
+                const lat = parseFloat(parts[0].trim())
+                const lon = parseFloat(parts[1].trim())
+
+                const validLat = !isNaN(lat) && lat >= -90 && lat <= 90
+                const validLon = !isNaN(lon) && lon >= -180 && lon <= 180
+
+                if (!validLat || !validLon) {
+                    failedMsg('Invalid coordinate. Latitude must be between -90 and 90, longitude between -180 and 180')
+                    $(this).val(null)
+                }
+            })
+        }
+
+        if (validator && validator.trim() === 'tidy_up_comma') {
+            $el.on('blur', function() {
+                const val = $(this).val().trim()
+                if (val !== '') {
+                    const textComma = val.split(/,\s+and\s+|,\s+|\s+and\s+/).map(dt => dt.trim().toLowerCase()).filter(dt => dt !== '')
+                    let cleanTextComma = ''
+            
+                    if (textComma.length > 1) {
+                        cleanTextComma = textComma.slice(0, -1).map(dt => ucEachWord(dt)).join(', ') + `, and ${ucEachWord(textComma[textComma.length - 1])}`
+                    } else if (textComma.length === 1) {
+                        cleanTextComma = ucEachWord(textComma[0])
+                    }
+            
+                    $(this).val(cleanTextComma)
+                }
+            })
+        }        
     });
 }
 

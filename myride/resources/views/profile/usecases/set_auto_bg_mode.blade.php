@@ -1,9 +1,11 @@
-<div class="d-flex justify-content-between align-items-center mb-2">
+<div class="d-block d-md-flex justify-content-between align-items-center mb-2">
     <div>
         <label style="font-size:var(--textXLG);" class="mb-0">Auto Background</label>
         <p class="mb-0 text-secondary">Ligth / Dark Mode theme based on your current local time</p>
     </div>
-    <button id="autoThemeToggle" class="btn py-1"></button>
+    <div class="d-grid d-md-inline-block">
+        <button id="autoThemeToggle" class="btn py-1 mt-2 mt-md-0 w-100 w-md-auto"></button>
+    </div>
 </div>
 
 <script>

@@ -1,9 +1,11 @@
-<div class="d-flex justify-content-between align-items-center">
+<div class="d-block d-md-flex justify-content-between align-items-center">
     <div>
         <label style="font-size:var(--textXLG);" class="mb-0">Background Color</label>
         <p class="mb-0 text-secondary">Set your background color manually</p>
     </div>
-    <button id="themeToggle" class="btn btn-success py-1"></button>
+    <div class="d-grid d-md-inline-block">
+        <button id="themeToggle" class="btn btn-success py-1 mt-2 mt-md-0 w-100 w-md-auto"></button>
+    </div>
 </div>
 
 <script>

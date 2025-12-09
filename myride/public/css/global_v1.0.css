@@ -76,7 +76,7 @@ body {
 }
 
 td, th {
-    color: var(--secondaryColor);
+    color: var(--whiteColor) !important;
 }
 
 a {
@@ -487,3 +487,13 @@ hr {
     border: 1px solid var(--secondaryColor);
     outline:none;
 } 
+
+.apexcharts-yaxis-label, .apexcharts-xaxis-label {
+    fill: var(--secondaryColor) !important;
+}
+.apexcharts-legend-text {
+    color: var(--secondaryColor) !important;
+}
+.apexcharts-yaxis-label, .apexcharts-xaxis-label, .apexcharts-tooltip, .apexcharts-legend-text  {
+    text-transform: capitalize !important;
+}
