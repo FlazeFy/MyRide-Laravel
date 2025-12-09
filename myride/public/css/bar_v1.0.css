@@ -10,7 +10,6 @@
     transition: 0.5s;
     padding-top: calc(var(--spaceJumbo)*3);
     background-color: var(--firstColor);
-    border-right: 2px solid var(--secondaryColor);
 }
 
 .sidebar .group-menu {

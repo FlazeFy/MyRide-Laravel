@@ -1,17 +1,3 @@
-<style>
-    .btn-trip-box {
-        padding: var(--spaceLG) !important;
-        margin-bottom: var(--spaceLG);
-        width: 100%;
-        text-align: left !important;
-        border: 1.5px solid var(--firstColor) !important;
-        border-radius: var(--roundedMD) !important;
-    }
-    .btn-trip-box:hover {
-        transform: scale(1.025);
-    }
-</style>
-
 <?php 
     use App\Helpers\Converter;
 ?>

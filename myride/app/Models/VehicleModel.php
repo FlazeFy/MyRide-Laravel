@@ -35,6 +35,12 @@ class VehicleModel extends Model
         return VehicleModel::create($data);
     }
 
+    public static function updateVehicleById($data, $id, $user_id){
+        return VehicleModel::where('id',$id)
+            ->where('created_by',$user_id)
+            ->update($data);
+    }
+
     public static function getTotalVehicleByCategory($user_id){
         return VehicleModel::selectRaw('vehicle_category as context, COUNT(1) as total')
             ->where('created_by', $user_id)

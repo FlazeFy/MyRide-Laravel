@@ -83,6 +83,9 @@ a {
     text-decoration: none;
     color: var(--secondaryColor) !important;
 }
+h6, p, .swal2-html-container, .swal2-title, tbody td {
+    color: var(--secondaryColor) !important;
+}
 nav a {
     color: var(--darkColor) !important;
 }
@@ -491,7 +494,7 @@ hr {
     outline:none;
 } 
 
-.apexcharts-yaxis-label, .apexcharts-xaxis-label {
+.apexcharts-yaxis-label, .apexcharts-xaxis-label, .apexcharts-datalabel-value {
     fill: var(--secondaryColor) !important;
 }
 .apexcharts-legend-text {

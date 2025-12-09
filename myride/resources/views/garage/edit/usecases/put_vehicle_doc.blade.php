@@ -1,242 +1,171 @@
-<h2>Attached Document</h2>
-<form action="/garage/edit_doc/{{$id}}" method="POST">
-    @csrf
-    <div>
-        <a class="btn btn-add-att mb-2 text-white" style="float:none;" id="add_att_btn" onclick="addAttachmentForm()"><i class="fa-solid fa-plus"></i> Attachment</a>
-        <div class="attachment-holder" id="attachment-holder">
-        </div>
-        <input hidden id="vehicle_document" name="vehicle_document">
+<div class="d-flex align-items-center justify-content-between">
+    <h2 class="mb-0">Document</h2>
+    <div class="d-flex flex-wrap gap-2" id="vehicle_document_button-holder">
+        <a class="btn btn-primary" id="add_doc-button"><i class="fa-solid fa-file"></i><span class="d-none d-md-inline"> Add Document</span></a>
     </div>
-    <button type="submit" class="btn btn-success rounded-pill px-3 py-2 mt-2"><i class="fa-solid fa-file"></i> Save Document</button>
-</form>
-<hr>
+</div><hr>
+
+<div id="doc_attachment-holder" class="row"></div>
 
 <script>
-    var attach_list = []
-    var maxSizeImage = 4 // Mb
-    var maxSizeDoc = 15 // Mb
-    var err_att = false
-    var add_att_btn = document.getElementById('add_att_btn')
+    template_alert_container('doc_attachment-holder', 'no-data', "No document attached", null, '<i class="fa-solid fa-link"></i>', null)
 
-    function addAttachmentForm(){
-        if(isAddMoreAttachment(attach_list)){
-            var id = getAttCode()
-            var is_addable = true
-            let obj = {
-                "id": id,
-                "attach_type":null, 
-                "attach_name":null, 
-                "attach_url":null,
-                "is_add_more":false
-            };
-            attach_list.push(obj)
+    $(document).ready(function() {
+        $(document).on('click', '#clear_doc-button', function(){
+            $('#vehicle_document_button-holder').find(this).remove()
+            $('#vehicle_document_button-holder').find('#save_doc-button').remove()
+            $("#doc_attachment-holder").empty()
+            template_alert_container('doc_attachment-holder', 'no-data', "No document attached", null, '<i class="fa-solid fa-link"></i>', null)
+        })
 
-            $("#attachment-holder").append(`
-                <div class="attachment-item p-2" id="attachment_container_${id}" style="--circle-attach-color-var:var(--shadowColor);">
-                    <div style="white-space:normal !important;">
-                        <span class="d-inline-block me-1">
-                            <h6 class="mt-1">Attachment Type :</h6>
-                        </span>
-                        <span class="d-inline-block">
-                            <select class="form-select attachment" id="attach_type_${id}" name="attach_type" onChange="getAttachmentGroupFun('${id}', this.value, false)" aria-label="Default select example">
-                                <option selected>---</option> 
-                                <option value="attachment_image">Image</option> 
-                                <option value="attachment_doc">Document</option> 
-                                <option value="attachment_url">URL</option> 
-                            </select>
-                        </span>
+        $(document).on('click', '#add_doc-button', function () {
+            if($('#vehicle_document_button-holder').find('#clear_doc-button').length === 0){
+                $('#vehicle_document_button-holder').prepend(`
+                    <a class="btn btn-danger" id="clear_doc-button"><i class="fa-solid fa-circle-xmark"></i><span class="d-none d-md-inline"> Clear</span></a>
+                    <a class="btn btn-success" id="save_doc-button"><i class="fa-solid fa-floppy-disk"></i><span class="d-none d-md-inline"> Save Document</span></a>
+                `)
+            }
+
+            if($("#doc_attachment-holder").find('.vehicle_document-holder').length === 0){
+                $("#doc_attachment-holder").empty()
+            }
+
+            const uid = Date.now()
+            $("#doc_attachment-holder").append(`
+                <div class="col-md-6 col-sm-12">
+                    <div class="container-fluid vehicle_document-holder mt-2">
+                        <input type="file" class="vehicle_document" id="vehicle_document_${uid}" accept="image/jpeg,image/png,application/pdf"><br>
+                        <div id="doc-preview_${uid}" class="my-2"></div>
+                        <label>Caption (Optional)</label>
+                        <input class="form-control vehicle_document_caption" type="text">
                     </div>
-                    <div id="attach-input-holder-${id}"></div>
-                    <a class="btn btn-icon-delete" title="Delete" onclick="deleteAttachmentForm('${id}')">
-                        <i class="fa-solid fa-trash-can"></i>
-                    </a>
-                    <span id="preview_att_${id}">
-                        <a class="btn btn-icon-preview" title="Preview Attachment" data-bs-toggle="collapse" href="#collapsePreview-${id}">
-                            <i class="fa-regular fa-eye-slash"></i>
-                        </a>
-                    </span>
-                    <a class="attach-upload-status success" id="attach-progress-${id}"></a>
-                    <a class="attach-upload-status failed" id="attach-failed-${id}"></a>
-                    <a class="attach-upload-status warning" id="attach-warning-${id}"></a>
-                    <span id="preview_holder_${id}"></span>
                 </div>
-            `);
-            
-            add_att_btn.setAttribute("class","btn btn-add-att text-white disabled mb-2")
-            add_att_btn.innerHTML = `<i class="fa-solid fa-lock"></i> Locked`
-        }
-    }
+            `)
+        })
 
-    function setValue(id, all){
-        objIndex = attach_list.findIndex((obj => obj.id == id))
+        $(document).on('change', '.vehicle_document', function(e) {
+            const file = e.target.files[0]
+            if (!file) return
 
-        let att_type = document.getElementById('attach_type_'+id).value
+            const maxSize = 5 * 1024 * 1024
+            if (file.size > maxSize) {
+                failedMsg('File too large. Maximum file size is 5 MB')
+                $(this).val('')
+                return
+            }
 
-        if(all){
-            var att_name_val = document.getElementById('attach_name_'+id).value
-            var att_dsbld = document.getElementById('attach_url_'+id).disabled
-            //var att_url = document.getElementById('attach_url_'+id).value
-            var att_cont = document.getElementById('attachment_container_'+id)
-            var submitHolder = $("#btn-submit-holder-event")
-            
-            if(att_type != "attachment_url" && att_dsbld != true){
-                var att_file_src = document.getElementById('attach_url_'+id).files[0]
+            const inputId = $(this).attr('id')
+            const previewId = inputId.replace('vehicle_document', 'doc-preview')
 
-                if(att_type == "attachment_image"){
-                    max = maxSizeImage
-                } else if(att_type == "attachment_doc"){
-                    max = maxSizeDoc
+            const previewHolder = $(`#${previewId}`)
+            previewHolder.html('')
+
+            const reader = new FileReader()
+            const type = file.type
+
+            reader.onload = function(event) {
+
+                if (type === "application/pdf") {
+                    previewHolder.html(`
+                        <iframe src="${event.target.result}" width="100%" height="400px"></iframe>
+                    `)
+                } 
+                else if (type.startsWith("image/")) {
+                    previewHolder.html(`
+                        <img src="${event.target.result}" class="img-fluid rounded border" style="max-height: 300px;"/>
+                    `)
+                } 
+                else {
+                    failedMsg('Unsupported file format')
                 }
+            }
 
-                if(att_file_src.size <= max * 1024 * 1024){
-                    var filePath = att_type + '/' + getUUID()
+            reader.readAsDataURL(file)
+        })
 
-                    //Set upload path
-                    var storageRef = firebase.storage().ref(filePath)
-                    var uploadTask = storageRef.put(att_file_src)
+        $(document).on('click','#save_doc-button',function(){
+            let allFilled = true
+            $('.vehicle_document').each(function(){
+                if (!this.files || this.files.length === 0) {
+                    allFilled = false
+                }
+            })
 
-                    //Do upload
-                    uploadTask.on('state_changed',function (snapshot) {
-                        var progress = Math.round((snapshot.bytesTransferred/snapshot.totalBytes)*100)
-                        document.getElementById('attach-failed-'+id).innerHTML = ""
-                        document.getElementById('attach-progress-'+id).innerHTML = "File upload is " + progress + "% done"
-                        document.getElementById('attach_url_'+id).disabled = true
-                        document.getElementById('attach_type_'+id).disabled = true
-                        
-                        if(progress == 100){
-                            attach_list[objIndex]['is_add_more'] = true
-                            document.getElementById('attach_name_'+id).disabled = false
-                            att_cont.style = "border-left: 3.5px solid var(--successBG) !important; --circle-attach-color-var:var(--successBG) !important;"
-                        } else {
-                            attach_list[objIndex]['is_add_more'] = false
-                            document.getElementById('attach_name_'+id).disabled = true
-                            submitHolder.html(`<button disabled class="custom-submit-modal"><i class="fa-solid fa-lock"></i> Locked</button>`)
-                        }
-                    }, 
-                    function (error) {
-                        doErrorAttachment(id, error)
-                        attach_list[objIndex]['is_add_more'] = false
-                        var att_url = null;
-                        if(error.message){
-                            att_cont.style = "border-left: 3.5px solid var(--warningBG) !important; --circle-attach-color-var:var(--warningBG) !important;"
-                            submitHolder.html(`<button disabled class="custom-submit-modal"><i class="fa-solid fa-lock"></i> Locked</button>`)
-                        }
-                    }, 
-                    function () {
-                        uploadTask.snapshot.ref.getDownloadURL().then(function (downloadUrl) {
-                            document.getElementById('attach_url_'+id).disabled = true
-                            var att_url = downloadUrl
-                            attach_list[objIndex]['attach_url'] =  downloadUrl
-                            
-                            if(att_type == "attachment_image"){
-                                var att_preview_elmt = `<img class='img img-fluid mx-auto rounded mt-2' src='${downloadUrl}' alt='${downloadUrl}'>`
-                            } else if(att_type == "attachment_doc"){
-                                var att_preview_elmt = `
-                                    <embed class='document-grid mb-2 rounded' alt='${downloadUrl}' style='height: 450px;' src='${downloadUrl}'/>
-                                `;
-                            }
+            if (!allFilled) {
+                failedMsg("All document inputs must be filled before uploading")
+                return
+            }
 
-                            var preview_elmt = `
-                                <div class='collapse' id='collapsePreview-${id}'> 
-                                    <div class='container-fluid m-0 p-0'> 
-                                        ${att_preview_elmt}
-                                    </div>
-                                </div>
-                            `;
-                            document.getElementById('preview_holder_' + id).innerHTML = preview_elmt
-                            document.getElementById('attach_url_holder_'+id).value = downloadUrl
+            Swal.fire({
+                title: "Warning!",
+                text: "Are you sure want to upload this document to our apps?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Yes, Upload",
+                cancelButtonText: "Cancel"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    post_document("<?= $id ?>")
+                } else if (result.isDismissed) {
+                    $('#vehicle_document_button-holder').find('#clear_doc-button').remove()
+                    $('#vehicle_document_button-holder').find('#save_doc-button').remove()
+                    $("#doc_attachment-holder").empty()
+                    template_alert_container('doc_attachment-holder', 'no-data', "No document attached", null, '<i class="fa-solid fa-link"></i>', null)
+                }
+            });
+        })
 
-                            attach_list[objIndex]['id'] = id
-                            attach_list[objIndex]['attach_type'] = att_type
-                            attach_list[objIndex]['attach_name'] = att_name_val
-                            attach_list[objIndex]['attach_url'] = att_url
-                            validateFailedAtt()
+        const post_document = (id) => {
+            const fd = new FormData()
 
-                            var modifiedList = washAddMoreStatus(attach_list);
-                            document.getElementById('vehicle_document').value = JSON.stringify(modifiedList)
-                        })
+            let totalFiles = 0
+
+            $(".vehicle_document").each(function() {
+                const files = this.files
+                if (!files.length) return
+
+                totalFiles += files.length;
+                for (let i = 0; i < files.length; i++) {
+                    fd.append("vehicle_document[]", files[i])
+                    fd.append("vehicle_document_caption[]", $(this).closest('.vehicle_document-holder').find('.vehicle_document_caption').val())
+                }
+            });
+
+            if (totalFiles > 10) {
+                failedMsg("You can only upload up to 5 at one time")
+                return
+            }
+
+            $.ajax({
+                url: `/api/v1/vehicle/doc/${id}`,
+                type: 'POST',
+                processData: false,
+                contentType: false,
+                data: fd,
+                beforeSend: function (xhr) {
+                    Swal.showLoading()
+                    xhr.setRequestHeader("Accept", "application/json")
+                    xhr.setRequestHeader("Authorization", `Bearer ${token}`)
+                },
+                success: function (response) {
+                    Swal.close()
+                    Swal.fire({
+                        title: "Success!",
+                        text: response.message,
+                        icon: "success"
+                    }).then(() => {
+                        window.location.href = `/garage/detail/${id}`
                     })
-                } else {
-                    err_att = true;
-                    attach_list[objIndex]['is_add_more'] = true
-                    document.getElementById('attach_name_'+id).disabled = true
-                    add_att_btn.setAttribute("class","btn btn-add-att text-white disabled mb-2 text-white")
-                    add_att_btn.innerHTML = '<i class="fa-solid fa-lock"></i> Locked'
-
-                    document.getElementById('attach-failed-'+id).innerHTML = `Maximum file size is ${max} mb`
-                    var att_url = null
-                    if(error.message){
-                        att_cont.style = "border-left: 3.5px solid var(--warningBG) !important; --circle-attach-color-var:var(--warningBG) !important;"
-                        submitHolder.html(`<button disabled class="custom-submit-modal"><i class="fa-solid fa-lock"></i> Locked</button>`)
+                },
+                error: function (response) {
+                    Swal.close()
+                    if (response.status === 500) {
+                        generate_api_error(response, true)
+                    } else {
+                        failedMsg(response.status === 400 ? Object.values(response.responseJSON.message).flat().join('\n') : response.responseJSON.message)
                     }
                 }
-            } else if(att_type == "attachment_url" && att_dsbld != true) {
-                attach_list[objIndex]['is_add_more'] = true
-                var att_url = document.getElementById('attach_url_'+id).value.trim()
-            
-                if(att_url.length > 0){
-                    warningAttMsg = document.getElementById('attach-warning-'+id)
-                    attach_list[objIndex]['id'] = id
-                    attach_list[objIndex]['attach_type'] = att_type
-                    attach_list[objIndex]['attach_name'] = att_name_val
-                    attach_list[objIndex]['attach_url'] = att_url
-
-                    if(isValidURL(att_url)){
-                        att_cont.style = "border-left: 3.5px solid var(--successBG) !important; --circle-attach-color-var:var(--successBG) !important;"
-                        warningAttMsg.style = "color: var(--successBG) !important;"
-                        warningAttMsg.innerHTML = "URL is valid"
-                    } else {
-                        att_cont.style = "border-left: 3.5px solid var(--blueColor) !important; --circle-attach-color-var:var(--blueColor) !important;"
-                        warningAttMsg.style = "color: var(--blueColor) !important;"
-                        warningAttMsg.innerHTML = "URL isn't not valid!"
-                    }
-                    validateFailedAtt();
-                } else {
-                    warningAttMsg.innerHTML = ""
-                    att_cont.style = "border-left: 3.5px solid var(--shadowColor) !important; --circle-attach-color-var:var(--shadowColor) !important;";
-                }   
-            } else {
-                attach_list[objIndex]['id'] = id
-                attach_list[objIndex]['attach_type'] = att_type
-                attach_list[objIndex]['attach_name'] = att_name_val
-            }
-        } else {
-            var att_name_val = null
-            var att_url = null
+            })
         }
-
-        var modifiedList = washAddMoreStatus(attach_list)
-        document.getElementById('vehicle_document').value = JSON.stringify(modifiedList)
-    }
-
-    function getAttachmentGroupFun(index, val){
-        getAttachmentInput(index, val)
-        validateFailedAtt()
-    }
-
-    function validateFailedAtt(){
-        var found = false
-        attach_list.forEach(e => {
-            if(e.is_add_more == false){
-                found = true
-            }
-        });
-
-        if(!found){
-            add_att_btn.setAttribute("class","btn btn-add-att mb-2 text-white")
-            add_att_btn.innerHTML = `<i class="fa-solid fa-plus"></i> Locked`
-        } else {
-            add_att_btn.setAttribute("class","btn btn-add-att disabled mb-2 text-white")
-            add_att_btn.innerHTML = `<i class="fa-solid fa-lock"></i> Locked`
-        }
-    }
-
-    function deleteAttachmentForm(index){
-        let att_type = document.getElementById('attach_type_'+index).value
-        attach_list = removeAttachment(att_type, attach_list, index)
-        validateFailedAtt()
-
-        var modifiedList = washAddMoreStatus(attach_list)
-        document.getElementById('vehicle_document').value = JSON.stringify(attach_list)
-    }
+    })
 </script>

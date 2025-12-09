@@ -22,7 +22,8 @@
                 $('#sidebar').css({
                     width: "250px",
                     paddingInline: 'var(--spaceMD)',
-                    boxShadow: 'rgba(0, 0, 0, 0.5) 0px 7px 17.5px'
+                    boxShadow: 'rgba(0, 0, 0, 0.5) 0px 7px 17.5px',
+                    borderRight: '2px solid var(--secondaryColor)'
                 })
                 
                 if (width < 577) {
@@ -33,7 +34,8 @@
                 $('#sidebar').css({
                     width: "0",
                     paddingInline: '0',
-                    boxShadow: 'none'
+                    boxShadow: 'none',
+                    borderRight: '0'
                 })
                 if (width < 577) {
                     $('.navbar-collapse-mobile').css({display:'none',marginTop:0})   

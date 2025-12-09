@@ -29,13 +29,17 @@ class Commands extends Controller
 {
     private $module;
     private $max_size_file;
+    private $max_doc_size_file;
     private $allowed_file_type;
+    private $allowed_doc_file_type;
 
     public function __construct()
     {
         $this->module = "vehicle";
         $this->max_size_file = 5000000; // 10 Mb
+        $this->max_doc_size_file = 10000000; // 10 Mb
         $this->allowed_file_type = ['jpg','jpeg','gif','png'];
+        $this->allowed_doc_file_type = ['jpg','jpeg','gif','png','pdf'];
     }
 
     /**
@@ -420,6 +424,131 @@ class Commands extends Controller
                     ], Response::HTTP_NOT_FOUND);
                 }
             } 
+        } catch(\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => Generator::getMessageTemplate("unknown_error", null),
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
+     * @OA\POST(
+     *     path="/api/v1/vehicle/doc/{id}",
+     *     summary="Post vehicle document",
+     *     description="Add new document to vehicle. This request is using MySQL database and send Telegram Message.",
+     *     tags={"Vehicle"},
+     *     security={{"bearerAuth":{}}},
+     *     @OA\Response(
+     *         response=201,
+     *         description="Vehicle document create successfully",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="message", type="string", example="vehicle document create")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Validation failed",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             oneOf={
+     *                 @OA\Schema(
+     *                     @OA\Property(property="status", type="string", example="failed"),
+     *                     @OA\Property(property="message", type="string", example="The file size must be under 10 mb")
+     *                 ),
+     *             }
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="vehicle failed to fetched",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="failed"),
+     *             @OA\Property(property="message", type="string", example="vehicle not found")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal Server Error",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="error"),
+     *             @OA\Property(property="message", type="string", example="something wrong. please contact admin")
+     *         )
+     *     )
+     * )
+     */
+    public function postVehicleDoc(Request $request, $id)
+    {
+        try{
+            $user_id = $request->user()->id;
+            $vehicle = VehicleModel::where('id',$id)->where('created_by',$user_id)->first();
+            if($vehicle){
+                $vehicle_document = $vehicle->vehicle_document ?? [];
+                if ($request->hasFile('vehicle_document')) {
+                    foreach ($request->file('vehicle_document') as $idx => $file) {
+                        if ($file->isValid()) {
+                            $file_ext = $file->getClientOriginalExtension();
+
+                            // Validate file type
+                            if (!in_array($file_ext, $this->allowed_doc_file_type)) {
+                                return response()->json([
+                                    'status' => 'failed',
+                                    'message' => Generator::getMessageTemplate("custom", 'The file must be a '.implode(', ', $this->allowed_doc_file_type).' file type'),
+                                ], Response::HTTP_UNPROCESSABLE_ENTITY);
+                            }
+                            // Validate file size
+                            if ($file->getSize() > $this->max_doc_size_file) {
+                                return response()->json([
+                                    'status' => 'failed',
+                                    'message' => Generator::getMessageTemplate("custom", 'The file size must be under '.($this->max_doc_size_file/1000000).' Mb'),
+                                ], Response::HTTP_UNPROCESSABLE_ENTITY);
+                            }
+            
+                            // Helper: Upload vehicle document
+                            try {
+                                $user = UserModel::find($user_id);
+                                $vehicle_document_url = Firebase::uploadFile('vehicle_document', $user_id, $user->username, $file, $file_ext); 
+                                $vehicle_document[] = (object)[
+                                    'vehicle_document_url' => $vehicle_document_url,
+                                    'vehicle_document_caption' => $request->vehicle_document_caption[$idx]
+                                ];
+                            } catch (\Exception $e) {
+                                return response()->json([
+                                    'status' => 'error',
+                                    'message' => Generator::getMessageTemplate("unknown_error", null),
+                                ], Response::HTTP_INTERNAL_SERVER_ERROR);
+                            }
+                        }
+                    }
+                }
+                if(count($vehicle_document) === 0){
+                    $vehicle_document = null;
+                }
+
+                $rows = VehicleModel::updateVehicleById([
+                    'vehicle_document' => $vehicle_document,
+                ], $id, $user_id);
+
+                // Respond
+                if($rows){
+                    return response()->json([
+                        'status' => 'success',
+                        'message' => Generator::getMessageTemplate("custom", "vehicle document created"),
+                    ], Response::HTTP_CREATED);
+                } else {
+                    return response()->json([
+                        'status' => 'failed',
+                        'message' => Generator::getMessageTemplate("not_found", $this->module),
+                    ], Response::HTTP_NOT_FOUND);
+                }
+            } else {
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => Generator::getMessageTemplate("not_found", $this->module),
+                ], Response::HTTP_NOT_FOUND);
+            }
         } catch(\Exception $e) {
             return response()->json([
                 'status' => 'error',

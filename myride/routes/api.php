@@ -69,6 +69,7 @@ Route::post('/v1/logout', [QueryAuthApi::class, 'logout'])->middleware(['auth:sa
 
 Route::prefix('/v1/vehicle')->middleware(['auth:sanctum'])->group(function () {
     Route::post('/', [CommandsVehicleApi::class, 'postVehicle']);
+    Route::post('/doc/{id}', [CommandsVehicleApi::class, 'postVehicleDoc']);
     Route::get('/header', [QueriesVehicleApi::class, 'getAllVehicleHeader']);
     Route::get('/name', [QueriesVehicleApi::class, 'getAllVehicleName']);
     Route::get('/fuel', [QueriesVehicleApi::class, 'getAllVehicleFuel']);
