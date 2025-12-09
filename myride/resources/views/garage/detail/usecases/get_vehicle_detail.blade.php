@@ -103,6 +103,35 @@
                         <img class="img img-fluid" alt="${detail.vehicle_img_url}" src="${detail.vehicle_img_url}">
                     </div>
                 `)
+                if(detail.vehicle_document){
+                    let docPreviewHolder = ''
+
+                    detail.vehicle_document.forEach((dt, i) => {
+                        let preview = ""
+
+                        if (dt.vehicle_document_type === "image") {
+                            preview = `<img src="${dt.vehicle_document_url}" class="img img-fluid my-2"style="max-width: 200px;">`
+                        } else if (dt.vehicle_document_type === "pdf") {
+                            preview = `<iframe src="${dt.vehicle_document_url}" style="width: 200px; height: 200px;" class="my-2"></iframe>`
+                        } 
+
+                        docPreviewHolder += `
+                            <div class="col-xl-6 col-lg-12 col-md-6 col-sm-12">
+                                <div class="container-fluid my-3 text-center">
+                                    ${preview}
+                                    <p class="mt-1 mb-0"><b>Caption:</b> ${dt.vehicle_document_caption ?? "-"}</p>
+                                </div>
+                            </div>
+                        `
+                    });
+
+                    $("#vehicle_document_url-holder").html(`
+                        <div class="container-fluid">
+                            <h2>Document</h2><hr>
+                            <div class="row">${docPreviewHolder}</div>
+                        </div>
+                    `);
+                }
 
                 if(detail.vehicle_other_img_url){
                     if(detail.vehicle_other_img_url.length === 1){

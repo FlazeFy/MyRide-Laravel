@@ -512,12 +512,13 @@ class Commands extends Controller
                                 $vehicle_document_url = Firebase::uploadFile('vehicle_document', $user_id, $user->username, $file, $file_ext); 
                                 $vehicle_document[] = (object)[
                                     'vehicle_document_url' => $vehicle_document_url,
-                                    'vehicle_document_caption' => $request->vehicle_document_caption[$idx]
+                                    'vehicle_document_caption' => $request->vehicle_document_caption[$idx],
+                                    'vehicle_document_type' => $file_ext === "pdf" ? "pdf" : "image"
                                 ];
                             } catch (\Exception $e) {
                                 return response()->json([
                                     'status' => 'error',
-                                    'message' => Generator::getMessageTemplate("unknown_error", null),
+                                    'message' => $e->getMessage(),
                                 ], Response::HTTP_INTERNAL_SERVER_ERROR);
                             }
                         }

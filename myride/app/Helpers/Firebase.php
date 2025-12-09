@@ -4,6 +4,7 @@ use App\Helpers\Generator;
 use Kreait\Firebase\Factory;
 use Illuminate\Support\Facades\Storage;
 use Kreait\Firebase\ServiceAccount;
+use DateTime;
 
 class Firebase
 {
@@ -34,14 +35,22 @@ class Firebase
         $object = $bucket->upload($uploadedFile, [
             'name' => $ctx.'/' . $user_id . '_' . $username . '/' . $id . '.' . $file_ext,
             'predefinedAcl' => 'publicRead',
-            'contentType' => $file_ext,
+            // 'contentType' => $file_ext,
+            'metadata' => [
+                'contentType' => $file->getMimeType(),       
+                'contentDisposition' => 'inline',            
+            ]
         ]);
 
         // Uploaded link
-        $object->update([
-            'acl' => [],
-        ]);                
-        $fileUrl = $object->info()['mediaLink']; 
+        $object->update(['acl' => [],]);                
+        $fileUrl = $object->signedUrl(
+            new \DateTime('+10 year'),
+            [
+                'version' => 'v2',
+                'responseDisposition' => 'inline'
+            ]
+        );
 
         return $fileUrl;
     }

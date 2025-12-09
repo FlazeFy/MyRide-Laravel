@@ -32,6 +32,7 @@
                 <div class="container-fluid">
                     @include('garage.detail.usecases.get_vehicle_wash_history')
                 </div>
+                <div id="vehicle_document_url-holder"></div>
             </div>
             <div class="col-lg-6 col-md-12 col-sm-12 col-12">
                 <div class="container-fluid">
