@@ -324,6 +324,47 @@ class Commands extends Controller
                     }
                 }
 
+                $vehicle_other_img_url = [];
+                if ($request->hasFile('vehicle_other_img_url')) {
+                    foreach ($request->file('vehicle_other_img_url') as $file) {
+                        if ($file->isValid()) {
+                            $file_ext = $file->getClientOriginalExtension();
+
+                            // Validate file type
+                            if (!in_array($file_ext, $this->allowed_file_type)) {
+                                return response()->json([
+                                    'status' => 'failed',
+                                    'message' => Generator::getMessageTemplate("custom", 'The file must be a '.implode(', ', $this->allowed_file_type).' file type'),
+                                ], Response::HTTP_UNPROCESSABLE_ENTITY);
+                            }
+                            // Validate file size
+                            if ($file->getSize() > $this->max_size_file) {
+                                return response()->json([
+                                    'status' => 'failed',
+                                    'message' => Generator::getMessageTemplate("custom", 'The file size must be under '.($this->max_size_file/1000000).' Mb'),
+                                ], Response::HTTP_UNPROCESSABLE_ENTITY);
+                            }
+            
+                            // Helper: Upload vehicle image
+                            try {
+                                $user = UserModel::find($user_id);
+                                $vehicle_image = Firebase::uploadFile('vehicle', $user_id, $user->username, $file, $file_ext); 
+                                $vehicle_other_img_url[] = (object)[
+                                    'vehicle_image_url' => $vehicle_image
+                                ];
+                            } catch (\Exception $e) {
+                                return response()->json([
+                                    'status' => 'error',
+                                    'message' => Generator::getMessageTemplate("unknown_error", null),
+                                ], Response::HTTP_INTERNAL_SERVER_ERROR);
+                            }
+                        }
+                    }
+                }
+                if(count($vehicle_other_img_url) === 0){
+                    $vehicle_other_img_url = null;
+                }
+
                 $rows = VehicleModel::createVehicle([
                     'vehicle_name' => $vehicle_name,
                     'vehicle_merk' => $request->vehicle_merk,
@@ -339,6 +380,7 @@ class Commands extends Controller
                     'vehicle_fuel_capacity' => $request->vehicle_fuel_capacity,
                     'vehicle_default_fuel' => $request->vehicle_default_fuel,
                     'vehicle_img_url' => $vehicle_image,
+                    'vehicle_other_img_url' => $vehicle_other_img_url,
                     'vehicle_color' => $request->vehicle_color,
                     'vehicle_transmission' => $request->vehicle_transmission,
                     'vehicle_capacity' => $request->vehicle_capacity,

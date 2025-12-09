@@ -1,17 +1,11 @@
 <form id="form-add-vehicle">
-    <div class="d-flex justify-content-between">
-        <h2>Add Vehicle</h2>
-        <div class="d-flex flex-wrap gap-2" id="vehicle_image_button-holder">
-            <a class="btn btn-primary" id="add_image-button"><i class="fa-solid fa-image"></i><span class="d-none d-md-inline"> Add Image</span></a>
-        </div>
-    </div>
+    <h2>Add Vehicle</h2>
     <div class="row">
         <div class="col-md-6 col-sm-12">
-
+            @include('garage.add.usecases.select_image_collection')
         </div>
         <div class="col-md-6 col-sm-12">
-            <label>Vehicle Image</label>
-            <div id="vehicle_img-holder"></div>
+            @include('garage.add.usecases.select_image_main')
         </div>
         <div class="col-xl-4 col-lg-4 col-md-8 col-sm-7 col-12">
             <label>Vehicle Name</label>
@@ -94,61 +88,6 @@
 </form>
 
 <script>
-    template_alert_container('vehicle_img-holder', 'no-data', "No image selected", null, '<i class="fa-solid fa-image"></i>', null)
-
-    $(document).ready(function() {
-        $(document).on('click', '#clear_attachment-button', function(){
-            $('#vehicle_image_button-holder').find(this).remove()
-            template_alert_container('vehicle_img-holder', 'no-data', "No image selected", null, '<i class="fa-solid fa-image"></i>', null)
-        })
-
-        $(document).on('click', '#add_image-button', function () {
-            $("#vehicle_img-holder .alert-container").remove()
-
-            if ($("#vehicle_img-holder .vehicle-image-holder").length > 0) {
-                Swal.fire({
-                    title: "Error!",
-                    text: "You can only add one image as attachment",
-                    icon: "error"
-                })
-                return
-            }
-            if($('#vehicle_image_button-holder').find('#clear_attachment-button').length === 0){
-                $('#vehicle_image_button-holder').prepend(`
-                    <a class="btn btn-danger" id="clear_attachment-button"><i class="fa-solid fa-circle-xmark"></i><span class="d-none d-md-inline"> Clear</span></a>
-                `)
-            }
-
-            $("#vehicle_img-holder").append(`
-                <div class="container-fluid vehicle-image-holder mt-2">
-                    <input type="file" id="vehicle_image" accept="image/jpeg,image/png,image/gif"><br>
-                    <img id="image-preview" class="mt-2 d-none" style="max-width: 200px;">
-                </div>
-            `)
-        })
-
-        $(document).on('change', '#vehicle_image', function(e) {
-            const file = e.target.files[0]
-            if (!file) return
-
-            const maxSize = 5 * 1024 * 1024
-
-            if (file.size > maxSize) {
-                failedMsg('File too large. Maximum file size is 5 MB')
-
-                $(this).val('')
-                $('#image-preview').addClass('d-none').attr('src', '')
-                return
-            }
-
-            const reader = new FileReader()
-            reader.onload = function (event) {
-                $('#image-preview').attr('src', event.target.result).removeClass('d-none')
-            }
-            reader.readAsDataURL(file)
-        })
-    })
-
     $(document).on('click','#submit-add-vehicle-btn', function(){
         post_vehicle()
     })
@@ -188,6 +127,23 @@
 
         const img = $("#vehicle_image")[0] ? $("#vehicle_image")[0].files[0] : null
         fd.append("vehicle_image", img ? img : null)
+
+        let totalFiles = 0
+
+        $(".vehicle_other_images").each(function() {
+            const files = this.files
+            if (!files.length) return
+
+            totalFiles += files.length;
+            for (let i = 0; i < files.length; i++) {
+                fd.append("vehicle_other_img_url[]", files[i])
+            }
+        });
+
+        if (totalFiles > 10) {
+            failedMsg("You can only upload up to 10 other images")
+            return
+        }
 
         $.ajax({
             url: `/api/v1/vehicle`,
