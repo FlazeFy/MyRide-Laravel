@@ -348,9 +348,9 @@ class Commands extends Controller
                             // Helper: Upload vehicle image
                             try {
                                 $user = UserModel::find($user_id);
-                                $vehicle_image = Firebase::uploadFile('vehicle', $user_id, $user->username, $file, $file_ext); 
+                                $vehicle_img_url = Firebase::uploadFile('vehicle', $user_id, $user->username, $file, $file_ext); 
                                 $vehicle_other_img_url[] = (object)[
-                                    'vehicle_image_url' => $vehicle_image
+                                    'vehicle_img_url' => $vehicle_img_url
                                 ];
                             } catch (\Exception $e) {
                                 return response()->json([

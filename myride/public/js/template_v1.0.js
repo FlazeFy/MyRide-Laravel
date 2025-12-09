@@ -1,7 +1,7 @@
 const template_alert_container = (target, type, msg, btn_title, icon, href) => {
     $(`#${target}`).html(`
         <div class="container-fluid alert-container py-2 px-3" style="${type == 'no-data'? 'background-color:rgba(245, 93, 134, 0.2);':''}">
-        <div class="d-flex justify-content-start text-start align-items-center flex-wrap gap-4">
+            <div class="d-flex justify-content-start text-start align-items-center flex-wrap gap-4">
                 <p class="mb-0" style="font-size: 60px;">${icon}</p>
                 <div>
                     <h6>${msg}</h6>

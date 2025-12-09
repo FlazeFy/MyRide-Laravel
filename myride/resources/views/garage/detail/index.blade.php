@@ -25,6 +25,7 @@
                     @include('garage.detail.usecases.get_vehicle_detail')
                 </div>
                 <div id="vehicle_img_url-holder"></div>
+                <div id="vehicle_img_collection_url-holder"></div>
                 <div class="container-fluid">
                     @include('garage.detail.usecases.get_vehicle_driver')
                 </div>

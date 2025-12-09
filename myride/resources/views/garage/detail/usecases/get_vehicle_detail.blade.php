@@ -1,3 +1,15 @@
+<style>
+    .carousel-indicators button {
+        width: var(--spaceXLG) !important;
+        height: var(--spaceMini) !important;
+        border-radius: 100%;
+        background: var(--blueColor) !important;
+    }
+    .carousel-indicators button.active {
+        background: var(--secondaryBlueColor) !important;
+    }
+</style>
+
 <h1 id="vehicle_name"></h1><hr>
 <div class="d-flex justify-content-between align-items-center mb-4">
     <div class="d-flex flex-wrap gap-2 align-items-center">
@@ -91,6 +103,49 @@
                         <img class="img img-fluid" alt="${detail.vehicle_img_url}" src="${detail.vehicle_img_url}">
                     </div>
                 `)
+
+                if(detail.vehicle_other_img_url){
+                    if(detail.vehicle_other_img_url.length === 1){
+                        $('#vehicle_img_collection_url-holder').html(`
+                            <div class="container-fluid">
+                                <h2>Others Image</h2><hr>
+                                <img class="img img-fluid" alt="${detail.vehicle_other_img_url[0].vehicle_img_url}" src="${detail.vehicle_other_img_url[0].vehicle_img_url}">
+                            </div>
+                        `)
+                    } else {
+                        let carouselInner = ''
+                        let carouselIndicator = ''
+
+                        detail.vehicle_other_img_url.forEach((dt, idx) => {
+                            carouselInner += `
+                                <div class="carousel-item ${idx === 0 ? 'active' :''}">
+                                    <img src="${dt.vehicle_img_url}" alt="${dt.vehicle_img_url}" class="d-block w-100">
+                                </div>
+                            `
+                            carouselIndicator += `<button type="button" data-bs-target="#carousel_other_image" data-bs-slide-to="${idx}" class="active" aria-current="true" aria-label="Slide ${idx+1}"></button>`
+                        });
+
+                        $('#vehicle_img_collection_url-holder').html(`
+                            <div class="container-fluid">
+                                <h2>Others Image</h2><hr>
+                                <div id="carousel_other_image" class="carousel slide position-relative mb-4" data-bs-ride="carousel">
+                                    <div class="carousel-indicators position-absolute" style="bottom: -50px;">${carouselIndicator}</div>
+                                    <div class="carousel-inner">${carouselInner}</div>
+                                    <div class="carousel-button-holder">
+                                        <button class="btn btn-primary carousel-control-prev ms-2" type="button" data-bs-target="#carousel_other_image" data-bs-slide="prev">
+                                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                            <span class="visually-hidden">Previous</span>
+                                        </button>
+                                        <button class="btn btn-primary carousel-control-next" type="button" data-bs-target="#carousel_other_image" data-bs-slide="next">
+                                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                            <span class="visually-hidden">Next</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        `)
+                    }
+                }
 
                 trip_data ? build_layout_trip(trip_data) : template_alert_container(`<?= $carouselId ?>`, 'no-data', "No trip found", 'add a trip', '<i class="fa-solid fa-luggage"></i>','/trip/add')
 
