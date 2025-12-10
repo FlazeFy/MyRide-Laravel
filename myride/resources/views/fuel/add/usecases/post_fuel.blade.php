@@ -45,9 +45,10 @@
                 </div>
             </div>
             <hr>
-            <label>Fuel Bill</label>
-            <input type="file">
-            <a class="btn btn-success rounded-pill py-3 w-100 mt-3" id="submit-add-fuel-btn"><i class="fa-solid fa-floppy-disk"></i> Save Fuel</a>
+            @include('fuel.add.usecases.select_fuel_bill')
+            <div class="d-grid d-md-inline-block">
+                <a class="btn btn-success rounded-pill py-3 w-100 w-md-auto mt-3" id="submit-add-fuel-btn"><i class="fa-solid fa-floppy-disk"></i> Save Fuel</a>
+            </div>
         </div>
     </div>
 </form>
@@ -91,21 +92,32 @@
         const fuel_brand = $('#fuel_brand_holder').val()
         const fuel_type = $('#fuel_type_holder').val()
 
+        if (vehicle_id === "-" || fuel_brand === "-") {
+            failedMsg('create fuel : you must select an item')
+            return
+        }
+
+        const fd = new FormData()
+
+        fd.append("vehicle_id", vehicle_id)
+        fd.append("fuel_brand", fuel_brand)
+        fd.append("fuel_type", fuel_type === "-" ? null : fuel_type)
+        fd.append("fuel_ron", $("#fuel_ron").val())
+        fd.append("fuel_volume", $('#fuel_volume').val())
+        fd.append("fuel_price_total", $('#fuel_price_total').val())
+
+        const img = $("#fuel_bill")[0] ? $("#fuel_bill")[0].files[0] : null
+        fd.append("fuel_bill", img ? img : null)
+
         if(vehicle_id !== "-" && fuel_brand !== "-"){
-            Swal.showLoading();
             $.ajax({
                 url: `/api/v1/fuel`,
                 type: 'POST',
-                contentType: "application/json",
-                data: JSON.stringify({
-                    vehicle_id: vehicle_id,
-                    fuel_brand: fuel_brand,
-                    fuel_type: fuel_type === "-" ? null : fuel_type,
-                    fuel_ron: $("#fuel_ron").val(),
-                    fuel_volume: $("#fuel_volume").val(),
-                    fuel_price_total: $("#fuel_price_total").val()
-                }),
+                processData: false,
+                contentType: false,
+                data: fd,
                 beforeSend: function (xhr) {
+                    Swal.showLoading()
                     xhr.setRequestHeader("Accept", "application/json")
                     xhr.setRequestHeader("Authorization", `Bearer ${token}`)
                 },

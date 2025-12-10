@@ -8,16 +8,23 @@ use Illuminate\Http\Response;
 // Model
 use App\Models\FuelModel;
 use App\Models\AdminModel;
+use App\Models\UserModel;
 // Helper
 use App\Helpers\Generator;
 use App\Helpers\Validation;
+use App\Helpers\Firebase;
 
 class Commands extends Controller
 {
     private $module;
+    private $max_size_file;
+    private $allowed_file_type;
+
     public function __construct()
     {
         $this->module = "fuel";
+        $this->max_size_file = 5000000; // 5 Mb
+        $this->allowed_file_type = ['jpg','jpeg','gif','png'];
     }
 
     /**
@@ -152,6 +159,39 @@ class Commands extends Controller
                     'message' => $validator->errors()
                 ], Response::HTTP_BAD_REQUEST);
             } else {
+                $fuel_bill = null;
+                if ($request->hasFile('fuel_bill')) {
+                    $file = $request->file('fuel_bill');
+                    if ($file->isValid()) {
+                        $file_ext = $file->getClientOriginalExtension();
+                        // Validate file type
+                        if (!in_array($file_ext, $this->allowed_file_type)) {
+                            return response()->json([
+                                'status' => 'failed',
+                                'message' => Generator::getMessageTemplate("custom", 'The file must be a '.implode(', ', $this->allowed_file_type).' file type'),
+                            ], Response::HTTP_UNPROCESSABLE_ENTITY);
+                        }
+                        // Validate file size
+                        if ($file->getSize() > $this->max_size_file) {
+                            return response()->json([
+                                'status' => 'failed',
+                                'message' => Generator::getMessageTemplate("custom", 'The file size must be under '.($this->max_size_file/1000000).' Mb'),
+                            ], Response::HTTP_UNPROCESSABLE_ENTITY);
+                        }
+        
+                        // Helper: Upload fuel bill
+                        try {
+                            $user = UserModel::find($user_id);
+                            $fuel_bill = Firebase::uploadFile('fuel', $user_id, $user->username, $file, $file_ext); 
+                        } catch (\Exception $e) {
+                            return response()->json([
+                                'status' => 'error',
+                                'message' => Generator::getMessageTemplate("unknown_error", null),
+                            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+                        }
+                    }
+                }
+
                 $data = [
                     'vehicle_id' => $request->vehicle_id, 
                     'fuel_volume' => $request->fuel_volume,
@@ -159,7 +199,7 @@ class Commands extends Controller
                     'fuel_brand' => $request->fuel_brand, 
                     'fuel_type' => $request->fuel_type, 
                     'fuel_ron' => $request->fuel_ron, 
-                    'fuel_bill' => null
+                    'fuel_bill' => $fuel_bill
                 ];
 
                 $rows = FuelModel::createFuel($data, $user_id);

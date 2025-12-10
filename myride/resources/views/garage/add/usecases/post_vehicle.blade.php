@@ -83,7 +83,7 @@
         </div>
     </div>
     <div class="d-grid d-md-inline-block">
-        <a class="btn btn-success rounded-pill w-100 mt-3" id="submit-add-vehicle-btn"><i class="fa-solid fa-floppy-disk"></i> Save Vehicle</a>
+        <a class="btn btn-success rounded-pill w-100 w-md-auto mt-3" id="submit-add-vehicle-btn"><i class="fa-solid fa-floppy-disk"></i> Save Vehicle</a>
     </div>
 </form>
 

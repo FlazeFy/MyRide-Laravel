@@ -36,7 +36,7 @@ class Commands extends Controller
     public function __construct()
     {
         $this->module = "vehicle";
-        $this->max_size_file = 5000000; // 10 Mb
+        $this->max_size_file = 5000000; // 5 Mb
         $this->max_doc_size_file = 10000000; // 10 Mb
         $this->allowed_file_type = ['jpg','jpeg','gif','png'];
         $this->allowed_doc_file_type = ['jpg','jpeg','gif','png','pdf'];

@@ -6,7 +6,7 @@
         </a>
     </div>
 </div>
-<div id="vehicle_img_collection-holder" class="row"></div>
+<div id="vehicle_img_collection-holder" class="row mx-1"></div>
 
 <script>
     template_alert_container('vehicle_img_collection-holder', 'no-data', "No image selected", null, '<i class="fa-solid fa-image"></i>', null)
