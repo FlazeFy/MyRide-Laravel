@@ -85,10 +85,18 @@ class Commands extends Controller
                 $user_id = null;
             }
 
+            $fuel = FuelModel::find($id);
             $rows = FuelModel::hardDeleteFuelById($id, $user_id);
             if($rows > 0){
                 // Delete Firebase Uploaded Image
-                // ....
+                if($fuel->fuel_bill){
+                    if(!Firebase::deleteFile($fuel->fuel_bill)){
+                        return response()->json([
+                            'status' => 'failed',
+                            'message' => Generator::getMessageTemplate("not_found", 'failed to delete fuel bill'),
+                        ], Response::HTTP_NOT_FOUND);
+                    }
+                }
                 
                 return response()->json([
                     'status' => 'success',

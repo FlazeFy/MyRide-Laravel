@@ -71,7 +71,22 @@
                             <td>${getDateToContext(dt.created_at,'calendar')}</td>
                             <td>
                                 <div class='d-flex flex-wrap gap-2'>
-                                    ${dt.fuel_bill != null ? `<a class="btn btn-primary" style="width:50px;"><i class="fa-solid fa-receipt"></i></a>` : ""}
+                                    ${dt.fuel_bill != null ? `
+                                        <a class="btn btn-primary" style="width:50px;" data-bs-target="#fuel_bill_${dt.id}-modal" data-bs-toggle="modal"><i class="fa-solid fa-receipt"></i></a>
+                                        <div class="modal fade" id="fuel_bill_${dt.id}-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title fw-bold">Fuel Bill</h5>
+                                                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <img class="img img-fluid" src="${dt.fuel_bill}" alt="${dt.fuel_bill}">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ` : ""}
                                     <a class="btn btn-danger btn-delete" style="width:50px;" data-url="/api/v1/fuel/destroy/${dt.id}" data-context="Fuel"><i class="fa-solid fa-trash"></i></a>
                                     <a class="btn btn-warning btn-update" style="width:50px;" data-vehicle-plate-number="${dt.vehicle_plate_number}" data-id="${dt.id}"
                                         data-fuel-type="${dt.fuel_type}" data-fuel-brand="${dt.fuel_brand}" data-fuel-volume="${dt.fuel_volume}" data-fuel-price-total="${dt.fuel_price_total}" data-fuel-ron="${dt.fuel_ron}"><i class="fa-solid fa-pen-to-square"></i></a>

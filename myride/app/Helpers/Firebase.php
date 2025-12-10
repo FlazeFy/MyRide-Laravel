@@ -59,22 +59,33 @@ class Firebase
         self::init();
         $storage = self::$factory->createStorage();
         $bucket = $storage->getBucket();
-
         $parsedUrl = parse_url($url);
+    
         if (!isset($parsedUrl['path'])) {
-            return false; 
+            return false;
         }
-
-        $path = urldecode(substr($parsedUrl['path'], strpos($parsedUrl['path'], '/o/') + 3));
+    
+        $bucketName = $bucket->name(); 
+        $pos = strpos($parsedUrl['path'], $bucketName);
+        if ($pos === false) {
+            return false;
+        }
+    
+        $path = substr($parsedUrl['path'], $pos + strlen($bucketName) + 1);
+        if (isset($parsedUrl['query'])) {
+            $path = explode('?', $path)[0];
+        }
+    
+        $path = urldecode($path);
         $object = $bucket->object($path);
-
+    
         if ($object->exists()) {
             $object->delete();
-            return true; 
+            return true;
         }
-
-        return false; 
-    }
+    
+        return false;
+    }    
 
     public function insert_command($path, $data)
     {

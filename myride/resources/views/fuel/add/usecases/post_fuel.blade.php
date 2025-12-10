@@ -29,13 +29,11 @@
                     <label>Fuel Type</label>
                     <select class="form-select" name="fuel_type" id="fuel_type_holder" aria-label="Default select example"></select>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-3 col-md-3 col-sm-6">
+                <div class="col-lg-3 col-md-3 col-sm-6 col-6">
                     <label>Fuel RON</label>
                     <input class="form-control" name="fuel_ron" id="fuel_ron">
                 </div>
-                <div class="col-lg-3 col-md-3 col-sm-6">
+                <div class="col-lg-3 col-md-3 col-sm-6 col-6">
                     <label>Volume (L)</label>
                     <input class="form-control" name="fuel_volume" id="fuel_volume" type="number" min="1" value="1">
                 </div>
