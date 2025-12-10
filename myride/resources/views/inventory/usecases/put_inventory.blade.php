@@ -27,16 +27,17 @@
 </div>
 
 <script>
-    $(document).on('click','.btn-update',function(){
+    $(document).on('click','.btn-update',async function(){
         callModal('update-modal')
-        get_vehicle_name_opt(token)
-        get_context_opt('inventory_category,inventory_storage',token)
+        await get_vehicle_name_opt(token)
+        await get_context_opt('inventory_category,inventory_storage',token)
+        const vehicle_plate_number = $(this).data('vehicle-plate-number')
 
         $('#vehicle_holder option').each(function () {
             const optionText = $(this).text().trim()
             const optionPrefix = optionText.split(' - ')[0].trim()
 
-            if (optionPrefix === $(this).data('vehicle-plate-number')) {
+            if (optionPrefix === vehicle_plate_number) {
                 $('#vehicle_holder').val($(this).val())
                 return false
             }

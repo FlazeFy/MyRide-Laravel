@@ -83,8 +83,10 @@
     }
     set_checklist_holder()
 
-    get_vehicle_name_opt(token)
-    get_context_opt('wash_by',token)
+    ;(async () => {
+        await get_vehicle_name_opt(token)
+        await get_context_opt('wash_by',token)
+    })()
 
     const post_wash = () => {
         const vehicle_id = $('#vehicle_holder').val()

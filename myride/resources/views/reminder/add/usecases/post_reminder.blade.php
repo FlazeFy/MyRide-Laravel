@@ -193,8 +193,10 @@
         })
     })
 
-    get_vehicle_name_opt(token)
-    get_context_opt('reminder_context',token)
+    ;(async () => {
+        await get_vehicle_name_opt(token)
+        await get_context_opt('reminder_context',token)
+    })()
 
     const post_reminder = () => {
         const remindAt = $('#remind_at').val()

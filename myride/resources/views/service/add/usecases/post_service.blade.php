@@ -55,8 +55,10 @@
         const val = $(this).val()
     })
 
-    get_vehicle_name_opt(token)
-    get_context_opt('service_category,service_type',token)
+    ;(async () => {
+        await get_vehicle_name_opt(token)
+        await get_context_opt('service_category,service_type',token)
+    })()
 
     const post_service = () => {
         const vehicle_id = $('#vehicle_holder').val()

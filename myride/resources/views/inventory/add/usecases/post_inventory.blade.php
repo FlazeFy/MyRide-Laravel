@@ -62,8 +62,10 @@
         const val = $(this).val()
     })
 
-    get_vehicle_name_opt(token)
-    get_context_opt('inventory_category,inventory_storage',token)
+    ;(async () => {
+        await get_vehicle_name_opt(token)
+        await get_context_opt('inventory_category,inventory_storage',token)
+    })()
 
     const post_inventory = () => {
         const vehicle_id = $('#vehicle_holder').val()

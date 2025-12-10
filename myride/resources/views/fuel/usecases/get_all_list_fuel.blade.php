@@ -68,9 +68,7 @@
                                     :''
                                 }
                             </td>
-                            <td class="text-start">
-                                <p class="mb-0">${getDateToContext(dt.created_at,'calendar')}</p>
-                            </td>
+                            <td>${getDateToContext(dt.created_at,'calendar')}</td>
                             <td>
                                 <div class='d-flex flex-wrap gap-2'>
                                     ${dt.fuel_bill != null ? `<a class="btn btn-primary" style="width:50px;"><i class="fa-solid fa-receipt"></i></a>` : ""}

@@ -161,7 +161,9 @@
         });
     }
 
-    get_vehicle_name_opt(token)
-    get_driver_name_opt(token)
-    get_context_opt('trip_category',token)
+    ;(async () => {
+        await get_vehicle_name_opt(token)
+        get_driver_name_opt(token)
+        await get_context_opt('trip_category',token)
+    })()
 </script>

@@ -62,10 +62,12 @@
 </div>
 
 <script>
-    $(document).on('click','.btn-update',function(){
+    $(document).on('click','.btn-update',async function(){
         callModal('update-modal')
-        get_vehicle_name_opt(token)
-        get_context_opt('trip_category',token)
+
+        await get_vehicle_name_opt(token)
+        await get_context_opt('trip_category',token)
+
         const vehicle_plate_number = $(this).data('vehicle-plate-number')
 
         $('#vehicle_holder option').each(function () {

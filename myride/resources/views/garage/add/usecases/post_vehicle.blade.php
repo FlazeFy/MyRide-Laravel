@@ -95,7 +95,9 @@
         const val = $(this).val()
     })
 
-    get_context_opt('vehicle_type,vehicle_transmission,vehicle_status,vehicle_fuel_status,vehicle_category,vehicle_default_fuel',token)
+    ;(async () => {
+        await get_context_opt('vehicle_type,vehicle_transmission,vehicle_status,vehicle_fuel_status,vehicle_category,vehicle_default_fuel',token)
+    })()
 
     const post_vehicle = () => {
         const vehicle_id = $('#vehicle_holder').val()

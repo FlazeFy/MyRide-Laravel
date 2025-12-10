@@ -63,9 +63,9 @@
             get_vehicle_last_fuel(id)
         }
     })
-    $(document).on('change','#fuel_brand_holder', function(){
+    $(document).on('change','#fuel_brand_holder', async function(){
         const val = $(this).val()
-        get_context_opt(`fuel_type_${val}`)
+        await get_context_opt(`fuel_type_${val}`)
     })
 
     const init_vehicle_page = async (token) => {
@@ -82,7 +82,9 @@
         }
     }
     init_vehicle_page(token)
-    get_context_opt('fuel_brand',token)
+    ;(async () => {
+        await get_context_opt('fuel_brand',token)
+    })()
 
     const post_fuel = () => {
         const vehicle_id = $('#vehicle_holder').val()

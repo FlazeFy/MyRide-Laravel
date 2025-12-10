@@ -43,10 +43,10 @@
 </div>
 
 <script>
-    $(document).on('click','.btn-update',function(){
+    $(document).on('click','.btn-update',async function(){
         callModal('update-modal')
-        get_vehicle_name_opt(token)
-        get_context_opt('fuel_type,fuel_brand',token)
+        await get_vehicle_name_opt(token)
+        await get_context_opt('fuel_type,fuel_brand',token)
         const vehicle_plate_number = $(this).data('vehicle-plate-number')
 
         $('#vehicle_holder option').each(function () {
@@ -64,12 +64,12 @@
         $('#fuel_type_holder').val($(this).data('fuel-type'))
         $('#fuel_price_total').val($(this).data('fuel-price-total'))
         $('#fuel_volume').val($(this).data('fuel-volume'))
-        get_context_opt(`fuel_type_${$(this).data('fuel-brand')}`,token)
+        await get_context_opt(`fuel_type_${$(this).data('fuel-brand')}`,token)
     })
 
-    $(document).on('change','#fuel_brand_holder', function(){
+    $(document).on('change','#fuel_brand_holder', async function(){
         const val = $(this).val()
-        get_context_opt(`fuel_type_${val}`,token)
+        await get_context_opt(`fuel_type_${val}`,token)
     })
 
     $(document).on('click','#submit_update-btn', function(){

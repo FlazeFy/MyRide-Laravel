@@ -1,61 +1,75 @@
 const get_vehicle_name_opt = (token) => {
-    Swal.showLoading()
-    const ctx = 'vehicle_name_temp'
-    const ctx_holder = 'vehicle_holder'
+    return new Promise((resolve, reject) => {
+        Swal.showLoading()
 
-    const generate_vehicle_list = (holder,data) => {
-        $(`#${holder}`).empty().append(`<option selected>-</option>`)
-        data.forEach(el => {
-            $(`#${holder}`).append(`<option value="${el.id}">${el.vehicle_plate_number} - ${el.vehicle_name}</option>`)
-        });
+        const ctx = 'vehicle_name_temp'
+        const ctx_holder = 'vehicle_holder'
 
-        let params = new URLSearchParams(window.location.search)
-        let vehicle_id = params.get('vehicle_id')
-        if(vehicle_id){
-            $(`#${holder}`).val(vehicle_id)
-        }
-    }
+        const generate_vehicle_list = (holder, data) => {
+            $(`#${holder}`).empty().append(`<option selected>-</option>`)
+            data.forEach(el => {
+                $(`#${holder}`).append(
+                    `<option value="${el.id}">${el.vehicle_plate_number} - ${el.vehicle_name}</option>`
+                )
+            })
 
-    const fetchData = () => {
-        $.ajax({
-            url: `/api/v1/vehicle/name`,
-            type: 'GET',
-            beforeSend: function (xhr) {
-                xhr.setRequestHeader("Accept", "application/json")
-                xhr.setRequestHeader("Authorization", `Bearer ${token}`)    
-            },
-            success: function(response) {
-                Swal.close()
-                const data = response.data
-                localStorage.setItem(ctx,JSON.stringify(data))
-                localStorage.setItem(`last-hit-${ctx}`,Date.now())
-                generate_vehicle_list(ctx_holder,data)
-            },
-            error: function(response, jqXHR, textStatus, errorThrown) {
-                generate_api_error(response, true)
+            const params = new URLSearchParams(window.location.search)
+            const vehicle_id = params.get('vehicle_id')
+            if (vehicle_id) {
+                $(`#${holder}`).val(vehicle_id);
             }
-        });
-    }
 
-    if(ctx in localStorage){
-        const lastHit = parseInt(localStorage.getItem(`last-hit-${ctx}`))
-        const now = Date.now()
+            resolve()
+        };
 
-        if(((now - lastHit) / 1000) < statsFetchRestTime){
-            const data = JSON.parse(localStorage.getItem(ctx))
-            if(data){
-                generate_vehicle_list(ctx_holder,data)
-                Swal.close()
+        const fetchData = () => {
+            $.ajax({
+                url: `/api/v1/vehicle/name`,
+                type: 'GET',
+                headers: {
+                    "Accept": "application/json",
+                    "Authorization": `Bearer ${token}`
+                },
+                success: function (response) {
+                    Swal.close();
+                    const data = response.data
+                    localStorage.setItem(ctx, JSON.stringify(data))
+                    localStorage.setItem(`last-hit-${ctx}`, Date.now())
+                    generate_vehicle_list(ctx_holder, data)
+                },
+                error: function (response) {
+                    Swal.close()
+                    generate_api_error(response, true)
+                    reject(response)
+                }
+            });
+        };
+
+        // caching
+        if (ctx in localStorage) {
+            const lastHit = parseInt(localStorage.getItem(`last-hit-${ctx}`))
+            const now = Date.now()
+
+            // still fresh
+            if (((now - lastHit) / 1000) < statsFetchRestTime) {
+                const data = JSON.parse(localStorage.getItem(ctx))
+
+                if (data) {
+                    Swal.close()
+                    generate_vehicle_list(ctx_holder, data)
+                } else {
+                    Swal.close()
+                    failedMsg(`get the vehicle list`)
+                    reject("No cached data")
+                }
             } else {
-                Swal.close()
-                failedMsg(`get the vehicle list`)
+                fetchData()
             }
+
         } else {
             fetchData()
         }
-    } else {
-        fetchData()
-    }
+    })
 }
 
 const get_driver_name_opt = (token) => {
@@ -143,74 +157,88 @@ const get_vehicle_detail = (id) => {
     }
 }
 
-const get_context_opt = (context,token) => {
-    Swal.showLoading()
-    let ctx_holder
+const get_context_opt = (context, token) => {
+    return new Promise((resolve, reject) => {
+        Swal.showLoading()
+        let ctx_holder
 
-    if(context.includes(',')){
-        ctx_holder = []
-        context = context.split(',')
-        context.forEach(el => {
-            ctx_holder.push(`${el}_holder`)
-        })
-    } else {
-        ctx_holder = context.includes('fuel_type_') ? 'fuel_type_holder' : `${context}_holder`
-    }
-
-    const generate_context_list = (holder,data) => {
-        if(Array.isArray(holder)){
-            holder.forEach(dt => {
-                $(`#${dt}`).empty().append(`<option>-</option>`)
-                data.forEach(el => {
-                    el.dictionary_type === dt.replace('_holder','') && $(`#${dt}`).append(`<option value="${el.dictionary_name}">${el.dictionary_name}</option>`)
-                });
-            });
+        if (context.includes(',')) {
+            ctx_holder = []
+            context = context.split(',')
+            context.forEach(el => {
+                ctx_holder.push(`${el}_holder`)
+            })
         } else {
-            $(`#${holder}`).empty().append(`<option>-</option>`)
-            data.forEach(el => {
-                $(`#${holder}`).append(`<option value="${el.dictionary_name}">${el.dictionary_name}</option>`)
-            });
+            ctx_holder = context.includes('fuel_type_') ? 'fuel_type_holder' : `${context}_holder`
         }
-    }
 
-    const fetchData = () => {
-        $.ajax({
-            url: `/api/v1/dictionary/type/${context}`,
-            type: 'GET',
-            beforeSend: function (xhr) {
-                xhr.setRequestHeader("Accept", "application/json")
-                xhr.setRequestHeader("Authorization", `Bearer ${token}`)    
-            },
-            success: function(response) {
-                Swal.close()
-                const data = response.data
-                localStorage.setItem(ctx_holder,JSON.stringify(data))
-                localStorage.setItem(`last-hit-${ctx_holder}`,Date.now())
-                generate_context_list(ctx_holder,data)
-            },
-            error: function(response, jqXHR, textStatus, errorThrown) {
-                generate_api_error(response, true)
-            }
-        });
-    }
-
-    if(ctx_holder in localStorage){
-        const lastHit = parseInt(localStorage.getItem(`last-hit-${ctx_holder}`))
-        const now = Date.now()
-
-        if(((now - lastHit) / 1000) < statsFetchRestTime){
-            const data = JSON.parse(localStorage.getItem(ctx_holder))
-            if(data){
-                generate_context_list(ctx_holder,data)
-                Swal.close()
+        const generate_context_list = (holder, data) => {
+            if (Array.isArray(holder)) {
+                holder.forEach(dt => {
+                    $(`#${dt}`).empty().append(`<option>-</option>`)
+                    data.forEach(el => {
+                        if (el.dictionary_type === dt.replace('_holder','')) {
+                            $(`#${dt}`).append(`<option value="${el.dictionary_name}">${el.dictionary_name}</option>`)
+                        }
+                    })
+                })
             } else {
-                Swal.close()
-                failedMsg(`get the ${context} list`)
+                $(`#${holder}`).empty().append(`<option>-</option>`)
+                data.forEach(el => {
+                    $(`#${holder}`).append(
+                        `<option value="${el.dictionary_name}">${el.dictionary_name}</option>`
+                    )
+                })
+            }
+
+            resolve()
+        }
+
+        const fetchData = () => {
+            $.ajax({
+                url: `/api/v1/dictionary/type/${context}`,
+                type: 'GET',
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("Accept", "application/json")
+                    xhr.setRequestHeader("Authorization", `Bearer ${token}`)
+                },
+                success: function (response) {
+                    Swal.close()
+                    const data = response.data
+
+                    localStorage.setItem(ctx_holder, JSON.stringify(data))
+                    localStorage.setItem(`last-hit-${ctx_holder}`, Date.now())
+
+                    generate_context_list(ctx_holder, data)
+                },
+                error: function (response) {
+                    Swal.close()
+                    generate_api_error(response, true)
+                    reject(response)
+                }
+            })
+        }
+
+        if (ctx_holder in localStorage) {
+            const lastHit = parseInt(localStorage.getItem(`last-hit-${ctx_holder}`))
+            const now = Date.now()
+
+            if (((now - lastHit) / 1000) < statsFetchRestTime) {
+                const data = JSON.parse(localStorage.getItem(ctx_holder))
+
+                if (data) {
+                    Swal.close()
+                    generate_context_list(ctx_holder, data)
+                } else {
+                    Swal.close()
+                    failedMsg(`get the ${context} list`)
+                    reject("No cached data")
+                }
+            } else {
+                fetchData()
             }
         } else {
             fetchData()
         }
-    } else {
-        fetchData()
-    }
+    })
 }
