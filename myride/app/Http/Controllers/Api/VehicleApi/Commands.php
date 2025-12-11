@@ -205,7 +205,7 @@ class Commands extends Controller
     /**
      * @OA\POST(
      *     path="/api/v1/vehicle/image/{id}",
-     *     summary="Put Vehicle Image By Id",
+     *     summary="Post Vehicle Image By Id",
      *     description="Update vehicle image. This request is using MySQL database.",
      *     tags={"Vehicle"},
      *     security={{"bearerAuth":{}}},
@@ -649,6 +649,7 @@ class Commands extends Controller
                                 $user = UserModel::find($user_id);
                                 $vehicle_document_url = Firebase::uploadFile('vehicle_document', $user_id, $user->username, $file, $file_ext); 
                                 $vehicle_document[] = (object)[
+                                    'vehicle_document_id' => Generator::getUUID(),
                                     'vehicle_document_url' => $vehicle_document_url,
                                     'vehicle_document_caption' => $request->vehicle_document_caption[$idx],
                                     'vehicle_document_type' => $file_ext === "pdf" ? "pdf" : "image"
@@ -656,7 +657,7 @@ class Commands extends Controller
                             } catch (\Exception $e) {
                                 return response()->json([
                                     'status' => 'error',
-                                    'message' => $e->getMessage(),
+                                    'message' => Generator::getMessageTemplate("unknown_error", null),
                                 ], Response::HTTP_INTERNAL_SERVER_ERROR);
                             }
                         }
@@ -785,6 +786,113 @@ class Commands extends Controller
             return response()->json([
                 'status' => 'error',
                 'message' => Generator::getMessageTemplate("unknown_error", null),
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
+     * @OA\DELETE(
+     *     path="/api/v1/vehicle/document/destroy/{vehicle_id}/{doc_id}",
+     *     summary="Hard Delete vehicle document by Id",
+     *     tags={"Vehicle"},
+     *     security={{"bearerAuth":{}}},
+     *     @OA\Parameter(
+     *         name="vehicle_id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="string"),
+     *         description="Vehicle ID",
+     *         example="e1288783-a5d4-1c4c-2cd6-0e92f7cc3bf9",
+     *     ),
+     *     @OA\Parameter(
+     *         name="doc_id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="string"),
+     *         description="Vehicle Document ID",
+     *         example="e1288783-a5d4-1c4c-2cd6-0e92f7cc3bf9",
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="vehicle document deleted",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="message", type="string", example="vehicle document deleted")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="protected route need to include sign in token as authorization bearer",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="failed"),
+     *             @OA\Property(property="message", type="string", example="you need to include the authorization token from login")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="vehicle document failed to deleted",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="failed"),
+     *             @OA\Property(property="message", type="string", example="vehicle document not found")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal Server Error",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="error"),
+     *             @OA\Property(property="message", type="string", example="something wrong. please contact admin")
+     *         )
+     *     ),
+     * )
+     */
+    public function hardDeleteVehicleDocById(Request $request, $vehicle_id, $doc_id){
+        try{
+            $user_id = $request->user()->id;
+
+            $vehicle = VehicleModel::getVehicleByIdAndUserId($vehicle_id,$user_id);
+            if($vehicle){
+                $vehicle_documents = $vehicle->vehicle_document;
+                // Remove File
+                foreach ($vehicle_documents as $dt) {
+                    if ($dt['vehicle_document_id'] === $doc_id) {
+                        Firebase::deleteFile($dt['vehicle_document_url']);
+                        break;
+                    }
+                }
+            
+                // Remove Item
+                $vehicle_documents = array_filter($vehicle_documents, function ($dt) use ($doc_id) {
+                    return $dt['vehicle_document_id'] !== $doc_id;
+                });
+            
+                $vehicle_document = array_values($vehicle_documents);
+                
+                $rows = VehicleModel::updateVehicleById([
+                    'vehicle_document' => count($vehicle_document) > 0 ? $vehicle_document : null,
+                ], $vehicle_id, $user_id);
+
+                if($rows > 0){
+                    return response()->json([
+                        'status' => 'success',
+                        'message' => Generator::getMessageTemplate("delete", "$this->module image"),
+                    ], Response::HTTP_OK);
+                } else {
+                    return response()->json([
+                        'status' => 'failed',
+                        'message' => Generator::getMessageTemplate("not_found", "$this->module image"),
+                    ], Response::HTTP_NOT_FOUND);
+                }
+            } else {
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => Generator::getMessageTemplate("not_found", "$this->module image"),
+                ], Response::HTTP_NOT_FOUND);
+            }
+        } catch(\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage(),
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }

@@ -25,6 +25,7 @@
             </div>
         </div>
     </div>
+    @include('garage.edit.usecases.delete_vehicle_document')
 
     <script>
         let vehicle_img_url = null
@@ -69,6 +70,30 @@
                         vehicle_img_url = data.vehicle_img_url
                     } else {
                         template_alert_container('vehicle_img-holder', 'no-data', "No image selected", null, '<i class="fa-solid fa-image"></i>', null)
+                    }
+
+                    if(data.vehicle_document){
+                        $('#doc_attachment-holder').empty()
+                        data.vehicle_document.forEach(dt => {
+                            let preview = ""
+
+                            if (dt.vehicle_document_type === "image") {
+                                preview = `<img src="${dt.vehicle_document_url}" class="img img-fluid my-2"style="max-width: 200px;">`
+                            } else if (dt.vehicle_document_type === "pdf") {
+                                preview = `<iframe src="${dt.vehicle_document_url}" style="width: 200px; height: 200px;" class="my-2"></iframe>`
+                            } 
+
+                            $('#doc_attachment-holder').append(`
+                                <div class="col-xl-6 col-lg-12 col-md-6 col-sm-12">
+                                    <div class="container-fluid my-3 text-center">
+                                        ${preview}
+                                        <p class="mt-1"><b>Caption:</b> ${dt.vehicle_document_caption ?? "-"}</p>
+                                        <a class="btn btn-danger btn-delete w-100" style="width:50px;" data-url="/api/v1/vehicle/document/destroy/<?= $id ?>/${dt.vehicle_document_id}" data-context="Vehicle Document"><i class="fa-solid fa-trash"></i> Delete</a>
+                                    </div>
+                                </div>
+                            `)
+                        });
+                        
                     }
 
                     $('#created_at').text(data.created_at)
