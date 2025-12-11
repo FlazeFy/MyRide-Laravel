@@ -160,6 +160,22 @@ const checkScreenSize = (width) => {
     }
 }
 
+const set_checklist_holder = () => {
+    const list_checklist = ['is_wash_body', 'is_wash_window', 'is_wash_dashboard', 'is_wash_tires', 'is_wash_trash', 'is_wash_engine', 'is_wash_seat', 'is_wash_carpet', 'is_wash_pillows', 'is_fill_window_washing_water', 'is_wash_hollow']
+
+    $('#checklist-holder').empty()
+    list_checklist.forEach(dt => {
+        $('#checklist-holder').append(`
+            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="${dt}">
+                    <label class="form-check-label">${ucEachWord(dt.replaceAll('_',' ').replaceAll('is',''))}</label>
+                </div>
+            </div>
+        `)
+    });
+}
+
 const applyAutoTheme = () => {
     const hour = new Date().getHours()
 

@@ -66,14 +66,9 @@
                                         { key: "is_wash_pillows", label: "Pillow" },
                                         { key: "is_wash_hollow", label: "Vehicle Hollow" },
                                         { key: "is_fill_window_washing_water", label: "Wiper Water Fill" },
-                                    ].map(wash => `
-                                        <div class="col-6">
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" ${dt[wash.key] ? 'checked' : ''}>
-                                                <label class="form-check-label">${wash.label}</label>
-                                            </div>
-                                        </div>
-                                    `).join('')}
+                                    ].map(wash => dt[wash.key] ? `
+                                        <div class="col-6"><li class="ms-4">${wash.label}</li></div>`:'').join('')
+                                    }
                                 </div>
                             </td>
                             <td class="text-start">
@@ -83,8 +78,19 @@
                                 <p class="mb-0">${dt.wash_end_time ? getDateToContext(dt.wash_end_time,'calendar') : "In Progress"}</p>
                             </td>
                             <td>
-                                <a class="btn btn-danger w-100 btn-delete" data-url="/api/v1/wash/destroy/${dt.id}" data-context="Wash"><i class="fa-solid fa-trash"></i></a>
-                                ${dt.wash_end_time === null ? `<a class="btn btn-success w-100 mt-2 btn-finish" data-id="${dt.id}"><i class="fa-solid fa-check"></i></a>` : ""}
+                                <div class="d-flex flex-wrap gap-2 justify-content-center">
+                                    <a class="btn btn-danger btn-delete" style="width:50px;" data-url="/api/v1/wash/destroy/${dt.id}" data-context="Wash"><i class="fa-solid fa-trash"></i></a>
+                                    ${dt.wash_end_time === null ? `<a class="btn btn-success btn-finish" data-id="${dt.id}"><i class="fa-solid fa-check"></i></a>` : ""}
+                                    <a class="btn btn-warning btn-update" style="width:50px;" 
+                                        data-vehicle-plate-number="${dt.vehicle_plate_number}" data-id="${dt.id}"
+                                        data-wash-by="${dt.wash_by}" data-wash-address="${dt.wash_address}" data-wash-desc="${dt.wash_desc}" data-wash-tools="${dt.wash_tools}" data-wash-price="${dt.wash_price}"
+                                        data-is-wash-body="${dt.is_wash_body}" data-is-wash-window="${dt.is_wash_window}" data-is-wash-dashboard="${dt.is_wash_dashboard}" 
+                                        data-is-wash-tires="${dt.is_wash_tires}" data-is-wash-trash="${dt.is_wash_trash}" data-is-wash-engine="${dt.is_wash_engine}" 
+                                        data-is-wash-seat="${dt.is_wash_seat}" data-is-wash-carpet="${dt.is_wash_carpet}" data-is-wash-pillows="${dt.is_wash_pillows}" 
+                                        data-is-wash-hollow="${dt.is_wash_hollow}" data-is-fill-window-washing-water="${dt.is_fill_window_washing_water}"
+                                        data-wash-start-time="${dt.wash_start_time}" data-wash-end-time="${dt.wash_end_time}"
+                                        ><i class="fa-solid fa-pen-to-square"></i></a>
+                                </div>
                             </td>
                         </tr>
                     `)

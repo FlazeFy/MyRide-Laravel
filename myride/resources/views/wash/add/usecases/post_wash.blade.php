@@ -32,13 +32,13 @@
         <div class="col-xl-6 col-lg-12">
             <div class="row">
                 <div class="col-md-6 col-sm-12">
-                    <label>wash By</label>
+                    <label>Wash By</label>
                     <select class="form-select" name="wash_by" id="wash_by_holder" aria-label="Default select example">
                         <option>-</option>
                     </select>
                 </div>
                 <div class="col-md-6 col-sm-12">
-                    <label>wash Price</label>
+                    <label>Wash Price</label>
                     <input class="form-control" type="number" min="1" id="wash_price" name="wash_price">
                 </div>
             </div>
@@ -65,22 +65,6 @@
         const id = $(this).val()
         get_vehicle_detail(id)
     })
-
-    const set_checklist_holder = () => {
-        const list_checklist = ['is_wash_body', 'is_wash_window', 'is_wash_dashboard', 'is_wash_tires', 'is_wash_trash', 'is_wash_engine', 'is_wash_seat', 'is_wash_carpet', 'is_wash_pillows', 'is_fill_window_washing_water', 'is_wash_hollow']
-
-        $('#checklist-holder').empty()
-        list_checklist.forEach(dt => {
-            $('#checklist-holder').append(`
-                <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="${dt}">
-                        <label class="form-check-label">${ucEachWord(dt.replaceAll('_',' ').replaceAll('is',''))}</label>
-                    </div>
-                </div>
-            `)
-        });
-    }
     set_checklist_holder()
 
     ;(async () => {

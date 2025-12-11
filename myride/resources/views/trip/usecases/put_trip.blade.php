@@ -67,6 +67,7 @@
 
         await get_vehicle_name_opt(token)
         await get_context_opt('trip_category',token)
+        get_driver_name_opt(token)
 
         const vehicle_plate_number = $(this).data('vehicle-plate-number')
 
