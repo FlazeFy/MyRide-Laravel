@@ -94,6 +94,7 @@ Route::prefix('/v1/wash')->middleware(['auth:sanctum'])->group(function () {
     Route::get('/summary', [QueriesWashController::class, 'getWashSummaryByVehicleId']);
     Route::post('/', [CommandsWashController::class, 'postWash']);
     Route::put('/finish/{id}', [CommandsWashController::class, 'putFinishWash']);
+    Route::put('/{id}', [CommandsWashController::class, 'putWashById']);
 });
 
 Route::prefix('/v1/history')->middleware(['auth:sanctum'])->group(function () {

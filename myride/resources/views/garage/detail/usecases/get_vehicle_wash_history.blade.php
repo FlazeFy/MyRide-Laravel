@@ -38,8 +38,6 @@
                             </div>
                             <h6 class="mb-0">Description</h6>
                             <p>${dt.wash_desc ?? '-'}</p>
-                            <h6 class="mb-0">Tools</h6>
-                            <p>${dt.wash_tools ?? '-'}</p>
                             <hr>
                             <div class="row">
                                 <h6 class="mb-0">Wash Detail</h6>

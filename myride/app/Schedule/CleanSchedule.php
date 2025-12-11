@@ -9,7 +9,7 @@ use Telegram\Bot\Laravel\Facades\Telegram;
 use App\Models\HistoryModel;
 use App\Models\AdminModel;
 use App\Models\VehicleModel;
-use App\Models\CleanModel;
+use App\Models\WashModel;
 use App\Models\TripModel;
 use App\Models\ServiceModel;
 use App\Models\InventoryModel;

@@ -103,17 +103,17 @@ class Commands extends Controller
     }
 
     /**
-     * @OA\PUT(
-     *     path="/api/v1/wash/{id}",
-     *     summary="Update a wash data",
+     * @OA\POST(
+     *     path="/api/v1/wash",
+     *     summary="Create a wash data",
      *     tags={"Wash"},
      *     security={{"bearerAuth":{}}},
      *     @OA\Response(
-     *         response=200,
-     *         description="wash updated",
+     *         response=201,
+     *         description="wash created",
      *         @OA\JsonContent(
      *             @OA\Property(property="status", type="string", example="success"),
-     *             @OA\Property(property="message", type="string", example="wash updated")
+     *             @OA\Property(property="message", type="string", example="wash created")
      *         )
      *     ),
      *     @OA\Response(
@@ -157,7 +157,6 @@ class Commands extends Controller
                     'vehicle_id' => $request->vehicle_id, 
                     'wash_desc' => $request->wash_desc, 
                     'wash_by' => $request->wash_by, 
-                    'wash_tools' => $request->wash_tools, 
                     'is_wash_body' => $request->is_wash_body,
                     'is_wash_window' => $request->is_wash_window,
                     'is_wash_dashboard' => $request->is_wash_dashboard,
@@ -255,6 +254,99 @@ class Commands extends Controller
                     'status' => 'error',
                     'message' => Generator::getMessageTemplate("unknown_error", null),
                 ], Response::HTTP_INTERNAL_SERVER_ERROR);
+            }
+        } catch(\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => Generator::getMessageTemplate("unknown_error", null),
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
+     * @OA\PUT(
+     *     path="/api/v1/wash/{id}",
+     *     summary="Update a wash data",
+     *     tags={"Wash"},
+     *     security={{"bearerAuth":{}}},
+     *     @OA\Response(
+     *         response=200,
+     *         description="wash updated",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="message", type="string", example="wash updated")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="protected route need to include sign in token as authorization bearer",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="failed"),
+     *             @OA\Property(property="message", type="string", example="you need to include the authorization token from login")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="wash failed to validated",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="failed"),
+     *             @OA\Property(property="message", type="string", example="[failed validation message]")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal Server Error",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="error"),
+     *             @OA\Property(property="message", type="string", example="something wrong. please contact admin")
+     *         )
+     *     ),
+     * )
+     */
+    public function putWashById(Request $request,$id){
+        try{
+            $user_id = $request->user()->id;
+
+            $validator = Validation::getValidateWash($request);
+            if ($validator->fails()) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => $validator->errors()
+                ], Response::HTTP_BAD_REQUEST);
+            } else {
+                $data = [
+                    'vehicle_id' => $request->vehicle_id, 
+                    'wash_desc' => $request->wash_desc, 
+                    'wash_by' => $request->wash_by, 
+                    'is_wash_body' => $request->is_wash_body,
+                    'is_wash_window' => $request->is_wash_window,
+                    'is_wash_dashboard' => $request->is_wash_dashboard,
+                    'is_wash_tires' => $request->is_wash_tires,
+                    'is_wash_trash' => $request->is_wash_trash,
+                    'is_wash_engine' => $request->is_wash_engine,
+                    'is_wash_seat' => $request->is_wash_seat,
+                    'is_wash_carpet' => $request->is_wash_carpet,
+                    'is_wash_pillows' => $request->is_wash_pillows,
+                    'wash_address' => $request->wash_address,
+                    'wash_start_time' => $request->wash_start_time,
+                    'wash_end_time' => $request->wash_end_time,
+                    'wash_price' => $request->wash_price,
+                    'is_fill_window_washing_water' => $request->is_fill_window_washing_water,
+                    'is_wash_hollow' => $request->is_wash_hollow
+                ];
+
+                $rows = WashModel::updateWashById($data, $user_id, $id);
+                if($rows > 0){
+                    return response()->json([
+                        'status' => 'success',
+                        'message' => Generator::getMessageTemplate("update", $this->module),
+                    ], Response::HTTP_OK);
+                } else {
+                    return response()->json([
+                        'status' => 'error',
+                        'message' => Generator::getMessageTemplate("unknown_error", null),
+                    ], Response::HTTP_INTERNAL_SERVER_ERROR);
+                }
             }
         } catch(\Exception $e) {
             return response()->json([

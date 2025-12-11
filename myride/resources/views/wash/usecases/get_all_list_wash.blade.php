@@ -47,8 +47,6 @@
                                 <p>${dt.wash_address ?? '-'}</p>
                                 <h6 class="mb-0">Description</h6>
                                 <p>${dt.wash_desc ?? '-'}</p>
-                                <h6 class="mb-0">Tools</h6>
-                                <p>${dt.wash_tools ?? '-'}</p>
                                 <h6 class="mb-0">Wash Price</h6>
                                 <p>${`Rp. ${number_format(dt.wash_price, 0, ',', '.')},00` ?? '-'}</p>
                             </td>
@@ -83,7 +81,7 @@
                                     ${dt.wash_end_time === null ? `<a class="btn btn-success btn-finish" data-id="${dt.id}"><i class="fa-solid fa-check"></i></a>` : ""}
                                     <a class="btn btn-warning btn-update" style="width:50px;" 
                                         data-vehicle-plate-number="${dt.vehicle_plate_number}" data-id="${dt.id}"
-                                        data-wash-by="${dt.wash_by}" data-wash-address="${dt.wash_address}" data-wash-desc="${dt.wash_desc}" data-wash-tools="${dt.wash_tools}" data-wash-price="${dt.wash_price}"
+                                        data-wash-by="${dt.wash_by}" data-wash-address="${dt.wash_address}" data-wash-desc="${dt.wash_desc}" data-wash-price="${dt.wash_price}"
                                         data-is-wash-body="${dt.is_wash_body}" data-is-wash-window="${dt.is_wash_window}" data-is-wash-dashboard="${dt.is_wash_dashboard}" 
                                         data-is-wash-tires="${dt.is_wash_tires}" data-is-wash-trash="${dt.is_wash_trash}" data-is-wash-engine="${dt.is_wash_engine}" 
                                         data-is-wash-seat="${dt.is_wash_seat}" data-is-wash-carpet="${dt.is_wash_carpet}" data-is-wash-pillows="${dt.is_wash_pillows}" 

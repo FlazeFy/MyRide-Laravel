@@ -148,7 +148,6 @@ class Validation
             'vehicle_id' => 'required|string|max:36|min:36', 
             'wash_desc' => 'nullable|string|min:1|max:500',
             'wash_by' => 'required|string|max:75|min:1', 
-            'wash_tools' => 'nullable|string|max:500|min:1', 
             'is_wash_body' => 'required|boolean',
             'is_wash_window' => 'required|boolean',
             'is_wash_dashboard' => 'required|boolean',

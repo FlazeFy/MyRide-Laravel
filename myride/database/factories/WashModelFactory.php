@@ -22,7 +22,6 @@ class WashModelFactory extends Factory
             'vehicle_id' => VehicleModel::getRandom(0,$user_id), 
             'wash_desc' => fake()->paragraph(), 
             'wash_by' => fake()->company(), 
-            'wash_tools' => fake()->paragraph(), 
             'is_wash_body' => 1, 
             'is_wash_window' => 1, 
             'is_wash_dashboard' => mt_rand(0, 1), 

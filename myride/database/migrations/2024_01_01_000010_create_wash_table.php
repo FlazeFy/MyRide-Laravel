@@ -13,7 +13,6 @@ return new class extends Migration
             $table->uuid('vehicle_id');
             $table->string('wash_desc', 500)->nullable();
             $table->string('wash_by', 75);
-            $table->string('wash_tools', 500)->nullable();
             $table->boolean('is_wash_body');
             $table->boolean('is_wash_window');
             $table->boolean('is_wash_dashboard');

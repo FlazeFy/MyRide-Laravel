@@ -42,7 +42,7 @@ class WashTest extends TestCase
         $this->assertArrayHasKey('data', $data);
 
         foreach ($data['data']['data'] as $dt) {
-            $check_object = ["id", "vehicle_name", "vehicle_plate_number", "wash_desc", "wash_by", "wash_tools", "is_wash_body", "is_wash_window", 
+            $check_object = ["id", "vehicle_name", "vehicle_plate_number", "wash_desc", "wash_by", "is_wash_body", "is_wash_window", 
                 "is_wash_dashboard", "is_wash_tires", "is_wash_trash", "is_wash_engine", "is_wash_seat", "is_wash_carpet", "is_wash_pillows", "wash_address", 
                 "wash_start_time", "wash_end_time", "is_fill_window_washing_water",  "is_wash_hollow", "created_at", "updated_at"];
 
@@ -56,7 +56,7 @@ class WashTest extends TestCase
                 $this->assertIsString($dt[$col]);
             }
 
-            $check_nullable_str = ["wash_desc", "wash_by", "wash_tools", "wash_address", "wash_end_time", "updated_at"];
+            $check_nullable_str = ["wash_desc", "wash_by", "wash_address", "wash_end_time", "updated_at"];
             foreach ($check_nullable_str as $col) {
                 if (!is_null($dt[$col])) {
                     $this->assertIsString($dt[$col]);

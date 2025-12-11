@@ -40,7 +40,6 @@ class Queries extends Controller
      *                         @OA\Property(property="vehicle_plate_number", type="string", example="D 1610 ZRB"),
      *                         @OA\Property(property="wash_desc", type="string", example="Cuci mobil"),
      *                         @OA\Property(property="wash_by", type="string", example="Carwash"),
-     *                         @OA\Property(property="wash_tools", type="string", nullable=true, example=null),
      *                         @OA\Property(property="is_wash_body", type="integer", example=1),
      *                         @OA\Property(property="is_wash_window", type="integer", example=1),
      *                         @OA\Property(property="is_wash_dashboard", type="integer", example=1),

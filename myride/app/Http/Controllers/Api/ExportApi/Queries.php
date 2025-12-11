@@ -43,7 +43,6 @@ class Queries extends Controller {
                     'vehicle_name' => $dt->vehicle_name,
                     'wash_desc' => $dt->wash_desc,
                     'wash_by' => $dt->wash_by,
-                    'wash_tools' => $dt->wash_tools,
                     'is_wash_body' => $dt->is_wash_body == 1 ? "Yes" : "No",
                     'is_wash_window' => $dt->is_wash_window == 1 ? "Yes" : "No",
                     'is_wash_dashboard' => $dt->is_wash_dashboard == 1 ? "Yes" : "No",

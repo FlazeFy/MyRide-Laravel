@@ -68,7 +68,6 @@
             $('#wash_by').val($(this).data('wash-by'))
             $('#wash_address').val($(this).data('wash-address'))
             $('#wash_desc').val($(this).data('wash-desc'))
-            $('#wash_tools').val($(this).data('wash-tools'))
             $('#wash_price').val($(this).data('wash-price'))
             $('#wash_start_time').val($(this).data('wash-start-time'))
             $('#wash_end_time').val($(this).data('wash-end-time'))
@@ -104,7 +103,6 @@
                         vehicle_id: vehicle_id,
                         wash_desc: $('#wash_desc').val(),  
                         wash_by: $('#wash_by_holder').val(), 
-                        wash_tools: null,  
                         is_wash_body: $('#is_wash_body').is(':checked'), 
                         is_wash_window: $('#is_wash_window').is(':checked'), 
                         is_wash_dashboard: $('#is_wash_dashboard').is(':checked'), 
