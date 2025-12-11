@@ -25,7 +25,7 @@ return new class extends Migration
             $table->string('vehicle_default_fuel', 36);
             $table->string('vehicle_color', 36);
             $table->string('vehicle_transmission', 14);
-            $table->string('vehicle_img_url', 500)->nullable();
+            $table->string('vehicle_img_url', 1000)->nullable();
             $table->json('vehicle_other_img_url')->nullable();
             $table->integer('vehicle_capacity')->length(2);
             $table->json('vehicle_document')->nullable();

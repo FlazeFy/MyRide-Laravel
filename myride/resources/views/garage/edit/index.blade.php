@@ -12,11 +12,23 @@
     <div class="container-fluid">
         @include('garage.edit.usecases.put_vehicle_data')
     </div>
-    <div class="container-fluid">
-        @include('garage.edit.usecases.put_vehicle_doc')
+    <div class="row">
+        <div class="col-lg-6 col-md-12">
+            <div class="container-fluid">
+                <h2>Vehicle Image</h2><hr>
+                @include('garage.edit.usecases.put_vehicle_image')
+            </div>
+        </div>
+        <div class="col-lg-6 col-md-12">
+            <div class="container-fluid">
+                @include('garage.edit.usecases.put_vehicle_doc')
+            </div>
+        </div>
     </div>
 
     <script>
+        let vehicle_img_url = null
+
         const get_vehicle = (id) => {
             Swal.showLoading()
             $.ajax({
@@ -50,6 +62,15 @@
                     $(`#vehicle_fuel_capacity`).val(data.vehicle_fuel_capacity)
                     $(`#vehicle_capacity`).val(data.vehicle_capacity)
 
+                    if(data.vehicle_img_url){
+                        $('#vehicle_img-holder').html(`<img class="img img-fluid" src="${data.vehicle_img_url}" alt="${data.vehicle_img_url}"/>`)
+                        $('#add_image-button span').text(' Change Image')
+                        $('#vehicle_image_button-holder').prepend(`<a class="btn btn-danger py-1" id="remove_image-button"><i class="fa-solid fa-trash"></i><span class="d-none d-md-inline"> Remove Image</span></a>`)
+                        vehicle_img_url = data.vehicle_img_url
+                    } else {
+                        template_alert_container('vehicle_img-holder', 'no-data', "No image selected", null, '<i class="fa-solid fa-image"></i>', null)
+                    }
+
                     $('#created_at').text(data.created_at)
                     $('#updated_at').text(data.updated_at ?? '-')
                     $('#deleted_at').text(data.deleted_at ?? '-')
@@ -65,19 +86,5 @@
             });
         }
         get_vehicle('<?= $id ?>')
-    </script>
-
-    <script src='https://www.gstatic.com/firebasejs/6.0.2/firebase.js'></script>
-    <script>
-        const firebaseConfig = {
-            apiKey: "AIzaSyAziQMCG6NEKuLhFp9AyzavVPRMdJwT5uw",
-            authDomain: "myride-a0077.firebaseapp.com",
-            projectId: "myride-a0077",
-            storageBucket: "myride-a0077.appspot.com",
-            messagingSenderId: "868020179967",
-            appId: "1:868020179967:web:0dccb0551a6faeeb810dca",
-            measurementId: "G-GTZV92C8MK"
-        }
-        firebase.initializeApp(firebaseConfig)
     </script>
 @endsection

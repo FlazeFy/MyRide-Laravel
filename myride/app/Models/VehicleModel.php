@@ -35,6 +35,12 @@ class VehicleModel extends Model
         return VehicleModel::create($data);
     }
 
+    public static function getVehicleByIdAndUserId($id, $user_id){
+        return VehicleModel::where('id',$id)
+            ->where('created_by',$user_id)
+            ->first();
+    }
+
     public static function updateVehicleById($data, $id, $user_id){
         return VehicleModel::where('id',$id)
             ->where('created_by',$user_id)

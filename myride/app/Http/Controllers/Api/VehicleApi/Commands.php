@@ -203,6 +203,144 @@ class Commands extends Controller
     }
 
     /**
+     * @OA\POST(
+     *     path="/api/v1/vehicle/image/{id}",
+     *     summary="Put Vehicle Image By Id",
+     *     description="Update vehicle image. This request is using MySQL database.",
+     *     tags={"Vehicle"},
+     *     security={{"bearerAuth":{}}},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"vehicle_img_url"},
+     *             @OA\Property(property="vehicle_img_url", type="string", example="...."),
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Vehicle image update successfully",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="message", type="string", example="vehicle update")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Validation failed",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             oneOf={
+     *                 @OA\Schema(
+     *                     @OA\Property(property="status", type="string", example="failed"),
+     *                     @OA\Property(property="message", type="string", example="vehicle image is a required field")
+     *                 )
+     *             }
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="vehicle failed to fetched",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="failed"),
+     *             @OA\Property(property="message", type="string", example="vehicle not found")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal Server Error",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="error"),
+     *             @OA\Property(property="message", type="string", example="something wrong. please contact admin")
+     *         )
+     *     )
+     * )
+     */
+    public function putVehicleImageById(Request $request, $id)
+    {
+        try{
+            $user_id = $request->user()->id;
+
+            $vehicle = VehicleModel::getVehicleByIdAndUserId($id, $user_id);
+            if ($vehicle){
+                $vehicle_image = null;
+
+                if ($vehicle->vehicle_img_url){
+                    if(!Firebase::deleteFile($vehicle->vehicle_img_url)){
+                        return response()->json([
+                            'status' => 'failed',
+                            'message' => Generator::getMessageTemplate("not_found", 'failed to delete vehicle image'),
+                        ], Response::HTTP_NOT_FOUND);
+                    }
+                }
+
+                if ($request->hasFile('vehicle_image')) {
+                    $file = $request->file('vehicle_image');
+                    if ($file->isValid()) {
+                        $file_ext = $file->getClientOriginalExtension();
+                        // Validate file type
+                        if (!in_array($file_ext, $this->allowed_file_type)) {
+                            return response()->json([
+                                'status' => 'failed',
+                                'message' => Generator::getMessageTemplate("custom", 'The file must be a '.implode(', ', $this->allowed_file_type).' file type'),
+                            ], Response::HTTP_UNPROCESSABLE_ENTITY);
+                        }
+                        // Validate file size
+                        if ($file->getSize() > $this->max_size_file) {
+                            return response()->json([
+                                'status' => 'failed',
+                                'message' => Generator::getMessageTemplate("custom", 'The file size must be under '.($this->max_size_file/1000000).' Mb'),
+                            ], Response::HTTP_UNPROCESSABLE_ENTITY);
+                        }
+        
+                        // Helper: Upload vehicle image
+                        try {
+                            $user = UserModel::find($user_id);
+                            $vehicle_image = Firebase::uploadFile('vehicle', $user_id, $user->username, $file, $file_ext); 
+                        } catch (\Exception $e) {
+                            return response()->json([
+                                'status' => 'error',
+                                'message' => Generator::getMessageTemplate("unknown_error", null),
+                            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+                        }
+                    } else {
+                        return response()->json([
+                            'status' => 'error',
+                            'message' => Generator::getMessageTemplate("unknown_error", null),
+                        ], Response::HTTP_INTERNAL_SERVER_ERROR);
+                    }
+                }
+
+                // Service : Update
+                $rows = VehicleModel::updateVehicleById([ 'vehicle_img_url' => $vehicle_image], $id, $user_id);
+
+                // Respond
+                if($rows > 0){
+                    return response()->json([
+                        'status' => 'success',
+                        'message' => Generator::getMessageTemplate("update", $this->module),
+                    ], Response::HTTP_OK);
+                } else {
+                    return response()->json([
+                        'status' => 'failed',
+                        'message' => Generator::getMessageTemplate("not_found", $this->module),
+                    ], Response::HTTP_NOT_FOUND);
+                } 
+            } else {
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => Generator::getMessageTemplate("not_found", $this->module),
+                ], Response::HTTP_NOT_FOUND);
+            }
+        } catch(\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => Generator::getMessageTemplate("unknown_error", null),
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
      * @OA\PUT(
      *     path="/api/v1/vehicle",
      *     summary="Post vehicle",
