@@ -42,6 +42,14 @@ const generate_line_chart = (title, holder, data) => {
                 },
                 xaxis: {
                     categories: contexts,
+                    crosshairs: {
+                        show: true,
+                        stroke: {
+                            color: 'var(--warningColor)',
+                            width: 'var(--spaceMini)',
+                            dashArray: 5
+                        }
+                    }
                 },
                 stroke: {
                     curve: 'smooth'

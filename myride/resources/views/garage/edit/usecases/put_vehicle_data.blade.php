@@ -8,8 +8,8 @@
         <div class="col-xl-2 col-lg-4 col-md-4 col-sm-5 col-12">
             <label>Transmission</label>
             <select class="form-select" aria-label="Default select example" name="vehicle_transmission_code" id="vehicle_transmission_code">
-                <option value="MT">Manual</option>
-                <option value="AT">Automatic</option>
+                <option value="Manual">Manual</option>
+                <option value="Automatic">Automatic</option>
                 <option value="CVT">CVT</option>
             </select>
         </div>

@@ -37,7 +37,7 @@
                     if(response.status != 404){
                         generate_api_error(response, true)
                     } else {
-                        template_alert_container(ctx_holder, 'no-data', "No vehicle found for this context to generate the stats", 'add a vehicle', '<i class="fa-solid fa-warehouse"></i>','/vehicle/add')
+                        template_alert_container(ctx_holder, 'no-data', "No vehicle found for this context to generate the stats", 'add a vehicle', '<i class="fa-solid fa-warehouse"></i>','/garage/add')
                         $(`#${ctx_holder}`).prepend(`<h2 class='title-chart'>${ucEachWord(title)}</h2>`)
                     }
                 }

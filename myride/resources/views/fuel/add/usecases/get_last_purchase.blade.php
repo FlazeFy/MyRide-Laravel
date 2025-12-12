@@ -28,17 +28,17 @@
                 
                 $(`#${holder_fuel}`).html(`
                     <div class="container-fluid bg-success">
-                        <div class="d-flex justify-content-between">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
                             <div>
                                 <h5 class="mb-0">${data.fuel_brand} | ${data.fuel_type}</h5>
-                                <p class="text-secondary text-dark">Fuel at ${getDateToContext(data.created_at,'calendar')}</p>
+                                <p class="text-secondary text-dark mb-0">Fuel at ${getDateToContext(data.created_at,'calendar')}</p>
                             </div>
-                            <div class="d-flex">
-                                <h5 class="chip bg-info">RON ${data.fuel_ron}</h5>
-                                <h5 class="chip bg-info">${data.fuel_volume} Liter</h5>
+                            <div class="d-flex gap-2">
+                                <h5 class="chip bg-info mx-0 mb-0">RON ${data.fuel_ron}</h5>
+                                <h5 class="chip bg-info mx-0 mb-0">${data.fuel_volume} Liter</h5>
                             </div>
                         </div>
-                        <h6 class="chip bg-warning d-inline" style="font-size:var(--textXLG);">Rp. ${number_format(data.fuel_price_total, 0, ',', '.')},00</h6>
+                        <h6 class="chip bg-warning d-inline mx-0" style="font-size:var(--textXLG);">Rp. ${number_format(data.fuel_price_total, 0, ',', '.')},00</h6>
                     </div>
                 `)
             },

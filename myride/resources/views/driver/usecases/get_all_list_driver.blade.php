@@ -60,7 +60,7 @@
                                 }
                             </td>
                             <td>
-                                <div class="d-flex flex-wrap gap-2">
+                                <div class="d-flex flex-wrap gap-2 justify-content-center">
                                     <a class="btn btn-danger btn-delete" style="width:50px;" data-url="/api/v1/driver/destroy/${dt.id}" data-context="Driver"><i class="fa-solid fa-trash"></i></a>
                                     <a class="btn btn-warning btn-update" style="width:50px;" 
                                         data-username="${dt.username}" data-id="${dt.id}" 

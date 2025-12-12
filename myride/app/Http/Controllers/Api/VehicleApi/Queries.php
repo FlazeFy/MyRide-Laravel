@@ -44,6 +44,7 @@ class Queries extends Controller
      *                         @OA\Property(property="vehicle_desc", type="string", example="snowy"),
      *                         @OA\Property(property="vehicle_merk", type="string", example="Honda"),
      *                         @OA\Property(property="vehicle_type", type="string", example="City Car"),
+     *                         @OA\Property(property="vehicle_transmission", type="string", example="Manual"),
      *                         @OA\Property(property="vehicle_distance", type="integer", example=45000),
      *                         @OA\Property(property="vehicle_category", type="string", example="Personal Car"),
      *                         @OA\Property(property="vehicle_status", type="string", example="Available"),

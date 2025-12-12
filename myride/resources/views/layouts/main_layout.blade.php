@@ -7,7 +7,7 @@
 
     @php
         $fullUrl = url()->current(); // Get the full current URL
-        $washedUrl = str_replace("http://127.0.0.1:8000/", "", $fullUrl);
+        $cleanedUrl = str_replace("http://127.0.0.1:8000/", "", $fullUrl);
         $route = Route::currentRouteName();
     @endphp
 
@@ -51,17 +51,18 @@
     <script type="text/javascript" language="javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
 
     <!-- CSS Collection -->
-    <link rel="stylesheet" href="{{ asset('/css/global_v1.0.css') }}"/>
-    <link rel="stylesheet" href="{{ asset('/css/bar_v1.0.css') }}"/>
+    @include('layouts.default_css_import')
 
     <!-- JS Collection -->
     <script src="{{ asset('/js/global_v1.0.js')}}"></script>
     <script src="{{ asset('/js/message_v1.0.js')}}"></script>
-    <?php if(preg_match('(stats|embed|detail|dashboard|fuel|inventory|service)', $washedUrl)): ?>
+    <script src="{{ asset('/js/template_v1.0.js')}}"></script>
+    <?php if(preg_match('(stats|embed|detail|dashboard|fuel|inventory|service)', $cleanedUrl)): ?>
         <script src="{{ asset('/js/chart_v1.0.js')}}"></script>
     <?php endif; ?>
-    <script src="{{ asset('/js/math_v1.0.js')}}"></script>
-    <script src="{{ asset('/js/template_v1.0.js')}}"></script>
+    <?php if(preg_match('(fuel|garage|service|wash|trip)', $cleanedUrl)): ?>
+        <script src="{{ asset('/js/math_v1.0.js')}}"></script>
+    <?php endif; ?>
 
     <!-- Swal -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -81,19 +82,14 @@
                 <!--Apex Chart-->
                 <script src='https://cdn.jsdelivr.net/npm/apexcharts'></script>
             ";
-        } else if($route == "edit_garage"){
-            echo "
-                <link rel=stylesheet' href='"; echo asset('/css/attachment_v1.0.css'); echo"'/>
-                <script src='"; echo asset('/js/attachment_v1.0.js'); echo"'></script>
-            ";
-        }
+        } 
     ?>
 </head>
 <body class="light">
-    <?php if(!preg_match('(embed)', $washedUrl)): ?>
+    <?php if(!preg_match('(embed)', $cleanedUrl)): ?>
         @include('others.bars.navbar')
     <?php endif; ?>
-    <?php if(!preg_match('(embed)', $washedUrl) && $route !== "welcome"): ?>
+    <?php if(!preg_match('(embed)', $cleanedUrl) && $route !== "welcome"): ?>
         @include('others.bars.sidebar')
     <?php endif; ?>
 

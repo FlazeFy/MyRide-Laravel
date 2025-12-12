@@ -212,6 +212,7 @@
                                             <span class="chip bg-${markFuel}"><i class="fa-solid fa-gas-pump"></i> ${dt.vehicle_fuel_status}</span>
                                             <span class="chip bg-success"><i class="fa-solid fa-location-arrow"></i> ${dt.vehicle_distance} Km</span>
                                             <span class="chip bg-info"><i class="fa-solid fa-user"></i> ${dt.vehicle_capacity}</span>
+                                            <span class="chip bg-info"><i class="fa-solid fa-gears"></i> ${dt.vehicle_transmission}</span>
                                             <span class="chip bg-${markStatus}"><i class="fa-solid fa-wrench"></i> ${dt.vehicle_status}</span>
                                         </div>
                                         <hr>
@@ -269,8 +270,8 @@
                     if(response.status != 404){
                         generate_api_error(response, true)
                     } else {
-                        $(`#${holder}`).css('margin-top','0')
-                        template_alert_container(holder, 'no-data', "No vehicle found", 'add a vehicle', '<i class="fa-solid fa-car"></i>','/vehicle/add')
+                        $(`#${holder}`).css('margin-top','var(--spaceMD)')
+                        template_alert_container(holder, 'no-data', "No vehicle found", 'add a vehicle', '<i class="fa-solid fa-car"></i>','/garage/add')
                     }
                 }
             });

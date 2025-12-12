@@ -1,0 +1,65 @@
+/* Typography */
+a {
+    text-decoration: none;
+    color: var(--secondaryColor) !important;
+}
+h6, p, .swal2-html-container, .swal2-title, tbody td {
+    color: var(--secondaryColor) !important;
+}
+label, input, textarea, select {
+    margin-bottom: var(--spaceMD);
+}
+.no-msg-text {
+    color: var(--greyColor);
+    text-align: center !important;
+    font-style: italic;
+    font-size: var(--textMD);
+}
+.text-secondary {
+    font-style: italic;
+    color: var(--greyColor) !important;
+    font-size: var(--textMD);
+}
+
+/* Table */
+table {
+    border-collapse: collapse;   
+    width: 100%;
+    border: 1.75px solid var(--secondaryColor) !important;
+}
+th, td {
+    text-align: center;         
+    vertical-align: middle;    
+    border: 1.75px solid var(--secondaryColor) !important; 
+    color: var(--whiteColor) !important;
+}
+thead th {
+    text-align: center;
+    background: var(--blueColor) !important;
+    color: var(--firstColor);
+    letter-spacing: 0.5px;
+    font-weight: 600;
+}
+table tbody p {
+    font-size: var(--textXMD);
+}
+
+/* Summary */
+.summary-label {
+    font-size: var(--textJumbo);
+    font-weight: 600;
+}
+.summary-number {
+    font-size: calc(2*var(--textJumbo));
+    font-weight: 700;
+    margin: 0;
+}
+
+.message.small img {
+    max-width: 160px;
+}
+.message.small p {
+    margin-top: var(--spaceSM);
+    margin-bottom: 0;
+    font-size: var(--textXMD);
+}

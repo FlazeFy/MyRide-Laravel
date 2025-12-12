@@ -29,51 +29,51 @@
                 let wash_checklist = ''
 
                 if (data.is_wash_body) {
-                    wash_checklist += '<h6 class="chip bg-warning d-inline mx-0">Body</h6> '
+                    wash_checklist += '<h6 class="chip bg-warning d-inline m-0">Body</h6> '
                 }
                 if (data.is_wash_window) {
-                    wash_checklist += '<h6 class="chip bg-warning d-inline mx-0">Window</h6> '
+                    wash_checklist += '<h6 class="chip bg-warning d-inline m-0">Window</h6> '
                 }
                 if (data.is_wash_dashboard) {
-                    wash_checklist += '<h6 class="chip bg-warning d-inline mx-0">Dashboard</h6> '
+                    wash_checklist += '<h6 class="chip bg-warning d-inline m-0">Dashboard</h6> '
                 }
                 if (data.is_wash_tires) {
-                    wash_checklist += '<h6 class="chip bg-warning d-inline mx-0">Tires</h6> '
+                    wash_checklist += '<h6 class="chip bg-warning d-inline m-0">Tires</h6> '
                 }
                 if (data.is_wash_trash) {
-                    wash_checklist += '<h6 class="chip bg-warning d-inline mx-0">Trash</h6> '
+                    wash_checklist += '<h6 class="chip bg-warning d-inline m-0">Trash</h6> '
                 }
                 if (data.is_wash_engine) {
-                    wash_checklist += '<h6 class="chip bg-warning d-inline mx-0">Engine</h6> '
+                    wash_checklist += '<h6 class="chip bg-warning d-inline m-0">Engine</h6> '
                 }
                 if (data.is_wash_seat) {
-                    wash_checklist += '<h6 class="chip bg-warning d-inline mx-0">Seat</h6> '
+                    wash_checklist += '<h6 class="chip bg-warning d-inline m-0">Seat</h6> '
                 }
                 if (data.is_wash_carpet) {
-                    wash_checklist += '<h6 class="chip bg-warning d-inline mx-0">Carpet</h6> '
+                    wash_checklist += '<h6 class="chip bg-warning d-inline m-0">Carpet</h6> '
                 }
                 if (data.is_wash_pillows) {
-                    wash_checklist += '<h6 class="chip bg-warning d-inline mx-0">Pillows</h6> '
+                    wash_checklist += '<h6 class="chip bg-warning d-inline m-0">Pillows</h6> '
                 }
                 if (data.is_fill_window_washing_water) {
-                    wash_checklist += '<h6 class="chip bg-warning d-inline mx-0">Window washing Water</h6> '
+                    wash_checklist += '<h6 class="chip bg-warning d-inline m-0">Window washing Water</h6> '
                 }
                 if (data.is_wash_hollow) {
-                    wash_checklist += '<h6 class="chip bg-warning d-inline mx-0">Hollow</h6> '
+                    wash_checklist += '<h6 class="chip bg-warning d-inline m-0">Hollow</h6> '
                 }
 
                 wash_checklist = wash_checklist.replace(/, $/, '')
                 
                 $(`#${wash_holder}`).html(`
                     <div class="container-fluid bg-success">
-                        <div class="d-flex justify-content-between">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
                             <div>
                                 <h5 class="mb-0">${data.wash_desc}</h5>
-                                <p class="text-secondary text-dark">wash at ${getDateToContext(data.created_at,'calendar')}</p>
+                                <p class="text-secondary text-dark mb-0">wash at ${getDateToContext(data.created_at,'calendar')}</p>
                             </div>
-                            <h5 class="chip bg-info">${data.wash_by}</h5>
+                            <h5 class="chip bg-info m-0">${data.wash_by}</h5>
                         </div>
-                        <div>${wash_checklist}</div>
+                        <div class="d-flex flex-wrap gap-2">${wash_checklist}</div>
                     </div>
                 `)
             },

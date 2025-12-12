@@ -8,7 +8,7 @@ class Query
             $res = "
                 vehicle.id, 
                 vehicle_name, vehicle_desc, vehicle_merk, vehicle_type, vehicle_distance, vehicle_category, vehicle_status, vehicle_plate_number, 
-                vehicle_fuel_status, vehicle_default_fuel, vehicle_color, vehicle_capacity, vehicle_img_url, 
+                vehicle_fuel_status, vehicle_default_fuel, vehicle_color, vehicle_capacity, vehicle_img_url, vehicle_transmission,
                 updated_at";
         } else if($type == 'trip_coordinate'){
             $res = "

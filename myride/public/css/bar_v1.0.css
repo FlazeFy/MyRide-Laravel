@@ -1,3 +1,69 @@
+/* Navbar */
+nav a {
+    color: var(--darkColor) !important;
+}
+.navbar, .footer {
+    border-bottom: 2px solid var(--secondaryColor);
+    padding: var(--spaceLG);
+    position: sticky;
+    top: 0;
+    background: var(--warningColor);
+    z-index: 1000;
+}
+.navbar .navbar-brand {
+    font-weight: 700;
+    font-size: calc(var(--textJumbo)*1.15);
+    margin-bottom: var(--spaceXXSM) !important;
+}
+.navbar-collapse-mobile {
+    display: none;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+    .content {
+        padding: var(--spaceMD);
+    }  
+    .navbar .navbar-brand {
+        font-size: var(--textJumbo);
+    }
+    .navbar, .footer {
+        padding: var(--spaceXMD);
+    }
+    .navbar-collapse {
+        display: inline-block !important;
+        position: absolute;
+        right: var(--spaceXMD);
+    }
+    .navbar-expand-lg .navbar-nav { 
+        flex-direction: row;
+    }
+}
+@media (max-width: 991px) {
+    .navbar .button-text {
+        display: none;
+    }
+}
+@media (max-width: 575px) {
+    .content {
+        padding: var(--spaceSM);
+    } 
+    .navbar .navbar-brand {
+        font-size: var(--textXLG);
+    }
+    .navbar, .footer {
+        padding: var(--spaceMD);
+    }
+    .navbar-collapse-mobile {
+        flex-wrap: wrap;
+        gap: 1;
+    }
+}
+
+.footer {
+    border-top: 2px solid var(--secondaryColor);
+}
+
+/* Sidebar */
 .sidebar {
     height: 100%;
     width: 0;
@@ -11,13 +77,11 @@
     padding-top: calc(var(--spaceJumbo)*3);
     background-color: var(--firstColor);
 }
-
 .sidebar .group-menu {
     font-weight: 600;
     margin-top: var(--spaceMD);
     transition: opacity 0.3s ease, margin 0.3s ease;
 }
-
 .sidebar .nav-link {
     border: 2px solid transparent;
     color: var(--secondaryColor);
@@ -28,28 +92,23 @@
     white-space: nowrap;
     transition: background 0.3s ease, border 0.3s ease, padding 0.3s ease;
 }
-
 .sidebar .nav-link i {
     min-width: 24px;
     text-align: center;
     transition: margin 0.3s ease;
 }
-
 .sidebar .nav-link span {
     transition: opacity 0.3s ease;
 }
-
 .sidebar .nav-link.active {
     background: var(--blueColor) !important;
     border-bottom: var(--spaceXXSM) solid var(--secondaryBlueColor);
 }
-
 .sidebar .nav-link:hover {
     background: var(--firstColor);
     border: 2px solid var(--secondaryBlueColor);
     border-bottom: var(--spaceXXSM) solid var(--secondaryBlueColor);
 }
-  
 .sidebar .closebtn {
     position: absolute;
     top: 0;

@@ -44,11 +44,10 @@
                     Swal.close()
                     const data = response.data
                     const carnametransmission = data.vehicle_name.split(" ")
-                    const transmission = carnametransmission[carnametransmission.length - 1]
                     const carname = carnametransmission.slice(0, -1).join(" ")
 
                     $(`#vehicle_name`).val(carname)
-                    $('#vehicle_transmission_code').val(transmission)
+                    $('#vehicle_transmission_code').val(data.vehicle_transmission)
                     $(`#vehicle_merk`).html(`<option value='${data.vehicle_merk}'>${data.vehicle_merk}</option>`)
                     $(`#vehicle_type`).html(`<option value='${data.vehicle_type}'>${data.vehicle_type}</option>`)
                     $(`#vehicle_category`).html(`<option value='${data.vehicle_category}'>${data.vehicle_category}</option>`)

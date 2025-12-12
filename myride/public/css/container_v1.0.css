@@ -1,0 +1,56 @@
+/* Container */
+.container, .form-control, .form-select, .modal-content, .swal2-popup, .popover, .plate-number, .chip, .bordered, .container-fluid, .input-group-text,
+.apexcharts-tooltip, .apexcharts-xaxistooltip, .apexcharts-xaxistooltip.apexcharts-theme-light, .apexcharts-xaxistooltip.apexcharts-theme-dark {
+    border: 2px solid var(--secondaryColor) !important;
+}
+.container, .modal-content, .swal2-popup, .popover, .plate-number, .chip, .container-fluid {
+    border-bottom: var(--spaceXXSM) solid var(--secondaryColor) !important;
+    padding: var(--spaceXLG);
+    margin-bottom: var(--spaceLG);
+    background: var(--firstColor);
+    position: relative;
+}
+@media (max-width: 575px) {
+    .container, .popover, .container-fluid {
+        padding: var(--spaceXMD) !important;
+    } 
+}
+@media (min-width: 768px) and (max-width: 991px) {
+    .modal-content, .swal2-popup {
+        padding: var(--spaceXSM) !important;
+    }  
+}
+@media (max-width: 575px) {
+    .modal-content, .swal2-popup {
+        padding: var(--spaceMini) !important;
+    } 
+}
+.container, .container-fluid {
+    width: 100%;
+    margin-inline: 0;
+}
+.container-landing {
+    border-radius: var(--roundedJumbo);
+    padding: var(--spaceXLG);
+    border: 4px solid transparent;
+    margin-bottom: var(--spaceLG);
+    border: 4px solid var(--firstColor);
+}
+.btn, .container, .sidebar .nav-link, .hover-grow, .plate-number, .chip, .bordered, .chip-mini, .container-fluid, .navbar-brand {
+    -webkit-transition: all 0.4s !important;
+    -o-transition: all 0.4s !important;
+    transition: all 0.4s !important;
+}
+.modal-content, .swal2-popup, .popover, .btn:hover, .container-landing, .apexcharts-tooltip {
+    box-shadow: rgba(0, 0, 0, 0.2) 1.975px 1.975px 2.8px !important;
+}
+.popover {
+    border-radius: var(--roundedLG);
+    padding: 0 !important;
+}
+.popover-header {
+    background: transparent;
+}
+.modal-content, .swal2-popup {
+    padding: var(--spaceMD) !important;
+}
