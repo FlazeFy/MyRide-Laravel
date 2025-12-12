@@ -480,7 +480,122 @@ class Commands extends Controller
         } catch(\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => $e->getMessage(),
+                'message' => Generator::getMessageTemplate("unknown_error", null),
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
+     * @OA\DELETE(
+     *     path="/api/v1/vehicle/image_collection/destroy/{vehicle_id}/{image_id}",
+     *     summary="Delete Vehicle Image Collection By Id",
+     *     description="Delete vehicle image collection. This request is using MySQL database.",
+     *     tags={"Vehicle"},
+     *     security={{"bearerAuth":{}}},
+     *     @OA\Parameter(
+     *         name="vehicle_id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="string"),
+     *         description="Vehicle ID",
+     *         example="e1288783-a5d4-1c4c-2cd6-0e92f7cc3bf9",
+     *     ),
+     *     @OA\Parameter(
+     *         name="image_id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="string"),
+     *         description="Vehicle Image ID",
+     *         example="e1288783-a5d4-1c4c-2cd6-0e92f7cc3bf9",
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Vehicle image collection update successfully",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="message", type="string", example="vehicle image update")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Validation failed",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             oneOf={
+     *                 @OA\Schema(
+     *                     @OA\Property(property="status", type="string", example="failed"),
+     *                     @OA\Property(property="message", type="string", example="vehicle image collection is a required field")
+     *                 )
+     *             }
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="vehicle failed to fetched",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="failed"),
+     *             @OA\Property(property="message", type="string", example="vehicle not found")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal Server Error",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="error"),
+     *             @OA\Property(property="message", type="string", example="something wrong. please contact admin")
+     *         )
+     *     )
+     * )
+     */
+    public function hardDeleteVehicleImageCollectionById(Request $request, $vehicle_id, $image_id)
+    {
+        try{
+            $user_id = $request->user()->id;
+
+            $vehicle = VehicleModel::getVehicleByIdAndUserId($vehicle_id,$user_id);
+            if($vehicle){
+                $vehicle_other_img_urls = $vehicle->vehicle_other_img_url;
+                // Remove File
+                foreach ($vehicle_other_img_urls as $dt) {
+                    if ($dt['vehicle_img_id'] === $image_id) {
+                        Firebase::deleteFile($dt['vehicle_img_url']);
+                        break;
+                    }
+                }
+            
+                // Remove Item
+                $vehicle_other_img_urls = array_filter($vehicle_other_img_urls, function ($dt) use ($image_id) {
+                    return $dt['vehicle_img_id'] !== $image_id;
+                });
+            
+                $vehicle_other_img_url = array_values($vehicle_other_img_urls);
+                
+                $rows = VehicleModel::updateVehicleById([
+                    'vehicle_other_img_url' => count($vehicle_other_img_url) > 0 ? $vehicle_other_img_url : null,
+                ], $vehicle_id, $user_id);
+
+                if($rows > 0){
+                    return response()->json([
+                        'status' => 'success',
+                        'message' => Generator::getMessageTemplate("delete", "$this->module image"),
+                    ], Response::HTTP_OK);
+                } else {
+                    return response()->json([
+                        'status' => 'failed',
+                        'message' => Generator::getMessageTemplate("not_found", "$this->module image"),
+                    ], Response::HTTP_NOT_FOUND);
+                }
+            } else {
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => Generator::getMessageTemplate("not_found", "$this->module image"),
+                ], Response::HTTP_NOT_FOUND);
+            }
+        } catch(\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => Generator::getMessageTemplate("unknown_error", null),
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
@@ -1038,7 +1153,7 @@ class Commands extends Controller
         } catch(\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => $e->getMessage(),
+                'message' => Generator::getMessageTemplate("unknown_error", null),
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }

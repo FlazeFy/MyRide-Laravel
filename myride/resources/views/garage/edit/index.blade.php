@@ -78,7 +78,8 @@
                             $('#vehicle_img_collection-holder').append(`
                                 <div class="col-md-6 col-sm-12">
                                     <div class="container-fluid">
-                                        <img class="img img-fluid" src="${dt.vehicle_img_url}" alt="${dt.vehicle_img_url}"/>
+                                        <img class="img img-fluid mb-2" src="${dt.vehicle_img_url}" alt="${dt.vehicle_img_url}"/>
+                                        <a class="btn btn-danger btn-delete w-100" style="width:50px;" data-url="/api/v1/vehicle/image_collection/destroy/<?= $id ?>/${dt.vehicle_img_id}" data-context="Vehicle Image Collection"><i class="fa-solid fa-trash"></i> Delete</a>
                                     </div>
                                 </div>
                             `)
