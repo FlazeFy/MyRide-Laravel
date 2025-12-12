@@ -78,7 +78,7 @@
                         xhr.setRequestHeader("Authorization", `Bearer ${token}`)
                     },
                     success: function(response) {
-                        Swal.fire("Success!", "Driver has successfully assigned", "success").then(() => window.location.reload())
+                        Swal.fire("Success!", response.message, "success").then(() => window.location.reload())
                     },
                     error: function(response, jqXHR, textStatus, errorThrown) {
                         generate_api_error(response, true)

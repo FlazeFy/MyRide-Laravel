@@ -17,6 +17,7 @@
             <div class="container-fluid">
                 <h2>Vehicle Image</h2><hr>
                 @include('garage.edit.usecases.put_vehicle_image')
+                @include('garage.edit.usecases.put_vehicle_image_collection')
             </div>
         </div>
         <div class="col-lg-6 col-md-12">
@@ -70,6 +71,23 @@
                         vehicle_img_url = data.vehicle_img_url
                     } else {
                         template_alert_container('vehicle_img-holder', 'no-data', "No image selected", null, '<i class="fa-solid fa-image"></i>', null)
+                    }
+
+                    if(data.vehicle_other_img_url){
+                        data.vehicle_other_img_url.forEach(dt => {
+                            $('#vehicle_img_collection-holder').append(`
+                                <div class="col-md-6 col-sm-12">
+                                    <div class="container-fluid">
+                                        <img class="img img-fluid" src="${dt.vehicle_img_url}" alt="${dt.vehicle_img_url}"/>
+                                    </div>
+                                </div>
+                            `)
+                        });
+                        $('#add_image_collection-button span').text(' Change Image')
+                        $('#vehicle_image_collection_button-holder').prepend(`<a class="btn btn-danger py-1" id="remove_image_collection-button"><i class="fa-solid fa-trash"></i><span class="d-none d-md-inline"> Remove Image</span></a>`)
+                        vehicle_other_img_url = data.vehicle_other_img_url
+                    } else {
+                        template_alert_container('vehicle_img_collection-holder', 'no-data', "No image collection added", null, '<i class="fa-solid fa-image"></i>', null)
                     }
 
                     if(data.vehicle_document){

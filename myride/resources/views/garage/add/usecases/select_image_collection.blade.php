@@ -52,9 +52,7 @@
             const $preview = $(this).siblings('.image-preview')
 
             if (!file) return
-
             const maxSize = 5 * 1024 * 1024
-
             if (file.size > maxSize) {
                 failedMsg('File too large. Maximum file size is 5 MB')
                 $(this).val('')

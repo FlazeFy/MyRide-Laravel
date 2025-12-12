@@ -53,7 +53,7 @@
                         reject(errorThrown)
                         generate_api_error(response, true)
                     } else {
-                        template_alert_container(`<?= $carouselId ?>`, 'no-data', "No trip found", 'add a trip', '<i class="fa-solid fa-luggage"></i>','/trip/add')
+                        template_alert_container(`<?= $carouselId ?>`, 'no-data', "No trip found", 'add a trip', '<i class="fa-solid fa-car"></i>','/trip/add')
                     }
                 }
             });
