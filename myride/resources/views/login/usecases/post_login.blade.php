@@ -18,6 +18,7 @@
     <input hidden name="role" value="" id="role">
     <input hidden name="profile_pic" value="" id="profile_pic">
     <a onclick="login()" class="btn btn-success w-100 mb-3"><i class="fa-solid fa-arrow-right-to-bracket mx-1"></i> Enter the Garage</a>
+    <a href="/auth/google" class="btn btn-primary w-100"><i class="fa-brands fa-google mx-1"></i> Sign In With Google</a>
     <hr>
     <div class="row">
         <div class="col-md-6 col-sm-12 p-1">

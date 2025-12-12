@@ -37,6 +37,11 @@ Route::prefix('/')->group(function () {
     Route::post('/sign_out', [DashboardController::class, 'sign_out']);
 });
 
+Route::prefix('/auth')->group(function (){
+    Route::get('/google', [LoginController::class, 'redirect_to_google']);
+    Route::get('/google/callback', [LoginController::class, 'login_google_callback']);
+});
+
 Route::prefix('/dashboard')->middleware(['auth_v2:sanctum'])->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
     Route::post('/toogle_view_stats_fuel', [DashboardController::class, 'toogle_view_stats_fuel']);

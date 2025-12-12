@@ -86,6 +86,12 @@ class UserModel extends Authenticatable
         return $res;
     }
 
+    public static function getUserByUsernameOrEmail($username,$email){
+        return UserModel::where('username',$username)
+            ->orwhere('email',$email)
+            ->first();
+    }
+
     public static function getAvailableYear($user_id, $is_admin){
         $res_vehicle = VehicleModel::selectRaw('YEAR(created_at) as year');
         if (!$is_admin) {
@@ -125,7 +131,7 @@ class UserModel extends Authenticatable
         return UserModel::create([
             'id' => Generator::getUUID(), 
             'username' => $data->username, 
-            'password' => Hash::make($data->password),
+            'password' => $data->password !== "GOOGLE_SIGN_IN" ? Hash::make($data->password) : $data->password,
             'email' => $data->email, 
             'telegram_user_id' => $data->telegram_user_id, 
             'telegram_is_valid' => 0, 
