@@ -10,11 +10,13 @@ use Kreait\Firebase\Factory;
 use App\Models\ReminderModel;
 use App\Models\AdminModel;
 use App\Models\UserModel;
+use App\Models\GoogleTokensModel;
 
 // Helper
 use App\Helpers\Generator;
 use App\Helpers\Validation;
 use App\Helpers\Firebase;
+use App\Helpers\GoogleCalendar;
 
 class Commands extends Controller
 {
@@ -238,6 +240,12 @@ class Commands extends Controller
 
                 $rows = ReminderModel::createReminder($data, $user_id);
                 if($rows){
+                    $google_token = GoogleTokensModel::getGoogleTokensByUserId($user_id);
+                    if($google_token){
+                        $reminder_desc = "$request->reminder_context | $request->reminder_title\n$request->reminder_body";
+                        GoogleCalendar::createSingleEvent($google_token->access_token, $reminder_desc, $request->remind_at, 60);
+                    }
+                    
                     return response()->json([
                         'status' => 'success',
                         'message' => Generator::getMessageTemplate("create", $this->module),

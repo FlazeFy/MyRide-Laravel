@@ -235,16 +235,12 @@
             const img = $("#reminder_image")[0].files[0]
             if (img) fd.append("reminder_image", img)
             else fd.append("reminder_image", null)
-        } else {
-            fd.append("reminder_image", null)
-        }
+        } 
 
         if (hasLocation) {
             const coor = $("#reminder_location").val()
             fd.append("reminder_location", coor ? coor : null)
-        } else {
-            fd.append("reminder_location", null)
-        }
+        } 
 
         Swal.showLoading()
 
