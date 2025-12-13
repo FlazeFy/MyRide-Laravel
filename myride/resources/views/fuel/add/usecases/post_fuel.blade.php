@@ -107,39 +107,35 @@
         const img = $("#fuel_bill")[0] ? $("#fuel_bill")[0].files[0] : null
         fd.append("fuel_bill", img ? img : null)
 
-        if(vehicle_id !== "-" && fuel_brand !== "-"){
-            $.ajax({
-                url: `/api/v1/fuel`,
-                type: 'POST',
-                processData: false,
-                contentType: false,
-                data: fd,
-                beforeSend: function (xhr) {
-                    Swal.showLoading()
-                    xhr.setRequestHeader("Accept", "application/json")
-                    xhr.setRequestHeader("Authorization", `Bearer ${token}`)
-                },
-                success: function(response) {
-                    Swal.close()
-                    Swal.fire({
-                        title: "Success!",
-                        text: response.message,
-                        icon: "success"
-                    }).then(() => {
-                        window.location.href = '/fuel'
-                    });
-                },
-                error: function(response, jqXHR, textStatus, errorThrown) {
-                    Swal.close()
-                    if(response.status === 500){
-                        generate_api_error(response, true)
-                    } else {
-                        failedMsg(response.status === 400 ? Object.values(response.responseJSON.message).flat().join('\n') : response.responseJSON.message)
-                    }
+        $.ajax({
+            url: `/api/v1/fuel`,
+            type: 'POST',
+            processData: false,
+            contentType: false,
+            data: fd,
+            beforeSend: function (xhr) {
+                Swal.showLoading()
+                xhr.setRequestHeader("Accept", "application/json")
+                xhr.setRequestHeader("Authorization", `Bearer ${token}`)
+            },
+            success: function(response) {
+                Swal.close()
+                Swal.fire({
+                    title: "Success!",
+                    text: response.message,
+                    icon: "success"
+                }).then(() => {
+                    window.location.href = '/fuel'
+                });
+            },
+            error: function(response, jqXHR, textStatus, errorThrown) {
+                Swal.close()
+                if(response.status === 500){
+                    generate_api_error(response, true)
+                } else {
+                    failedMsg(response.status === 400 ? Object.values(response.responseJSON.message).flat().join('\n') : response.responseJSON.message)
                 }
-            });
-        } else {
-            failedMsg('create fuel : you must select an item')
-        }
+            }
+        });
     }
 </script>

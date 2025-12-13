@@ -61,7 +61,22 @@
                             </td>
                             <td>
                                 <div class="d-flex flex-wrap gap-2">
-                                    ${dt.inventory_image_url != null ? `<a class="btn btn-primary" style="width:50px;"><i class="fa-solid fa-image"></i></a>` : ""}
+                                    ${dt.inventory_image_url != null ? `
+                                        <a class="btn btn-primary" style="width:50px;" data-bs-target="#inventory_image_url_${dt.id}-modal" data-bs-toggle="modal"><i class="fa-solid fa-image"></i></a>
+                                        <div class="modal fade" id="inventory_image_url_${dt.id}-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title fw-bold">Inventory Image</h5>
+                                                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <img class="img img-fluid" src="${dt.inventory_image_url}" alt="${dt.inventory_image_url}">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ` : ""}
                                     <a class="btn btn-danger btn-delete" style="width:50px;" data-url="/api/v1/inventory/destroy/${dt.id}" data-context="Inventory"><i class="fa-solid fa-trash"></i></a>
                                     <a class="btn btn-warning btn-update" style="width:50px;" 
                                         data-vehicle-plate-number="${dt.vehicle_plate_number}" data-id="${dt.id}" 

@@ -41,8 +41,7 @@
                 </div>
             </div>
             <hr>
-            <label>Inventory Image</label>
-            <input type="file"><br>
+            @include('inventory.add.usecases.select_inventory_image')
             <div class="d-grid d-md-inline-block">
                 <a class="btn btn-success rounded-pill p-3 w-100 w-md-auto mt-3" id="submit-add-inventory-btn"><i class="fa-solid fa-floppy-disk"></i> Save Inventory</a>
             </div>
@@ -71,45 +70,51 @@
         const vehicle_id = $('#vehicle_holder').val()
         const inventory_category = $('#inventory_category_holder').val()
 
-        if(vehicle_id !== "-" && inventory_category !== "-"){
-            Swal.showLoading();
-            $.ajax({
-                url: `/api/v1/inventory`,
-                type: 'POST',
-                contentType: "application/json",
-                data: JSON.stringify({
-                    vehicle_id: vehicle_id,
-                    gudangku_inventory_id: null,
-                    inventory_name: $("#inventory_name").val(),
-                    inventory_category: $("#inventory_category_holder").val(),
-                    inventory_qty: $("#inventory_qty").val(),
-                    inventory_storage: $("#inventory_storage_holder").val()
-                }),
-                beforeSend: function (xhr) {
-                    xhr.setRequestHeader("Accept", "application/json")
-                    xhr.setRequestHeader("Authorization", `Bearer ${token}`)
-                },
-                success: function(response) {
-                    Swal.close()
-                    Swal.fire({
-                        title: "Success!",
-                        text: response.message,
-                        icon: "success"
-                    }).then(() => {
-                        window.location.href = '/inventory'
-                    });
-                },
-                error: function(response, jqXHR, textStatus, errorThrown) {
-                    Swal.close()
-                    if(response.status === 500){
-                        generate_api_error(response, true)
-                    } else {
-                        failedMsg(response.status === 400 ? Object.values(response.responseJSON.message).flat().join('\n') : response.responseJSON.message)
-                    }
-                }
-            });
-        } else {
+        if (vehicle_id === "-" || inventory_category === "-") {
             failedMsg('create inventory : you must select an item')
+            return
         }
+
+        const fd = new FormData()
+
+        fd.append("vehicle_id", vehicle_id)
+        fd.append("inventory_name",  $('#inventory_name').val())
+        fd.append("inventory_category", inventory_category)
+        fd.append("inventory_qty", $("#inventory_qty").val())
+        fd.append("inventory_storage", $("#inventory_storage_holder").val())
+
+        const img = $("#inventory_image")[0] ? $("#inventory_image")[0].files[0] : null
+        fd.append("inventory_image_url", img ? img : null)
+
+        $.ajax({
+            url: `/api/v1/inventory`,
+            type: 'POST',
+            processData: false,
+            contentType: false,
+            data: fd,
+            beforeSend: function (xhr) {
+                Swal.showLoading()
+                xhr.setRequestHeader("Accept", "application/json")
+                xhr.setRequestHeader("Authorization", `Bearer ${token}`)
+            },
+            success: function(response) {
+                Swal.close()
+                Swal.fire({
+                    title: "Success!",
+                    text: response.message,
+                    icon: "success"
+                }).then(() => {
+                    window.location.href = '/inventory'
+                });
+            },
+            error: function(response, jqXHR, textStatus, errorThrown) {
+                Swal.close()
+                if(response.status === 500){
+                    generate_api_error(response, true)
+                } else {
+                    failedMsg(response.status === 400 ? Object.values(response.responseJSON.message).flat().join('\n') : response.responseJSON.message)
+                }
+            }
+        });
     }
 </script>
