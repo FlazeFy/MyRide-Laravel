@@ -2,7 +2,8 @@
 <h3>How to Add Vehicle?</h3>
 <p>To regist your vehicle at MyRide Apps you must provide <b class="text-primary">Vehicle Name</b>, <b class="text-primary">Transmission</b>, <b class="text-primary">Merk</b>, <b class="text-primary">Type</b>, <b class="text-primary">Price</b>, <b class="text-primary">Description</b>
 , <b class="text-primary">Distance Travelled</b>, <b class="text-primary">Category</b>, <b class="text-primary">Status</b>, <b class="text-primary">Year Made</b>, <b class="text-primary">Plate Number</b>, <b class="text-primary">Default Fuel</b>, <b class="text-primary">Fuel Capacity</b>
-, <b class="text-primary">Fuel Status</b>, <b class="text-primary">Color</b>, and <b class="text-primary">Passanger Capacity</b>.</p>
+, <b class="text-primary">Fuel Status</b>, <b class="text-primary">Color</b>, and <b class="text-primary">Passanger Capacity</b>. You can also provide the <b class="text-primary">Vehicle Image</b> and <b class="text-primary">Vehicle Image Collection</b>
+capture as image with format such as PNG, JPG, or JPEG.</p>
 <ol>
     <li>Open your sidebar and press button <b class="text-success">My Garage</b>, after that you will be redirect to Vehicle Page.</li>
     <li>At the Vehicle Page, press button <b class="text-success">+ Vehicle</b>.</li>
