@@ -103,6 +103,7 @@
 </body>
 
 <!--Modal-->
+@include('others.scroll_top')
 @include('others.popup.success')
 @include('others.popup.failed')
 @include('others.popup.success_mini')
