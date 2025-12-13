@@ -4,7 +4,7 @@
 <b class="text-primary">Remind At</b>, and <b class="text-primary">Service Notes</b>.</p>
 <ol>
     <li>Open your sidebar and press button <b class="text-success">Service</b>, after that you will be redirect to Service Page.</li>
-    <li>At the Service Page, press button <b class="text-success">+ Service</b>.</li>
+    <li>At the Service Page, press button <b class="text-success">+ Service</b>. And it will redirect you to the Add Service Page.</li>
     <li>Fill the form and press the <b class="text-success">Save Service</b> button to finish.</li>
 </ol>
 <h3>How to See Your Service History?</h3>

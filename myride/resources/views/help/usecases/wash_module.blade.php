@@ -1,10 +1,10 @@
 <h2>Wash Module</h2><hr>
 <h3>How to Add Wash?</h3>
-<p>To add your past wash history at MyRide Apps you must select your <b class="text-primary">Vehicle</b>, provide <b class="text-primary">Wash Brand</b>, <b class="text-primary">Wash Type</b>, <b class="text-primary">Wash RON</b>, 
-<b class="text-primary">Volume (L)</b>, and <b class="text-primary">Total Price</b>. You can also provide the <b class="text-primary">Wash Receipt</b> capture as image with format such as PNG, JPG, or JPEG.</p>
+<p>To add your past wash history at MyRide Apps you must select your <b class="text-primary">Vehicle</b>, provide <b class="text-primary">Wash By</b>, <b class="text-primary">Wash Price</b>, <b class="text-primary">Address</b>, 
+<b class="text-primary">Description</b>, and fill some <b class="text-primary">Checklist</b>.</p>
 <ol>
     <li>Open your sidebar and press button <b class="text-success">Wash</b>, after that you will be redirect to Wash Page.</li>
-    <li>At the Wash Page, press button <b class="text-success">+ Wash</b>.</li>
+    <li>At the Wash Page, press button <b class="text-success">+ Wash</b>. And it will redirect you to the Add Wash Page.</li>
     <li>Fill the form and press the <b class="text-success">Save Wash</b> button to finish.</li>
 </ol>
 <h3>How to See Your Wash History?</h3>

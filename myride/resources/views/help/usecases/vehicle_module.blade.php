@@ -15,7 +15,7 @@ capture as image with format such as PNG, JPG, or JPEG.</p>
 <h5 class="fw-bold mt-3">Via Sidebar</h5>
 <ol>
     <li>Open your sidebar, navigate through the My Vehicle section. You will find list of your vehicle that showing the <b class="text-primary">Vehicle Name</b> and <b class="text-primary">Plate Number</b>.</li>
-    <li>To open the vehicle detail, you can press the button that labeled with the "<b class="text-primary">Vehicle Name</b>". And it will redirect your to Vehicle Detail Page</li>
+    <li>To open the vehicle detail, you can press the button that labeled with the "<b class="text-primary">Vehicle Name</b>". And it will redirect your to Vehicle Detail Page.</li>
 </ol>
 <h5 class="fw-bold mt-3">Via My Garage Page</h5>
 <ol>

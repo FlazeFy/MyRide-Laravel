@@ -4,8 +4,8 @@
 , <b class="text-primary">Trip Origin Coordinate</b>, <b class="text-primary">Trip Destination Name</b>, and <b class="text-primary">Trip Destination Coordinate</b>.</p>
 <ol>
     <li>Open your sidebar and press button <b class="text-success">Trip</b>, after that you will be redirect to Trip Page.</li>
-    <li>At the Trip Page, press button <b class="text-success">+ Trip</b>.</li>
-    <li>Fill the form and select your trip location via Maps or just manually input the coordinate</li>
+    <li>At the Trip Page, press button <b class="text-success">+ Trip</b>. And it will redirect you to the Add Trip Page.</li>
+    <li>Fill the form and select your trip location via Maps or just manually input the coordinate.</li>
     <li>Press the <b class="text-success">Save Trip</b> button to finish.</li>
 </ol>
 <h3>How to See Your Trip History?</h3>

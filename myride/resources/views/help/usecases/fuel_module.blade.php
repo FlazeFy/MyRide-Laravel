@@ -4,7 +4,7 @@
 <b class="text-primary">Volume (L)</b>, and <b class="text-primary">Total Price</b>. You can also provide the <b class="text-primary">Fuel Receipt</b> capture as image with format such as PNG, JPG, or JPEG.</p>
 <ol>
     <li>Open your sidebar and press button <b class="text-success">Fuel</b>, after that you will be redirect to Fuel Page.</li>
-    <li>At the Fuel Page, press button <b class="text-success">+ Fuel</b>.</li>
+    <li>At the Fuel Page, press button <b class="text-success">+ Fuel</b>. And it will redirect you to the Add Fuel Page.</li>
     <li>Fill the form and also you can add your fuel purchase receipt by pressed the <b class="text-success">Add Receipt</b> button.</li>
     <li>Press the <b class="text-success">Save Fuel</b> button to finish.</li>
 </ol>
