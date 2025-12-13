@@ -7,6 +7,9 @@
                 <div class="container-fluid">
                     @include('help.usecases.auth_module')
                 </div>
+                <div class="container-fluid">
+                    @include('help.usecases.trip_module')
+                </div>
             </div>
             <div class="col-md-6 col-sm-12">
                 <div class="container-fluid">
