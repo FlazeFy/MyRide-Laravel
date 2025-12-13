@@ -28,6 +28,7 @@ use App\Http\Controllers\AboutController;
 use App\Http\Controllers\AddDriverController;
 use App\Http\Controllers\GarageAddController;
 use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\HelpController;
 
 Route::prefix('/')->group(function () {
     Route::get('/', [WelcomeController::class, 'index'])->name('welcome');
@@ -35,6 +36,7 @@ Route::prefix('/')->group(function () {
     Route::get('/login', [LoginController::class, 'index'])->name('login');
     Route::post('/login/validate', [LoginController::class, 'login_auth']);
     Route::post('/sign_out', [DashboardController::class, 'sign_out']);
+    Route::get('/help', [HelpController::class, 'index'])->name('help');
 });
 
 Route::prefix('/auth')->group(function (){

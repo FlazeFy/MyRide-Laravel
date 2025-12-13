@@ -4,7 +4,7 @@
         <li><a href="/dashboard" class="nav-link <?= $active_menu == "dashboard" ? "active" : "" ?>"><i class="fa-solid fa-table"></i> <span>Dashboard</span></a></li>
         <li><a href="/garage" class="nav-link <?= $active_menu == "garage" ? "active" : "" ?>"><i class="fa-solid fa-warehouse"></i> <span>My Garage</span></a></li>
     </ul>
-    <h5 class="group-menu">Vehicle</h5>
+    <h5 class="group-menu">My Vehicle</h5>
     <ul class="nav nav-pills flex-column" id="vehicle_menu-list"></ul>
     <h5 class="group-menu">Others</h5>
     <ul class="nav nav-pills flex-column">
@@ -106,8 +106,11 @@
                 },
                 error: function(response, jqXHR, textStatus, errorThrown) {
                     Swal.close()
-                    if(response.status != 404){
+                    if(response.status !== 404 && response.status !== 401){
                         generate_api_error(response, true)
+                    } else if(response.status === 401){
+                        $('#sidebar').css({paddingTop: $(window).width() < 767 ? '120px' : '100px' })
+                        template_alert_container('sidebar', 'expired_session', "Your session was lost", 'go to login', '<i class="fa-solid fa-arrow-right-to-bracket"></i>','/login')
                     } else {
                         generate_menu(false, ctx_holder)
                     }
