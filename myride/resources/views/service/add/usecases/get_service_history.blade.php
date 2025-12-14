@@ -38,7 +38,7 @@
                             <td scope="col" style="width:120px;">${dt.service_category}</td>
                             <td scope="col" class="text-start" style="width:150px;">
                                 <h6>Price</h6>
-                                <p>Rp. ${number_format(dt.service_price_total, 0, ',', '.')},00</p>
+                                <p>Rp. ${numberFormat(dt.service_price_total, 0, ',', '.')},00</p>
                                 <h6>Location</h6>
                                 <p>${dt.service_location}</p>
                             </td>
@@ -49,7 +49,7 @@
             error: function(response, jqXHR, textStatus, errorThrown) {
                 Swal.close()
                 if(response.status !== 404){
-                    generate_api_error(response, true)
+                    generateApiError(response, true)
                 } else {
                     $(`#${holder}`).html(`<th scope="row" colspan="3" class="no-msg-text">- No Service Found -</th>`)
                 }

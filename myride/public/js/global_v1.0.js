@@ -84,7 +84,7 @@ const ucFirst = (val) => {
     return res
 }
 
-const generate_api_error = (response, is_list_format) => {
+const generateApiError = (response, is_list_format) => {
     if (response.status === 422) {
         let msg = response.responseJSON.message
         
@@ -160,7 +160,7 @@ const checkScreenSize = (width) => {
     }
 }
 
-const set_checklist_holder = () => {
+const setChecklistHolder = () => {
     const list_checklist = ['is_wash_body', 'is_wash_window', 'is_wash_dashboard', 'is_wash_tires', 'is_wash_trash', 'is_wash_engine', 'is_wash_seat', 'is_wash_carpet', 'is_wash_pillows', 'is_fill_window_washing_water', 'is_wash_hollow']
 
     $('#checklist-holder').empty()
@@ -174,6 +174,14 @@ const set_checklist_holder = () => {
             </div>
         `)
     });
+}
+
+const getMonthYear = () => {
+    const date = new Date()
+    const month = String(date.getMonth() + 1).padStart(2, '0')
+    const year = date.getFullYear()
+    
+    return `${month}-${year}`
 }
 
 const applyAutoTheme = () => {

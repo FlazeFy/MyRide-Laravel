@@ -148,7 +148,7 @@
             });
         })
         .fail(function (response, xhr, ajaxOptions, thrownError) {
-            generate_api_error(response, true)
+            generateApiError(response, true)
             var pins = pin_holder.querySelectorAll('input')
             var is_empty = false
 

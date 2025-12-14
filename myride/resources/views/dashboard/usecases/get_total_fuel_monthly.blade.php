@@ -21,14 +21,14 @@
                     const data = response.data
                     localStorage.setItem(ctx,JSON.stringify(data))
                     localStorage.setItem(`last-hit-${ctx}`,Date.now())
-                    generate_line_chart(title,ctx_holder,data)
+                    generateLineChart(title,ctx_holder,data)
                 },
                 error: function(response, jqXHR, textStatus, errorThrown) {
                     Swal.close()
                     if(response.status != 404){
-                        generate_api_error(response, true)
+                        generateApiError(response, true)
                     } else {
-                        template_alert_container(ctx_holder, 'no-data', "No fuel found for this context to generate the stats", 'add a fuel', '<i class="fa-solid fa-gas-pump"></i>','/fuel/add')
+                        templateAlertContainer(ctx_holder, 'no-data', "No fuel found for this context to generate the stats", 'add a fuel', '<i class="fa-solid fa-gas-pump"></i>','/fuel/add')
                         $(`#${ctx_holder}`).prepend(`<h2 class='title-chart'>${ucEachWord(title)}</h2>`)
                     }
                 }
@@ -42,7 +42,7 @@
             if(((now - lastHit) / 1000) < statsFetchRestTime){
                 const data = JSON.parse(localStorage.getItem(ctx))
                 if(data){
-                    generate_line_chart(title,ctx_holder,data)
+                    generateLineChart(title,ctx_holder,data)
                     Swal.close()
                 } else {
                     Swal.close()

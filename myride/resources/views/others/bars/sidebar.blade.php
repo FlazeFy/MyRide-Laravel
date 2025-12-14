@@ -107,10 +107,10 @@
                 error: function(response, jqXHR, textStatus, errorThrown) {
                     Swal.close()
                     if(response.status !== 404 && response.status !== 401){
-                        generate_api_error(response, true)
+                        generateApiError(response, true)
                     } else if(response.status === 401){
                         $('#sidebar').css({paddingTop: $(window).width() < 767 ? '120px' : '100px' })
-                        template_alert_container('sidebar', 'expired_session', "Your session was lost", 'go to login', '<i class="fa-solid fa-arrow-right-to-bracket"></i>','/login')
+                        templateAlertContainer('sidebar', 'expired_session', "Your session was lost", 'go to login', '<i class="fa-solid fa-arrow-right-to-bracket"></i>','/login')
                     } else {
                         generate_menu(false, ctx_holder)
                     }

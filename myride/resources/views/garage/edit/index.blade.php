@@ -69,7 +69,7 @@
                         $('#vehicle_image_button-holder').prepend(`<a class="btn btn-danger py-1" id="remove_image-button"><i class="fa-solid fa-trash"></i><span class="d-none d-md-inline"> Remove Image</span></a>`)
                         vehicle_img_url = data.vehicle_img_url
                     } else {
-                        template_alert_container('vehicle_img-holder', 'no-data', "No image selected", null, '<i class="fa-solid fa-image"></i>', null)
+                        templateAlertContainer('vehicle_img-holder', 'no-data', "No image selected", null, '<i class="fa-solid fa-image"></i>', null)
                     }
 
                     if(data.vehicle_other_img_url){
@@ -87,7 +87,7 @@
                         $('#vehicle_image_collection_button-holder').prepend(`<a class="btn btn-danger py-1" id="remove_image_collection-button"><i class="fa-solid fa-trash"></i><span class="d-none d-md-inline"> Remove Image</span></a>`)
                         vehicle_other_img_url = data.vehicle_other_img_url
                     } else {
-                        template_alert_container('vehicle_img_collection-holder', 'no-data', "No image collection added", null, '<i class="fa-solid fa-image"></i>', null)
+                        templateAlertContainer('vehicle_img_collection-holder', 'no-data', "No image collection added", null, '<i class="fa-solid fa-image"></i>', null)
                     }
 
                     if(data.vehicle_document){
@@ -121,7 +121,7 @@
                 error: function(response, jqXHR, textStatus, errorThrown) {
                     Swal.close()
                     if(response.status !== 404){
-                        generate_api_error(response, true)
+                        generateApiError(response, true)
                     } else {
                         failedRoute('vehicle','/garage')
                     }

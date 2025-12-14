@@ -61,7 +61,7 @@
                 telegram_req_holder(data_telegram)
             },
             error: function(response, jqXHR, textStatus, errorThrown) {
-                generate_api_error(response, true)
+                generateApiError(response, true)
             }
         });
     }
@@ -93,7 +93,7 @@
                 });
             },
             error: function(response, textStatus, errorThrown) {
-                generate_api_error(response, true)
+                generateApiError(response, true)
             }
         });
     })
@@ -130,7 +130,7 @@
                 });
             },
             error: function(response, textStatus, errorThrown) {
-                generate_api_error(response, true)
+                generateApiError(response, true)
             }
         });
     })

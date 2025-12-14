@@ -1,6 +1,6 @@
 const colorPalleteChart = ['#46dca2', '#f55d86', '#FFC352', '#00b8ff']
 
-const warning_no_data_visualize = (holder) => {
+const warningNoDataVisualize = (holder) => {
     $(`#${holder}`).html(`
         <div class="container-fluid bg-warning">
             <h6><i class="fa-solid fa-triangle-exclamation"></i> Warning</h6>
@@ -9,7 +9,7 @@ const warning_no_data_visualize = (holder) => {
     `)
 }
 
-const generate_line_chart = (title, holder, data) => {
+const generateLineChart = (title, holder, data) => {
     $(`#${holder}`).before(`<h2>${ucEachWord(title)}</h2>`)
 
     if(data.length > 0){
@@ -70,14 +70,14 @@ const generate_line_chart = (title, holder, data) => {
             let chart = new ApexCharts(document.querySelector(`#${holder}`), options)
             chart.render()
         } else {
-            warning_no_data_visualize(holder)
+            warningNoDataVisualize(holder)
         }
     } else {
-        warning_no_data_visualize(holder)
+        warningNoDataVisualize(holder)
     }
 }
 
-const generate_pie_chart = (title, holder, data) => {
+const generatePieChart = (title, holder, data) => {
     $(`#${holder}`).before(`<h2 class="text-center">${ucEachWord(title)}</h2><hr>`)
 
     if(data && data.length > 0){
@@ -112,14 +112,14 @@ const generate_pie_chart = (title, holder, data) => {
             let chart = new ApexCharts(document.querySelector(`#${holder}`), options)
             chart.render()
         } else {
-            warning_no_data_visualize(holder)
+            warningNoDataVisualize(holder)
         }
     } else {
-        warning_no_data_visualize(holder)
+        warningNoDataVisualize(holder)
     }
 }
 
-const generate_bar_chart = (title, holder, data) => {
+const generateBarChart = (title, holder, data) => {
     $(`#${holder}`).before(`<h2 class="text-center">${ucEachWord(title)}</h2><hr>`)
 
     if(data.length > 0){
@@ -171,14 +171,14 @@ const generate_bar_chart = (title, holder, data) => {
             let chart = new ApexCharts(document.querySelector(`#${holder}`), options)
             chart.render()
         } else {
-            warning_no_data_visualize(holder)
+            warningNoDataVisualize(holder)
         }
     } else {
-        warning_no_data_visualize(holder)
+        warningNoDataVisualize(holder)
     }
 }
 
-const generate_semi_gauge_chart = (title = null, holder, percentage) => {
+const generateSemiGaugeChart = (title = null, holder, percentage) => {
     if(title){
         $(`#${holder}`).before(`<h2 class='title-chart'>${ucEachWord(title)}</h2>`)
     }
@@ -232,6 +232,6 @@ const generate_semi_gauge_chart = (title = null, holder, percentage) => {
         let chart = new ApexCharts(document.querySelector(`#${holder}`), options)
         chart.render()
     } else {
-        warning_no_data_visualize(holder)
+        warningNoDataVisualize(holder)
     }
 }

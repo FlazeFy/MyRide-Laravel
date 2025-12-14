@@ -36,7 +36,7 @@
                     markers = []
                     $('#trip-content-holder').empty()
 
-                    build_layout_trip(response.data)
+                    buildLayoutTrip(response.data)
                     data.forEach((dt, idx) => {
                         place_marker(dt)
                     });
@@ -44,16 +44,16 @@
                     resolve()
 
                     if(data.length > 3){
-                        template_carousel_navigation("carousel-nav-holder", "<?= $carouselId ?>")
+                        templateCarouselNavigation("carousel-nav-holder", "<?= $carouselId ?>")
                     }
                 },
                 error: function(response, jqXHR, textStatus, errorThrown) {
                     Swal.close()
                     if(response.status != 404){
                         reject(errorThrown)
-                        generate_api_error(response, true)
+                        generateApiError(response, true)
                     } else {
-                        template_alert_container(`<?= $carouselId ?>`, 'no-data', "No trip found", 'add a trip', '<i class="fa-solid fa-car"></i>','/trip/add')
+                        templateAlertContainer(`<?= $carouselId ?>`, 'no-data', "No trip found", 'add a trip', '<i class="fa-solid fa-car"></i>','/trip/add')
                     }
                 }
             });

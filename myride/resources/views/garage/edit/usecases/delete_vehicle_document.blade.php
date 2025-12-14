@@ -3,6 +3,6 @@
         const url = $(this).data('url')
         const context = $(this).data('context')
 
-        build_delete_modal(url, context, token, () => window.location.href = `/garage/detail/<?= $id ?>`)
+        buildDeleteModal(url, context, token, () => window.location.href = `/garage/detail/<?= $id ?>`)
     });
 </script>

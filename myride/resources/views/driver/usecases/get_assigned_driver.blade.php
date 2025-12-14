@@ -78,10 +78,10 @@
                 Swal.close()
 
                 if(response.status !== 404){
-                    generate_api_error(response, true)
+                    generateApiError(response, true)
                 } else {
                     $(`#${holder}`).html(`<tr><td colspan="5" id="msg-${holder}"></td></tr>`)
-                    template_alert_container(`msg-${holder}`, 'no-data', "No driver found", 'add a driver', '<i class="fa-solid fa-user"></i>','/driver/add')
+                    templateAlertContainer(`msg-${holder}`, 'no-data', "No driver found", 'add a driver', '<i class="fa-solid fa-user"></i>','/driver/add')
                 }
             }
         });

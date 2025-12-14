@@ -100,7 +100,7 @@
         map.setZoom(14)
     })
     
-    template_alert_container('reminder_attachment-holder', 'no-data', "No attachment selected", null, '<i class="fa-solid fa-link"></i>', null)
+    templateAlertContainer('reminder_attachment-holder', 'no-data', "No attachment selected", null, '<i class="fa-solid fa-link"></i>', null)
     $(document).on('click','#submit-add-reminder-btn', function(){
         post_reminder()
     })
@@ -123,7 +123,7 @@
     $(document).ready(function() {
         $(document).on('click', '#clear_attachment-button', function(){
             $('#reminder_attachment_button-holder').find(this).remove()
-            template_alert_container('reminder_attachment-holder', 'no-data', "No attachment selected", null, '<i class="fa-solid fa-link"></i>', null)
+            templateAlertContainer('reminder_attachment-holder', 'no-data', "No attachment selected", null, '<i class="fa-solid fa-link"></i>', null)
         })
 
         $(document).on('click', '#add_image-button', function () {
@@ -141,8 +141,8 @@
 
             $("#reminder_attachment-holder").append(`
                 <div class="container-fluid reminder-image-holder mt-2">
-                    <input type="file" id="reminder_image" accept="image/jpeg,image/png,image/gif"><br>
-                    <img id="image-preview" class="mt-2 d-none" style="max-width: 200px;">
+                    <input type="file" id="reminder_image" class="form-control" accept="image/jpeg,image/png,image/gif"><br>
+                    <img id="image-preview" class="mt-1 d-none" style="max-width: 200px;">
                 </div>
             `)
         })
@@ -265,7 +265,7 @@
                 })
             },
             error: function (response) {
-                generate_api_error(response, true)
+                generateApiError(response, true)
             }
         })
     }

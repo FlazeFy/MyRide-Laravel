@@ -46,7 +46,7 @@
                                 <h6 class="mb-0">Location</h6>
                                 <p class="mb-0">${dt.service_location}</p>
                                 <h6 class="mb-0">Price Total</h6>
-                                <p class="mb-0">Rp. ${number_format(dt.service_price_total, 0, ',', '.')},00</p>
+                                <p class="mb-0">Rp. ${numberFormat(dt.service_price_total, 0, ',', '.')},00</p>
                             </td>
                             <td class="text-start">${dt.service_note}</td>
                             <td class="text-start">
@@ -81,10 +81,10 @@
             error: function(response, jqXHR, textStatus, errorThrown) {
                 Swal.close()
                 if(response.status != 404){
-                    generate_api_error(response, true)
+                    generateApiError(response, true)
                 } else {
                     $(`#${holder}`).html(`<tr><td colspan="6" id="msg-${holder}"></td></tr>`)
-                    template_alert_container(`msg-${holder}`, 'no-data', "No service found", 'add a service', '<i class="fa-solid fa-screwdriver-wrench"></i>','/service/add')
+                    templateAlertContainer(`msg-${holder}`, 'no-data', "No service found", 'add a service', '<i class="fa-solid fa-screwdriver-wrench"></i>','/service/add')
                 }
             }
         });

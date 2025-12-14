@@ -7,12 +7,12 @@
 <div id="vehicle_img-holder"></div>
 
 <script>
-    template_alert_container('vehicle_img-holder', 'no-data', "No image selected", null, '<i class="fa-solid fa-image"></i>', null)
+    templateAlertContainer('vehicle_img-holder', 'no-data', "No image selected", null, '<i class="fa-solid fa-image"></i>', null)
 
     $(document).ready(function() {
         $(document).on('click', '#clear_attachment-button', function(){
             $('#vehicle_image_button-holder').find(this).remove()
-            template_alert_container('vehicle_img-holder', 'no-data', "No image selected", null, '<i class="fa-solid fa-image"></i>', null)
+            templateAlertContainer('vehicle_img-holder', 'no-data', "No image selected", null, '<i class="fa-solid fa-image"></i>', null)
         })
 
         $(document).on('click', '#add_image-button', function () {
@@ -34,8 +34,8 @@
 
             $("#vehicle_img-holder").append(`
                 <div class="container-fluid vehicle-image-holder mt-2">
-                    <input type="file" id="vehicle_image" accept="image/jpeg,image/png,image/gif"><br>
-                    <img id="image-preview" class="mt-2 d-none" style="max-width: 200px;">
+                    <input type="file" id="vehicle_image" class="form-control" accept="image/jpeg,image/png,image/gif"><br>
+                    <img id="image-preview" class="mt-1 d-none" style="max-width: 200px;">
                 </div>
             `)
         })

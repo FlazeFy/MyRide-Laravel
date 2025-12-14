@@ -39,7 +39,7 @@ const get_vehicle_name_opt = (token) => {
                 },
                 error: function (response) {
                     Swal.close()
-                    generate_api_error(response, true)
+                    generateApiError(response, true)
                     reject(response)
                 }
             });
@@ -100,7 +100,7 @@ const get_driver_name_opt = (token) => {
                 generate_driver_list(ctx_holder,data)
             },
             error: function(response, jqXHR, textStatus, errorThrown) {
-                generate_api_error(response, true)
+                generateApiError(response, true)
             }
         });
     }
@@ -149,7 +149,7 @@ const get_vehicle_detail = (id) => {
                 $('#vehicle_category').val(data.vehicle_category)
             },
             error: function(response, jqXHR, textStatus, errorThrown) {
-                generate_api_error(response, true)
+                generateApiError(response, true)
             }
         });
     } else {
@@ -213,7 +213,7 @@ const get_context_opt = (context, token) => {
                 },
                 error: function (response) {
                     Swal.close()
-                    generate_api_error(response, true)
+                    generateApiError(response, true)
                     reject(response)
                 }
             })

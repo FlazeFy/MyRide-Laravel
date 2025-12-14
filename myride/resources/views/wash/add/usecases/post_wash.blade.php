@@ -65,7 +65,7 @@
         const id = $(this).val()
         get_vehicle_detail(id)
     })
-    set_checklist_holder()
+    setChecklistHolder()
 
     ;(async () => {
         await get_vehicle_name_opt(token)
@@ -118,7 +118,7 @@
                     });
                 },
                 error: function(response, jqXHR, textStatus, errorThrown) {
-                    generate_api_error(response, true)
+                    generateApiError(response, true)
                 }
             });
         } else {

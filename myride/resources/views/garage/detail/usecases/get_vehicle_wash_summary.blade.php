@@ -20,8 +20,8 @@
                         <div class="col-xl-6 col-lg-12 col-md-6 col-sm-12">
                             <ul class="ps-3">
                                 <li>Total Wash : ${data[0].total_wash}</li>
-                                <li>Total Spend : Rp.${number_format(data[0].total_price,0,',','.')}</li>
-                                <li>Avg Spend per Wash : Rp.${number_format(data[0].avg_price_per_wash,0,',','.')}</li>
+                                <li>Total Spend : Rp.${numberFormat(data[0].total_price,0,',','.')}</li>
+                                <li>Avg Spend per Wash : Rp.${numberFormat(data[0].avg_price_per_wash,0,',','.')}</li>
                                 <li><b>${data[0].total_wash_body} body washings</b> out of ${data[0].total_wash} total washs</li>
                                 <li><b>${data[0].total_wash_window} window washings</b> out of ${data[0].total_wash} total washs</li>
                                 <li><b>${data[0].total_wash_dashboard} dashboard washings</b> out of ${data[0].total_wash} total washs</li>
@@ -44,9 +44,9 @@
             },
             error: function(response, jqXHR, textStatus, errorThrown) {
                 if(response.status !== 404){
-                    generate_api_error(response, true)
+                    generateApiError(response, true)
                 } else {
-                    template_alert_container(holder, 'no-data', "No wash found for this context to generate the summary", 'add a wash', '<i class="fa-solid fa-soap"></i>','/trip/add')
+                    templateAlertContainer(holder, 'no-data', "No wash found for this context to generate the summary", 'add a wash', '<i class="fa-solid fa-soap"></i>','/trip/add')
                 }
             }
         });

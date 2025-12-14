@@ -44,7 +44,7 @@
                                 <h6 class="mb-0">Volume</h6>
                                 <p class="mb-0">${dt.fuel_volume}${dt.fuel_brand == 'Electric' ? '%' : ' L'}</p>
                                 <h6 class="mb-0">Price Total</h6>
-                                <p>Rp. ${number_format(dt.fuel_price_total, 0, ',', '.')},00</p>
+                                <p>Rp. ${numberFormat(dt.fuel_price_total, 0, ',', '.')},00</p>
                             </td>
                             <td class="text-start">
                                 <div class="d-flex justify-content-between">
@@ -100,10 +100,10 @@
                 Swal.close()
 
                 if(response.status != 404){
-                    generate_api_error(response, true)
+                    generateApiError(response, true)
                 } else {
                     $(`#${holder}`).html(`<tr><td colspan="5" id="msg-${holder}"></td></tr>`)
-                    template_alert_container(`msg-${holder}`, 'no-data', "No fuel found", 'add a fuel', '<i class="fa-solid fa-gas-pump"></i>','/fuel/add')
+                    templateAlertContainer(`msg-${holder}`, 'no-data', "No fuel found", 'add a fuel', '<i class="fa-solid fa-gas-pump"></i>','/fuel/add')
                 }
             }
         });

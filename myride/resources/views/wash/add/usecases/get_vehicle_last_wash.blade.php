@@ -80,7 +80,7 @@
             error: function(response, jqXHR, textStatus, errorThrown) {
                 Swal.close()
                 if(response.status != 404){
-                    generate_api_error(response, true)
+                    generateApiError(response, true)
                 } else {
                     $(`#${wash_holder}`).html(`
                         <div class="container-fluid bg-danger">

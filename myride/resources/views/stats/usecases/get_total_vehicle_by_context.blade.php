@@ -29,15 +29,15 @@
                     localStorage.setItem(ctx,JSON.stringify(data))
                     localStorage.setItem(`last-hit-${ctx}`,Date.now())
                     data.forEach(dt => {
-                        generate_pie_chart(dt.context.replaceAll('_',' '),`${dt.context}-holder`,dt.data)
+                        generatePieChart(dt.context.replaceAll('_',' '),`${dt.context}-holder`,dt.data)
                     });
                 },
                 error: function(response, jqXHR, textStatus, errorThrown) {
                     Swal.close()
                     if(response.status != 404){
-                        generate_api_error(response, true)
+                        generateApiError(response, true)
                     } else {
-                        template_alert_container(ctx_holder, 'no-data', "No vehicle found for this context to generate the stats", 'add a vehicle', '<i class="fa-solid fa-warehouse"></i>','/garage/add')
+                        templateAlertContainer(ctx_holder, 'no-data', "No vehicle found for this context to generate the stats", 'add a vehicle', '<i class="fa-solid fa-warehouse"></i>','/garage/add')
                         $(`#${ctx_holder}`).prepend(`<h2 class='title-chart'>${ucEachWord(title)}</h2>`)
                     }
                 }
@@ -52,7 +52,7 @@
                 const data = JSON.parse(localStorage.getItem(ctx))
                 if(data){
                     data.forEach(dt => {
-                        generate_pie_chart(dt.context.replaceAll('_',' '),`${dt.context}-holder`,dt.data)
+                        generatePieChart(dt.context.replaceAll('_',' '),`${dt.context}-holder`,dt.data)
                     });
                     Swal.close()
                 } else {

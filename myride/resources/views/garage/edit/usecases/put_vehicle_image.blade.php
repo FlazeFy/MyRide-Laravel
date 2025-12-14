@@ -16,7 +16,7 @@
             if(vehicle_img_url){
                 $('#vehicle_img-holder').html(`<img class="img img-fluid" src="${vehicle_img_url}" alt="${vehicle_img_url}"/>`)
             } else {
-                template_alert_container('vehicle_img-holder', 'no-data', "No image selected", null, '<i class="fa-solid fa-image"></i>', null)
+                templateAlertContainer('vehicle_img-holder', 'no-data', "No image selected", null, '<i class="fa-solid fa-image"></i>', null)
             }
             $('#remove_image-button').removeClass('d-none') 
             $("#vehicle_img-holder img").removeClass('d-none')
@@ -46,8 +46,8 @@
 
             $("#vehicle_img-holder").append(`
                 <div class="container-fluid vehicle-image-holder mt-2">
-                    <input type="file" id="vehicle_image" accept="image/jpeg,image/png,image/gif"><br>
-                    <img id="image-preview" class="mt-2 d-none" style="max-width: 200px;">
+                    <input type="file" id="vehicle_image" class="form-control" accept="image/jpeg,image/png,image/gif"><br>
+                    <img id="image-preview" class="mt-1 d-none" style="max-width: 200px;">
                 </div>
             `)
             $("#vehicle_img-holder img").addClass('d-none')
@@ -107,7 +107,7 @@
                             Swal.fire("Success!", response.message, "success").then(() => window.location.href=`/garage/detail/${id}` )
                         },
                         error: function(response, jqXHR, textStatus, errorThrown) {
-                            generate_api_error(response, true)
+                            generateApiError(response, true)
                         }
                     });
                 }
@@ -136,7 +136,7 @@
                     Swal.fire("Success!", response.message, "success").then(() => window.location.href=`/garage/detail/${id}` )
                 },
                 error: function(response, jqXHR, textStatus, errorThrown) {
-                    generate_api_error(response, true)
+                    generateApiError(response, true)
                 }
             });
         })

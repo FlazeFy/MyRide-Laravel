@@ -2,6 +2,6 @@
 
 <script>
     $(document).on('click','#export_excel',function(){
-        get_export('inventory',token)
+        getExport('inventory',token)
     })
 </script>

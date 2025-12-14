@@ -44,7 +44,7 @@
                             percentage = 0
                         }
 
-                        generate_semi_gauge_chart(null, `stats_${dt.id}`, percentage)
+                        generateSemiGaugeChart(null, `stats_${dt.id}`, percentage)
                     } 
                 });
             },
@@ -52,9 +52,9 @@
                 Swal.close()
 
                 if(response.status != 404){
-                    generate_api_error(response, true)
+                    generateApiError(response, true)
                 } else {
-                    template_alert_container(holder, 'no-data', "No vehicle found", 'add a vehicle', '<i class="fa-solid fa-gas-pump"></i>','/garage/add')
+                    templateAlertContainer(holder, 'no-data', "No vehicle found", 'add a vehicle', '<i class="fa-solid fa-gas-pump"></i>','/garage/add')
                 }
             }
         });

@@ -18,11 +18,11 @@ hr {
 .btn:hover, .hover-grow:hover {
     transform: scale(1.025);
 }
-.btn.btn-primary, .gm-control-active, .swal2-actions button.swal2-confirm {
+.btn.btn-primary, .gm-control-active {
     background: var(--blueColor) !important;
     border-bottom: var(--spaceXXSM) solid var(--secondaryBlueColor) !important;
 }
-.btn.btn-success {
+.btn.btn-success, .swal2-actions button.swal2-confirm {
     background: var(--successColor) !important;
     border-bottom: var(--spaceXXSM) solid var(--secondarySuccessColor) !important;
 }
@@ -52,6 +52,10 @@ input:focus, textarea:focus {
 }
 .form-control, .form-select, .input-group-text , .rounded {
     border-radius: var(--roundedLG);   
+}
+input[type="file"].form-control {
+    margin-bottom: 0;
+    font-size: var(--textMD);
 }
 .progress-bar {
     background: var(--successColor);

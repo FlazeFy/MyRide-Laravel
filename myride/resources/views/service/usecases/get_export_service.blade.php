@@ -2,6 +2,6 @@
 
 <script>
     $(document).on('click','#export_excel',function(){
-        get_export('service',token)
+        getExport('service',token)
     })
 </script>

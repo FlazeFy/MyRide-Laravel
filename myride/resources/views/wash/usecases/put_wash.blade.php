@@ -52,7 +52,7 @@
             callModal('update-modal')
             await get_vehicle_name_opt(token)
             await get_context_opt('wash_by',token)
-            set_checklist_holder()
+            setChecklistHolder()
             const vehicle_plate_number = $(this).data('vehicle-plate-number')
 
             $('#vehicle_holder option').each(function () {
@@ -136,7 +136,7 @@
                     error: function(response, jqXHR, textStatus, errorThrown) {
                         Swal.close()
                         if(response.status === 500){
-                            generate_api_error(response, true)
+                            generateApiError(response, true)
                         } else {
                             failedMsg(response.status === 400 ? Object.values(response.responseJSON.message).flat().join('\n') : response.responseJSON.message)
                         }

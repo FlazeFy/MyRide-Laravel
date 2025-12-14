@@ -1,4 +1,4 @@
-const message_short_image = (target, image, caption) => {
+const messageShortImage = (target, image, caption) => {
     $(`#${target}`).html(`
         <div class="message small">
             <img src="${image}" class="img img-fluid">

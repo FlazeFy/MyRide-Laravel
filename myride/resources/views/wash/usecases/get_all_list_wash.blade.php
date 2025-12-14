@@ -48,7 +48,7 @@
                                 <h6 class="mb-0">Description</h6>
                                 <p>${dt.wash_desc ?? '-'}</p>
                                 <h6 class="mb-0">Wash Price</h6>
-                                <p>${`Rp. ${number_format(dt.wash_price, 0, ',', '.')},00` ?? '-'}</p>
+                                <p>${`Rp. ${numberFormat(dt.wash_price, 0, ',', '.')},00` ?? '-'}</p>
                             </td>
                             <td style="max-width:var(--tcolMinLG);">
                                 <div class="row text-start">
@@ -98,10 +98,10 @@
                 Swal.close()
 
                 if(response.status != 404){
-                    generate_api_error(response, true)
+                    generateApiError(response, true)
                 } else {
                     $(`#${holder}`).html(`<tr><td colspan="5" id="msg-${holder}"></td></tr>`)
-                    template_alert_container(`msg-${holder}`, 'no-data', "No wash found", 'add a wash history', '<i class="fa-solid fa-soap"></i>','/wash/add')
+                    templateAlertContainer(`msg-${holder}`, 'no-data', "No wash found", 'add a wash history', '<i class="fa-solid fa-soap"></i>','/wash/add')
                 }
             }
         });

@@ -16,7 +16,7 @@
             if(vehicle_img_url){
                 $('#vehicle_img_collection-holder').html(`<img class="img img-fluid" src="${vehicle_img_url}" alt="${vehicle_img_url}"/>`)
             } else {
-                template_alert_container('vehicle_img_collection-holder', 'no-data', "No image selected", null, '<i class="fa-solid fa-image"></i>', null)
+                templateAlertContainer('vehicle_img_collection-holder', 'no-data', "No image selected", null, '<i class="fa-solid fa-image"></i>', null)
             }
             $('#remove_image_collection-button').removeClass('d-none') 
             $("#vehicle_img_collection-holder img").removeClass('d-none')
@@ -46,8 +46,8 @@
             $("#vehicle_img_collection-holder").append(`
                 <div class="col-md-6 col-sm-12">
                     <div class="container-fluid vehicle-image-holder mt-2">
-                        <input type="file" class="vehicle_other_images" accept="image/jpeg,image/png,image/gif"><br>
-                        <img class="image-preview mt-2 d-none" style="max-width: 200px;">
+                        <input type="file" class="vehicle_other_images form-control" accept="image/jpeg,image/png,image/gif"><br>
+                        <img class="image-preview mt-1 d-none" style="max-width: 200px;">
                     </div>
                 </div>
             `)
@@ -108,7 +108,7 @@
                             Swal.fire("Success!", response.message, "success").then(() => window.location.href=`/garage/detail/${id}` )
                         },
                         error: function(response, jqXHR, textStatus, errorThrown) {
-                            generate_api_error(response, true)
+                            generateApiError(response, true)
                         }
                     });
                 }
@@ -150,7 +150,7 @@
                     Swal.fire("Success!", response.message, "success").then(() => window.location.href=`/garage/detail/${id}` )
                 },
                 error: function(response, jqXHR, textStatus, errorThrown) {
-                    generate_api_error(response, true)
+                    generateApiError(response, true)
                 }
             });
         })

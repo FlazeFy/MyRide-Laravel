@@ -9,13 +9,13 @@
 <div id="vehicle_img_collection-holder" class="row mx-1"></div>
 
 <script>
-    template_alert_container('vehicle_img_collection-holder', 'no-data', "No image selected", null, '<i class="fa-solid fa-image"></i>', null)
+    templateAlertContainer('vehicle_img_collection-holder', 'no-data', "No image selected", null, '<i class="fa-solid fa-image"></i>', null)
 
     $(document).ready(function() {
         $(document).on('click', '#clear_attachment-button', function(){
             $('#vehicle_img_collection_button-holder').find(this).remove()
             $('#vehicle_img_collection-holder').empty()
-            template_alert_container('vehicle_img_collection-holder', 'no-data', "No image selected", null, '<i class="fa-solid fa-image"></i>', null)
+            templateAlertContainer('vehicle_img_collection-holder', 'no-data', "No image selected", null, '<i class="fa-solid fa-image"></i>', null)
         })
 
         $(document).on('click', '#add_image_collection-button', function () {
@@ -40,8 +40,8 @@
             $("#vehicle_img_collection-holder").append(`
                 <div class="col-md-6 col-sm-12">
                     <div class="container-fluid vehicle-image-holder mt-2">
-                        <input type="file" class="vehicle_other_images" accept="image/jpeg,image/png,image/gif"><br>
-                        <img class="image-preview mt-2 d-none" style="max-width: 200px;">
+                        <input type="file" class="vehicle_other_images form-control" accept="image/jpeg,image/png,image/gif"><br>
+                        <img class="image-preview mt-1 d-none" style="max-width: 200px;">
                     </div>
                 </div>
             `)

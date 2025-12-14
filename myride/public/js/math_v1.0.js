@@ -1,4 +1,4 @@
-const calculate_distance = (lat1, lon1, lat2, lon2, unit = 'km') => {
+const calculateDistance = (lat1, lon1, lat2, lon2, unit = 'km') => {
     const toRad = (deg) => (deg * Math.PI) / 180
 
     let theta = lon1 - lon2
@@ -15,7 +15,7 @@ const calculate_distance = (lat1, lon1, lat2, lon2, unit = 'km') => {
     return distance.toFixed(2)
 }
 
-const number_format = (number, decimals, dec_point, thousands_sep) => {
+const numberFormat = (number, decimals, dec_point, thousands_sep) => {
     number = number.toFixed(decimals);
 
     var nstr = number.split('.');

@@ -4,6 +4,6 @@
         const context = $(this).data('context')
         const token = "<?= session()->get('token_key'); ?>"
 
-        build_delete_modal(url, context, token, () => get_all_fuel(1))
+        buildDeleteModal(url, context, token, () => get_all_fuel(1))
     });
 </script>

@@ -60,9 +60,9 @@
                     Swal.close()
 
                     if(response.status != 404){
-                        generate_api_error(response, true)
+                        generateApiError(response, true)
                     } else {
-                        message_short_image(`${ctx}-holder`,`{{asset('assets/empty.png')}}`,`there's no active service`)
+                        messageShortImage(`${ctx}-holder`,`{{asset('assets/empty.png')}}`,`there's no active service`)
                     }
                 }
             });

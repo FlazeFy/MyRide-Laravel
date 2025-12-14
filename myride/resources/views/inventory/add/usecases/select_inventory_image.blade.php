@@ -7,12 +7,12 @@
 <div id="inventory_image-holder"></div>
 
 <script>
-    template_alert_container('inventory_image-holder', 'no-data', "No inventory image selected", null, '<i class="fa-solid fa-image"></i>', null)
+    templateAlertContainer('inventory_image-holder', 'no-data', "No inventory image selected", null, '<i class="fa-solid fa-image"></i>', null)
 
     $(document).ready(function() {
         $(document).on('click', '#clear_image-button', function(){
             $('#inventory_image_button-holder').find(this).remove()
-            template_alert_container('inventory_image-holder', 'no-data', "No inventory image selected", null, '<i class="fa-solid fa-receipt"></i>', null)
+            templateAlertContainer('inventory_image-holder', 'no-data', "No inventory image selected", null, '<i class="fa-solid fa-receipt"></i>', null)
         })
 
         $(document).on('click', '#add_image-button', function () {
@@ -34,8 +34,8 @@
 
             $("#inventory_image-holder").append(`
                 <div class="container-fluid inventory_image-holder mt-2">
-                    <input type="file" id="inventory_image" accept="image/jpeg,image/png,image/gif"><br>
-                    <img id="image-preview" class="mt-2 d-none" style="max-width: 200px;">
+                    <input type="file" id="inventory_image" class="form-control" accept="image/jpeg,image/png,image/gif"><br>
+                    <img id="image-preview" class="mt-1 d-none" style="max-width: 200px;">
                 </div>
             `)
         })

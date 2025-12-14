@@ -20,8 +20,8 @@
                         <div class="collapse mt-2" style='font-size: var(--textMD)' id='wash_${dt.vehicle_plate_number.replaceAll(' ','_')}_summary-collapse'>
                             <ul class="ps-3">
                                 <li>Total Wash : ${dt.total_wash}</li>
-                                <li>Total Spend : Rp.${number_format(dt.total_price,0,',','.')}</li>
-                                <li>Avg Spend per Wash : Rp.${number_format(dt.avg_price_per_wash,0,',','.')}</li>
+                                <li>Total Spend : Rp.${numberFormat(dt.total_price,0,',','.')}</li>
+                                <li>Avg Spend per Wash : Rp.${numberFormat(dt.avg_price_per_wash,0,',','.')}</li>
                                 <li><b>${dt.total_wash_body} body washings</b> out of ${dt.total_wash} total washs</li>
                                 <li><b>${dt.total_wash_window} window washings</b> out of ${dt.total_wash} total washs</li>
                                 <li><b>${dt.total_wash_dashboard} dashboard washings</b> out of ${dt.total_wash} total washs</li>
@@ -56,7 +56,7 @@
                     generate_summary(data)
                 },
                 error: function(response, jqXHR, textStatus, errorThrown) {
-                    generate_api_error(response, true)
+                    generateApiError(response, true)
                 }
             });
         }

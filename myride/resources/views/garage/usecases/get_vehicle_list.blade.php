@@ -230,7 +230,7 @@
                     })
 
                     if(data.length > 3){
-                        template_carousel_navigation("carousel-nav-holder", "carouselVehicle")
+                        templateCarouselNavigation("carousel-nav-holder", "carouselVehicle")
                     }
                     
                     // Navigate Carousel Using Keyboard
@@ -268,10 +268,10 @@
                 },
                 error: function(response, jqXHR, textStatus, errorThrown) {
                     if(response.status != 404){
-                        generate_api_error(response, true)
+                        generateApiError(response, true)
                     } else {
                         $(`#${holder}`).css('margin-top','var(--spaceMD)')
-                        template_alert_container(holder, 'no-data', "No vehicle found", 'add a vehicle', '<i class="fa-solid fa-car"></i>','/garage/add')
+                        templateAlertContainer(holder, 'no-data', "No vehicle found", 'add a vehicle', '<i class="fa-solid fa-car"></i>','/garage/add')
                     }
                 }
             });

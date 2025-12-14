@@ -1,4 +1,4 @@
-const get_export = (ctx, token) => {
+const getExport = (ctx, token) => {
     Swal.showLoading()
     $.ajax({
         url: `/api/v1/export/${ctx}`,

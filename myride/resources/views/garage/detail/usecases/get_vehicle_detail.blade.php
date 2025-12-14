@@ -176,7 +176,7 @@
                     }
                 }
 
-                trip_data ? build_layout_trip(trip_data) : template_alert_container(`<?= $carouselId ?>`, 'no-data', "No trip found", 'add a trip', '<i class="fa-solid fa-car"></i>','/trip/add')
+                trip_data ? buildLayoutTrip(trip_data) : templateAlertContainer(`<?= $carouselId ?>`, 'no-data', "No trip found", 'add a trip', '<i class="fa-solid fa-car"></i>','/trip/add')
 
                 build_layout_wash(wash_data)
                 build_layout_driver(driver_data)
@@ -201,7 +201,7 @@
                 }
 
                 if(trip_data && trip_data.data.length > 3){
-                    template_carousel_navigation("carousel-nav-holder", "<?= $carouselId ?>")
+                    templateCarouselNavigation("carousel-nav-holder", "<?= $carouselId ?>")
                 }
 
                 get_vehicle_monthly_trip_stats(<?= date('Y') ?>,"<?= $id ?>")
@@ -210,7 +210,7 @@
             error: function(response, jqXHR, textStatus, errorThrown) {
                 Swal.close()
                 if(response.status !== 404){
-                    generate_api_error(response, true)
+                    generateApiError(response, true)
                 } else {
                     failedRoute('vehicle','/garage')
                 }

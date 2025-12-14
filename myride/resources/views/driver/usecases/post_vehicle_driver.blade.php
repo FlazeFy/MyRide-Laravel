@@ -81,7 +81,7 @@
                         Swal.fire("Success!", response.message, "success").then(() => window.location.reload())
                     },
                     error: function(response, jqXHR, textStatus, errorThrown) {
-                        generate_api_error(response, true)
+                        generateApiError(response, true)
                     }
                 });
             }

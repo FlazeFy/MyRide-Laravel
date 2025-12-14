@@ -7,12 +7,12 @@
 <div id="fuel_bill-holder"></div>
 
 <script>
-    template_alert_container('fuel_bill-holder', 'no-data', "No fuel bill selected", null, '<i class="fa-solid fa-receipt"></i>', null)
+    templateAlertContainer('fuel_bill-holder', 'no-data', "No fuel bill selected", null, '<i class="fa-solid fa-receipt"></i>', null)
 
     $(document).ready(function() {
         $(document).on('click', '#clear_bill-button', function(){
             $('#fuel_bill_button-holder').find(this).remove()
-            template_alert_container('fuel_bill-holder', 'no-data', "No fuel bill selected", null, '<i class="fa-solid fa-receipt"></i>', null)
+            templateAlertContainer('fuel_bill-holder', 'no-data', "No fuel bill selected", null, '<i class="fa-solid fa-receipt"></i>', null)
         })
 
         $(document).on('click', '#add_image-button', function () {
@@ -34,8 +34,8 @@
 
             $("#fuel_bill-holder").append(`
                 <div class="container-fluid fuel_bill-holder mt-2">
-                    <input type="file" id="fuel_bill" accept="image/jpeg,image/png,image/gif"><br>
-                    <img id="image-preview" class="mt-2 d-none" style="max-width: 200px;">
+                    <input type="file" id="fuel_bill" class="form-control" accept="image/jpeg,image/png,image/gif"><br>
+                    <img id="image-preview" class="mt-1 d-none" style="max-width: 200px;">
                 </div>
             `)
         })

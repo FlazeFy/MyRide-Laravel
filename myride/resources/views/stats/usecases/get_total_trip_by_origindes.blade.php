@@ -29,15 +29,15 @@
                     localStorage.setItem(ctx,JSON.stringify(data))
                     localStorage.setItem(`last-hit-${ctx}`,Date.now())
                     data.forEach(dt => {
-                        generate_bar_chart(`Most ${dt.context.replaceAll('_',' ')}`,`${dt.context}-holder`,dt.data)
+                        generateBarChart(`Most ${dt.context.replaceAll('_',' ')}`,`${dt.context}-holder`,dt.data)
                     });
                 },
                 error: function(response, jqXHR, textStatus, errorThrown) {
                     Swal.close()
                     if(response.status != 404){
-                        generate_api_error(response, true)
+                        generateApiError(response, true)
                     } else {
-                        template_alert_container(ctx_holder, 'no-data', "No trip found for this context to generate the stats", 'add a trip', '<i class="fa-solid fa-car"></i>','/trip/add')
+                        templateAlertContainer(ctx_holder, 'no-data', "No trip found for this context to generate the stats", 'add a trip', '<i class="fa-solid fa-car"></i>','/trip/add')
                         $(`#${ctx_holder}`).prepend(`<h2 class='title-chart'>${ucEachWord(title)}</h2>`)
                     }
                 }
@@ -52,7 +52,7 @@
                 const data = JSON.parse(localStorage.getItem(ctx))
                 if(data){
                     data.forEach(dt => {
-                        generate_bar_chart(`Most ${dt.context.replaceAll('_',' ')}`,`${dt.context}-holder`,dt.data)
+                        generateBarChart(`Most ${dt.context.replaceAll('_',' ')}`,`${dt.context}-holder`,dt.data)
                     });
                     Swal.close()
                 } else {

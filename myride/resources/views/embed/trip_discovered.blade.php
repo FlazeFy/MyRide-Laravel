@@ -44,7 +44,7 @@
                         generate_trip_discovered(data.total_trip,data.distance_km,data.last_update,ctx)
                     },
                     error: function(response, jqXHR, textStatus, errorThrown) {
-                        generate_api_error(response, true)
+                        generateApiError(response, true)
                     }
                 });
             }

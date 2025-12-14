@@ -35,7 +35,7 @@
                                 <span class="plate-number">${dt.vehicle_plate_number}</span>
                                 <p class="text-secondary mt-2 mb-0 fw-bold">${dt.vehicle_type}</p>
                             </td>
-                            <td class="text-center">Rp. ${number_format(dt.total, 0, ',', '.')},00</td>
+                            <td class="text-center">Rp. ${numberFormat(dt.total, 0, ',', '.')},00</td>
                         </tr>
                     `)
                 });
@@ -43,10 +43,10 @@
             error: function(response, jqXHR, textStatus, errorThrown) {
                 Swal.close()
                 if(response.status != 404){
-                    generate_api_error(response, true)
+                    generateApiError(response, true)
                 } else {
                     $(`#${holder}`).html(`<tr><td colspan="6" id="msg-${holder}"></td></tr>`)
-                    template_alert_container(`msg-${holder}`, 'no-data', "No service found", 'add a service', '<i class="fa-solid fa-screwdriver-wrench"></i>','/service/add')
+                    templateAlertContainer(`msg-${holder}`, 'no-data', "No service found", 'add a service', '<i class="fa-solid fa-screwdriver-wrench"></i>','/service/add')
                 }
             }
         });

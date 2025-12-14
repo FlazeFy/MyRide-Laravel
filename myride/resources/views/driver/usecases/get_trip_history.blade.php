@@ -31,11 +31,11 @@
                 const data = response.data.data
                 $('#trip-content-holder').empty()
                 data.forEach(dt => {
-                    $('#trip-content-holder').append(template_trip_box(dt))
+                    $('#trip-content-holder').append(templateTripBox(dt))
                 });
             },
             error: function(response, jqXHR, textStatus, errorThrown) {
-                generate_api_error(response, true)
+                generateApiError(response, true)
             }
         });
     })

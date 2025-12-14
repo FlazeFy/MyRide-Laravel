@@ -32,9 +32,9 @@
             },
             error: function(response, jqXHR, textStatus, errorThrown) {
                 if(response.status != 404){
-                    generate_api_error(response, true)
+                    generateApiError(response, true)
                 } else {
-                    template_alert_container(holder, 'no-data', "No history found", null, '<i class="fa-solid fa-rotate-left"></i>',null)
+                    templateAlertContainer(holder, 'no-data', "No history found", null, '<i class="fa-solid fa-rotate-left"></i>',null)
                 }
             }
         });

@@ -55,7 +55,7 @@
                 Swal.close()
 
                 if(response.status != 404){
-                    generate_api_error(response, true)
+                    generateApiError(response, true)
                 } else {
                     $(`#${holder}`).html(`<tr><td colspan="5" id="msg-${holder}" class="no-msg-text">- No Driver Found -</td></tr>`)
                 }

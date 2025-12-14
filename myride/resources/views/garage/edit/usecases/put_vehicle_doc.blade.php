@@ -1,28 +1,28 @@
 <div class="d-flex align-items-center justify-content-between">
     <h2 class="mb-0">Document</h2>
     <div class="d-flex flex-wrap gap-2" id="vehicle_document_button-holder">
-        <a class="btn btn-primary" id="add_doc-button"><i class="fa-solid fa-file"></i><span class="d-none d-md-inline"> Add Document</span></a>
+        <a class="btn btn-primary" id="add_doc-button"><i class="fa-solid fa-file"></i><span class="d-none d-md-inline"> Add Doc</span></a>
     </div>
 </div><hr>
 
 <div id="doc_attachment-holder" class="row"></div>
 
 <script>
-    template_alert_container('doc_attachment-holder', 'no-data', "No document attached", null, '<i class="fa-solid fa-link"></i>', null)
+    templateAlertContainer('doc_attachment-holder', 'no-data', "No document attached", null, '<i class="fa-solid fa-link"></i>', null)
 
     $(document).ready(function() {
         $(document).on('click', '#clear_doc-button', function(){
             $('#vehicle_document_button-holder').find(this).remove()
             $('#vehicle_document_button-holder').find('#save_doc-button').remove()
             $("#doc_attachment-holder").empty()
-            template_alert_container('doc_attachment-holder', 'no-data', "No document attached", null, '<i class="fa-solid fa-link"></i>', null)
+            templateAlertContainer('doc_attachment-holder', 'no-data', "No document attached", null, '<i class="fa-solid fa-link"></i>', null)
         })
 
         $(document).on('click', '#add_doc-button', function () {
             if($('#vehicle_document_button-holder').find('#clear_doc-button').length === 0){
                 $('#vehicle_document_button-holder').prepend(`
                     <a class="btn btn-danger" id="clear_doc-button"><i class="fa-solid fa-circle-xmark"></i><span class="d-none d-md-inline"> Clear</span></a>
-                    <a class="btn btn-success" id="save_doc-button"><i class="fa-solid fa-floppy-disk"></i><span class="d-none d-md-inline"> Save Document</span></a>
+                    <a class="btn btn-success" id="save_doc-button"><i class="fa-solid fa-floppy-disk"></i><span class="d-none d-md-inline"> Save Doc</span></a>
                 `)
             }
 
@@ -34,7 +34,7 @@
             $("#doc_attachment-holder").append(`
                 <div class="col-md-6 col-sm-12">
                     <div class="container-fluid vehicle_document-holder mt-2">
-                        <input type="file" class="vehicle_document" id="vehicle_document_${uid}" accept="image/jpeg,image/png,application/pdf"><br>
+                        <input type="file" class="vehicle_document form-control" id="vehicle_document_${uid}" accept="image/jpeg,image/png,application/pdf"><br>
                         <div id="doc-preview_${uid}" class="my-2"></div>
                         <label>Caption (Optional)</label>
                         <input class="form-control vehicle_document_caption" type="text">
@@ -110,7 +110,7 @@
                     $('#vehicle_document_button-holder').find('#clear_doc-button').remove()
                     $('#vehicle_document_button-holder').find('#save_doc-button').remove()
                     $("#doc_attachment-holder").empty()
-                    template_alert_container('doc_attachment-holder', 'no-data', "No document attached", null, '<i class="fa-solid fa-link"></i>', null)
+                    templateAlertContainer('doc_attachment-holder', 'no-data', "No document attached", null, '<i class="fa-solid fa-link"></i>', null)
                 }
             });
         })
@@ -160,7 +160,7 @@
                 error: function (response) {
                     Swal.close()
                     if (response.status === 500) {
-                        generate_api_error(response, true)
+                        generateApiError(response, true)
                     } else {
                         failedMsg(response.status === 400 ? Object.values(response.responseJSON.message).flat().join('\n') : response.responseJSON.message)
                     }

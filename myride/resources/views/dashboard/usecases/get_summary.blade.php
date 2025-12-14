@@ -51,7 +51,7 @@
                     generate_summary(data.total_vehicle, data.total_service, data.total_wash, data.total_driver, data.total_trip)
                 },
                 error: function(response, jqXHR, textStatus, errorThrown) {
-                    generate_api_error(response, true)
+                    generateApiError(response, true)
                 }
             });
         }

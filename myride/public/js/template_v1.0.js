@@ -1,4 +1,4 @@
-const template_alert_container = (target, type, msg, btn_title, icon, href) => {
+const templateAlertContainer = (target, type, msg, btn_title, icon, href) => {
     $(`#${target}`).html(`
         <div class="container-fluid alert-container py-2 px-3" style="${type === 'no-data' || type === 'expired_session' ? 'background-color:rgba(245, 93, 134, 0.2);':''}">
             <div class="d-flex justify-content-start text-start align-items-center flex-wrap gap-4">
@@ -12,7 +12,7 @@ const template_alert_container = (target, type, msg, btn_title, icon, href) => {
     `)
 }
 
-const template_carousel_navigation = (holder, carouselId) => {
+const templateCarouselNavigation = (holder, carouselId) => {
     $(`#${holder}`).html(`
         <div class="carousel-button-holder">
             <button class="btn btn-primary carousel-control-prev ms-2" type="button" data-bs-target="#${carouselId}" data-bs-slide="prev">
@@ -27,7 +27,7 @@ const template_carousel_navigation = (holder, carouselId) => {
     `)
 }
 
-const template_trip_box = (dt, extra_class = '') => {
+const templateTripBox = (dt, extra_class = '') => {
     const coorOrigin = dt.trip_origin_coordinate ? dt.trip_origin_coordinate.split(",").map(Number) : null
     const coorDestination = dt.trip_destination_coordinate ? dt.trip_destination_coordinate.split(",").map(Number) : null
     const deletedStyle = dt.deleted_at ? "background-color: rgba(221, 0, 33, 0.3);" : ""
@@ -48,7 +48,7 @@ const template_trip_box = (dt, extra_class = '') => {
                 ${ coorOrigin ? `
                     <div class="text-center">
                         <a><i class="fa-solid fa-arrow-right"></i></a>
-                        <p class="mb-0" style="font-size:var(--textMD);">${calculate_distance(coorOrigin[0], coorOrigin[1], coorDestination[0], coorDestination[1])} Km</p>
+                        <p class="mb-0" style="font-size:var(--textMD);">${calculateDistance(coorOrigin[0], coorOrigin[1], coorDestination[0], coorDestination[1])} Km</p>
                     </div>`: ''
                 }
                 <div class="text-end">
@@ -103,7 +103,7 @@ const template_trip_box = (dt, extra_class = '') => {
     `;
 }
 
-const build_layout_trip = (dt) => {
+const buildLayoutTrip = (dt) => {
     if (!dt || !dt.data) return
 
     const itemsPerSlide = 3
@@ -132,11 +132,11 @@ const build_layout_trip = (dt) => {
         }
 
         const targetSlide = $(`#carouselTrip .carousel-item[data-slide-index="${slideIndex}"] .holder`)
-        targetSlide.append(template_trip_box(el))
+        targetSlide.append(templateTripBox(el))
     })
 }
 
-const build_delete_modal = (url, context, token, action) => {
+const buildDeleteModal = (url, context, token, action) => {
     Swal.fire({
         title: "Are you sure?",
         text: `Do you want to delete this "${context}"?`,

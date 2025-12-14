@@ -36,6 +36,9 @@
     margin-bottom: var(--spaceLG);
     border: 4px solid var(--firstColor);
 }
+.container, .container-fluid, .modal-content {
+    border-radius: var(--roundedLG) !important;
+} 
 .btn, .container, .sidebar .nav-link, .hover-grow, .plate-number, .chip, .bordered, .chip-mini, .container-fluid, .navbar-brand {
     -webkit-transition: all 0.4s !important;
     -o-transition: all 0.4s !important;
