@@ -5,19 +5,15 @@
         const token = `<?= session()->get("token_key"); ?>`
     </script>
 
-    <div class="row">
-        <div class="col-lg-6 col-md-12">
-            <div class="container-fluid">
-                @include('profile.usecases.get_active_req')
-                @include('profile.usecases.get_profile')
-            </div>
+    <div class="mx-auto" style="max-width: 720px;">
+        <div class="container-fluid">
+            @include('profile.usecases.get_active_req')
+            @include('profile.usecases.get_profile')
         </div>
-        <div class="col-lg-6 col-md-12">
-            <div class="container-fluid">
-                <h2>Setting</h2><hr>
-                @include('profile.usecases.set_auto_bg_mode')
-                @include('profile.usecases.set_light_dark_mode')
-            </div>
+        <div class="container-fluid">
+            <h2>Setting</h2><hr>
+            @include('profile.usecases.set_auto_bg_mode')
+            @include('profile.usecases.set_light_dark_mode')
         </div>
     </div>
 @endsection

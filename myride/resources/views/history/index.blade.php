@@ -5,14 +5,10 @@
         const token = `<?= session()->get("token_key"); ?>`
     </script>
 
-    <div class="position-relative">
-        <div class="row">
-            <div class="col-xl-4 col-lg-5 col-md-6 col-sm-12">
-                <div class="container-fluid">
-                    @include('history.usecases.get_all_list_history')
-                    @include('history.usecases.hard_delete_history')
-                </div>
-            </div>
+    <div class="mx-auto" style="max-width: 720px;">
+        <div class="container-fluid">
+            @include('history.usecases.get_all_list_history')
+            @include('history.usecases.hard_delete_history')
         </div>
     </div>
 @endsection
