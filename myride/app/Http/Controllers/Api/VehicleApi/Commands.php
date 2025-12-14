@@ -18,7 +18,7 @@ use App\Models\InventoryModel;
 use App\Models\FuelModel;
 use App\Models\ReminderModel;
 use App\Models\WashModel;
-
+use App\Models\HistoryModel;
 // Helper
 use App\Helpers\Validation;
 use App\Helpers\Generator;

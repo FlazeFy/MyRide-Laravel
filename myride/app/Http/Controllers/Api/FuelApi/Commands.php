@@ -9,6 +9,7 @@ use Illuminate\Http\Response;
 use App\Models\FuelModel;
 use App\Models\AdminModel;
 use App\Models\UserModel;
+use App\Models\HistoryModel;
 // Helper
 use App\Helpers\Generator;
 use App\Helpers\Validation;
@@ -97,6 +98,8 @@ class Commands extends Controller
                         ], Response::HTTP_NOT_FOUND);
                     }
                 }
+
+                HistoryModel::createHistory(['history_type' => 'Fuel', 'history_context' => "remove a fuel history"], $user_id);
                 
                 return response()->json([
                     'status' => 'success',
@@ -212,6 +215,8 @@ class Commands extends Controller
 
                 $rows = FuelModel::createFuel($data, $user_id);
                 if($rows){
+                    HistoryModel::createHistory(['history_type' => 'Fuel', 'history_context' => "added a fuel history"], $user_id);
+
                     return response()->json([
                         'status' => 'success',
                         'message' => Generator::getMessageTemplate("create", $this->module),
@@ -293,6 +298,8 @@ class Commands extends Controller
 
                 $rows = FuelModel::updateFuelById($data, $user_id, $id);
                 if($rows > 0){
+                    HistoryModel::createHistory(['history_type' => 'Fuel', 'history_context' => "edited a fuel history"], $user_id);
+
                     return response()->json([
                         'status' => 'success',
                         'message' => Generator::getMessageTemplate("update", $this->module),

@@ -9,6 +9,7 @@ use Illuminate\Http\Response;
 use App\Models\InventoryModel;
 use App\Models\AdminModel;
 use App\Models\UserModel;
+use App\Models\HistoryModel;
 // Helper
 use App\Helpers\Generator;
 use App\Helpers\Validation;
@@ -85,10 +86,20 @@ class Commands extends Controller
                 $user_id = null;
             }
 
+            $inventory = InventoryModel::find($id);
             $rows = InventoryModel::hardDeleteInventoryById($id, $user_id);
             if($rows > 0){
                 // Delete Firebase Uploaded Image
-                // ....
+                if($inventory->inventory_image_url){
+                    if(!Firebase::deleteFile($inventory->inventory_image_url)){
+                        return response()->json([
+                            'status' => 'failed',
+                            'message' => Generator::getMessageTemplate("not_found", 'failed to delete inventory image'),
+                        ], Response::HTTP_NOT_FOUND);
+                    }
+                }
+
+                HistoryModel::createHistory(['history_type' => 'Inventory', 'history_context' => "remove an inventory"], $user_id);
 
                 return response()->json([
                     'status' => 'success',
@@ -204,6 +215,8 @@ class Commands extends Controller
 
                 $rows = InventoryModel::createInventory($data, $user_id);
                 if($rows){
+                    HistoryModel::createHistory(['history_type' => 'Inventory', 'history_context' => "added an inventory"], $user_id);
+
                     return response()->json([
                         'status' => 'success',
                         'message' => Generator::getMessageTemplate("create", $this->module),
@@ -284,6 +297,8 @@ class Commands extends Controller
 
                 $rows = InventoryModel::updateInventoryById($data, $user_id, $id);
                 if($rows > 0){
+                    HistoryModel::createHistory(['history_type' => 'Inventory', 'history_context' => "edited an inventory"], $user_id);
+
                     return response()->json([
                         'status' => 'success',
                         'message' => Generator::getMessageTemplate("update", $this->module),

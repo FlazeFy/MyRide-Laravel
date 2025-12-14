@@ -8,7 +8,7 @@ use Illuminate\Http\Response;
 // Model
 use App\Models\WashModel;
 use App\Models\AdminModel;
-
+use App\Models\HistoryModel;
 // Helper
 use App\Helpers\Generator;
 use App\Helpers\Validation;
@@ -81,8 +81,7 @@ class Commands extends Controller
 
             $rows = WashModel::hardDeleteWashById($id, $user_id);
             if($rows > 0){
-                // Delete Firebase Uploaded Image
-                // ....
+                HistoryModel::createHistory(['history_type' => 'Wash', 'history_context' => "removed a wash history"], $user_id);
                 
                 return response()->json([
                     'status' => 'success',
@@ -176,6 +175,8 @@ class Commands extends Controller
 
                 $rows = WashModel::createWash($data, $user_id);
                 if($rows){
+                    HistoryModel::createHistory(['history_type' => 'Wash', 'history_context' => "added a wash history"], $user_id);
+
                     return response()->json([
                         'status' => 'success',
                         'message' => Generator::getMessageTemplate("create", $this->module),
@@ -337,6 +338,8 @@ class Commands extends Controller
 
                 $rows = WashModel::updateWashById($data, $user_id, $id);
                 if($rows > 0){
+                    HistoryModel::createHistory(['history_type' => 'Wash', 'history_context' => "edited a wash history"], $user_id);
+
                     return response()->json([
                         'status' => 'success',
                         'message' => Generator::getMessageTemplate("update", $this->module),

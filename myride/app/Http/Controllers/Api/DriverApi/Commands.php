@@ -13,6 +13,7 @@ use App\Models\DriverModel;
 use App\Models\AdminModel;
 use App\Models\VehicleModel;
 use App\Models\UserModel;
+use App\Models\HistoryModel;
 use App\Models\DriverVehicleRelationModel;
 // Helper
 use App\Helpers\Generator;
@@ -84,9 +85,11 @@ class Commands extends Controller
             if($check_admin){
                 $user_id = null;
             }
+            $driver = DriverModel::find($id);
 
             $rows = DriverModel::hardDeleteDriverById($id, $user_id);
             if($rows > 0){
+                HistoryModel::createHistory(['history_type' => 'Driver', 'history_context' => "deleted $driver->username as a driver"], $user_id);
                 DriverVehicleRelationModel::hardDeleteDriverVehicleRelationByDriverId($id, $user_id);
                 
                 return response()->json([
@@ -252,6 +255,8 @@ class Commands extends Controller
 
                     $row = DriverModel::createDriver($data, $user_id);
                     if($row){
+                        HistoryModel::createHistory(['history_type' => 'Driver', 'history_context' => "added $request->username as a driver"], $user_id);
+
                         return response()->json([
                             'status' => 'success',
                             'message' => Generator::getMessageTemplate("create", $this->module),
@@ -341,6 +346,8 @@ class Commands extends Controller
 
                     $rows = DriverModel::updateDriverById($data, $user_id, $id);
                     if($rows > 0){
+                        HistoryModel::createHistory(['history_type' => 'Driver', 'history_context' => "updated $request->username driver's data"], $user_id);
+
                         return response()->json([
                             'status' => 'success',
                             'message' => Generator::getMessageTemplate("update", $this->module),

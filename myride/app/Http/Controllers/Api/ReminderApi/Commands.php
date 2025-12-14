@@ -11,7 +11,7 @@ use App\Models\ReminderModel;
 use App\Models\AdminModel;
 use App\Models\UserModel;
 use App\Models\GoogleTokensModel;
-
+use App\Models\HistoryModel;
 // Helper
 use App\Helpers\Generator;
 use App\Helpers\Validation;
@@ -108,6 +108,8 @@ class Commands extends Controller
                         }
                     }
                 }
+
+                HistoryModel::createHistory(['history_type' => 'Reminder', 'history_context' => "removed a reminder"], $user_id);
 
                 return response()->json([
                     'status' => 'success',
@@ -245,6 +247,8 @@ class Commands extends Controller
                         $reminder_desc = "$request->reminder_context | $request->reminder_title\n$request->reminder_body";
                         GoogleCalendar::createSingleEvent($google_token->access_token, $reminder_desc, $request->remind_at, 60);
                     }
+
+                    HistoryModel::createHistory(['history_type' => 'Reminder', 'history_context' => "added a reminder"], $user_id);
                     
                     return response()->json([
                         'status' => 'success',

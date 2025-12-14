@@ -4,6 +4,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
+// Helper
+use App\Helpers\Generator;
 
 /**
  * @OA\Schema(
@@ -29,6 +31,14 @@ class HistoryModel extends Model
     protected $table = 'history';
     protected $primaryKey = 'id';
     protected $fillable = ['id', 'history_type', 'history_context', 'created_at', 'created_by'];
+
+    public static function createHistory($data, $user_id){
+        $data['created_at'] = date('Y-m-d H:i:s');
+        $data['created_by'] = $user_id;
+        $data['id'] = Generator::getUUID();
+            
+        return HistoryModel::create($data);
+    }
 
     public static function deleteHistoryForLastNDays($days){
         return HistoryModel::whereDate('created_at', '<', Carbon::now()->subDays($days))->delete();

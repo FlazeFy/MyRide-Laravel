@@ -8,6 +8,7 @@ use Illuminate\Http\Response;
 // Model
 use App\Models\ServiceModel;
 use App\Models\AdminModel;
+use App\Models\HistoryModel;
 // Helper
 use App\Helpers\Generator;
 use App\Helpers\Validation;
@@ -82,6 +83,8 @@ class Commands extends Controller
 
                 $rows = ServiceModel::createService($data, $user_id);
                 if($rows){
+                    HistoryModel::createHistory(['history_type' => 'Service', 'history_context' => "added a service history"], $user_id);
+
                     return response()->json([
                         'status' => 'success',
                         'message' => Generator::getMessageTemplate("create", $this->module),
@@ -161,6 +164,8 @@ class Commands extends Controller
 
             $rows = ServiceModel::hardDeleteServiceById($id, $user_id);
             if($rows > 0){
+                HistoryModel::createHistory(['history_type' => 'Service', 'history_context' => "removed a service history"], $user_id);
+
                 return response()->json([
                     'status' => 'success',
                     'message' => Generator::getMessageTemplate("permentally delete", $this->module),
@@ -241,6 +246,8 @@ class Commands extends Controller
 
                 $rows = ServiceModel::updateServiceById($data, $user_id, $id);
                 if($rows > 0){
+                    HistoryModel::createHistory(['history_type' => 'Service', 'history_context' => "edited a service history"], $user_id);
+
                     return response()->json([
                         'status' => 'success',
                         'message' => Generator::getMessageTemplate("update", $this->module),

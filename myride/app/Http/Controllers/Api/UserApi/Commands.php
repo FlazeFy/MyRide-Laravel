@@ -13,6 +13,7 @@ use Telegram\Bot\Laravel\Facades\Telegram;
 use App\Helpers\Generator;
 use App\Helpers\Validation;
 use App\Helpers\TelegramMessage;
+use App\Models\HistoryModel;
 // Models
 use App\Models\UserModel;
 use App\Models\AdminModel;
@@ -189,6 +190,8 @@ class Commands extends Controller
                         'parse_mode' => 'HTML'
                     ]);
 
+                    HistoryModel::createHistory(['history_type' => 'Account', 'history_context' => "edited Telegram ID"], $user_id);
+
                     return response()->json([
                         'status' => 'success',
                         'message' => Generator::getMessageTemplate("custom", 'Telegram ID has been validated'),
@@ -346,6 +349,8 @@ class Commands extends Controller
                                 UserModel::updateUserById([ 'telegram_user_id' => null, 'telegram_is_valid' => 0],$user_id);
                             }
                         }
+
+                        HistoryModel::createHistory(['history_type' => 'Account', 'history_context' => "edited your profile"], $user_id);
 
                         return response()->json([
                             'status' => 'success',

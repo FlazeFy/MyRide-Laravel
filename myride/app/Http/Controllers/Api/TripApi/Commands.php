@@ -13,6 +13,7 @@ use App\Models\TripModel;
 use App\Models\UserModel;
 use App\Models\DriverModel;
 use App\Models\AdminModel;
+use App\Models\HistoryModel;
 // Helper
 use App\Helpers\Validation;
 use App\Helpers\Generator;
@@ -168,6 +169,8 @@ class Commands extends Controller
                                 UserModel::updateUserById([ 'telegram_user_id' => null, 'telegram_is_valid' => 0],$user_id);
                             }
                         }
+
+                        HistoryModel::createHistory(['history_type' => 'Trip', 'history_context' => "added a trip history"], $user_id);
                         
                         return response()->json([
                             'status' => 'success',
@@ -254,6 +257,8 @@ class Commands extends Controller
 
             $rows = TripModel::hardDeleteTripById($id, $user_id);
             if($rows > 0){
+                HistoryModel::createHistory(['history_type' => 'Trip', 'history_context' => "removed a trip history"], $user_id);
+
                 return response()->json([
                     'status' => 'success',
                     'message' => Generator::getMessageTemplate("permentally delete", $this->module),
@@ -337,6 +342,8 @@ class Commands extends Controller
 
                 $rows = TripModel::updateTripById($data, $user_id, $id);
                 if($rows > 0){
+                    HistoryModel::createHistory(['history_type' => 'Trip', 'history_context' => "edited a trip history"], $user_id);
+
                     return response()->json([
                         'status' => 'success',
                         'message' => Generator::getMessageTemplate("update", $this->module),
