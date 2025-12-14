@@ -104,6 +104,7 @@ class FuelModelFactory extends Factory
             'fuel_bill' => null,
             'created_at' => Generator::getRandomDate(0), 
             'created_by' => $user_id, 
+            'updated_at' => Generator::getRandomDate($ran),
         ];
     }
 }

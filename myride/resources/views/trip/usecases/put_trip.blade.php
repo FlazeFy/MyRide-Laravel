@@ -55,7 +55,9 @@
                     </div>
                 </form>
                 <hr>
-                <button class="btn btn-success rounded-pill px-4" id="submit_update-btn"><i class="fa-solid fa-floppy-disk"></i> Save Changes</button>
+                <div class="d-grid d-md-inline-block">
+                    <button class="btn btn-success rounded-pill px-4 w-100 w-md-100" id="submit_update-btn"><i class="fa-solid fa-floppy-disk"></i> Save Changes</button>
+                </div>
             </div>
         </div>
     </div>
@@ -99,7 +101,11 @@
         const trip_category = $('#trip_category_holder').val()
 
         if(vehicle_id !== "-" && trip_category !== "-"){
-            Swal.showLoading();
+            if ($('#driver_holder').val() === "-") {
+                $('#driver_holder').val('')
+            }
+
+            Swal.showLoading()
             $.ajax({
                 url: `/api/v1/trip/${id}`,
                 type: 'PUT',

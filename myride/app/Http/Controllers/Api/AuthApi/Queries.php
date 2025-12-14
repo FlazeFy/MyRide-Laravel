@@ -6,9 +6,6 @@ use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 
-// Models
-use App\Models\UserModel;
-use App\Models\AdminModel;
 // Helper
 use App\Helpers\Generator;
 
@@ -17,8 +14,8 @@ class Queries extends Controller
     /**
      * @OA\GET(
      *     path="/api/v1/logout",
-     *     summary="Sign out from Apps",
-     *     description="This request is used to get sign out from the Apps (sign out from the session). This request is using MySql database, and have a protected routes.",
+     *     summary="Get Log Out",
+     *     description="This authentication request is used to sign out from application or reset current session. This request interacts with the MySQL database.",
      *     tags={"Auth"},
      *     security={{"bearerAuth":{}}},
      *     @OA\Response(
@@ -51,11 +48,12 @@ class Queries extends Controller
     {
         try {
             $user_id = $request->user()->id;
-            $check = AdminModel::where('id', $user_id)->first();
 
-            // Response
+            // Reset session & token
             session()->flush();
             $request->user()->currentAccessToken()->delete();
+
+            // Return success response
             return response()->json([
                 'status' => 'success',
                 'message' => 'logout success'

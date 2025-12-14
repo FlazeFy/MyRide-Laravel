@@ -2,7 +2,7 @@
     "openapi": "3.0.0",
     "info": {
         "title": "MyRide",
-        "description": "API Documentation for MyRide",
+        "description": "This document describes the MyRide API, built with Laravel (PHP), MySQL as the primary database, and Firebase for cloud storage and NoSQL data storage.",
         "contact": {
             "email": "flazen.edu@gmail.com"
         },
@@ -14,7 +14,8 @@
                 "tags": [
                     "Auth"
                 ],
-                "summary": "Sign in to the Apps",
+                "summary": "Post Login (Basic Auth)",
+                "description": "This authentication request is used to access the application and obtain an authorization token for accessing all protected APIs. This request interacts with the MySQL database.",
                 "operationId": "26ae6f7a2668f358293a502309985206",
                 "requestBody": {
                     "required": true,
@@ -163,286 +164,13 @@
                 }
             }
         },
-        "/api/v1/register": {
-            "post": {
-                "tags": [
-                    "Auth"
-                ],
-                "summary": "Register an account",
-                "operationId": "06be8aeac0568d6da099bf9de9631bec",
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "required": [
-                                    "username",
-                                    "password",
-                                    "email"
-                                ],
-                                "properties": {
-                                    "username": {
-                                        "type": "string",
-                                        "example": "flazefy"
-                                    },
-                                    "password": {
-                                        "type": "string",
-                                        "example": "nopass123"
-                                    },
-                                    "email": {
-                                        "type": "string",
-                                        "example": "tester@gmail.com"
-                                    },
-                                    "telegram_user_id": {
-                                        "type": "string",
-                                        "example": "1317625123"
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "201": {
-                        "description": "register successfully",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "status": {
-                                            "type": "string",
-                                            "example": "success"
-                                        },
-                                        "message": {
-                                            "type": "string",
-                                            "example": "user has been created"
-                                        },
-                                        "data": {
-                                            "properties": {
-                                                "id": {
-                                                    "type": "string",
-                                                    "example": "83ce75db-4016-d87c-2c3c-db1e222d0001"
-                                                },
-                                                "username": {
-                                                    "type": "string",
-                                                    "example": "flazefy"
-                                                },
-                                                "email": {
-                                                    "type": "string",
-                                                    "example": "flazen.work@gmail.com"
-                                                },
-                                                "telegram_user_id": {
-                                                    "type": "string",
-                                                    "example": "123456789"
-                                                },
-                                                "telegram_is_valid": {
-                                                    "type": "integer",
-                                                    "example": 0
-                                                },
-                                                "created_at": {
-                                                    "type": "string",
-                                                    "format": "date-time",
-                                                    "example": "2024-03-14 02:28:37"
-                                                },
-                                                "updated_at": {
-                                                    "type": "string",
-                                                    "format": "date-time",
-                                                    "example": "2024-10-25 09:37:20"
-                                                }
-                                            },
-                                            "type": "object"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "{validation_msg}",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "status": {
-                                            "type": "string",
-                                            "example": "failed"
-                                        },
-                                        "result": {
-                                            "type": "string",
-                                            "example": "{field validation message}"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "409": {
-                        "description": "user with same email or username had been registered, try using another",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "status": {
-                                            "type": "string",
-                                            "example": "failed"
-                                        },
-                                        "message": {
-                                            "type": "string",
-                                            "example": "user with same email or username has been used"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "status": {
-                                            "type": "string",
-                                            "example": "error"
-                                        },
-                                        "message": {
-                                            "type": "string",
-                                            "example": "something wrong. please contact admin"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/api/v1/register/validate": {
-            "post": {
-                "tags": [
-                    "Auth"
-                ],
-                "summary": "Validate an account register's request",
-                "operationId": "325b5ef485ca0b33ecf7aad93c7f8e82",
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "required": [
-                                    "username",
-                                    "token"
-                                ],
-                                "properties": {
-                                    "username": {
-                                        "type": "string",
-                                        "example": "flazefy"
-                                    },
-                                    "token": {
-                                        "type": "string",
-                                        "example": "ABC123"
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "validation successfully",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "status": {
-                                            "type": "string",
-                                            "example": "success"
-                                        },
-                                        "message": {
-                                            "type": "string",
-                                            "example": "user has been validated"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "{validation_msg}",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "status": {
-                                            "type": "string",
-                                            "example": "failed"
-                                        },
-                                        "result": {
-                                            "type": "string",
-                                            "example": "{field validation message}"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "token is invalid or user request not found or has been accepted",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "status": {
-                                            "type": "string",
-                                            "example": "failed"
-                                        },
-                                        "message": {
-                                            "type": "string",
-                                            "example": "token is invalid or request not found"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "status": {
-                                            "type": "string",
-                                            "example": "error"
-                                        },
-                                        "message": {
-                                            "type": "string",
-                                            "example": "something wrong. please contact admin"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
         "/api/v1/register/token": {
             "post": {
                 "tags": [
-                    "User"
+                    "Auth"
                 ],
-                "summary": "Check and send validation token to the user who in registration process",
+                "summary": "Post Register Token",
+                "description": "This authentication request is used to get token validation after register. This request interacts with the MySQL database and using mailer.",
                 "operationId": "11b8431c2504d0fea4b6ecb6da3a1277",
                 "responses": {
                     "200": {
@@ -511,9 +239,10 @@
         "/api/v1/register/account": {
             "post": {
                 "tags": [
-                    "User"
+                    "Auth"
                 ],
-                "summary": "Register account and accept validation",
+                "summary": "Post Register Account",
+                "description": "This authentication request is used to get token validation after register. This request interacts with the MySQL database and using mailer.",
                 "operationId": "b864fe52687c987f1e7726bc56722429",
                 "responses": {
                     "200": {
@@ -630,9 +359,10 @@
         "/api/v1/register/regen_token": {
             "post": {
                 "tags": [
-                    "User"
+                    "Auth"
                 ],
-                "summary": "Regenerate registration token",
+                "summary": "Post Regenerate Registration Token",
+                "description": "This authentication request is used to regenerate a token after user has failed to validate their previous token. This request interacts with the MySQL database and using mailer.",
                 "operationId": "a4fcf6ec4a417ca28f4e76fb9590fbf7",
                 "responses": {
                     "200": {
@@ -703,8 +433,8 @@
                 "tags": [
                     "Auth"
                 ],
-                "summary": "Sign out from Apps",
-                "description": "This request is used to get sign out from the Apps (sign out from the session). This request is using MySql database, and have a protected routes.",
+                "summary": "Get Log Out",
+                "description": "This authentication request is used to sign out from application or reset current session. This request interacts with the MySQL database.",
                 "operationId": "8859fad6cbeb2081a7611f5b944b4630",
                 "responses": {
                     "200": {
@@ -780,7 +510,8 @@
                 "tags": [
                     "Dictionary"
                 ],
-                "summary": "Delete dictionary by id",
+                "summary": "Delete Dictionary By ID",
+                "description": "This request is used to permanently delete a dictionary entry based on the provided `ID`. This request interacts with the MySQL database, and have a protected routes.",
                 "operationId": "41d0a45e2befa472da1adade242b757d",
                 "parameters": [
                     {
@@ -908,8 +639,8 @@
                 "tags": [
                     "Dictionary"
                 ],
-                "summary": "Post dictionary",
-                "description": "Create a new dictionary using the given name and category. This request is using MySQL database.",
+                "summary": "Post Dictionary",
+                "description": "This request is used to created a new dictionary. This request interacts with the MySQL database, and have a protected routes.",
                 "operationId": "c00bb932223a0676d61b6d1079013eca",
                 "requestBody": {
                     "required": true,
@@ -1053,8 +784,8 @@
                 "tags": [
                     "Dictionary"
                 ],
-                "summary": "Get dictionary by type",
-                "description": "This request is used to get dictionary by its `dictionary_type`, that can be trip_category, vehicle_merk, vehicle_type, vehicle_category, vehicle_status, vehicle_default_fuel, vehicle_fuel_status, or vehicle_transmission_code. This request is using MySql database, and have a protected routes.",
+                "summary": "Get Dictionary By Type",
+                "description": "This request is used to get dictionary by its `dictionary_type`, that can be trip_category, vehicle_merk, vehicle_type, vehicle_category, vehicle_status, vehicle_default_fuel, vehicle_fuel_status, or vehicle_transmission_code. This request interacts with the MySQL database and can be accessed as public routes or protected routes. When accessed with a token (protected routes), the returned list includes both public and private dictionaries. When accessed without a token, only public dictionaries are returned.",
                 "operationId": "c6cd36c8c3508387249c596947b82e6f",
                 "parameters": [
                     {
@@ -1165,12 +896,7 @@
                             }
                         }
                     }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
+                }
             }
         },
         "/api/v1/driver/destroy/{id}": {
@@ -9170,6 +8896,130 @@
                 ]
             }
         },
+        "/api/v1/vehicle/image_collection/destroy/{vehicle_id}/{image_id}": {
+            "delete": {
+                "tags": [
+                    "Vehicle"
+                ],
+                "summary": "Delete Vehicle Image Collection By Id",
+                "description": "Delete vehicle image collection. This request is using MySQL database.",
+                "operationId": "b9674d9cdb9b5018b7fb0e2cdaad2dc1",
+                "parameters": [
+                    {
+                        "name": "vehicle_id",
+                        "in": "path",
+                        "description": "Vehicle ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "e1288783-a5d4-1c4c-2cd6-0e92f7cc3bf9"
+                    },
+                    {
+                        "name": "image_id",
+                        "in": "path",
+                        "description": "Vehicle Image ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "e1288783-a5d4-1c4c-2cd6-0e92f7cc3bf9"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Vehicle image collection update successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "vehicle image update"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Validation failed",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "oneOf": [
+                                        {
+                                            "properties": {
+                                                "status": {
+                                                    "type": "string",
+                                                    "example": "failed"
+                                                },
+                                                "message": {
+                                                    "type": "string",
+                                                    "example": "vehicle image collection is a required field"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "vehicle failed to fetched",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "vehicle not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "something wrong. please contact admin"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/v1/vehicle": {
             "put": {
                 "tags": [
@@ -9847,7 +9697,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "vehicle permanentelly deleted",
+                        "description": "vehicle permanently deleted",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -9858,7 +9708,7 @@
                                         },
                                         "message": {
                                             "type": "string",
-                                            "example": "vehicle permanentelly deleted"
+                                            "example": "vehicle permanently deleted"
                                         }
                                     },
                                     "type": "object"
@@ -9987,6 +9837,10 @@
                                                             "vehicle_type": {
                                                                 "type": "string",
                                                                 "example": "City Car"
+                                                            },
+                                                            "vehicle_transmission": {
+                                                                "type": "string",
+                                                                "example": "Manual"
                                                             },
                                                             "vehicle_distance": {
                                                                 "type": "integer",
@@ -12484,6 +12338,46 @@
                         "description": "ID of the user who created the fuel record",
                         "type": "string",
                         "format": "uuid"
+                    },
+                    "updated_at": {
+                        "description": "Timestamp when the fuel record was last updated",
+                        "type": "string",
+                        "format": "date-time",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "Google Tokens": {
+                "required": [
+                    "id",
+                    "access_token",
+                    "expiry",
+                    "created_at",
+                    "created_by"
+                ],
+                "properties": {
+                    "id": {
+                        "description": "Primary Key",
+                        "type": "integer"
+                    },
+                    "access_token": {
+                        "description": "Access token of Google Sign In",
+                        "type": "string"
+                    },
+                    "expiry": {
+                        "description": "Expire datetime of access token",
+                        "type": "string"
+                    },
+                    "created_at": {
+                        "description": "Timestamp when the user created the history",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "created_by": {
+                        "description": "ID of the user who created the history",
+                        "type": "string",
+                        "format": "uuid"
                     }
                 },
                 "type": "object"
@@ -12687,10 +12581,6 @@
             "description": "Auth"
         },
         {
-            "name": "User",
-            "description": "User"
-        },
-        {
             "name": "Dictionary",
             "description": "Dictionary"
         },
@@ -12733,6 +12623,10 @@
         {
             "name": "Trip",
             "description": "Trip"
+        },
+        {
+            "name": "User",
+            "description": "User"
         },
         {
             "name": "Vehicle",

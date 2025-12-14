@@ -9,7 +9,7 @@
                 <input hidden id="fuel_id">
                 <form id="form-update-fuel">
                     <label>Vehicle Name & Plate Number</label>
-                    <select class="form-select" name="vehicle_holder" id="vehicle_holder" aria-label="Default select example"></select>
+                    <select class="form-select" name="vehicle_id" id="vehicle_holder" aria-label="Default select example"></select>
                     <div class="row">
                         <div class="col-lg-6 col-md-6 col-sm-12">
                             <label>Fuel Brand</label>
@@ -21,11 +21,11 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-lg-3 col-md-3 col-sm-6">
+                        <div class="col-lg-3 col-md-3 col-sm-6 col-6">
                             <label>Fuel RON</label>
                             <input class="form-control" name="fuel_ron" id="fuel_ron">
                         </div>
-                        <div class="col-lg-3 col-md-3 col-sm-6">
+                        <div class="col-lg-3 col-md-3 col-sm-6 col-6">
                             <label>Volume (L)</label>
                             <input class="form-control" name="fuel_volume" id="fuel_volume" type="number" min="1" value="1">
                         </div>
@@ -36,7 +36,9 @@
                     </div>
                 </form>
                 <hr>
-                <button class="btn btn-success rounded-pill px-4" id="submit_update-btn"><i class="fa-solid fa-floppy-disk"></i> Save Changes</button>
+                <div class="d-grid d-md-inline-block">
+                    <button class="btn btn-success rounded-pill px-4 w-100 w-md-auto" id="submit_update-btn"><i class="fa-solid fa-floppy-disk"></i> Save Changes</button>
+                </div>
             </div>
         </div>
     </div>

@@ -22,7 +22,7 @@ use App\Jobs\UserJob;
  * @OA\Info(
  *     title="MyRide",
  *     version="1.0.0",
- *     description="API Documentation for MyRide",
+ *     description="This document describes the MyRide API, built with Laravel (PHP), MySQL as the primary database, and Firebase for cloud storage and NoSQL data storage.",
  *     @OA\Contact(
  *         email="flazen.edu@gmail.com"
  *     )
@@ -41,7 +41,8 @@ class Commands extends Controller
     /**
      * @OA\POST(
      *     path="/api/v1/login",
-     *     summary="Sign in to the Apps",
+     *     summary="Post Login (Basic Auth)",
+     *     description="This authentication request is used to access the application and obtain an authorization token for accessing all protected APIs. This request interacts with the MySQL database.",
      *     tags={"Auth"},
      *     @OA\RequestBody(
      *         required=true,
@@ -98,25 +99,24 @@ class Commands extends Controller
     public function login(Request $request)
     {
         try {
+            // Validate request body
             $validator = Validation::getValidateLogin($request);
-
             if ($validator->fails()) {
-                $errors = $validator->messages();
-
                 return response()->json([
                     'status' => 'failed',
-                    'result' => $errors,
+                    'result' => $validator->messages(),
                 ], Response::HTTP_BAD_REQUEST);
             } else {
-                // Check for Admin
+                // Check for Admin account
                 $user = AdminModel::where('username', $request->username)->first();
                 $role = 1;
                 if($user == null){
-                    // Check for User
+                    // Check for User account
                     $user = UserModel::where('username', $request->username)->first();
                     $role = 0;
 
                     if($user){
+                        // Verify that the account has completed registration validation
                         $check_register = ValidateRequestModel::getCheckRegisterToken($request->username);
                         if($check_register){
                             return response()->json([
@@ -127,16 +127,18 @@ class Commands extends Controller
                     }
                 }
 
-                // Response
+                // Verify username and password
                 if (!$user || !Hash::check($request->password, $user->password)) {
                     return response()->json([
                         'status' => 'failed',
                         'result' => 'wrong username or password',
                     ], Response::HTTP_UNAUTHORIZED);
                 } else {
+                    // Create Token
                     $token = $user->createToken('login')->plainTextToken;
                     unset($user->password);
 
+                    // Return success response
                     return response()->json([
                         'status' => 'success',
                         'result' => $user,
@@ -144,260 +146,6 @@ class Commands extends Controller
                         'role' => $role                  
                     ], Response::HTTP_OK);
                 }
-            }
-            
-        } catch(\Exception $e) {
-            return response()->json([
-                'status' => 'error',
-                'message' => Generator::getMessageTemplate("unknown_error", null),
-            ], Response::HTTP_INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    /**
-     * @OA\POST(
-     *     path="/api/v1/register",
-     *     summary="Register an account",
-     *     tags={"Auth"},
-     *     @OA\RequestBody(
-     *         required=true,
-     *         @OA\JsonContent(
-     *             required={"username", "password", "email"},
-     *             @OA\Property(property="username", type="string", example="flazefy"),
-     *             @OA\Property(property="password", type="string", example="nopass123"),
-     *             @OA\Property(property="email", type="string", example="tester@gmail.com"),
-     *             @OA\Property(property="telegram_user_id", type="string", example="1317625123")
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=201,
-     *         description="register successfully",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="status", type="string", example="success"),
-     *             @OA\Property(property="message", type="string", example="user has been created"),
-     *             @OA\Property(property="data", type="object",
-     *                 @OA\Property(property="id", type="string", example="83ce75db-4016-d87c-2c3c-db1e222d0001"),
-     *                 @OA\Property(property="username", type="string", example="flazefy"),
-     *                 @OA\Property(property="email", type="string", example="flazen.work@gmail.com"),
-     *                 @OA\Property(property="telegram_user_id", type="string", example="123456789"),
-     *                 @OA\Property(property="telegram_is_valid", type="integer", example=0),
-     *                 @OA\Property(property="created_at", type="string", format="date-time", example="2024-03-14 02:28:37"),
-     *                 @OA\Property(property="updated_at", type="string", format="date-time", example="2024-10-25 09:37:20"),
-     *             ),
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=400,
-     *         description="{validation_msg}",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="status", type="string", example="failed"),
-     *             @OA\Property(property="result", type="string", example="{field validation message}")
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=409,
-     *         description="user with same email or username had been registered, try using another",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="status", type="string", example="failed"),
-     *             @OA\Property(property="message", type="string", example="user with same email or username has been used")
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=500,
-     *         description="Internal Server Error",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="status", type="string", example="error"),
-     *             @OA\Property(property="message", type="string", example="something wrong. please contact admin")
-     *         )
-     *     ),
-     * )
-     */
-    public function register(Request $request)
-    {
-        try {
-            $validator = Validation::getValidateRegister($request);
-
-            if ($validator->fails()) {
-                $errors = $validator->messages();
-
-                return response()->json([
-                    'status' => 'failed',
-                    'data' => $errors,
-                ], Response::HTTP_BAD_REQUEST);
-            } else {
-                $username = $request->username;
-                $password = $request->password;
-                $email = $request->email;
-                $telegram_user_id = $request->telegram_user_id;
-
-                // Check If Password & Password Confirmation is same
-                if($password == $request->confirm_password){
-                    // Check username or email avaiability
-                    $is_waiting_validate_register = ValidateRequestModel::getCheckRegisterToken($username);                    
-                    if(!$is_waiting_validate_register){
-                        // Create User
-                        $is_exist = UserModel::getCheckUserByUsernameAndEmail($username, $email);
-                        if(!$is_exist){
-                            $data = [
-                                'username' => $username,
-                                'password' => $password,
-                                'email' => $email,
-                                'telegram_user_id' => $telegram_user_id
-                            ];
-                            $user = UserModel::createUser((object)$data);
-
-                            if($user){
-                                // Create Token
-                                $token_length = 6;
-                                $token = Generator::getTokenValidation($token_length);
-                                $valid_req = [
-                                    'request_context' => $token,
-                                    'request_type' => 'register',
-                                ];
-                                $validate_req = ValidateRequestModel::createValidateRequest((object)$valid_req, $user->username);
-
-                                if($validate_req){
-                                    // Send email
-                                    $ctx = 'Generate registration token';
-                                    $data = "You almost finish your registration process. We provided you with this token <br><h5>$token</h5> to make sure this account is yours.<br>If you're the owner just paste this token into the Token's Field. If its not, just leave this message<br>Thank You, MyRide";
-
-                                    dispatch(new UserJob($ctx, $data, $username, $email));
-
-                                    return response()->json([
-                                        'status' => 'success',
-                                        'message' => 'user has been created',
-                                        'data' => $user,                
-                                    ], Response::HTTP_CREATED);
-                                } else {
-                                    return response()->json([
-                                        'status' => 'error',
-                                        'message' => Generator::getMessageTemplate("unknown_error", null),
-                                    ], Response::HTTP_INTERNAL_SERVER_ERROR);
-                                }
-                            } else {
-                                return response()->json([
-                                    'status' => 'error',
-                                    'message' => Generator::getMessageTemplate("unknown_error", null),
-                                ], Response::HTTP_INTERNAL_SERVER_ERROR);
-                            }
-                        } else {
-                            return response()->json([
-                                'status' => 'failed',
-                                'message' => 'user with same email or username has been used',             
-                            ], Response::HTTP_CONFLICT);
-                        }
-                    } else {
-                        return response()->json([
-                            'status' => 'failed',
-                            'message' => 'user has been registered but need validate first',           
-                        ], Response::HTTP_CONFLICT);
-                    }   
-                } else {
-                    return response()->json([
-                        'status' => 'failed',
-                        'message' => 'password confirmation must same',
-                    ], Response::HTTP_BAD_REQUEST);
-                }
-            }
-        } catch(\Exception $e) {
-            return response()->json([
-                'status' => 'error',
-                'message' => Generator::getMessageTemplate("unknown_error", null),
-            ], Response::HTTP_INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    /**
-     * @OA\POST(
-     *     path="/api/v1/register/validate",
-     *     summary="Validate an account register's request",
-     *     tags={"Auth"},
-     *     @OA\RequestBody(
-     *         required=true,
-     *         @OA\JsonContent(
-     *             required={"username", "token"},
-     *             @OA\Property(property="username", type="string", example="flazefy"),
-     *             @OA\Property(property="token", type="string", example="ABC123")
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="validation successfully",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="status", type="string", example="success"),
-     *             @OA\Property(property="message", type="string", example="user has been validated")
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=400,
-     *         description="{validation_msg}",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="status", type="string", example="failed"),
-     *             @OA\Property(property="result", type="string", example="{field validation message}")
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=404,
-     *         description="token is invalid or user request not found or has been accepted",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="status", type="string", example="failed"),
-     *             @OA\Property(property="message", type="string", example="token is invalid or request not found")
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=500,
-     *         description="Internal Server Error",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="status", type="string", example="error"),
-     *             @OA\Property(property="message", type="string", example="something wrong. please contact admin")
-     *         )
-     *     ),
-     * )
-     */
-    public function validate_register(Request $request){
-        try {
-            $validator = Validation::getValidateRegisterValidation($request);
-
-            if ($validator->fails()) {
-                $errors = $validator->messages();
-
-                return response()->json([
-                    'status' => 'failed',
-                    'data' => $errors,
-                ], Response::HTTP_BAD_REQUEST);
-            } else {
-                $username = $request->username;
-                $token = $request->token;
-
-                $valid_req = ValidateRequestModel::getActiveRequestByCreatedByTokenAndType($username,$token,'register');                    
-                if($valid_req){
-                    // Delete Request
-                    $is_deleted = ValidateRequestModel::destroy($valid_req);
-                    if($is_deleted){
-                        $user = UserModel::where('username',$username)->first();
-
-                        // Send email
-                        $ctx = 'Registration Complete!';
-                        $data = "You have finished register your account. Welcome to MyRide $username, happy explore the world";
-
-                        dispatch(new UserJob($ctx, $data, $username, $user->email));
-
-                        return response()->json([
-                            'status' => 'success',
-                            'message' => 'user has been validated',
-                        ], Response::HTTP_OK);
-                    } else {
-                        return response()->json([
-                            'status' => 'error',
-                            'message' => Generator::getMessageTemplate("unknown_error", null),
-                        ], Response::HTTP_INTERNAL_SERVER_ERROR);
-                    }
-                } else {
-                    return response()->json([
-                        'status' => 'failed',
-                        'message' => 'token is invalid or request not found',           
-                    ], Response::HTTP_NOT_FOUND);
-                }   
             }
         } catch(\Exception $e) {
             return response()->json([
@@ -410,8 +158,9 @@ class Commands extends Controller
     /**
      * @OA\POST(
      *     path="/api/v1/register/token",
-     *     summary="Check and send validation token to the user who in registration process",
-     *     tags={"User"},
+     *     summary="Post Register Token",
+     *     description="This authentication request is used to get token validation after register. This request interacts with the MySQL database and using mailer.",
+     *     tags={"Auth"},
      *     @OA\Response(
      *         response=200,
      *         description="the validation token has been sended to {email} email account",
@@ -441,21 +190,23 @@ class Commands extends Controller
     public function get_register_validation_token(Request $request)
     {
         try{
+            // Check if account exist by username
             $username = $request->username;
             $check_user = UserModel::selectRaw('1')
                 ->where('username',$username)
                 ->first();
 
             if(!$check_user){
+                // Check if request doesnt duplicate
                 $valid = ValidateRequestModel::selectRaw('1')
                     ->where('request_type','register')
                     ->where('created_by',$username)
                     ->first();
 
                 if(!$valid){
+                    // Generate token
                     $token_length = 6;
                     $token = Generator::getTokenValidation($token_length);
-
                     $data_req = (object)[
                         'request_type' => 'register',
                         'request_context' => $token
@@ -463,13 +214,13 @@ class Commands extends Controller
                     $valid_insert = ValidateRequestModel::createValidateRequest($data_req, $username);
 
                     if($valid_insert){
-                        // Send email
+                        // Send token email
                         $ctx = 'Generate registration token';
                         $email = $request->email;
                         $data = "You almost finish your registration process. We provided you with this token <br><h5>$token</h5> to make sure this account is yours.<br>If you're the owner just paste this token into the Token's Field. If its not, just leave this message<br>Thank You, MyRide";
-
                         dispatch(new UserJob($ctx, $data, $username, $email));
 
+                        // Return success response
                         return response()->json([
                             'status' => 'success',
                             'message' => Generator::getMessageTemplate("custom", "the validation token has been sended to $email email account"),
@@ -503,8 +254,9 @@ class Commands extends Controller
     /**
      * @OA\POST(
      *     path="/api/v1/register/account",
-     *     summary="Register account and accept validation",
-     *     tags={"User"},
+     *     summary="Post Register Account",
+     *     description="This authentication request is used to get token validation after register. This request interacts with the MySQL database and using mailer.",
+     *     tags={"Auth"},
      *     @OA\Response(
      *         response=200,
      *         description="account is registered",
@@ -552,6 +304,7 @@ class Commands extends Controller
     public function post_validate_register(Request $request)
     {
         try{
+            // Validate request body
             $validator = Validation::getValidateUser($request,'create');
             if ($validator->fails()) {
                 return response()->json([
@@ -560,6 +313,8 @@ class Commands extends Controller
                 ], Response::HTTP_UNPROCESSABLE_ENTITY);
             } else {
                 $username = $request->username;
+
+                // Verify that the account has valid registration validation
                 $valid = ValidateRequestModel::selectRaw('id')
                     ->where('request_type','register')
                     ->where('request_context',$request->token)
@@ -567,13 +322,16 @@ class Commands extends Controller
                     ->first();
 
                 if($valid){
+                    // Verify the username not duplicated
                     $check_user = UserModel::selectRaw('1')
                         ->where('username',$username)
                         ->first();
 
                     if(!$check_user){
+                        // Delete request after validation
                         ValidateRequestModel::destroy($valid->id);
 
+                        // Create user
                         $data = (object)[
                             'username' => $request->username,
                             'password' => $request->password,
@@ -581,17 +339,19 @@ class Commands extends Controller
                             'telegram_user_id' => $request->telegram_user_id
                         ];
                         $user = UserModel::createUser($data);
+
                         if($user){
                             // Send email
                             $ctx = 'Register new account';
                             $email = $request->email;
                             $data = "Welcome to MyRide, happy explore!";
-
                             dispatch(new UserJob($ctx, $data, $username, $email));
 
+                            // Check this ....
                             if(Hash::check($request->password, $user->password)){
                                 $token = $user->createToken('login')->plainTextToken;
 
+                                // Return success response
                                 return response()->json([
                                     'is_signed_in' => true,
                                     'token' => $token,
@@ -599,6 +359,7 @@ class Commands extends Controller
                                     'message' => Generator::getMessageTemplate("custom", "account is registered"),
                                 ], Response::HTTP_OK);   
                             } else {
+                                // Return success response
                                 return response()->json([
                                     'is_signed_in' => false,
                                     'status' => 'success',
@@ -635,8 +396,9 @@ class Commands extends Controller
     /**
      * @OA\POST(
      *     path="/api/v1/register/regen_token",
-     *     summary="Regenerate registration token",
-     *     tags={"User"},
+     *     summary="Post Regenerate Registration Token",
+     *     description="This authentication request is used to regenerate a token after user has failed to validate their previous token. This request interacts with the MySQL database and using mailer.",
+     *     tags={"Auth"},
      *     @OA\Response(
      *         response=200,
      *         description="the validation token has been sended to {email} email account",
@@ -667,28 +429,34 @@ class Commands extends Controller
     {
         try{
             $username = $request->username;
+
+            // Check if request valid
             $valid = ValidateRequestModel::select('id')
                 ->where('request_type','register')
                 ->where('created_by',$username)
                 ->first();
 
+            // Generate token
             $token_length = 6;
             $token = Generator::getTokenValidation($token_length);
 
             if($valid){
+                // If token still fresh but user request a new one
+                // Delete request after validation
                 $delete = ValidateRequestModel::destroy($valid->id);
 
                 if($delete > 0){
+                    // Create register token
                     $valid_insert = ValidateRequestModel::createValidateRequest('register', $token, $username);
 
                     if($valid_insert){
-                        // Send email
+                        // Send email regenerate token
                         $ctx = 'Generate registration token';
                         $email = $request->email;
                         $data = "You almost finish your registration process. We provided you with this token <br><h5>$token</h5> to make sure this account is yours.<br>If you're the owner just paste this token into the Token's Field. If its not, just leave this message<br>Thank You, MyRide";
-
                         dispatch(new UserJob($ctx, $data, $username, $email));
 
+                         // Return success response
                         return response()->json([
                             'status' => 'success',
                             'message' => Generator::getMessageTemplate("custom", "the validation token has been sended to $email email account"),
@@ -706,17 +474,18 @@ class Commands extends Controller
                     ], Response::HTTP_NOT_FOUND);
                 }
             } else {
-                // already deleted
+                // If token already deleted / expired
+                // Create register token
                 $valid_insert = ValidateRequestModel::createValidateRequest('register', $token, $username);
 
                 if($valid_insert){
-                    // Send email
+                    // Send email regenerate token
                     $ctx = 'Generate registration token';
                     $email = $request->email;
                     $data = "You almost finish your registration process. We provided you with this token <br><h5>$token</h5> to make sure this account is yours.<br>If you're the owner just paste this token into the Token's Field. If its not, just leave this message<br>Thank You, MyRide";
-
                     dispatch(new UserJob($ctx, $data, $username, $email));
 
+                    // Return success response
                     return response()->json([
                         'status' => 'success',
                         'message' => Generator::getMessageTemplate("custom", "the validation token has been sended to $email email account"),

@@ -22,10 +22,9 @@ class Queries extends Controller
     /**
      * @OA\GET(
      *     path="/api/v1/dictionary/type/{type}",
-     *     summary="Get dictionary by type",
-     *     description="This request is used to get dictionary by its `dictionary_type`, that can be trip_category, vehicle_merk, vehicle_type, vehicle_category, vehicle_status, vehicle_default_fuel, vehicle_fuel_status, or vehicle_transmission_code. This request is using MySql database, and have a protected routes.",
+     *     summary="Get Dictionary By Type",
+     *     description="This request is used to get dictionary by its `dictionary_type`, that can be trip_category, vehicle_merk, vehicle_type, vehicle_category, vehicle_status, vehicle_default_fuel, vehicle_fuel_status, or vehicle_transmission_code. This request interacts with the MySQL database and can be accessed as public routes or protected routes. When accessed with a token (protected routes), the returned list includes both public and private dictionaries. When accessed without a token, only public dictionaries are returned.",
      *     tags={"Dictionary"},
-     *     security={{"bearerAuth":{}}},
      *     @OA\Parameter(
      *         name="type",
      *         in="path",
@@ -78,7 +77,8 @@ class Queries extends Controller
      */
     public function getDictionaryByType(Request $request,$type)
     {
-        try{
+        try {
+            // Define user ID if token attached
             if ($request->hasHeader('Authorization')) {
                 $user = Auth::guard('sanctum')->user(); 
                 $user_id = $user ? $user->id : null;
@@ -86,7 +86,7 @@ class Queries extends Controller
                 $user_id = null;
             }
 
-            // Model
+            // Get dictionary by type and user
             $res = DictionaryModel::select('dictionary_name','dictionary_type')
                 ->where(function($query) use ($user_id){
                     $query->where('created_by',$user_id)
@@ -107,8 +107,8 @@ class Queries extends Controller
                 ->orderby('dictionary_name', 'ASC')
                 ->get();
             
-            // Response
             if (count($res) > 0) {
+                // Return success response
                 return response()->json([
                     'status' => 'success',
                     'message' => Generator::getMessageTemplate("fetch", $this->module),

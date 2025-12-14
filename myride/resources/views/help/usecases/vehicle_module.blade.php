@@ -54,5 +54,5 @@ capture as image with format such as PNG, JPG, or JPEG.</p>
     <li>You will see list of vehicle. To navigate the vehicle that you want to delete, you can click box that show the <b class="text-success">Vehicle Image</b>.</li>
     <li>After you find the vehicle that you want to delete. Press the <b class="text-success">See Detail</b> and then it will redirect you to the Vehicle Detail Page.</li>
     <li>At the Vehicle Detail Page, press the <b class="text-success">Permanentelly Delete</b> button.</li>
-    <li>A validation pop-up will appear, press <b class="text-success">Yes, delete it</b> button to finally permanentelly delete your vehicle.</li>
+    <li>A validation pop-up will appear, press <b class="text-success">Yes, delete it</b> button to finally permanently delete your vehicle.</li>
 </ol>

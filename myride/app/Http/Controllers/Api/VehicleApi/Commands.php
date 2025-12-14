@@ -1253,10 +1253,10 @@ class Commands extends Controller
      *     ),
      *     @OA\Response(
      *         response=200,
-     *         description="vehicle permanentelly deleted",
+     *         description="vehicle permanently deleted",
      *         @OA\JsonContent(
      *             @OA\Property(property="status", type="string", example="success"),
-     *             @OA\Property(property="message", type="string", example="vehicle permanentelly deleted")
+     *             @OA\Property(property="message", type="string", example="vehicle permanently deleted")
      *         )
      *     ),
      *     @OA\Response(

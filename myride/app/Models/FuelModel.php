@@ -22,7 +22,8 @@ use App\Helpers\Generator;
  *     @OA\Property(property="fuel_ron", type="integer", description="Research Octane Number (RON) of the fuel"),
  *     @OA\Property(property="fuel_bill", type="string", format="uri", description="URL or path to the uploaded fuel bill image"),
  *     @OA\Property(property="created_at", type="string", format="date-time", description="Timestamp when the fuel record was created"),
- *     @OA\Property(property="created_by", type="string", format="uuid", description="ID of the user who created the fuel record")
+ *     @OA\Property(property="created_by", type="string", format="uuid", description="ID of the user who created the fuel record"),
+ *     @OA\Property(property="updated_at", type="string", format="date-time", nullable=true, description="Timestamp when the fuel record was last updated")
  * )
  */
 
@@ -34,7 +35,7 @@ class FuelModel extends Model
 
     protected $table = 'fuel';
     protected $primaryKey = 'id';
-    protected $fillable = ['id', 'vehicle_id', 'fuel_volume', 'fuel_price_total', 'fuel_brand', 'fuel_type', 'fuel_ron', 'created_at', 'created_by', 'fuel_bill'];
+    protected $fillable = ['id', 'vehicle_id', 'fuel_volume', 'fuel_price_total', 'fuel_brand', 'fuel_type', 'fuel_ron', 'created_at', 'created_by', 'fuel_bill', 'updated_at'];
 
     public static function getAllFuel($user_id = null, $vehicle_id = null, $paginate){
         $res = FuelModel::select('fuel.id', 'vehicle_plate_number', 'vehicle_type', 'fuel_volume', 'fuel_price_total', 'fuel_brand', 'fuel_type', 'fuel_ron', 'fuel.created_at', 'fuel_bill')

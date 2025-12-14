@@ -21,6 +21,7 @@ return new class extends Migration
             // Props
             $table->dateTime('created_at', $precision = 0);
             $table->uuid('created_by');
+            $table->dateTime('updated_at', $precision = 0)->nullable();
 
             // References
             $table->foreign('created_by')->references('id')->on('users')->onDelete('cascade');

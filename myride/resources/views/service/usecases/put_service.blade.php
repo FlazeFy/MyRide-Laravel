@@ -20,7 +20,9 @@
                 <label>Remind At</label>
                 <input class="form-control" type="datetime-local" name="remind_at" id="remind_at">
                 <hr>
-                <button class="btn btn-success rounded-pill px-4" id="submit_update-btn"><i class="fa-solid fa-floppy-disk"></i> Save Changes</button>
+                <div class="d-grid d-md-inline-block">
+                    <button class="btn btn-success rounded-pill px-4 w-100 w-md-auto" id="submit_update-btn"><i class="fa-solid fa-floppy-disk"></i> Save Changes</button>
+                </div>
             </div>
         </div>
     </div>

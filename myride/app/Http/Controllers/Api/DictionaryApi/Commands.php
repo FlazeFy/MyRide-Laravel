@@ -22,7 +22,8 @@ class Commands extends Controller
     /**
      * @OA\DELETE(
      *     path="/api/v1/dictionary/{id}",
-     *     summary="Delete dictionary by id",
+     *     summary="Delete Dictionary By ID",
+     *     description="This request is used to permanently delete a dictionary entry based on the provided `ID`. This request interacts with the MySQL database, and have a protected routes.",
      *     tags={"Dictionary"},
      *     security={{"bearerAuth":{}}},
      *     @OA\Parameter(
@@ -78,7 +79,7 @@ class Commands extends Controller
     public function hardDeleteDictionaryById(Request $request, $id)
     {
         try{
-            // Validator
+            // Validate param
             $request->merge(['id' => $id]);
             $validator = Validation::getValidateDictionary($request,'delete');
             if ($validator->fails()) {
@@ -87,11 +88,11 @@ class Commands extends Controller
                     'message' => $validator->errors()
                 ], Response::HTTP_BAD_REQUEST);
             } else {
-                // Service : Delete
+                // Delete dictionary
                 $rows = DictionaryModel::destroy($id);
 
-                // Respond
                 if($rows > 0){
+                    // Return success response
                     return response()->json([
                         'status' => 'success',
                         'message' => Generator::getMessageTemplate("permentally delete", $this->module),
@@ -114,8 +115,8 @@ class Commands extends Controller
     /**
      * @OA\POST(
      *     path="/api/v1/dictionary",
-     *     summary="Post dictionary",
-     *     description="Create a new dictionary using the given name and category. This request is using MySQL database.",
+     *     summary="Post Dictionary",
+     *     description="This request is used to created a new dictionary. This request interacts with the MySQL database, and have a protected routes.",
      *     tags={"Dictionary"},
      *     security={{"bearerAuth":{}}},
      *     @OA\RequestBody(
@@ -173,7 +174,7 @@ class Commands extends Controller
     public function postCreateDictionary(Request $request)
     {
         try{
-            // Validator
+            // Validate request body
             $validator = Validation::getValidateDictionary($request,'create');
             if ($validator->fails()) {
                 return response()->json([
@@ -181,10 +182,11 @@ class Commands extends Controller
                     'message' => $validator->errors()
                 ], Response::HTTP_BAD_REQUEST);
             } else {
+                // Request body
                 $dictionary_type = $request->dictionary_type;
                 $dictionary_name = $request->dictionary_name;
 
-                // Model : Check name dictionary name avaiability
+                // Check dictionary name availability
                 $isUsedName = DictionaryModel::isUsedName($dictionary_name, $dictionary_type);
                 if($isUsedName){
                     return response()->json([
@@ -194,7 +196,7 @@ class Commands extends Controller
                 } else {
                     $user_id = $request->user()->id;
 
-                    // Service : Create
+                    // Create dictionary
                     $rows = DictionaryModel::create([
                         'id' => Generator::getUUID(),
                         'dictionary_type' => $dictionary_type,
@@ -203,8 +205,8 @@ class Commands extends Controller
                         'created_by' => $user_id
                     ]);
 
-                    // Respond
                     if($rows){
+                        // Return success response
                         return response()->json([
                             'status' => 'success',
                             'message' => Generator::getMessageTemplate("create", $this->module),
