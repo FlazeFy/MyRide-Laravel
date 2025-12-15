@@ -29,7 +29,7 @@ class Queries extends Controller
      *     security={{"bearerAuth":{}}},
      *     @OA\Response(
      *         response=200,
-     *         description="Inventory records fetched successfully",
+     *         description="Inventory fetched successfully",
      *         @OA\JsonContent(
      *             @OA\Property(property="status", type="string", example="success"),
      *             @OA\Property(property="message", type="string", example="inventory fetched"),
@@ -116,7 +116,7 @@ class Queries extends Controller
      *     security={{"bearerAuth":{}}},
      *     @OA\Response(
      *         response=200,
-     *         description="Inventory records fetched successfully",
+     *         description="Inventory fetched successfully",
      *         @OA\JsonContent(
      *             @OA\Property(property="status", type="string", example="success"),
      *             @OA\Property(property="message", type="string", example="inventory fetched"),

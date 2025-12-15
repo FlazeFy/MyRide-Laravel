@@ -29,7 +29,7 @@ class Queries extends Controller
      *     security={{"bearerAuth":{}}},
      *     @OA\Response(
      *         response=200,
-     *         description="Fuel records fetched successfully",
+     *         description="Fuel fetched successfully",
      *         @OA\JsonContent(
      *             @OA\Property(property="status", type="string", example="success"),
      *             @OA\Property(property="message", type="string", example="fuel fetched"),

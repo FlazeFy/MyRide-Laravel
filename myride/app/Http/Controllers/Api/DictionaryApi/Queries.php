@@ -37,7 +37,7 @@ class Queries extends Controller
      *     ),
      *     @OA\Response(
      *         response=200,
-     *         description="dictionary fetched",
+     *         description="Dictionary fetched successfully. Ordered in ascending order by `dictionary_type` and `dictionary_name`",
      *         @OA\JsonContent(
      *             @OA\Property(property="status", type="string", example="success"),
      *             @OA\Property(property="message", type="string", example="dictionary fetched"),

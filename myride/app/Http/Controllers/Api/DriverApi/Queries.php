@@ -24,13 +24,13 @@ class Queries extends Controller
     /**
      * @OA\GET(
      *     path="/api/v1/driver",
-     *     summary="Get all driver",
-     *     description="This request is used to get all driver. This request is using MySql database, have a protected routes, and have template pagination.",
+     *     summary="Get All Driver",
+     *     description="This request is used to get all driver. This request interacts with the MySQL database, has a protected routes, and a pagination.",
      *     tags={"Driver"},
      *     security={{"bearerAuth":{}}},
      *     @OA\Response(
      *         response=200,
-     *         description="Driver records fetched successfully",
+     *         description="Driver fetched successfully. Ordered in ascending order by `created_at`",
      *         @OA\JsonContent(
      *             @OA\Property(property="status", type="string", example="success"),
      *             @OA\Property(property="message", type="string", example="driver fetched"),
@@ -83,12 +83,18 @@ class Queries extends Controller
     {
         try{
             $user_id = $request->user()->id;
-            $check_admin = AdminModel::find($user_id);
             $paginate = $request->query('per_page_key') ?? 12;
 
+            // Define user id by role
+            $check_admin = AdminModel::find($user_id);
+            if($check_admin) {
+                $user_id = null;
+            }
+
+            // Get all driver with pagination
             $res = DriverModel::getAllDriver($user_id, $paginate);
-            
             if (count($res) > 0) {
+                // Return success response
                 return response()->json([
                     'status' => 'success',
                     'message' => Generator::getMessageTemplate("fetch", $this->module),
@@ -111,13 +117,13 @@ class Queries extends Controller
     /**
      * @OA\GET(
      *     path="/api/v1/driver/name",
-     *     summary="Get all driver name",
-     *     description="This request is used to get all driver name. This request is using MySql database, have a protected routes, and have template pagination.",
+     *     summary="Get All Driver Name",
+     *     description="This request is used to get all driver name. This request interacts with the MySQL database, and has a protected routes.",
      *     tags={"Driver"},
      *     security={{"bearerAuth":{}}},
      *     @OA\Response(
      *         response=200,
-     *         description="Driver records fetched successfully",
+     *         description="Driver fetched successfully. Ordered in ascending order by `fullname`",
      *         @OA\JsonContent(
      *             @OA\Property(property="status", type="string", example="success"),
      *             @OA\Property(property="message", type="string", example="driver fetched"),
@@ -161,8 +167,10 @@ class Queries extends Controller
         try{
             $user_id = $request->user()->id;
 
+            // Get all driver name
             $res = DriverModel::getAllDriverName($user_id);            
             if (count($res) > 0) {
+                // Return success response
                 return response()->json([
                     'status' => 'success',
                     'message' => Generator::getMessageTemplate("fetch", $this->module),
@@ -185,13 +193,13 @@ class Queries extends Controller
     /**
      * @OA\GET(
      *     path="/api/v1/driver/vehicle",
-     *     summary="Get all driver and vehicle",
-     *     description="This request is used to get all driver with his assigned vehicle. This request is using MySql database, have a protected routes, and have template pagination.",
+     *     summary="Get All Driver - Vehicle Relation",
+     *     description="This request is used to get all driver with his assigned vehicle. This request interacts with the MySQL database, has a protected routes, and a pagination.",
      *     tags={"Driver"},
      *     security={{"bearerAuth":{}}},
      *     @OA\Response(
      *         response=200,
-     *         description="Driver records fetched successfully",
+     *         description="Driver fetched successfully. Ordered in descending order by driver relation's `created_at`",
      *         @OA\JsonContent(
      *             @OA\Property(property="status", type="string", example="success"),
      *             @OA\Property(property="message", type="string", example="driver fetched"),
@@ -239,12 +247,18 @@ class Queries extends Controller
     public function getDriverVehicle(Request $request){
         try{
             $user_id = $request->user()->id;
-            $check_admin = AdminModel::find($user_id);
             $paginate = $request->query('per_page_key') ?? 12;
 
-            $res = DriverModel::getDriverVehicle($user_id, $paginate);
-            
+            // Define user id by role
+            $check_admin = AdminModel::find($user_id);
+            if ($check_admin) {
+                $user_id = null;
+            }
+
+            // Get all driver - vehicle relation with pagination
+            $res = DriverModel::getDriverVehicle($user_id, $paginate);            
             if (count($res) > 0) {
+                // Return success response
                 return response()->json([
                     'status' => 'success',
                     'message' => Generator::getMessageTemplate("fetch", $this->module),
@@ -267,13 +281,13 @@ class Queries extends Controller
      /**
      * @OA\GET(
      *     path="/api/v1/driver/vehicle/list",
-     *     summary="Get all driver and vehicle list for management / assigned",
-     *     description="This request is used to get all drivers with their assigned vehicles for management / assigned. This request uses a MySQL database and is a protected route.",
+     *     summary="Get All Driver - Vehicle Relation For Management / Assigning",
+     *     description="This request is used to get all driver with their assigned vehicle for management / assigning. This request interacts with the MySQL database, and has a protected routes.",
      *     tags={"Driver"},
      *     security={{"bearerAuth":{}}},
      *     @OA\Response(
      *         response=200,
-     *         description="Driver and vehicle records fetched successfully",
+     *         description="Driver and vehicle fetched successfully",
      *         @OA\JsonContent(
      *             @OA\Property(property="status", type="string", example="success"),
      *             @OA\Property(property="message", type="string", example="driver fetched"),
@@ -334,12 +348,16 @@ class Queries extends Controller
     public function getDriverVehicleManageList(Request $request){
         try{
             $user_id = $request->user()->id;
-            $res_vehicle = VehicleModel::getAllVehicleName($user_id);
 
+            // Get all vehicle name
+            $res_vehicle = VehicleModel::getAllVehicleName($user_id);
             if (count($res_vehicle) > 0) {
+                // Get all driver and define fetched column
                 $res_driver = DriverModel::getAllDriver($user_id, 0, 'id,username,fullname');
+                // Get all assigned driver
                 $res_assigned = DriverModel::getDriverVehicleManageList($user_id);
 
+                // Return success response
                 return response()->json([
                     'status' => 'success',
                     'message' => Generator::getMessageTemplate("fetch", $this->module),

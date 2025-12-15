@@ -31,7 +31,8 @@ class Commands extends Controller
     /**
      * @OA\DELETE(
      *     path="/api/v1/driver/destroy/{id}",
-     *     summary="Delete driver by id",
+     *     summary="Hard Delete Driver By ID",
+     *     description="This request is used to permanently delete a driver entry based on the provided `ID`. This request interacts with the MySQL database, has a protected routes, and audited activity (history).",
      *     tags={"Driver"},
      *     security={{"bearerAuth":{}}},
      *     @OA\Parameter(
@@ -81,17 +82,23 @@ class Commands extends Controller
         try{
             $user_id = $request->user()->id;
 
+            // Define user id by role
             $check_admin = AdminModel::find($user_id);
             if($check_admin){
                 $user_id = null;
             }
             $driver = DriverModel::find($id);
 
+            // Permanently delete driver
             $rows = DriverModel::hardDeleteDriverById($id, $user_id);
             if($rows > 0){
-                HistoryModel::createHistory(['history_type' => 'Driver', 'history_context' => "deleted $driver->username as a driver"], $user_id);
+                // Permanently delete driver relation with vehicle
                 DriverVehicleRelationModel::hardDeleteDriverVehicleRelationByDriverId($id, $user_id);
                 
+                // Create history
+                HistoryModel::createHistory(['history_type' => 'Driver', 'history_context' => "deleted $driver->username as a driver"], $user_id);
+
+                // Return success response
                 return response()->json([
                     'status' => 'success',
                     'message' => Generator::getMessageTemplate("permentally delete", $this->module),
@@ -113,7 +120,8 @@ class Commands extends Controller
     /**
      * @OA\DELETE(
      *     path="/api/v1/driver/destroy/relation/{id}",
-     *     summary="Delete driver relation to vehicle by id",
+     *     summary="Hard Delete Driver Relation With Vehicle By ID",
+     *     description="This request is used to permanently delete a driver relation with vehicle entry based on the provided driver relation `ID`. This request interacts with the MySQL database, and has a protected routes.",
      *     tags={"Driver"},
      *     security={{"bearerAuth":{}}},
      *     @OA\Parameter(
@@ -163,13 +171,16 @@ class Commands extends Controller
         try{
             $user_id = $request->user()->id;
 
+            // Define user id by role
             $check_admin = AdminModel::find($user_id);
             if($check_admin){
                 $user_id = null;
             }
 
+            // Permanently delete driver relation with vehicle
             $rows = DriverVehicleRelationModel::hardDeleteDriverVehicleRelationById($id, $user_id);
             if($rows > 0){
+                // Return success response
                 return response()->json([
                     'status' => 'success',
                     'message' => Generator::getMessageTemplate("permentally delete", "$this->module relation"),
@@ -191,7 +202,8 @@ class Commands extends Controller
     /**
      * @OA\POST(
      *     path="/api/v1/driver",
-     *     summary="Create a driver",
+     *     summary="Post Create A Driver",
+     *     description="This request is used to create a driver by using given `username`, `fullname`, `password`, `telegram_user_id`, `email`, `phone`, and `notes`. This request interacts with the MySQL database, has a protected routes, and audited activity (history).",
      *     tags={"Driver"},
      *     security={{"bearerAuth":{}}},
      *     @OA\Response(
@@ -230,8 +242,7 @@ class Commands extends Controller
      */
     public function postDriver(Request $request){
         try{
-            $user_id = $request->user()->id;
-
+            // Validate request body
             $validator = Validation::getValidateDriver($request,'create');
             if ($validator->fails()) {
                 return response()->json([
@@ -239,9 +250,12 @@ class Commands extends Controller
                     'message' => $validator->errors()
                 ], Response::HTTP_BAD_REQUEST);
             } else {
+                $user_id = $request->user()->id;
+
+                // Check if driver username is available
                 $check = DriverModel::getDriverByUsernameOrEmail($request->username,$request->email,null);
-                   
                 if(!$check){
+                    // Create driver
                     $data = [
                         'username' => $request->username, 
                         'fullname' => $request->fullname, 
@@ -252,11 +266,12 @@ class Commands extends Controller
                         'phone' => $request->phone, 
                         'notes' => $request->notes,
                     ];
-
                     $row = DriverModel::createDriver($data, $user_id);
                     if($row){
+                        // Create history
                         HistoryModel::createHistory(['history_type' => 'Driver', 'history_context' => "added $request->username as a driver"], $user_id);
 
+                        // Return success response
                         return response()->json([
                             'status' => 'success',
                             'message' => Generator::getMessageTemplate("create", $this->module),
@@ -285,7 +300,8 @@ class Commands extends Controller
     /**
      * @OA\PUT(
      *     path="/api/v1/driver/{id}",
-     *     summary="Update an driver",
+     *     summary="Put Update Driver",
+     *     description="This request is used to update a driver by using given `username`, `fullname`, `email`, `phone`, and `notes`. This request interacts with the MySQL database, has a protected routes, and audited activity (history).",
      *     tags={"Driver"},
      *     security={{"bearerAuth":{}}},
      *     @OA\Response(
@@ -324,8 +340,7 @@ class Commands extends Controller
      */
     public function updateDriver(Request $request, $id){
         try{
-            $user_id = $request->user()->id;
-
+            // Validate request body
             $validator = Validation::getValidateDriver($request,'update');
             if ($validator->fails()) {
                 return response()->json([
@@ -333,9 +348,12 @@ class Commands extends Controller
                     'message' => $validator->errors()
                 ], Response::HTTP_BAD_REQUEST);
             } else {
-                $check = DriverModel::getDriverByUsernameOrEmail($request->username,$request->email,$id);
-                   
+                $user_id = $request->user()->id;
+
+                // Check if driver username is available
+                $check = DriverModel::getDriverByUsernameOrEmail($request->username,$request->email,$id);   
                 if(!$check){
+                    // Update driver
                     $data = [
                         'username' => $request->username, 
                         'fullname' => $request->fullname, 
@@ -343,11 +361,12 @@ class Commands extends Controller
                         'phone' => $request->phone, 
                         'notes' => $request->notes,
                     ];
-
                     $rows = DriverModel::updateDriverById($data, $user_id, $id);
                     if($rows > 0){
+                        // Create history
                         HistoryModel::createHistory(['history_type' => 'Driver', 'history_context' => "updated $request->username driver's data"], $user_id);
 
+                        // Return success response
                         return response()->json([
                             'status' => 'success',
                             'message' => Generator::getMessageTemplate("update", $this->module),
@@ -376,7 +395,8 @@ class Commands extends Controller
     /**
      * @OA\POST(
      *     path="/api/v1/driver/vehicle",
-     *     summary="Create a driver vehicle relation",
+     *     summary="Post Create Driver Vehicle Relation",
+     *     description="This request is used to create a driver - vehicle relation by using given `vehicle_id`, `driver_id`, and `relation_note`. This request interacts with the MySQL database, has a protected routes, broadcast message with Telegram, and audited activity (history).",
      *     tags={"Driver"},
      *     security={{"bearerAuth":{}}},
      *     @OA\Response(
@@ -415,6 +435,7 @@ class Commands extends Controller
      */
     public function postDriverVehicle(Request $request){
         try{
+            // Validate request body
             $validator = Validation::getValidateDriver($request,'create_relation');
             if ($validator->fails()) {
                 return response()->json([
@@ -422,35 +443,42 @@ class Commands extends Controller
                     'message' => $validator->errors()
                 ], Response::HTTP_BAD_REQUEST);
             } else {
+                // Check if driver relation with vehicle already exist
                 $check = DriverVehicleRelationModel::getRelationByVehicleAndDriver($request->vehicle_id,$request->driver_id);
-                   
                 if(!$check){
+                    // Create driver relation with vehicle
                     $data = [
                         'vehicle_id' => $request->vehicle_id, 
                         'driver_id' => $request->driver_id, 
                         'relation_note' => $request->relation_note,
                     ];
-
                     $row = DriverVehicleRelationModel::createDriverVehicleRelation($data);
                     if($row){
+                        // Get driver contact to broadcast and check if its has valid telegram
                         $driver = DriverModel::getDriverContact($request->driver_id);
                         if($driver->telegram_user_id && $driver->telegram_is_valid === 1){
                             $user_id = $request->user()->id;
+                            // Validate telegram id
                             if(TelegramMessage::checkTelegramID($driver->telegram_user_id)){
+                                // Get username to put in message
                                 $user = UserModel::getSocial($user_id);
+                                // Get vehicle plate number to put in message
                                 $vehicle = VehicleModel::getVehicleDetailById(null,$request->vehicle_id);
+                                
+                                // Send telegram message
                                 $message = "Hello $driver->username, you have been assigned by $user->username to become the driver of '$vehicle->vehicle_plate_number'";
-
                                 $response = Telegram::sendMessage([
                                     'chat_id' => $driver->telegram_user_id,
                                     'text' => $message,
                                     'parse_mode' => 'HTML'
                                 ]);
                             } else {
+                                // Reset telegram from user account if not valid
                                 $res = UserModel::updateUserById([ 'telegram_user_id' => null, 'telegram_is_valid' => 0],$user_id);
                             }
                         }
 
+                        // Return success response
                         return response()->json([
                             'status' => 'success',
                             'message' => Generator::getMessageTemplate("create", "$this->module relation"),

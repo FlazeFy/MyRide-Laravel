@@ -115,8 +115,8 @@ class Commands extends Controller
     /**
      * @OA\POST(
      *     path="/api/v1/dictionary",
-     *     summary="Post Dictionary",
-     *     description="This request is used to created a new dictionary. This request interacts with the MySQL database, and have a protected routes.",
+     *     summary="Post Create Dictionary",
+     *     description="This request is used to created a dictionary by using given `dictionary_type`, and `dictionary_name`. This request interacts with the MySQL database, and have a protected routes.",
      *     tags={"Dictionary"},
      *     security={{"bearerAuth":{}}},
      *     @OA\RequestBody(

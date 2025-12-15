@@ -639,8 +639,8 @@
                 "tags": [
                     "Dictionary"
                 ],
-                "summary": "Post Dictionary",
-                "description": "This request is used to created a new dictionary. This request interacts with the MySQL database, and have a protected routes.",
+                "summary": "Post Create Dictionary",
+                "description": "This request is used to created a dictionary by using given `dictionary_type`, and `dictionary_name`. This request interacts with the MySQL database, and have a protected routes.",
                 "operationId": "c00bb932223a0676d61b6d1079013eca",
                 "requestBody": {
                     "required": true,
@@ -801,7 +801,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "dictionary fetched",
+                        "description": "Dictionary fetched successfully. Ordered in ascending order by `dictionary_type` and `dictionary_name`",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -904,7 +904,8 @@
                 "tags": [
                     "Driver"
                 ],
-                "summary": "Delete driver by id",
+                "summary": "Hard Delete Driver By ID",
+                "description": "This request is used to permanently delete a driver entry based on the provided `ID`. This request interacts with the MySQL database, has a protected routes, and audited activity (history).",
                 "operationId": "ce6d66cd3429dbd023210e0af03b9575",
                 "parameters": [
                     {
@@ -1012,7 +1013,8 @@
                 "tags": [
                     "Driver"
                 ],
-                "summary": "Delete driver relation to vehicle by id",
+                "summary": "Hard Delete Driver Relation With Vehicle By ID",
+                "description": "This request is used to permanently delete a driver relation with vehicle entry based on the provided driver relation `ID`. This request interacts with the MySQL database, and has a protected routes.",
                 "operationId": "a3e2e4e8e02c4229c094612d6ada953b",
                 "parameters": [
                     {
@@ -1120,12 +1122,12 @@
                 "tags": [
                     "Driver"
                 ],
-                "summary": "Get all driver",
-                "description": "This request is used to get all driver. This request is using MySql database, have a protected routes, and have template pagination.",
+                "summary": "Get All Driver",
+                "description": "This request is used to get all driver. This request interacts with the MySQL database, has a protected routes, and a pagination.",
                 "operationId": "b5f5520d95ad2e585c6b94124325ccfb",
                 "responses": {
                     "200": {
-                        "description": "Driver records fetched successfully",
+                        "description": "Driver fetched successfully. Ordered in ascending order by `created_at`",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -1274,7 +1276,8 @@
                 "tags": [
                     "Driver"
                 ],
-                "summary": "Create a driver",
+                "summary": "Post Create A Driver",
+                "description": "This request is used to create a driver by using given `username`, `fullname`, `password`, `telegram_user_id`, `email`, `phone`, and `notes`. This request interacts with the MySQL database, has a protected routes, and audited activity (history).",
                 "operationId": "03c269702e9c152dd0c9d742184be583",
                 "responses": {
                     "201": {
@@ -1370,7 +1373,8 @@
                 "tags": [
                     "Driver"
                 ],
-                "summary": "Update an driver",
+                "summary": "Put Update Driver",
+                "description": "This request is used to update a driver by using given `username`, `fullname`, `email`, `phone`, and `notes`. This request interacts with the MySQL database, has a protected routes, and audited activity (history).",
                 "operationId": "25163ca64bc304f0b8b4e3d24406591c",
                 "responses": {
                     "200": {
@@ -1466,12 +1470,12 @@
                 "tags": [
                     "Driver"
                 ],
-                "summary": "Get all driver and vehicle",
-                "description": "This request is used to get all driver with his assigned vehicle. This request is using MySql database, have a protected routes, and have template pagination.",
+                "summary": "Get All Driver - Vehicle Relation",
+                "description": "This request is used to get all driver with his assigned vehicle. This request interacts with the MySQL database, has a protected routes, and a pagination.",
                 "operationId": "d70213baf151454426f89de5098a9c89",
                 "responses": {
                     "200": {
-                        "description": "Driver records fetched successfully",
+                        "description": "Driver fetched successfully. Ordered in descending order by driver relation's `created_at`",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -1602,7 +1606,8 @@
                 "tags": [
                     "Driver"
                 ],
-                "summary": "Create a driver vehicle relation",
+                "summary": "Post Create Driver Vehicle Relation",
+                "description": "This request is used to create a driver - vehicle relation by using given `vehicle_id`, `driver_id`, and `relation_note`. This request interacts with the MySQL database, has a protected routes, broadcast message with Telegram, and audited activity (history).",
                 "operationId": "746c9aa03930889a98e6dba1b70850ea",
                 "responses": {
                     "201": {
@@ -1698,12 +1703,12 @@
                 "tags": [
                     "Driver"
                 ],
-                "summary": "Get all driver name",
-                "description": "This request is used to get all driver name. This request is using MySql database, have a protected routes, and have template pagination.",
+                "summary": "Get All Driver Name",
+                "description": "This request is used to get all driver name. This request interacts with the MySQL database, and has a protected routes.",
                 "operationId": "af44aedd656296e46329da0d5a837e7e",
                 "responses": {
                     "200": {
-                        "description": "Driver records fetched successfully",
+                        "description": "Driver fetched successfully. Ordered in ascending order by `fullname`",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -1815,12 +1820,12 @@
                 "tags": [
                     "Driver"
                 ],
-                "summary": "Get all driver and vehicle list for management / assigned",
-                "description": "This request is used to get all drivers with their assigned vehicles for management / assigned. This request uses a MySQL database and is a protected route.",
+                "summary": "Get All Driver - Vehicle Relation For Management / Assigning",
+                "description": "This request is used to get all driver with their assigned vehicle for management / assigning. This request interacts with the MySQL database, and has a protected routes.",
                 "operationId": "63bdd137229f370165b8215f5fdf1b0b",
                 "responses": {
                     "200": {
-                        "description": "Driver and vehicle records fetched successfully",
+                        "description": "Driver and vehicle fetched successfully",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -1989,7 +1994,8 @@
                 "tags": [
                     "Error"
                 ],
-                "summary": "Delete error by id",
+                "summary": "Hard Delete Error By ID",
+                "description": "This request is used to permanently delete an error history based on the provided `ID`. However, it will also search for all errors with the same `message` and delete them. This request interacts with the MySQL database, and has a protected routes (Admin only).",
                 "operationId": "cebb279c5d0f0f7e53c5563ec1612044",
                 "parameters": [
                     {
@@ -2097,12 +2103,12 @@
                 "tags": [
                     "Error"
                 ],
-                "summary": "Get all error",
-                "description": "This request is used to get all error audit. This request is using MySql database, have a protected routes, and have template pagination.",
+                "summary": "Get All Error",
+                "description": "This request is used to get all error audit. This request interacts with the MySQL database, has a protected routes (Admin only), and a pagination.",
                 "operationId": "febe4acefbf67eaa9f1333612bd1863f",
                 "responses": {
                     "200": {
-                        "description": "error fetched",
+                        "description": "Error fetched successfully. Ordered in ascending order by `created_at`",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -2196,6 +2202,366 @@
                                         "message": {
                                             "type": "string",
                                             "example": "error not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "something wrong. please contact admin"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/export/wash": {
+            "get": {
+                "tags": [
+                    "Export"
+                ],
+                "summary": "Get Export Wash Dataset",
+                "description": "This request is used to export all wash data (dataset). To test it, you must execute the request in a web browser to download the file. This request interacts with the MySQL database, has a protected routes, exported file, and broadcast message with Telegram.",
+                "operationId": "02d25059f8c5470d729015ab9e7af8a5",
+                "responses": {
+                    "200": {
+                        "description": "Export wash successfully. File downloaded as `xlsx` format"
+                    },
+                    "401": {
+                        "description": "protected route need to include sign in token as authorization bearer",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "you need to include the authorization token from login"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "something wrong. please contact admin"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/export/fuel": {
+            "get": {
+                "tags": [
+                    "Export"
+                ],
+                "summary": "Get Export Fuel Dataset",
+                "description": "This request is used to export all fuel data (dataset). To test it, you must execute the request in a web browser to download the file. This request interacts with the MySQL database, has a protected routes, exported file, and broadcast message with Telegram.",
+                "operationId": "205c1243aa0342561c309292662c9f07",
+                "responses": {
+                    "200": {
+                        "description": "Export fuel successfully. File downloaded as `xlsx` format"
+                    },
+                    "401": {
+                        "description": "protected route need to include sign in token as authorization bearer",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "you need to include the authorization token from login"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "something wrong. please contact admin"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/export/inventory": {
+            "get": {
+                "tags": [
+                    "Export"
+                ],
+                "summary": "Get Export Inventory Dataset",
+                "description": "This request is used to export all inventory data (dataset). To test it, you must execute the request in a web browser to download the file. This request interacts with the MySQL database, has a protected routes, exported file, and broadcast message with Telegram.",
+                "operationId": "775572b984a49144f601693abaa8be03",
+                "responses": {
+                    "200": {
+                        "description": "Export inventory successfully. File downloaded as `xlsx` format"
+                    },
+                    "401": {
+                        "description": "protected route need to include sign in token as authorization bearer",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "you need to include the authorization token from login"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "something wrong. please contact admin"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/export/service": {
+            "get": {
+                "tags": [
+                    "Export"
+                ],
+                "summary": "Get Export Service Dataset",
+                "description": "This request is used to export all service data (dataset). To test it, you must execute the request in a web browser to download the file. This request interacts with the MySQL database, has a protected routes, exported file, and broadcast message with Telegram.",
+                "operationId": "956c5632271d9947a85a77d7350ef04c",
+                "responses": {
+                    "200": {
+                        "description": "Export service successfully. File downloaded as `xlsx` format"
+                    },
+                    "401": {
+                        "description": "protected route need to include sign in token as authorization bearer",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "you need to include the authorization token from login"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "something wrong. please contact admin"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/export/driver": {
+            "get": {
+                "tags": [
+                    "Export"
+                ],
+                "summary": "Get Export Driver Dataset",
+                "description": "This request is used to export all driver data (dataset). To test it, you must execute the request in a web browser to download the file. This request interacts with the MySQL database, has a protected routes, exported file, and broadcast message with Telegram.",
+                "operationId": "1a2bf45f28487891a988febcbcbef945",
+                "responses": {
+                    "200": {
+                        "description": "Export driver successfully. File downloaded as `xlsx` format"
+                    },
+                    "401": {
+                        "description": "protected route need to include sign in token as authorization bearer",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "you need to include the authorization token from login"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "something wrong. please contact admin"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/export/trip": {
+            "get": {
+                "tags": [
+                    "Export"
+                ],
+                "summary": "Get Export Trip Dataset",
+                "description": "This request is used to export all trip data (dataset). To test it, you must execute the request in a web browser to download the file. This request interacts with the MySQL database, has a protected routes, exported file, and broadcast message with Telegram.",
+                "operationId": "31eaffd57f17c1c5c49fe4db4c4a8839",
+                "responses": {
+                    "200": {
+                        "description": "Export trip successfully. File downloaded as `xlsx` format"
+                    },
+                    "401": {
+                        "description": "protected route need to include sign in token as authorization bearer",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "you need to include the authorization token from login"
                                         }
                                     },
                                     "type": "object"
@@ -2349,7 +2715,7 @@
                 "operationId": "a6bfc63fd137cb123e444ec1f036d421",
                 "responses": {
                     "200": {
-                        "description": "Fuel records fetched successfully",
+                        "description": "Fuel fetched successfully",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -3300,7 +3666,7 @@
                 "operationId": "ba8b3005bed7008380df0cdd8724f8f3",
                 "responses": {
                     "200": {
-                        "description": "Inventory records fetched successfully",
+                        "description": "Inventory fetched successfully",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -3643,7 +4009,7 @@
                 "operationId": "22ae415791f3b39ae3bf098ce09f34b6",
                 "responses": {
                     "200": {
-                        "description": "Inventory records fetched successfully",
+                        "description": "Inventory fetched successfully",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -4665,7 +5031,7 @@
                 "operationId": "bc5e51b694b7a5f64005010b7f27c5f1",
                 "responses": {
                     "200": {
-                        "description": "Service records fetched successfully",
+                        "description": "Service fetched successfully",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -5116,7 +5482,7 @@
                 "operationId": "372f13c4dc92a804af46c297dca8fe4c",
                 "responses": {
                     "200": {
-                        "description": "Service records fetched successfully",
+                        "description": "Service fetched successfully",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -5246,7 +5612,7 @@
                 "operationId": "d7d2bfe6b32bbbd59e2da2fa5bd83b7d",
                 "responses": {
                     "200": {
-                        "description": "Service records fetched successfully",
+                        "description": "Service fetched successfully",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -12591,6 +12957,10 @@
         {
             "name": "Error",
             "description": "Error"
+        },
+        {
+            "name": "Export",
+            "description": "Export"
         },
         {
             "name": "Fuel",

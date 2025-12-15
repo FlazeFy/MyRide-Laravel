@@ -29,7 +29,7 @@ class Queries extends Controller
      *     security={{"bearerAuth":{}}},
      *     @OA\Response(
      *         response=200,
-     *         description="Service records fetched successfully",
+     *         description="Service fetched successfully",
      *         @OA\JsonContent(
      *             @OA\Property(property="status", type="string", example="success"),
      *             @OA\Property(property="message", type="string", example="service fetched"),
@@ -116,7 +116,7 @@ class Queries extends Controller
      *     security={{"bearerAuth":{}}},
      *     @OA\Response(
      *         response=200,
-     *         description="Service records fetched successfully",
+     *         description="Service fetched successfully",
      *         @OA\JsonContent(
      *             @OA\Property(property="status", type="string", example="success"),
      *             @OA\Property(property="message", type="string", example="service fetched"),
@@ -196,7 +196,7 @@ class Queries extends Controller
      *     security={{"bearerAuth":{}}},
      *     @OA\Response(
      *         response=200,
-     *         description="Service records fetched successfully",
+     *         description="Service fetched successfully",
      *         @OA\JsonContent(
      *             @OA\Property(property="status", type="string", example="success"),
      *             @OA\Property(property="message", type="string", example="service fetched"),
