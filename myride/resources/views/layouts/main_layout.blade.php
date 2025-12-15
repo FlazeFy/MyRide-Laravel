@@ -86,6 +86,7 @@
     ?>
 </head>
 <body class="light">
+    @include('others.detect_flazenapps')
     <?php if(!preg_match('(embed)', $cleanedUrl)): ?>
         @include('others.bars.navbar')
     <?php endif; ?>

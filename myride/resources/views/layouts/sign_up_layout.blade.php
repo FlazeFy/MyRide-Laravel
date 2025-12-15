@@ -29,6 +29,7 @@
     <script src="{{ asset('/js/global_v1.0.js')}}"></script>
 </head>
 <body style="background:var(--warningColor);" class="px-2">
+    @include('others.detect_flazenapps')
     <div style="margin-top: 10vh;">
         @yield('content')
     </div>

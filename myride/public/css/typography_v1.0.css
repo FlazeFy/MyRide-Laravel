@@ -20,6 +20,9 @@ label, input, textarea, select {
     color: var(--greyColor) !important;
     font-size: var(--textMD);
 }
+.text-dark {
+    color: var(--darkColor) !important;
+}
 
 /* Table */
 table {
