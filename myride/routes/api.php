@@ -17,7 +17,7 @@ use App\Http\Controllers\Api\StatsApi\Queries as QueriesStatsApi;
 use App\Http\Controllers\Api\UserApi\Queries as QueriesUserController;
 use App\Http\Controllers\Api\UserApi\Commands as CommandsUserController;
 use App\Http\Controllers\Api\ExportApi\Queries as QueriesExportController;
-use App\Http\Controllers\Api\QuestionApi\FAQQueries as QueriesFAQController;
+use App\Http\Controllers\Api\QuestionApi\Queries as QueriesFAQController;
 use App\Http\Controllers\Api\ReminderApi\Queries as QueriesReminderController;
 use App\Http\Controllers\Api\ReminderApi\Commands as CommandsReminderController;
 use App\Http\Controllers\Api\HistoryApi\Queries as QueriesHistoryController;

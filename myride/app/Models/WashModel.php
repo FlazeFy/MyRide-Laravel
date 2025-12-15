@@ -103,7 +103,7 @@ class WashModel extends Model
         }
 
         $res = $res->where('wash.created_by',$user_id)
-            ->orderBy('wash.created_at');
+            ->orderBy('wash.created_at', 'desc');
 
         return $res->get();
     }

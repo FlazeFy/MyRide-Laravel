@@ -31,7 +31,8 @@ class Commands extends Controller
     /**
      * @OA\DELETE(
      *     path="/api/v1/inventory/destroy/{id}",
-     *     summary="Delete inventory by id",
+     *     summary="Delete Inventory By ID",
+     *     description="This request is used to permanently delete an inventory based on the provided `ID`. This request interacts with the MySQL database, firebase storage (for remove uploaded `inventory_image_url`), has a protected routes, and audited activity (history).",
      *     tags={"Inventory"},
      *     security={{"bearerAuth":{}}},
      *     @OA\Parameter(
@@ -81,16 +82,21 @@ class Commands extends Controller
         try{
             $user_id = $request->user()->id;
 
+            // Define user id by role
             $check_admin = AdminModel::find($user_id);
             if($check_admin){
                 $user_id = null;
             }
 
+            // Get inventory data
             $inventory = InventoryModel::find($id);
+
+            // Hard Delete inventory by ID
             $rows = InventoryModel::hardDeleteInventoryById($id, $user_id);
             if($rows > 0){
-                // Delete Firebase Uploaded Image
+                // Delete Firebase uploaded image
                 if($inventory->inventory_image_url){
+                    // Delete failed if file not found (already gone)
                     if(!Firebase::deleteFile($inventory->inventory_image_url)){
                         return response()->json([
                             'status' => 'failed',
@@ -99,8 +105,10 @@ class Commands extends Controller
                     }
                 }
 
+                // Create history
                 HistoryModel::createHistory(['history_type' => 'Inventory', 'history_context' => "remove an inventory"], $user_id);
 
+                // Return success response
                 return response()->json([
                     'status' => 'success',
                     'message' => Generator::getMessageTemplate("permentally delete", $this->module),
@@ -122,9 +130,25 @@ class Commands extends Controller
     /**
      * @OA\POST(
      *     path="/api/v1/inventory",
-     *     summary="Create a inventory",
+     *     summary="Post Create Inventory",
+     *     description="This request is used to create an inventory by using given `vehicle_id`, `inventory_name`, `inventory_category`, `inventory_storage`, `inventory_qty`, and `inventory_image_url`. This request interacts with the MySQL database, firebase storage, has a protected routes, and audited activity (history).",
      *     tags={"Inventory"},
      *     security={{"bearerAuth":{}}},
+     *     @OA\RequestBody(
+     *          required=true,
+     *          @OA\MediaType(
+     *              mediaType="multipart/form-data",
+     *              @OA\Schema(
+     *                  required={"vehicle_id", "inventory_name", "inventory_category", "inventory_storage", "inventory_qty"},
+     *                  @OA\Property(property="vehicle_id", type="string", example="e1288783-a5d4-1c4c-2cd6-0e92f7cc3bf9"),
+     *                  @OA\Property(property="inventory_name", type="string", example="Secondary Tire"),
+     *                  @OA\Property(property="inventory_category", type="string", example="Vehicle Component"),
+     *                  @OA\Property(property="inventory_storage", type="string", example="Trunk"),
+     *                  @OA\Property(property="inventory_qty", type="integer", example=1),
+     *                  @OA\Property(property="inventory_image_url", type="string", format="binary"),
+     *              )
+     *          )
+     *     ),
      *     @OA\Response(
      *         response=201,
      *         description="inventory created",
@@ -163,6 +187,7 @@ class Commands extends Controller
         try{
             $user_id = $request->user()->id;
 
+            // Validate request body
             $validator = Validation::getValidateInventory($request,'create');
             if ($validator->fails()) {
                 return response()->json([
@@ -171,6 +196,7 @@ class Commands extends Controller
                 ], Response::HTTP_BAD_REQUEST);
             } else {
                 $inventory_image = null;
+                // Check if file attached
                 if ($request->hasFile('inventory_image_url')) {
                     $file = $request->file('inventory_image_url');
                     if ($file->isValid()) {
@@ -190,9 +216,10 @@ class Commands extends Controller
                             ], Response::HTTP_UNPROCESSABLE_ENTITY);
                         }
         
-                        // Helper: Upload inventory image
                         try {
+                            // Get user data
                             $user = UserModel::find($user_id);
+                            // Upload file to Firebase storage
                             $inventory_image = Firebase::uploadFile('inventory', $user_id, $user->username, $file, $file_ext); 
                         } catch (\Exception $e) {
                             return response()->json([
@@ -203,6 +230,7 @@ class Commands extends Controller
                     }
                 }
 
+                // Create inventory
                 $data = [
                     'gudangku_inventory_id' => $request->gudangku_inventory_id, 
                     'vehicle_id' => $request->vehicle_id, 
@@ -212,11 +240,12 @@ class Commands extends Controller
                     'inventory_storage' => $request->inventory_storage, 
                     'inventory_image_url' => $inventory_image
                 ];
-
                 $rows = InventoryModel::createInventory($data, $user_id);
                 if($rows){
+                    // Create history
                     HistoryModel::createHistory(['history_type' => 'Inventory', 'history_context' => "added an inventory"], $user_id);
 
+                    // Return success response
                     return response()->json([
                         'status' => 'success',
                         'message' => Generator::getMessageTemplate("create", $this->module),
@@ -239,9 +268,21 @@ class Commands extends Controller
     /**
      * @OA\PUT(
      *     path="/api/v1/inventory/{id}",
-     *     summary="Update an inventory",
+     *     summary="Update Inventory By ID",
+     *     description="This request is used to update an inventory by using given `ID`. The updated field are `vehicle_id`, `inventory_name`, `inventory_category`, `inventory_storage`, and `inventory_qty`. This request interacts with the MySQL database, has a protected routes, and audited activity (history).",
      *     tags={"Inventory"},
      *     security={{"bearerAuth":{}}},
+     *     @OA\RequestBody(
+     *          required=true,
+     *          @OA\JsonContent(
+     *              required={"vehicle_id", "inventory_name", "inventory_category", "inventory_storage", "inventory_qty"},
+     *              @OA\Property(property="vehicle_id", type="string", example="e1288783-a5d4-1c4c-2cd6-0e92f7cc3bf9"),
+     *              @OA\Property(property="inventory_name", type="string", example="Secondary Tire"),
+     *              @OA\Property(property="inventory_category", type="string", example="Vehicle Component"),
+     *              @OA\Property(property="inventory_storage", type="string", example="Trunk"),
+     *              @OA\Property(property="inventory_qty", type="integer", example=1),
+     *          )
+     *     ),
      *     @OA\Response(
      *         response=200,
      *         description="inventory updated",
@@ -280,6 +321,7 @@ class Commands extends Controller
         try{
             $user_id = $request->user()->id;
 
+            // Validate request body
             $validator = Validation::getValidateInventory($request,'update');
             if ($validator->fails()) {
                 return response()->json([
@@ -287,6 +329,7 @@ class Commands extends Controller
                     'message' => $validator->errors()
                 ], Response::HTTP_BAD_REQUEST);
             } else {
+                // Update inventory by ID
                 $data = [
                     'vehicle_id' => $request->vehicle_id, 
                     'inventory_name' => $request->inventory_name, 
@@ -294,11 +337,12 @@ class Commands extends Controller
                     'inventory_qty' => $request->inventory_qty, 
                     'inventory_storage' => $request->inventory_storage 
                 ];
-
                 $rows = InventoryModel::updateInventoryById($data, $user_id, $id);
                 if($rows > 0){
+                    // Create history
                     HistoryModel::createHistory(['history_type' => 'Inventory', 'history_context' => "edited an inventory"], $user_id);
 
+                    // Return success response
                     return response()->json([
                         'status' => 'success',
                         'message' => Generator::getMessageTemplate("update", $this->module),

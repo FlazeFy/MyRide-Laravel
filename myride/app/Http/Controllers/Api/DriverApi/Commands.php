@@ -202,7 +202,7 @@ class Commands extends Controller
     /**
      * @OA\POST(
      *     path="/api/v1/driver",
-     *     summary="Post Create A Driver",
+     *     summary="Post Create Driver",
      *     description="This request is used to create a driver by using given `username`, `fullname`, `password`, `telegram_user_id`, `email`, `phone`, and `notes`. This request interacts with the MySQL database, has a protected routes, and audited activity (history).",
      *     tags={"Driver"},
      *     security={{"bearerAuth":{}}},

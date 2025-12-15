@@ -139,7 +139,7 @@ class FuelModel extends Model
         }
 
         $res = $res->where('fuel.created_by',$user_id)
-            ->orderBy('fuel.created_at');
+            ->orderBy('fuel.created_at', 'desc');
 
         return $res->get();
     }

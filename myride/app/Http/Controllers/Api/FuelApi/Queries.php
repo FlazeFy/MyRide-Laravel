@@ -23,13 +23,13 @@ class Queries extends Controller
     /**
      * @OA\GET(
      *     path="/api/v1/fuel",
-     *     summary="Get all fuel",
-     *     description="This request is used to get all fuel purchase history. This request is using MySql database, have a protected routes, and have template pagination.",
+     *     summary="Get All Fuel",
+     *     description="This request is used to get all fuel purchase history. This request interacts with the MySQL database, has a protected routes, and a pagination.",
      *     tags={"Fuel"},
      *     security={{"bearerAuth":{}}},
      *     @OA\Response(
      *         response=200,
-     *         description="Fuel fetched successfully",
+     *         description="Fuel fetched successfully. Ordered in descending order by `created_at`",
      *         @OA\JsonContent(
      *             @OA\Property(property="status", type="string", example="success"),
      *             @OA\Property(property="message", type="string", example="fuel fetched"),
@@ -81,13 +81,20 @@ class Queries extends Controller
     {
         try{
             $user_id = $request->user()->id;
-            $check_admin = AdminModel::find($user_id);
             $paginate = $request->query('per_page_key') ?? 12;
+            // This will get all fuel history if vehicle_id not attached
             $vehicle_id = $request->query('vehicle_id') ?? null;
 
+            // Define user id by role
+            $check_admin = AdminModel::find($user_id);
+            if($check_admin) {
+                $user_id = null;
+            }
+
+            // Get all fuel with pagination
             $res = FuelModel::getAllFuel($user_id, $vehicle_id, $paginate);
-            
-            if (count($res) > 0) {
+            if(count($res) > 0) {
+                // Return success response
                 return response()->json([
                     'status' => 'success',
                     'message' => Generator::getMessageTemplate("fetch", $this->module),
@@ -110,8 +117,8 @@ class Queries extends Controller
     /**
      * @OA\GET(
      *     path="/api/v1/fuel/last",
-     *     summary="Get last fuel",
-     *     description="This request is used to get last fuel purchase history. This request is using MySql database, have a protected routes, and have template pagination.",
+     *     summary="Get Last Fuel",
+     *     description="This request is used to get last fuel purchase history. This request interacts with the MySQL database, and has a protected routes.",
      *     tags={"Fuel"},
      *     security={{"bearerAuth":{}}},
      *     @OA\Response(
@@ -163,11 +170,13 @@ class Queries extends Controller
     public function getLastFuel(Request $request){
         try{
             $user_id = $request->user()->id;
+            // This will get all fuel history if vehicle_id not attached
             $vehicle_id = $request->query('vehicle_id') ?? null;
 
+            // Get last fuel
             $res = FuelModel::getLastFuel($user_id, $vehicle_id);
-            
-            if ($res) {
+            if($res) {
+                // Return success response
                 return response()->json([
                     'status' => 'success',
                     'message' => Generator::getMessageTemplate("fetch", $this->module),
@@ -190,13 +199,13 @@ class Queries extends Controller
     /**
      * @OA\GET(
      *     path="/api/v1/fuel/summary/{month_year}",
-     *     summary="Get fuel summary monthly",
-     *     description="This request is used to get summary of fuel consume in the specific month period. This request is using MySql database, and have a protected routes.",
+     *     summary="Get Fuel Summary Monthly",
+     *     description="This request is used to get summary of fuel purchase history in the specific month and year by giving `month_year`. This request interacts with the MySQL database, and has a protected routes.",
      *     tags={"Fuel"},
      *     security={{"bearerAuth":{}}},
      *     @OA\Response(
      *         response=200,
-     *         description="Fuel record fetched successfully",
+     *         description="Fuel fetched successfully",
      *         @OA\JsonContent(
      *             @OA\Property(property="status", type="string", example="success"),
      *             @OA\Property(property="message", type="string", example="fuel fetched"),
@@ -236,11 +245,13 @@ class Queries extends Controller
     public function getMonthlyFuelSummary(Request $request, $month_year){
         try{
             $user_id = $request->user()->id;
+            // This will get all fuel history if vehicle_id not attached
             $vehicle_id = $request->query('vehicle_id') ?? null;
 
+            // Get monthly fuel summary
             $res = FuelModel::getMonthlyFuelSummary($user_id, $vehicle_id, $month_year);
-            
-            if ($res) {
+            if($res){
+                // Return success response
                 return response()->json([
                     'status' => 'success',
                     'message' => Generator::getMessageTemplate("fetch", $this->module),

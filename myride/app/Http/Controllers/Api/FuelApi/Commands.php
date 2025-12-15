@@ -31,7 +31,8 @@ class Commands extends Controller
     /**
      * @OA\DELETE(
      *     path="/api/v1/fuel/destroy/{id}",
-     *     summary="Delete fuel by id",
+     *     summary="Delete Fuel By ID",
+     *     description="This request is used to permanently delete a fuel history based on the provided `ID`. This request interacts with the MySQL database, firebase storage (for remove uploaded `fuel_bill`), has a protected routes, and audited activity (history).",
      *     tags={"Fuel"},
      *     security={{"bearerAuth":{}}},
      *     @OA\Parameter(
@@ -81,16 +82,19 @@ class Commands extends Controller
         try{
             $user_id = $request->user()->id;
 
+            // Define user id by role
             $check_admin = AdminModel::find($user_id);
             if($check_admin){
                 $user_id = null;
             }
-
             $fuel = FuelModel::find($id);
+
+            // Permanently delete fuel
             $rows = FuelModel::hardDeleteFuelById($id, $user_id);
             if($rows > 0){
-                // Delete Firebase Uploaded Image
+                // Delete Firebase uploaded image
                 if($fuel->fuel_bill){
+                    // Delete failed if file not found (already gone)
                     if(!Firebase::deleteFile($fuel->fuel_bill)){
                         return response()->json([
                             'status' => 'failed',
@@ -99,8 +103,10 @@ class Commands extends Controller
                     }
                 }
 
+                // Create history
                 HistoryModel::createHistory(['history_type' => 'Fuel', 'history_context' => "remove a fuel history"], $user_id);
                 
+                // Return success response
                 return response()->json([
                     'status' => 'success',
                     'message' => Generator::getMessageTemplate("permentally delete", $this->module),
@@ -122,9 +128,26 @@ class Commands extends Controller
     /**
      * @OA\POST(
      *     path="/api/v1/fuel",
-     *     summary="Post fuel",
+     *     summary="Post Create Fuel",
+     *     description="This request is used to create a fuel by using given `vehicle_id`, `fuel_volume`, `fuel_price_total`, `fuel_brand`, `fuel_type`, `fuel_ron`, and `fuel_bill` (Fuel Receipt image). This request interacts with the MySQL database, firebase storage, has a protected routes, and audited activity (history).",
      *     tags={"Fuel"},
      *     security={{"bearerAuth":{}}},
+     *     @OA\RequestBody(
+     *          required=true,
+     *          @OA\MediaType(
+     *              mediaType="multipart/form-data",
+     *              @OA\Schema(
+     *                  required={"vehicle_id", "fuel_volume", "fuel_price_total", "fuel_brand"},
+     *                  @OA\Property(property="vehicle_id", type="string", example="e1288783-a5d4-1c4c-2cd6-0e92f7cc3bf9"),
+     *                  @OA\Property(property="fuel_volume", type="integer", example=20),
+     *                  @OA\Property(property="fuel_price_total", type="integer", example=300000),
+     *                  @OA\Property(property="fuel_brand", type="string", example="Shell"),
+     *                  @OA\Property(property="fuel_type", type="string", example="Super"),
+     *                  @OA\Property(property="fuel_ron", type="integer", example=92),
+     *                  @OA\Property(property="fuel_bill", type="string", format="binary"),
+     *              )
+     *          )
+     *     ),
      *     @OA\Response(
      *         response=201,
      *         description="fuel created",
@@ -163,6 +186,7 @@ class Commands extends Controller
         try{
             $user_id = $request->user()->id;
 
+            // Validate request body
             $validator = Validation::getValidateFuel($request);
             if ($validator->fails()) {
                 return response()->json([
@@ -171,11 +195,12 @@ class Commands extends Controller
                 ], Response::HTTP_BAD_REQUEST);
             } else {
                 $fuel_bill = null;
+                // Check if file attached
                 if ($request->hasFile('fuel_bill')) {
                     $file = $request->file('fuel_bill');
                     if ($file->isValid()) {
-                        $file_ext = $file->getClientOriginalExtension();
                         // Validate file type
+                        $file_ext = $file->getClientOriginalExtension();
                         if (!in_array($file_ext, $this->allowed_file_type)) {
                             return response()->json([
                                 'status' => 'failed',
@@ -190,9 +215,10 @@ class Commands extends Controller
                             ], Response::HTTP_UNPROCESSABLE_ENTITY);
                         }
         
-                        // Helper: Upload fuel bill
                         try {
+                            // Get user data
                             $user = UserModel::find($user_id);
+                            // Upload file to Firebase storage
                             $fuel_bill = Firebase::uploadFile('fuel', $user_id, $user->username, $file, $file_ext); 
                         } catch (\Exception $e) {
                             return response()->json([
@@ -203,6 +229,7 @@ class Commands extends Controller
                     }
                 }
 
+                // Create fuel
                 $data = [
                     'vehicle_id' => $request->vehicle_id, 
                     'fuel_volume' => $request->fuel_volume,
@@ -212,11 +239,12 @@ class Commands extends Controller
                     'fuel_ron' => $request->fuel_ron, 
                     'fuel_bill' => $fuel_bill
                 ];
-
                 $rows = FuelModel::createFuel($data, $user_id);
                 if($rows){
+                    // Create history
                     HistoryModel::createHistory(['history_type' => 'Fuel', 'history_context' => "added a fuel history"], $user_id);
 
+                    // Return success response
                     return response()->json([
                         'status' => 'success',
                         'message' => Generator::getMessageTemplate("create", $this->module),
@@ -239,9 +267,22 @@ class Commands extends Controller
     /**
      * @OA\PUT(
      *     path="/api/v1/fuel/{id}",
-     *     summary="Update an fuel",
+     *     summary="Update Fuel By ID",
+     *     description="This request is used to update a fuel by using given `ID`. The updated field are `vehicle_id`, `fuel_volume`, `fuel_price_total`, `fuel_brand`, `fuel_type`, and `fuel_ron`. This request interacts with the MySQL database, has a protected routes, and audited activity (history).",
      *     tags={"Fuel"},
      *     security={{"bearerAuth":{}}},
+     *     @OA\RequestBody(
+     *          required=true,
+     *          @OA\JsonContent(
+     *              required={"vehicle_id", "fuel_volume", "fuel_price_total", "fuel_brand"},
+     *              @OA\Property(property="vehicle_id", type="string", example="e1288783-a5d4-1c4c-2cd6-0e92f7cc3bf9"),
+     *              @OA\Property(property="fuel_volume", type="integer", example=20),
+     *              @OA\Property(property="fuel_price_total", type="integer", example=300000),
+     *              @OA\Property(property="fuel_brand", type="string", example="Shell"),
+     *              @OA\Property(property="fuel_type", type="string", example="Super"),
+     *              @OA\Property(property="fuel_ron", type="integer", example=92),
+     *          )
+     *     ),
      *     @OA\Response(
      *         response=200,
      *         description="fuel updated",
@@ -280,6 +321,7 @@ class Commands extends Controller
         try{
             $user_id = $request->user()->id;
 
+            // Validate request body
             $validator = Validation::getValidateFuel($request,'update');
             if ($validator->fails()) {
                 return response()->json([
@@ -287,6 +329,7 @@ class Commands extends Controller
                     'message' => $validator->errors()
                 ], Response::HTTP_BAD_REQUEST);
             } else {
+                // Update fuel by id
                 $data = [
                     'vehicle_id' => $request->vehicle_id, 
                     'fuel_volume' => $request->fuel_volume,
@@ -295,11 +338,12 @@ class Commands extends Controller
                     'fuel_type' => $request->fuel_type, 
                     'fuel_ron' => $request->fuel_ron, 
                 ];
-
                 $rows = FuelModel::updateFuelById($data, $user_id, $id);
                 if($rows > 0){
+                    // Create history
                     HistoryModel::createHistory(['history_type' => 'Fuel', 'history_context' => "edited a fuel history"], $user_id);
 
+                    // Return success message
                     return response()->json([
                         'status' => 'success',
                         'message' => Generator::getMessageTemplate("update", $this->module),

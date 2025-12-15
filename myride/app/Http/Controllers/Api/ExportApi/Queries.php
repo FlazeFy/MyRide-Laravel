@@ -40,7 +40,7 @@ class Queries extends Controller {
      *     security={{"bearerAuth":{}}},
      *     @OA\Response(
      *         response=200,
-     *         description="Export wash successfully. File downloaded as `xlsx` format"
+     *         description="Export wash successfully. File downloaded as `xlsx` format and ordered in descending order by `created_at`"
      *     ),
      *     @OA\Response(
      *         response=401,
@@ -157,7 +157,7 @@ class Queries extends Controller {
      *     security={{"bearerAuth":{}}},
      *     @OA\Response(
      *         response=200,
-     *         description="Export fuel successfully. File downloaded as `xlsx` format"
+     *         description="Export fuel successfully. File downloaded as `xlsx` format and ordered in descending order by `created_at`"
      *     ),
      *     @OA\Response(
      *         response=401,
@@ -265,7 +265,7 @@ class Queries extends Controller {
      *     security={{"bearerAuth":{}}},
      *     @OA\Response(
      *         response=200,
-     *         description="Export inventory successfully. File downloaded as `xlsx` format"
+     *         description="Export inventory successfully. File downloaded as `xlsx` format and ordered in descending order by `created_at`"
      *     ),
      *     @OA\Response(
      *         response=401,
@@ -373,7 +373,7 @@ class Queries extends Controller {
      *     security={{"bearerAuth":{}}},
      *     @OA\Response(
      *         response=200,
-     *         description="Export service successfully. File downloaded as `xlsx` format"
+     *         description="Export service successfully. File downloaded as `xlsx` format and ordered in descending order by `created_at`"
      *     ),
      *     @OA\Response(
      *         response=401,
@@ -482,7 +482,7 @@ class Queries extends Controller {
      *     security={{"bearerAuth":{}}},
      *     @OA\Response(
      *         response=200,
-     *         description="Export driver successfully. File downloaded as `xlsx` format"
+     *         description="Export driver successfully. File downloaded as `xlsx` format and ordered in descending order by `created_at`"
      *     ),
      *     @OA\Response(
      *         response=401,
@@ -590,7 +590,7 @@ class Queries extends Controller {
      *     security={{"bearerAuth":{}}},
      *     @OA\Response(
      *         response=200,
-     *         description="Export trip successfully. File downloaded as `xlsx` format"
+     *         description="Export trip successfully. File downloaded as `xlsx` format and ordered in descending order by `created_at`"
      *     ),
      *     @OA\Response(
      *         response=401,

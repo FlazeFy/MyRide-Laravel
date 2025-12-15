@@ -80,7 +80,7 @@ class InventoryModel extends Model
         }
 
         $res = $res->where('inventory.created_by',$user_id)
-            ->orderBy('inventory.created_at');
+            ->orderBy('inventory.created_at', 'desc');
 
         return $res->get();
     }
@@ -93,7 +93,7 @@ class InventoryModel extends Model
         }
 
         $res = $res->where('inventory.created_by',$user_id)
-            ->orderBy('inventory_name');
+            ->orderBy('inventory_name', 'desc');
 
         return $res->get();
     }

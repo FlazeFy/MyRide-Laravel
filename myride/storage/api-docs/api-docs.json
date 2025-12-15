@@ -1276,7 +1276,7 @@
                 "tags": [
                     "Driver"
                 ],
-                "summary": "Post Create A Driver",
+                "summary": "Post Create Driver",
                 "description": "This request is used to create a driver by using given `username`, `fullname`, `password`, `telegram_user_id`, `email`, `phone`, and `notes`. This request interacts with the MySQL database, has a protected routes, and audited activity (history).",
                 "operationId": "03c269702e9c152dd0c9d742184be583",
                 "responses": {
@@ -2247,7 +2247,7 @@
                 "operationId": "02d25059f8c5470d729015ab9e7af8a5",
                 "responses": {
                     "200": {
-                        "description": "Export wash successfully. File downloaded as `xlsx` format"
+                        "description": "Export wash successfully. File downloaded as `xlsx` format and ordered in descending order by `created_at`"
                     },
                     "401": {
                         "description": "protected route need to include sign in token as authorization bearer",
@@ -2307,7 +2307,7 @@
                 "operationId": "205c1243aa0342561c309292662c9f07",
                 "responses": {
                     "200": {
-                        "description": "Export fuel successfully. File downloaded as `xlsx` format"
+                        "description": "Export fuel successfully. File downloaded as `xlsx` format and ordered in descending order by `created_at`"
                     },
                     "401": {
                         "description": "protected route need to include sign in token as authorization bearer",
@@ -2367,7 +2367,7 @@
                 "operationId": "775572b984a49144f601693abaa8be03",
                 "responses": {
                     "200": {
-                        "description": "Export inventory successfully. File downloaded as `xlsx` format"
+                        "description": "Export inventory successfully. File downloaded as `xlsx` format and ordered in descending order by `created_at`"
                     },
                     "401": {
                         "description": "protected route need to include sign in token as authorization bearer",
@@ -2427,7 +2427,7 @@
                 "operationId": "956c5632271d9947a85a77d7350ef04c",
                 "responses": {
                     "200": {
-                        "description": "Export service successfully. File downloaded as `xlsx` format"
+                        "description": "Export service successfully. File downloaded as `xlsx` format and ordered in descending order by `created_at`"
                     },
                     "401": {
                         "description": "protected route need to include sign in token as authorization bearer",
@@ -2487,7 +2487,7 @@
                 "operationId": "1a2bf45f28487891a988febcbcbef945",
                 "responses": {
                     "200": {
-                        "description": "Export driver successfully. File downloaded as `xlsx` format"
+                        "description": "Export driver successfully. File downloaded as `xlsx` format and ordered in descending order by `created_at`"
                     },
                     "401": {
                         "description": "protected route need to include sign in token as authorization bearer",
@@ -2547,7 +2547,7 @@
                 "operationId": "31eaffd57f17c1c5c49fe4db4c4a8839",
                 "responses": {
                     "200": {
-                        "description": "Export trip successfully. File downloaded as `xlsx` format"
+                        "description": "Export trip successfully. File downloaded as `xlsx` format and ordered in descending order by `created_at`"
                     },
                     "401": {
                         "description": "protected route need to include sign in token as authorization bearer",
@@ -2602,7 +2602,8 @@
                 "tags": [
                     "Fuel"
                 ],
-                "summary": "Delete fuel by id",
+                "summary": "Delete Fuel By ID",
+                "description": "This request is used to permanently delete a fuel history based on the provided `ID`. This request interacts with the MySQL database, firebase storage (for remove uploaded `fuel_bill`), has a protected routes, and audited activity (history).",
                 "operationId": "e2ed8c80ade32e384e520a0f1f608e23",
                 "parameters": [
                     {
@@ -2710,12 +2711,12 @@
                 "tags": [
                     "Fuel"
                 ],
-                "summary": "Get all fuel",
-                "description": "This request is used to get all fuel purchase history. This request is using MySql database, have a protected routes, and have template pagination.",
+                "summary": "Get All Fuel",
+                "description": "This request is used to get all fuel purchase history. This request interacts with the MySQL database, has a protected routes, and a pagination.",
                 "operationId": "a6bfc63fd137cb123e444ec1f036d421",
                 "responses": {
                     "200": {
-                        "description": "Fuel fetched successfully",
+                        "description": "Fuel fetched successfully. Ordered in descending order by `created_at`",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -2862,8 +2863,55 @@
                 "tags": [
                     "Fuel"
                 ],
-                "summary": "Post fuel",
+                "summary": "Post Create Fuel",
+                "description": "This request is used to create a fuel by using given `vehicle_id`, `fuel_volume`, `fuel_price_total`, `fuel_brand`, `fuel_type`, `fuel_ron`, and `fuel_bill` (Fuel Receipt image). This request interacts with the MySQL database, firebase storage, has a protected routes, and audited activity (history).",
                 "operationId": "781edfda28dbc20a06ab30716f078d1c",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "vehicle_id",
+                                    "fuel_volume",
+                                    "fuel_price_total",
+                                    "fuel_brand"
+                                ],
+                                "properties": {
+                                    "vehicle_id": {
+                                        "type": "string",
+                                        "example": "e1288783-a5d4-1c4c-2cd6-0e92f7cc3bf9"
+                                    },
+                                    "fuel_volume": {
+                                        "type": "integer",
+                                        "example": 20
+                                    },
+                                    "fuel_price_total": {
+                                        "type": "integer",
+                                        "example": 300000
+                                    },
+                                    "fuel_brand": {
+                                        "type": "string",
+                                        "example": "Shell"
+                                    },
+                                    "fuel_type": {
+                                        "type": "string",
+                                        "example": "Super"
+                                    },
+                                    "fuel_ron": {
+                                        "type": "integer",
+                                        "example": 92
+                                    },
+                                    "fuel_bill": {
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "201": {
                         "description": "fuel created",
@@ -2958,8 +3006,51 @@
                 "tags": [
                     "Fuel"
                 ],
-                "summary": "Update an fuel",
+                "summary": "Update Fuel By ID",
+                "description": "This request is used to update a fuel by using given `ID`. The updated field are `vehicle_id`, `fuel_volume`, `fuel_price_total`, `fuel_brand`, `fuel_type`, and `fuel_ron`. This request interacts with the MySQL database, has a protected routes, and audited activity (history).",
                 "operationId": "197240b06afa4c99bfb2322feaa42da4",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "vehicle_id",
+                                    "fuel_volume",
+                                    "fuel_price_total",
+                                    "fuel_brand"
+                                ],
+                                "properties": {
+                                    "vehicle_id": {
+                                        "type": "string",
+                                        "example": "e1288783-a5d4-1c4c-2cd6-0e92f7cc3bf9"
+                                    },
+                                    "fuel_volume": {
+                                        "type": "integer",
+                                        "example": 20
+                                    },
+                                    "fuel_price_total": {
+                                        "type": "integer",
+                                        "example": 300000
+                                    },
+                                    "fuel_brand": {
+                                        "type": "string",
+                                        "example": "Shell"
+                                    },
+                                    "fuel_type": {
+                                        "type": "string",
+                                        "example": "Super"
+                                    },
+                                    "fuel_ron": {
+                                        "type": "integer",
+                                        "example": 92
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "200": {
                         "description": "fuel updated",
@@ -3054,8 +3145,8 @@
                 "tags": [
                     "Fuel"
                 ],
-                "summary": "Get last fuel",
-                "description": "This request is used to get last fuel purchase history. This request is using MySql database, have a protected routes, and have template pagination.",
+                "summary": "Get Last Fuel",
+                "description": "This request is used to get last fuel purchase history. This request interacts with the MySQL database, and has a protected routes.",
                 "operationId": "b74450a87831a1450cbe681950c971fb",
                 "responses": {
                     "200": {
@@ -3200,12 +3291,12 @@
                 "tags": [
                     "Fuel"
                 ],
-                "summary": "Get fuel summary monthly",
-                "description": "This request is used to get summary of fuel consume in the specific month period. This request is using MySql database, and have a protected routes.",
+                "summary": "Get Fuel Summary Monthly",
+                "description": "This request is used to get summary of fuel purchase history in the specific month and year by giving `month_year`. This request interacts with the MySQL database, and has a protected routes.",
                 "operationId": "0096ab10ab04bf345e337bf46b860b78",
                 "responses": {
                     "200": {
-                        "description": "Fuel record fetched successfully",
+                        "description": "Fuel fetched successfully",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -3314,7 +3405,8 @@
                 "tags": [
                     "History"
                 ],
-                "summary": "Delete history by id",
+                "summary": "Hard Delete History By ID",
+                "description": "This request is used to permanently delete a system history based on the provided `ID`. This request interacts with the MySQL database, and has a protected routes.",
                 "operationId": "4d5036ffd8580da35bf9d00c5d2c6050",
                 "parameters": [
                     {
@@ -3422,12 +3514,12 @@
                 "tags": [
                     "History"
                 ],
-                "summary": "Get all history",
-                "description": "This request is used to get all history when user use the App. This request is using MySql database, have a protected routes, and have template pagination.",
+                "summary": "Get All History",
+                "description": "This request is used to get all history when user use the App. This request interacts with the MySQL database, has a protected routes, and has a pagination.",
                 "operationId": "b51b619e3c45ec6458bcca590a3a70e8",
                 "responses": {
                     "200": {
-                        "description": "history fetched",
+                        "description": "History fetched successfully. Ordered in descending order by `created_at`",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -3553,7 +3645,8 @@
                 "tags": [
                     "Inventory"
                 ],
-                "summary": "Delete inventory by id",
+                "summary": "Delete Inventory By ID",
+                "description": "This request is used to permanently delete an inventory based on the provided `ID`. This request interacts with the MySQL database, firebase storage (for remove uploaded `inventory_image_url`), has a protected routes, and audited activity (history).",
                 "operationId": "344d7c237f1e008bee49ac4e624c2e10",
                 "parameters": [
                     {
@@ -3661,12 +3754,12 @@
                 "tags": [
                     "Inventory"
                 ],
-                "summary": "Get all inventory",
-                "description": "This request is used to get all inventory purchase history. This request is using MySql database, have a protected routes, and have template pagination.",
+                "summary": "Get All Inventory",
+                "description": "This request is used to get all inventory. This request interacts with the MySQL database, has a protected routes, and a pagination.",
                 "operationId": "ba8b3005bed7008380df0cdd8724f8f3",
                 "responses": {
                     "200": {
-                        "description": "Inventory fetched successfully",
+                        "description": "Inventory fetched successfully. Ordered in descending order by `gudangku_inventory_id`, `updated_at`, and last `created_at`",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -3812,8 +3905,52 @@
                 "tags": [
                     "Inventory"
                 ],
-                "summary": "Create a inventory",
+                "summary": "Post Create Inventory",
+                "description": "This request is used to create an inventory by using given `vehicle_id`, `inventory_name`, `inventory_category`, `inventory_storage`, `inventory_qty`, and `inventory_image_url`. This request interacts with the MySQL database, firebase storage, has a protected routes, and audited activity (history).",
                 "operationId": "4674b1921101b03eb103dc6acea8108b",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "vehicle_id",
+                                    "inventory_name",
+                                    "inventory_category",
+                                    "inventory_storage",
+                                    "inventory_qty"
+                                ],
+                                "properties": {
+                                    "vehicle_id": {
+                                        "type": "string",
+                                        "example": "e1288783-a5d4-1c4c-2cd6-0e92f7cc3bf9"
+                                    },
+                                    "inventory_name": {
+                                        "type": "string",
+                                        "example": "Secondary Tire"
+                                    },
+                                    "inventory_category": {
+                                        "type": "string",
+                                        "example": "Vehicle Component"
+                                    },
+                                    "inventory_storage": {
+                                        "type": "string",
+                                        "example": "Trunk"
+                                    },
+                                    "inventory_qty": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "inventory_image_url": {
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "201": {
                         "description": "inventory created",
@@ -3908,8 +4045,48 @@
                 "tags": [
                     "Inventory"
                 ],
-                "summary": "Update an inventory",
+                "summary": "Update Inventory By ID",
+                "description": "This request is used to update an inventory by using given `ID`. The updated field are `vehicle_id`, `inventory_name`, `inventory_category`, `inventory_storage`, and `inventory_qty`. This request interacts with the MySQL database, has a protected routes, and audited activity (history).",
                 "operationId": "9954cea5a79b0b22c6d7d14e5871b773",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "vehicle_id",
+                                    "inventory_name",
+                                    "inventory_category",
+                                    "inventory_storage",
+                                    "inventory_qty"
+                                ],
+                                "properties": {
+                                    "vehicle_id": {
+                                        "type": "string",
+                                        "example": "e1288783-a5d4-1c4c-2cd6-0e92f7cc3bf9"
+                                    },
+                                    "inventory_name": {
+                                        "type": "string",
+                                        "example": "Secondary Tire"
+                                    },
+                                    "inventory_category": {
+                                        "type": "string",
+                                        "example": "Vehicle Component"
+                                    },
+                                    "inventory_storage": {
+                                        "type": "string",
+                                        "example": "Trunk"
+                                    },
+                                    "inventory_qty": {
+                                        "type": "integer",
+                                        "example": 1
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "200": {
                         "description": "inventory updated",
@@ -4004,12 +4181,12 @@
                 "tags": [
                     "Inventory"
                 ],
-                "summary": "Get inventory by vehicle id",
-                "description": "This request is used to get all inventory purchase history. This request is using MySql database, have a protected routes, and have template pagination.",
+                "summary": "Get Inventory By Vehicle ID",
+                "description": "This request is used to get all inventory by given `vehicle_id`. This request interacts with the MySQL database, has a protected routes, and a pagination.",
                 "operationId": "22ae415791f3b39ae3bf098ce09f34b6",
                 "responses": {
                     "200": {
-                        "description": "Inventory fetched successfully",
+                        "description": "Inventory fetched successfully. Ordered in descending order by `inventory_name`",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -4134,12 +4311,12 @@
                 "tags": [
                     "Question"
                 ],
-                "summary": "Get showing FAQ",
-                "description": "This request is used to get showing FAQ in the welcome page. This request is using MySql database",
-                "operationId": "27dc39035fffcbd37f6e60fbbf93d66f",
+                "summary": "Get Showing FAQ",
+                "description": "This request is used to get showing FAQ in the welcome page (Maximum to fetch 8 item). This request interacts with the MySQL database.",
+                "operationId": "fdd9299b38b400b0fff59cff76deb886",
                 "responses": {
                     "200": {
-                        "description": "faq fetched",
+                        "description": "FAQ fetched successfully. Ordered in descending order by `created_at`",
                         "content": {
                             "application/json": {
                                 "schema": {

@@ -23,13 +23,13 @@ class Queries extends Controller
     /**
      * @OA\GET(
      *     path="/api/v1/history",
-     *     summary="Get all history",
-     *     description="This request is used to get all history when user use the App. This request is using MySql database, have a protected routes, and have template pagination.",
+     *     summary="Get All History",
+     *     description="This request is used to get all history when user use the App. This request interacts with the MySQL database, has a protected routes, and has a pagination.",
      *     tags={"History"},
      *     security={{"bearerAuth":{}}},
      *     @OA\Response(
      *         response=200,
-     *         description="history fetched",
+     *         description="History fetched successfully. Ordered in descending order by `created_at`",
      *         @OA\JsonContent(
      *             @OA\Property(property="status", type="string", example="success"),
      *             @OA\Property(property="message", type="string", example="history fetched"),
@@ -76,9 +76,10 @@ class Queries extends Controller
     {
         try{
             $user_id = $request->user()->id;
-            $check_admin = AdminModel::find($user_id);
             $paginate = $request->query('per_page_key') ?? 12;
 
+            // Define user id by role
+            $check_admin = AdminModel::find($user_id);
             if($check_admin){
                 $user_id = $request->query('user_id') ?? null;
                 $res = HistoryModel::getAllHistory('admin', $user_id, $paginate);
@@ -87,6 +88,7 @@ class Queries extends Controller
             }
             
             if (count($res) > 0) {
+                // Return success response
                 return response()->json([
                     'status' => 'success',
                     'message' => Generator::getMessageTemplate("fetch", $this->module),

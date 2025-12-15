@@ -9,7 +9,7 @@ use App\Models\FAQModel;
 // Helper
 use App\Helpers\Generator;
 
-class FAQQueries extends Controller
+class Queries extends Controller
 {
     private $module;
     public function __construct()
@@ -20,12 +20,12 @@ class FAQQueries extends Controller
     /**
      * @OA\GET(
      *     path="/api/v1/question/faq",
-     *     summary="Get showing FAQ",
-     *     description="This request is used to get showing FAQ in the welcome page. This request is using MySql database",
+     *     summary="Get Showing FAQ",
+     *     description="This request is used to get showing FAQ in the welcome page (Maximum to fetch 8 item). This request interacts with the MySQL database.",
      *     tags={"Question"},
      *     @OA\Response(
      *         response=200,
-     *         description="faq fetched",
+     *         description="FAQ fetched successfully. Ordered in descending order by `created_at`",
      *         @OA\JsonContent(
      *             @OA\Property(property="status", type="string", example="success"),
      *             @OA\Property(property="message", type="string", example="faq fetched"),
@@ -58,11 +58,11 @@ class FAQQueries extends Controller
     public function getShowingFAQ()
     {
         try{
-            // Model
+            // Get Showing FAQ
             $res = FAQModel::getShowingFAQ();
             
-            // Response
             if($res) {
+                // Return success response
                 return response()->json([
                     'status' => 'success',
                     'message' => Generator::getMessageTemplate("fetch", $this->module),

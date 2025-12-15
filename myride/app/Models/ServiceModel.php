@@ -98,7 +98,7 @@ class ServiceModel extends Model
         }
 
         $res = $res->where('service.created_by',$user_id)
-            ->orderBy('service.created_at');
+            ->orderBy('service.created_at', 'desc');
 
         return $res->get();
     }

@@ -227,7 +227,7 @@ class TripModel extends Model
         }
 
         $res = $res->where('trip.created_by',$user_id)
-            ->orderBy('trip.created_at');
+            ->orderBy('trip.created_at', 'desc');
 
         return $res->get();
     }

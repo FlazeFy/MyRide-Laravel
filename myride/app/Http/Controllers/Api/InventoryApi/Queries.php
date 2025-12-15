@@ -23,13 +23,13 @@ class Queries extends Controller
     /**
      * @OA\GET(
      *     path="/api/v1/inventory",
-     *     summary="Get all inventory",
-     *     description="This request is used to get all inventory purchase history. This request is using MySql database, have a protected routes, and have template pagination.",
+     *     summary="Get All Inventory",
+     *     description="This request is used to get all inventory. This request interacts with the MySQL database, has a protected routes, and a pagination.",
      *     tags={"Inventory"},
      *     security={{"bearerAuth":{}}},
      *     @OA\Response(
      *         response=200,
-     *         description="Inventory fetched successfully",
+     *         description="Inventory fetched successfully. Ordered in descending order by `gudangku_inventory_id`, `updated_at`, and last `created_at`",
      *         @OA\JsonContent(
      *             @OA\Property(property="status", type="string", example="success"),
      *             @OA\Property(property="message", type="string", example="inventory fetched"),
@@ -81,13 +81,20 @@ class Queries extends Controller
     {
         try{
             $user_id = $request->user()->id;
-            $check_admin = AdminModel::find($user_id);
             $paginate = $request->query('per_page_key') ?? 12;
+            // This will get all inventory if vehicle_id not attached
             $vehicle_id = $request->query('vehicle_id') ?? null;
-
-            $res = InventoryModel::getAllInventory($user_id, $vehicle_id, $paginate);
             
+            // Define user id by role
+            $check_admin = AdminModel::find($user_id);
+            if($check_admin) {
+                $user_id = null;
+            }
+
+            // Get all inventory with paginate
+            $res = InventoryModel::getAllInventory($user_id, $vehicle_id, $paginate);
             if (count($res) > 0) {
+                // Return success response
                 return response()->json([
                     'status' => 'success',
                     'message' => Generator::getMessageTemplate("fetch", $this->module),
@@ -110,13 +117,13 @@ class Queries extends Controller
     /**
      * @OA\GET(
      *     path="/api/v1/inventory/vehicle/{vehicle_id}",
-     *     summary="Get inventory by vehicle id",
-     *     description="This request is used to get all inventory purchase history. This request is using MySql database, have a protected routes, and have template pagination.",
+     *     summary="Get Inventory By Vehicle ID",
+     *     description="This request is used to get all inventory by given `vehicle_id`. This request interacts with the MySQL database, has a protected routes, and a pagination.",
      *     tags={"Inventory"},
      *     security={{"bearerAuth":{}}},
      *     @OA\Response(
      *         response=200,
-     *         description="Inventory fetched successfully",
+     *         description="Inventory fetched successfully. Ordered in descending order by `inventory_name`",
      *         @OA\JsonContent(
      *             @OA\Property(property="status", type="string", example="success"),
      *             @OA\Property(property="message", type="string", example="inventory fetched"),
@@ -162,11 +169,10 @@ class Queries extends Controller
         try{
             $user_id = $request->user()->id;
 
-            // Model
+            // Get inventory by vehicle ID
             $res = InventoryModel::getInventoryByVehicle($user_id,$vehicle_id);
-
-            // Response
             if ($res && count($res) > 0) {
+                // Return success response
                 return response()->json([
                     'status' => 'success',
                     'message' => Generator::getMessageTemplate("fetch", $this->module),
