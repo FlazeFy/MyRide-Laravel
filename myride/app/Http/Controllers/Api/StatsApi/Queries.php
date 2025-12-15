@@ -23,8 +23,8 @@ class Queries extends Controller
     /**
      * @OA\GET(
      *     path="/api/v1/stats/total/trip/{context}",
-     *     summary="Get total trip by context",
-     *     description="This request is used to get total trip by `context`, that can be trip_category, trip_origin_name, and trip_destination_name. This request is using MySql database, and have a protected routes.",
+     *     summary="Get Total Trip By Context",
+     *     description="This request is used to get total trip by `context`, that can be trip_category, trip_origin_name, and trip_destination_name. This request interacts with the MySQL database, and has a protected routes.",
      *     tags={"Stats"},
      *     security={{"bearerAuth":{}}},
      *     @OA\Parameter(
@@ -83,15 +83,18 @@ class Queries extends Controller
             $user_id = $request->user()->id;
 
             $res = null;
+            // Check if context contain multiple item that separate using comma
             if(str_contains($context,",")){
                 $list_context = explode(",",$context);
                 foreach ($list_context as $dt) {
                     if($dt == "trip_category" || $dt == "trip_origin_name" || $dt == "trip_destination_name"){
+                        // Get the total by context in the trip table
                         $res[] = [
                             'context' => $dt,
                             'data' => MultiModel::getContextTotalStats($dt,$user_id,'trip')
                         ];
                     } else {
+                        // Context not valid
                         return response()->json([
                             'status' => 'failed',
                             'message' => Generator::getMessageTemplate("custom", "$dt is not available"),
@@ -99,10 +102,12 @@ class Queries extends Controller
                     }
                 }
             } else {
+                // Get the total by context in the trip table
                 $res = MultiModel::getContextTotalStats($context,$user_id,'trip');
             }
                 
             if ($res) {
+                // Return success response
                 return response()->json([
                     'status' => 'success',
                     'message' => Generator::getMessageTemplate("fetch", 'stats'),
@@ -114,7 +119,6 @@ class Queries extends Controller
                     'message' => Generator::getMessageTemplate("not_found", 'stats'),
                 ], Response::HTTP_NOT_FOUND);
             }
-            
         } catch(\Exception $e) {
             return response()->json([
                 'status' => 'error',
@@ -126,8 +130,8 @@ class Queries extends Controller
     /**
      * @OA\GET(
      *     path="/api/v1/stats/total/inventory/{context}",
-     *     summary="Get total inventory by context",
-     *     description="This request is used to get total inventory by `context`, that can be inventory_category, and inventory_storage. This request is using MySql database, and have a protected routes.",
+     *     summary="Get Total Inventory By Context",
+     *     description="This request is used to get total inventory by `context`, that can be inventory_category, and inventory_storage. This request interacts with the MySQL database, and has a protected routes.",
      *     tags={"Stats"},
      *     security={{"bearerAuth":{}}},
      *     @OA\Parameter(
@@ -186,15 +190,18 @@ class Queries extends Controller
             $user_id = $request->user()->id;
 
             $res = null;
+            // Check if context contain multiple item that separate using comma
             if(str_contains($context,",")){
                 $list_context = explode(",",$context);
                 foreach ($list_context as $dt) {
                     if($dt == "inventory_category" || $dt == "inventory_storage"){
+                        // Get the total by context in the inventory table
                         $res[] = [
                             'context' => $dt,
                             'data' => MultiModel::getContextTotalStats($dt,$user_id,'inventory')
                         ];
                     } else {
+                        // Context not valid
                         return response()->json([
                             'status' => 'failed',
                             'message' => Generator::getMessageTemplate("custom", "$dt is not available"),
@@ -202,10 +209,12 @@ class Queries extends Controller
                     }
                 }
             } else {
+                // Get the total by context in the inventory table
                 $res = MultiModel::getContextTotalStats($context,$user_id,'inventory');
             }
                 
             if ($res) {
+                // Return success response
                 return response()->json([
                     'status' => 'success',
                     'message' => Generator::getMessageTemplate("fetch", 'stats'),
@@ -217,7 +226,6 @@ class Queries extends Controller
                     'message' => Generator::getMessageTemplate("not_found", 'stats'),
                 ], Response::HTTP_NOT_FOUND);
             }
-            
         } catch(\Exception $e) {
             return response()->json([
                 'status' => 'error',
@@ -229,8 +237,8 @@ class Queries extends Controller
     /**
      * @OA\GET(
      *     path="/api/v1/stats/total/service/{context}",
-     *     summary="Get total service price by context",
-     *     description="This request is used to get total service by `context`, that can be service_category, and service_location. This request is using MySql database, and have a protected routes.",
+     *     summary="Get Total Service Price By Context",
+     *     description="This request is used to get total service by `context`, that can be service_category, and service_location. This request interacts with the MySQL database, and has a protected routes.",
      *     tags={"Stats"},
      *     security={{"bearerAuth":{}}},
      *     @OA\Parameter(
@@ -288,15 +296,18 @@ class Queries extends Controller
             $user_id = $request->user()->id;
 
             $res = null;
+            // Check if context contain multiple item that separate using comma
             if(str_contains($context,",")){
                 $list_context = explode(",",$context);
                 foreach ($list_context as $dt) {
                     if($dt == "service_category" || $dt == "service_location"){
+                        // Get the total by context in the service table
                         $res[] = [
                             'context' => $dt,
                             'data' => MultiModel::getContextTotalStats($dt,$user_id,'service',"CAST(SUM(service_price_total) AS INT)")
                         ];
                     } else {
+                        // Context not valid
                         return response()->json([
                             'status' => 'failed',
                             'message' => Generator::getMessageTemplate("custom", "$dt is not available"),
@@ -304,10 +315,12 @@ class Queries extends Controller
                     }
                 }
             } else {
+                // Get the total by context in the service table
                 $res = MultiModel::getContextTotalStats($context,$user_id,'service',"CAST(SUM(service_price_total) AS INT)");
             }
                 
             if ($res) {
+                // Return success response
                 return response()->json([
                     'status' => 'success',
                     'message' => Generator::getMessageTemplate("fetch", 'stats'),
@@ -319,7 +332,6 @@ class Queries extends Controller
                     'message' => Generator::getMessageTemplate("not_found", 'stats'),
                 ], Response::HTTP_NOT_FOUND);
             }
-            
         } catch(\Exception $e) {
             return response()->json([
                 'status' => 'error',
@@ -331,8 +343,8 @@ class Queries extends Controller
     /**
      * @OA\GET(
      *     path="/api/v1/stats/total/vehicle/{context}",
-     *     summary="Get total vehicle by context",
-     *     description="This request is used to get total vehicle by `context`, that can be vehicle_merk, vehicle_type, vehicle_status, vehicle_fuel_status, vehicle_transmission, and vehicle_color. This request is using MySql database, and have a protected routes.",
+     *     summary="Get Total Vehicle By Context",
+     *     description="This request is used to get total vehicle by `context`, that can be vehicle_merk, vehicle_type, vehicle_status, vehicle_fuel_status, vehicle_transmission, and vehicle_color. This request interacts with the MySQL database, and has a protected routes.",
      *     tags={"Stats"},
      *     security={{"bearerAuth":{}}},
      *     @OA\Parameter(
@@ -392,16 +404,19 @@ class Queries extends Controller
             $vehicleContext = ["vehicle_merk","vehicle_type","vehicle_status","vehicle_category","vehicle_fuel_status","vehicle_transmission","vehicle_color"];
             
             $res = null;
+            // Check if context contain multiple item that separate using comma
             if(str_contains($context, ",")){
                 $context_list = explode(",", $context);
                 $res = [];
                 foreach ($context_list as $dt) {
                     if (in_array($dt, $vehicleContext)) {
+                        // Get the total by context in the vehicle table
                         $res[] = [
                             'context' => $dt,
                             'data' => MultiModel::getContextTotalStats($dt,$user_id,'vehicle')
                         ];
                     } else {
+                        // Context not valid
                         return response()->json([
                             'status' => 'failed',
                             'message' => Generator::getMessageTemplate("custom", "$dt is not available"),
@@ -410,16 +425,18 @@ class Queries extends Controller
                 }
             } else {
                 if (in_array($context, $vehicleContext)) {
+                    // Get the total by context in the vehicle table
                     $res = MultiModel::getContextTotalStats($context,$user_id,'vehicle');
                 } else {
+                    // Context not valid
                     return response()->json([
                         'status' => 'failed',
                         'message' => Generator::getMessageTemplate("custom", "$context is not available"),
                     ], Response::HTTP_BAD_REQUEST);
                 }
             }
-            
             if ($res) {
+                // Return success response
                 return response()->json([
                     'status' => 'success',
                     'message' => Generator::getMessageTemplate("fetch", 'stats'),
@@ -442,8 +459,8 @@ class Queries extends Controller
     /**
      * @OA\GET(
      *     path="/api/v1/stats/total/trip/{year}/{vehicle_id}",
-     *     summary="Get total trip by vehicle per month",
-     *     description="This request is used to get total trip by vehicle per month by given `year`. This request is using MySql database, and have a protected routes.",
+     *     summary="Get Total Trip By Vehicle Per Month",
+     *     description="This request is used to get total trip by vehicle per month by given `year` and `vehicle_id`. This request interacts with the MySQL database, and has a protected routes.",
      *     tags={"Stats"},
      *     security={{"bearerAuth":{}}},
      *     @OA\Parameter(
@@ -510,10 +527,12 @@ class Queries extends Controller
     {
         try{
             $user_id = $request->user()->id;
-            $res = TripModel::getTotalTripByVehiclePerYear($user_id, $vehicle_id, $year);
             
+            // Get total trip by its vehicle per year period
+            $res = TripModel::getTotalTripByVehiclePerYear($user_id, $vehicle_id, $year);
             if ($res && count($res) > 0) {
                 $res_final = [];
+                // Mapping per month
                 for ($i=1; $i <= 12; $i++) { 
                     $total = 0;
                     foreach ($res as $idx => $val) {
@@ -522,12 +541,14 @@ class Queries extends Controller
                             break;
                         }
                     }
+                    // Get month name short
                     array_push($res_final, [
                         'context' => Generator::generateMonthName($i,'short'),
                         'total' => $total,
                     ]);
                 }
 
+                // Return success response
                 return response()->json([
                     'status' => 'success',
                     'message' => Generator::getMessageTemplate("fetch", 'stats'),
@@ -550,8 +571,8 @@ class Queries extends Controller
     /**
      * @OA\GET(
      *     path="/api/v1/stats/total/trip/{year}",
-     *     summary="Get total trip per month",
-     *     description="This request is used to get total trip per month by given `year`. This request is using MySql database, and have a protected routes.",
+     *     summary="Get Total Trip Per Month",
+     *     description="This request is used to get total trip per month by given `year`. This request interacts with the MySQL database, and has a protected routes.",
      *     tags={"Stats"},
      *     security={{"bearerAuth":{}}},
      *     @OA\Parameter(
@@ -617,16 +638,19 @@ class Queries extends Controller
     public function getTotalTripPerYear(Request $request, $year)
     {
         try{
+            // Check whether authentication is attached. If yes, retrieve statistics by user; if not, retrieve statistics for all users
             if ($request->hasHeader('Authorization')) {
                 $user = Auth::guard('sanctum')->user(); 
                 $user_id = $user ? $user->id : null;
             } else {
                 $user_id = null;
             }
+
+            // Get total trip per year period
             $res = TripModel::getTotalTripByVehiclePerYear($user_id, null, $year);
-            
             if ($res && count($res) > 0) {
                 $res_final = [];
+                // Mapping per month
                 for ($i=1; $i <= 12; $i++) { 
                     $total = 0;
                     foreach ($res as $idx => $val) {
@@ -635,12 +659,14 @@ class Queries extends Controller
                             break;
                         }
                     }
+                    // Get month name short
                     array_push($res_final, [
                         'context' => Generator::generateMonthName($i,'short'),
                         'total' => $total,
                     ]);
                 }
 
+                // Return success response
                 return response()->json([
                     'status' => 'success',
                     'message' => Generator::getMessageTemplate("fetch", 'stats'),
@@ -663,8 +689,8 @@ class Queries extends Controller
     /**
      * @OA\GET(
      *     path="/api/v1/stats/total/fuel/{context}/{year}",
-     *     summary="Get total fuel per month",
-     *     description="This request is used to get total fuel per month by given `year` and `context`. This request is using MySql database, and have a protected routes.",
+     *     summary="Get Total Fuel Per Month",
+     *     description="This request is used to get total fuel per month by given `year` and `context`. This request interacts with the MySQL database, and has a protected routes.",
      *     tags={"Stats"},
      *     security={{"bearerAuth":{}}},
      *     @OA\Parameter(
@@ -740,6 +766,7 @@ class Queries extends Controller
     public function getTotalFuelPerYear(Request $request, $context, $year)
     {
         try{
+            // Check whether authentication is attached. If yes, retrieve statistics by user; if not, retrieve statistics for all users
             if ($request->hasHeader('Authorization')) {
                 $user = Auth::guard('sanctum')->user(); 
                 $user_id = $user ? $user->id : null;
@@ -748,11 +775,14 @@ class Queries extends Controller
             }
             $vehicle_id = $request->query('vehicle_id') ?? null;
 
+            // Check if context valid
             if($context !== "fuel_volume" || $context !== "fuel_price_total"){
+                // Get total fuel for specific year per vehicle by vehicle_id or all vehicle
                 $res = FuelModel::getTotalFuelByVehiclePerYear($user_id, $vehicle_id, $context, $year);
                 
                 if ($res && count($res) > 0) {
                     $res_final = [];
+                    // Mapping per month
                     for ($i=1; $i <= 12; $i++) { 
                         $total = 0;
                         foreach ($res as $idx => $val) {
@@ -761,12 +791,14 @@ class Queries extends Controller
                                 break;
                             }
                         }
+                        // Get month name short
                         array_push($res_final, [
                             'context' => Generator::generateMonthName($i,'short'),
                             'total' => $total,
                         ]);
                     }
 
+                    // Return success response
                     return response()->json([
                         'status' => 'success',
                         'message' => Generator::getMessageTemplate("fetch", 'stats'),
@@ -795,7 +827,7 @@ class Queries extends Controller
     /**
      * @OA\GET(
      *     path="/api/v1/stats/total/service/{context}/{year}",
-     *     summary="Get total service per month",
+     *     summary="Get Total Service Per Month",
      *     description="This request is used to get total service per month by given `year` and `context`. This request is using MySql database.",
      *     tags={"Stats"},
      *     security={{"bearerAuth":{}}},
@@ -862,6 +894,7 @@ class Queries extends Controller
     public function getTotalServicePerYear(Request $request, $context, $year)
     {
         try{
+            // Check whether authentication is attached. If yes, retrieve statistics by user; if not, retrieve statistics for all users
             if ($request->hasHeader('Authorization')) {
                 $user = Auth::guard('sanctum')->user(); 
                 $user_id = $user ? $user->id : null;
@@ -869,11 +902,13 @@ class Queries extends Controller
                 $user_id = null;
             }
 
+            // Check if context valid
             if($context !== "total_item" || $context !== "total_price"){
+                // Get total service per year by context
                 $res = ServiceModel::getTotalServicePerYear($user_id, $context, $year);
-                
                 if ($res && count($res) > 0) {
                     $res_final = [];
+                    // Mapping per month
                     for ($i=1; $i <= 12; $i++) { 
                         $total = 0;
                         foreach ($res as $idx => $val) {
@@ -882,12 +917,14 @@ class Queries extends Controller
                                 break;
                             }
                         }
+                        // Get month name short
                         array_push($res_final, [
                             'context' => Generator::generateMonthName($i,'short'),
                             'total' => $total,
                         ]);
                     }
 
+                    // Return success response
                     return response()->json([
                         'status' => 'success',
                         'message' => Generator::getMessageTemplate("fetch", 'stats'),
@@ -916,7 +953,7 @@ class Queries extends Controller
     /**
      * @OA\GET(
      *     path="/api/v1/stats/total/wash/{context}/{year}",
-     *     summary="Get total wash per month",
+     *     summary="Get Total Wash Per Month",
      *     description="This request is used to get total wash per month by given `year` and `context`. This request is using MySql database.",
      *     tags={"Stats"},
      *     security={{"bearerAuth":{}}},
@@ -993,6 +1030,7 @@ class Queries extends Controller
     public function getTotalWashPerYear(Request $request, $context, $year)
     {
         try{
+            // Check whether authentication is attached. If yes, retrieve statistics by user; if not, retrieve statistics for all users
             if ($request->hasHeader('Authorization')) {
                 $user = Auth::guard('sanctum')->user(); 
                 $user_id = $user ? $user->id : null;
@@ -1001,11 +1039,14 @@ class Queries extends Controller
             }
             $vehicle_id = $request->query('vehicle_id') ?? null;
 
+            // Check if context valid
             if($context !== "total_item" || $context !== "total_price"){
+                // Get total wash for specific year per vehicle by vehicle_id or all vehicle
                 $res = WashModel::getTotalWashPerYear($user_id, $vehicle_id, $context, $year);
                 
                 if ($res && count($res) > 0) {
                     $res_final = [];
+                    // Mapping per month
                     for ($i=1; $i <= 12; $i++) { 
                         $total = 0;
                         foreach ($res as $idx => $val) {
@@ -1014,12 +1055,14 @@ class Queries extends Controller
                                 break;
                             }
                         }
+                        // Get month name short
                         array_push($res_final, [
                             'context' => Generator::generateMonthName($i,'short'),
                             'total' => $total,
                         ]);
                     }
 
+                    // Return success response
                     return response()->json([
                         'status' => 'success',
                         'message' => Generator::getMessageTemplate("fetch", 'stats'),
@@ -1048,8 +1091,8 @@ class Queries extends Controller
     /**
      * @OA\GET(
      *     path="/api/v1/stats/summary",
-     *     summary="Get summary of the apps",
-     *     description="This request is used to get summary of the apps. This request is using MySql database, and have a protected routes.",
+     *     summary="Get Summary Of The Apps",
+     *     description="This request is used to get summary of the apps. This request interacts with the MySQL database, and has a protected routes.",
      *     tags={"Stats"},
      *     @OA\Response(
      *         response=200,
@@ -1094,6 +1137,7 @@ class Queries extends Controller
      */
     public function getSummaryApps(Request $request){
         try{
+            // Check whether authentication is attached. If yes, retrieve statistics by user; if not, retrieve statistics for all users
             if ($request->hasHeader('Authorization')) {
                 $user = Auth::guard('sanctum')->user(); 
                 $user_id = $user ? $user->id : null;
@@ -1101,12 +1145,12 @@ class Queries extends Controller
                 $user_id = null;
             }
 
+            // Get total item for all table (main module)
             $total_vehicle = MultiModel::countTotalContext('vehicle',$user_id);
             $total_wash = MultiModel::countTotalContext('wash',$user_id);
             $total_driver = MultiModel::countTotalContext('driver',$user_id);
             $total_service = MultiModel::countTotalContext('service',$user_id);
             $total_trip = MultiModel::countTotalContext('trip',$user_id);
-
             $data = [
                 'total_vehicle' => $total_vehicle,
                 'total_service' => $total_service,
@@ -1115,11 +1159,13 @@ class Queries extends Controller
                 'total_trip'    => $total_trip,
             ];
 
+            // If authentication is not attached, also get total user
             if($user_id == null){
                 $total_user = MultiModel::countTotalContext('users',$user_id);
                 $data['total_user'] = $total_user;
             }
 
+            // Return success response
             return response()->json([
                 'status' => 'success',
                 'message' => Generator::getMessageTemplate("fetch", 'stats'),

@@ -22,13 +22,13 @@ class Queries extends Controller
     /**
      * @OA\GET(
      *     path="/api/v1/reminder/next",
-     *     summary="Get next reminder",
-     *     description="This request is used to get the nearest reminder for now. This request is using MySql database, and have a protected routes.",
+     *     summary="Get Next Reminder",
+     *     description="This request is used to get the nearest reminder. This request interacts with the MySQL database, and has a protected routes.",
      *     tags={"Reminder"},
      *     security={{"bearerAuth":{}}},
      *     @OA\Response(
      *         response=200,
-     *         description="reminder fetched",
+     *         description="reminder fetched successfully",
      *         @OA\JsonContent(
      *             @OA\Property(property="status", type="string", example="success"),
      *             @OA\Property(property="message", type="string", example="reminder fetched"),
@@ -71,9 +71,10 @@ class Queries extends Controller
         try{
             $user_id = $request->user()->id;
             
+            // Get next reminder
             $res = ReminderModel::getNextReminder($user_id);
-            
             if ($res) {
+                // Return success response
                 return response()->json([
                     'status' => 'success',
                     'message' => Generator::getMessageTemplate("fetch", $this->module),
@@ -96,18 +97,17 @@ class Queries extends Controller
     /**
      * @OA\GET(
      *     path="/api/v1/reminder",
-     *     summary="Get all reminder history",
-     *     description="This request is used to get all reminder history with pagination. This request is using MySql database, and have a protected routes.",
+     *     summary="Get All Reminder",
+     *     description="This request is used to get all reminder. This request interacts with the MySQL database, has a protected routes, and a pagination.",
      *     tags={"Reminder"},
      *     security={{"bearerAuth":{}}},
      *     @OA\Response(
      *         response=200,
-     *         description="reminder fetched",
+     *         description="Reminder fetched successfully. Ordered in descending order by `created_at`",
      *         @OA\JsonContent(
      *             @OA\Property(property="status", type="string", example="success"),
      *             @OA\Property(property="message", type="string", example="reminder fetched"),
      *             @OA\Property(property="data",
-     *                 @OA\Property(property="current_page", type="integer", example=1),
      *                 @OA\Property(property="data", type="array",
      *                     @OA\Items(
      *                         @OA\Property(property="id", type="string", format="uuid", example="28668090-5653-dff5-2d8f-af603fc36b45"),
@@ -131,9 +131,6 @@ class Queries extends Controller
      *                         @OA\Property(property="created_at", type="string", format="datetime", example="2025-06-19 07:54:42")
      *                     )
      *                 ),
-     *                 @OA\Property(property="last_page", type="integer", example=1),
-     *                 @OA\Property(property="per_page", type="integer", example=14),
-     *                 @OA\Property(property="total", type="integer", example=1)
      *             )
      *         )
      *     ),
@@ -169,11 +166,10 @@ class Queries extends Controller
             $user_id = $request->user()->id;
             $limit = $request->query("limit",14);
 
-            // Model
+            // Get all reminder with pagination
             $res = ReminderModel::getAllReminder($user_id,$limit);
-
-            // Response
             if(count($res) > 0) {
+                // Return success response
                 return response()->json([
                     'status' => 'success',
                     'message' => Generator::getMessageTemplate("fetch", $this->module),
@@ -196,18 +192,17 @@ class Queries extends Controller
     /**
      * @OA\GET(
      *     path="/api/v1/reminder/recently",
-     *     summary="Get recently reminder history",
+     *     summary="Get Recently Reminder",
      *     description="This request is used to get recently reminder history with pagination. This request is using MySql database, and have a protected routes.",
      *     tags={"Reminder"},
      *     security={{"bearerAuth":{}}},
      *     @OA\Response(
      *         response=200,
-     *         description="reminder fetched",
+     *         description="reminder fetched successfully. Ordered in descending order by `remind_at`",
      *         @OA\JsonContent(
      *             @OA\Property(property="status", type="string", example="success"),
      *             @OA\Property(property="message", type="string", example="reminder fetched"),
      *             @OA\Property(property="data",
-     *                 @OA\Property(property="current_page", type="integer", example=1),
      *                 @OA\Property(property="data", type="array",
      *                     @OA\Items(
      *                         @OA\Property(property="id", type="string", format="uuid", example="28668090-5653-dff5-2d8f-af603fc36b45"),
@@ -218,9 +213,6 @@ class Queries extends Controller
      *                         @OA\Property(property="remind_at", type="string", nullable=true, example="2025-06-24 10:54:42")
      *                     )
      *                 ),
-     *                 @OA\Property(property="last_page", type="integer", example=1),
-     *                 @OA\Property(property="per_page", type="integer", example=14),
-     *                 @OA\Property(property="total", type="integer", example=1)
      *             )
      *         )
      *     ),
@@ -256,11 +248,10 @@ class Queries extends Controller
             $user_id = $request->user()->id;
             $limit = $request->query("limit",14);
 
-            // Model
+            // Get recently created reminder
             $res = ReminderModel::getRecentlyReminder($user_id,$limit);
-
-            // Response
             if(count($res) > 0) {
+                // Return success response
                 return response()->json([
                     'status' => 'success',
                     'message' => Generator::getMessageTemplate("fetch", $this->module),
@@ -283,13 +274,13 @@ class Queries extends Controller
     /**
      * @OA\GET(
      *     path="/api/v1/reminder/vehicle/{vehicle_id}",
-     *     summary="Get reminder by vehicle",
-     *     description="This request is used to get all reminder by specific vehicle. This request is using MySql database, and have a protected routes.",
+     *     summary="Get Reminder By Vehicle ID",
+     *     description="This request is used to get reminder by `vehicle_id`. This request interacts with the MySQL database, and has a protected routes.",
      *     tags={"Reminder"},
      *     security={{"bearerAuth":{}}},
      *     @OA\Response(
      *         response=200,
-     *         description="reminder fetched",
+     *         description="Reminder fetched successfully. Ordered in ascending order by `remind_at`",
      *         @OA\JsonContent(
      *             @OA\Property(property="status", type="string", example="success"),
      *             @OA\Property(property="message", type="string", example="reminder fetched"),
@@ -346,11 +337,10 @@ class Queries extends Controller
         try{
             $user_id = $request->user()->id;
 
-            // Model
+            // Get reminder by vehicle ID
             $res = ReminderModel::getReminderByVehicle($user_id,$vehicle_id);
-
-            // Response
             if (count($res) > 0) {
+                // Return success response
                 return response()->json([
                     'status' => 'success',
                     'message' => Generator::getMessageTemplate("fetch", $this->module),

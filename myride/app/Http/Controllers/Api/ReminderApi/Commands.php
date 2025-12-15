@@ -34,7 +34,8 @@ class Commands extends Controller
     /**
      * @OA\DELETE(
      *     path="/api/v1/reminder/destroy/{id}",
-     *     summary="Delete reminder by id",
+     *     summary="Hard Delete Reminder By ID",
+     *     description="This request is used to permanently delete a reminder based on the provided `ID`. This request interacts with the MySQL database, firebase storage, has a protected routes, and audited activity (history).",
      *     tags={"Reminder"},
      *     security={{"bearerAuth":{}}},
      *     @OA\Parameter(
@@ -84,12 +85,15 @@ class Commands extends Controller
         try{
             $user_id = $request->user()->id;
 
+            // Define user id by role
             $check_admin = AdminModel::find($user_id);
             if($check_admin){
                 $user_id = null;
             }
 
+            // Get reminder by ID
             $old_reminder = ReminderModel::find($id);
+            // Hard Delete reminder by ID
             $rows = ReminderModel::hardDeleteReminderById($id, $user_id);
             if($rows > 0){
                 // Delete Firebase Uploaded Image
@@ -98,6 +102,7 @@ class Commands extends Controller
                     foreach ($attachments as $att) {
                         if ($att['attachment_type'] === 'image') {
                             $image_url = $att['attachment_value'];
+                            // Delete failed if file not found (already gone)
                             if(!Firebase::deleteFile($image_url)){
                                 return response()->json([
                                     'status' => 'failed',
@@ -109,8 +114,10 @@ class Commands extends Controller
                     }
                 }
 
+                // Create history
                 HistoryModel::createHistory(['history_type' => 'Reminder', 'history_context' => "removed a reminder"], $user_id);
 
+                // Return success response
                 return response()->json([
                     'status' => 'success',
                     'message' => Generator::getMessageTemplate("permentally delete", $this->module),
@@ -132,9 +139,26 @@ class Commands extends Controller
     /**
      * @OA\POST(
      *     path="/api/v1/reminder",
-     *     summary="Create a reminder",
+     *     summary="Post Create Reminder",
+     *     description="This request is used to create a reminder by using given `vehicle_id`, `reminder_title`, `reminder_context`, `reminder_body`, `reminder_location`, `reminder_image`, and `reminder_at`. This request interacts with the MySQL database, firebase storage, google calendar API, has a protected routes, and audited activity (history).",
      *     tags={"Reminder"},
      *     security={{"bearerAuth":{}}},
+     *     @OA\RequestBody(
+     *          required=true,
+     *          @OA\MediaType(
+     *              mediaType="multipart/form-data",
+     *              @OA\Schema(
+     *                  required={"vehicle_id", "reminder_title", "reminder_context", "reminder_body", "remind_at"},
+     *                  @OA\Property(property="vehicle_id", type="string", example="e1288783-a5d4-1c4c-2cd6-0e92f7cc3bf9"),
+     *                  @OA\Property(property="reminder_title", type="string", example="Routine service KM 50000"),
+     *                  @OA\Property(property="reminder_context", type="string", example="Service"),
+     *                  @OA\Property(property="reminder_body", type="string", example="Lorem ipsum"),
+     *                  @OA\Property(property="reminder_location", type="string", example="-6.230333799218126, 106.81866017790138"),
+     *                  @OA\Property(property="reminder_image", type="string", format="binary"),
+     *                  @OA\Property(property="remind_at", type="string", example="2025-09-05 00:00:00")
+     *              )
+     *          )
+     *     ),
      *     @OA\Response(
      *         response=201,
      *         description="reminder created",
@@ -171,9 +195,11 @@ class Commands extends Controller
      */
     public function postReminder(Request $request){
         try{
+            // Init firebase factory to use in Google Calendar
             $factory = (new Factory)->withServiceAccount(base_path('/firebase/myride-a0077-firebase-adminsdk-7x7j4-6b7da5321a.json'));
             $user_id = $request->user()->id;
 
+            // Validate request body
             $validator = Validation::getValidateReminder($request);
             if ($validator->fails()) {
                 return response()->json([
@@ -182,6 +208,7 @@ class Commands extends Controller
                 ], Response::HTTP_BAD_REQUEST);
             } else {
                 $reminder_image = null;
+                // Check if file attached
                 if ($request->hasFile('reminder_image')) {
                     $file = $request->file('reminder_image');
                     if ($file->isValid()) {
@@ -201,9 +228,10 @@ class Commands extends Controller
                             ], Response::HTTP_UNPROCESSABLE_ENTITY);
                         }
         
-                        // Helper: Upload reminder image
                         try {
+                            // Get user data
                             $user = UserModel::find($user_id);
+                            // Upload file to Firebase storage
                             $reminder_image = Firebase::uploadFile('reminder', $user_id, $user->username, $file, $file_ext); 
                         } catch (\Exception $e) {
                             return response()->json([
@@ -214,6 +242,7 @@ class Commands extends Controller
                     }
                 }
 
+                // Build reminder array of object (store location or file attachment)
                 $reminder_attachment = [];
                 if ($reminder_image) {
                     $reminder_attachment[] = (object)[
@@ -231,6 +260,7 @@ class Commands extends Controller
                     $reminder_attachment = null;
                 }
 
+                // Create reminder
                 $data = [
                     'vehicle_id' => $request->vehicle_id, 
                     'reminder_title' => $request->reminder_title, 
@@ -239,17 +269,20 @@ class Commands extends Controller
                     'reminder_attachment' => $reminder_attachment,  
                     'remind_at' => $request->remind_at, 
                 ];
-
                 $rows = ReminderModel::createReminder($data, $user_id);
                 if($rows){
+                    // Get google token by user ID
                     $google_token = GoogleTokensModel::getGoogleTokensByUserId($user_id);
                     if($google_token){
+                        // Sync reminder with user Google Calendar account
                         $reminder_desc = "$request->reminder_context | $request->reminder_title\n$request->reminder_body";
                         GoogleCalendar::createSingleEvent($google_token->access_token, $reminder_desc, $request->remind_at, 60);
                     }
 
+                    // Create history
                     HistoryModel::createHistory(['history_type' => 'Reminder', 'history_context' => "added a reminder"], $user_id);
                     
+                    // Return success response
                     return response()->json([
                         'status' => 'success',
                         'message' => Generator::getMessageTemplate("create", $this->module),

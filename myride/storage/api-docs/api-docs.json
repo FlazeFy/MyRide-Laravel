@@ -4399,7 +4399,8 @@
                 "tags": [
                     "Reminder"
                 ],
-                "summary": "Delete reminder by id",
+                "summary": "Hard Delete Reminder By ID",
+                "description": "This request is used to permanently delete a reminder based on the provided `ID`. This request interacts with the MySQL database, firebase storage, has a protected routes, and audited activity (history).",
                 "operationId": "3cfffe0613e3d301333c08a8475a9cbd",
                 "parameters": [
                     {
@@ -4507,12 +4508,12 @@
                 "tags": [
                     "Reminder"
                 ],
-                "summary": "Get all reminder history",
-                "description": "This request is used to get all reminder history with pagination. This request is using MySql database, and have a protected routes.",
+                "summary": "Get All Reminder",
+                "description": "This request is used to get all reminder. This request interacts with the MySQL database, has a protected routes, and a pagination.",
                 "operationId": "0e57a988ebf3ad38c9c240003759a8c0",
                 "responses": {
                     "200": {
-                        "description": "reminder fetched",
+                        "description": "Reminder fetched successfully. Ordered in descending order by `created_at`",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -4527,10 +4528,6 @@
                                         },
                                         "data": {
                                             "properties": {
-                                                "current_page": {
-                                                    "type": "integer",
-                                                    "example": 1
-                                                },
                                                 "data": {
                                                     "type": "array",
                                                     "items": {
@@ -4595,18 +4592,6 @@
                                                         },
                                                         "type": "object"
                                                     }
-                                                },
-                                                "last_page": {
-                                                    "type": "integer",
-                                                    "example": 1
-                                                },
-                                                "per_page": {
-                                                    "type": "integer",
-                                                    "example": 14
-                                                },
-                                                "total": {
-                                                    "type": "integer",
-                                                    "example": 1
                                                 }
                                             },
                                             "type": "object"
@@ -4688,8 +4673,56 @@
                 "tags": [
                     "Reminder"
                 ],
-                "summary": "Create a reminder",
+                "summary": "Post Create Reminder",
+                "description": "This request is used to create a reminder by using given `vehicle_id`, `reminder_title`, `reminder_context`, `reminder_body`, `reminder_location`, `reminder_image`, and `reminder_at`. This request interacts with the MySQL database, firebase storage, google calendar API, has a protected routes, and audited activity (history).",
                 "operationId": "d976dc76a89edab9b2bce746c019980f",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "vehicle_id",
+                                    "reminder_title",
+                                    "reminder_context",
+                                    "reminder_body",
+                                    "remind_at"
+                                ],
+                                "properties": {
+                                    "vehicle_id": {
+                                        "type": "string",
+                                        "example": "e1288783-a5d4-1c4c-2cd6-0e92f7cc3bf9"
+                                    },
+                                    "reminder_title": {
+                                        "type": "string",
+                                        "example": "Routine service KM 50000"
+                                    },
+                                    "reminder_context": {
+                                        "type": "string",
+                                        "example": "Service"
+                                    },
+                                    "reminder_body": {
+                                        "type": "string",
+                                        "example": "Lorem ipsum"
+                                    },
+                                    "reminder_location": {
+                                        "type": "string",
+                                        "example": "-6.230333799218126, 106.81866017790138"
+                                    },
+                                    "reminder_image": {
+                                        "type": "string",
+                                        "format": "binary"
+                                    },
+                                    "remind_at": {
+                                        "type": "string",
+                                        "example": "2025-09-05 00:00:00"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "201": {
                         "description": "reminder created",
@@ -4784,12 +4817,12 @@
                 "tags": [
                     "Reminder"
                 ],
-                "summary": "Get next reminder",
-                "description": "This request is used to get the nearest reminder for now. This request is using MySql database, and have a protected routes.",
+                "summary": "Get Next Reminder",
+                "description": "This request is used to get the nearest reminder. This request interacts with the MySQL database, and has a protected routes.",
                 "operationId": "5892c0a04affcf06bfcf83eae264d1d2",
                 "responses": {
                     "200": {
-                        "description": "reminder fetched",
+                        "description": "reminder fetched successfully",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -4902,12 +4935,12 @@
                 "tags": [
                     "Reminder"
                 ],
-                "summary": "Get recently reminder history",
+                "summary": "Get Recently Reminder",
                 "description": "This request is used to get recently reminder history with pagination. This request is using MySql database, and have a protected routes.",
                 "operationId": "626dee513de66daeb88f90d88810a750",
                 "responses": {
                     "200": {
-                        "description": "reminder fetched",
+                        "description": "reminder fetched successfully. Ordered in descending order by `remind_at`",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -4922,10 +4955,6 @@
                                         },
                                         "data": {
                                             "properties": {
-                                                "current_page": {
-                                                    "type": "integer",
-                                                    "example": 1
-                                                },
                                                 "data": {
                                                     "type": "array",
                                                     "items": {
@@ -4959,18 +4988,6 @@
                                                         },
                                                         "type": "object"
                                                     }
-                                                },
-                                                "last_page": {
-                                                    "type": "integer",
-                                                    "example": 1
-                                                },
-                                                "per_page": {
-                                                    "type": "integer",
-                                                    "example": 14
-                                                },
-                                                "total": {
-                                                    "type": "integer",
-                                                    "example": 1
                                                 }
                                             },
                                             "type": "object"
@@ -5054,12 +5071,12 @@
                 "tags": [
                     "Reminder"
                 ],
-                "summary": "Get reminder by vehicle",
-                "description": "This request is used to get all reminder by specific vehicle. This request is using MySql database, and have a protected routes.",
+                "summary": "Get Reminder By Vehicle ID",
+                "description": "This request is used to get reminder by `vehicle_id`. This request interacts with the MySQL database, and has a protected routes.",
                 "operationId": "73387d06e291173fd973bab044aa3b38",
                 "responses": {
                     "200": {
-                        "description": "reminder fetched",
+                        "description": "Reminder fetched successfully. Ordered in ascending order by `remind_at`",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -5203,12 +5220,12 @@
                 "tags": [
                     "Service"
                 ],
-                "summary": "Get all service",
-                "description": "This request is used to get all service history. This request is using MySql database, have a protected routes, and have template pagination.",
+                "summary": "Get All Service",
+                "description": "This request is used to get all service history. This request interacts with the MySQL database, has a protected routes, and pagination.",
                 "operationId": "bc5e51b694b7a5f64005010b7f27c5f1",
                 "responses": {
                     "200": {
-                        "description": "Service fetched successfully",
+                        "description": "Service fetched successfully. Ordered in descending order by `remind_at` and `created_at`",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -5354,8 +5371,52 @@
                 "tags": [
                     "Service"
                 ],
-                "summary": "Create a service",
+                "summary": "Post Create Service",
+                "description": "This request is used to create a service by using given `vehicle_id`, `service_note`, `service_category`, `service_location`, `service_price_total`, and `remind_at`. This request interacts with the MySQL database, has a protected routes, and audited activity (history).",
                 "operationId": "a3b1050e2a104d5b330e35323667da92",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "vehicle_id",
+                                    "service_note",
+                                    "service_category",
+                                    "service_location"
+                                ],
+                                "properties": {
+                                    "vehicle_id": {
+                                        "type": "string",
+                                        "example": "e1288783-a5d4-1c4c-2cd6-0e92f7cc3bf9"
+                                    },
+                                    "service_note": {
+                                        "type": "string",
+                                        "example": "Routine service KM 50.000"
+                                    },
+                                    "service_category": {
+                                        "type": "string",
+                                        "example": "Routine"
+                                    },
+                                    "service_location": {
+                                        "type": "string",
+                                        "example": "Honda Autobest"
+                                    },
+                                    "service_price_total": {
+                                        "type": "integer",
+                                        "example": 4500000
+                                    },
+                                    "remind_at": {
+                                        "type": "string",
+                                        "format": "date-time",
+                                        "example": "2025-01-20 09:15:00"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "201": {
                         "description": "service created",
@@ -5450,7 +5511,8 @@
                 "tags": [
                     "Service"
                 ],
-                "summary": "Delete service by id",
+                "summary": "Hard Delete Service By ID",
+                "description": "This request is used to permanently delete a service based on the provided `ID`. This request interacts with the MySQL database, has a protected routes, and audited activity (history).",
                 "operationId": "e9f3e29a2ccb7cd833a1d6a1b0783aa9",
                 "parameters": [
                     {
@@ -5558,8 +5620,52 @@
                 "tags": [
                     "Service"
                 ],
-                "summary": "Update an service",
+                "summary": "Update Service By ID",
+                "description": "This request is used to update service by using given `ID`. The updated field are `vehicle_id`, `service_note`, `service_category`, `service_location`, `service_price_total`, and `remind_at`. This request interacts with the MySQL database, has a protected routes, and audited activity (history).",
                 "operationId": "a2dff3a0dae84d2dda6b08b1bc6713d9",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "vehicle_id",
+                                    "service_note",
+                                    "service_category",
+                                    "service_location"
+                                ],
+                                "properties": {
+                                    "vehicle_id": {
+                                        "type": "string",
+                                        "example": "e1288783-a5d4-1c4c-2cd6-0e92f7cc3bf9"
+                                    },
+                                    "service_note": {
+                                        "type": "string",
+                                        "example": "Routine service KM 50.000"
+                                    },
+                                    "service_category": {
+                                        "type": "string",
+                                        "example": "Routine"
+                                    },
+                                    "service_location": {
+                                        "type": "string",
+                                        "example": "Honda Autobest"
+                                    },
+                                    "service_price_total": {
+                                        "type": "integer",
+                                        "example": 4500000
+                                    },
+                                    "remind_at": {
+                                        "type": "string",
+                                        "format": "date-time",
+                                        "example": "2025-01-20 09:15:00"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "200": {
                         "description": "service updated",
@@ -5654,12 +5760,12 @@
                 "tags": [
                     "Service"
                 ],
-                "summary": "Get service by vehicle id",
-                "description": "This request is used to get all service history. This request is using MySql database, have a protected routes, and have template pagination.",
+                "summary": "Get Service By Vehicle ID",
+                "description": "This request is used to get all service history. This request interacts with the MySQL database, and has a protected routes.",
                 "operationId": "372f13c4dc92a804af46c297dca8fe4c",
                 "responses": {
                     "200": {
-                        "description": "Service fetched successfully",
+                        "description": "Service fetched successfully. Ordered in descending order by `remind_at` and `created_at`",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -5779,17 +5885,17 @@
                 ]
             }
         },
-        "/api/v1/service/spending}": {
+        "/api/v1/service/spending": {
             "get": {
                 "tags": [
                     "Service"
                 ],
-                "summary": "Get all service spending",
-                "description": "This request is used to get all service spending per vehicle. This request is using MySql database, have a protected routes.",
-                "operationId": "d7d2bfe6b32bbbd59e2da2fa5bd83b7d",
+                "summary": "Get All Service Spending",
+                "description": "This request is used to get all service spending per vehicle. This request interacts with the MySQL database, and has a protected routes.",
+                "operationId": "2b8955e7a2764efd4ba0547d2d9c3d26",
                 "responses": {
                     "200": {
-                        "description": "Service fetched successfully",
+                        "description": "Service fetched successfully. Ordered in descending order by `total`",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -5901,12 +6007,12 @@
                 "tags": [
                     "Service"
                 ],
-                "summary": "Get next service",
-                "description": "This request is used to get the nearest service for now. This request is using MySql database, and have a protected routes.",
+                "summary": "Get Next Service",
+                "description": "This request is used to get the nearest service. This request interacts with the MySQL database, and has a protected routes.",
                 "operationId": "3c766ff3bbcf1a4863bd0863f74b053a",
                 "responses": {
                     "200": {
-                        "description": "service fetched",
+                        "description": "Service fetched successfully",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -6023,8 +6129,8 @@
                 "tags": [
                     "Stats"
                 ],
-                "summary": "Get total trip by context",
-                "description": "This request is used to get total trip by `context`, that can be trip_category, trip_origin_name, and trip_destination_name. This request is using MySql database, and have a protected routes.",
+                "summary": "Get Total Trip By Context",
+                "description": "This request is used to get total trip by `context`, that can be trip_category, trip_origin_name, and trip_destination_name. This request interacts with the MySQL database, and has a protected routes.",
                 "operationId": "c0d553400b7958f3827ae8cd20f5f8a5",
                 "parameters": [
                     {
@@ -6148,8 +6254,8 @@
                 "tags": [
                     "Stats"
                 ],
-                "summary": "Get total inventory by context",
-                "description": "This request is used to get total inventory by `context`, that can be inventory_category, and inventory_storage. This request is using MySql database, and have a protected routes.",
+                "summary": "Get Total Inventory By Context",
+                "description": "This request is used to get total inventory by `context`, that can be inventory_category, and inventory_storage. This request interacts with the MySQL database, and has a protected routes.",
                 "operationId": "c84c6a324285f3d52d921a10b8a26fba",
                 "parameters": [
                     {
@@ -6273,8 +6379,8 @@
                 "tags": [
                     "Stats"
                 ],
-                "summary": "Get total service price by context",
-                "description": "This request is used to get total service by `context`, that can be service_category, and service_location. This request is using MySql database, and have a protected routes.",
+                "summary": "Get Total Service Price By Context",
+                "description": "This request is used to get total service by `context`, that can be service_category, and service_location. This request interacts with the MySQL database, and has a protected routes.",
                 "operationId": "a113c10a72124c99a050b5edbc00e7a2",
                 "parameters": [
                     {
@@ -6398,8 +6504,8 @@
                 "tags": [
                     "Stats"
                 ],
-                "summary": "Get total vehicle by context",
-                "description": "This request is used to get total vehicle by `context`, that can be vehicle_merk, vehicle_type, vehicle_status, vehicle_fuel_status, vehicle_transmission, and vehicle_color. This request is using MySql database, and have a protected routes.",
+                "summary": "Get Total Vehicle By Context",
+                "description": "This request is used to get total vehicle by `context`, that can be vehicle_merk, vehicle_type, vehicle_status, vehicle_fuel_status, vehicle_transmission, and vehicle_color. This request interacts with the MySQL database, and has a protected routes.",
                 "operationId": "9ac23a6e672074fbed33d71224ad074f",
                 "parameters": [
                     {
@@ -6523,8 +6629,8 @@
                 "tags": [
                     "Stats"
                 ],
-                "summary": "Get total trip by vehicle per month",
-                "description": "This request is used to get total trip by vehicle per month by given `year`. This request is using MySql database, and have a protected routes.",
+                "summary": "Get Total Trip By Vehicle Per Month",
+                "description": "This request is used to get total trip by vehicle per month by given `year` and `vehicle_id`. This request interacts with the MySQL database, and has a protected routes.",
                 "operationId": "272039e94d78c4829f6c2acc439d2ad1",
                 "parameters": [
                     {
@@ -6658,8 +6764,8 @@
                 "tags": [
                     "Stats"
                 ],
-                "summary": "Get total trip per month",
-                "description": "This request is used to get total trip per month by given `year`. This request is using MySql database, and have a protected routes.",
+                "summary": "Get Total Trip Per Month",
+                "description": "This request is used to get total trip per month by given `year`. This request interacts with the MySQL database, and has a protected routes.",
                 "operationId": "e113c3600c9fd19089953b6c3647336d",
                 "parameters": [
                     {
@@ -6793,8 +6899,8 @@
                 "tags": [
                     "Stats"
                 ],
-                "summary": "Get total fuel per month",
-                "description": "This request is used to get total fuel per month by given `year` and `context`. This request is using MySql database, and have a protected routes.",
+                "summary": "Get Total Fuel Per Month",
+                "description": "This request is used to get total fuel per month by given `year` and `context`. This request interacts with the MySQL database, and has a protected routes.",
                 "operationId": "b4b170f136a5fdbbbfce97e9627b3dd8",
                 "parameters": [
                     {
@@ -6938,7 +7044,7 @@
                 "tags": [
                     "Stats"
                 ],
-                "summary": "Get total service per month",
+                "summary": "Get Total Service Per Month",
                 "description": "This request is used to get total service per month by given `year` and `context`. This request is using MySql database.",
                 "operationId": "0880de249b4195bff3f99b5efa840486",
                 "parameters": [
@@ -7073,7 +7179,7 @@
                 "tags": [
                     "Stats"
                 ],
-                "summary": "Get total wash per month",
+                "summary": "Get Total Wash Per Month",
                 "description": "This request is used to get total wash per month by given `year` and `context`. This request is using MySql database.",
                 "operationId": "502d13bbd681d7ff0831f99750098ff4",
                 "parameters": [
@@ -7218,8 +7324,8 @@
                 "tags": [
                     "Stats"
                 ],
-                "summary": "Get summary of the apps",
-                "description": "This request is used to get summary of the apps. This request is using MySql database, and have a protected routes.",
+                "summary": "Get Summary Of The Apps",
+                "description": "This request is used to get summary of the apps. This request interacts with the MySQL database, and has a protected routes.",
                 "operationId": "bd16e91d89bc5e6e2ae77d2ac6f8a9c3",
                 "responses": {
                     "200": {

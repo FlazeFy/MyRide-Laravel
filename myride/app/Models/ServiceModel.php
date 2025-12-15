@@ -48,19 +48,19 @@ class ServiceModel extends Model
         }
             
         return $res->groupBy('vehicle_plate_number')
-            ->orderBy('total', 'desc') 
-            ->orderBy('vehicle_plate_number', 'desc')     
+            ->orderBy('total', 'desc')  
             ->get(); 
     }
 
     public static function getServiceByVehicle($user_id = null,$vehicle_id){
-        $res = ServiceModel::select('service.id', 'service_category', 'service_price_total', 'service_location', 'service_note', 'service.created_at', 'remind_at');
+        $res = ServiceModel::select('service.id', 'service_category', 'service_price_total', 'service_location', 'service_note', 'created_at', 'remind_at');
 
         if($user_id){
             $res = $res->where('service.created_by', $user_id);
         }
             
-        return $res->orderBy('remind_at', 'asc') 
+        return $res->orderBy('remind_at', 'desc') 
+            ->orderBy('created_at', 'desc')
             ->get();  
     }
 

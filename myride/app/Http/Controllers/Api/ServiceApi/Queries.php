@@ -23,13 +23,13 @@ class Queries extends Controller
     /**
      * @OA\GET(
      *     path="/api/v1/service",
-     *     summary="Get all service",
-     *     description="This request is used to get all service history. This request is using MySql database, have a protected routes, and have template pagination.",
+     *     summary="Get All Service",
+     *     description="This request is used to get all service history. This request interacts with the MySQL database, has a protected routes, and pagination.",
      *     tags={"Service"},
      *     security={{"bearerAuth":{}}},
      *     @OA\Response(
      *         response=200,
-     *         description="Service fetched successfully",
+     *         description="Service fetched successfully. Ordered in descending order by `remind_at` and `created_at`",
      *         @OA\JsonContent(
      *             @OA\Property(property="status", type="string", example="success"),
      *             @OA\Property(property="message", type="string", example="service fetched"),
@@ -81,13 +81,20 @@ class Queries extends Controller
     {
         try{
             $user_id = $request->user()->id;
-            $check_admin = AdminModel::find($user_id);
             $paginate = $request->query('per_page_key') ?? 12;
+            // This will get all service if vehicle_id not attached
             $vehicle_id = $request->query('vehicle_id') ?? null;
 
-            $res = ServiceModel::getAllService($user_id, $vehicle_id, $paginate);
-            
+            // Define user id by role
+            $check_admin = AdminModel::find($user_id);
+            if($check_admin) {
+                $user_id = null;
+            }
+
+            // Get all service
+            $res = ServiceModel::getAllService($user_id, $vehicle_id, $paginate);            
             if (count($res) > 0) {
+                // Return success response
                 return response()->json([
                     'status' => 'success',
                     'message' => Generator::getMessageTemplate("fetch", $this->module),
@@ -110,13 +117,13 @@ class Queries extends Controller
     /**
      * @OA\GET(
      *     path="/api/v1/service/vehicle/{vehicle_id}",
-     *     summary="Get service by vehicle id",
-     *     description="This request is used to get all service history. This request is using MySql database, have a protected routes, and have template pagination.",
+     *     summary="Get Service By Vehicle ID",
+     *     description="This request is used to get all service history. This request interacts with the MySQL database, and has a protected routes.",
      *     tags={"Service"},
      *     security={{"bearerAuth":{}}},
      *     @OA\Response(
      *         response=200,
-     *         description="Service fetched successfully",
+     *         description="Service fetched successfully. Ordered in descending order by `remind_at` and `created_at`",
      *         @OA\JsonContent(
      *             @OA\Property(property="status", type="string", example="success"),
      *             @OA\Property(property="message", type="string", example="service fetched"),
@@ -163,11 +170,10 @@ class Queries extends Controller
         try{
             $user_id = $request->user()->id;
 
-            // Model
+            // Get service by vehicle ID
             $res = ServiceModel::getServiceByVehicle($user_id,$vehicle_id);
-
-            // Response
             if ($res && count($res) > 0) {
+                // Return success response
                 return response()->json([
                     'status' => 'success',
                     'message' => Generator::getMessageTemplate("fetch", $this->module),
@@ -189,14 +195,14 @@ class Queries extends Controller
 
     /**
      * @OA\GET(
-     *     path="/api/v1/service/spending}",
-     *     summary="Get all service spending",
-     *     description="This request is used to get all service spending per vehicle. This request is using MySql database, have a protected routes.",
+     *     path="/api/v1/service/spending",
+     *     summary="Get All Service Spending",
+     *     description="This request is used to get all service spending per vehicle. This request interacts with the MySQL database, and has a protected routes.",
      *     tags={"Service"},
      *     security={{"bearerAuth":{}}},
      *     @OA\Response(
      *         response=200,
-     *         description="Service fetched successfully",
+     *         description="Service fetched successfully. Ordered in descending order by `total`",
      *         @OA\JsonContent(
      *             @OA\Property(property="status", type="string", example="success"),
      *             @OA\Property(property="message", type="string", example="service fetched"),
@@ -239,11 +245,10 @@ class Queries extends Controller
         try{
             $user_id = $request->user()->id;
 
-            // Model
+            // Get all service spending 
             $res = ServiceModel::getAllServiceSpending($user_id);
-
-            // Response
             if (count($res) > 0) {
+                // Return success response 
                 return response()->json([
                     'status' => 'success',
                     'message' => Generator::getMessageTemplate("fetch", $this->module),
@@ -266,13 +271,13 @@ class Queries extends Controller
     /**
      * @OA\GET(
      *     path="/api/v1/service/next",
-     *     summary="Get next service",
-     *     description="This request is used to get the nearest service for now. This request is using MySql database, and have a protected routes.",
+     *     summary="Get Next Service",
+     *     description="This request is used to get the nearest service. This request interacts with the MySQL database, and has a protected routes.",
      *     tags={"Service"},
      *     security={{"bearerAuth":{}}},
      *     @OA\Response(
      *         response=200,
-     *         description="service fetched",
+     *         description="Service fetched successfully",
      *         @OA\JsonContent(
      *             @OA\Property(property="status", type="string", example="success"),
      *             @OA\Property(property="message", type="string", example="service fetched"),
@@ -316,9 +321,10 @@ class Queries extends Controller
         try{
             $user_id = $request->user()->id;
             
+            // Get next / upcoming service
             $res = ServiceModel::getNextService($user_id);
-            
             if ($res) {
+                // Return success response
                 return response()->json([
                     'status' => 'success',
                     'message' => Generator::getMessageTemplate("fetch", $this->module),

@@ -24,9 +24,22 @@ class Commands extends Controller
     /**
      * @OA\POST(
      *     path="/api/v1/service",
-     *     summary="Create a service",
+     *     summary="Post Create Service",
+     *     description="This request is used to create a service by using given `vehicle_id`, `service_note`, `service_category`, `service_location`, `service_price_total`, and `remind_at`. This request interacts with the MySQL database, has a protected routes, and audited activity (history).",
      *     tags={"Service"},
      *     security={{"bearerAuth":{}}},
+     *     @OA\RequestBody(
+     *          required=true,
+     *          @OA\JsonContent(
+     *              required={"vehicle_id", "service_note", "service_category", "service_location"},
+     *              @OA\Property(property="vehicle_id", type="string", example="e1288783-a5d4-1c4c-2cd6-0e92f7cc3bf9"),
+     *              @OA\Property(property="service_note", type="string", example="Routine service KM 50.000"),
+     *              @OA\Property(property="service_category", type="string", example="Routine"),
+     *              @OA\Property(property="service_location", type="string", example="Honda Autobest"),
+     *              @OA\Property(property="service_price_total", type="integer", example=4500000),
+     *              @OA\Property(property="remind_at", type="string", format="date-time", example="2025-01-20 09:15:00"),
+     *          )
+     *     ),
      *     @OA\Response(
      *         response=201,
      *         description="service created",
@@ -65,6 +78,7 @@ class Commands extends Controller
         try{
             $user_id = $request->user()->id;
 
+            // Validate request body
             $validator = Validation::getValidateService($request,'create');
             if ($validator->fails()) {
                 return response()->json([
@@ -72,6 +86,7 @@ class Commands extends Controller
                     'message' => $validator->errors()
                 ], Response::HTTP_BAD_REQUEST);
             } else {
+                // Create service
                 $data = [
                     'vehicle_id' => $request->vehicle_id, 
                     'service_note' => $request->service_note, 
@@ -80,11 +95,12 @@ class Commands extends Controller
                     'service_price_total' => $request->service_price_total, 
                     'remind_at' => $request->remind_at, 
                 ];
-
                 $rows = ServiceModel::createService($data, $user_id);
                 if($rows){
+                    // Create history
                     HistoryModel::createHistory(['history_type' => 'Service', 'history_context' => "added a service history"], $user_id);
 
+                    // Return success response
                     return response()->json([
                         'status' => 'success',
                         'message' => Generator::getMessageTemplate("create", $this->module),
@@ -107,7 +123,8 @@ class Commands extends Controller
     /**
      * @OA\DELETE(
      *     path="/api/v1/service/destroy/{id}",
-     *     summary="Delete service by id",
+     *     summary="Hard Delete Service By ID",
+     *     description="This request is used to permanently delete a service based on the provided `ID`. This request interacts with the MySQL database, has a protected routes, and audited activity (history).",
      *     tags={"Service"},
      *     security={{"bearerAuth":{}}},
      *     @OA\Parameter(
@@ -157,15 +174,19 @@ class Commands extends Controller
         try{
             $user_id = $request->user()->id;
 
+            // Define user id by role
             $check_admin = AdminModel::find($user_id);
             if($check_admin){
                 $user_id = null;
             }
 
+            // Hard Delete service by ID
             $rows = ServiceModel::hardDeleteServiceById($id, $user_id);
             if($rows > 0){
+                // Create history
                 HistoryModel::createHistory(['history_type' => 'Service', 'history_context' => "removed a service history"], $user_id);
 
+                // Return success response
                 return response()->json([
                     'status' => 'success',
                     'message' => Generator::getMessageTemplate("permentally delete", $this->module),
@@ -187,9 +208,22 @@ class Commands extends Controller
     /**
      * @OA\PUT(
      *     path="/api/v1/service/{id}",
-     *     summary="Update an service",
+     *     summary="Update Service By ID",
+     *     description="This request is used to update service by using given `ID`. The updated field are `vehicle_id`, `service_note`, `service_category`, `service_location`, `service_price_total`, and `remind_at`. This request interacts with the MySQL database, has a protected routes, and audited activity (history).",
      *     tags={"Service"},
      *     security={{"bearerAuth":{}}},
+     *     @OA\RequestBody(
+     *          required=true,
+     *          @OA\JsonContent(
+     *              required={"vehicle_id", "service_note", "service_category", "service_location"},
+     *              @OA\Property(property="vehicle_id", type="string", example="e1288783-a5d4-1c4c-2cd6-0e92f7cc3bf9"),
+     *              @OA\Property(property="service_note", type="string", example="Routine service KM 50.000"),
+     *              @OA\Property(property="service_category", type="string", example="Routine"),
+     *              @OA\Property(property="service_location", type="string", example="Honda Autobest"),
+     *              @OA\Property(property="service_price_total", type="integer", example=4500000),
+     *              @OA\Property(property="remind_at", type="string", format="date-time", example="2025-01-20 09:15:00"),
+     *          )
+     *     ),
      *     @OA\Response(
      *         response=200,
      *         description="service updated",
@@ -228,6 +262,7 @@ class Commands extends Controller
         try{
             $user_id = $request->user()->id;
 
+            // Validate request body
             $validator = Validation::getValidateService($request,'update');
             if ($validator->fails()) {
                 return response()->json([
@@ -235,6 +270,7 @@ class Commands extends Controller
                     'message' => $validator->errors()
                 ], Response::HTTP_BAD_REQUEST);
             } else {
+                // Update service by ID
                 $data = [
                     'vehicle_id' => $request->vehicle_id, 
                     'service_note' => $request->service_note, 
@@ -243,11 +279,12 @@ class Commands extends Controller
                     'service_category' => $request->service_category, 
                     'remind_at' => $request->remind_at 
                 ];
-
                 $rows = ServiceModel::updateServiceById($data, $user_id, $id);
                 if($rows > 0){
+                    // Create history
                     HistoryModel::createHistory(['history_type' => 'Service', 'history_context' => "edited a service history"], $user_id);
 
+                    // Return success response
                     return response()->json([
                         'status' => 'success',
                         'message' => Generator::getMessageTemplate("update", $this->module),
