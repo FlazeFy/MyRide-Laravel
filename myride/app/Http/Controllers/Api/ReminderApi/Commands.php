@@ -87,9 +87,7 @@ class Commands extends Controller
 
             // Define user id by role
             $check_admin = AdminModel::find($user_id);
-            if($check_admin){
-                $user_id = null;
-            }
+            $user_id = $check_admin ? null : $user_id;
 
             // Get reminder by ID
             $old_reminder = ReminderModel::find($id);
@@ -256,6 +254,7 @@ class Commands extends Controller
                         'attachment_value' => $request->reminder_location,
                     ];
                 }
+                // If reminder attachment empty make it null
                 if (empty($reminder_attachment)) {
                     $reminder_attachment = null;
                 }

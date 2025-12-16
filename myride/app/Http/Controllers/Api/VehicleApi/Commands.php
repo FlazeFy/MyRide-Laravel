@@ -1077,9 +1077,7 @@ class Commands extends Controller
 
             // Define user id by role
             $check_admin = AdminModel::find($user_id);
-            if($check_admin){
-                $user_id = null;
-            }
+            $user_id = $check_admin ? null : $user_id;
 
             // Soft Delete vehicle by ID
             $rows = VehicleModel::softDeleteVehicleById($user_id,$id);
@@ -1298,9 +1296,7 @@ class Commands extends Controller
 
             // Define user id by role
             $check_admin = AdminModel::find($user_id);
-            if($check_admin){
-                $user_id = null;
-            }
+            $user_id = $check_admin ? null : $user_id;
 
             // Update vehicle by ID
             $rows = VehicleModel::recoverVehicleById($user_id,$id);
@@ -1386,9 +1382,7 @@ class Commands extends Controller
 
             // Define user id by role
             $check_admin = AdminModel::find($user_id);
-            if($check_admin){
-                $user_id = null;
-            }
+            $user_id = $check_admin ? null : $user_id;
 
             // Get vehicle data
             $vehicle = VehicleModel::getVehicleByIdAndUserId($id,$user_id);

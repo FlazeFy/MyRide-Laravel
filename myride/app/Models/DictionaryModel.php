@@ -4,6 +4,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+// Helper 
+use App\Helpers\Generator;
+
 class DictionaryModel extends Model
 {
     use HasFactory;
@@ -23,6 +26,28 @@ class DictionaryModel extends Model
         return $res;
     }
 
+    public static function getDictionaryByTypeAndUserID($type,$user_id){
+        $res = DictionaryModel::select('dictionary_name','dictionary_type')
+            ->where(function($query) use ($user_id){
+                $query->where('created_by',$user_id)
+                    ->orwhereNull('created_by');
+            });
+        if(strpos($type, ',')){
+            $dcts = explode(",", $type);
+            $res = $res->where(function($query) use ($dcts) {
+                foreach ($dcts as $dt) {
+                    $query->orWhere('dictionary_type', $dt);
+                }
+            });
+        } else {
+            $res = $res->where('dictionary_type',$type); 
+        }
+
+        return $res->orderby('dictionary_type', 'ASC')
+            ->orderby('dictionary_name', 'ASC')
+            ->get();
+    }
+
     public static function isUsedName($name, $type){
         $res = DictionaryModel::selectRaw('1')
             ->whereRaw('LOWER(dictionary_name) = LOWER(?)', [$name])
@@ -30,6 +55,14 @@ class DictionaryModel extends Model
             ->first();
 
         return $res ? true : false;
+    }
+
+    public static function createDictionary($data,$user_id){
+        $data['id'] = Generator::getUUID();
+        $data['created_at'] = date('Y-m-d H:i:s');
+        $data['created_by'] = $user_id;
+
+        return DictionaryModel::create($data);
     }
 
     // For Seeder

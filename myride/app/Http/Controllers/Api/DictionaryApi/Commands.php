@@ -197,14 +197,7 @@ class Commands extends Controller
                     $user_id = $request->user()->id;
 
                     // Create dictionary
-                    $rows = DictionaryModel::create([
-                        'id' => Generator::getUUID(),
-                        'dictionary_type' => $dictionary_type,
-                        'dictionary_name' => $dictionary_name,
-                        'created_at' => date('Y-m-d H:i:s'),
-                        'created_by' => $user_id
-                    ]);
-
+                    $rows = DictionaryModel::createDictionary(['dictionary_type' => $dictionary_type, 'dictionary_name' => $dictionary_name],$user_id);
                     if($rows){
                         // Return success response
                         return response()->json([

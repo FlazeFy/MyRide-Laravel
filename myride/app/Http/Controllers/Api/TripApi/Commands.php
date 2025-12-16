@@ -157,19 +157,21 @@ class Commands extends Controller
 
                         if($driver_id){
                             // Get driver by ID
-                            $driver = DriverModel::find($driver_id);
+                            $driver = DriverModel::getDriverContact($driver_id);
                             // Check if driver's Telegram ID is valid
-                            if($driver->telegram_user_id && TelegramMessage::checkTelegramID($driver->telegram_user_id)){
-                                $message = "Hello $driver->username, $user->username have added trip history with you as the driver. The trip from $trip_origin_name to $trip_destination_name using $vehicle_name ($vehicle_plate_number)";
-                                // Send telegram message
-                                $response = Telegram::sendMessage([
-                                    'chat_id' => $driver->telegram_user_id,
-                                    'text' => $message,
-                                    'parse_mode' => 'HTML'
-                                ]);
-                            } else {
-                                // Reset telegram from driver account if not valid
-                                DriverModel::updateDriverById([ 'telegram_user_id' => null, 'telegram_is_valid' => 0], $user_id, $driver_id);
+                            if($driver->telegram_user_id && $driver->telegram_is_valid === 1){
+                                if(TelegramMessage::checkTelegramID($driver->telegram_user_id)){
+                                    $message = "Hello $driver->username, $user->username have added trip history with you as the driver. The trip from $trip_origin_name to $trip_destination_name using $vehicle_name ($vehicle_plate_number)";
+                                    // Send telegram message
+                                    $response = Telegram::sendMessage([
+                                        'chat_id' => $driver->telegram_user_id,
+                                        'text' => $message,
+                                        'parse_mode' => 'HTML'
+                                    ]);
+                                } else {
+                                    // Reset telegram from driver account if not valid
+                                    DriverModel::updateDriverById([ 'telegram_user_id' => null, 'telegram_is_valid' => 0], $user_id, $driver_id);
+                                }
                             }
                         }
 
@@ -258,9 +260,7 @@ class Commands extends Controller
 
             // Define user id by role
             $check_admin = AdminModel::find($user_id);
-            if($check_admin){
-                $user_id = null;
-            }
+            $user_id = $check_admin ? null : $user_id;
 
             // Hard Delete trip by ID
             $rows = TripModel::hardDeleteTripById($id, $user_id);
@@ -372,19 +372,21 @@ class Commands extends Controller
                 if($rows > 0){
                     if($driver_id){
                         // Get driver by ID
-                        $driver = DriverModel::find($driver_id);
+                        $driver = DriverModel::getDriverContact($driver_id);
                         // Check if driver's Telegram ID is valid
-                        if($driver->telegram_user_id && TelegramMessage::checkTelegramID($driver->telegram_user_id)){
-                            $message = "Hello $driver->username, $user->username have added trip history with you as the driver. The trip from $trip_origin_name to $trip_destination_name using $vehicle_name ($vehicle_plate_number)";
-                            // Send telegram message
-                            $response = Telegram::sendMessage([
-                                'chat_id' => $driver->telegram_user_id,
-                                'text' => $message,
-                                'parse_mode' => 'HTML'
-                            ]);
-                        } else {
-                            // Reset telegram from driver account if not valid
-                            DriverModel::updateDriverById(['telegram_user_id' => null, 'telegram_is_valid' => 0], $user_id, $driver_id);
+                        if($driver->telegram_user_id && $driver->telegram_is_valid === 1){
+                            if(TelegramMessage::checkTelegramID($driver->telegram_user_id)){
+                                $message = "Hello $driver->username, $user->username have added trip history with you as the driver. The trip from $trip_origin_name to $trip_destination_name using $vehicle_name ($vehicle_plate_number)";
+                                // Send telegram message
+                                $response = Telegram::sendMessage([
+                                    'chat_id' => $driver->telegram_user_id,
+                                    'text' => $message,
+                                    'parse_mode' => 'HTML'
+                                ]);
+                            } else {
+                                // Reset telegram from driver account if not valid
+                                DriverModel::updateDriverById(['telegram_user_id' => null, 'telegram_is_valid' => 0], $user_id, $driver_id);
+                            }
                         }
                     }
 

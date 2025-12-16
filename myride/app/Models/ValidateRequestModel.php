@@ -71,4 +71,21 @@ class ValidateRequestModel extends Model
 
         return $res;
     }
+
+    public static function isUserRequestDuplicate($ctx,$user){
+        return ValidateRequestModel::where('request_type',$ctx)
+            ->where('created_by',$user)
+            ->exists();
+    }
+
+    public static function isUserRequestValid($ctx,$token,$user){
+        $res = ValidateRequestModel::select('id')
+            ->where('request_type',$ctx);
+        
+        if($token){
+            $res = $res->where('request_context',$token);
+        }
+            
+        return $res->where('created_by',$user)->first();
+    }
 }

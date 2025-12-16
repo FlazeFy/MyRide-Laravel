@@ -84,10 +84,8 @@ class Commands extends Controller
 
             // Define user id by role
             $check_admin = AdminModel::find($user_id);
-            if($check_admin){
-                $user_id = null;
-            }
-            $driver = DriverModel::find($id);
+            $user_id = $check_admin ? null : $user_id;
+            $driver = DriverModel::getDriverContact($id);
 
             // Permanently delete driver
             $rows = DriverModel::hardDeleteDriverById($id, $user_id);
@@ -173,9 +171,7 @@ class Commands extends Controller
 
             // Define user id by role
             $check_admin = AdminModel::find($user_id);
-            if($check_admin){
-                $user_id = null;
-            }
+            $user_id = $check_admin ? null : $user_id;
 
             // Permanently delete driver relation with vehicle
             $rows = DriverVehicleRelationModel::hardDeleteDriverVehicleRelationById($id, $user_id);

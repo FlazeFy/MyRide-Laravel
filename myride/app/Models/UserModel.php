@@ -69,19 +69,6 @@ class UserModel extends Authenticatable
         return UserModel::select('id','username','telegram_user_id','telegram_is_valid','email')->get();
     }
 
-    public static function isTelegramIDUsed($telegram_id){
-        return UserModel::where('telegram_user_id', $telegram_id)->exists();
-    }    
-
-    public static function isUsernameEmailUsed($email, $username, $exceptional_id){
-        return UserModel::where(function ($query) use ($email, $username) {
-                $query->where('email', $email)
-                    ->orWhere('username', $username);
-            })
-            ->where('id', '!=', $exceptional_id)
-            ->exists();
-    }
-
     public static function getUserById($user_id){
         $select_query = 'id,username,email,telegram_user_id,telegram_is_valid,created_at,updated_at';
 
@@ -199,5 +186,22 @@ class UserModel extends Authenticatable
         }
         
         return $res;
+    }
+
+    public static function isTelegramIDUsed($telegram_id){
+        return UserModel::where('telegram_user_id', $telegram_id)->exists();
+    }    
+
+    public static function isUsernameEmailUsed($email, $username, $exceptional_id){
+        return UserModel::where(function ($query) use ($email, $username) {
+                $query->where('email', $email)
+                    ->orWhere('username', $username);
+            })
+            ->where('id', '!=', $exceptional_id)
+            ->exists();
+    }
+
+    public static function isUsernameUsed($username){
+        return UserModel::where('username',$username)->exists();
     }
 }

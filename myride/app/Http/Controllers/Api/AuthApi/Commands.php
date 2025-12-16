@@ -108,11 +108,11 @@ class Commands extends Controller
                 ], Response::HTTP_BAD_REQUEST);
             } else {
                 // Check for Admin account
-                $user = AdminModel::where('username', $request->username)->first();
+                $user = AdminModel::isUsernameUsed($request->username);
                 $role = 1;
                 if($user == null){
                     // Check for User account
-                    $user = UserModel::where('username', $request->username)->first();
+                    $user = UserModel::isUsernameUsed($request->username);
                     $role = 0;
 
                     if($user){
@@ -192,17 +192,10 @@ class Commands extends Controller
         try{
             // Check if account exist by username
             $username = $request->username;
-            $check_user = UserModel::selectRaw('1')
-                ->where('username',$username)
-                ->first();
-
+            $check_user = UserModel::isUsernameUsed($username);
             if(!$check_user){
                 // Check if request doesnt duplicate
-                $valid = ValidateRequestModel::selectRaw('1')
-                    ->where('request_type','register')
-                    ->where('created_by',$username)
-                    ->first();
-
+                $valid = ValidateRequestModel::isUserRequestDuplicate('register',$username);
                 if(!$valid){
                     // Generate token
                     $token_length = 6;
@@ -315,18 +308,10 @@ class Commands extends Controller
                 $username = $request->username;
 
                 // Verify that the account has valid registration validation
-                $valid = ValidateRequestModel::selectRaw('id')
-                    ->where('request_type','register')
-                    ->where('request_context',$request->token)
-                    ->where('created_by',$username)
-                    ->first();
-
+                $valid = ValidateRequestModel::isUserRequestValid('register',$request->token,$username);
                 if($valid){
                     // Verify the username not duplicated
-                    $check_user = UserModel::selectRaw('1')
-                        ->where('username',$username)
-                        ->first();
-
+                    $check_user = UserModel::isUsernameUsed($username);
                     if(!$check_user){
                         // Delete request after validation
                         ValidateRequestModel::destroy($valid->id);
@@ -431,21 +416,16 @@ class Commands extends Controller
             $username = $request->username;
 
             // Check if request valid
-            $valid = ValidateRequestModel::select('id')
-                ->where('request_type','register')
-                ->where('created_by',$username)
-                ->first();
-
-            // Generate token
-            $token_length = 6;
-            $token = Generator::getTokenValidation($token_length);
-
+            $valid = ValidateRequestModel::isUserRequestValid('register',null,$username);
             if($valid){
                 // If token still fresh but user request a new one
                 // Delete request after validation
                 $delete = ValidateRequestModel::destroy($valid->id);
-
                 if($delete > 0){
+                    // Generate token
+                    $token_length = 6;
+                    $token = Generator::getTokenValidation($token_length);
+
                     // Create register token
                     $valid_insert = ValidateRequestModel::createValidateRequest('register', $token, $username);
 
@@ -456,7 +436,7 @@ class Commands extends Controller
                         $data = "You almost finish your registration process. We provided you with this token <br><h5>$token</h5> to make sure this account is yours.<br>If you're the owner just paste this token into the Token's Field. If its not, just leave this message<br>Thank You, MyRide";
                         dispatch(new UserJob($ctx, $data, $username, $email));
 
-                         // Return success response
+                        // Return success response
                         return response()->json([
                             'status' => 'success',
                             'message' => Generator::getMessageTemplate("custom", "the validation token has been sended to $email email account"),

@@ -103,4 +103,8 @@ class AdminModel extends Authenticatable
         $data['updated_at'] = date('Y-m-d H:i:s');
         return AdminModel::where('id',$id)->update($data);
     }
+
+    public static function isUsernameUsed($username){
+        return AdminModel::where('username',$username)->exists();
+    }
 }

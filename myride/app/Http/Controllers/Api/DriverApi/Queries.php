@@ -87,9 +87,7 @@ class Queries extends Controller
 
             // Define user id by role
             $check_admin = AdminModel::find($user_id);
-            if($check_admin) {
-                $user_id = null;
-            }
+            $user_id = $check_admin ? null : $user_id;
 
             // Get all driver with pagination
             $res = DriverModel::getAllDriver($user_id, $paginate);
@@ -251,9 +249,7 @@ class Queries extends Controller
 
             // Define user id by role
             $check_admin = AdminModel::find($user_id);
-            if ($check_admin) {
-                $user_id = null;
-            }
+            $user_id = $check_admin ? null : $user_id;
 
             // Get all driver - vehicle relation with pagination
             $res = DriverModel::getDriverVehicle($user_id, $paginate);            

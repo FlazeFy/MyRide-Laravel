@@ -87,9 +87,7 @@ class Queries extends Controller
 
             // Define user id by role
             $check_admin = AdminModel::find($user_id);
-            if($check_admin) {
-                $user_id = null;
-            }
+            $user_id = $check_admin ? null : $user_id;
 
             // Get all service
             $res = ServiceModel::getAllService($user_id, $vehicle_id, $paginate);            

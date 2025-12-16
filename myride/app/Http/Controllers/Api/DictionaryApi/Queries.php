@@ -87,26 +87,7 @@ class Queries extends Controller
             }
 
             // Get dictionary by type and user
-            $res = DictionaryModel::select('dictionary_name','dictionary_type')
-                ->where(function($query) use ($user_id){
-                    $query->where('created_by',$user_id)
-                        ->orwhereNull('created_by');
-                });
-            if(strpos($type, ',')){
-                $dcts = explode(",", $type);
-                $res = $res->where(function($query) use ($dcts) {
-                    foreach ($dcts as $dt) {
-                        $query->orWhere('dictionary_type', $dt);
-                    }
-                });
-            } else {
-                $res = $res->where('dictionary_type',$type); 
-            }
-
-            $res = $res->orderby('dictionary_type', 'ASC')
-                ->orderby('dictionary_name', 'ASC')
-                ->get();
-            
+            $res = DictionaryModel::getDictionaryByTypeAndUserID($type,$user_id);
             if (count($res) > 0) {
                 // Return success response
                 return response()->json([
