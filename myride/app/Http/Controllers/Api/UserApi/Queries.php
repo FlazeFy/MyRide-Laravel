@@ -205,7 +205,7 @@ class Queries extends Controller
      *     security={{"bearerAuth":{}}},
      *     @OA\Response(
      *         response=200,
-     *         description="Yser year fetched successfully. Ordered in descending order by `year`",
+     *         description="User year fetched successfully. Ordered in descending order by `year`",
      *         @OA\JsonContent(
      *             @OA\Property(property="status", type="string", example="success"),
      *             @OA\Property(property="message", type="string", example="user year fetched"),

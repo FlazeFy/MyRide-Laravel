@@ -230,7 +230,7 @@ class Commands extends Controller
         
                         try {
                             // Get user data
-                            $user = UserModel::find($user_id);
+                            $user = UserModel::getSocial($user_id);
                             // Upload file to Firebase storage
                             $reminder_image = Firebase::uploadFile('reminder', $user_id, $user->username, $file, $file_ext); 
                         } catch (\Exception $e) {

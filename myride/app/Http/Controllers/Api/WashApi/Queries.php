@@ -15,19 +15,19 @@ class Queries extends Controller
     private $module;
     public function __construct()
     {
-        $this->module = "wash history";
+        $this->module = "wash";
     }
 
     /**
      * @OA\GET(
      *     path="/api/v1/wash",
-     *     summary="Get all wash history",
-     *     description="This request is used to get all wash history with pagination. This request is using MySql database, and have a protected routes.",
+     *     summary="Get All Wash",
+     *     description="This request is used to get all wash history. This request interacts with the MySQL database, has a protected routes, and a pagination.",
      *     tags={"Wash"},
      *     security={{"bearerAuth":{}}},
      *     @OA\Response(
      *         response=200,
-     *         description="wash fetched",
+     *         description="Wash fetched successfully. Ordered in descending order by `created_at`",
      *         @OA\JsonContent(
      *             @OA\Property(property="status", type="string", example="success"),
      *             @OA\Property(property="message", type="string", example="wash fetched"),
@@ -96,11 +96,10 @@ class Queries extends Controller
             $user_id = $request->user()->id;
             $limit = $request->query("limit",14);
 
-            // Model 
+            // Get all wash history
             $res = WashModel::getAllWashHistory($user_id,$limit);
-
-            // Response
             if($res && count($res) > 0) {
+                // Return success response
                 return response()->json([
                     'status' => 'success',
                     'message' => Generator::getMessageTemplate("fetch", $this->module),
@@ -122,14 +121,14 @@ class Queries extends Controller
 
     /**
      * @OA\GET(
-     *     path="/api/v1/wash/last",
-     *     summary="Get last wash",
-     *     description="This request is used to get last wash history by vehicle id. This request is using MySql database, and have a protected routes.",
+     *     path="/api/v1/wash/last/{vehicle_id}",
+     *     summary="Get Last Wash",
+     *     description="This request is used to get last wash history by given `vehicle_id`. This request interacts with the MySQL database, and has a protected routes.",
      *     tags={"Wash"},
      *     security={{"bearerAuth":{}}},
      *     @OA\Response(
      *         response=200,
-     *         description="wash fetched",
+     *         description="Wash fetched successfully",
      *         @OA\JsonContent(
      *             @OA\Property(property="status", type="string", example="success"),
      *             @OA\Property(property="message", type="string", example="wash fetched"),
@@ -178,16 +177,14 @@ class Queries extends Controller
      *     ),
      * )
      */
-    public function getLastWashByVehicleId(Request $request){
+    public function getLastWashByVehicleId(Request $request, $vehicle_id){
         try{
             $user_id = $request->user()->id;
-            $vehicle_id = $request->query('vehicle_id') ?? null;
 
-            // Model 
+            // Get last wash by vehicle id
             $res = WashModel::getLastWashByVehicleId($user_id,$vehicle_id);
-
-            // Response
             if($res) {
+                // Return success response
                 return response()->json([
                     'status' => 'success',
                     'message' => Generator::getMessageTemplate("fetch", $this->module),
@@ -210,13 +207,13 @@ class Queries extends Controller
     /**
      * @OA\GET(
      *     path="/api/v1/wash/summary",
-     *     summary="Get wash summary",
-     *     description="This request is used to get wash summary by vehicle id or all vehicle. This request is using MySql database, and have a protected routes.",
+     *     summary="Get Wash Summary",
+     *     description="This request is used to get wash summary by vehicle id or all vehicle. This request interacts with the MySQL database, and has a protected routes.",
      *     tags={"Wash"},
      *     security={{"bearerAuth":{}}},
      *     @OA\Response(
      *         response=200,
-     *         description="wash fetched",
+     *         description="Wash fetched successfully. Ordered in ascending order by `vehicle_name`",
      *         @OA\JsonContent(
      *             @OA\Property(property="status", type="string", example="success"),
      *             @OA\Property(property="message", type="string", example="wash fetched"),
@@ -226,17 +223,17 @@ class Queries extends Controller
      *                         @OA\Property(property="vehicle_plate_number", type="string", example="D 1610 ZRB"),
      *                         @OA\Property(property="vehicle_type", type="string", example="City Car"),
      *                         @OA\Property(property="total_wash", type="integer", example=5),
-     *                         @OA\Property(property="is_wash_body", type="integer", example=5),
-     *                         @OA\Property(property="is_wash_window", type="integer", example=5),
-     *                         @OA\Property(property="is_wash_dashboard", type="integer", example=4),
-     *                         @OA\Property(property="is_wash_tires", type="integer", example=5),
-     *                         @OA\Property(property="is_wash_trash", type="integer", example=5),
-     *                         @OA\Property(property="is_wash_engine", type="integer", example=1),
-     *                         @OA\Property(property="is_wash_seat", type="integer", example=4),
-     *                         @OA\Property(property="is_wash_carpet", type="integer", example=4),
-     *                         @OA\Property(property="is_wash_pillows", type="integer", example=0),
-     *                         @OA\Property(property="is_fill_window_washing_water", type="integer", example=5),
-     *                         @OA\Property(property="is_wash_hollow", type="integer", example=3),
+     *                         @OA\Property(property="total_wash_body", type="integer", example=5),
+     *                         @OA\Property(property="total_wash_window", type="integer", example=5),
+     *                         @OA\Property(property="total_wash_dashboard", type="integer", example=4),
+     *                         @OA\Property(property="total_wash_tires", type="integer", example=5),
+     *                         @OA\Property(property="total_wash_trash", type="integer", example=5),
+     *                         @OA\Property(property="total_wash_engine", type="integer", example=1),
+     *                         @OA\Property(property="total_wash_seat", type="integer", example=4),
+     *                         @OA\Property(property="total_wash_carpet", type="integer", example=4),
+     *                         @OA\Property(property="total_wash_pillows", type="integer", example=0),
+     *                         @OA\Property(property="total_fill_window_washing_water", type="integer", example=5),
+     *                         @OA\Property(property="total_wash_hollow", type="integer", example=3),
      *                         @OA\Property(property="total_price", type="integer", example=475000),
      *                         @OA\Property(property="avg_price_per_wash", type="integer", example=95000)
      *                   )
@@ -274,11 +271,10 @@ class Queries extends Controller
             $user_id = $request->user()->id;
             $vehicle_id = $request->query('vehicle_id') ?? null;
 
-            // Model 
+            // Get wash summary by vehicle id
             $res = WashModel::getWashSummaryByVehicleId($user_id,$vehicle_id);
-
-            // Response
             if($res && count($res) > 0) {
+                // Return success response
                 return response()->json([
                     'status' => 'success',
                     'message' => Generator::getMessageTemplate("fetch", $this->module),

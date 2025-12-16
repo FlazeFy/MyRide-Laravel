@@ -94,7 +94,7 @@ Route::prefix('/v1/dictionary')->middleware(['auth:sanctum'])->group(function ()
 Route::prefix('/v1/wash')->middleware(['auth:sanctum'])->group(function () {
     Route::get('/', [QueriesWashController::class, 'getAllWashHistory']);
     Route::delete('/destroy/{id}', [CommandsWashController::class, 'hardDeleteWashById']);
-    Route::get('/last', [QueriesWashController::class, 'getLastWashByVehicleId']);
+    Route::get('/last/{vehicle_id}', [QueriesWashController::class, 'getLastWashByVehicleId']);
     Route::get('/summary', [QueriesWashController::class, 'getWashSummaryByVehicleId']);
     Route::post('/', [CommandsWashController::class, 'postWash']);
     Route::put('/finish/{id}', [CommandsWashController::class, 'putFinishWash']);

@@ -188,7 +188,7 @@ class Commands extends Controller
                 ->delete();
             if($res > 0){
                 // Get user by ID
-                $user = UserModel::find($user_id);
+                $user = UserModel::getSocial($user_id);
 
                 // Update user by ID (Set valid Telegram)
                 UserModel::updateUserById([ 'telegram_is_valid' => 1 ],$user_id);

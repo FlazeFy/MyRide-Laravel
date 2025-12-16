@@ -25,16 +25,16 @@ class Queries extends Controller
     /**
      * @OA\GET(
      *     path="/api/v1/vehicle/header",
-     *     summary="Get all vehicle",
-     *     description="This request is used to get all vehicle with pagination. This request is using MySql database, and have a protected routes.",
+     *     summary="Get All Vehicle",
+     *     description="This request is used to get all vehicle (header format). This request interacts with the MySQL database, has a protected routes, and a pagination.",
      *     tags={"Vehicle"},
      *     security={{"bearerAuth":{}}},
      *     @OA\Response(
      *         response=200,
-     *         description="vehicle fetched",
+     *         description="Vehicle fetched successfully. Ordered in descending order by `updated_at` and `created_at`",
      *         @OA\JsonContent(
      *             @OA\Property(property="status", type="string", example="success"),
-     *             @OA\Property(property="message", type="string", example="vehicle fetched"),
+     *             @OA\Property(property="message", type="string", example="vehicle fetched successfully"),
      *             @OA\Property(property="data",
      *                 @OA\Property(property="current_page", type="integer", example=1),
      *                 @OA\Property(property="data", type="array",
@@ -95,11 +95,10 @@ class Queries extends Controller
             $user_id = $request->user()->id;
             $limit = $request->query("limit",14);
 
-            // Model
+            // Get all vehicle header
             $res = VehicleModel::getAllVehicleHeader($user_id,$limit);
-
-            // Response
             if ($res) {
+                // Return success response
                 return response()->json([
                     'status' => 'success',
                     'message' => Generator::getMessageTemplate("fetch", $this->module),
@@ -122,16 +121,16 @@ class Queries extends Controller
     /**
      * @OA\GET(
      *     path="/api/v1/vehicle/readiness",
-     *     summary="Get vehicle readiness",
-     *     description="This request is used to get all vehicle that ready to drive with pagination. This request is using MySql database, and have a protected routes.",
+     *     summary="Get Vehicle Readiness",
+     *     description="This request is used to get all vehicle that ready to drive. This request interacts with the MySQL database, has a protected routes, and a pagination.",
      *     tags={"Vehicle"},
      *     security={{"bearerAuth":{}}},
      *     @OA\Response(
      *         response=200,
-     *         description="vehicle fetched",
+     *         description="vehicle fetched successfully. Ordered in descending order by `readiness` and `created_at`",
      *         @OA\JsonContent(
      *             @OA\Property(property="status", type="string", example="success"),
-     *             @OA\Property(property="message", type="string", example="vehicle fetched"),
+     *             @OA\Property(property="message", type="string", example="vehicle fetched successfully"),
      *             @OA\Property(property="data",
      *                 @OA\Property(property="current_page", type="integer", example=1),
      *                 @OA\Property(property="data", type="array",
@@ -183,19 +182,20 @@ class Queries extends Controller
     public function getVehicleReadiness(Request $request)
     {
         try{
+            $limit = $request->query("limit",14);
+
+            // Check whether authentication is attached. If yes, retrieve vehicle by user; if not, retrieve all vehicle for all users
             if ($request->hasHeader('Authorization')) {
                 $user = Auth::guard('sanctum')->user(); 
                 $user_id = $user ? $user->id : null;
             } else {
                 $user_id = null;
             }
-            $limit = $request->query("limit",14);
 
-            // Model
+            // Get vehicle readiness status
             $res = VehicleModel::getVehicleReadiness($user_id,$limit);
-
-            // Response
             if ($res) {
+                // Return success response
                 return response()->json([
                     'status' => 'success',
                     'message' => Generator::getMessageTemplate("fetch", $this->module),
@@ -218,16 +218,16 @@ class Queries extends Controller
     /**
      * @OA\GET(
      *     path="/api/v1/vehicle/name",
-     *     summary="Get all vehicle name",
-     *     description="This request is used to get all vehicle name. This request is using MySql database, and have a protected routes.",
+     *     summary="Get All Vehicle Name",
+     *     description="This request is used to get all vehicle name. This request interacts with the MySQL database, and has a protected routes.",
      *     tags={"Vehicle"},
      *     security={{"bearerAuth":{}}},
      *     @OA\Response(
      *         response=200,
-     *         description="vehicle fetched",
+     *         description="Vehicle fetched successfully. Ordered in ascending order by `deleted_at` and descending by `vehicle_name` and `vehicle_plate_number`",
      *         @OA\JsonContent(
      *             @OA\Property(property="status", type="string", example="success"),
-     *             @OA\Property(property="message", type="string", example="vehicle fetched"),
+     *             @OA\Property(property="message", type="string", example="vehicle fetched successfully"),
      *             @OA\Property(property="data", type="array",
      *                 @OA\Items(
      *                     @OA\Property(property="id", type="string", format="uuid", example="2d98f524-de02-11ed-b5ea-0242ac120002"),
@@ -268,11 +268,10 @@ class Queries extends Controller
         try{
             $user_id = $request->user()->id;
 
-            // Model
+            // Get all vehicle name
             $res = VehicleModel::getAllVehicleName($user_id);
-
-            // Response
             if (count($res) > 0) {
+                // Return success respone
                 return response()->json([
                     'status' => 'success',
                     'message' => Generator::getMessageTemplate("fetch", $this->module),
@@ -295,16 +294,16 @@ class Queries extends Controller
     /**
      * @OA\GET(
      *     path="/api/v1/vehicle/fuel",
-     *     summary="Get all vehicle fuel",
-     *     description="This request is used to get all vehicle fuel status. This request is using MySql database, and have a protected routes.",
+     *     summary="Get All Vehicle Fuel",
+     *     description="This request is used to get all vehicle fuel status. This request interacts with the MySQL database, and has a protected routes",
      *     tags={"Vehicle"},
      *     security={{"bearerAuth":{}}},
      *     @OA\Response(
      *         response=200,
-     *         description="vehicle fetched",
+     *         description="vehicle fetched successfully. Ordered in format ('Empty', 'Low', 'Normal', 'High', 'Full', 'Not Monitored') for column `vehicle_fuel_status`",
      *         @OA\JsonContent(
      *             @OA\Property(property="status", type="string", example="success"),
-     *             @OA\Property(property="message", type="string", example="vehicle fetched"),
+     *             @OA\Property(property="message", type="string", example="vehicle fetched successfully"),
      *             @OA\Property(property="data", type="array",
      *                 @OA\Items(
      *                     @OA\Property(property="id", type="string", format="uuid", example="2d98f524-de02-11ed-b5ea-0242ac120002"),
@@ -346,11 +345,10 @@ class Queries extends Controller
         try{
             $user_id = $request->user()->id;
 
-            // Model
+            // Get all vehicle fuel
             $res = VehicleModel::getAllVehicleFuel($user_id);
-
-            // Response
             if (count($res) > 0) {
+                // Return success response
                 return response()->json([
                     'status' => 'success',
                     'message' => Generator::getMessageTemplate("fetch", $this->module),
@@ -373,8 +371,8 @@ class Queries extends Controller
     /**
      * @OA\GET(
      *     path="/api/v1/vehicle/detail/{id}",
-     *     summary="Get vehicle detail by id",
-     *     description="This request is used to get vehicle detail by id. This request is using MySql database, and have a protected routes.",
+     *     summary="Get Vehicle Detail By ID",
+     *     description="This request is used to get vehicle detail by `id`. This request interacts with the MySQL database, and has a protected routes.",
      *     tags={"Vehicle"},
      *     security={{"bearerAuth":{}}},
      *     @OA\Parameter(
@@ -389,10 +387,10 @@ class Queries extends Controller
      *     ),
      *     @OA\Response(
      *         response=200,
-     *         description="vehicle fetched",
+     *         description="vehicle fetched successfully",
      *         @OA\JsonContent(
      *             @OA\Property(property="status", type="string", example="success"),
-     *             @OA\Property(property="message", type="string", example="vehicle fetched"),
+     *             @OA\Property(property="message", type="string", example="vehicle fetched successfully"),
      *             @OA\Property(property="data", type="object",
      *                 @OA\Property(property="id", type="string", format="uuid", example="4f33d5e4-de9f-11ed-b5ea-0242ac120002"),
      *                 @OA\Property(property="vehicle_name", type="string", example="Kijang Innova 2.0 Type G MT"),
@@ -459,11 +457,10 @@ class Queries extends Controller
         try{
             $user_id = $request->user()->id;
 
-            // Model
+            // Get vehicle detail
             $res = VehicleModel::getVehicleDetailById($user_id,$id);
-
-            // Response
             if ($res) {
+                // Return success response
                 return response()->json([
                     'status' => 'success',
                     'message' => Generator::getMessageTemplate("fetch", $this->module),
@@ -486,8 +483,8 @@ class Queries extends Controller
     /**
      * @OA\GET(
      *     path="/api/v1/vehicle/detail/full/{id}",
-     *     summary="Get vehicle full detail by id",
-     *     description="This request is used to get vehicle detail by id, it comes with Wash and Trip History. This request is using MySql database, and have a protected routes.",
+     *     summary="Get Vehicle Full Detail By ID",
+     *     description="This request is used to get vehicle detail by `id`, it comes with Wash and Trip History. This request interacts with the MySQL database, and has a protected routes.",
      *     tags={"Vehicle"},
      *     security={{"bearerAuth":{}}},
      *     @OA\Parameter(
@@ -502,10 +499,10 @@ class Queries extends Controller
      *     ),
      *     @OA\Response(
      *         response=200,
-     *         description="vehicle fetched",
+     *         description="vehicle fetched successfully",
      *         @OA\JsonContent(
      *             @OA\Property(property="status", type="string", example="success"),
-     *             @OA\Property(property="message", type="string", example="vehicle fetched"),
+     *             @OA\Property(property="message", type="string", example="vehicle fetched successfully"),
      *             @OA\Property(property="data", type="object",
      *                 @OA\Property(property="detail", type="object",
      *                     @OA\Property(property="id", type="string", format="uuid", example="2d98f524-de02-11ed-b5ea-0242ac120002"),
@@ -627,17 +624,17 @@ class Queries extends Controller
             $user_id = $request->user()->id;
             $limit = $request->query("limit",14);
 
-            // Model : Show Detail
+            // Get vehicle detail
             $res = VehicleModel::getVehicleDetailById($user_id,$id);
-
-            // Response
             if ($res) {
-                // Model : Show Trip History
+                // Get trip history by vehicle ID
                 $res_trip = TripModel::getTripByVehicleId($user_id,$id,$limit);
-                // Model : Show Wash History
+                // Get wash history by vehicle ID
                 $res_wash = WashModel::getWashByVehicleId($user_id,$id,$limit);
-                // Model : Show Driver
+                // Get driver by its vehicle ID
                 $res_driver = DriverModel::getDriverByVehicleId($user_id, $id);
+
+                // Return success response
                 return response()->json([
                     'status' => 'success',
                     'message' => Generator::getMessageTemplate("fetch", $this->module),
@@ -665,8 +662,8 @@ class Queries extends Controller
     /**
      * @OA\GET(
      *     path="/api/v1/vehicle/trip/summary/{id}",
-     *     summary="Get vehicle trip summary by id",
-     *     description="This request is used to get vehicle trip history summary by id. This request is using MySql database, and have a protected routes.",
+     *     summary="Get Vehicle Trip Summary By ID",
+     *     description="This request is used to get vehicle trip history summary by vehicle's `id`. This request interacts with the MySQL database, and has a protected routes",
      *     tags={"Vehicle"},
      *     security={{"bearerAuth":{}}},
      *     @OA\Parameter(
@@ -681,10 +678,10 @@ class Queries extends Controller
      *     ),
      *     @OA\Response(
      *         response=200,
-     *         description="vehicle fetched",
+     *         description="vehicle fetched successfully",
      *         @OA\JsonContent(
      *             @OA\Property(property="status", type="string", example="success"),
-     *             @OA\Property(property="message", type="string", example="vehicle fetched"),
+     *             @OA\Property(property="message", type="string", example="vehicle fetched successfully"),
      *             @OA\Property(property="data", type="object",
      *                 @OA\Property(property="detail", type="object",
      *                     @OA\Property(property="most_person_with", type="string", example="budi"),
@@ -726,16 +723,16 @@ class Queries extends Controller
         try{
             $user_id = $request->user()->id;
 
-            // Model : Show Most Person Trip With
+            // Get person name that most travelled with
             $res_most_person_with = TripModel::getMostPersonTripWith($user_id,$id);
-
-            // Model : Show Vehicle Trip Most Origin, Destination, and Category
+            // Get trip total stats
             $res_most_context_total_trip = TripModel::getMostContext($user_id,$id);
             $res_vehicle_total_trip_distance = TripModel::getTotalTripDistance($user_id,$id);
             $res_most_origin = $res_most_context_total_trip->most_origin;
             $res_most_destination = $res_most_context_total_trip->most_destination;
             $res_most_category = $res_most_context_total_trip->most_category;
             
+            // Return success response
             return response()->json([
                 'status' => 'success',
                 'message' => Generator::getMessageTemplate("fetch", $this->module),

@@ -42,6 +42,8 @@ class VehicleModel extends Model
     }
 
     public static function updateVehicleById($data, $id, $user_id){
+        $data['updated_at'] = date('Y-m-d H:i:s');
+
         return VehicleModel::where('id',$id)
             ->where('created_by',$user_id)
             ->update($data);

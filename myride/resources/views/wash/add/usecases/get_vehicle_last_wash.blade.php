@@ -17,7 +17,7 @@
     const get_vehicle_last_wash = (id) => {
         Swal.showLoading();
         $.ajax({
-            url: `/api/v1/wash/last?vehicle_id=${id}`,
+            url: `/api/v1/wash/last/${id}`,
             type: 'GET',
             beforeSend: function (xhr) {
                 xhr.setRequestHeader("Accept", "application/json")

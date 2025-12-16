@@ -24,7 +24,7 @@ class WashModel extends Model
                 wash.created_at, wash.updated_at
             ")
             ->join('vehicle','vehicle.id','=','wash.vehicle_id')
-            ->orderBy('wash.created_at')
+            ->orderBy('wash.created_at','desc')
             ->paginate($limit);
 
         return $res->isNotEmpty() ? $res : null;
@@ -85,7 +85,8 @@ class WashModel extends Model
             $res = $res->where('vehicle_id',$vehicle_id);
         }
         $res = $res->join('vehicle','vehicle.id','=','wash.vehicle_id')
-            ->groupby('vehicle_id');
+            ->groupby('vehicle_id')
+            ->orderby('vehicle_name','asc');
 
         return $res->get();
     }

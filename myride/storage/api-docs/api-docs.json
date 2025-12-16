@@ -9103,7 +9103,7 @@
                 "operationId": "8f8d65302095f16adbc3960a60221f37",
                 "responses": {
                     "200": {
-                        "description": "Yser year fetched successfully. Ordered in descending order by `year`",
+                        "description": "User year fetched successfully. Ordered in descending order by `year`",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -9207,8 +9207,8 @@
                 "tags": [
                     "Vehicle"
                 ],
-                "summary": "Put Vehicle Detail By Id",
-                "description": "Update a new vehicle using `vehicle_name`, `vehicle_merk`, `vehicle_type`, `vehicle_price`, `vehicle_distance`, `vehicle_category`, `vehicle_status`, `vehicle_year_made`, `vehicle_plate_number`, `vehicle_fuel_status`, `vehicle_default_fuel`, `vehicle_color`, `vehicle_transmission`, and `vehicle_capacity`. This request is using MySQL database and send Telegram Message.",
+                "summary": "Put Vehicle Detail By ID",
+                "description": "This request is used to update a vehicle by using given `ID`. The updated fields are `vehicle_name`, `vehicle_merk`, `vehicle_type`, `vehicle_price`, `vehicle_distance`, `vehicle_category`, `vehicle_status`, `vehicle_year_made`, `vehicle_plate_number`, `vehicle_fuel_status`, `vehicle_default_fuel`, `vehicle_color`, `vehicle_transmission`, and `vehicle_capacity`. This request interacts with the MySQL database, has a protected routes, and audited activity (history).",
                 "operationId": "a00ec7b39268b8fb47c1480e59442e1b",
                 "requestBody": {
                     "required": true,
@@ -9427,13 +9427,13 @@
                 "tags": [
                     "Vehicle"
                 ],
-                "summary": "Post Vehicle Image By Id",
-                "description": "Update vehicle image. This request is using MySQL database.",
+                "summary": "Post Update Vehicle Image By ID",
+                "description": "This request is used to update vehicle image by given vehicle's `ID`. And the updated field is `vehicle_img_url`. This request interacts with the MySQL database, firebase storage, has a protected routes, and audited activity (history).",
                 "operationId": "2de4c52f3d77dd7f90449e227619eb04",
                 "requestBody": {
                     "required": true,
                     "content": {
-                        "application/json": {
+                        "multipart/form-data": {
                             "schema": {
                                 "required": [
                                     "vehicle_img_url"
@@ -9441,7 +9441,7 @@
                                 "properties": {
                                     "vehicle_img_url": {
                                         "type": "string",
-                                        "example": "...."
+                                        "format": "binary"
                                     }
                                 },
                                 "type": "object"
@@ -9450,7 +9450,7 @@
                     }
                 },
                 "responses": {
-                    "200": {
+                    "201": {
                         "description": "Vehicle image update successfully",
                         "content": {
                             "application/json": {
@@ -9548,13 +9548,13 @@
                 "tags": [
                     "Vehicle"
                 ],
-                "summary": "Post Vehicle Image Collection By Id",
-                "description": "Update vehicle image collection. This request is using MySQL database.",
+                "summary": "Post Update Vehicle Image Collection By Id",
+                "description": "This request is used to update vehicle image collection by given vehicle's `ID`. The updated field is `vehicle_other_img_url`. This request interacts with the MySQL database, firebase storage, and has a protected routes.",
                 "operationId": "6c2803f8b01487aca96c9fd0b95f249e",
                 "requestBody": {
                     "required": true,
                     "content": {
-                        "application/json": {
+                        "multipart/form-data": {
                             "schema": {
                                 "required": [
                                     "vehicle_other_img_url"
@@ -9562,7 +9562,7 @@
                                 "properties": {
                                     "vehicle_other_img_url": {
                                         "type": "string",
-                                        "example": "...."
+                                        "format": "binary"
                                     }
                                 },
                                 "type": "object"
@@ -9571,7 +9571,7 @@
                     }
                 },
                 "responses": {
-                    "200": {
+                    "201": {
                         "description": "Vehicle image collection update successfully",
                         "content": {
                             "application/json": {
@@ -9669,8 +9669,8 @@
                 "tags": [
                     "Vehicle"
                 ],
-                "summary": "Delete Vehicle Image Collection By Id",
-                "description": "Delete vehicle image collection. This request is using MySQL database.",
+                "summary": "Delete Vehicle Image Collection By Image ID",
+                "description": "This request is used to delete an image in vehicle by given `vehicle_id` and `image_id` for the image collection. Updated field is `vehicle_other_img_url`. This request interacts with the MySQL database, firebase storage, and has a protected routes.",
                 "operationId": "b9674d9cdb9b5018b7fb0e2cdaad2dc1",
                 "parameters": [
                     {
@@ -9793,13 +9793,13 @@
                 "tags": [
                     "Vehicle"
                 ],
-                "summary": "Post vehicle",
-                "description": "Create a new vehicle using `vehicle_name`, `vehicle_merk`, `vehicle_type`, `vehicle_price`, `vehicle_distance`, `vehicle_category`, `vehicle_status`, `vehicle_year_made`, `vehicle_plate_number`, `vehicle_fuel_status`, `vehicle_default_fuel`, `vehicle_color`, `vehicle_transmission`, and `vehicle_capacity`. This request is using MySQL database and send Telegram Message.",
+                "summary": "Post Create Vehicle",
+                "description": "This request is used to create a new vehicle using `vehicle_name`, `vehicle_merk`, `vehicle_type`, `vehicle_price`, `vehicle_distance`, `vehicle_category`, `vehicle_status`, `vehicle_year_made`, `vehicle_plate_number`, `vehicle_fuel_status`, `vehicle_default_fuel`, `vehicle_color`, `vehicle_transmission`, `vehicle_capacity`, `vehicle_img_url`, and `vehicle_other_img_url`. This request interacts with the MySQL database, firebase storage (for vehicle_image and vehicle_other_img), broadcast using Telegram, has a protected routes, and audited activity (history).",
                 "operationId": "84aedd7cfe098c421cec5246d6131883",
                 "requestBody": {
                     "required": true,
                     "content": {
-                        "application/json": {
+                        "multipart/form-data": {
                             "schema": {
                                 "required": [
                                     "vehicle_name",
@@ -9881,6 +9881,14 @@
                                     "vehicle_capacity": {
                                         "type": "integer",
                                         "example": 8
+                                    },
+                                    "vehicle_img_url": {
+                                        "type": "string",
+                                        "format": "binary"
+                                    },
+                                    "vehicle_other_img_url": {
+                                        "type": "string",
+                                        "format": "binary"
                                     }
                                 },
                                 "type": "object"
@@ -10013,9 +10021,28 @@
                 "tags": [
                     "Vehicle"
                 ],
-                "summary": "Post vehicle document",
-                "description": "Add new document to vehicle. This request is using MySQL database and send Telegram Message.",
+                "summary": "Post Update Vehicle Document By ID",
+                "description": "This request is used to update vehicle document by given vehicle's `ID`. The updated field is `vehicle_document`. This request interacts with the MySQL database, firebase storage, and has a protected routes.",
                 "operationId": "d203e5fcee70dee1d20356d538e97688",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "vehicle_document"
+                                ],
+                                "properties": {
+                                    "vehicle_document": {
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "201": {
                         "description": "Vehicle document create successfully",
@@ -10115,7 +10142,8 @@
                 "tags": [
                     "Vehicle"
                 ],
-                "summary": "Soft Delete vehicle by Id",
+                "summary": "Soft Delete Vehicle By ID",
+                "description": "This request is used to delete a vehicle based on the provided `ID`. This request interacts with the MySQL database, broadcast message with Telegram, has a protected routes, and audited activity (history).",
                 "operationId": "62ec8eeb4dfd622e0469731b1fb09ad1",
                 "parameters": [
                     {
@@ -10223,7 +10251,8 @@
                 "tags": [
                     "Vehicle"
                 ],
-                "summary": "Hard Delete vehicle document by Id",
+                "summary": "Hard Delete Vehicle Document By ID",
+                "description": "This request is used to permanently delete a vehicle document based on the provided `vehicle_id` and `doc_id`. This request interacts with the MySQL database, firebase storage, and has a protected routes.",
                 "operationId": "fad22b7cd5d14a276cedf09f07011433",
                 "parameters": [
                     {
@@ -10337,12 +10366,13 @@
             }
         },
         "/api/v1/vehicle/recover/{id}": {
-            "delete": {
+            "put": {
                 "tags": [
                     "Vehicle"
                 ],
-                "summary": "Recover vehicle by Id",
-                "operationId": "adbad60e0cbea7820027df7294260cf8",
+                "summary": "Recover Vehicle By ID",
+                "description": "This request is used to recover deleted vehicle based on the provided `ID`. This request interacts with the MySQL database, has a protected routes, and audited activity (history).",
+                "operationId": "4531755bca399e235ff80e44d838db87",
                 "parameters": [
                     {
                         "name": "id",
@@ -10449,7 +10479,8 @@
                 "tags": [
                     "Vehicle"
                 ],
-                "summary": "Hard Delete vehicle by Id",
+                "summary": "Hard Delete Vehicle By ID",
+                "description": "This request is used to permanently delete vehicle based on the provided `ID`. This request interacts with the MySQL database, firebase storage, has a protected routes, and audited activity (history).",
                 "operationId": "dffdbf3a72a25209b87c44c8394d0e88",
                 "parameters": [
                     {
@@ -10557,12 +10588,12 @@
                 "tags": [
                     "Vehicle"
                 ],
-                "summary": "Get all vehicle",
-                "description": "This request is used to get all vehicle with pagination. This request is using MySql database, and have a protected routes.",
+                "summary": "Get All Vehicle",
+                "description": "This request is used to get all vehicle (header format). This request interacts with the MySQL database, has a protected routes, and a pagination.",
                 "operationId": "6d70a56336f3eb7c41cd11d0b97a3bf8",
                 "responses": {
                     "200": {
-                        "description": "vehicle fetched",
+                        "description": "Vehicle fetched successfully. Ordered in descending order by `updated_at` and `created_at`",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -10573,7 +10604,7 @@
                                         },
                                         "message": {
                                             "type": "string",
-                                            "example": "vehicle fetched"
+                                            "example": "vehicle fetched successfully"
                                         },
                                         "data": {
                                             "properties": {
@@ -10750,12 +10781,12 @@
                 "tags": [
                     "Vehicle"
                 ],
-                "summary": "Get vehicle readiness",
-                "description": "This request is used to get all vehicle that ready to drive with pagination. This request is using MySql database, and have a protected routes.",
+                "summary": "Get Vehicle Readiness",
+                "description": "This request is used to get all vehicle that ready to drive. This request interacts with the MySQL database, has a protected routes, and a pagination.",
                 "operationId": "62b078376a3f2821bf66ed39b9c7d3ce",
                 "responses": {
                     "200": {
-                        "description": "vehicle fetched",
+                        "description": "vehicle fetched successfully. Ordered in descending order by `readiness` and `created_at`",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -10766,7 +10797,7 @@
                                         },
                                         "message": {
                                             "type": "string",
-                                            "example": "vehicle fetched"
+                                            "example": "vehicle fetched successfully"
                                         },
                                         "data": {
                                             "properties": {
@@ -10918,12 +10949,12 @@
                 "tags": [
                     "Vehicle"
                 ],
-                "summary": "Get all vehicle name",
-                "description": "This request is used to get all vehicle name. This request is using MySql database, and have a protected routes.",
+                "summary": "Get All Vehicle Name",
+                "description": "This request is used to get all vehicle name. This request interacts with the MySQL database, and has a protected routes.",
                 "operationId": "f35309a39045fbff11e7a45bba2b6000",
                 "responses": {
                     "200": {
-                        "description": "vehicle fetched",
+                        "description": "Vehicle fetched successfully. Ordered in ascending order by `deleted_at` and descending by `vehicle_name` and `vehicle_plate_number`",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -10934,7 +10965,7 @@
                                         },
                                         "message": {
                                             "type": "string",
-                                            "example": "vehicle fetched"
+                                            "example": "vehicle fetched successfully"
                                         },
                                         "data": {
                                             "type": "array",
@@ -11042,12 +11073,12 @@
                 "tags": [
                     "Vehicle"
                 ],
-                "summary": "Get all vehicle fuel",
-                "description": "This request is used to get all vehicle fuel status. This request is using MySql database, and have a protected routes.",
+                "summary": "Get All Vehicle Fuel",
+                "description": "This request is used to get all vehicle fuel status. This request interacts with the MySQL database, and has a protected routes",
                 "operationId": "bcd5d1f67ba4b2c4941e5ba049f8d719",
                 "responses": {
                     "200": {
-                        "description": "vehicle fetched",
+                        "description": "vehicle fetched successfully. Ordered in format ('Empty', 'Low', 'Normal', 'High', 'Full', 'Not Monitored') for column `vehicle_fuel_status`",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -11058,7 +11089,7 @@
                                         },
                                         "message": {
                                             "type": "string",
-                                            "example": "vehicle fetched"
+                                            "example": "vehicle fetched successfully"
                                         },
                                         "data": {
                                             "type": "array",
@@ -11168,8 +11199,8 @@
                 "tags": [
                     "Vehicle"
                 ],
-                "summary": "Get vehicle detail by id",
-                "description": "This request is used to get vehicle detail by id. This request is using MySql database, and have a protected routes.",
+                "summary": "Get Vehicle Detail By ID",
+                "description": "This request is used to get vehicle detail by `id`. This request interacts with the MySQL database, and has a protected routes.",
                 "operationId": "72eecbefc758130b99a60704c96174dd",
                 "parameters": [
                     {
@@ -11185,7 +11216,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "vehicle fetched",
+                        "description": "vehicle fetched successfully",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -11196,7 +11227,7 @@
                                         },
                                         "message": {
                                             "type": "string",
-                                            "example": "vehicle fetched"
+                                            "example": "vehicle fetched successfully"
                                         },
                                         "data": {
                                             "properties": {
@@ -11401,8 +11432,8 @@
                 "tags": [
                     "Vehicle"
                 ],
-                "summary": "Get vehicle full detail by id",
-                "description": "This request is used to get vehicle detail by id, it comes with Wash and Trip History. This request is using MySql database, and have a protected routes.",
+                "summary": "Get Vehicle Full Detail By ID",
+                "description": "This request is used to get vehicle detail by `id`, it comes with Wash and Trip History. This request interacts with the MySQL database, and has a protected routes.",
                 "operationId": "093cfdf4530576f08b4f9c4b7c063627",
                 "parameters": [
                     {
@@ -11418,7 +11449,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "vehicle fetched",
+                        "description": "vehicle fetched successfully",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -11429,7 +11460,7 @@
                                         },
                                         "message": {
                                             "type": "string",
-                                            "example": "vehicle fetched"
+                                            "example": "vehicle fetched successfully"
                                         },
                                         "data": {
                                             "properties": {
@@ -11841,8 +11872,8 @@
                 "tags": [
                     "Vehicle"
                 ],
-                "summary": "Get vehicle trip summary by id",
-                "description": "This request is used to get vehicle trip history summary by id. This request is using MySql database, and have a protected routes.",
+                "summary": "Get Vehicle Trip Summary By ID",
+                "description": "This request is used to get vehicle trip history summary by vehicle's `id`. This request interacts with the MySQL database, and has a protected routes",
                 "operationId": "0ec160ab68e5614a26acd1f9e83f9c46",
                 "parameters": [
                     {
@@ -11858,7 +11889,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "vehicle fetched",
+                        "description": "vehicle fetched successfully",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -11869,7 +11900,7 @@
                                         },
                                         "message": {
                                             "type": "string",
-                                            "example": "vehicle fetched"
+                                            "example": "vehicle fetched successfully"
                                         },
                                         "data": {
                                             "properties": {
@@ -11980,7 +12011,8 @@
                 "tags": [
                     "Wash"
                 ],
-                "summary": "Delete wash by id",
+                "summary": "Hard Delete Wash By ID",
+                "description": "This request is used to permanently delete a wash history based on the provided `ID`. This request interacts with the MySQL database, has a protected routes, and audited activity (history).",
                 "operationId": "1718c8e5ea70292a45deba1b664ac3b0",
                 "parameters": [
                     {
@@ -12088,12 +12120,12 @@
                 "tags": [
                     "Wash"
                 ],
-                "summary": "Get all wash history",
-                "description": "This request is used to get all wash history with pagination. This request is using MySql database, and have a protected routes.",
+                "summary": "Get All Wash",
+                "description": "This request is used to get all wash history. This request interacts with the MySQL database, has a protected routes, and a pagination.",
                 "operationId": "e4734ff42a78318e53bfbd0de0202ad6",
                 "responses": {
                     "200": {
-                        "description": "wash fetched",
+                        "description": "Wash fetched successfully. Ordered in descending order by `created_at`",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -12301,8 +12333,111 @@
                 "tags": [
                     "Wash"
                 ],
-                "summary": "Create a wash data",
+                "summary": "Post Create Wash",
+                "description": "This request is used to create a wash history based on the provided `vehicle_id`, `wash_desc`, `wash_by`, `is_wash_body`, `is_wash_window`, `is_wash_dashboard`, `is_wash_tires`, `is_wash_trash`, `is_wash_engine`, `is_wash_seat`, `is_wash_carpet`, `is_wash_pillows`, `wash_address`, `wash_start_time`, `wash_end_time`, `wash_price`, `is_fill_window_washing_water`, and `is_wash_hollow`. This request interacts with the MySQL database, has a protected routes, and audited activity (history).",
                 "operationId": "98d3a5a01cc01767a2670149ec17e8b7",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "vehicle_id",
+                                    "wash_by",
+                                    "is_wash_body",
+                                    "is_wash_window",
+                                    "is_wash_dashboard",
+                                    "is_wash_tires",
+                                    "is_wash_trash",
+                                    "is_wash_engine",
+                                    "is_wash_seat",
+                                    "is_wash_carpet",
+                                    "is_wash_pillows",
+                                    "wash_start_time",
+                                    "is_fill_window_washing_water",
+                                    "is_wash_hollow"
+                                ],
+                                "properties": {
+                                    "vehicle_id": {
+                                        "type": "string",
+                                        "example": "e1288783-a5d4-1c4c-2cd6-0e92f7cc3bf9"
+                                    },
+                                    "wash_desc": {
+                                        "type": "string",
+                                        "example": "Full body and interior wash"
+                                    },
+                                    "wash_by": {
+                                        "type": "string",
+                                        "example": "John Doe"
+                                    },
+                                    "is_wash_body": {
+                                        "type": "boolean",
+                                        "example": true
+                                    },
+                                    "is_wash_window": {
+                                        "type": "boolean",
+                                        "example": true
+                                    },
+                                    "is_wash_dashboard": {
+                                        "type": "boolean",
+                                        "example": false
+                                    },
+                                    "is_wash_tires": {
+                                        "type": "boolean",
+                                        "example": true
+                                    },
+                                    "is_wash_trash": {
+                                        "type": "boolean",
+                                        "example": true
+                                    },
+                                    "is_wash_engine": {
+                                        "type": "boolean",
+                                        "example": false
+                                    },
+                                    "is_wash_seat": {
+                                        "type": "boolean",
+                                        "example": true
+                                    },
+                                    "is_wash_carpet": {
+                                        "type": "boolean",
+                                        "example": true
+                                    },
+                                    "is_wash_pillows": {
+                                        "type": "boolean",
+                                        "example": false
+                                    },
+                                    "wash_address": {
+                                        "type": "string",
+                                        "example": "Jl. Raya No. 12"
+                                    },
+                                    "wash_start_time": {
+                                        "type": "string",
+                                        "format": "date-time",
+                                        "example": "2025-12-16T14:00:00Z"
+                                    },
+                                    "wash_end_time": {
+                                        "type": "string",
+                                        "format": "date-time",
+                                        "example": "2025-12-16T15:30:00Z"
+                                    },
+                                    "wash_price": {
+                                        "type": "integer",
+                                        "example": 150000
+                                    },
+                                    "is_fill_window_washing_water": {
+                                        "type": "boolean",
+                                        "example": true
+                                    },
+                                    "is_wash_hollow": {
+                                        "type": "boolean",
+                                        "example": false
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "201": {
                         "description": "wash created",
@@ -12397,8 +12532,29 @@
                 "tags": [
                     "Wash"
                 ],
-                "summary": "Put Update a wash finish status",
+                "summary": "Put Update Wash Finish Status By ID",
+                "description": "This request is used to update a wash history based on the provided `ID` and the updated fields `wash_end_time`. This request interacts with the MySQL database, has a protected routes, and audited activity (history).",
                 "operationId": "f11a368a53de5b987f852c44f301ba63",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "wash_end_time"
+                                ],
+                                "properties": {
+                                    "wash_end_time": {
+                                        "type": "string",
+                                        "format": "date-time",
+                                        "example": "2025-12-16T15:30:00Z"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "200": {
                         "description": "wash updated",
@@ -12493,8 +12649,111 @@
                 "tags": [
                     "Wash"
                 ],
-                "summary": "Put Update a wash data",
+                "summary": "Put Update Wash By ID",
+                "description": "This request is used to update a wash history based on the provided `ID`. The updated fields are `vehicle_id`, `wash_desc`, `wash_by`, `is_wash_body`, `is_wash_window`, `is_wash_dashboard`, `is_wash_tires`, `is_wash_trash`, `is_wash_engine`, `is_wash_seat`, `is_wash_carpet`, `is_wash_pillows`, `wash_address`, `wash_start_time`, `wash_end_time`, `wash_price`, `is_fill_window_washing_water`, and `is_wash_hollow`. This request interacts with the MySQL database, has a protected routes, and audited activity (history).",
                 "operationId": "ad2428ef907d4a04894c216c9a649abc",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "vehicle_id",
+                                    "wash_by",
+                                    "is_wash_body",
+                                    "is_wash_window",
+                                    "is_wash_dashboard",
+                                    "is_wash_tires",
+                                    "is_wash_trash",
+                                    "is_wash_engine",
+                                    "is_wash_seat",
+                                    "is_wash_carpet",
+                                    "is_wash_pillows",
+                                    "wash_start_time",
+                                    "is_fill_window_washing_water",
+                                    "is_wash_hollow"
+                                ],
+                                "properties": {
+                                    "vehicle_id": {
+                                        "type": "string",
+                                        "example": "e1288783-a5d4-1c4c-2cd6-0e92f7cc3bf9"
+                                    },
+                                    "wash_desc": {
+                                        "type": "string",
+                                        "example": "Full body and interior wash"
+                                    },
+                                    "wash_by": {
+                                        "type": "string",
+                                        "example": "John Doe"
+                                    },
+                                    "is_wash_body": {
+                                        "type": "boolean",
+                                        "example": true
+                                    },
+                                    "is_wash_window": {
+                                        "type": "boolean",
+                                        "example": true
+                                    },
+                                    "is_wash_dashboard": {
+                                        "type": "boolean",
+                                        "example": false
+                                    },
+                                    "is_wash_tires": {
+                                        "type": "boolean",
+                                        "example": true
+                                    },
+                                    "is_wash_trash": {
+                                        "type": "boolean",
+                                        "example": true
+                                    },
+                                    "is_wash_engine": {
+                                        "type": "boolean",
+                                        "example": false
+                                    },
+                                    "is_wash_seat": {
+                                        "type": "boolean",
+                                        "example": true
+                                    },
+                                    "is_wash_carpet": {
+                                        "type": "boolean",
+                                        "example": true
+                                    },
+                                    "is_wash_pillows": {
+                                        "type": "boolean",
+                                        "example": false
+                                    },
+                                    "wash_address": {
+                                        "type": "string",
+                                        "example": "Jl. Raya No. 12"
+                                    },
+                                    "wash_start_time": {
+                                        "type": "string",
+                                        "format": "date-time",
+                                        "example": "2025-12-16T14:00:00Z"
+                                    },
+                                    "wash_end_time": {
+                                        "type": "string",
+                                        "format": "date-time",
+                                        "example": "2025-12-16T15:30:00Z"
+                                    },
+                                    "wash_price": {
+                                        "type": "integer",
+                                        "example": 150000
+                                    },
+                                    "is_fill_window_washing_water": {
+                                        "type": "boolean",
+                                        "example": true
+                                    },
+                                    "is_wash_hollow": {
+                                        "type": "boolean",
+                                        "example": false
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "200": {
                         "description": "wash updated",
@@ -12584,17 +12843,17 @@
                 ]
             }
         },
-        "/api/v1/wash/last": {
+        "/api/v1/wash/last/{vehicle_id}": {
             "get": {
                 "tags": [
                     "Wash"
                 ],
-                "summary": "Get last wash",
-                "description": "This request is used to get last wash history by vehicle id. This request is using MySql database, and have a protected routes.",
-                "operationId": "0c5fba425fa3728731386fb25e95d028",
+                "summary": "Get Last Wash",
+                "description": "This request is used to get last wash history by given `vehicle_id`. This request interacts with the MySQL database, and has a protected routes.",
+                "operationId": "4710024f07bcc5b1506b57cdff90b0d5",
                 "responses": {
                     "200": {
-                        "description": "wash fetched",
+                        "description": "Wash fetched successfully",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -12752,12 +13011,12 @@
                 "tags": [
                     "Wash"
                 ],
-                "summary": "Get wash summary",
-                "description": "This request is used to get wash summary by vehicle id or all vehicle. This request is using MySql database, and have a protected routes.",
+                "summary": "Get Wash Summary",
+                "description": "This request is used to get wash summary by vehicle id or all vehicle. This request interacts with the MySQL database, and has a protected routes.",
                 "operationId": "ea534c33a246d1186c2319727c55c72d",
                 "responses": {
                     "200": {
-                        "description": "wash fetched",
+                        "description": "Wash fetched successfully. Ordered in ascending order by `vehicle_name`",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -12790,47 +13049,47 @@
                                                         "type": "integer",
                                                         "example": 5
                                                     },
-                                                    "is_wash_body": {
+                                                    "total_wash_body": {
                                                         "type": "integer",
                                                         "example": 5
                                                     },
-                                                    "is_wash_window": {
+                                                    "total_wash_window": {
                                                         "type": "integer",
                                                         "example": 5
                                                     },
-                                                    "is_wash_dashboard": {
+                                                    "total_wash_dashboard": {
                                                         "type": "integer",
                                                         "example": 4
                                                     },
-                                                    "is_wash_tires": {
+                                                    "total_wash_tires": {
                                                         "type": "integer",
                                                         "example": 5
                                                     },
-                                                    "is_wash_trash": {
+                                                    "total_wash_trash": {
                                                         "type": "integer",
                                                         "example": 5
                                                     },
-                                                    "is_wash_engine": {
+                                                    "total_wash_engine": {
                                                         "type": "integer",
                                                         "example": 1
                                                     },
-                                                    "is_wash_seat": {
+                                                    "total_wash_seat": {
                                                         "type": "integer",
                                                         "example": 4
                                                     },
-                                                    "is_wash_carpet": {
+                                                    "total_wash_carpet": {
                                                         "type": "integer",
                                                         "example": 4
                                                     },
-                                                    "is_wash_pillows": {
+                                                    "total_wash_pillows": {
                                                         "type": "integer",
                                                         "example": 0
                                                     },
-                                                    "is_fill_window_washing_water": {
+                                                    "total_fill_window_washing_water": {
                                                         "type": "integer",
                                                         "example": 5
                                                     },
-                                                    "is_wash_hollow": {
+                                                    "total_wash_hollow": {
                                                         "type": "integer",
                                                         "example": 3
                                                     },
