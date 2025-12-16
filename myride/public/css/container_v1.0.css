@@ -55,5 +55,6 @@
     background: transparent;
 }
 .modal-content, .swal2-popup {
+    border-radius: var(--roundedLG);
     padding: var(--spaceMD) !important;
 }

@@ -30,8 +30,8 @@ class Commands extends Controller
     /**
      * @OA\POST(
      *     path="/api/v1/trip",
-     *     summary="Post create trip",
-     *     description="Create a new trip using `vehicle_id`, `trip_desc`, `trip_category`, `trip_origin_name`, `trip_person`, `trip_origin_coordinate`, `trip_destination_coordinate`, and `trip_destination_name`. This request is using MySQL database and send Telegram Message.",
+     *     summary="Post Create Trip",
+     *     description="This request is used to create a new trip using `vehicle_id`, `driver_id`, `trip_desc`, `trip_category`, `trip_origin_name`, `trip_person`, `trip_origin_coordinate`, `trip_destination_coordinate`, and `trip_destination_name`. This request interacts with the MySQL database, has a protected routes, broadcast message with Telegram, and audited activity (history).",
      *     tags={"Trip"},
      *     security={{"bearerAuth":{}}},
      *     @OA\RequestBody(
@@ -39,6 +39,7 @@ class Commands extends Controller
      *         @OA\JsonContent(
      *             required={"vehicle_id","trip_category","trip_origin_name","trip_destination_name"},
      *             @OA\Property(property="vehicle_id", type="string", example="2d98f524-de02-11ed-b5ea-0242ac120002"),
+     *             @OA\Property(property="driver_id", type="string", example="2d98f524-de02-11ed-b5ea-0242ac120002"),
      *             @OA\Property(property="trip_desc", type="string", example="Business meeting"),
      *             @OA\Property(property="trip_category", type="string", example="Business"),
      *             @OA\Property(property="trip_origin_name", type="string", example="Office A"),
@@ -95,10 +96,15 @@ class Commands extends Controller
     public function postTrip(Request $request)
     {
         try{
-            if ($request->driver_id == "-") {
+            // Prepare request body
+            $driver_id = null;
+            if ($request->driver_id === "-") {
                 $request->merge(['driver_id' => null]);
+            } else {
+                $driver_id = $request->driver_id;
             }
 
+            // Validate request body
             $validator = Validation::getValidateTrip($request,"create");
             if ($validator->fails()) {
                 return response()->json([
@@ -108,13 +114,8 @@ class Commands extends Controller
             } else {
                 $user_id = $request->user()->id;
                 $vehicle_id = $request->vehicle_id;
-                $driver_id = null;
 
-                if($request->driver_id !== "-"){
-                    $driver_id = $request->driver_id;
-                }
-
-                // Service : Validate existing vehicle and get the identity
+                // Get vehicle by ID
                 $vehicle = VehicleModel::getVehicleIdentity($user_id,$vehicle_id);
                 if($vehicle){
                     $vehicle_plate_number = $vehicle->vehicle_plate_number;
@@ -122,9 +123,8 @@ class Commands extends Controller
                     $trip_origin_name = $request->trip_origin_name;
                     $trip_destination_name = $request->trip_destination_name;
 
-                    // Service : Update
-                    $rows = TripModel::create([
-                        'id' => Generator::getUUID(), 
+                    // Create trip
+                    $rows = TripModel::createTrip([
                         'vehicle_id' => $vehicle_id, 
                         'driver_id' => $driver_id,
                         'trip_desc' => $request->trip_desc, 
@@ -134,44 +134,49 @@ class Commands extends Controller
                         'trip_origin_coordinate' => $request->trip_origin_coordinate, 
                         'trip_destination_name' => $trip_destination_name, 
                         'trip_destination_coordinate' => $request->trip_destination_coordinate, 
-                        'created_at' => date('Y-m-d H:i:s'), 
-                        'created_by' => $user_id, 
-                        'updated_at' => null, 
-                        'deleted_at' => null
-                    ]);
+                    ],$user_id);
 
-                    // Respond
                     if($rows){
-                        // Message to User
+                        // Get user social contact
                         $user = UserModel::getSocial($user_id);
-                        if($user->telegram_user_id && TelegramMessage::checkTelegramID($user->telegram_user_id)){
-                            $message = "Hello $user->username, your have added trip history from $trip_origin_name to $trip_destination_name using $vehicle_name ($vehicle_plate_number)";
-                            $response = Telegram::sendMessage([
-                                'chat_id' => $user->telegram_user_id,
-                                'text' => $message,
-                                'parse_mode' => 'HTML'
-                            ]);
-                        } else {
-                            UserModel::updateUserById([ 'telegram_user_id' => null, 'telegram_is_valid' => 0],$user_id);
+                        // Check if user's Telegram ID is valid
+                        if($user->telegram_user_id && $user->telegram_is_valid === 1){
+                            if(TelegramMessage::checkTelegramID($user->telegram_user_id)){
+                                $message = "Hello $user->username, your have added trip history from $trip_origin_name to $trip_destination_name using $vehicle_name ($vehicle_plate_number)";
+                                // Send telegram message
+                                $response = Telegram::sendMessage([
+                                    'chat_id' => $user->telegram_user_id,
+                                    'text' => $message,
+                                    'parse_mode' => 'HTML'
+                                ]);
+                            } else {
+                                // Reset telegram from user account if not valid
+                                UserModel::updateUserById([ 'telegram_user_id' => null, 'telegram_is_valid' => 0],$user_id);
+                            }
                         }
 
-                        // Message to Driver
                         if($driver_id){
+                            // Get driver by ID
                             $driver = DriverModel::find($driver_id);
+                            // Check if driver's Telegram ID is valid
                             if($driver->telegram_user_id && TelegramMessage::checkTelegramID($driver->telegram_user_id)){
                                 $message = "Hello $driver->username, $user->username have added trip history with you as the driver. The trip from $trip_origin_name to $trip_destination_name using $vehicle_name ($vehicle_plate_number)";
+                                // Send telegram message
                                 $response = Telegram::sendMessage([
                                     'chat_id' => $driver->telegram_user_id,
                                     'text' => $message,
                                     'parse_mode' => 'HTML'
                                 ]);
                             } else {
-                                UserModel::updateUserById([ 'telegram_user_id' => null, 'telegram_is_valid' => 0],$user_id);
+                                // Reset telegram from driver account if not valid
+                                DriverModel::updateDriverById([ 'telegram_user_id' => null, 'telegram_is_valid' => 0], $user_id, $driver_id);
                             }
                         }
 
+                        // Create history
                         HistoryModel::createHistory(['history_type' => 'Trip', 'history_context' => "added a trip history"], $user_id);
                         
+                        // Return success response
                         return response()->json([
                             'status' => 'success',
                             'message' => Generator::getMessageTemplate("create", $this->module),
@@ -200,7 +205,8 @@ class Commands extends Controller
     /**
      * @OA\DELETE(
      *     path="/api/v1/trip/destroy/{id}",
-     *     summary="Delete trip by id",
+     *     summary="Delete Trip By ID",
+     *     description="This request is used to permanently delete a trip based on the provided `ID`. This request interacts with the MySQL database, has a protected routes, and audited activity (history).",
      *     tags={"Trip"},
      *     security={{"bearerAuth":{}}},
      *     @OA\Parameter(
@@ -250,15 +256,19 @@ class Commands extends Controller
         try{
             $user_id = $request->user()->id;
 
+            // Define user id by role
             $check_admin = AdminModel::find($user_id);
             if($check_admin){
                 $user_id = null;
             }
 
+            // Hard Delete trip by ID
             $rows = TripModel::hardDeleteTripById($id, $user_id);
             if($rows > 0){
+                // Create history
                 HistoryModel::createHistory(['history_type' => 'Trip', 'history_context' => "removed a trip history"], $user_id);
 
+                // Return success response
                 return response()->json([
                     'status' => 'success',
                     'message' => Generator::getMessageTemplate("permentally delete", $this->module),
@@ -280,9 +290,25 @@ class Commands extends Controller
     /**
      * @OA\PUT(
      *     path="/api/v1/trip/{id}",
-     *     summary="Update an trip",
+     *     summary="Put Update Trip By ID",
+     *     description="This request is used to update a trip using given `ID`. The updated field are `vehicle_id`, `driver_id`, `trip_desc`, `trip_category`, `trip_origin_name`, `trip_person`, `trip_origin_coordinate`, `trip_destination_coordinate`, and `trip_destination_name`. This request interacts with the MySQL database, has a protected routes, broadcast message with Telegram, and audited activity (history).",
      *     tags={"Trip"},
      *     security={{"bearerAuth":{}}},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"vehicle_id","trip_category","trip_origin_name","trip_destination_name"},
+     *             @OA\Property(property="vehicle_id", type="string", example="2d98f524-de02-11ed-b5ea-0242ac120002"),
+     *             @OA\Property(property="driver_id", type="string", example="2d98f524-de02-11ed-b5ea-0242ac120002"),
+     *             @OA\Property(property="trip_desc", type="string", example="Business meeting"),
+     *             @OA\Property(property="trip_category", type="string", example="Business"),
+     *             @OA\Property(property="trip_origin_name", type="string", example="Office A"),
+     *             @OA\Property(property="trip_person", type="string", example="John Doe"),
+     *             @OA\Property(property="trip_origin_coordinate", type="string", example="-6.9175,107.6191"),
+     *             @OA\Property(property="trip_destination_coordinate", type="string", example="-6.2000,106.8167"),
+     *             @OA\Property(property="trip_destination_name", type="string", example="Office B")
+     *         )
+     *     ),
      *     @OA\Response(
      *         response=200,
      *         description="trip updated",
@@ -320,7 +346,9 @@ class Commands extends Controller
     public function updateTripById(Request $request, $id){
         try{
             $user_id = $request->user()->id;
+            $driver_id = $request->driver_id === "-" ? null : $request->driver_id;
 
+            // Validate request body
             $validator = Validation::getValidateTrip($request,"update");
             if ($validator->fails()) {
                 return response()->json([
@@ -328,9 +356,10 @@ class Commands extends Controller
                     'message' => $validator->errors()
                 ], Response::HTTP_BAD_REQUEST);
             } else {
+                // Update trip by ID
                 $data = [
                     'vehicle_id' => $request->vehicle_id, 
-                    'driver_id' => $request->driver_id === "-" ? null : $request->driver_id,
+                    'driver_id' => $driver_id,
                     'trip_desc' => $request->trip_desc, 
                     'trip_category' => $request->trip_category, 
                     'trip_person' => $request->trip_person, 
@@ -339,11 +368,30 @@ class Commands extends Controller
                     'trip_destination_name' => $request->trip_destination_name, 
                     'trip_destination_coordinate' => $request->trip_destination_coordinate, 
                 ];
-
                 $rows = TripModel::updateTripById($data, $user_id, $id);
                 if($rows > 0){
+                    if($driver_id){
+                        // Get driver by ID
+                        $driver = DriverModel::find($driver_id);
+                        // Check if driver's Telegram ID is valid
+                        if($driver->telegram_user_id && TelegramMessage::checkTelegramID($driver->telegram_user_id)){
+                            $message = "Hello $driver->username, $user->username have added trip history with you as the driver. The trip from $trip_origin_name to $trip_destination_name using $vehicle_name ($vehicle_plate_number)";
+                            // Send telegram message
+                            $response = Telegram::sendMessage([
+                                'chat_id' => $driver->telegram_user_id,
+                                'text' => $message,
+                                'parse_mode' => 'HTML'
+                            ]);
+                        } else {
+                            // Reset telegram from driver account if not valid
+                            DriverModel::updateDriverById(['telegram_user_id' => null, 'telegram_is_valid' => 0], $user_id, $driver_id);
+                        }
+                    }
+
+                    // Create history
                     HistoryModel::createHistory(['history_type' => 'Trip', 'history_context' => "edited a trip history"], $user_id);
 
+                    // Return success response
                     return response()->json([
                         'status' => 'success',
                         'message' => Generator::getMessageTemplate("update", $this->module),

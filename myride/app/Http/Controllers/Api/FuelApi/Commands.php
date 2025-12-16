@@ -267,7 +267,7 @@ class Commands extends Controller
     /**
      * @OA\PUT(
      *     path="/api/v1/fuel/{id}",
-     *     summary="Update Fuel By ID",
+     *     summary="Put Update Fuel By ID",
      *     description="This request is used to update a fuel by using given `ID`. The updated field are `vehicle_id`, `fuel_volume`, `fuel_price_total`, `fuel_brand`, `fuel_type`, and `fuel_ron`. This request interacts with the MySQL database, has a protected routes, and audited activity (history).",
      *     tags={"Fuel"},
      *     security={{"bearerAuth":{}}},

@@ -47,6 +47,10 @@ class UserModel extends Authenticatable
         'updated_at' => 'datetime:Y-m-d H:i:s',
     ];
 
+    public static function getAllUser($paginate){
+        return UserModel::select('*')->orderby('created_at','desc')->paginate($paginate);
+    } 
+
     public static function getSocial($id){
         $res = UserModel::select('username','telegram_user_id','telegram_is_valid','email')
             ->where('id',$id)
@@ -63,6 +67,19 @@ class UserModel extends Authenticatable
 
     public static function getUserBroadcastAll(){
         return UserModel::select('id','username','telegram_user_id','telegram_is_valid','email')->get();
+    }
+
+    public static function isTelegramIDUsed($telegram_id){
+        return UserModel::where('telegram_user_id', $telegram_id)->exists();
+    }    
+
+    public static function isUsernameEmailUsed($email, $username, $exceptional_id){
+        return UserModel::where(function ($query) use ($email, $username) {
+                $query->where('email', $email)
+                    ->orWhere('username', $username);
+            })
+            ->where('id', '!=', $exceptional_id)
+            ->exists();
     }
 
     public static function getUserById($user_id){

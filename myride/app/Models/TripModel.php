@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 // Helpers
 use App\Helpers\Converter;
+use App\Helpers\Generator;
 
 class TripModel extends Model
 {
@@ -250,6 +251,16 @@ class TripModel extends Model
         }
             
         return $res->delete();
+    }
+
+    public static function createTrip($data, $user_id){
+        $data['id'] = Generator::getUUID();
+        $data['created_at'] = date('Y-m-d H:i:s');
+        $data['created_by'] = $user_id;
+        $data['deleted_at'] = null;
+        $data['updated_at'] = null;
+        
+        return TripModel::create($data);
     }
 
     public static function updateTripById($data, $user_id, $id){

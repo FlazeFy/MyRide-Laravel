@@ -208,7 +208,7 @@ class Commands extends Controller
     /**
      * @OA\PUT(
      *     path="/api/v1/service/{id}",
-     *     summary="Update Service By ID",
+     *     summary="Put Update Service By ID",
      *     description="This request is used to update service by using given `ID`. The updated field are `vehicle_id`, `service_note`, `service_category`, `service_location`, `service_price_total`, and `remind_at`. This request interacts with the MySQL database, has a protected routes, and audited activity (history).",
      *     tags={"Service"},
      *     security={{"bearerAuth":{}}},

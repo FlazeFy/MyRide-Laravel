@@ -199,7 +199,7 @@ class Commands extends Controller
     /**
      * @OA\PUT(
      *     path="/api/v1/wash/finish/{id}",
-     *     summary="Update a wash finish status",
+     *     summary="Put Update a wash finish status",
      *     tags={"Wash"},
      *     security={{"bearerAuth":{}}},
      *     @OA\Response(
@@ -267,7 +267,7 @@ class Commands extends Controller
     /**
      * @OA\PUT(
      *     path="/api/v1/wash/{id}",
-     *     summary="Update a wash data",
+     *     summary="Put Update a wash data",
      *     tags={"Wash"},
      *     security={{"bearerAuth":{}}},
      *     @OA\Response(

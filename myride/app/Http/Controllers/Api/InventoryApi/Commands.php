@@ -268,7 +268,7 @@ class Commands extends Controller
     /**
      * @OA\PUT(
      *     path="/api/v1/inventory/{id}",
-     *     summary="Update Inventory By ID",
+     *     summary="Put Update Inventory By ID",
      *     description="This request is used to update an inventory by using given `ID`. The updated field are `vehicle_id`, `inventory_name`, `inventory_category`, `inventory_storage`, and `inventory_qty`. This request interacts with the MySQL database, has a protected routes, and audited activity (history).",
      *     tags={"Inventory"},
      *     security={{"bearerAuth":{}}},

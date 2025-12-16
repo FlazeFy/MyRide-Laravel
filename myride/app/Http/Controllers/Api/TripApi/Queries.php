@@ -22,13 +22,13 @@ class Queries extends Controller
     /**
      * @OA\GET(
      *     path="/api/v1/trip",
-     *     summary="Get all trip history",
-     *     description="This request is used to get all trip history with pagination. This request is using MySql database, and have a protected routes.",
+     *     summary="Get All Trip History",
+     *     description="This request is used to get all trip history. This request interacts with the MySQL database, has a protected routes, and a pagination.",
      *     tags={"Trip"},
      *     security={{"bearerAuth":{}}},
      *     @OA\Response(
      *         response=200,
-     *         description="trip fetched",
+     *         description="Trip fetched successfully. Ordered in descending order by `created_at`",
      *         @OA\JsonContent(
      *             @OA\Property(property="status", type="string", example="success"),
      *             @OA\Property(property="message", type="string", example="trip fetched"),
@@ -89,11 +89,10 @@ class Queries extends Controller
             $user_id = $request->user()->id;
             $limit = $request->query("limit",14);
 
-            // Model
+            // Get all trip with pagination
             $res = TripModel::getAllTrip($user_id,$limit);
-
-            // Response
             if($res && count($res) > 0) {
+                // Return success response
                 return response()->json([
                     'status' => 'success',
                     'message' => Generator::getMessageTemplate("fetch", $this->module),
@@ -116,13 +115,13 @@ class Queries extends Controller
     /**
      * @OA\GET(
      *     path="/api/v1/trip/driver/{driver_id}",
-     *     summary="Get all trip history by driver id",
-     *     description="This request is used to get all trip history by driver id with pagination. This request is using MySql database, and have a protected routes.",
+     *     summary="Get All Trip History By Driver ID",
+     *     description="This request is used to get all trip history by given `driver_id`. This request interacts with the MySQL database, has a protected routes, and a pagination.",
      *     tags={"Trip"},
      *     security={{"bearerAuth":{}}},
      *     @OA\Response(
      *         response=200,
-     *         description="trip fetched",
+     *         description="Trip fetched successfully. Ordered in descending order by `created_at`",
      *         @OA\JsonContent(
      *             @OA\Property(property="status", type="string", example="success"),
      *             @OA\Property(property="message", type="string", example="trip fetched"),
@@ -180,16 +179,16 @@ class Queries extends Controller
             $user_id = $request->user()->id;
             $limit = $request->query("limit",14);
 
-            // Model
+            // Get all trip with pagination by driver_id
             $res = TripModel::getAllTrip($user_id,$limit,$driver_id);
-
-            // Response
             if(count($res) > 0) {
+                // Remove id and driver_fullname
                 $res->getCollection()->transform(function ($item) {
                     unset($item->id, $item->driver_fullname); 
                     return $item;
                 });
 
+                // Return success response
                 return response()->json([
                     'status' => 'success',
                     'message' => Generator::getMessageTemplate("fetch", $this->module),
@@ -212,13 +211,13 @@ class Queries extends Controller
     /**
      * @OA\GET(
      *     path="/api/v1/trip/last",
-     *     summary="Get last trip",
-     *     description="This request is used to get the last trip. This request is using MySql database, and have a protected routes.",
+     *     summary="Get Last Trip",
+     *     description="This request is used to get the last trip. This request interacts with the MySQL database, and has a protected routes.",
      *     tags={"Trip"},
      *     security={{"bearerAuth":{}}},
      *     @OA\Response(
      *         response=200,
-     *         description="trip fetched",
+     *         description="Trip fetched successfully",
      *         @OA\JsonContent(
      *             @OA\Property(property="status", type="string", example="success"),
      *             @OA\Property(property="message", type="string", example="trip fetched"),
@@ -263,11 +262,10 @@ class Queries extends Controller
         try{
             $user_id = $request->user()->id;
 
-            // Model
+            // Get last trip
             $res = TripModel::getLastTrip($user_id);
-
-            // Response
             if($res) {
+                // Return success response
                 return response()->json([
                     'status' => 'success',
                     'message' => Generator::getMessageTemplate("fetch", $this->module),
@@ -290,13 +288,13 @@ class Queries extends Controller
     /**
      * @OA\GET(
      *     path="/api/v1/trip/discovered",
-     *     summary="Get trip discovered summary",
-     *     description="This request is used to get trip discovered summary. This request is using MySql database, and have a protected routes.",
+     *     summary="Get Trip Discovered Summary",
+     *     description="This request is used to get trip discovered summary. This request interacts with the MySQL database, and has a protected routes.",
      *     tags={"Trip"},
      *     security={{"bearerAuth":{}}},
      *     @OA\Response(
      *         response=200,
-     *         description="trip fetched",
+     *         description="Trip fetched successfully",
      *         @OA\JsonContent(
      *             @OA\Property(property="status", type="string", example="success"),
      *             @OA\Property(property="message", type="string", example="trip fetched"),
@@ -336,19 +334,20 @@ class Queries extends Controller
     public function getTripDiscovered(Request $request)
     {
         try{
+            // Check whether authentication is attached. If yes, retrieve statistics by user; if not, retrieve statistics for all users
             if ($request->hasHeader('Authorization')) {
                 $user = Auth::guard('sanctum')->user(); 
                 $user_id = $user ? $user->id : null;
             } else {
                 $user_id = null;
             }
+            
+            // This will get all trip if vehicle_id not attached
             $vehicle_id = $request->query("vehicle_id",null);
-
-            // Model
+            // Get trip discovered stats
             $res = TripModel::getTripDiscovered($user_id,$vehicle_id);
-
-            // Response
             if ($res && $res['last_update']) {
+                // Return success response
                 return response()->json([
                     'status' => 'success',
                     'message' => Generator::getMessageTemplate("fetch", $this->module),
