@@ -4,7 +4,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Api\AuthApi\Commands as CommandAuthApi;
-use App\Http\Controllers\Api\AuthApi\Queries as QueryAuthApi;
 use App\Http\Controllers\Api\VehicleApi\Queries as QueriesVehicleApi;
 use App\Http\Controllers\Api\VehicleApi\Commands as CommandsVehicleApi;
 use App\Http\Controllers\Api\WashApi\Queries as QueriesWashController;
@@ -35,12 +34,12 @@ use App\Http\Controllers\Api\ErrorApi\Commands as CommandsErrorController;
 
 ######################### Public Route #########################
 
-Route::post('/v1/login', [CommandAuthApi::class, 'login']);
+Route::post('/v1/login', [CommandAuthApi::class, 'postLogin']);
 
 Route::prefix('/v1/register')->group(function () {
-    Route::post('/token', [CommandAuthApi::class, 'get_register_validation_token']);
-    Route::post('/account', [CommandAuthApi::class, 'post_validate_register']);
-    Route::post('/regen_token', [CommandAuthApi::class, 'regenerate_register_token']);
+    Route::post('/token', [CommandAuthApi::class, 'getRegisterValidationToken']);
+    Route::post('/account', [CommandAuthApi::class, 'postValidateRegister']);
+    Route::post('/regen_token', [CommandAuthApi::class, 'regenerateRegisterToken']);
 });
 
 Route::prefix('/v1/stats')->group(function () {
@@ -65,7 +64,7 @@ Route::prefix('/v1/dictionary')->group(function () {
 
 ######################### Private Route #########################
 
-Route::post('/v1/logout', [QueryAuthApi::class, 'logout'])->middleware(['auth:sanctum']);
+Route::post('/v1/logout', [CommandAuthApi::class, 'postLogout'])->middleware(['auth:sanctum']);
 
 Route::prefix('/v1/vehicle')->middleware(['auth:sanctum'])->group(function () {
     Route::post('/', [CommandsVehicleApi::class, 'postVehicle']);
@@ -108,7 +107,7 @@ Route::prefix('/v1/history')->middleware(['auth:sanctum'])->group(function () {
 
 Route::prefix('/v1/error')->middleware(['auth:sanctum'])->group(function () {
     Route::get('/', [QueriesErrorController::class, 'getAllError']);
-    Route::delete('/destroy/{id}', [CommandsErrorController::class, 'hard_delete_error_by_id']);
+    Route::delete('/destroy/{id}', [CommandsErrorController::class, 'hardDeleteErrorById']);
 });
 
 Route::prefix('/v1/reminder')->middleware(['auth:sanctum'])->group(function () {
@@ -182,12 +181,12 @@ Route::prefix('/v1/inventory')->middleware(['auth:sanctum'])->group(function () 
 });
 
 Route::prefix('/v1/user')->middleware(['auth:sanctum'])->group(function () {
-    Route::get('/', [QueriesUserController::class, 'get_all_user']);
-    Route::get('/my_year', [QueriesUserController::class, 'get_content_year']);
-    Route::get('/my_profile', [QueriesUserController::class, 'get_my_profile']);
-    Route::put('/update_telegram_id', [CommandsUserController::class, 'update_telegram_id']);
-    Route::put('/validate_telegram_id', [CommandsUserController::class, 'validate_telegram_id']);
-    Route::put('/update_profile', [CommandsUserController::class, 'update_profile']);
+    Route::get('/', [QueriesUserController::class, 'getAllUser']);
+    Route::get('/my_year', [QueriesUserController::class, 'getContentYear']);
+    Route::get('/my_profile', [QueriesUserController::class, 'getMyProfile']);
+    Route::put('/update_telegram_id', [CommandsUserController::class, 'updateTelegramId']);
+    Route::put('/validate_telegram_id', [CommandsUserController::class, 'validateTelegramId']);
+    Route::put('/update_profile', [CommandsUserController::class, 'updateProfile']);
 });
 
 Route::prefix('/v1/export')->middleware(['auth:sanctum'])->group(function () {

@@ -14,7 +14,6 @@ use App\Models\ValidateRequestModel;
 // Helpers
 use App\Helpers\Validation;
 use App\Helpers\Generator;
-
 // Mailer
 use App\Jobs\UserJob;
 
@@ -96,7 +95,7 @@ class Commands extends Controller
      *     ),
      * )
      */
-    public function login(Request $request)
+    public function postLogin(Request $request)
     {
         try {
             // Validate request body
@@ -187,7 +186,7 @@ class Commands extends Controller
      *     ),
      * )
      */
-    public function get_register_validation_token(Request $request)
+    public function getRegisterValidationToken(Request $request)
     {
         try{
             // Check if account exist by username
@@ -294,7 +293,7 @@ class Commands extends Controller
      *     ),
      * )
      */
-    public function post_validate_register(Request $request)
+    public function postValidateRegister(Request $request)
     {
         try{
             // Validate request body
@@ -410,7 +409,7 @@ class Commands extends Controller
      *     ),
      * )
      */
-    public function regenerate_register_token(Request $request)
+    public function regenerateRegisterToken(Request $request)
     {
         try{
             $username = $request->username;
@@ -477,6 +476,61 @@ class Commands extends Controller
                     ], Response::HTTP_INTERNAL_SERVER_ERROR);
                 }
             }
+        } catch(\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => Generator::getMessageTemplate("unknown_error", null),
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
+     * @OA\POST(
+     *     path="/api/v1/logout",
+     *     summary="Post Log Out",
+     *     description="This authentication request is used to sign out from application or reset current session. This request interacts with the MySQL database.",
+     *     tags={"Auth"},
+     *     security={{"bearerAuth":{}}},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Logout success",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="message", type="string", example="Logout success"),
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="protected route need to include sign in token as authorization bearer",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="failed"),
+     *             @OA\Property(property="message", type="string", example="you need to include the authorization token from login")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal Server Error",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="error"),
+     *             @OA\Property(property="message", type="string", example="something wrong. please contact admin")
+     *         )
+     *     ),
+     * )
+     */
+    public function postLogout(Request $request)
+    {
+        try {
+            $user_id = $request->user()->id;
+
+            // Reset session & token
+            session()->flush();
+            $request->user()->currentAccessToken()->delete();
+
+            // Return success response
+            return response()->json([
+                'status' => 'success',
+                'message' => Generator::getMessageTemplate("custom", 'logout success')
+            ], Response::HTTP_OK);
         } catch(\Exception $e) {
             return response()->json([
                 'status' => 'error',

@@ -72,7 +72,7 @@ class Commands extends Controller
      *     ),
      * )
      */
-    public function update_telegram_id(Request $request)
+    public function updateTelegramId(Request $request)
     {
         try{
             $user_id = $request->user()->id;
@@ -177,7 +177,7 @@ class Commands extends Controller
      *     ),
      * )
      */
-    public function validate_telegram_id(Request $request){
+    public function validateTelegramId(Request $request){
         try{
             $user_id = $request->user()->id;
 
@@ -280,7 +280,7 @@ class Commands extends Controller
      *     ),
      * )
      */
-    public function update_profile(Request $request)
+    public function updateProfile(Request $request)
     {
         try{
             $user_id = $request->user()->id;
