@@ -366,4 +366,79 @@ class Queries extends Controller
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
+
+    /**
+     * @OA\GET(
+     *     path="/api/v1/trip/coordinate/{trip_location_name}",
+     *     summary="Get Trip History Coordinate By Location Name",
+     *     description="This request is used to get trip history's coordinate by given `trip_location_name`. This request interacts with the MySQL database, and has a protected routes.",
+     *     tags={"Trip"},
+     *     security={{"bearerAuth":{}}},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Trip fetched successfully. Ordered in ascending order by `trip_location_name`",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="message", type="string", example="trip fetched"),
+     *             @OA\Property(property="data", type="array",
+     *                  @OA\Items(
+     *                      @OA\Property(property="trip_location_coordinate", type="string", example="-6.177362076836449,106.79156507985539"),
+     *                      @OA\Property(property="trip_location_name", type="string", example="Location A")
+     *                  )
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="protected route need to include sign in token as authorization bearer",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="failed"),
+     *             @OA\Property(property="message", type="string", example="you need to include the authorization token from login")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="trip failed to fetched",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="failed"),
+     *             @OA\Property(property="message", type="string", example="trip not found")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal Server Error",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="error"),
+     *             @OA\Property(property="message", type="string", example="something wrong. please contact admin")
+     *         )
+     *     ),
+     * )
+     */
+    public function getCoordinateByTripLocationName(Request $request, $trip_location_name)
+    {
+        try{
+            $user_id = $request->user()->id;
+
+            // Get trip history's coordinate by trip location name
+            $res = TripModel::getCoordinateByTripLocationName($user_id,$trip_location_name);
+            if(count($res) > 0) {
+                // Return success response
+                return response()->json([
+                    'status' => 'success',
+                    'message' => Generator::getMessageTemplate("fetch", $this->module),
+                    'data' => $res
+                ], Response::HTTP_OK);
+            } else {
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => Generator::getMessageTemplate("not_found", $this->module),
+                ], Response::HTTP_NOT_FOUND);
+            }
+        } catch(\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage(),
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
 }

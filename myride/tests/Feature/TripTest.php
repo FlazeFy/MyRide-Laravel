@@ -102,6 +102,40 @@ class TripTest extends TestCase
         Audit::auditRecordSheet("Test - Get All Trip", "TC-XXX", 'TC-XXX test_get_all_trip', json_encode($data));
     }
 
+    public function test_get_trip_history_coordinate_by_location_name(): void
+    {
+        // Exec
+        $token = $this->login_trait("user");
+        $location_name = "my";
+        $response = $this->httpClient->get("coordinate/$location_name", [
+            'headers' => [
+                'Authorization' => "Bearer $token"
+            ]
+        ]);
+
+        $data = json_decode($response->getBody(), true);
+
+        // Test Parameter
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertArrayHasKey('status', $data);
+        $this->assertEquals('success', $data['status']);
+        $this->assertArrayHasKey('message', $data);
+        $this->assertArrayHasKey('data', $data);
+
+        foreach ($data['data'] as $dt) {
+            $check_object = ["trip_location_name","trip_location_coordinate"];
+
+            foreach ($check_object as $col) {
+                $this->assertArrayHasKey($col, $dt);
+                $this->assertNotNull($dt[$col]);
+                $this->assertIsString($dt[$col]);
+            }
+        }
+
+        Audit::auditRecordText("Test - Get Trip History Coordinate By Location Name", "TC-XXX", "Result : ".json_encode($data));
+        Audit::auditRecordSheet("Test - Get Trip History Coordinate By Location Name", "TC-XXX", 'TC-XXX test_get_trip_history_coordinate_by_location_name', json_encode($data));
+    }
+
     public function test_get_last_trip(): void
     {
         // Exec

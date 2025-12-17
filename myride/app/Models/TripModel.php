@@ -44,6 +44,25 @@ class TripModel extends Model
             ->get();
     }
 
+    public static function getCoordinateByTripLocationName($user_id,$trip_location_name){
+        $origin = TripModel::selectRaw('trip_origin_name as trip_location_name, trip_origin_coordinate as trip_location_coordinate')
+            ->where('trip_origin_name', 'like', "%{$trip_location_name}%")
+            ->where('created_by', $user_id)
+            ->groupBy('trip_location_name');
+
+        $destination = TripModel::selectRaw('trip_destination_name as trip_location_name, trip_destination_coordinate as trip_location_coordinate')
+            ->where('trip_origin_name', 'like', "%{$trip_location_name}%")
+            ->where('created_by', $user_id)
+            ->groupBy('trip_location_name');
+
+        $combined = $origin->union($destination)
+            ->orderBy('trip_location_name','ASC')
+            ->limit(14)
+            ->get();
+
+        return $combined;
+    }
+
     public static function getLastTrip($user_id){
         return TripModel::select('trip_destination_name','trip_destination_coordinate','driver.username as driver_username','vehicle_plate_number','trip.created_at','vehicle_type')
             ->join('vehicle','vehicle.id','=','trip.vehicle_id')

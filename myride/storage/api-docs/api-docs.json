@@ -715,7 +715,7 @@
                                                 },
                                                 "message": {
                                                     "type": "string",
-                                                    "example": "dictionary type must be one of the following values trip_category, vehicle_merk, vehicle_type, vehicle_category, vehicle_status, vehicle_default_fuel, vehicle_fuel_status, vehicle_transmission_code"
+                                                    "example": "dictionary type must be one of the following values trip_category, vehicle_merk, vehicle_type, vehicle_category, vehicle_status, vehicle_default_fuel, vehicle_fuel_status, vehicle_transmission"
                                                 }
                                             },
                                             "type": "object"
@@ -785,7 +785,7 @@
                     "Dictionary"
                 ],
                 "summary": "Get Dictionary By Type",
-                "description": "This request is used to get dictionary by its `dictionary_type`, that can be trip_category, vehicle_merk, vehicle_type, vehicle_category, vehicle_status, vehicle_default_fuel, vehicle_fuel_status, or vehicle_transmission_code. This request interacts with the MySQL database and can be accessed as public routes or protected routes. When accessed with a token (protected routes), the returned list includes both public and private dictionaries. When accessed without a token, only public dictionaries are returned.",
+                "description": "This request is used to get dictionary by its `dictionary_type`, that can be trip_category, vehicle_merk, vehicle_type, vehicle_category, vehicle_status, vehicle_default_fuel, vehicle_fuel_status, or vehicle_transmission. This request interacts with the MySQL database and can be accessed as public routes or protected routes. When accessed with a token (protected routes), the returned list includes both public and private dictionaries. When accessed without a token, only public dictionaries are returned.",
                 "operationId": "c6cd36c8c3508387249c596947b82e6f",
                 "parameters": [
                     {
@@ -8377,6 +8377,119 @@
                                                 }
                                             },
                                             "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "protected route need to include sign in token as authorization bearer",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "you need to include the authorization token from login"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "trip failed to fetched",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "trip not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "something wrong. please contact admin"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/trip/coordinate/{trip_location_name}": {
+            "get": {
+                "tags": [
+                    "Trip"
+                ],
+                "summary": "Get Trip History Coordinate By Location Name",
+                "description": "This request is used to get trip history's coordinate by given `trip_location_name`. This request interacts with the MySQL database, and has a protected routes.",
+                "operationId": "e0440c6d7333fed414b752f7d4798b73",
+                "responses": {
+                    "200": {
+                        "description": "Trip fetched successfully. Ordered in ascending order by `trip_location_name`",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "trip fetched"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "trip_location_coordinate": {
+                                                        "type": "string",
+                                                        "example": "-6.177362076836449,106.79156507985539"
+                                                    },
+                                                    "trip_location_name": {
+                                                        "type": "string",
+                                                        "example": "Location A"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
                                         }
                                     },
                                     "type": "object"
