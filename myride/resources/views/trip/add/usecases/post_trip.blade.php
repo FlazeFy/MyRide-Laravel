@@ -171,3 +171,5 @@
         await get_context_opt('trip_category',token)
     })()
 </script>
+
+@include('trip.add.usecases.get_trip_coordinate_by_location_name')
