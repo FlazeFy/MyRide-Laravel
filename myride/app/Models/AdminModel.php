@@ -107,4 +107,8 @@ class AdminModel extends Authenticatable
     public static function isUsernameUsed($username){
         return AdminModel::where('username',$username)->exists();
     }
+
+    public static function getByUsername($username){
+        return AdminModel::where('username',$username)->first();
+    }
 }

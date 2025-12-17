@@ -10,7 +10,7 @@
             </tr>
         </thead>
         <tbody id="list_attached_inventory-holder">
-            <tr><th scope="row" colspan="4" class="fst-italic fw-normal">- No Inventory Found -</th></tr>
+            <tr><td scope="row" colspan="4" class="no-msg-text">- No Inventory Found -</td></tr>
         </tbody>
     </table>
 </div>
@@ -21,7 +21,7 @@
         if(id !== "-"){
             get_vehicle_attached_inventory(id)
         } else {
-            $(`#${holder}`).html(`<th scope="row" colspan="4" class="no-msg-text">- No Inventory Found -</th>`)
+            $(`#${holder}`).html(`<tr><td scope="row" colspan="4" class="no-msg-text">- No Inventory Found -</td></tr>`)
         }
     })
 
@@ -56,7 +56,7 @@
                 if(response.status !== 404){
                     generateApiError(response, true)                
                 } else {
-                    $(`#${holder}`).html(`<th scope="row" colspan="4" class="no-msg-text">- No Inventory Found -</th>`)
+                    $(`#${holder}`).html(`<tr><td scope="row" colspan="4" class="no-msg-text">- No Inventory Found -</td></tr>`)
                 }
             }
         });

@@ -7,7 +7,7 @@
         </div>
         <div class="col-xl-2 col-lg-4 col-md-4 col-sm-5 col-12">
             <label>Transmission</label>
-            <select class="form-select" aria-label="Default select example" name="vehicle_transmission_code" id="vehicle_transmission_code">
+            <select class="form-select" aria-label="Default select example" name="vehicle_transmission" id="vehicle_transmission">
                 <option value="Manual">Manual</option>
                 <option value="Automatic">Automatic</option>
                 <option value="CVT">CVT</option>

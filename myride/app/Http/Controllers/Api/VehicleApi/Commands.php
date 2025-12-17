@@ -122,18 +122,7 @@ class Commands extends Controller
     public function putVehicleDetailById(Request $request, $id)
     {
         try{
-            // Tidy up vehicle transmission request
-            $vehicle_transmission = null;
-            if ($request->vehicle_transmission === "MT") {
-                $vehicle_transmission = "Manual";
-            } else if ($request->vehicle_transmission === "AT") {
-                $vehicle_transmission = "Automatic";
-            } else if ($request->vehicle_transmission === "CVT") {
-                $vehicle_transmission = "CVT"; 
-            }
-
             // Validate request body
-            $request->merge(['vehicle_transmission' => $vehicle_transmission]);
             $validator = Validation::getValidateVehicle($request,'detail');
             if ($validator->fails()) {
                 return response()->json([
@@ -142,7 +131,7 @@ class Commands extends Controller
                 ], Response::HTTP_BAD_REQUEST);
             } else {
                 $user_id = $request->user()->id;
-                $vehicle_name = $request->vehicle_name." ".$request->vehicle_transmission_code;
+                $vehicle_name = $request->vehicle_name." ".$request->vehicle_transmission;
                 $vehicle_plate_number = $request->vehicle_plate_number;
 
                 // Update vehicle by ID
@@ -161,7 +150,7 @@ class Commands extends Controller
                     'vehicle_fuel_capacity' => $request->vehicle_fuel_capacity,
                     'vehicle_default_fuel' => $request->vehicle_default_fuel,
                     'vehicle_color' => $request->vehicle_color,
-                    'vehicle_transmission' => $vehicle_transmission,
+                    'vehicle_transmission' => $request->vehicle_transmission,
                     'vehicle_capacity' => $request->vehicle_capacity,
                 ], $id, $user_id);
                 if($rows > 0){
@@ -725,7 +714,7 @@ class Commands extends Controller
                 ], Response::HTTP_BAD_REQUEST);
             } else {
                 $user_id = $request->user()->id;
-                $vehicle_name = $request->vehicle_name." ".$request->vehicle_transmission_code;
+                $vehicle_name = $request->vehicle_name." ".$request->vehicle_transmission;
                 $vehicle_plate_number = $request->vehicle_plate_number;
                 $extra_msg = null;
 

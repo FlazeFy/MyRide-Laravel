@@ -56,10 +56,11 @@ class ServiceModel extends Model
         $res = ServiceModel::select('service.id', 'service_category', 'service_price_total', 'service_location', 'service_note', 'created_at', 'remind_at');
 
         if($user_id){
-            $res = $res->where('service.created_by', $user_id);
+            $res = $res->where('created_by', $user_id);
         }
             
-        return $res->orderBy('remind_at', 'desc') 
+        return $res->where('vehicle_id',$vehicle_id)
+            ->orderBy('remind_at', 'desc') 
             ->orderBy('created_at', 'desc')
             ->get();  
     }

@@ -23,7 +23,7 @@ class Queries extends Controller
      * @OA\GET(
      *     path="/api/v1/dictionary/type/{type}",
      *     summary="Get Dictionary By Type",
-     *     description="This request is used to get dictionary by its `dictionary_type`, that can be trip_category, vehicle_merk, vehicle_type, vehicle_category, vehicle_status, vehicle_default_fuel, vehicle_fuel_status, or vehicle_transmission_code. This request interacts with the MySQL database and can be accessed as public routes or protected routes. When accessed with a token (protected routes), the returned list includes both public and private dictionaries. When accessed without a token, only public dictionaries are returned.",
+     *     description="This request is used to get dictionary by its `dictionary_type`, that can be trip_category, vehicle_merk, vehicle_type, vehicle_category, vehicle_status, vehicle_default_fuel, vehicle_fuel_status, or vehicle_transmission. This request interacts with the MySQL database and can be accessed as public routes or protected routes. When accessed with a token (protected routes), the returned list includes both public and private dictionaries. When accessed without a token, only public dictionaries are returned.",
      *     tags={"Dictionary"},
      *     @OA\Parameter(
      *         name="type",

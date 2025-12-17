@@ -51,7 +51,7 @@
                 if(response.status !== 404){
                     generateApiError(response, true)
                 } else {
-                    $(`#${holder}`).html(`<th scope="row" colspan="3" class="no-msg-text">- No Service Found -</th>`)
+                    $(`#${holder}`).html(`<tr><td scope="row" colspan="3" class="no-msg-text">- No Service Found -</td></tr>`)
                 }
             }
         });

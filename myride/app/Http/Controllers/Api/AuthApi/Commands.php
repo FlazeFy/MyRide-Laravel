@@ -108,11 +108,11 @@ class Commands extends Controller
                 ], Response::HTTP_BAD_REQUEST);
             } else {
                 // Check for Admin account
-                $user = AdminModel::isUsernameUsed($request->username);
+                $user = AdminModel::getByUsername($request->username);
                 $role = 1;
                 if($user == null){
                     // Check for User account
-                    $user = UserModel::isUsernameUsed($request->username);
+                    $user = UserModel::getByUsername($request->username);
                     $role = 0;
 
                     if($user){

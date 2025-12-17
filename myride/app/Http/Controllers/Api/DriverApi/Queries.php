@@ -9,7 +9,6 @@ use App\Http\Controllers\Controller;
 use App\Models\DriverModel;
 use App\Models\VehicleModel;
 use App\Models\AdminModel;
-
 // Helper
 use App\Helpers\Generator;
 

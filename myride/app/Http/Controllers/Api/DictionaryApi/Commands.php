@@ -148,7 +148,7 @@ class Commands extends Controller
      *                 ),
      *                 @OA\Schema(
      *                     @OA\Property(property="status", type="string", example="failed"),
-     *                     @OA\Property(property="message", type="string", example="dictionary type must be one of the following values trip_category, vehicle_merk, vehicle_type, vehicle_category, vehicle_status, vehicle_default_fuel, vehicle_fuel_status, vehicle_transmission_code")
+     *                     @OA\Property(property="message", type="string", example="dictionary type must be one of the following values trip_category, vehicle_merk, vehicle_type, vehicle_category, vehicle_status, vehicle_default_fuel, vehicle_fuel_status, vehicle_transmission")
      *                 ),
      *                 @OA\Schema(
      *                     @OA\Property(property="status", type="string", example="failed"),

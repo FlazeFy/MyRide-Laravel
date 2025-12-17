@@ -18,7 +18,7 @@ class ReminderContextRules implements Rule
 
     public function passes($attribute, $value)
     {
-        $type = ['Service','Trip','Warm Up','Test'];
+        $type = ['Service','Trip','Warm Up','Pick Up','Drop Off'];
 
         foreach ($type as $format) {
             if ($format === $value) {

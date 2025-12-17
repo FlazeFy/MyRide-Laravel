@@ -204,4 +204,8 @@ class UserModel extends Authenticatable
     public static function isUsernameUsed($username){
         return UserModel::where('username',$username)->exists();
     }
+
+    public static function getByUsername($username){
+        return UserModel::where('username',$username)->first();
+    }
 }

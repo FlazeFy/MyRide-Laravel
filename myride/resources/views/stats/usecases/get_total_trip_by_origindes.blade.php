@@ -9,7 +9,7 @@
         list_context.forEach(el => {
             $(`#${ctx_holder}`).append(`
                 <div class="col-xl-6 col-lg-6 col-md-12">
-                    <div class="container"><div id="${el}-holder"></div></div>
+                    <div class="container-fluid mb-0"><div id="${el}-holder"></div></div>
                 </div>
             `)
         });

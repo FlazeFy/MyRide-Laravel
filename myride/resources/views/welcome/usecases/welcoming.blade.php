@@ -37,7 +37,7 @@
                 <h6>Sign In With</h6>
                 <div class="d-flex flex-wrap gap-2 justify-content-center">
                     <a class="btn btn-success" href="/login"><i class="fa-solid fa-play"></i> Basic Account</a>
-                    <a class="btn btn-success"><i class="fa-brands fa-google"></i> Google Sign In</a>
+                    <a class="btn btn-success" href="/auth/google"><i class="fa-brands fa-google"></i> Sign In With Google</a>
                 </div>
             </div>
         @endif

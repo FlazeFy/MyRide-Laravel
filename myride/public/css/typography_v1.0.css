@@ -34,7 +34,6 @@ th, td {
     text-align: center;         
     vertical-align: middle;    
     border: 1.75px solid var(--secondaryColor) !important; 
-    color: var(--whiteColor) !important;
 }
 thead th {
     text-align: center;
