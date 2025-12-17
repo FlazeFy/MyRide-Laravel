@@ -255,7 +255,7 @@ class TripModel extends Model
 
     public static function createTrip($data, $user_id){
         $data['id'] = Generator::getUUID();
-        $data['created_at'] = date('Y-m-d H:i:s');
+        $data['created_at'] = $data['created_at'] ?? date('Y-m-d H:i:s');
         $data['created_by'] = $user_id;
         $data['deleted_at'] = null;
         $data['updated_at'] = null;

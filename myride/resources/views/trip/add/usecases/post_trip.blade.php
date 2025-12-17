@@ -27,8 +27,6 @@
                     <label>Driver</label>
                     <select class="form-select" name="driver_id" id="driver_holder" aria-label="Default select example"></select>
                 </div>
-            </div>
-            <div class="row">
                 <div class="col-lg-6 col-md-6 col-sm-12">
                     <label>Description</label>
                     <textarea class="form-control" name="trip_desc" id="trip_desc" required></textarea>
@@ -48,8 +46,6 @@
                     <label>Trip Destination Name</label>
                     <input class="form-control" name="trip_destination_name" id="trip_destination_name" requried>
                 </div>
-            </div>
-            <div class="row">
                 <div class="col-lg-6 col-md-6 col-sm-12">
                     <label>Trip Origin Coordinate</label>
                     <input class="form-control form-validator" data-validator="must_coordinate" name="trip_origin_coordinate" id="trip_origin_coordinate" requried>
@@ -57,6 +53,10 @@
                 <div class="col-lg-6 col-md-6 col-sm-12">
                     <label>Trip Destination Coordinate</label>
                     <input class="form-control form-validator" data-validator="must_coordinate" name="trip_destination_coordinate" id="trip_destination_coordinate" requried>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-12">
+                    <label>Departure At</label>
+                    <input class="form-control" name="departure_at" id="departure_at" type="datetime-local">
                 </div>
             </div>
             <div class="row">
@@ -74,6 +74,10 @@
 <script type="text/javascript">
     let map
     let markerCounter = 0
+
+    let now = new Date()
+    let departureAt = now.getFullYear() + "-" + String(now.getMonth() + 1).padStart(2, '0') + "-" + String(now.getDate()).padStart(2, '0') + "T" + String(now.getHours()).padStart(2, '0') + ":" + String(now.getMinutes()).padStart(2, '0');
+    $("#departure_at").val(departureAt)
 
     function initMap() {
         map = new google.maps.Map(document.getElementById("map-board"), {

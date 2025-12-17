@@ -124,7 +124,7 @@ class Commands extends Controller
                     $trip_destination_name = $request->trip_destination_name;
 
                     // Create trip
-                    $rows = TripModel::createTrip([
+                    $data = [
                         'vehicle_id' => $vehicle_id, 
                         'driver_id' => $driver_id,
                         'trip_desc' => $request->trip_desc, 
@@ -134,7 +134,12 @@ class Commands extends Controller
                         'trip_origin_coordinate' => $request->trip_origin_coordinate, 
                         'trip_destination_name' => $trip_destination_name, 
                         'trip_destination_coordinate' => $request->trip_destination_coordinate, 
-                    ],$user_id);
+                    ];
+                    // If departure time not defined, just use current time
+                    if($request->departure_at){
+                        $data['created_at'] = $request->departure_at;
+                    }
+                    $rows = TripModel::createTrip($data,$user_id);
 
                     if($rows){
                         // Get user social contact
