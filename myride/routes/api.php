@@ -39,7 +39,7 @@ Route::post('/v1/login', [CommandAuthApi::class, 'postLogin']);
 Route::prefix('/v1/register')->group(function () {
     Route::post('/token', [CommandAuthApi::class, 'getRegisterValidationToken']);
     Route::post('/account', [CommandAuthApi::class, 'postValidateRegister']);
-    Route::post('/regen_token', [CommandAuthApi::class, 'regenerateRegisterToken']);
+    Route::post('/regen_token', [CommandAuthApi::class, 'postRegenerateRegisterToken']);
 });
 
 Route::prefix('/v1/stats')->group(function () {

@@ -409,24 +409,28 @@ class Commands extends Controller
      *     ),
      * )
      */
-    public function regenerateRegisterToken(Request $request)
+    public function postRegenerateRegisterToken(Request $request)
     {
         try{
             $username = $request->username;
 
             // Check if request valid
             $valid = ValidateRequestModel::isUserRequestValid('register',null,$username);
+            // Generate token
+            $token_length = 6;
+            $token = Generator::getTokenValidation($token_length);
+
+            // Create register token
+            $data_req = (object)[
+                'request_type' => 'register',
+                'request_context' => $token
+            ];
             if($valid){
                 // If token still fresh but user request a new one
                 // Delete request after validation
                 $delete = ValidateRequestModel::destroy($valid->id);
                 if($delete > 0){
-                    // Generate token
-                    $token_length = 6;
-                    $token = Generator::getTokenValidation($token_length);
-
-                    // Create register token
-                    $valid_insert = ValidateRequestModel::createValidateRequest('register', $token, $username);
+                    $valid_insert = ValidateRequestModel::createValidateRequest($data_req, $username);
 
                     if($valid_insert){
                         // Send email regenerate token
@@ -455,7 +459,7 @@ class Commands extends Controller
             } else {
                 // If token already deleted / expired
                 // Create register token
-                $valid_insert = ValidateRequestModel::createValidateRequest('register', $token, $username);
+                $valid_insert = ValidateRequestModel::createValidateRequest($data_req, $username);
 
                 if($valid_insert){
                     // Send email regenerate token
