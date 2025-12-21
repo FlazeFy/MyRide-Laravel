@@ -35,6 +35,14 @@ class TripModel extends Model
         return $res->isNotEmpty() ? $res : null;
     }
 
+    public static function getTripCalendar($user_id){
+        return TripModel::selectRaw("CONCAT(trip_destination_name, ' - ', trip_destination_name) AS trip_location_name, vehicle.vehicle_plate_number,trip.created_at")
+            ->leftjoin('vehicle','vehicle.id','=','trip.vehicle_id')
+            ->where('trip.created_by',$user_id)
+            ->orderby('trip.created_at','DESC')
+            ->get();
+    }
+
     public static function getTotalTripByCategory($user_id){
         return TripModel::selectRaw('trip_category as context, COUNT(1) as total')
             ->where('created_by', $user_id)

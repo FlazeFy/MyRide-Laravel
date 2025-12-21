@@ -621,7 +621,7 @@ class Commands extends Controller
     }
 
     /**
-     * @OA\PUT(
+     * @OA\POST(
      *     path="/api/v1/vehicle",
      *     summary="Post Create Vehicle",
      *     description="This request is used to create a new vehicle using `vehicle_name`, `vehicle_merk`, `vehicle_type`, `vehicle_price`, `vehicle_distance`, `vehicle_category`, `vehicle_status`, `vehicle_year_made`, `vehicle_plate_number`, `vehicle_fuel_status`, `vehicle_default_fuel`, `vehicle_color`, `vehicle_transmission`, `vehicle_capacity`, `vehicle_img_url`, and `vehicle_other_img_url`. This request interacts with the MySQL database, firebase storage (for vehicle_image and vehicle_other_img), broadcast using Telegram, has a protected routes, and audited activity (history).",
@@ -835,6 +835,8 @@ class Commands extends Controller
                                 'parse_mode' => 'HTML'
                             ]);
                         } else {
+                            // Reset telegram from user account if not valid
+                            UserModel::updateUserById([ 'telegram_user_id' => null, 'telegram_is_valid' => 0],$user_id);
                             $extra_msg = ' Telegram ID is invalid. Please check your Telegram ID';
                         }
                     }

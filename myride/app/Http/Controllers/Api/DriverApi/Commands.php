@@ -85,6 +85,8 @@ class Commands extends Controller
             // Define user id by role
             $check_admin = AdminModel::find($user_id);
             $user_id = $check_admin ? null : $user_id;
+
+            // Get driver's contect
             $driver = DriverModel::getDriverContact($id);
 
             // Permanently delete driver

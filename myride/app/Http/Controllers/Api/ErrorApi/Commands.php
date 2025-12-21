@@ -13,6 +13,12 @@ use App\Helpers\Generator;
 
 class Commands extends Controller
 {
+    private $module;
+    public function __construct()
+    {
+        $this->module = "error";
+    }
+
     /**
      * @OA\DELETE(
      *     path="/api/v1/error/destroy/{id}",
@@ -78,12 +84,12 @@ class Commands extends Controller
                     // Return success response
                     return response()->json([
                         'status' => 'success',
-                        'message' => Generator::getMessageTemplate("permentally delete", 'error'),
+                        'message' => Generator::getMessageTemplate("permentally delete", $this->module),
                     ], Response::HTTP_OK);
                 } else {
                     return response()->json([
                         'status' => 'failed',
-                        'message' => Generator::getMessageTemplate("not_found", 'error'),
+                        'message' => Generator::getMessageTemplate("not_found", $this->module),
                     ], Response::HTTP_NOT_FOUND);
                 }
             } else {

@@ -8,7 +8,6 @@ use App\Http\Controllers\Controller;
 // Model
 use App\Models\HistoryModel;
 use App\Models\AdminModel;
-
 // Helper
 use App\Helpers\Generator;
 

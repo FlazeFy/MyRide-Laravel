@@ -16,7 +16,7 @@
                 ],
                 "summary": "Post Login (Basic Auth)",
                 "description": "This authentication request is used to access the application and obtain an authorization token for accessing all protected APIs. This request interacts with the MySQL database.",
-                "operationId": "26ae6f7a2668f358293a502309985206",
+                "operationId": "c313af52425c515aed59e62cb41e35cb",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -171,7 +171,7 @@
                 ],
                 "summary": "Post Register Token",
                 "description": "This authentication request is used to get token validation after register. This request interacts with the MySQL database and using mailer.",
-                "operationId": "11b8431c2504d0fea4b6ecb6da3a1277",
+                "operationId": "92a091431ace008d65f1c2d53cd590c3",
                 "responses": {
                     "200": {
                         "description": "the validation token has been sended to {email} email account",
@@ -243,7 +243,7 @@
                 ],
                 "summary": "Post Register Account",
                 "description": "This authentication request is used to get token validation after register. This request interacts with the MySQL database and using mailer.",
-                "operationId": "b864fe52687c987f1e7726bc56722429",
+                "operationId": "3ae1ac790e1d34518fd37d4fafb3e56e",
                 "responses": {
                     "200": {
                         "description": "account is registered",
@@ -363,7 +363,7 @@
                 ],
                 "summary": "Post Regenerate Registration Token",
                 "description": "This authentication request is used to regenerate a token after user has failed to validate their previous token. This request interacts with the MySQL database and using mailer.",
-                "operationId": "a4fcf6ec4a417ca28f4e76fb9590fbf7",
+                "operationId": "4a13a14dbf02f10af1ee233002116e66",
                 "responses": {
                     "200": {
                         "description": "the validation token has been sended to {email} email account",
@@ -429,13 +429,13 @@
             }
         },
         "/api/v1/logout": {
-            "get": {
+            "post": {
                 "tags": [
                     "Auth"
                 ],
-                "summary": "Get Log Out",
+                "summary": "Post Log Out",
                 "description": "This authentication request is used to sign out from application or reset current session. This request interacts with the MySQL database.",
-                "operationId": "8859fad6cbeb2081a7611f5b944b4630",
+                "operationId": "d0674a59369a9381c3b1913d665ec2fe",
                 "responses": {
                     "200": {
                         "description": "Logout success",
@@ -1996,7 +1996,7 @@
                 ],
                 "summary": "Hard Delete Error By ID",
                 "description": "This request is used to permanently delete an error history based on the provided `ID`. However, it will also search for all errors with the same `message` and delete them. This request interacts with the MySQL database, and has a protected routes (Admin only).",
-                "operationId": "cebb279c5d0f0f7e53c5563ec1612044",
+                "operationId": "79ffb8a9e5e2cf116445bb978339ab9a",
                 "parameters": [
                     {
                         "name": "id",
@@ -8565,6 +8565,124 @@
                 ]
             }
         },
+        "/api/v1/trip/calendar": {
+            "get": {
+                "tags": [
+                    "Trip"
+                ],
+                "summary": "Get Trip As Calendar Format",
+                "description": "This request is used to get all trip data but in calendar format.  This request interacts with the MySQL database, and has protected routes",
+                "operationId": "8e157a961ce8b11281c1d59f68ce0832",
+                "responses": {
+                    "200": {
+                        "description": "Trip fetched successfully. Ordered in descending order by `created_at`",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "trip fetched"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "trip_location_name": {
+                                                        "type": "string",
+                                                        "example": "Location A - Location B"
+                                                    },
+                                                    "vehicle_plate_number": {
+                                                        "type": "string",
+                                                        "example": "D 1710 PWT"
+                                                    },
+                                                    "created_at": {
+                                                        "type": "string",
+                                                        "format": "date-time",
+                                                        "example": "2024-03-19 02:37:58"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "protected route need to include sign in token as authorization bearer",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "you need to include the authorization token from login"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "trip failed to fetched",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "trip not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "something wrong. please contact admin"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/v1/user/update_telegram_id": {
             "put": {
                 "tags": [
@@ -8572,7 +8690,7 @@
                 ],
                 "summary": "Put Update Telegram ID",
                 "description": "This request is used to update user's `telegram_user_id` using given `ID`. This request interacts with the MySQL database, has a protected routes, broadcast message with Telegram, and audited activity (history).",
-                "operationId": "b3319a420453e08af500d97aa4d48b6d",
+                "operationId": "c70d54943ca3414fe4365878ff52e309",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -8688,7 +8806,7 @@
                 ],
                 "summary": "Put Validate Telegram ID Change",
                 "description": "This request is used to validate user's `telegram_user_id` changing request by using given `ID`. This request interacts with the MySQL database, has a protected routes, broadcast message with Telegram, and audited activity (history).",
-                "operationId": "de1ceb7d57fb3bab1493d6315a623752",
+                "operationId": "877b4295ac0cfe56576db89f4d4b4762",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -8779,7 +8897,7 @@
                 ],
                 "summary": "Put Update Profile",
                 "description": "This request is used to update user profile. The updated field are `email`, `username`, and `telegram_user_id`. This request interacts with the MySQL database, has a protected routes, broadcast message with Telegram, and audited activity (history).",
-                "operationId": "d8307a36aad6b3e10693a92193f8d4ad",
+                "operationId": "d5ace13a02be6746143b151df9c9cde0",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -8904,7 +9022,7 @@
                 ],
                 "summary": "Get My Profile",
                 "description": "This request is used to get user profile info. This request interacts with the MySQL database, and has a protected routes.",
-                "operationId": "c286fe042f9492a53f1a424547fa83e4",
+                "operationId": "b2acc664d9f1c1787fe8c4f3ecc7d583",
                 "responses": {
                     "200": {
                         "description": "User fetched successfully",
@@ -9057,7 +9175,7 @@
                 ],
                 "summary": "Get All User",
                 "description": "This request is used to get all user. This request interacts with the MySQL database, has a protected routes (Admin only), and a pagination.",
-                "operationId": "0068e396297c4f55d9c717181a67e82b",
+                "operationId": "40b8390ae98ad1b43f5079d74a902e0b",
                 "responses": {
                     "200": {
                         "description": "User fetched successfully. Ordered in descending order by `created_at`",
@@ -9213,7 +9331,7 @@
                 ],
                 "summary": "Get My Year Content",
                 "description": "This request is used to get list of year in which the user has created content (Vehicle, Trip, Service, and Wash History). This request interacts with the MySQL database, and has a protected routes.",
-                "operationId": "8f8d65302095f16adbc3960a60221f37",
+                "operationId": "2e2557e28eb79cefb6dc58450258afd3",
                 "responses": {
                     "200": {
                         "description": "User year fetched successfully. Ordered in descending order by `year`",
@@ -9902,13 +10020,13 @@
             }
         },
         "/api/v1/vehicle": {
-            "put": {
+            "post": {
                 "tags": [
                     "Vehicle"
                 ],
                 "summary": "Post Create Vehicle",
                 "description": "This request is used to create a new vehicle using `vehicle_name`, `vehicle_merk`, `vehicle_type`, `vehicle_price`, `vehicle_distance`, `vehicle_category`, `vehicle_status`, `vehicle_year_made`, `vehicle_plate_number`, `vehicle_fuel_status`, `vehicle_default_fuel`, `vehicle_color`, `vehicle_transmission`, `vehicle_capacity`, `vehicle_img_url`, and `vehicle_other_img_url`. This request interacts with the MySQL database, firebase storage (for vehicle_image and vehicle_other_img), broadcast using Telegram, has a protected routes, and audited activity (history).",
-                "operationId": "84aedd7cfe098c421cec5246d6131883",
+                "operationId": "a7112b70314dddf05ccce55888ecddfd",
                 "requestBody": {
                     "required": true,
                     "content": {

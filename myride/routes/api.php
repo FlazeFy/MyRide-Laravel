@@ -162,6 +162,7 @@ Route::prefix('/v1/trip')->middleware(['auth:sanctum'])->group(function () {
     Route::post('/', [CommandsTripController::class, 'postTrip']);
     Route::get('/', [QueriesTripApi::class, 'getAllTrip']);
     Route::get('/last', [QueriesTripApi::class, 'getLastTrip']);
+    Route::get('/calendar', [QueriesTripApi::class, 'getTripCalendar']);
     Route::get('/coordinate/{trip_location_name}', [QueriesTripApi::class, 'getCoordinateByTripLocationName']);
     Route::get('/driver/{driver_id}', [QueriesTripApi::class, 'getAllTripByDriverId']);
     Route::delete('/destroy/{id}', [CommandsTripController::class, 'hardDeleteTripById']);
