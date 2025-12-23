@@ -12,6 +12,7 @@ use App\Http\Controllers\StatsController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\TripController;
+use App\Http\Controllers\TripCalendarController;
 use App\Http\Controllers\AddTripController;
 use App\Http\Controllers\EmbedController;
 use App\Http\Controllers\ReminderController;
@@ -68,7 +69,7 @@ Route::prefix('/wash')->middleware(['auth_v2:sanctum'])->group(function () {
 
 Route::prefix('/trip')->middleware(['auth_v2:sanctum'])->group(function () {
     Route::get('/', [TripController::class, 'index'])->name('trip');
-
+    Route::get('/calendar', [TripCalendarController::class, 'index'])->name('trip_calendar');
     Route::get('/add', [AddTripController::class, 'index'])->name('add_trip');
 });
 

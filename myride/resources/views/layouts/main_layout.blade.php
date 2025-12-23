@@ -63,6 +63,10 @@
     <?php if(preg_match('(fuel|garage|service|wash|trip)', $cleanedUrl)): ?>
         <script src="{{ asset('/js/math_v1.0.js')}}"></script>
     <?php endif; ?>
+    <?php if(preg_match('(calendar)', $cleanedUrl)): ?>
+        <!--Full calendar.-->
+        <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js'></script>
+    <?php endif; ?>
 
     <!-- Swal -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

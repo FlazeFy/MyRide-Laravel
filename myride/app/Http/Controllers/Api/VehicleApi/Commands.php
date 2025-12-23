@@ -755,6 +755,9 @@ class Commands extends Controller
 
                 $vehicle_other_img_url = [];
                 if ($request->hasFile('vehicle_other_img_url')) {
+                    // Get user data
+                    $user = UserModel::getSocial($user_id);
+
                     // Iterate to upload file
                     foreach ($request->file('vehicle_other_img_url') as $file) {
                         if ($file->isValid()) {
@@ -776,8 +779,6 @@ class Commands extends Controller
                             }
             
                             try {
-                                // Get user data
-                                $user = UserModel::getSocial($user_id);
                                 // Upload file to Firebase storage
                                 $vehicle_img_url = Firebase::uploadFile('vehicle', $user_id, $user->username, $file, $file_ext); 
                                 $vehicle_other_img_url[] = (object)[

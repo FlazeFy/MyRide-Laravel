@@ -36,7 +36,7 @@ class TripModel extends Model
     }
 
     public static function getTripCalendar($user_id){
-        return TripModel::selectRaw("CONCAT(trip_destination_name, ' - ', trip_destination_name) AS trip_location_name, vehicle.vehicle_plate_number,trip.created_at")
+        return TripModel::selectRaw("CONCAT(trip_origin_name, ' - ', trip_destination_name) AS trip_location_name, vehicle.vehicle_plate_number,trip.created_at")
             ->leftjoin('vehicle','vehicle.id','=','trip.vehicle_id')
             ->where('trip.created_by',$user_id)
             ->orderby('trip.created_at','DESC')
