@@ -12,7 +12,7 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->uuid('vehicle_id');
             $table->integer('fuel_volume')->length(3);
-            $table->integer('fuel_price_total')->length(9);
+            $table->integer('fuel_price_total')->length(9)->nullable();
             $table->string('fuel_brand', 75);
             $table->string('fuel_type', 75)->nullable();
             $table->integer('fuel_ron')->length(2)->nullable();

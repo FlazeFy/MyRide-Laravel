@@ -10,10 +10,10 @@ return new class extends Migration
     {
         Schema::create('service', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->longText('service_context')->nullable();
+            $table->uuid('vehicle_id');
+            $table->longText('service_note')->nullable();
             $table->string('service_category', 36);
-            $table->boolean('service_is_payment');
-            $table->string('service_payment_amount', 9);
+            $table->string('service_price_total', 9);
             $table->string('service_location', 255);
             $table->string('notes', 1000)->nullable();
             $table->uuid('created_by');
@@ -21,9 +21,11 @@ return new class extends Migration
             // Props
             $table->dateTime('created_at', $precision = 0);
             $table->dateTime('updated_at')->nullable();
+            $table->dateTime('remind_at')->nullable();
 
             // References
             $table->foreign('created_by')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('vehicle_id')->references('id')->on('vehicle')->onDelete('cascade');
         });
     }
 

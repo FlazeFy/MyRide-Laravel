@@ -11,6 +11,7 @@ use App\Models\WashModel;
 use App\Models\FuelModel;
 use App\Models\HistoryModel;
 use App\Models\InventoryModel;
+use App\Models\ServiceModel;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -30,6 +31,7 @@ class DatabaseSeeder extends Seeder
         VehicleModel::truncate();
         UserModel::truncate();
         AdminModel::truncate();
+        ServiceModel::truncate();
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
         // Factory
@@ -43,5 +45,6 @@ class DatabaseSeeder extends Seeder
         FuelModel::factory(200)->create();
         HistoryModel::factory(200)->create();
         InventoryModel::factory(200)->create();
+        ServiceModel::factory(50)->create();
     }
 }

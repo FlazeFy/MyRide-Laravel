@@ -24,20 +24,21 @@ class DictionarySeeder extends Seeder
             'vehicle_transmission' => ['CVT','Manual','Automatic'],
             'vehicle_type' => [
                 'City Car','Minibus','Motorcycle','Hatchback','Sedan','SUV','Pickup Truck',
-                'Convertible','Coupe','Van','Wagon','Crossover','Electric'
+                'Convertible','Coupe','Van','Wagon','Crossover','Electric Vehicle'
             ],
             'vehicle_category' => ['Operational', 'Parents Car', 'Rental', 'Project'],
-            'vehicle_default_fuel' => ['Pertamina Pertalite', 'Pertamina Pertamax', 'Solar', 'Dexlite', 'Shell Super', 'Shell V-Power', 'Shell V-Power Diesel', 'Shell V-Power Nitro+'],
+            'service_category' => ['Routine', 'Repair', 'Inspection', 'Emergency'],
+            'vehicle_default_fuel' => ['Pertamina Pertalite', 'Pertamina Pertamax', 'Pertamina Solar', 'Pertamina Dexlite', 'Shell Super', 'Shell V-Power', 'Shell V-Power Diesel', 'Shell V-Power Nitro+'],
             'trip_category' => [
                 'Culinary Hunting','Business Trip','Family Vacation','Worship','Refreshing','Strolling Around','City Exploration','Nature Retreat',
                 'Cultural Festival','Road Trip','Backpacking','Photography','Shopping','Sport Event',
             ],
             'fuel_ron' => ['90','92','95','98'],
             'fuel_brand' => ['Pertamina','Vivo','BP','Shell','Electric'],
-            'fuel_type_Pertamina' => ['Pertalite', 'Pertamax', 'Pertamax Turbo', 'Dexlite', 'Pertamina Dex'],
+            'fuel_type_Pertamina' => ['Pertalite', 'Pertamax', 'Pertamax Turbo', 'Dexlite', 'Dex'],
             'fuel_type_Vivo' => ['Revvo 89', 'Revvo 92', 'Revvo 95'],
             'fuel_type_BP' => ['BP 90', 'BP 92', 'BP Ultimate'],
-            'fuel_type_Shell' => ['Shell Super', 'Shell V-Power', 'Shell Diesel'],
+            'fuel_type_Shell' => ['Super', 'V-Power', 'Diesel'],
             'inventory_category' => ['Safety', 'Maintenance', 'Personal', 'Electronics', 'Documents'],
             'inventory_storage' => ['Glove Compartment', 'Trunk', 'Dashboard', 'Back Seat Pocket', 'Roof Box'],
         ];
