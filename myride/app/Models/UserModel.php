@@ -188,6 +188,22 @@ class UserModel extends Authenticatable
         return $res;
     }
 
+    public static function getRandomWithVehicleDriver($null){
+        if($null == 0){
+            $data = UserModel::select('users.id')
+                ->join('vehicle','users.id','=','vehicle.created_by')
+                ->join('driver','users.id','=','driver.created_by')
+                ->inRandomOrder()
+                ->take(1)
+                ->first();
+            $res = $data->id;
+        } else {
+            $res = null;
+        }
+        
+        return $res;
+    }
+
     public static function isTelegramIDUsed($telegram_id){
         return UserModel::where('telegram_user_id', $telegram_id)->exists();
     }    

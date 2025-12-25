@@ -126,4 +126,16 @@ class DriverModel extends Authenticatable
         
         return DriverModel::where('created_by',$user_id)->where('id',$id)->update($data);
     }
+
+    // For Seeder
+    public static function getRandom($null, $user_id){
+        if($null == 0){
+            $data = DriverModel::where('created_by',$user_id)->inRandomOrder()->take(1)->first();
+            $res = $data->id;
+        } else {
+            $res = null;
+        }
+        
+        return $res;
+    }
 }
