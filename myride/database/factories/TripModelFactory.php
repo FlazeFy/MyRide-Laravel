@@ -33,7 +33,6 @@ class TripModelFactory extends Factory
         return $locations ? $locations[array_rand($locations)] : null;
     }
 
-
     public function definition(): array
     {
         $ran = mt_rand(0, 1);

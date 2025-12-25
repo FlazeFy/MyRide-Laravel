@@ -41,6 +41,7 @@ class DictionarySeeder extends Seeder
             'fuel_type_Shell' => ['Super', 'V-Power', 'Diesel'],
             'inventory_category' => ['Safety', 'Maintenance', 'Personal', 'Electronics', 'Documents'],
             'inventory_storage' => ['Glove Compartment', 'Trunk', 'Dashboard', 'Back Seat Pocket', 'Roof Box'],
+            'reminder_context' => ['Service','Pick Up','Drop Off','Wash','Trip','Warm Up'],
         ];
         $now = Carbon::now();
 

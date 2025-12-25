@@ -14,6 +14,7 @@ use App\Models\InventoryModel;
 use App\Models\ServiceModel;
 use App\Models\DriverModel;
 use App\Models\DriverVehicleRelationModel;
+use App\Models\ReminderModel;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -36,6 +37,7 @@ class DatabaseSeeder extends Seeder
         AdminModel::truncate();
         ServiceModel::truncate();
         DriverVehicleRelationModel::truncate();
+        ReminderModel::truncate();
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
         // Factory
@@ -52,5 +54,6 @@ class DatabaseSeeder extends Seeder
         InventoryModel::factory(200)->create();
         ServiceModel::factory(50)->create();
         DriverVehicleRelationModel::factory(70)->create();
+        ReminderModel::factory(50)->create();
     }
 }
