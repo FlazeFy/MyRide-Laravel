@@ -46,6 +46,9 @@ thead th {
 table tbody {
     font-size: var(--textMD);
 }
+table tbody h6 {
+    font-size: var(--textXMD);
+}
 
 /* Summary */
 .summary-label {

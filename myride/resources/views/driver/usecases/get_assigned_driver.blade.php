@@ -45,12 +45,12 @@
                 data.vehicle.forEach(dt => {
                     const listDriver = data.assigned ? data.assigned.filter(asg => asg.vehicle_id === dt.id).map(asg => `
                         <div class="d-inline-flex align-items-center pt-2">
-                            <div class="text-center">
+                            <div class="text-start">
                                 <div>
                                     <span class="plate-number me-0"><i class="fa-solid fa-user-tie"></i> ${asg.username}</span>
                                     <a class="btn btn-danger p-0 pt-1 btn-remove-assigned-driver" data-id="${asg.id}" data-vehicle="<b>(${dt.vehicle_plate_number})</b> ${dt.vehicle_name}" data-driver="<b>${asg.username}</b>" style="height: var(--spaceJumbo); width: var(--spaceJumbo);"><i class="fa-solid fa-circle-xmark fa-sm"></i></a>
                                 </div>
-                                <p class="text-secondary mt-2 mb-0 fw-bold">${asg.fullname}</p>
+                                <p class="text-secondary mt-1 mb-0 ms-2 fw-bold">${asg.fullname}</p>
                             </div>
                         </div>
                     `).join("") : null

@@ -724,7 +724,7 @@ class Queries extends Controller
             $user_id = $request->user()->id;
 
             // Get person name that most travelled with
-            $res_most_person_with = TripModel::getMostPersonTripWith($user_id,$id);
+            $res_most_person_with = TripModel::getPersonWithMostTripWith($user_id,$id);
             // Get trip total stats
             $res_most_context_total_trip = TripModel::getMostContext($user_id,$id);
             $res_vehicle_total_trip_distance = TripModel::getTotalTripDistance($user_id,$id);
@@ -738,7 +738,7 @@ class Queries extends Controller
                 'message' => Generator::getMessageTemplate("fetch", $this->module),
                 'data' => [
                     'most_person_with' => $res_most_person_with ? $res_most_person_with[0]->context : null,
-                    'vehicle_total_trip_distance' => $res_vehicle_total_trip_distance,
+                    'vehicle_total_trip_distance' => round($res_vehicle_total_trip_distance,2),
                     'most_origin' => $res_most_origin,
                     'most_destination' => $res_most_destination,
                     'most_category' => $res_most_category,

@@ -41,16 +41,22 @@
                                 <p class="text-secondary mt-2 fw-bold">${dt.vehicle_type}</p>
                             </td>
                             <td class="text-start">
-                                <h6 class="mb-0">Wash By</h6>
-                                <p>${dt.wash_by ?? '-'}</p>
+                                <div class="d-flex justify-content-between">
+                                    <div>
+                                        <h6 class="mb-0">Wash By</h6>
+                                        <p>${dt.wash_by ?? '-'}</p>
+                                    </div>
+                                    <div class="text-end">
+                                        <h6 class="mb-0">Wash Price</h6>
+                                        ${
+                                            dt.wash_price ? `<p>Rp. ${dt.wash_price.toLocaleString()},00</p>` : `<div class="chip-mini bg-success d-inline-block mx-0">Free</div>`
+                                        }
+                                    </div>
+                                </div>
                                 <h6 class="mb-0">Address</h6>
                                 <p>${dt.wash_address ?? '-'}</p>
                                 <h6 class="mb-0">Description</h6>
-                                <p>${dt.wash_desc ?? '-'}</p>
-                                <h6 class="mb-0">Wash Price</h6>
-                                ${
-                                    dt.wash_price ? `<p>Rp. ${dt.wash_price.toLocaleString()},00</p>` : `<div class="chip-mini bg-success d-inline-block">Free</div>`
-                                }
+                                <p class="mb-0">${dt.wash_desc ?? '-'}</p>
                             </td>
                             <td style="max-width:var(--tcolMinLG);">
                                 <div class="row text-start">
@@ -80,7 +86,7 @@
                             <td>
                                 <div class="d-flex flex-wrap gap-2 justify-content-center">
                                     <a class="btn btn-danger btn-delete" style="width:50px;" data-url="/api/v1/wash/destroy/${dt.id}" data-context="Wash"><i class="fa-solid fa-trash"></i></a>
-                                    ${dt.wash_end_time === null ? `<a class="btn btn-success btn-finish" data-id="${dt.id}"><i class="fa-solid fa-check"></i></a>` : ""}
+                                    ${dt.wash_end_time === null ? `<a class="btn btn-success btn-finish" style="width:50px;" data-id="${dt.id}"><i class="fa-solid fa-check"></i></a>` : ""}
                                     <a class="btn btn-warning btn-update" style="width:50px;" 
                                         data-vehicle-plate-number="${dt.vehicle_plate_number}" data-id="${dt.id}"
                                         data-wash-by="${dt.wash_by}" data-wash-address="${dt.wash_address}" data-wash-desc="${dt.wash_desc}" data-wash-price="${dt.wash_price}"

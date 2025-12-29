@@ -14,7 +14,8 @@
         </div>
         @include('stats.usecases.get_total_vehicle_by_context')
     </div>
-    <div class="row text-center" id="stats_bar-holder">
+    <div class="row text-center gy-3" id="stats_bar-holder">
         @include('stats.usecases.get_total_trip_by_origindes')
+        @include('stats.usecases.get_person_most_trip_with')
     </div>
 @endsection

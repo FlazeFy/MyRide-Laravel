@@ -143,6 +143,7 @@ Route::prefix('/v1/driver')->middleware(['auth:sanctum'])->group(function () {
 
 Route::prefix('/v1/stats')->middleware(['auth:sanctum'])->group(function () {
     Route::get('/total/trip/{context}', [QueriesStatsApi::class, 'getTotalTripByContext']);
+    Route::get('/total/most_person_trip_with', [QueriesStatsApi::class, 'getPersonWithMostTripWith']);
     Route::get('/total/inventory/{context}', [QueriesStatsApi::class, 'getTotalInventoryByContext']);
     Route::get('/total/vehicle/{context}', [QueriesStatsApi::class, 'getTotalVehicleByContext']);
     Route::get('/total/service/{context}', [QueriesStatsApi::class, 'getTotalServicePriceByContext']);

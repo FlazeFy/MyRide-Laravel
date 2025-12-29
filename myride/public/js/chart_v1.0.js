@@ -10,7 +10,7 @@ const warningNoDataVisualize = (holder) => {
 }
 
 const generateLineChart = (title, holder, data) => {
-    $(`#${holder}`).before(`<h2>${ucEachWord(title)}</h2>`)
+    $(`#${holder}`).before(`<h2>${ucEachWord(title)}</h2><hr>`)
 
     if(data.length > 0){
         let keys = Object.keys(data[0])
@@ -78,7 +78,7 @@ const generateLineChart = (title, holder, data) => {
 }
 
 const generatePieChart = (title, holder, data) => {
-    $(`#${holder}`).before(`<h2 class="text-center">${ucEachWord(title)}</h2><hr>`)
+    $(`#${holder}`).addClass("d-flex flex-wrap justify-content-center").before(`<h2 class="text-center">${ucEachWord(title)}</h2><hr class="w-100">`)
 
     if(data && data.length > 0){
         let keys = Object.keys(data[0])

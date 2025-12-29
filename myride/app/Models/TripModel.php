@@ -105,10 +105,14 @@ class TripModel extends Model
         return $res->isNotEmpty() ? $res : null;
     }
 
-    public static function getMostPersonTripWith($user_id, $vehicle_id, $limit = 7){
-        $res = TripModel::selectRaw("LOWER(trip_person) as context")
-            ->where('vehicle_id', $vehicle_id)
-            ->where('created_by', $user_id)
+    public static function getPersonWithMostTripWith($user_id, $vehicle_id = null, $limit = 7){
+        $res = TripModel::selectRaw("LOWER(trip_person) as context");
+
+        if($vehicle_id){
+            $res = $res->where('vehicle_id', $vehicle_id);
+        }
+            
+        $res = $res->where('created_by', $user_id)
             ->whereNull('deleted_at')
             ->get();
 

@@ -1,4 +1,4 @@
-<div id="stats_total_price_service_by_category_holder" class="d-flex flex-wrap justify-content-center"></div>
+<div id="stats_total_price_service_by_category_holder"></div>
 
 <script>
     const get_total_price_service_by_category = () => {
