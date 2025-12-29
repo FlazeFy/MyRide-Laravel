@@ -7,7 +7,7 @@
 @endphp
 
 <div class="carousel-parent">
-    <div id="{{$carouselId}}" class="carousel slide" data-bs-ride="carousel" data-bs-interval="15000">
+    <div id="{{$carouselId}}" class="carousel slide">
         <div class="carousel-indicators"></div>
         <div class="carousel-inner py-4"></div>
         <div id="carousel-holder"></div>
@@ -18,12 +18,15 @@
     let page = 1
     var markers = []
     var dt_all_trip_location = []
+    let lastPageCarousel = null
+    let nextPageUrlCarousel = null
+    let isFetchingNextCarousel = false
 
     const get_all_trip = (page) => {
         return new Promise((resolve, reject) => {
             Swal.showLoading();
             $.ajax({
-                url: `/api/v1/trip`,
+                url: `/api/v1/trip?page=${page}`,
                 type: 'GET',
                 beforeSend: function (xhr) {
                     xhr.setRequestHeader("Accept", "application/json")
@@ -31,19 +34,25 @@
                 },
                 success: function(response) {
                     Swal.close()
-                    const data = response.data.data
-                    dt_all_trip_location = data
-                    markers = []
-                    $('#trip-content-holder').empty()
+                    const payload = response.data
+                    const data = payload.data
+                    lastPageCarousel = payload.last_page
+                    nextPageUrlCarousel = payload.next_page_url
 
-                    buildLayoutTrip(response.data)
-                    data.forEach((dt, idx) => {
-                        place_marker(dt)
-                    });
+                    if (page === 1) {
+                        dt_all_trip_location = data
+                        markers = []
+                        $('#trip-content-holder').empty()
+                        buildLayoutTrip(payload)
+                    } else {
+                        appendLayoutTrip(payload)
+                    }
+
+                    data.forEach(dt => place_marker(dt))
                     initMap()
                     resolve()
 
-                    if(data.length > 3){
+                    if (data.length > 3) {
                         templateCarouselNavigation("carousel-nav-holder", "<?= $carouselId ?>")
                     }
                 },
@@ -60,4 +69,27 @@
         });
     };
     get_all_trip(page)
+
+    $(document).ready(function() {
+        $('#carouselTrip').on('slid.bs.carousel', function (e) {
+            const carousel = e.target
+            const items = carousel.querySelectorAll('.carousel-item')
+            const lastIndex = items.length - 1
+
+            if(e.to === lastIndex && !isFetchingNextCarousel && nextPageUrlCarousel && page < lastPageCarousel){
+                isFetchingNextCarousel = true
+                page++
+
+                get_all_trip(page).then(() => {
+                    const instance = bootstrap.Carousel.getOrCreateInstance(carousel, {
+                        interval: false,
+                        ride: false,
+                        wrap: false
+                    })
+                    instance.pause()
+                    isFetchingNextCarousel = false
+                })
+            }
+        })
+    })
 </script>

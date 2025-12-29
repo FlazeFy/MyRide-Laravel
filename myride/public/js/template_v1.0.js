@@ -27,6 +27,33 @@ const templateCarouselNavigation = (holder, carouselId) => {
     `)
 }
 
+const appendLayoutTrip = (dt) => {
+    const itemsPerSlide = 3
+    const carouselInner = $("#carouselTrip .carousel-inner")
+    const indicators = $("#carouselTrip .carousel-indicators")
+
+    let existingSlides = carouselInner.find('.carousel-item').length
+    let startIndex = existingSlides * itemsPerSlide
+
+    dt.data.forEach((el, i) => {
+        const slideIndex = Math.floor((startIndex + i) / itemsPerSlide)
+
+        if ($(`#carouselTrip .carousel-item[data-slide-index="${slideIndex}"]`).length === 0) {
+            carouselInner.append(`
+                <div class="carousel-item px-2" data-slide-index="${slideIndex}">
+                    <div class="holder"></div>
+                </div>
+            `)
+
+            indicators.append(`
+                <button type="button" data-bs-target="#carouselTrip" data-bs-slide-to="${slideIndex}" aria-label="Slide ${slideIndex + 1}"></button>
+            `)
+        }
+
+        $(`#carouselTrip .carousel-item[data-slide-index="${slideIndex}"] .holder`).append(templateTripBox(el))
+    })
+}
+
 const templateTripBox = (dt, extra_class = '') => {
     const coorOrigin = dt.trip_origin_coordinate ? dt.trip_origin_coordinate.split(",").map(Number) : null
     const coorDestination = dt.trip_destination_coordinate ? dt.trip_destination_coordinate.split(",").map(Number) : null
@@ -36,7 +63,7 @@ const templateTripBox = (dt, extra_class = '') => {
 
     return `
         <button class="container-fluid text-start mb-4 ${extra_class}" style="${deletedStyle}" ${deletedTitle} ${clickFunc}>
-            ${dt.vehicle_plate_number ? `<a class="plate-number position-absolute" style="top:calc(-2*var(--spaceSM)); left:calc(-2*var(--spaceSM)); width: fit-content;">${dt.vehicle_plate_number}</a>`:''}
+            ${dt.vehicle_plate_number ? `<span class="plate-number position-absolute" style="top:calc(-2*var(--spaceSM)); left:calc(-2*var(--spaceSM)); width: fit-content;">${dt.vehicle_plate_number}</span>`:''}
             ${dt.vehicle_name ? `<h6 class="mb-2">${dt.vehicle_name}</h6>`:''}
             <p class="text-secondary">${dt.trip_desc ?? '- No Description Provided -'}</p>
             <hr>

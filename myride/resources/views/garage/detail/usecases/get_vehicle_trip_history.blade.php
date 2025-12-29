@@ -15,7 +15,7 @@
 
 <h2 class="mb-3">Trip History</h2><hr>
 <div class="carousel-parent pb-3">
-    <div id="{{$carouselId}}" class="carousel slide position-relative" data-bs-ride="carousel">
+    <div id="{{$carouselId}}" class="carousel slide position-relative">
         <div class="carousel-indicators position-absolute" style="bottom: -40px;"></div>
         <div class="carousel-inner"></div>
         <div id="carousel-nav-holder"></div>
