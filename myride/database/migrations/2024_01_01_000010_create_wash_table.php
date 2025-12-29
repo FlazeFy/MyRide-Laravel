@@ -27,6 +27,7 @@ return new class extends Migration
             $table->dateTime('wash_end_time')->nullable();
             $table->boolean('is_fill_window_washing_water');
             $table->boolean('is_wash_hollow');
+            $table->integer('wash_price')->length(7)->nullable();
 
             // Props
             $table->dateTime('created_at', $precision = 0);

@@ -13,7 +13,7 @@
     <li>Open your sidebar and press button <b class="text-success">Trip</b>, after that you will be redirect to Trip Page.</li>
     <li>Your trip history is displayed on the map using markers or as a list in a carousel format next to the map.</li>
     <li>To see the trip detail, you can press the button that have "<b class="text-success">Expand</b>" icon. And it will show you the rest of trip information.</li>
-    <li>To set direction on your Google Maps, you can press <b class="text-success">Set Route on Maps</b> after you expanded the trip detail.</li>
+    <li>To set direction on your Google Maps, you can press <b class="text-success">Set Route</b> after you expanded the trip detail.</li>
 </ol>
 <h3>How to Edit Your Trip History?</h3>
 <ol>

@@ -18,7 +18,7 @@
                 </span>
                 <p class="text-secondary mb-0"><b>Locate on:</b> ${trip_destination_coordinate ? `${trip_destination_coordinate} | `:''}${trip_destination_name}</p>
                 ${trip_destination_coordinate ? `
-                    <a class="btn btn-success py-1 mt-2 btn-set-route" data-trip-origin-coordinate="now" data-trip-destination-coordinate="${trip_destination_coordinate}" data-vehicle-type="${vehicle_type}">Set Route on Maps</a> 
+                    <a class="btn btn-success py-1 mt-2 btn-set-route" data-trip-origin-coordinate="now" data-trip-destination-coordinate="${trip_destination_coordinate}" data-vehicle-type="${vehicle_type}"><i class="fa-solid fa-map-pin"></i> Set Route</a> 
                 `:''}
             `)
         }

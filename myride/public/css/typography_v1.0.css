@@ -30,7 +30,7 @@ table {
     width: 100%;
     border: 1.75px solid var(--secondaryColor) !important;
 }
-th, td {
+tr:not(.calendar-holder tr), td:not(.calendar-holder td) {
     text-align: center;         
     vertical-align: middle;    
     border: 1.75px solid var(--secondaryColor) !important; 
@@ -41,9 +41,10 @@ thead th {
     color: var(--firstColor);
     letter-spacing: 0.5px;
     font-weight: 600;
-}
-table tbody p {
     font-size: var(--textXMD);
+}
+table tbody {
+    font-size: var(--textMD);
 }
 
 /* Summary */

@@ -35,7 +35,7 @@
                                 <span class="plate-number">${dt.vehicle_plate_number}</span>
                                 <p class="text-secondary mt-2 mb-0 fw-bold">${dt.vehicle_type}</p>
                             </td>
-                            <td class="text-center">Rp. ${numberFormat(dt.total, 0, ',', '.')},00</td>
+                            <td class="text-center">Rp. ${dt.total.toLocaleString()},00</td>
                         </tr>
                     `)
                 });

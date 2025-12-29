@@ -38,7 +38,7 @@
                                 <h5 class="chip bg-info mx-0 mb-0">${data.fuel_volume} Liter</h5>
                             </div>
                         </div>
-                        <h6 class="chip bg-warning d-inline mx-0" style="font-size:var(--textXLG);">Rp. ${numberFormat(data.fuel_price_total, 0, ',', '.')},00</h6>
+                        <h6 class="chip bg-warning d-inline mx-0" style="font-size:var(--textXLG);">Rp. ${data.fuel_price_total.toLocaleString()},00</h6>
                     </div>
                 `)
             },

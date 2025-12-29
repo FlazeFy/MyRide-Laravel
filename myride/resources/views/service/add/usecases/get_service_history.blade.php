@@ -38,7 +38,7 @@
                             <td scope="col" style="width:120px;">${dt.service_category}</td>
                             <td scope="col" class="text-start" style="width:150px;">
                                 <h6>Price</h6>
-                                <p>Rp. ${numberFormat(dt.service_price_total, 0, ',', '.')},00</p>
+                                <p>Rp. ${dt.service_price_total.toLocaleString()},00</p>
                                 <h6>Location</h6>
                                 <p>${dt.service_location}</p>
                             </td>

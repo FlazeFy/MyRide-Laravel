@@ -44,7 +44,9 @@
                                 <h6 class="mb-0">Volume</h6>
                                 <p class="mb-0">${dt.fuel_volume}${dt.fuel_brand == 'Electric' ? '%' : ' L'}</p>
                                 <h6 class="mb-0">Price Total</h6>
-                                <p>Rp. ${numberFormat(dt.fuel_price_total, 0, ',', '.')},00</p>
+                                ${
+                                    dt.fuel_price_total ? `<p>Rp. ${dt.fuel_price_total.toLocaleString()},00</p>` : `<div class="chip-mini bg-success d-inline-block">Free</div>`
+                                }
                             </td>
                             <td class="text-start">
                                 <div class="d-flex justify-content-between">
@@ -52,20 +54,16 @@
                                         <h6 class="mb-0">Brand</h6>
                                         <p class="mb-0">${dt.fuel_brand}</p>
                                     </div>
-                                    ${
-                                        dt.fuel_brand != 'Electric' ?  
-                                            `<div>
-                                                <h6 class="mb-0">RON</h6>
-                                                <p class="mb-0">${dt.fuel_ron}</p>
-                                            </div>`
-                                        :''
+                                    ${dt.fuel_brand !== 'Electric' ?  
+                                        `<div>
+                                            <h6 class="mb-0">RON</h6>
+                                            <p class="mb-0">${dt.fuel_ron}</p>
+                                        </div>` :''
                                     }
                                 </div>
-                                ${
-                                    dt.fuel_brand != 'Electric' ?  
-                                        `<h6 class="mb-0">Type</h6>
-                                        <p class="mb-0">${dt.fuel_type}</p>`
-                                    :''
+                                ${dt.fuel_brand !== 'Electric' ?  
+                                    `<h6 class="mb-0">Type</h6>
+                                    <p class="mb-0">${dt.fuel_type}</p>` :''
                                 }
                             </td>
                             <td>${getDateToContext(dt.created_at,'calendar')}</td>

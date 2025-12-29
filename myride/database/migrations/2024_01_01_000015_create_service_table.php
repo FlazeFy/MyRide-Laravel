@@ -13,15 +13,15 @@ return new class extends Migration
             $table->uuid('vehicle_id');
             $table->longText('service_note')->nullable();
             $table->string('service_category', 36);
-            $table->string('service_price_total', 9);
+            $table->integer('service_price_total')->length(9)->nullable();
             $table->string('service_location', 255);
             $table->string('notes', 1000)->nullable();
-            $table->uuid('created_by');
 
             // Props
             $table->dateTime('created_at', $precision = 0);
             $table->dateTime('updated_at')->nullable();
             $table->dateTime('remind_at')->nullable();
+            $table->uuid('created_by');
 
             // References
             $table->foreign('created_by')->references('id')->on('users')->onDelete('cascade');

@@ -10,7 +10,7 @@
             data.forEach((dt,idx) => {
                 $('#wash_summary-holder').append(`
                     <div class="col-lg-12 col-md-6 col-sm-12">
-                        <button class="btn btn-primary w-100 text-start" type="button" data-bs-toggle="collapse" data-bs-target="#wash_${dt.vehicle_plate_number.replaceAll(' ','_')}_summary-collapse" aria-expanded="false" aria-controls="collapseExample">
+                        <button class="btn btn-primary w-100 text-start mb-2" type="button" data-bs-toggle="collapse" data-bs-target="#wash_${dt.vehicle_plate_number.replaceAll(' ','_')}_summary-collapse" aria-expanded="false" aria-controls="collapseExample">
                             <div class="d-flex flex-wrap align-items-center gap-2">
                                 <span class="plate-number m-0">${dt.vehicle_plate_number}</span>
                                 <p class="text-white mb-0 fw-bold">${dt.vehicle_type}</p>
@@ -20,8 +20,8 @@
                         <div class="collapse mt-2" style='font-size: var(--textMD)' id='wash_${dt.vehicle_plate_number.replaceAll(' ','_')}_summary-collapse'>
                             <ul class="ps-3">
                                 <li>Total Wash : ${dt.total_wash}</li>
-                                <li>Total Spend : Rp.${numberFormat(dt.total_price,0,',','.')}</li>
-                                <li>Avg Spend per Wash : Rp.${numberFormat(dt.avg_price_per_wash,0,',','.')}</li>
+                                <li>Total Spend : Rp.${dt.total_price ? dt.total_price.toLocaleString() : '0'}</li>
+                                <li>Avg Spend per Wash : Rp.${dt.total_price ? dt.avg_price_per_wash.toLocaleString():'0'}</li>
                                 <li><b>${dt.total_wash_body} body washings</b> out of ${dt.total_wash} total washs</li>
                                 <li><b>${dt.total_wash_window} window washings</b> out of ${dt.total_wash} total washs</li>
                                 <li><b>${dt.total_wash_dashboard} dashboard washings</b> out of ${dt.total_wash} total washs</li>

@@ -1,4 +1,4 @@
-<h2 class="mb-3">Wash Summary</h2><hr>
+<h2>Wash Summary</h2><hr>
 <div id="wash_summary-holder" class="row"></div>
 
 <script>
@@ -20,8 +20,8 @@
                         <div class="col-xl-6 col-lg-12 col-md-6 col-sm-12">
                             <ul class="ps-3">
                                 <li>Total Wash : ${data[0].total_wash}</li>
-                                <li>Total Spend : Rp.${numberFormat(data[0].total_price,0,',','.')}</li>
-                                <li>Avg Spend per Wash : Rp.${numberFormat(data[0].avg_price_per_wash,0,',','.')}</li>
+                                <li>Total Spend : Rp.${data[0].total_price ? data[0].total_price.toLocaleString() : '0'}</li>
+                                <li>Avg Spend per Wash : Rp.${data[0].total_price ? data[0].avg_price_per_wash.toLocaleString():'0'}</li>
                                 <li><b>${data[0].total_wash_body} body washings</b> out of ${data[0].total_wash} total washs</li>
                                 <li><b>${data[0].total_wash_window} window washings</b> out of ${data[0].total_wash} total washs</li>
                                 <li><b>${data[0].total_wash_dashboard} dashboard washings</b> out of ${data[0].total_wash} total washs</li>

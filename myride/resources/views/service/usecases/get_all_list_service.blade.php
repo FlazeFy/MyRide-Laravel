@@ -6,7 +6,7 @@
                 <th scope="col" style="min-width: 160px;">Vehicle</th>
                 <th scope="col" style="min-width: 160px;">Category</th>
                 <th scope="col" style="min-width: 160px;">Info</th>
-                <th scope="col" style="min-width: 160px;">Notes</th>
+                <th scope="col" style="min-width: 200px;">Notes</th>
                 <th scope="col" style="min-width: 160px;">Properties</th>
                 <th scope="col" style="width: 130px;">Action</th>
             </tr>
@@ -46,7 +46,7 @@
                                 <h6 class="mb-0">Location</h6>
                                 <p class="mb-0">${dt.service_location}</p>
                                 <h6 class="mb-0">Price Total</h6>
-                                <p class="mb-0">Rp. ${numberFormat(dt.service_price_total, 0, ',', '.')},00</p>
+                                <p class="mb-0">Rp. ${dt.service_price_total.toLocaleString()},00</p>
                             </td>
                             <td class="text-start">${dt.service_note}</td>
                             <td class="text-start">

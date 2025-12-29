@@ -5,7 +5,7 @@
             <tr>
                 <th scope="col" style="min-width: 240px;">Username & FullName</th>
                 <th scope="col" style="min-width: 240px;">Contact</th>
-                <th scope="col" style="min-width: 200px;">Notes</th>
+                <th scope="col" style="min-width: 240px;">Notes</th>
                 <th scope="col" style="min-width: 140px;">Total Trip</th>
                 <th scope="col" style="min-width: 140px;">Properties</th>
                 <th scope="col" style="min-width: 140px;">Action</th>

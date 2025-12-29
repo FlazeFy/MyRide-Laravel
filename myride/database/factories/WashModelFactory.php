@@ -32,6 +32,7 @@ class WashModelFactory extends Factory
             'is_wash_carpet' => mt_rand(0, 1), 
             'is_wash_pillows' => mt_rand(0, 1), 
             'wash_address' => fake()->address(), 
+            'wash_price' => $ran === 1 ? mt_rand(40000, 450000) : null, 
             'wash_start_time' => Generator::getRandomDate(0), 
             'wash_end_time' => Generator::getRandomDate($ran),
             'is_fill_window_washing_water' => mt_rand(0, 1), 

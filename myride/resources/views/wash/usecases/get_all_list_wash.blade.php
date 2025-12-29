@@ -4,7 +4,7 @@
         <thead>
             <tr>
                 <th scope="col" style="min-width: 160px;">Vehicle</th>
-                <th scope="col" style="min-width: 200px;">Washing Info</th>
+                <th scope="col" style="min-width: 280px;">Washing Info</th>
                 <th scope="col" style="min-width: 240px;">Washing Detail</th>
                 <th scope="col" style="min-width: 160px;">Properties</th>
                 <th scope="col">Action</th>
@@ -48,7 +48,9 @@
                                 <h6 class="mb-0">Description</h6>
                                 <p>${dt.wash_desc ?? '-'}</p>
                                 <h6 class="mb-0">Wash Price</h6>
-                                <p>${`Rp. ${numberFormat(dt.wash_price, 0, ',', '.')},00` ?? '-'}</p>
+                                ${
+                                    dt.wash_price ? `<p>Rp. ${dt.wash_price.toLocaleString()},00</p>` : `<div class="chip-mini bg-success d-inline-block">Free</div>`
+                                }
                             </td>
                             <td style="max-width:var(--tcolMinLG);">
                                 <div class="row text-start">

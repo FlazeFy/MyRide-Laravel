@@ -406,10 +406,10 @@ class Commands extends Controller
 
             // Get vehicle by ID
             $vehicle = VehicleModel::getVehicleByIdAndUserId($id, $user_id);
-            if ($vehicle){
+            if($vehicle){
                 $vehicle_other_img_url = [];
                 // Check if file attached
-                if ($request->hasFile('vehicle_other_img_url')) {
+                if($request->hasFile('vehicle_other_img_url')){
                     // Iterate to upload file
                     foreach ($request->file('vehicle_other_img_url') as $file) {
                         if ($file->isValid()) {

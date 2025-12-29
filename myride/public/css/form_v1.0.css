@@ -18,7 +18,7 @@ hr {
 .btn:hover, .hover-grow:hover {
     transform: scale(1.025);
 }
-.btn.btn-primary, .gm-control-active {
+.btn.btn-primary, .gm-control-active, .fc-toolbar-chunk .fc-button-group button, .fc-today-button.fc-button.fc-button-primary {
     background: var(--blueColor) !important;
     border-bottom: var(--spaceXXSM) solid var(--secondaryBlueColor) !important;
 }
@@ -36,7 +36,8 @@ hr {
 }
 
 /* Form Control */
-.form-control, .form-select, .btn, .container, .sidebar .nav-link.active, .plate-number, .chip, .bordered, .container-fluid, .input-group-text, .swal2-actions button {
+.form-control, .form-select, .btn, .container, .sidebar .nav-link.active, .plate-number, .chip, .bordered, .container-fluid, .input-group-text, .swal2-actions button,
+.fc-toolbar-chunk .fc-button-group button, .fc-today-button.fc-button.fc-button-primary {
     border-radius: var(--roundedSM) !important;
 }
 .form-label, label {

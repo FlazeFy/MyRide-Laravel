@@ -14,11 +14,11 @@ return new class extends Migration
             $table->text('stack_trace');
             $table->string('file', 255);
             $table->integer('line')->length(11)->unsigned();
-            $table->string('faced_by', 36)->nullable();
             $table->boolean('is_fixed');
 
             // Props
             $table->timestamp('created_at', $precision = 0);
+            $table->string('faced_by', 36)->nullable();
 
             // References
             $table->foreign('faced_by')->references('id')->on('users')->onDelete('cascade');

@@ -11,6 +11,7 @@ return new class extends Migration
         Schema::create('trip', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->uuid('vehicle_id');
+            $table->uuid('driver_id')->nullable();
             $table->string('trip_desc', 500);
             $table->string('trip_category', 36);
             $table->string('trip_person', 255)->nullable();
@@ -28,6 +29,7 @@ return new class extends Migration
             // References
             $table->foreign('created_by')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('vehicle_id')->references('id')->on('vehicle')->onDelete('cascade');
+            $table->foreign('driver_id')->references('id')->on('driver')->onDelete('cascade');
             $table->foreign('trip_category')->references('dictionary_name')->on('dictionary')->onDelete('cascade');
         });
     }

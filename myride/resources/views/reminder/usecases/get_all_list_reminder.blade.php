@@ -86,19 +86,21 @@
                         });
                     }
 
-                    if(dt.reminder_context == 'Service'){
+                    if(dt.reminder_context.includes(['Service','Pick Up','Drop Off','Trip'])){
                         class_chip = 'bg-danger'
-                    } else if(dt.reminder_context == 'Washing' || dt.reminder_context == 'Trip'){
+                    } else {
                         class_chip = 'bg-success'
-                    } 
+                    }
 
                     $(`#${holder}`).append(`
                         <tr>
                             <td>${dt.vehicle_plate_number ? `<span class="plate-number">${dt.vehicle_plate_number}</span>`:'-'}</td>
                             <td>${dt.reminder_title}</td>
                             <td>
-                                <span class="chip ${class_chip}">${dt.reminder_context}</span>
-                                ${dt.reminder_body}
+                                <div class="d-flex flex-wrap text-start align-items-center">
+                                    <span class="chip mb-0 ms-0 ${class_chip}">${dt.reminder_context}</span>
+                                    ${dt.reminder_body}
+                                </div>
                             </td>
                             <td>${dt.reminder_attachment ? `<div class="d-flex flex-wrap gap-2 justify-content-center">${reminder_attachment_el}</div>` :`-`}</td>
                             <td class="text-start">

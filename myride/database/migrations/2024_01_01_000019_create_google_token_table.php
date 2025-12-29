@@ -10,7 +10,6 @@ return new class extends Migration
     {
         Schema::create('google_tokens', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            
             $table->text('access_token');
 
             // Props

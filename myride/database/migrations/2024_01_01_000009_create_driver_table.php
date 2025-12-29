@@ -18,12 +18,12 @@ return new class extends Migration
             $table->boolean('telegram_is_valid');
             $table->string('phone', 16);
             $table->string('notes', 500)->nullable();
-            $table->uuid('created_by');
-            $table->string('updated_by', 36)->nullable();
 
             // Props
             $table->dateTime('created_at');
             $table->dateTime('updated_at')->nullable();
+            $table->uuid('created_by');
+            $table->uuid('updated_by')->nullable();
 
             // References
             $table->foreign('created_by')->references('id')->on('users')->onDelete('cascade');

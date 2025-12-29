@@ -20,7 +20,7 @@
         const ctx = 'summary_fuel'
 
         const generate_summary = (total_fuel_price, total_fuel_volume, total_refueling) => {
-            $('#total_fuel_price-holder').text(`Rp. ${total_fuel_price > 0 ? `${numberFormat(total_fuel_price, 0, ',', '.')},00` : '-'}`)
+            $('#total_fuel_price-holder').text(`Rp. ${total_fuel_price > 0 ? `${total_fuel_price.toLocaleString()},00` : '-'}`)
             $('#total_fuel_volume-holder').text(`${total_fuel_volume ?? 0}L`)
             $('#total_refueling-holder').text(total_refueling)
         }
