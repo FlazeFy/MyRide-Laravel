@@ -11,18 +11,18 @@ hr {
 }
 
 /* Button */
-.btn.small {
+.btn.small, .btn-page {
     font-size: var(--textSM);
     padding: var(--spaceXSM) var(--spaceMD);
 }
-.btn:hover, .hover-grow:hover {
-    transform: scale(1.025);
+.btn:hover, .hover-grow:hover, .btn-page:hover {
+    transform: scale(1.025) !important;
 }
 .btn.btn-primary, .gm-control-active, .fc-toolbar-chunk .fc-button-group button, .fc-today-button.fc-button.fc-button-primary {
     background: var(--blueColor) !important;
     border-bottom: var(--spaceXXSM) solid var(--secondaryBlueColor) !important;
 }
-.btn.btn-success, .swal2-actions button.swal2-confirm {
+.btn.btn-success, .swal2-actions button.swal2-confirm, .btn-page.active {
     background: var(--successColor) !important;
     border-bottom: var(--spaceXXSM) solid var(--secondarySuccessColor) !important;
 }
@@ -30,17 +30,39 @@ hr {
     background: var(--dangerColor) !important;
     border-bottom: var(--spaceXXSM) solid var(--secondaryDangerColor) !important;
 }
-.btn.btn-warning {
+.btn.btn-warning, .btn-page {
     background: var(--warningColor) !important;
     border-bottom: var(--spaceXXSM) solid var(--secondaryWarningColor) !important;
 }
 
+/* Pagination */
+.btn-page-holder {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: start; 
+    gap: var(--spaceXXSM); 
+    padding: var(--spaceSM);
+    align-items: center;
+    background: var(--blueColor);
+    border: 1.5px solid var(--whiteColor) !important;
+}
+.btn-page {
+    cursor: pointer;
+    padding: var(--spaceMini) var(--spaceMD);
+}
+.btn-page, .btn-page-holder label {
+    margin: 0;
+}
+.btn-page-holder label {
+    margin-right: var(--spaceXSM);
+}
+
 /* Form Control */
 .form-control, .form-select, .btn, .container, .sidebar .nav-link.active, .plate-number, .chip, .bordered, .container-fluid, .input-group-text, .swal2-actions button,
-.fc-toolbar-chunk .fc-button-group button, .fc-today-button.fc-button.fc-button-primary {
+.fc-toolbar-chunk .fc-button-group button, .fc-today-button.fc-button.fc-button-primary, .btn-page {
     border-radius: var(--roundedSM) !important;
 }
-.form-label, label {
+.form-label, label, .btn-page {
     font-weight: 500;
 }
 input:focus, textarea:focus {

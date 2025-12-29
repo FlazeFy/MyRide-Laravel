@@ -84,6 +84,32 @@ const ucFirst = (val) => {
     return res
 }
 
+const generatePagination = (items_holder, fetch_callback, total_page, current_page) => {
+    let page_element = ''
+    for (let i = 1; i <= total_page; i++) {
+        page_element += `
+            <a class='btn-page ${i === current_page ? 'active' : ''}' href='#' data-page='${i}' title='Open page: ${i}'>${i}</a>
+        `
+    }
+
+    $(`#pagination-${items_holder}`).remove()
+    if ($('#'+items_holder).closest('table').length == 0) {
+        $(`<div id='pagination-${items_holder}' class='btn-page-holder'><label>Page</label>${page_element}</div>`).insertAfter(`#${items_holder}`)
+    } else {
+        $(`<div id='pagination-${items_holder}' class='btn-page-holder'><label>Page</label>${page_element}</div>`).insertAfter($(`#${items_holder}`).closest('table'))
+    }
+    $(document).off('click', `#pagination-${items_holder} .btn-page`)
+    $(document).on('click', `#pagination-${items_holder} .btn-page`, function() {
+        const selectedPage = $(this).data('page')
+        fetch_callback(selectedPage)
+    });
+
+    const table = $(`#${items_holder}`).closest('table')
+    if (table.length) {
+        table.css('margin-bottom', '0')
+    }
+}
+
 const generateApiError = (response, is_list_format) => {
     if (response.status === 422) {
         let msg = response.responseJSON.message

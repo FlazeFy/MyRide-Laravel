@@ -42,7 +42,7 @@
 
         Swal.showLoading();
         $.ajax({
-            url: `/api/v1/reminder`,
+            url: `/api/v1/reminder?page=${page}`,
             type: 'GET',
             beforeSend: function (xhr) {
                 xhr.setRequestHeader("Accept", "application/json")
@@ -52,6 +52,8 @@
             success: function(response) {
                 Swal.close()
                 const data = response.data.data
+                const current_page = response.data.current_page
+                const total_page = response.data.last_page
                 
                 data.forEach(dt => {
                     let reminder_attachment_el = ''
@@ -115,6 +117,8 @@
                         </tr>
                     `)
                 });
+
+                generatePagination(holder, get_all_reminder, total_page, current_page)
             },
             error: function(response, jqXHR, textStatus, errorThrown) {
                 Swal.close()

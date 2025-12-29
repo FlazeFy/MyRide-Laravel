@@ -23,7 +23,7 @@
 
         Swal.showLoading();
         $.ajax({
-            url: `/api/v1/inventory`,
+            url: `/api/v1/inventory?page=${page}`,
             type: 'GET',
             beforeSend: function (xhr) {
                 xhr.setRequestHeader("Accept", "application/json")
@@ -33,6 +33,8 @@
             success: function(response) {
                 Swal.close()
                 const data = response.data.data
+                const current_page = response.data.current_page
+                const total_page = response.data.last_page
                 
                 data.forEach(dt => {
                     $(`#${holder}`).append(`
@@ -87,6 +89,8 @@
                         </tr>
                     `)
                 });
+
+                generatePagination(holder, get_all_inventory, total_page, current_page)
             },
             error: function(response, jqXHR, textStatus, errorThrown) {
                 Swal.close()

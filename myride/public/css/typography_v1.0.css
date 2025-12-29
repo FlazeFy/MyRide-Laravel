@@ -38,7 +38,7 @@ tr:not(.calendar-holder tr), td:not(.calendar-holder td) {
 thead th {
     text-align: center;
     background: var(--blueColor) !important;
-    color: var(--firstColor);
+    color: var(--whiteColor);
     letter-spacing: 0.5px;
     font-weight: 600;
     font-size: var(--textXMD);

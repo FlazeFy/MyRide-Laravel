@@ -21,7 +21,7 @@
         const holder = 'fuel-holder'
 
         $.ajax({
-            url: `/api/v1/fuel`,
+            url: `/api/v1/fuel?page=${page}`,
             type: 'GET',
             beforeSend: function (xhr) {
                 Swal.showLoading()
@@ -32,6 +32,8 @@
             success: function(response) {
                 Swal.close()
                 const data = response.data.data
+                const current_page = response.data.current_page
+                const total_page = response.data.last_page
                 
                 data.forEach(dt => {
                     $(`#${holder}`).append(`
@@ -93,6 +95,8 @@
                         </tr>
                     `)
                 });
+
+                generatePagination(holder, get_all_fuel, total_page, current_page)
             },
             error: function(response, jqXHR, textStatus, errorThrown) {
                 Swal.close()
