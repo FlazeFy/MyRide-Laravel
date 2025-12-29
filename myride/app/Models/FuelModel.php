@@ -144,7 +144,7 @@ class FuelModel extends Model
         return $res->get();
     }
 
-    public static function getMonthlyFuelSummary($user_id = null, $vehicle_id = null, $month_year){
+    public static function getMonthlyFuelSummary($user_id = null, $vehicle_id = null, $month_year = "all"){
         $res = FuelModel::selectRaw("CAST(SUM(fuel_price_total) as INT) as total_fuel_price, CAST(SUM(fuel_volume) as INT) as total_fuel_volume, COUNT(1) as total_refueling");
         
         if($vehicle_id){
@@ -154,9 +154,10 @@ class FuelModel extends Model
             $res = $res->where('created_by',$user_id);
         }
 
-        [$month, $year] = explode('-', $month_year);
-        $res = $res->whereMonth('created_at', $month)
-            ->whereYear('created_at', $year);
+        if($month_year !== "all"){
+            [$month, $year] = explode('-', $month_year);
+            $res = $res->whereMonth('created_at', $month)->whereYear('created_at', $year);
+        }
 
         return $res->first();
     }

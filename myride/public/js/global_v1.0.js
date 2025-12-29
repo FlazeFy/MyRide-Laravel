@@ -271,6 +271,13 @@ const validatorInput = () => {
     });
 }
 
+const resetLocalStorage = (keys) => {
+    keys.forEach(dt => {
+        localStorage.removeItem(dt)
+        localStorage.removeItem(`last-hit-${dt}`) 
+    });
+}
+
 $(document).ready(() => {
     let width = $(window).width()
 

@@ -21,7 +21,7 @@
                 data.forEach(dt => {
                     if(dt.vehicle_fuel_status !== 'Not Monitored'){
                         $(`#${holder}`).append(`
-                            <div class="col-xl-6 col-lg-12 text-center mx-auto">
+                            <div class="col-xl-6 col-lg-12 col-md-6 col-sm-6 col-6 text-center mx-auto">
                                 <div id="stats_${dt.id}" class="mb-2"></div>
                                 <div class="d-flex flex-wrap justify-content-center align-items-center mb-3">
                                     <div class="plate-number d-inline-block mb-0">${dt.vehicle_plate_number}</div>

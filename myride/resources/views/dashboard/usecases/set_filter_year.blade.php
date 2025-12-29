@@ -7,10 +7,7 @@
 <script>
     $(document).on('change','#toogle_year',function(){
         const keys = ['total_fuel_monthly_fuel_price_total_temp','total_fuel_monthly_fuel_volume_temp','total_trip_monthly_temp']
-        keys.forEach(dt => {
-            localStorage.removeItem(dt)
-            localStorage.removeItem(`last-hit-${dt}`) 
-        });
+        resetLocalStorage(keys)
         $('#toogle_year_select').submit()
     })
     

@@ -1,4 +1,8 @@
-<h2>Summary</h2><hr>
+<div class="d-flex justify-content-between">
+    <h2>Summary</h2>
+    @include('others.set_filter_month_year')
+</div>
+<hr>
 <div class="row">
     <div class="col-md-6 col-6">
         <h5 class="summary-number" id="total_fuel_volume-holder">0L</h5>
@@ -26,7 +30,7 @@
         }
 
         const fetchData = () => {
-            const month_year = getMonthYear()
+            const month_year = `<?= session()->get('toogle_month_year') ?? 'getMonthYear()' ?>`;
             $.ajax({
                 url: `/api/v1/fuel/summary/${month_year}`,
                 type: 'GET',

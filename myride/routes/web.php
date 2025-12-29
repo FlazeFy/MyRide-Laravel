@@ -108,6 +108,7 @@ Route::prefix('/stats')->middleware(['auth_v2:sanctum'])->group(function () {
     Route::get('/', [StatsController::class, 'index'])->name('stats');
 
     Route::post('/convert/csv', [StatsController::class, 'convert_csv']);
+    Route::post('/toogle_month_year', [StatsController::class, 'toogle_month_year']);
 });
 
 Route::prefix('/profile')->middleware(['auth_v2:sanctum'])->group(function () {

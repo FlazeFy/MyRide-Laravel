@@ -19,17 +19,11 @@
                 </div>
             </div>
             <div class="col-lg-4 col-md-12">
-                <div class="row">
-                    <div class="col-lg-12 col-md-6">
-                        <div class="container-fluid">
-                            @include('fuel.usecases.get_fuel_summary')
-                        </div>
-                    </div>
-                    <div class="col-lg-12 col-md-6">
-                        <div class="container-fluid">
-                            @include('fuel.usecases.get_all_fuel_monitor')
-                        </div>
-                    </div>
+                <div class="container-fluid">
+                    @include('fuel.usecases.get_fuel_summary')
+                </div>
+                <div class="container-fluid">
+                    @include('fuel.usecases.get_all_fuel_monitor')
                 </div>
             </div>
         </div>
