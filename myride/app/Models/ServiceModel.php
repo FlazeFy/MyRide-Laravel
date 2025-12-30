@@ -70,7 +70,8 @@ class ServiceModel extends Model
             case 'total_item':
                 $context = 'COUNT(id)';
                 break;
-            case 'SUM(service_price_total)':
+            case 'total_price':
+                $context = 'SUM(service_price_total)';
                 break;
             default:
                 return [];

@@ -40,7 +40,6 @@ class QuestionTest extends TestCase
         foreach ($data['data'] as $dt) {
             foreach ($context as $col) {
                 $this->assertArrayHasKey($col, $dt);
-
                 $this->assertNotNull($dt[$col]);
                 $this->assertIsString($dt[$col]);
             }

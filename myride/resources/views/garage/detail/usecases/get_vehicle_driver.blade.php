@@ -5,7 +5,6 @@
             <tr>
                 <th scope="col" style="min-width: 160px;">Driver</th>
                 <th scope="col" style="min-width: 160px;">Notes</th>
-                <th scope="col">Action</th>
             </tr>
         </thead>
         <tbody></tbody>
@@ -24,7 +23,6 @@
                             <p class="text-secondary mb-0 mt-1 fw-bold">${dt.fullname}</p>
                         </td>
                         <td>${dt.notes ?? '<p class="m-0 fst-italic text-secondary">- No Notes Provided -</p>'}</td>
-                        <td></td>
                     </tr>
                 `)
             });

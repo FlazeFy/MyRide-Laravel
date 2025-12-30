@@ -570,8 +570,8 @@ class Queries extends Controller
 
     /**
      * @OA\GET(
-     *     path="/api/v1/stats/total/trip/{year}",
-     *     summary="Get Total Trip Per Month",
+     *     path="/api/v1/stats/total/trip/monthly/{year}",
+     *     summary="Get Total Trip Per Year",
      *     description="This request is used to get total trip per month by given `year`. This request interacts with the MySQL database, and has a protected routes.",
      *     tags={"Stats"},
      *     security={{"bearerAuth":{}}},
@@ -688,8 +688,8 @@ class Queries extends Controller
 
     /**
      * @OA\GET(
-     *     path="/api/v1/stats/total/fuel/{context}/{year}",
-     *     summary="Get Total Fuel Per Month",
+     *     path="/api/v1/stats/total/fuel/monthly/{context}/{year}",
+     *     summary="Get Total Fuel Per Year",
      *     description="This request is used to get total fuel per month by given `year` and `context`. This request interacts with the MySQL database, and has a protected routes.",
      *     tags={"Stats"},
      *     security={{"bearerAuth":{}}},
@@ -826,8 +826,8 @@ class Queries extends Controller
 
     /**
      * @OA\GET(
-     *     path="/api/v1/stats/total/service/{context}/{year}",
-     *     summary="Get Total Service Per Month",
+     *     path="/api/v1/stats/total/service/monthly/{context}/{year}",
+     *     summary="Get Total Service Per Year",
      *     description="This request is used to get total service per month by given `year` and `context`. This request is using MySql database.",
      *     tags={"Stats"},
      *     security={{"bearerAuth":{}}},

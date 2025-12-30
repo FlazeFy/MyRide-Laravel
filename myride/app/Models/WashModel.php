@@ -130,7 +130,8 @@ class WashModel extends Model
             case 'total_item':
                 $context = 'COUNT(id)';
                 break;
-            case 'SUM(wash_price)':
+            case 'total_price':
+                $context = 'SUM(wash_price)';
                 break;
             default:
                 return [];

@@ -14,7 +14,7 @@ trait LoginHelperTrait
         ]);
 
         $param = [
-            'username' => $role == "user" ? 'ricky.cremin' : 'testeradmin',
+            'username' => $role == "user" ? 'flazefy' : 'testeradmin',
             'password' => 'nopass123'
         ];
         $response = $httpClient->post("/api/v1/login", [

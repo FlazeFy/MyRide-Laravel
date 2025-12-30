@@ -6759,14 +6759,14 @@
                 ]
             }
         },
-        "/api/v1/stats/total/trip/{year}": {
+        "/api/v1/stats/total/trip/monthly/{year}": {
             "get": {
                 "tags": [
                     "Stats"
                 ],
-                "summary": "Get Total Trip Per Month",
+                "summary": "Get Total Trip Per Year",
                 "description": "This request is used to get total trip per month by given `year`. This request interacts with the MySQL database, and has a protected routes.",
-                "operationId": "e113c3600c9fd19089953b6c3647336d",
+                "operationId": "19bc6ecaef31b2de7cb78518bd3c2daa",
                 "parameters": [
                     {
                         "name": "year",
@@ -6894,14 +6894,14 @@
                 ]
             }
         },
-        "/api/v1/stats/total/fuel/{context}/{year}": {
+        "/api/v1/stats/total/fuel/monthly/{context}/{year}": {
             "get": {
                 "tags": [
                     "Stats"
                 ],
-                "summary": "Get Total Fuel Per Month",
+                "summary": "Get Total Fuel Per Year",
                 "description": "This request is used to get total fuel per month by given `year` and `context`. This request interacts with the MySQL database, and has a protected routes.",
-                "operationId": "b4b170f136a5fdbbbfce97e9627b3dd8",
+                "operationId": "fbf7f9d0144a4927e7213a1ab148ff3c",
                 "parameters": [
                     {
                         "name": "year",
@@ -7039,14 +7039,14 @@
                 ]
             }
         },
-        "/api/v1/stats/total/service/{context}/{year}": {
+        "/api/v1/stats/total/service/monthly/{context}/{year}": {
             "get": {
                 "tags": [
                     "Stats"
                 ],
-                "summary": "Get Total Service Per Month",
+                "summary": "Get Total Service Per Year",
                 "description": "This request is used to get total service per month by given `year` and `context`. This request is using MySql database.",
-                "operationId": "0880de249b4195bff3f99b5efa840486",
+                "operationId": "3f353360be994874a11587e69a5acb5e",
                 "parameters": [
                     {
                         "name": "year",

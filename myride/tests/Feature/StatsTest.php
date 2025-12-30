@@ -323,6 +323,168 @@ class StatsTest extends TestCase
         }
     }
 
+    public function test_get_total_service_per_year_protected(): void
+    {
+        // Exec
+        $token = $this->login_trait("user");
+        $context = ["total_item","total_price"];
+        $year = 2024;
+
+        foreach($context as $ctx){
+            // Exec
+            $response = $this->httpClient->get("total/service/monthly/$ctx/$year",[
+                'headers' => [
+                    'Authorization' => "Bearer $token"
+                ]
+            ]);
+
+            $data = json_decode($response->getBody(), true);
+
+            // Test Parameter
+            $this->assertEquals(200, $response->getStatusCode());
+            $this->assertArrayHasKey('status', $data);
+            $this->assertEquals('success', $data['status']);
+            $this->assertArrayHasKey('message', $data);
+            $this->assertArrayHasKey('data', $data);
+            $this->assertEquals(12,count($data['data']));
+
+            foreach ($data['data'] as $dt) {
+                $this->assertArrayHasKey('context', $dt);
+                $this->assertArrayHasKey('total', $dt);
+
+                $this->assertNotNull($dt['context']);
+                $this->assertIsString($dt['context']);
+        
+                $this->assertNotNull($dt['total']);
+                $this->assertIsInt($dt['total']);
+                $this->assertGreaterThanOrEqual(0, $dt['total']);
+            }
+
+            $ctx_title = ucwords(str_replace("_"," ",$ctx));
+            Audit::auditRecordText("Integration Test - Success Get Total Service Per Year By $ctx_title (Protected)", "TC-INT-ST-004-02", "Result : ".json_encode($data));
+            Audit::auditRecordSheet("Integration Test - Success Get Total Service Per Year By $ctx_title (Protected)", "TC-INT-ST-004-02", "test_get_total_service_per_year_by_$ctx"."_protected", json_encode($data));
+        }
+    }
+
+    public function test_get_total_service_per_year_public(): void
+    {
+        // Exec
+        $context = ["total_item","total_price"];
+        $year = 2024;
+
+        foreach($context as $ctx){
+            // Exec
+            $response = $this->httpClient->get("total/service/monthly/$ctx/$year");
+
+            $data = json_decode($response->getBody(), true);
+
+            // Test Parameter
+            $this->assertEquals(200, $response->getStatusCode());
+            $this->assertArrayHasKey('status', $data);
+            $this->assertEquals('success', $data['status']);
+            $this->assertArrayHasKey('message', $data);
+            $this->assertArrayHasKey('data', $data);
+            $this->assertEquals(12,count($data['data']));
+
+            foreach ($data['data'] as $dt) {
+                $this->assertArrayHasKey('context', $dt);
+                $this->assertArrayHasKey('total', $dt);
+
+                $this->assertNotNull($dt['context']);
+                $this->assertIsString($dt['context']);
+        
+                $this->assertNotNull($dt['total']);
+                $this->assertIsInt($dt['total']);
+                $this->assertGreaterThanOrEqual(0, $dt['total']);
+            }
+
+            $ctx_title = ucwords(str_replace("_"," ",$ctx));
+            Audit::auditRecordText("Integration Test - Success Get Total Service Per Year By $ctx_title (Public)", "TC-INT-ST-004-01", "Result : ".json_encode($data));
+            Audit::auditRecordSheet("Integration Test - Success Get Total Service Per Year By $ctx_title (Public)", "TC-INT-ST-004-01", "test_get_total_service_per_year_by_$ctx"."_public", json_encode($data));
+        }
+    }
+
+    public function test_get_total_wash_per_year_protected(): void
+    {
+        // Exec
+        $token = $this->login_trait("user");
+        $context = ["total_item","total_price"];
+        $year = 2025;
+
+        foreach($context as $ctx){
+            // Exec
+            $response = $this->httpClient->get("total/wash/monthly/$ctx/$year",[
+                'headers' => [
+                    'Authorization' => "Bearer $token"
+                ]
+            ]);
+
+            $data = json_decode($response->getBody(), true);
+
+            // Test Parameter
+            $this->assertEquals(200, $response->getStatusCode());
+            $this->assertArrayHasKey('status', $data);
+            $this->assertEquals('success', $data['status']);
+            $this->assertArrayHasKey('message', $data);
+            $this->assertArrayHasKey('data', $data);
+            $this->assertEquals(12,count($data['data']));
+
+            foreach ($data['data'] as $dt) {
+                $this->assertArrayHasKey('context', $dt);
+                $this->assertArrayHasKey('total', $dt);
+
+                $this->assertNotNull($dt['context']);
+                $this->assertIsString($dt['context']);
+        
+                $this->assertNotNull($dt['total']);
+                $this->assertIsInt($dt['total']);
+                $this->assertGreaterThanOrEqual(0, $dt['total']);
+            }
+
+            $ctx_title = ucwords(str_replace("_"," ",$ctx));
+            Audit::auditRecordText("Integration Test - Success Get Total Wash Per Year By $ctx_title (Protected)", "TC-INT-ST-004-02", "Result : ".json_encode($data));
+            Audit::auditRecordSheet("Integration Test - Success Get Total Wash Per Year By $ctx_title (Protected)", "TC-INT-ST-004-02", "test_get_total_wash_per_year_by_$ctx"."_protected", json_encode($data));
+        }
+    }
+
+    public function test_get_total_wash_per_year_public(): void
+    {
+        // Exec
+        $context = ["total_item","total_price"];
+        $year = 2025;
+
+        foreach($context as $ctx){
+            // Exec
+            $response = $this->httpClient->get("total/wash/monthly/$ctx/$year");
+
+            $data = json_decode($response->getBody(), true);
+
+            // Test Parameter
+            $this->assertEquals(200, $response->getStatusCode());
+            $this->assertArrayHasKey('status', $data);
+            $this->assertEquals('success', $data['status']);
+            $this->assertArrayHasKey('message', $data);
+            $this->assertArrayHasKey('data', $data);
+            $this->assertEquals(12,count($data['data']));
+
+            foreach ($data['data'] as $dt) {
+                $this->assertArrayHasKey('context', $dt);
+                $this->assertArrayHasKey('total', $dt);
+
+                $this->assertNotNull($dt['context']);
+                $this->assertIsString($dt['context']);
+        
+                $this->assertNotNull($dt['total']);
+                $this->assertIsInt($dt['total']);
+                $this->assertGreaterThanOrEqual(0, $dt['total']);
+            }
+
+            $ctx_title = ucwords(str_replace("_"," ",$ctx));
+            Audit::auditRecordText("Integration Test - Success Get Total Wash Per Year By $ctx_title (Public)", "TC-INT-ST-004-01", "Result : ".json_encode($data));
+            Audit::auditRecordSheet("Integration Test - Success Get Total Wash Per Year By $ctx_title (Public)", "TC-INT-ST-004-01", "test_get_total_wash_per_year_by_$ctx"."_public", json_encode($data));
+        }
+    }
+
     public function test_get_total_trip_per_year_public(): void
     {
         // Exec
