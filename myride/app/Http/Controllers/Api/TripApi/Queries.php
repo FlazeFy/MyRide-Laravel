@@ -87,7 +87,7 @@ class Queries extends Controller
     {
         try{
             $user_id = $request->user()->id;
-            $limit = $request->query("limit",14);
+            $limit = $request->query("limit",15);
 
             // Get all trip with pagination
             $res = TripModel::getAllTrip($user_id,$limit);
@@ -177,7 +177,7 @@ class Queries extends Controller
     {
         try{
             $user_id = $request->user()->id;
-            $limit = $request->query("limit",14);
+            $limit = $request->query("limit",15);
 
             // Get all trip with pagination by driver_id
             $res = TripModel::getAllTrip($user_id,$limit,$driver_id);

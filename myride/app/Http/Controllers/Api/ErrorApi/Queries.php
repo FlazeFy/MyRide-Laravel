@@ -78,7 +78,7 @@ class Queries extends Controller
     {
         try{
             $user_id = $request->user()->id;
-            $paginate = $request->query('per_page_key') ?? 12;
+            $paginate = $request->query('per_page_key') ?? 15;
 
             // Make sure only admin can access the request
             $check_admin = AdminModel::find($user_id);

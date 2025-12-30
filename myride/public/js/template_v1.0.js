@@ -219,3 +219,17 @@ const navigateCarouselPage = (holder, direction) => {
     instance.to(current)
     instance.pause()
 }
+
+const syncCarouselIndicator = (carouselId) => {
+    const $carousel = $(`#${carouselId}`)
+
+    $carousel.on('slid.bs.carousel', function (e) {
+        const current = e.to  
+
+        const pages = $carousel.find('.btn-page')
+        if (!pages.length) return
+
+        pages.removeClass('active')
+        pages.filter(`[data-slide="${current}"]`).addClass('active')
+    })
+}

@@ -8,7 +8,7 @@
         const holder = 'history-holder'
 
         $.ajax({
-            url: `/api/v1/history`,
+            url: `/api/v1/history?page=${page}`,
             type: 'GET',
             beforeSend: function (xhr) {
                 Swal.showLoading()
@@ -19,6 +19,8 @@
             success: function(response) {
                 Swal.close()
                 const data = response.data.data
+                const current_page = response.data.current_page
+                const total_page = response.data.last_page
                 
                 data.forEach(dt => {
                     $(`#${holder}`).append(`
@@ -32,6 +34,8 @@
                         </div>
                     `)
                 });
+
+                generatePagination(holder, get_all_history, total_page, current_page)
             },
             error: function(response, jqXHR, textStatus, errorThrown) {
                 if(response.status != 404){

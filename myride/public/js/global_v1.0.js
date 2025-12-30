@@ -93,11 +93,13 @@ const generatePagination = (items_holder, fetch_callback, total_page, current_pa
     }
 
     $(`#pagination-${items_holder}`).remove()
+
     if ($('#'+items_holder).closest('table').length == 0) {
         $(`<div id='pagination-${items_holder}' class='btn-page-holder'><label>Page</label>${page_element}</div>`).insertAfter(`#${items_holder}`)
     } else {
         $(`<div id='pagination-${items_holder}' class='btn-page-holder'><label>Page</label>${page_element}</div>`).insertAfter($(`#${items_holder}`).closest('table'))
     }
+
     $(document).off('click', `#pagination-${items_holder} .btn-page`)
     $(document).on('click', `#pagination-${items_holder} .btn-page`, function() {
         const selectedPage = $(this).data('page')
@@ -107,6 +109,8 @@ const generatePagination = (items_holder, fetch_callback, total_page, current_pa
     const table = $(`#${items_holder}`).closest('table')
     if (table.length) {
         table.css('margin-bottom', '0')
+    } else {
+        $(`#${items_holder}`).next('.btn-page-holder').addClass('rounded')
     }
 }
 
@@ -304,15 +308,27 @@ const resetLocalStorage = (keys) => {
     });
 }
 
+const initStaticModal = () => {
+    $('.modal').each(function () {
+        new bootstrap.Modal(this, {
+            backdrop: 'static',
+            keyboard: false
+        })
+    })   
+}
+
 $(document).ready(() => {
     let width = $(window).width()
+    const theme = localStorage.getItem("theme") || "light"
+    $("body").addClass(theme)
 
     buttonSetRoute()
     checkScreenSize(width)
     validatorInput()
+    initStaticModal()
 
     $(window).on('resize', function() {
         width = $(window).width()
         checkScreenSize(width)
-    });
+    })
 })

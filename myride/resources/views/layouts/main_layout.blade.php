@@ -114,15 +114,10 @@
 @include('others.popup.success_mini')
 
 <script>
-    var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
-    var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+    const popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
+    const popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
         return new bootstrap.Popover(popoverTriggerEl)
     })
-
-    $(document).ready(function () {
-        const theme = localStorage.getItem("theme") || "light"
-        $("body").addClass(theme)
-    });
 </script>
 
 <!-- Others JS -->
@@ -134,5 +129,4 @@
         ";
     } 
 ?>
-
 </html>

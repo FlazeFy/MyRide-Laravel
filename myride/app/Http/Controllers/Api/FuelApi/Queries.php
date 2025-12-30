@@ -81,7 +81,7 @@ class Queries extends Controller
     {
         try{
             $user_id = $request->user()->id;
-            $paginate = $request->query('per_page_key') ?? 12;
+            $paginate = $request->query('per_page_key') ?? 15;
             // This will get all fuel history if vehicle_id not attached
             $vehicle_id = $request->query('vehicle_id') ?? null;
 

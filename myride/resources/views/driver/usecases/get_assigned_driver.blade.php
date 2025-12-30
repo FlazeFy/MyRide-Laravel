@@ -8,7 +8,7 @@
             </div>
             <div class="modal-body">
                 <div class="table-responsive">
-                    <table>
+                    <table class="table">
                         <thead>
                             <tr>
                                 <th style="min-width: 180px;">Vehicle</th>
@@ -19,7 +19,6 @@
                         <tbody id="assigned_driver-holder"></tbody>
                     </table>
                 </div>
-                <hr>
             </div>
         </div>
     </div>

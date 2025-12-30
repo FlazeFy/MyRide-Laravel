@@ -93,7 +93,7 @@ class Queries extends Controller
     {
         try{
             $user_id = $request->user()->id;
-            $limit = $request->query("limit",14);
+            $limit = $request->query("limit",15);
 
             // Get all vehicle header
             $res = VehicleModel::getAllVehicleHeader($user_id,$limit);
@@ -182,7 +182,7 @@ class Queries extends Controller
     public function getVehicleReadiness(Request $request)
     {
         try{
-            $limit = $request->query("limit",14);
+            $limit = $request->query("limit",15);
 
             // Check whether authentication is attached. If yes, retrieve vehicle by user; if not, retrieve all vehicle for all users
             if ($request->hasHeader('Authorization')) {
@@ -622,7 +622,7 @@ class Queries extends Controller
     public function getVehicleFullDetailById(Request $request, $id){
         try{
             $user_id = $request->user()->id;
-            $limit = $request->query("limit",14);
+            $limit = $request->query("limit",15);
 
             // Get vehicle detail
             $res = VehicleModel::getVehicleDetailById($user_id,$id);

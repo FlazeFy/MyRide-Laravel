@@ -164,7 +164,7 @@ class Queries extends Controller
     {
         try{
             $user_id = $request->user()->id;
-            $limit = $request->query("limit",14);
+            $limit = $request->query("limit",15);
 
             // Get all reminder with pagination
             $res = ReminderModel::getAllReminder($user_id,$limit);
@@ -246,7 +246,7 @@ class Queries extends Controller
     {
         try{
             $user_id = $request->user()->id;
-            $limit = $request->query("limit",14);
+            $limit = $request->query("limit",15);
 
             // Get recently created reminder
             $res = ReminderModel::getRecentlyReminder($user_id,$limit);

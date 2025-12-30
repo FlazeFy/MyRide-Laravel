@@ -75,7 +75,7 @@ class Queries extends Controller
     {
         try{
             $user_id = $request->user()->id;
-            $paginate = $request->query('per_page_key') ?? 12;
+            $paginate = $request->query('per_page_key') ?? 15;
 
             // Define user id by role
             $check_admin = AdminModel::find($user_id);

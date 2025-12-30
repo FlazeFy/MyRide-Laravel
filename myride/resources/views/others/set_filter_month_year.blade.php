@@ -21,7 +21,7 @@
             const now = getMonthYear()
             $(`#${holder}`).html(`
                 <option value="all" ${selected === "all" ? "selected":""}>All</option>
-                <option value="${now}" ${selected === now ? "selected":""}>${now}</option>
+                <option value="${now}" ${[now,""].includes(selected) ? "selected":""}>${now}</option>
             `)
 
             const years = data.map(dt => dt.year)

@@ -6,6 +6,12 @@
     $carouselId = 'carouselTrip';
 @endphp
 
+<style>
+    .carousel-item .holder button:last-child {
+        margin-bottom: var(--spaceSM) !important;
+    }
+</style>
+
 <div class="carousel-parent">
     <div id="{{$carouselId}}" class="carousel slide">
         <div class="carousel-inner pt-4"></div>
@@ -55,6 +61,7 @@
                     }
 
                     pauseCarousel("<?= $carouselId ?>")
+                    syncCarouselIndicator("<?= $carouselId ?>")
                 },
                 error: function(response, jqXHR, textStatus, errorThrown) {
                     Swal.close()

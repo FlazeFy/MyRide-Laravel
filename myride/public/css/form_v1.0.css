@@ -44,7 +44,7 @@ hr {
     padding: var(--spaceSM);
     align-items: center;
     background: var(--blueColor);
-    border: 1.5px solid var(--whiteColor) !important;
+    border: 1.5px solid var(--secondaryColor) !important;
 }
 .btn-page {
     cursor: pointer;
@@ -52,6 +52,7 @@ hr {
 }
 .btn-page, .btn-page-holder label {
     margin: 0;
+    color: var(--whiteColor) !important;
 }
 .btn-page-holder label {
     margin-right: var(--spaceXSM);

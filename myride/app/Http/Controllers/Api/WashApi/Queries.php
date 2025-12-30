@@ -94,7 +94,7 @@ class Queries extends Controller
     {
         try{
             $user_id = $request->user()->id;
-            $limit = $request->query("limit",14);
+            $limit = $request->query("limit",15);
 
             // Get all wash history
             $res = WashModel::getAllWashHistory($user_id,$limit);
