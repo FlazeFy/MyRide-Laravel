@@ -89,20 +89,20 @@ class TripModel extends Model
             ->get();
     }
 
-    public static function getTripByVehicleId($user_id,$vehicle_id,$limit = null){
-        $res = TripModel::select("id","trip_desc","trip_category","trip_person","trip_origin_name","trip_origin_coordinate","trip_destination_name","trip_destination_coordinate","created_at")
-            ->where('vehicle_id',$vehicle_id)
-            ->where('created_by',$user_id)
+    public static function getTripByVehicleId($user_id, $vehicle_id, $limit = null, $page = 1){
+        $res = TripModel::select("id","trip_desc","trip_category","trip_person", "trip_origin_name","trip_origin_coordinate","trip_destination_name","trip_destination_coordinate","created_at")
+            ->where('vehicle_id', $vehicle_id)
+            ->where('created_by', $user_id)
             ->whereNull('deleted_at')
-            ->orderBy('created_at','desc');
-        
+            ->orderBy('created_at', 'desc');
+    
         if($limit){
-            $res = $res->paginate($limit);
+            $res = $res->paginate($limit, ['*'], 'page_trip', $page);
         } else {
             $res = $res->get();
         }
-
-        return $res->isNotEmpty() ? $res : null;
+    
+        return $res->isEmpty() ? null : $res;
     }
 
     public static function getPersonWithMostTripWith($user_id, $vehicle_id = null, $limit = 7){

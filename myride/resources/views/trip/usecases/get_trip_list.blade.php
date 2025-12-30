@@ -46,7 +46,6 @@
                     if (page === 1) {
                         dt_all_trip_location = data
                         markers = []
-                        $('#trip-content-holder').empty()
                         buildLayoutTrip(payload,"<?= $carouselId ?>")
                     } else {
                         appendLayoutTrip(payload,"<?= $carouselId ?>")
@@ -78,7 +77,7 @@
     get_all_trip(page)
 
     $(document).ready(function() {
-        $('#carouselTrip').on('slid.bs.carousel', function (e) {
+        $('#<?= $carouselId ?>').on('slid.bs.carousel', function (e) {
             const carousel = e.target
             const items = carousel.querySelectorAll('.carousel-item')
             const lastIndex = items.length - 1
@@ -95,18 +94,7 @@
         })
 
         $(document).on('click', '.btn-page', function () {            
-            const slideIndex = Number($(this).data('slide'))
-            const page = $(this).data('slide') + 1
-            const holder = $(this).data('holder')
-            const carousel = bootstrap.Carousel.getOrCreateInstance($('#carouselTrip'), {interval: false})
-            
-            carousel.to(slideIndex)
-            $(`#${holder} .btn-page`).removeClass('active')
-            $(`#${holder} .btn-page`).each(function () {
-                if ($(this).data('slide') + 1 === page) {
-                    $(this).addClass('active')
-                }
-            })
+            navigateCarouselPageWithButtonPage(this,'<?= $carouselId ?>')
         })
 
         $(document).on('click', '.carousel-control-prev, .carousel-control-next', function () {
@@ -117,7 +105,7 @@
 
         $(document).on('keydown', function (e) {
             if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return
-            navigateCarouselPage('carouselTrip', e.key === 'ArrowRight' ? 'next' : 'prev')
+            navigateCarouselPage('<?= $carouselId ?>', e.key === 'ArrowRight' ? 'next' : 'prev')
         })
     })
 </script>

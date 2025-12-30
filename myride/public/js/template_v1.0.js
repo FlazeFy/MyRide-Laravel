@@ -195,6 +195,25 @@ const buildLayoutTrip = (dt, holder) => {
     })
 }
 
+const navigateCarouselPageWithButtonPage = (el) => {
+    const slideIndex = Number($(el).data('slide'))
+    const page = slideIndex + 1
+    const holder = $(el).data('holder')
+
+    const carousel = bootstrap.Carousel.getOrCreateInstance(
+        $('#carouselTrip'),
+        { interval: false }
+    )
+    carousel.to(slideIndex)
+
+    $(`#${holder} .btn-page`).removeClass('active')
+    $(`#${holder} .btn-page`).each(function () {
+        if ($(this).data('slide') + 1 === page) {
+            $(this).addClass('active')
+        }
+    })
+}
+
 const navigateCarouselPage = (holder, direction) => {
     const pages = $(`#${holder} .btn-page`)
     const activeBtn = pages.filter('.active')

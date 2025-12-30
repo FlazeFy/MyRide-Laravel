@@ -30,24 +30,26 @@ class WashModel extends Model
         return $res->isNotEmpty() ? $res : null;
     }
 
-    public static function getWashByVehicleId($user_id,$vehicle_id,$limit = null){
+    public static function getWashByVehicleId($user_id, $vehicle_id, $limit = null, $page = 1){
         $res = WashModel::selectRaw("
                 wash.id, wash_desc, wash_by,
-                is_wash_body, is_wash_window, is_wash_dashboard, is_wash_tires, is_wash_trash, is_wash_engine, is_wash_seat, is_wash_carpet, 
-                is_wash_pillows, wash_address, wash_start_time, wash_end_time, is_fill_window_washing_water, is_wash_hollow, 
+                is_wash_body, is_wash_window, is_wash_dashboard, is_wash_tires,
+                is_wash_trash, is_wash_engine, is_wash_seat, is_wash_carpet,
+                is_wash_pillows, wash_address, wash_start_time, wash_end_time,
+                is_fill_window_washing_water, is_wash_hollow,
                 wash.created_at, wash.updated_at
             ")
             ->join('vehicle','vehicle.id','=','wash.vehicle_id')
-            ->where('vehicle_id',$vehicle_id)
-            ->orderBy('wash.created_at');
-            
+            ->where('vehicle_id', $vehicle_id)
+            ->orderBy('wash.created_at', 'desc');
+
         if($limit){
-            $res = $res->paginate($limit);
+            $res = $res->paginate($limit, ['*'], 'page_wash', $page);
         } else {
             $res = $res->get();
         }
-
-        return $res->isNotEmpty() ? $res : null;
+    
+        return $res->isEmpty() ? null : $res;
     }
 
     public static function getLastWashByVehicleId($user_id,$vehicle_id){

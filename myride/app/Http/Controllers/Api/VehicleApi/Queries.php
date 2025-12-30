@@ -622,15 +622,18 @@ class Queries extends Controller
     public function getVehicleFullDetailById(Request $request, $id){
         try{
             $user_id = $request->user()->id;
-            $limit = $request->query("limit",15);
+            $limit_trip = $request->query("limit_trip",15);
+            $limit_wash = $request->query("limit_wash",4);
+            $page_trip = $request->query("page_trip",1);
+            $page_wash = $request->query("page_wash",1);
 
             // Get vehicle detail
             $res = VehicleModel::getVehicleDetailById($user_id,$id);
-            if ($res) {
+            if($res){
                 // Get trip history by vehicle ID
-                $res_trip = TripModel::getTripByVehicleId($user_id,$id,$limit);
+                $res_trip = TripModel::getTripByVehicleId($user_id, $id, $limit_trip, $page_trip);
                 // Get wash history by vehicle ID
-                $res_wash = WashModel::getWashByVehicleId($user_id,$id,$limit);
+                $res_wash = WashModel::getWashByVehicleId($user_id, $id, $limit_wash, $page_wash);
                 // Get driver by its vehicle ID
                 $res_driver = DriverModel::getDriverByVehicleId($user_id, $id);
 
@@ -638,11 +641,11 @@ class Queries extends Controller
                 return response()->json([
                     'status' => 'success',
                     'message' => Generator::getMessageTemplate("fetch", $this->module),
-                    'data' => [
+                    'data'    => [
                         'detail' => $res,
-                        'trip' => $res_trip,
-                        'wash' => $res_wash && count($res_wash) > 0 ? $res_wash : null,
-                        'driver' => $res_driver && count($res_driver) > 0 ? $res_driver : null
+                        'trip'   => $res_trip,
+                        'wash'   => $res_wash,
+                        'driver' => count($res_driver) > 0 ? $res_driver : null
                     ]
                 ], Response::HTTP_OK);
             } else {
@@ -654,7 +657,7 @@ class Queries extends Controller
         } catch(\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => Generator::getMessageTemplate("unknown_error", null),
+                'message' => $e->getMessage(),
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
