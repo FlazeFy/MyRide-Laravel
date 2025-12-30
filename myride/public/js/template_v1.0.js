@@ -12,46 +12,32 @@ const templateAlertContainer = (target, type, msg, btn_title, icon, href) => {
     `)
 }
 
-const templateCarouselNavigation = (holder, carouselId) => {
-    $(`#${holder}`).html(`
-        <div class="carousel-button-holder">
-            <button class="btn btn-primary carousel-control-prev ms-2" type="button" data-bs-target="#${carouselId}" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Previous</span>
-            </button>
-            <button class="btn btn-primary carousel-control-next" type="button" data-bs-target="#${carouselId}" data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Next</span>
-            </button>
-        </div>
-    `)
-}
-
-const appendLayoutTrip = (dt) => {
-    const itemsPerSlide = 3
-    const carouselInner = $("#carouselTrip .carousel-inner")
-    const indicators = $("#carouselTrip .carousel-indicators")
-
-    let existingSlides = carouselInner.find('.carousel-item').length
-    let startIndex = existingSlides * itemsPerSlide
-
-    dt.data.forEach((el, i) => {
-        const slideIndex = Math.floor((startIndex + i) / itemsPerSlide)
-
-        if ($(`#carouselTrip .carousel-item[data-slide-index="${slideIndex}"]`).length === 0) {
-            carouselInner.append(`
-                <div class="carousel-item px-2" data-slide-index="${slideIndex}">
-                    <div class="holder"></div>
-                </div>
-            `)
-
-            indicators.append(`
-                <button type="button" data-bs-target="#carouselTrip" data-bs-slide-to="${slideIndex}" aria-label="Slide ${slideIndex + 1}"></button>
-            `)
+const buildDeleteModal = (url, context, token, action) => {
+    Swal.fire({
+        title: "Are you sure?",
+        text: `Do you want to delete this "${context}"?`,
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes, delete it",
+        cancelButtonText: "No, cancel",
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: url,
+                type: 'DELETE',
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("Accept", "application/json")
+                    xhr.setRequestHeader("Authorization", `Bearer ${token}`)
+                },
+                success: function(response) {
+                    Swal.fire("Deleted!", response.message ?? `Your ${context} has been deleted`, "success").then(() => action())
+                },
+                error: function() {
+                    Swal.fire("Error!", `Failed to delete this ${context}`, "error")
+                }
+            });
         }
-
-        $(`#carouselTrip .carousel-item[data-slide-index="${slideIndex}"] .holder`).append(templateTripBox(el))
-    })
+    });
 }
 
 const templateTripBox = (dt, extra_class = '') => {
@@ -130,63 +116,106 @@ const templateTripBox = (dt, extra_class = '') => {
     `;
 }
 
-const buildLayoutTrip = (dt) => {
-    if (!dt || !dt.data) return
+const pauseCarousel = (carouselId) => {
+    const el = document.getElementById(carouselId)
+    if (!el) return
 
+    const instance = bootstrap.Carousel.getOrCreateInstance(el, {
+        interval: false,
+        ride: false,
+        wrap: false
+    })
+
+    instance.pause()
+}
+
+const templateCarouselNavigation = (holder, carouselId) => {
+    $(`#${holder}`).html(`
+        <div class="carousel-button-holder">
+            <button class="btn btn-primary carousel-control-prev ms-2" type="button" data-bs-target="#${carouselId}" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="btn btn-primary carousel-control-next" type="button" data-bs-target="#${carouselId}" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+    `)
+}
+
+const appendLayoutTrip = (dt, holder) => {
     const itemsPerSlide = 3
-    const carouselInner = $("#carouselTrip .carousel-inner")
-    const indicators = $("#carouselTrip .carousel-indicators")
-
-    carouselInner.empty()
-    indicators.empty()
+    const carouselInner = $(`#${holder} .carousel-inner`)
+    const existingSlides = carouselInner.find('.carousel-item').length
 
     dt.data.forEach((el, i) => {
-        const slideIndex = Math.floor(i / itemsPerSlide)
+        const slideIndex = Math.floor((existingSlides * itemsPerSlide + i) / itemsPerSlide)
 
-        if ($(`#carouselTrip .carousel-item[data-slide-index="${slideIndex}"]`).length === 0) {
+        if (!$(`#${holder} .carousel-item[data-slide-index="${slideIndex}"]`).length) {
             carouselInner.append(`
-                <div class="carousel-item px-2 ${slideIndex === 0 ? "active" : ""}" data-slide-index="${slideIndex}">
+                <div class="carousel-item px-2" data-slide-index="${slideIndex}">
                     <div class="holder"></div>
                 </div>
             `)
 
-            if(dt.data.length > 3){
-                indicators.append(`
-                    <button type="button" data-bs-target="#carouselTrip" data-bs-slide-to="${slideIndex}" 
-                        class="${slideIndex === 0 ? "active" : ""}" aria-current="${slideIndex === 0 ? "true" : "false"}" aria-label="Slide ${slideIndex + 1}"></button>
-                `)
-            }
+            $(`#${holder} .btn-page-holder`).append(`<a class="btn-page" data-slide="${slideIndex}" data-holder="${holder}">${slideIndex + 1}</a>`)
         }
 
-        const targetSlide = $(`#carouselTrip .carousel-item[data-slide-index="${slideIndex}"] .holder`)
-        targetSlide.append(templateTripBox(el))
+        $(`#${holder} .carousel-item[data-slide-index="${slideIndex}"] .holder`).append(templateTripBox(el))
     })
 }
 
-const buildDeleteModal = (url, context, token, action) => {
-    Swal.fire({
-        title: "Are you sure?",
-        text: `Do you want to delete this "${context}"?`,
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonText: "Yes, delete it",
-        cancelButtonText: "No, cancel",
-    }).then((result) => {
-        if (result.isConfirmed) {
-            $.ajax({
-                url: url,
-                type: 'DELETE',
-                beforeSend: function (xhr) {
-                    xhr.setRequestHeader("Accept", "application/json")
-                    xhr.setRequestHeader("Authorization", `Bearer ${token}`)
-                },
-                success: function(response) {
-                    Swal.fire("Deleted!", response.message ?? `Your ${context} has been deleted`, "success").then(() => action())
-                },
-                error: function() {
-                    Swal.fire("Error!", `Failed to delete this ${context}`, "error")
-                }
-            });
+const buildLayoutTrip = (dt, holder) => {
+    if (!dt || !dt.data) return
+
+    const itemsPerSlide = 3
+    const carouselInner = $(`#${holder} .carousel-inner`)
+
+    carouselInner.empty()
+    $(`#${holder} .btn-page-holder`).remove()
+    $(`#${holder}`).append(`<div class="btn-page-holder rounded mx-1"><label>Page</label></div>`)
+
+    dt.data.forEach((el, i) => {
+        const slideIndex = Math.floor(i / itemsPerSlide)
+
+        if (!$(`#${holder} .carousel-item[data-slide-index="${slideIndex}"]`).length) {
+            carouselInner.append(`
+                <div class="carousel-item px-2 ${slideIndex === 0 ? 'active' : ''}" data-slide-index="${slideIndex}">
+                    <div class="holder"></div>
+                </div>
+            `)
+
+            $(`#${holder} .btn-page-holder`).append(`
+                <a class="btn-page ${slideIndex === 0 ? 'active' : ''}" data-slide="${slideIndex}" data-holder="${holder}">${slideIndex + 1}</a>
+            `)
         }
-    });
+
+        $(`#${holder} .carousel-item[data-slide-index="${slideIndex}"] .holder`).append(templateTripBox(el))
+    })
+}
+
+const navigateCarouselPage = (holder, direction) => {
+    const pages = $(`#${holder} .btn-page`)
+    const activeBtn = pages.filter('.active')
+    const total = pages.length
+    if (!total) return
+
+    let current = Number(activeBtn.data('slide'))
+
+    if (direction === 'next') {
+        current = current + 1 >= total ? 0 : current + 1
+    } else {
+        current = current - 1 < 0 ? total - 1 : current - 1
+    }
+
+    pages.removeClass('active')
+    pages.filter(`[data-slide="${current}"]`).addClass('active')
+
+    const carouselEl = document.getElementById(holder)
+    if (!carouselEl) return
+
+    const instance = bootstrap.Carousel.getOrCreateInstance(carouselEl)
+    instance.to(current)
+    instance.pause()
 }

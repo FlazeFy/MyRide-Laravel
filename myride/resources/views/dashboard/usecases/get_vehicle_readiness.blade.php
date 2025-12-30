@@ -5,7 +5,7 @@
             <tr>
                 <th scope="col" style="min-width: 160px;">Plate Number</th>
                 <th scope="col" style="min-width: 160px;">Vehicle Name & Type</th>
-                <th scope="col" style="min-width: 160px;">Status</th>
+                <th scope="col" style="min-width: 200px;">Status</th>
                 <th scope="col" style="min-width: 160px;">Fuel</th>
                 <th scope="col">Capacity</th>
                 <th scope="col">Action</th>

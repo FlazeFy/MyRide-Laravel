@@ -74,7 +74,7 @@ input:focus, textarea:focus {
     color: var(--secondaryColor);
 }
 .form-control, .form-select, .input-group-text , .rounded {
-    border-radius: var(--roundedLG);   
+    border-radius: var(--roundedLG) !important;   
 }
 input[type="file"].form-control {
     margin-bottom: 0;

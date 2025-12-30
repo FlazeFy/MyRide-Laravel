@@ -30,7 +30,7 @@
         }
 
         const fetchData = () => {
-            const month_year = `<?= session()->get('toogle_month_year') ?? 'getMonthYear()' ?>`;
+            const month_year = <?= session()->get('toogle_month_year') ? "'".session()->get('toogle_month_year')."'" : 'getMonthYear()' ?>;
             $.ajax({
                 url: `/api/v1/fuel/summary/${month_year}`,
                 type: 'GET',

@@ -8,9 +8,7 @@
 
 <div class="carousel-parent">
     <div id="{{$carouselId}}" class="carousel slide">
-        <div class="carousel-indicators"></div>
-        <div class="carousel-inner py-4"></div>
-        <div id="carousel-holder"></div>
+        <div class="carousel-inner pt-4"></div>
     </div>
 </div>
 
@@ -43,9 +41,9 @@
                         dt_all_trip_location = data
                         markers = []
                         $('#trip-content-holder').empty()
-                        buildLayoutTrip(payload)
+                        buildLayoutTrip(payload,"<?= $carouselId ?>")
                     } else {
-                        appendLayoutTrip(payload)
+                        appendLayoutTrip(payload,"<?= $carouselId ?>")
                     }
 
                     data.forEach(dt => place_marker(dt))
@@ -55,6 +53,8 @@
                     if (data.length > 3) {
                         templateCarouselNavigation("carousel-nav-holder", "<?= $carouselId ?>")
                     }
+
+                    pauseCarousel("<?= $carouselId ?>")
                 },
                 error: function(response, jqXHR, textStatus, errorThrown) {
                     Swal.close()
@@ -67,7 +67,7 @@
                 }
             });
         });
-    };
+    }
     get_all_trip(page)
 
     $(document).ready(function() {
@@ -81,15 +81,36 @@
                 page++
 
                 get_all_trip(page).then(() => {
-                    const instance = bootstrap.Carousel.getOrCreateInstance(carousel, {
-                        interval: false,
-                        ride: false,
-                        wrap: false
-                    })
-                    instance.pause()
+                    pauseCarousel("<?= $carouselId ?>")
                     isFetchingNextCarousel = false
                 })
             }
+        })
+
+        $(document).on('click', '.btn-page', function () {            
+            const slideIndex = Number($(this).data('slide'))
+            const page = $(this).data('slide') + 1
+            const holder = $(this).data('holder')
+            const carousel = bootstrap.Carousel.getOrCreateInstance($('#carouselTrip'), {interval: false})
+            
+            carousel.to(slideIndex)
+            $(`#${holder} .btn-page`).removeClass('active')
+            $(`#${holder} .btn-page`).each(function () {
+                if ($(this).data('slide') + 1 === page) {
+                    $(this).addClass('active')
+                }
+            })
+        })
+
+        $(document).on('click', '.carousel-control-prev, .carousel-control-next', function () {
+            const holder = $(this).data('bs-target').replace('#', '')
+            const type = $(this).data('bs-slide')
+            navigateCarouselPage(holder, type === 'next' ? 'next' : 'prev')
+        })
+
+        $(document).on('keydown', function (e) {
+            if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return
+            navigateCarouselPage('carouselTrip', e.key === 'ArrowRight' ? 'next' : 'prev')
         })
     })
 </script>
