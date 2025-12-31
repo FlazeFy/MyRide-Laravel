@@ -16,21 +16,26 @@
 </div>
 
 <script>
-    const get_all_trip = () => {
+    let page = 1
+
+    const getVehicleReadiness = (page) => {
         const holder = 'vehicle_readiness-holder'
-        Swal.showLoading()
+       
         $.ajax({
-            url: `/api/v1/vehicle/readiness`,
+            url: `/api/v1/vehicle/readiness?page=${page}`,
             type: 'GET',
             beforeSend: function (xhr) {
+                Swal.showLoading()
                 xhr.setRequestHeader("Accept", "application/json")
                 xhr.setRequestHeader("Authorization", `Bearer ${token}`)
             },
             success: function(response) {
                 Swal.close()
                 const data = response.data.data
-                $(`#${holder}`).empty()
+                const current_page = response.data.current_page
+                const total_page = response.data.last_page
 
+                $(`#${holder}`).empty()
                 data.forEach(dt => {
                     $(`#${holder}`).append(`
                         <tr>
@@ -49,6 +54,8 @@
                         </tr>
                     `)
                 });
+
+                generatePagination(holder, getVehicleReadiness, total_page, current_page)
             },
             error: function(response, jqXHR, textStatus, errorThrown) {
                 Swal.close()
@@ -61,5 +68,6 @@
             }
         });
     }
-    get_all_trip()
+
+    getVehicleReadiness(page)
 </script>

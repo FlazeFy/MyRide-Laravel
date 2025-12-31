@@ -37,14 +37,14 @@
         });
     }
 
-    const get_all_reminder = (page) => {
+    const getAllReminder = (page) => {
         const holder = 'reminder-holder'
 
-        Swal.showLoading();
         $.ajax({
             url: `/api/v1/reminder?page=${page}`,
             type: 'GET',
             beforeSend: function (xhr) {
+                Swal.showLoading()
                 xhr.setRequestHeader("Accept", "application/json")
                 xhr.setRequestHeader("Authorization", `Bearer ${token}`)
                 $(`#${holder}`).empty()
@@ -126,7 +126,7 @@
                     `)
                 });
 
-                generatePagination(holder, get_all_reminder, total_page, current_page)
+                generatePagination(holder, getAllReminder, total_page, current_page)
                 initStaticModal()
             },
             error: function(response, jqXHR, textStatus, errorThrown) {
@@ -141,5 +141,5 @@
             }
         });
     }
-    get_all_reminder(page)
+    getAllReminder(page)
 </script>

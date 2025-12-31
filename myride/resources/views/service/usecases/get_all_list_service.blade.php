@@ -18,14 +18,14 @@
 <script>
     let page = 1
 
-    const get_all_service = (page) => {
+    const getAllService = (page) => {
         const holder = 'service-holder'
 
-        Swal.showLoading();
         $.ajax({
             url: `/api/v1/service?page=${page}`,
             type: 'GET',
             beforeSend: function (xhr) {
+                Swal.showLoading()
                 xhr.setRequestHeader("Accept", "application/json")
                 xhr.setRequestHeader("Authorization", `Bearer ${token}`)
                 $(`#${holder}`).empty()
@@ -80,7 +80,7 @@
                     `)
                 });
 
-                generatePagination(holder, get_all_service, total_page, current_page)
+                generatePagination(holder, getAllService, total_page, current_page)
             },
             error: function(response, jqXHR, textStatus, errorThrown) {
                 Swal.close()
@@ -93,5 +93,5 @@
             }
         });
     };
-    get_all_service(page)
+    getAllService(page)
 </script>

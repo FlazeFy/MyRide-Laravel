@@ -16,12 +16,13 @@ class WashModelFactory extends Factory
     {
         $ran = mt_rand(0, 1);
         $user_id = UserModel::getRandomWithVehicle(0);
+        $wash_by = DictionaryModel::getRandom(0,'wash_by');
 
         return [
             'id' => Generator::getUUID(), 
             'vehicle_id' => VehicleModel::getRandom(0,$user_id), 
             'wash_desc' => fake()->paragraph(), 
-            'wash_by' => fake()->company(), 
+            'wash_by' => $wash_by, 
             'is_wash_body' => 1, 
             'is_wash_window' => 1, 
             'is_wash_dashboard' => mt_rand(0, 1), 
@@ -31,7 +32,7 @@ class WashModelFactory extends Factory
             'is_wash_seat' => mt_rand(0, 1), 
             'is_wash_carpet' => mt_rand(0, 1), 
             'is_wash_pillows' => mt_rand(0, 1), 
-            'wash_address' => fake()->address(), 
+            'wash_address' => $wash_by !== "Myself" ? fake()->address() : null, 
             'wash_price' => $ran === 1 ? mt_rand(40000, 450000) : null, 
             'wash_start_time' => Generator::getRandomDate(0), 
             'wash_end_time' => Generator::getRandomDate($ran),

@@ -3,6 +3,6 @@
         const url = $(this).data('url')
         const context = $(this).data('context')
 
-        buildDeleteModal(url, context, token, () => get_all_service(1))
+        buildDeleteModal(url, context, token, () => getAllService(1))
     });
 </script>

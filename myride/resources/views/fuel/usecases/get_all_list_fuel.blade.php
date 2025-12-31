@@ -17,7 +17,7 @@
 <script>
     let page = 1
 
-    const get_all_fuel = (page) => {
+    const getAllFuel = (page) => {
         const holder = 'fuel-holder'
 
         $.ajax({
@@ -96,7 +96,7 @@
                     `)
                 });
 
-                generatePagination(holder, get_all_fuel, total_page, current_page)
+                generatePagination(holder, getAllFuel, total_page, current_page)
             },
             error: function(response, jqXHR, textStatus, errorThrown) {
                 Swal.close()
@@ -110,5 +110,5 @@
             }
         });
     };
-    get_all_fuel(page)
+    getAllFuel(page)
 </script>

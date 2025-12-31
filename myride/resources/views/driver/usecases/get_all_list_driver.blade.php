@@ -18,7 +18,7 @@
 <script>
     let page = 1
 
-    const get_all_driver = (page) => {
+    const getAllDriver = (page) => {
         const holder = 'driver-holder'
 
         Swal.showLoading();
@@ -76,7 +76,7 @@
                     `)
                 });
 
-                generatePagination(holder, get_all_driver, total_page, current_page)
+                generatePagination(holder, getAllDriver, total_page, current_page)
             },
             error: function(response, jqXHR, textStatus, errorThrown) {
                 Swal.close()
@@ -89,5 +89,5 @@
             }
         });
     };
-    get_all_driver(page)
+    getAllDriver(page)
 </script>

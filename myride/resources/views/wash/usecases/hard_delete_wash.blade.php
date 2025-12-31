@@ -3,6 +3,6 @@
         const url = $(this).data('url')
         const context = $(this).data('context')
 
-        buildDeleteModal(url, context, token, () => get_all_wash(1))
+        buildDeleteModal(url, context, token, () => getAllWash(1))
     });
 </script>

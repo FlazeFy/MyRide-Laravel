@@ -17,7 +17,7 @@
 <script>
     let page = 1
 
-    const get_all_wash = (page) => {
+    const getAllWash = (page) => {
         const holder = 'wash-holder'
 
         $.ajax({
@@ -104,7 +104,7 @@
                     `)
                 });
 
-                generatePagination(holder, get_all_wash, total_page, current_page)
+                generatePagination(holder, getAllWash, total_page, current_page)
             },
             error: function(response, jqXHR, textStatus, errorThrown) {
                 Swal.close()
@@ -118,5 +118,5 @@
             }
         });
     };
-    get_all_wash(page)
+    getAllWash(page)
 </script>

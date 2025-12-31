@@ -26,13 +26,13 @@
     let nextPageUrlCarousel = null
     let isFetchingNextCarousel = false
 
-    const get_all_trip = (page) => {
+    const getAllTrip = (page) => {
         return new Promise((resolve, reject) => {
-            Swal.showLoading();
             $.ajax({
                 url: `/api/v1/trip?page=${page}`,
                 type: 'GET',
                 beforeSend: function (xhr) {
+                    Swal.showLoading()
                     xhr.setRequestHeader("Accept", "application/json")
                     xhr.setRequestHeader("Authorization", `Bearer ${token}`)
                 },
@@ -74,7 +74,7 @@
             });
         });
     }
-    get_all_trip(page)
+    getAllTrip(page)
 
     $(document).ready(function() {
         $('#<?= $carouselId ?>').on('slid.bs.carousel', function (e) {
@@ -86,7 +86,7 @@
                 isFetchingNextCarousel = true
                 page++
 
-                get_all_trip(page).then(() => {
+                getAllTrip(page).then(() => {
                     pauseCarousel("<?= $carouselId ?>")
                     isFetchingNextCarousel = false
                 })

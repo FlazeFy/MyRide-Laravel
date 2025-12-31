@@ -3,6 +3,6 @@
         const url = $(this).data('url')
         const context = $(this).data('context')
 
-        buildDeleteModal(url, context, token, () => get_all_driver(1))
+        buildDeleteModal(url, context, token, () => getAllDriver(1))
     });
 </script>

@@ -18,14 +18,14 @@
 <script>
     let page = 1
 
-    const get_all_inventory = (page) => {
+    const getAllInventory = (page) => {
         const holder = 'inventory-holder'
 
-        Swal.showLoading();
         $.ajax({
             url: `/api/v1/inventory?page=${page}`,
             type: 'GET',
             beforeSend: function (xhr) {
+                Swal.showLoading()
                 xhr.setRequestHeader("Accept", "application/json")
                 xhr.setRequestHeader("Authorization", `Bearer ${token}`)
                 $(`#${holder}`).empty()
@@ -90,7 +90,7 @@
                     `)
                 });
 
-                generatePagination(holder, get_all_inventory, total_page, current_page)
+                generatePagination(holder, getAllInventory, total_page, current_page)
             },
             error: function(response, jqXHR, textStatus, errorThrown) {
                 Swal.close()
@@ -103,5 +103,5 @@
             }
         });
     };
-    get_all_inventory(page)
+    getAllInventory(page)
 </script>

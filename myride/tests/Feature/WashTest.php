@@ -220,4 +220,103 @@ class WashTest extends TestCase
         Audit::auditRecordText("Test - Put Finish Wash By ID", "TC-XXX", "Result : ".json_encode($data));
         Audit::auditRecordSheet("Test - Put Finish Wash By ID", "TC-XXX", 'TC-XXX test_put_finish_wash_by_id', json_encode($data));
     }
+
+    public function test_get_wash_summary_by_vehicle_id(): void
+    {
+        // Exec
+        $token = $this->login_trait("user");
+        $response = $this->httpClient->get("summary", [
+            'headers' => [
+                'Authorization' => "Bearer $token"
+            ]
+        ]);
+
+        $data = json_decode($response->getBody(), true);
+
+        // Test Parameter
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertArrayHasKey('status', $data);
+        $this->assertEquals('success', $data['status']);
+        $this->assertArrayHasKey('message', $data);
+        $this->assertArrayHasKey('data', $data);
+
+        foreach ($data['data'] as $dt) {
+            $check_object = ["vehicle_name", "vehicle_plate_number", "vehicle_type", "total_wash","total_wash_body","total_wash_window","total_wash_dashboard","total_wash_tires","total_wash_trash",
+                "total_wash_engine","total_wash_seat","total_wash_carpet","total_wash_pillows","total_fill_window_washing_water","total_wash_hollow","total_price","avg_price_per_wash"];
+
+            foreach ($check_object as $col) {
+                $this->assertArrayHasKey($col, $dt);
+            }
+
+            $check_not_null_str = ["vehicle_name", "vehicle_plate_number", "vehicle_type"];
+            foreach ($check_not_null_str as $col) {
+                $this->assertNotNull($dt[$col]);
+                $this->assertIsString($dt[$col]);
+            }
+
+            $check_not_null_int = ["total_wash","total_wash_body","total_wash_window","total_wash_dashboard","total_wash_tires","total_wash_trash",
+            "total_wash_engine","total_wash_seat","total_wash_carpet","total_wash_pillows","total_fill_window_washing_water","total_wash_hollow","total_price","avg_price_per_wash"];
+            foreach ($check_not_null_int as $col) {
+                $this->assertNotNull($dt[$col]);
+                $this->assertIsInt($dt[$col]);
+                $this->assertGreaterThanOrEqual(0, $dt[$col]);
+            }
+        }
+
+        Audit::auditRecordText("Test - Get Wash Summary By Vehicle ID", "TC-XXX", "Result : ".json_encode($data));
+        Audit::auditRecordSheet("Test - Get Wash Summary By Vehicle ID", "TC-XXX", 'TC-XXX test_get_wash_summary_by_vehicle_id', json_encode($data));
+    }
+
+    public function test_get_last_wash_by_vehicle_id(): void
+    {
+        $token = $this->login_trait("user");
+        $vehicle_id = "c73c179b-a204-2b8f-2c46-5e77091462b0";
+
+        // Exec
+        $response = $this->httpClient->get("last/$vehicle_id", [
+            'headers' => [
+                'Authorization' => "Bearer $token"
+            ]
+        ]);
+
+        $data = json_decode($response->getBody(), true);
+
+        // Test Parameter
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertArrayHasKey('status', $data);
+        $this->assertEquals('success', $data['status']);
+        $this->assertArrayHasKey('message', $data);
+        $this->assertArrayHasKey('data', $data);
+
+        $check_object = ["wash_desc", "wash_by", "is_wash_body", "is_wash_window", "is_wash_dashboard", "is_wash_tires", "is_wash_trash", 
+            "is_wash_engine", "is_wash_seat", "is_wash_carpet", "is_wash_pillows", "wash_address", "is_fill_window_washing_water",  "is_wash_hollow", "created_at"];
+
+        foreach ($check_object as $col) {
+            $this->assertArrayHasKey($col, $data['data']);
+        }
+
+        $check_not_null_str = ["created_at","wash_by"];
+        foreach ($check_not_null_str as $col) {
+            $this->assertNotNull($data['data'][$col]);
+            $this->assertIsString($data['data'][$col]);
+        }
+
+        $check_nullable_str = ["wash_desc", "wash_address"];
+        foreach ($check_nullable_str as $col) {
+            if (!is_null($data['data'][$col])) {
+                $this->assertIsString($data['data'][$col]);
+            }
+        }
+
+        $check_not_null_int = ["is_wash_body", "is_wash_window", "is_wash_dashboard", "is_wash_tires", "is_wash_trash", "is_wash_engine", "is_wash_seat", 
+            "is_wash_carpet", "is_wash_pillows", "is_fill_window_washing_water", "is_wash_hollow"];
+        foreach ($check_not_null_int as $col) {
+            $this->assertNotNull($data['data'][$col]);
+            $this->assertIsInt($data['data'][$col]);
+            $this->assertTrue($data['data'][$col] === 0 || $data['data'][$col] === 1);
+        }
+
+        Audit::auditRecordText("Test - Get Last Wash By Vehicle ID", "TC-XXX", "Result : ".json_encode($data));
+        Audit::auditRecordSheet("Test - Get Last Wash By Vehicle ID", "TC-XXX", 'TC-XXX test_get_last_wash_by_vehicle_id', json_encode($data));
+    }
 }

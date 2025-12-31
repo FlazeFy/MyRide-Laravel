@@ -4,7 +4,7 @@
 <script>
     let page = 1
 
-    const get_all_history = (page) => {
+    const getAllHistory = (page) => {
         const holder = 'history-holder'
 
         $.ajax({
@@ -35,7 +35,7 @@
                     `)
                 });
 
-                generatePagination(holder, get_all_history, total_page, current_page)
+                generatePagination(holder, getAllHistory, total_page, current_page)
             },
             error: function(response, jqXHR, textStatus, errorThrown) {
                 if(response.status != 404){
@@ -46,5 +46,5 @@
             }
         });
     };
-    get_all_history(page)
+    getAllHistory(page)
 </script>
