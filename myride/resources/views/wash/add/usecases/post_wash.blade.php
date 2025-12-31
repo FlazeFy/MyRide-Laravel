@@ -1,4 +1,4 @@
-<h2>Add wash</h2><hr>
+<h2>Add Wash</h2><hr>
 <form id="form-add-wash">
     <div class="row">
         <div class="col-xl-6 col-lg-12 pb-4">

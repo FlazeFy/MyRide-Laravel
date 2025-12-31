@@ -14,7 +14,7 @@
         const autoTheme = localStorage.getItem("autoTheme") || "off"
 
         const lightCaption = '<i class="fa-solid fa-sun me-1"></i> Light'
-        const darkCaption  = '<i class="fa-solid fa-moon me-1"></i> Dark'
+        const darkCaption = '<i class="fa-solid fa-moon me-1"></i> Dark'
 
         $('#themeToggle').html(theme === "light" ? lightCaption : darkCaption)
 

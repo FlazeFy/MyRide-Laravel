@@ -641,10 +641,10 @@ class Queries extends Controller
                 return response()->json([
                     'status' => 'success',
                     'message' => Generator::getMessageTemplate("fetch", $this->module),
-                    'data'    => [
+                    'data' => [
                         'detail' => $res,
-                        'trip'   => $res_trip,
-                        'wash'   => $res_wash,
+                        'trip' => $res_trip,
+                        'wash' => $res_wash,
                         'driver' => count($res_driver) > 0 ? $res_driver : null
                     ]
                 ], Response::HTTP_OK);

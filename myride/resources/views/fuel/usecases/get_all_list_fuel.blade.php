@@ -47,7 +47,7 @@
                                 <p class="mb-0">${dt.fuel_volume}${dt.fuel_brand == 'Electric' ? '%' : ' L'}</p>
                                 <h6 class="mb-0">Price Total</h6>
                                 ${
-                                    dt.fuel_price_total ? `<p class="mb-0">Rp. ${dt.fuel_price_total.toLocaleString()},00</p>` : `<div class="chip-mini bg-success d-inline-block mx-0">Free</div>`
+                                    dt.fuel_price_total ? `<p class="mb-0">Rp. ${dt.fuel_price_total.toLocaleString()},00</p>` : `<div class="chip bg-success d-inline-block m-0 mt-1">Free</div>`
                                 }
                             </td>
                             <td class="text-start">

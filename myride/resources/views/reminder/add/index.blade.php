@@ -4,7 +4,6 @@
     <script src="{{ asset('/js/usecases/inventory_v1.0.js')}}"></script>
     <script>
         const token = `<?= session()->get("token_key"); ?>`
-        const reminder_holder = 'reminder-holder'
     </script>
 
     <div class="position-relative">

@@ -16,7 +16,10 @@
 <script>
     $(document).on('blur','#trip_origin_name,#trip_destination_name',function(){
         const locationName = $(this).val()
-        getTripCoordinateByLocationName(locationName,$(this).attr('id'))
+
+        if(locationName.trim() !== ""){
+            getTripCoordinateByLocationName(locationName,$(this).attr('id'))
+        }
     })
 
     const getTripCoordinateByLocationName = (locationName,id) => {
@@ -37,7 +40,10 @@
                 data.forEach(dt => {
                     $(holder).append(`
                         <div class="container-fluid p-3">
-                            <h6>${dt.trip_location_name}</h6>
+                            <div class="d-flex flex-wrap justify-content-between gap-2 mb-2 align-items-center">
+                                <h6 class="mb-0">${dt.trip_location_name}</h6>
+                                ${locationName.toLowerCase() === dt.trip_location_name.toLowerCase() ? `<span class="chip bg-success m-0">Matched</span>`:""}
+                            </div>
                             <p class="text-secondary mb-1">${dt.trip_location_coordinate}</p>
                             <a class="btn btn-success py-1 px-3 use_coordinate-btn" data-location-coordinate="${dt.trip_location_coordinate}" data-location-name="${dt.trip_location_name}" data-active-input="${id}" style="font-size:var(--textMD);">Use This</a>
                         </div>

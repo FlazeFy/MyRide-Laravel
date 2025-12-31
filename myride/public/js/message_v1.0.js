@@ -15,6 +15,16 @@ const failedMsg = (context) => {
     });
 }
 
+const messageAlertBox = (holder, type, message) => {
+    $(`#${holder}`).html(`
+        <div class="container-fluid bg-${type}">
+            <h6><i class="fa-solid ${type === 'danger' || type === 'warning' ? 'fa-triangle-exclamation' : 'fa-circle-info'}"></i> 
+            ${type === 'danger' ? ' Alert' : ucFirst(type)}</h6>
+            <p class="mb-0">${message}</p>
+        </div>
+    `)
+}
+
 const failedRoute = (context,url_home) => {
     Swal.fire({
         title: "Failed to see detail",

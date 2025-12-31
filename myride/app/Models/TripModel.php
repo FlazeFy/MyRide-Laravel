@@ -219,14 +219,14 @@ class TripModel extends Model
 
         $res = $res->groupBy('trip_origin_coordinate', 'trip_destination_coordinate')->get();
 
-        $totalTrip    = 0;
+        $totalTrip = 0;
         $totalDistance = 0;
-        $lastUpdate   = null;
+        $lastUpdate = null;
 
         foreach ($res as $item) {
             if($item->trip_origin_coordinate && $item->trip_destination_coordinate){
                 [$originLat, $originLng] = explode(',', $item->trip_origin_coordinate);
-                [$destLat, $destLng]     = explode(',', $item->trip_destination_coordinate);
+                [$destLat, $destLng] = explode(',', $item->trip_destination_coordinate);
 
                 $distance = Converter::calculate_distance((float) $originLat,(float) $originLng,(float) $destLat,(float) $destLng,'km');
 
@@ -240,7 +240,7 @@ class TripModel extends Model
         }
 
         return [
-            'total_trip'  => $totalTrip,
+            'total_trip' => $totalTrip,
             'distance_km' => number_format($totalDistance, 2),
             'last_update' => $lastUpdate,
         ];

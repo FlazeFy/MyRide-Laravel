@@ -20,7 +20,7 @@
                     <select class="form-select" name="vehicle_id" id="vehicle_holder" aria-label="Default select example"></select>
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-12">
-                    <label>Trip Category</label>
+                    <label>Category</label>
                     <select class="form-select" name="trip_category" id="trip_category_holder" aria-label="Default select example"></select>
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-12">
@@ -39,19 +39,25 @@
             <hr>
             <div class="row">
                 <div class="col-lg-6 col-md-6 col-sm-12">
-                    <label>Trip Origin Name</label>
+                    <label>Origin Name</label>
                     <input class="form-control" name="trip_origin_name" id="trip_origin_name" requried>
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-12">
-                    <label>Trip Destination Name</label>
+                    <label>Destination Name</label>
                     <input class="form-control" name="trip_destination_name" id="trip_destination_name" requried>
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-12">
-                    <label>Trip Origin Coordinate</label>
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <label class="mb-0">Origin Coordinate</label>
+                        <a class="btn btn-success py-1 btn-current-coordinate"><i class="fa-solid fa-map-pin"></i></a>
+                    </div>
                     <input class="form-control form-validator" data-validator="must_coordinate" name="trip_origin_coordinate" id="trip_origin_coordinate" requried>
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-12">
-                    <label>Trip Destination Coordinate</label>
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <label class="mb-0">Destination Coordinate</label>
+                        <a class="btn btn-success py-1 btn-current-coordinate"><i class="fa-solid fa-map-pin"></i></a>
+                    </div>
                     <input class="form-control form-validator" data-validator="must_coordinate" name="trip_destination_coordinate" id="trip_destination_coordinate" requried>
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-12">
@@ -120,9 +126,9 @@
         coor = coor.toJSON()
 
         if(markerCounter == 0){
-            document.getElementById('trip_origin_coordinate').value = coor['lat'] + ', ' + coor['lng']
+            $('#trip_origin_coordinate').val(coor['lat'] + ', ' + coor['lng'])
         } else if(markerCounter == 1){
-            document.getElementById('trip_destination_coordinate').value = coor['lat'] + ', ' + coor['lng']
+            $('#trip_destination_coordinate').val(coor['lat'] + ', ' + coor['lng'])
         }
     }
 
@@ -134,6 +140,29 @@
 
     $(document).on('click','#submit-add-trip-btn', function(){
         post_trip()
+    })
+
+    $(document).on('click','.btn-current-coordinate', function(){
+        const $wrapper = $(this).closest('.col-lg-6, .col-md-6, .col-sm-12')
+        const $input = $wrapper.find('input')
+
+        if (!navigator.geolocation) {
+            failedMsg("get current location. Geolocation is not supported by this browser")
+            return
+        }
+
+        navigator.geolocation.getCurrentPosition(
+            function (position) {
+                const lat = position.coords.latitude
+                const lng = position.coords.longitude
+                const coordinate = `${lat},${lng}`
+                $input.val(coordinate).trigger('input')
+            },
+            function (error) {
+                failedMsg("get current location")
+            },
+            { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+        )
     })
 
     const post_trip = () => {

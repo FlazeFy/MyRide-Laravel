@@ -1154,9 +1154,9 @@ class Queries extends Controller
             $data = [
                 'total_vehicle' => $total_vehicle,
                 'total_service' => $total_service,
-                'total_wash'   => $total_wash,
-                'total_driver'  => $total_driver,
-                'total_trip'    => $total_trip,
+                'total_wash' => $total_wash,
+                'total_driver' => $total_driver,
+                'total_trip' => $total_trip,
             ];
 
             // If authentication is not attached, also get total user

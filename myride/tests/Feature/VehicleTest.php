@@ -310,17 +310,17 @@ class VehicleTest extends TestCase
             ['name' => 'vehicle_transmission', 'contents' => 'Manual'], 
             ['name' => 'vehicle_capacity', 'contents' => 8],
             [
-                'name'     => 'vehicle_image',
+                'name' => 'vehicle_image',
                 'contents' => fopen($img1->getPathname(), 'r'),
                 'filename' => 'image1.jpg',
             ],
             [
-                'name'     => 'vehicle_other_img_url[]',
+                'name' => 'vehicle_other_img_url[]',
                 'contents' => fopen($img2->getPathname(), 'r'),
                 'filename' => 'image2.jpg',
             ],
             [
-                'name'     => 'vehicle_other_img_url[]',
+                'name' => 'vehicle_other_img_url[]',
                 'contents' => fopen($img3->getPathname(), 'r'),
                 'filename' => 'image3.jpg',
             ],
@@ -358,21 +358,21 @@ class VehicleTest extends TestCase
 
         $form = [
             [
-                'name'     => 'vehicle_document[]',
+                'name' => 'vehicle_document[]',
                 'contents' => fopen($img1->getPathname(), 'r'),
                 'filename' => 'image1.jpg',
             ],
             [
-                'name'     => 'vehicle_document[]',
+                'name' => 'vehicle_document[]',
                 'contents' => fopen($pdf1->getPathname(), 'r'),
                 'filename' => 'document1.pdf',
             ],
             [
-                'name'     => 'vehicle_document_caption[]',
+                'name' => 'vehicle_document_caption[]',
                 'contents' => 'this is an image',
             ],
             [
-                'name'     => 'vehicle_document_caption[]',
+                'name' => 'vehicle_document_caption[]',
                 'contents' => 'this is a doc',
             ],
         ];
@@ -408,7 +408,7 @@ class VehicleTest extends TestCase
 
         $form = [
             [
-                'name'     => 'vehicle_image',
+                'name' => 'vehicle_image',
                 'contents' => fopen($img1->getPathname(), 'r'),
                 'filename' => 'image1.jpg',
             ]
@@ -446,12 +446,12 @@ class VehicleTest extends TestCase
 
         $form = [
             [
-                'name'     => 'vehicle_other_img_url[]',
+                'name' => 'vehicle_other_img_url[]',
                 'contents' => fopen($img1->getPathname(), 'r'),
                 'filename' => 'image1.jpg',
             ],
             [
-                'name'     => 'vehicle_other_img_url[]',
+                'name' => 'vehicle_other_img_url[]',
                 'contents' => fopen($img2->getPathname(), 'r'),
                 'filename' => 'image2.jpg',
             ]

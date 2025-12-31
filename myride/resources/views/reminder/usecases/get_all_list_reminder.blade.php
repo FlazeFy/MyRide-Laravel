@@ -140,6 +140,6 @@
                 reject(errorThrown)
             }
         });
-    };
+    }
     get_all_reminder(page)
 </script>

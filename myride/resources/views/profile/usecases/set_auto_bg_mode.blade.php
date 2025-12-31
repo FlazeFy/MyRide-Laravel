@@ -11,7 +11,7 @@
 <script>
     $(document).ready(function () {
         const autoTheme = localStorage.getItem("autoTheme") || "off"
-        const onCaption  = '<i class="fa-solid fa-toggle-on me-1"></i> On'
+        const onCaption = '<i class="fa-solid fa-toggle-on me-1"></i> On'
         const offCaption = '<i class="fa-solid fa-toggle-off me-1"></i> Off'
 
         if (autoTheme === "on") {
