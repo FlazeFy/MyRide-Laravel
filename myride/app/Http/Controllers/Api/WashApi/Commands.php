@@ -117,7 +117,7 @@ class Commands extends Controller
      *              required={"vehicle_id", "wash_by", "is_wash_body", "is_wash_window", "is_wash_dashboard", "is_wash_tires", "is_wash_trash", "is_wash_engine", "is_wash_seat", "is_wash_carpet", "is_wash_pillows", "wash_start_time", "is_fill_window_washing_water","is_wash_hollow"},
      *              @OA\Property(property="vehicle_id", type="string", example="e1288783-a5d4-1c4c-2cd6-0e92f7cc3bf9"),
      *              @OA\Property(property="wash_desc", type="string", example="Full body and interior wash"),
-     *              @OA\Property(property="wash_by", type="string", example="John Doe"),
+     *              @OA\Property(property="wash_by", type="string", example="Car Wash"),
      *              @OA\Property(property="is_wash_body", type="boolean", example=true),
      *              @OA\Property(property="is_wash_window", type="boolean", example=true),
      *              @OA\Property(property="is_wash_dashboard", type="boolean", example=false),
@@ -169,7 +169,7 @@ class Commands extends Controller
      *     ),
      * )
      */
-    public function postWash(Request $request){
+    public function postCreateWash(Request $request){
         try{
             $user_id = $request->user()->id;
 
@@ -275,7 +275,7 @@ class Commands extends Controller
      *     ),
      * )
      */
-    public function putFinishWash(Request $request,$id){
+    public function putFinishWashById(Request $request,$id){
         try{
             $user_id = $request->user()->id;
 
@@ -289,14 +289,14 @@ class Commands extends Controller
                 ], Response::HTTP_OK);
             } else {
                 return response()->json([
-                    'status' => 'error',
-                    'message' => Generator::getMessageTemplate("unknown_error", null),
-                ], Response::HTTP_INTERNAL_SERVER_ERROR);
+                    'status' => 'failed',
+                    'message' => Generator::getMessageTemplate("not_found", $this->module),
+                ], Response::HTTP_NOT_FOUND);
             }
         } catch(\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => Generator::getMessageTemplate("unknown_error", null),
+                'message' => $e->getMessage(),
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
@@ -314,7 +314,7 @@ class Commands extends Controller
      *              required={"vehicle_id", "wash_by", "is_wash_body", "is_wash_window", "is_wash_dashboard", "is_wash_tires", "is_wash_trash", "is_wash_engine", "is_wash_seat", "is_wash_carpet", "is_wash_pillows", "wash_start_time", "is_fill_window_washing_water","is_wash_hollow"},
      *              @OA\Property(property="vehicle_id", type="string", example="e1288783-a5d4-1c4c-2cd6-0e92f7cc3bf9"),
      *              @OA\Property(property="wash_desc", type="string", example="Full body and interior wash"),
-     *              @OA\Property(property="wash_by", type="string", example="John Doe"),
+     *              @OA\Property(property="wash_by", type="string", example="Car Wash"),
      *              @OA\Property(property="is_wash_body", type="boolean", example=true),
      *              @OA\Property(property="is_wash_window", type="boolean", example=true),
      *              @OA\Property(property="is_wash_dashboard", type="boolean", example=false),
@@ -325,8 +325,8 @@ class Commands extends Controller
      *              @OA\Property(property="is_wash_carpet", type="boolean", example=true),
      *              @OA\Property(property="is_wash_pillows", type="boolean", example=false),
      *              @OA\Property(property="wash_address", type="string", example="Jl. Raya No. 12"),
-     *              @OA\Property(property="wash_start_time", type="string", format="date-time", example="2025-12-16T14:00:00Z"),
-     *              @OA\Property(property="wash_end_time", type="string", format="date-time", example="2025-12-16T15:30:00Z"),
+     *              @OA\Property(property="wash_start_time", type="string", format="date-time", example="2025-12-16 14:00:00"),
+     *              @OA\Property(property="wash_end_time", type="string", format="date-time", example="2025-12-16 15:30:00"),
      *              @OA\Property(property="wash_price", type="integer", example=150000),
      *              @OA\Property(property="is_fill_window_washing_water", type="boolean", example=true),
      *              @OA\Property(property="is_wash_hollow", type="boolean", example=false)
@@ -366,7 +366,7 @@ class Commands extends Controller
      *     ),
      * )
      */
-    public function putWashById(Request $request,$id){
+    public function putUpdateWashById(Request $request,$id){
         try{
             $user_id = $request->user()->id;
 
@@ -411,9 +411,9 @@ class Commands extends Controller
                     ], Response::HTTP_OK);
                 } else {
                     return response()->json([
-                        'status' => 'error',
-                        'message' => Generator::getMessageTemplate("unknown_error", null),
-                    ], Response::HTTP_INTERNAL_SERVER_ERROR);
+                        'status' => 'failed',
+                        'message' => Generator::getMessageTemplate("not_found", $this->module),
+                    ], Response::HTTP_NOT_FOUND);
                 }
             }
         } catch(\Exception $e) {

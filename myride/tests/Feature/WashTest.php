@@ -102,4 +102,122 @@ class WashTest extends TestCase
         Audit::auditRecordText("Test - Hard Delete Wash By Id", "TC-XXX", "Result : ".json_encode($data));
         Audit::auditRecordSheet("Test - Hard Delete Wash By Id", "TC-XXX", 'TC-XXX test_hard_delete_wash_by_id', json_encode($data));
     }
+
+    public function test_post_create_wash(): void
+    {
+        // Exec
+        $token = $this->login_trait("user");
+
+        $body = [
+            'vehicle_id' => '3fd091f0-68e9-87e8-0b38-ff129e29e0af',
+            'wash_desc' => 'Full body and interior wash',
+            'wash_by' => 'Car Wash',
+            'is_wash_body' => 1,
+            'is_wash_window' => 1,
+            'is_wash_dashboard' => 0,
+            'is_wash_tires' => 1,
+            'is_wash_trash' => 1,
+            'is_wash_engine' => 0,
+            'is_wash_seat' => 1,
+            'is_wash_carpet' => 1,
+            'is_wash_pillows' => 0,
+            'is_wash_hollow' => 0,
+            'wash_address' => 'Jl. Raya No. 12',
+            'wash_start_time' => '2025-12-16 14:00:00',
+            'wash_end_time' => '2025-12-16 15:30:00',
+            'wash_price' => 150000,
+            'is_fill_window_washing_water' => 1,
+        ];
+
+        $response = $this->httpClient->post("", [
+            'headers' => [
+                'Authorization' => "Bearer $token"
+            ],
+            'json' => $body
+        ]);
+
+        $data = json_decode($response->getBody(), true);
+
+        // Test Parameter
+        $this->assertEquals(201, $response->getStatusCode());
+        $this->assertArrayHasKey('status', $data);
+        $this->assertEquals('success', $data['status']);
+        $this->assertArrayHasKey('message', $data);
+        $this->assertEquals("wash created", $data['message']);
+
+        Audit::auditRecordText("Test - Post Create Wash", "TC-XXX", "Result : ".json_encode($data));
+        Audit::auditRecordSheet("Test - Post Create Wash", "TC-XXX", 'TC-XXX test_post_create_wash', json_encode($data));
+    }
+
+    public function test_put_update_wash_by_id(): void
+    {
+        // Exec
+        $token = $this->login_trait("user");
+        $id = "d43b7860-d3cd-3671-25cc-d792cef3cdd4";
+
+        $body = [
+            'vehicle_id' => '3fd091f0-68e9-87e8-0b38-ff129e29e0af',
+            'wash_desc' => 'Full body and interior wash',
+            'wash_by' => 'Car Wash',
+            'is_wash_body' => 1,
+            'is_wash_window' => 1,
+            'is_wash_dashboard' => 0,
+            'is_wash_tires' => 1,
+            'is_wash_trash' => 1,
+            'is_wash_engine' => 0,
+            'is_wash_seat' => 1,
+            'is_wash_carpet' => 1,
+            'is_wash_pillows' => 0,
+            'is_wash_hollow' => 0,
+            'wash_address' => 'Jl. Raya No. 14',
+            'wash_start_time' => '2025-12-16 14:00:00',
+            'wash_end_time' => '2025-12-16 15:30:00',
+            'wash_price' => 120000,
+            'is_fill_window_washing_water' => 1,
+        ];
+
+        $response = $this->httpClient->put("$id", [
+            'headers' => [
+                'Authorization' => "Bearer $token"
+            ],
+            'json' => $body
+        ]);
+
+        $data = json_decode($response->getBody(), true);
+
+        // Test Parameter
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertArrayHasKey('status', $data);
+        $this->assertEquals('success', $data['status']);
+        $this->assertArrayHasKey('message', $data);
+        $this->assertEquals("wash updated", $data['message']);
+
+        Audit::auditRecordText("Test - Put Update Wash By ID", "TC-XXX", "Result : ".json_encode($data));
+        Audit::auditRecordSheet("Test - Put Update Wash By ID", "TC-XXX", 'TC-XXX test_put_update_wash_by_id', json_encode($data));
+    }
+
+    public function test_put_finish_wash_by_id(): void
+    {
+        // Exec
+        $token = $this->login_trait("user");
+        $id = "d43b7860-d3cd-3671-25cc-d792cef3cdd4";
+
+        $response = $this->httpClient->put("finish/$id", [
+            'headers' => [
+                'Authorization' => "Bearer $token"
+            ]
+        ]);
+
+        $data = json_decode($response->getBody(), true);
+
+        // Test Parameter
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertArrayHasKey('status', $data);
+        $this->assertEquals('success', $data['status']);
+        $this->assertArrayHasKey('message', $data);
+        $this->assertEquals("wash updated", $data['message']);
+
+        Audit::auditRecordText("Test - Put Finish Wash By ID", "TC-XXX", "Result : ".json_encode($data));
+        Audit::auditRecordSheet("Test - Put Finish Wash By ID", "TC-XXX", 'TC-XXX test_put_finish_wash_by_id', json_encode($data));
+    }
 }

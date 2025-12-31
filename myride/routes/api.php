@@ -50,10 +50,6 @@ Route::prefix('/v1/stats')->group(function () {
     Route::get('/total/wash/monthly/{context}/{year}', [QueriesStatsApi::class, 'getTotalWashPerYear']);
 });
 
-Route::prefix('/v1/vehicle')->group(function () {
-    Route::get('/readiness', [QueriesVehicleApi::class, 'getVehicleReadiness']);
-});
-
 Route::prefix('/v1/question')->group(function () {
     Route::get('/faq', [QueriesFAQController::class, 'getShowingFAQ']);
 });
@@ -75,6 +71,7 @@ Route::prefix('/v1/vehicle')->middleware(['auth:sanctum'])->group(function () {
     Route::get('/detail/{id}', [QueriesVehicleApi::class, 'getVehicleDetailById']);
     Route::get('/detail/full/{id}', [QueriesVehicleApi::class, 'getVehicleFullDetailById']);
     Route::get('/trip/summary/{id}', [QueriesVehicleApi::class, 'getVehicleTripSummaryById']);
+    Route::get('/readiness', [QueriesVehicleApi::class, 'getVehicleReadiness']);
     Route::put('/detail/{id}', [CommandsVehicleApi::class, 'putUpdateVehicleDetailById']);
     Route::post('/image/{id}', [CommandsVehicleApi::class, 'postUpdateVehicleImageById']);
     Route::post('/image_collection/{id}', [CommandsVehicleApi::class, 'postUpdateVehicleImageCollectionById']);
@@ -95,9 +92,9 @@ Route::prefix('/v1/wash')->middleware(['auth:sanctum'])->group(function () {
     Route::delete('/destroy/{id}', [CommandsWashController::class, 'hardDeleteWashById']);
     Route::get('/last/{vehicle_id}', [QueriesWashController::class, 'getLastWashByVehicleId']);
     Route::get('/summary', [QueriesWashController::class, 'getWashSummaryByVehicleId']);
-    Route::post('/', [CommandsWashController::class, 'postWash']);
-    Route::put('/finish/{id}', [CommandsWashController::class, 'putFinishWash']);
-    Route::put('/{id}', [CommandsWashController::class, 'putWashById']);
+    Route::post('/', [CommandsWashController::class, 'postCreateWash']);
+    Route::put('/finish/{id}', [CommandsWashController::class, 'putFinishWashById']);
+    Route::put('/{id}', [CommandsWashController::class, 'putUpdateWashById']);
 });
 
 Route::prefix('/v1/history')->middleware(['auth:sanctum'])->group(function () {

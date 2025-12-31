@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 
 // Models
+use App\Models\AdminModel;
 use App\Models\VehicleModel;
 use App\Models\TripModel;
 use App\Models\WashModel;
@@ -184,13 +185,10 @@ class Queries extends Controller
         try{
             $limit = $request->query("limit",15);
 
-            // Check whether authentication is attached. If yes, retrieve vehicle by user; if not, retrieve all vehicle for all users
-            if ($request->hasHeader('Authorization')) {
-                $user = Auth::guard('sanctum')->user(); 
-                $user_id = $user ? $user->id : null;
-            } else {
-                $user_id = null;
-            }
+            // Define user id by role
+            $user_id = $request->user()->id;
+            $check_admin = AdminModel::find($user_id);
+            $user_id = $check_admin ? $request->query("user_id",null) : $user_id;
 
             // Get vehicle readiness status
             $res = VehicleModel::getVehicleReadiness($user_id,$limit);

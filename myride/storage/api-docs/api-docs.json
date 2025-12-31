@@ -9553,7 +9553,7 @@
                 ],
                 "summary": "Put Vehicle Detail By ID",
                 "description": "This request is used to update a vehicle by using given `ID`. The updated fields are `vehicle_name`, `vehicle_merk`, `vehicle_type`, `vehicle_price`, `vehicle_distance`, `vehicle_category`, `vehicle_status`, `vehicle_year_made`, `vehicle_plate_number`, `vehicle_fuel_status`, `vehicle_default_fuel`, `vehicle_color`, `vehicle_transmission`, and `vehicle_capacity`. This request interacts with the MySQL database, has a protected routes, and audited activity (history).",
-                "operationId": "a00ec7b39268b8fb47c1480e59442e1b",
+                "operationId": "3a978828e7412ae4f9d25bd70bdcadf8",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -9659,7 +9659,7 @@
                                         },
                                         "message": {
                                             "type": "string",
-                                            "example": "vehicle update"
+                                            "example": "vehicle updated"
                                         }
                                     },
                                     "type": "object"
@@ -9773,7 +9773,7 @@
                 ],
                 "summary": "Post Update Vehicle Image By ID",
                 "description": "This request is used to update vehicle image by given vehicle's `ID`. And the updated field is `vehicle_img_url`. This request interacts with the MySQL database, firebase storage, has a protected routes, and audited activity (history).",
-                "operationId": "2de4c52f3d77dd7f90449e227619eb04",
+                "operationId": "ab8d0fd1214fcbbe26a75d5afd9ce7b3",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -9806,7 +9806,7 @@
                                         },
                                         "message": {
                                             "type": "string",
-                                            "example": "vehicle update"
+                                            "example": "vehicle updated"
                                         }
                                     },
                                     "type": "object"
@@ -9894,7 +9894,7 @@
                 ],
                 "summary": "Post Update Vehicle Image Collection By Id",
                 "description": "This request is used to update vehicle image collection by given vehicle's `ID`. The updated field is `vehicle_other_img_url`. This request interacts with the MySQL database, firebase storage, and has a protected routes.",
-                "operationId": "6c2803f8b01487aca96c9fd0b95f249e",
+                "operationId": "2e80b58bbfec5fdaf7539f1ac63fc356",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -9927,7 +9927,7 @@
                                         },
                                         "message": {
                                             "type": "string",
-                                            "example": "vehicle update"
+                                            "example": "vehicle updated"
                                         }
                                     },
                                     "type": "object"
@@ -10226,7 +10226,7 @@
                                         "type": "integer",
                                         "example": 8
                                     },
-                                    "vehicle_img_url": {
+                                    "vehicle_image": {
                                         "type": "string",
                                         "format": "binary"
                                     },
@@ -10716,7 +10716,7 @@
                 ],
                 "summary": "Recover Vehicle By ID",
                 "description": "This request is used to recover deleted vehicle based on the provided `ID`. This request interacts with the MySQL database, has a protected routes, and audited activity (history).",
-                "operationId": "4531755bca399e235ff80e44d838db87",
+                "operationId": "38e3c6f69d9dbf8489659f13856315cd",
                 "parameters": [
                     {
                         "name": "id",
@@ -12679,7 +12679,7 @@
                 ],
                 "summary": "Post Create Wash",
                 "description": "This request is used to create a wash history based on the provided `vehicle_id`, `wash_desc`, `wash_by`, `is_wash_body`, `is_wash_window`, `is_wash_dashboard`, `is_wash_tires`, `is_wash_trash`, `is_wash_engine`, `is_wash_seat`, `is_wash_carpet`, `is_wash_pillows`, `wash_address`, `wash_start_time`, `wash_end_time`, `wash_price`, `is_fill_window_washing_water`, and `is_wash_hollow`. This request interacts with the MySQL database, has a protected routes, and audited activity (history).",
-                "operationId": "98d3a5a01cc01767a2670149ec17e8b7",
+                "operationId": "be94acd8a5357f36d5b7adf6231ef3e5",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -12712,7 +12712,7 @@
                                     },
                                     "wash_by": {
                                         "type": "string",
-                                        "example": "John Doe"
+                                        "example": "Car Wash"
                                     },
                                     "is_wash_body": {
                                         "type": "boolean",
@@ -13028,7 +13028,7 @@
                                     },
                                     "wash_by": {
                                         "type": "string",
-                                        "example": "John Doe"
+                                        "example": "Car Wash"
                                     },
                                     "is_wash_body": {
                                         "type": "boolean",
@@ -13073,12 +13073,12 @@
                                     "wash_start_time": {
                                         "type": "string",
                                         "format": "date-time",
-                                        "example": "2025-12-16T14:00:00Z"
+                                        "example": "2025-12-16 14:00:00"
                                     },
                                     "wash_end_time": {
                                         "type": "string",
                                         "format": "date-time",
-                                        "example": "2025-12-16T15:30:00Z"
+                                        "example": "2025-12-16 15:30:00"
                                     },
                                     "wash_price": {
                                         "type": "integer",

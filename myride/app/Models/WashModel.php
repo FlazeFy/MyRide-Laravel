@@ -86,11 +86,11 @@ class WashModel extends Model
         if($vehicle_id){
             $res = $res->where('vehicle_id',$vehicle_id);
         }
-        $res = $res->join('vehicle','vehicle.id','=','wash.vehicle_id')
-            ->groupby('vehicle_id')
-            ->orderby('vehicle_name','asc');
 
-        return $res->get();
+        return $res->join('vehicle','vehicle.id','=','wash.vehicle_id')
+            ->groupby('vehicle_id')
+            ->orderby('vehicle_name','asc')
+            ->get();
     }
 
     public static function getExportData($user_id, $vehicle_id = null){
@@ -105,10 +105,7 @@ class WashModel extends Model
             $res = $res->where('vehicle_id',$vehicle_id);
         }
 
-        $res = $res->where('wash.created_by',$user_id)
-            ->orderBy('wash.created_at', 'desc');
-
-        return $res->get();
+        return $res->where('wash.created_by',$user_id)->orderBy('wash.created_at', 'desc')->get();
     }
 
     public static function getTotalWashSpendingPerMonth($user_id = null, $year, $is_admin){
@@ -118,11 +115,7 @@ class WashModel extends Model
             $res = $res->where('created_by', $user_id);
         }
 
-        $res = $res->whereRaw("YEAR(created_at) = '$year'")
-            ->groupByRaw('MONTH(created_at)')
-            ->get();
-
-        return $res;
+        return $res->whereRaw("YEAR(created_at) = '$year'")->groupByRaw('MONTH(created_at)')->get();
     }
 
     public static function getTotalWashPerYear($user_id = null, $vehicle_id = null, $context, $year){
@@ -147,11 +140,7 @@ class WashModel extends Model
             $res = $res->where('vehicle_id',$vehicle_id);
         }
 
-        $res = $res->whereRaw("YEAR(created_at) = '$year'")
-            ->groupByRaw('MONTH(created_at)')
-            ->get();
-
-        return $res;
+        return $res->whereRaw("YEAR(created_at) = '$year'")->groupByRaw('MONTH(created_at)')->get();
     }
 
     public static function hardDeleteWashById($id, $user_id = null){
