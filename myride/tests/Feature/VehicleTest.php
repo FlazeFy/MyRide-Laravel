@@ -422,4 +422,80 @@ class VehicleTest extends TestCase
         Audit::auditRecordText("Test - Hard Delete Vehicle Image Collection By ID", "TC-XXX", "Result : ".json_encode($data));
         Audit::auditRecordSheet("Test - Hard Delete Vehicle Image Collection By ID", "TC-XXX", 'TC-XXX test_hard_delete_vehicle_image_collection_by_id', json_encode($data));
     }
+
+    public function test_hard_delete_vehicle_document_by_id(): void
+    {
+        // Exec
+        $token = $this->login_trait("user");
+        $vehicle_id = "563e01b3-e06f-01a9-2fae-4d525177fdd1";
+        $doc_id = "304d5c4a-b0a7-8c1a-1cac-50efb3413403";
+
+        $response = $this->httpClient->delete("document/destroy/$vehicle_id/$doc_id", [
+            'headers' => [
+                'Authorization' => "Bearer $token"
+            ]
+        ]);
+
+        $data = json_decode($response->getBody(), true);
+
+        // Test Parameter
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertArrayHasKey('status', $data);
+        $this->assertEquals('success', $data['status']);
+        $this->assertArrayHasKey('message', $data);
+        $this->assertEquals("vehicle document deleted", $data['message']);
+
+        Audit::auditRecordText("Test - Hard Delete Vehicle Document By ID", "TC-XXX", "Result : ".json_encode($data));
+        Audit::auditRecordSheet("Test - Hard Delete Vehicle Document By ID", "TC-XXX", 'TC-XXX test_hard_delete_vehicle_document_by_id', json_encode($data));
+    }
+
+    public function test_soft_delete_vehicle_by_id(): void
+    {
+        // Exec
+        $token = $this->login_trait("user");
+        $id = "563e01b3-e06f-01a9-2fae-4d525177fdd1";
+
+        $response = $this->httpClient->delete("delete/$id", [
+            'headers' => [
+                'Authorization' => "Bearer $token"
+            ]
+        ]);
+
+        $data = json_decode($response->getBody(), true);
+
+        // Test Parameter
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertArrayHasKey('status', $data);
+        $this->assertEquals('success', $data['status']);
+        $this->assertArrayHasKey('message', $data);
+        $this->assertEquals("vehicle deleted", $data['message']);
+
+        Audit::auditRecordText("Test - Soft Delete Vehicle By ID", "TC-XXX", "Result : ".json_encode($data));
+        Audit::auditRecordSheet("Test - Soft Delete Vehicle By ID", "TC-XXX", 'TC-XXX test_soft_delete_vehicle_by_id', json_encode($data));
+    }
+
+    public function test_hard_delete_vehicle_by_id(): void
+    {
+        // Exec
+        $token = $this->login_trait("user");
+        $id = "563e01b3-e06f-01a9-2fae-4d525177fdd1";
+
+        $response = $this->httpClient->delete("destroy/$id", [
+            'headers' => [
+                'Authorization' => "Bearer $token"
+            ]
+        ]);
+
+        $data = json_decode($response->getBody(), true);
+
+        // Test Parameter
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertArrayHasKey('status', $data);
+        $this->assertEquals('success', $data['status']);
+        $this->assertArrayHasKey('message', $data);
+        $this->assertEquals("vehicle permentally deleted", $data['message']);
+
+        Audit::auditRecordText("Test - Hard Delete Vehicle By ID", "TC-XXX", "Result : ".json_encode($data));
+        Audit::auditRecordSheet("Test - Hard Delete Vehicle By ID", "TC-XXX", 'TC-XXX test_hard_delete_vehicle_by_id', json_encode($data));
+    }
 }

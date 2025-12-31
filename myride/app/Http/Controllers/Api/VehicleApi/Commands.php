@@ -1215,18 +1215,18 @@ class Commands extends Controller
                     // Return success response
                     return response()->json([
                         'status' => 'success',
-                        'message' => Generator::getMessageTemplate("delete", "$this->module image"),
+                        'message' => Generator::getMessageTemplate("delete", "$this->module document"),
                     ], Response::HTTP_OK);
                 } else {
                     return response()->json([
                         'status' => 'failed',
-                        'message' => Generator::getMessageTemplate("not_found", "$this->module image"),
+                        'message' => Generator::getMessageTemplate("not_found", "$this->module document"),
                     ], Response::HTTP_NOT_FOUND);
                 }
             } else {
                 return response()->json([
                     'status' => 'failed',
-                    'message' => Generator::getMessageTemplate("not_found", "$this->module image"),
+                    'message' => Generator::getMessageTemplate("not_found", "$this->module document"),
                 ], Response::HTTP_NOT_FOUND);
             }
         } catch(\Exception $e) {
