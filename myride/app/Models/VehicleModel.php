@@ -36,17 +36,16 @@ class VehicleModel extends Model
     }
 
     public static function getVehicleByIdAndUserId($id, $user_id){
-        return VehicleModel::where('id',$id)
-            ->where('created_by',$user_id)
-            ->first();
+        return VehicleModel::where('id',$id)->where('created_by',$user_id)->first();
     }
 
     public static function updateVehicleById($data, $id, $user_id){
-        $data['updated_at'] = date('Y-m-d H:i:s');
+        $keys = array_keys($data);
+        if (!(count($keys) === 1 && $keys[0] === 'deleted_at')) {
+            $data['updated_at'] = date('Y-m-d H:i:s');
+        }
 
-        return VehicleModel::where('id',$id)
-            ->where('created_by',$user_id)
-            ->update($data);
+        return VehicleModel::where('id',$id)->where('created_by',$user_id)->update($data);
     }
 
     public static function getTotalVehicleByCategory($user_id){
@@ -151,24 +150,6 @@ class VehicleModel extends Model
             ->get();
         
         return count($res) > 0 ? $res : null;
-    }
-
-    public static function softDeleteVehicleById($user_id = null,$id){
-        $res = VehicleModel::whereNull("deleted_at")->where('id',$id);
-        if($user_id){
-            $res = $res->where('created_by',$user_id);
-        }
-
-        return $res->update(['deleted_at'=>date("Y-m-d H:i")]);
-    }
-
-    public static function recoverVehicleById($user_id = null,$id){
-        $res = VehicleModel::whereNotNull("deleted_at")->where('id',$id);
-        if($user_id){
-            $res = $res->where('created_by',$user_id);
-        }
-
-        return $res->update(['deleted_at'=>null]);
     }
 
     public static function hardDeleteVehicleById($user_id = null,$id){

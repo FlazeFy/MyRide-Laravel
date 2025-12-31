@@ -77,7 +77,7 @@ class Commands extends Controller
      *         @OA\JsonContent(
      *             type="object",
      *             @OA\Property(property="status", type="string", example="success"),
-     *             @OA\Property(property="message", type="string", example="vehicle update")
+     *             @OA\Property(property="message", type="string", example="vehicle updated")
      *         )
      *     ),
      *     @OA\Response(
@@ -218,7 +218,7 @@ class Commands extends Controller
      *         @OA\JsonContent(
      *             type="object",
      *             @OA\Property(property="status", type="string", example="success"),
-     *             @OA\Property(property="message", type="string", example="vehicle update")
+     *             @OA\Property(property="message", type="string", example="vehicle updated")
      *         )
      *     ),
      *     @OA\Response(
@@ -252,7 +252,7 @@ class Commands extends Controller
      *     )
      * )
      */
-    public function putVehicleImageById(Request $request, $id)
+    public function postUpdateVehicleImageById(Request $request, $id)
     {
         try{
             $user_id = $request->user()->id;
@@ -365,7 +365,7 @@ class Commands extends Controller
      *         @OA\JsonContent(
      *             type="object",
      *             @OA\Property(property="status", type="string", example="success"),
-     *             @OA\Property(property="message", type="string", example="vehicle update")
+     *             @OA\Property(property="message", type="string", example="vehicle updated")
      *         )
      *     ),
      *     @OA\Response(
@@ -399,7 +399,7 @@ class Commands extends Controller
      *     )
      * )
      */
-    public function putVehicleImageCollectionById(Request $request, $id)
+    public function postUpdateVehicleImageCollectionById(Request $request, $id)
     {
         try{
             $user_id = $request->user()->id;
@@ -1077,7 +1077,7 @@ class Commands extends Controller
             $user_id = $check_admin ? null : $user_id;
 
             // Soft Delete vehicle by ID
-            $rows = VehicleModel::softDeleteVehicleById($user_id,$id);
+            $rows = VehicleModel::updateVehicleById(["deleted_at" => date("Y-m-d H:i")], $id, $user_id);
             if($rows > 0){
                 // Get user data
                 $user = UserModel::getSocial($user_id);
@@ -1286,7 +1286,7 @@ class Commands extends Controller
      *     ),
      * )
      */
-    public function recoverVehicleById(Request $request, $id)
+    public function putRecoverVehicleById(Request $request, $id)
     {
         try{
             $user_id = $request->user()->id;
@@ -1296,7 +1296,7 @@ class Commands extends Controller
             $user_id = $check_admin ? null : $user_id;
 
             // Update vehicle by ID
-            $rows = VehicleModel::recoverVehicleById($user_id,$id);
+            $rows = VehicleModel::updateVehicleById(["deleted_at" => null], $id, $user_id);
             if($rows > 0){
                 // Get vehicle by ID
                 $vehicle = VehicleModel::getVehicleByIdAndUserId($id,$user_id);

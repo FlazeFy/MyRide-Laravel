@@ -397,6 +397,111 @@ class VehicleTest extends TestCase
         Audit::auditRecordSheet("Test - Post Vehicle Doc", "TC-XXX", 'TC-XXX test_post_vehicle_doc', json_encode($data));
     }
 
+    public function test_post_update_vehicle_image_by_id(): void
+    {
+        // Exec
+        $token = $this->login_trait("user");
+        $id = "3fd091f0-68e9-87e8-0b38-ff129e29e0af";
+        
+        // Create fake image
+        $img1 = UploadedFile::fake()->image('image1.jpg');
+
+        $form = [
+            [
+                'name'     => 'vehicle_image',
+                'contents' => fopen($img1->getPathname(), 'r'),
+                'filename' => 'image1.jpg',
+            ]
+        ];
+
+        $response = $this->httpClient->post("image/$id", [
+            'headers' => [
+                'Authorization' => "Bearer $token"
+            ],
+            'multipart' => $form,
+        ]);
+
+        $data = json_decode($response->getBody(), true);
+
+        // Test Parameter
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertArrayHasKey('status', $data);
+        $this->assertEquals('success', $data['status']);
+        $this->assertArrayHasKey('message', $data);
+        $this->assertEquals("vehicle updated", $data['message']);
+
+        Audit::auditRecordText("Test - Post Update Vehicle Image By ID", "TC-XXX", "Result : ".json_encode($data));
+        Audit::auditRecordSheet("Test - Post Update Vehicle Image By ID", "TC-XXX", 'TC-XXX test_post_update_vehicle_image_by_id', json_encode($data));
+    }
+
+    public function test_post_update_vehicle_image_collection_by_id(): void
+    {
+        // Exec
+        $token = $this->login_trait("user");
+        $id = "3fd091f0-68e9-87e8-0b38-ff129e29e0af";
+        
+        // Create fake images
+        $img1 = UploadedFile::fake()->image('image1.jpg');
+        $img2 = UploadedFile::fake()->image('image2.jpg');
+
+        $form = [
+            [
+                'name'     => 'vehicle_other_img_url[]',
+                'contents' => fopen($img1->getPathname(), 'r'),
+                'filename' => 'image1.jpg',
+            ],
+            [
+                'name'     => 'vehicle_other_img_url[]',
+                'contents' => fopen($img2->getPathname(), 'r'),
+                'filename' => 'image2.jpg',
+            ]
+        ];
+
+        $response = $this->httpClient->post("image_collection/$id", [
+            'headers' => [
+                'Authorization' => "Bearer $token"
+            ],
+            'multipart' => $form,
+        ]);
+
+        $data = json_decode($response->getBody(), true);
+
+        // Test Parameter
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertArrayHasKey('status', $data);
+        $this->assertEquals('success', $data['status']);
+        $this->assertArrayHasKey('message', $data);
+        $this->assertEquals("vehicle updated", $data['message']);
+
+        Audit::auditRecordText("Test - Post Update Vehicle Image Collection By ID", "TC-XXX", "Result : ".json_encode($data));
+        Audit::auditRecordSheet("Test - Post Update Vehicle Image Collection By ID", "TC-XXX", 'TC-XXX test_post_update_vehicle_image_collection_by_id', json_encode($data));
+    }
+
+    public function test_put_recover_vehicle_by_id(): void
+    {
+        // Exec
+        $token = $this->login_trait("user");
+        $id = "9f0484ff-3099-6205-0dae-b3ccbc222a2c";
+
+        $response = $this->httpClient->put("recover/$id", [
+            'headers' => [
+                'Authorization' => "Bearer $token"
+            ]
+        ]);
+
+        $data = json_decode($response->getBody(), true);
+
+        // Test Parameter
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertArrayHasKey('status', $data);
+        $this->assertEquals('success', $data['status']);
+        $this->assertArrayHasKey('message', $data);
+        $this->assertEquals("vehicle recovered", $data['message']);
+
+        Audit::auditRecordText("Test - Put Recover Vehicle By ID", "TC-XXX", "Result : ".json_encode($data));
+        Audit::auditRecordSheet("Test - Put Recover Vehicle By ID", "TC-XXX", 'TC-XXX test_put_recover_vehicle_by_id', json_encode($data));
+    }
+
     public function test_hard_delete_vehicle_image_collection_by_id(): void
     {
         // Exec
