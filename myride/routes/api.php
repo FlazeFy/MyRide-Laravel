@@ -75,7 +75,7 @@ Route::prefix('/v1/vehicle')->middleware(['auth:sanctum'])->group(function () {
     Route::get('/detail/{id}', [QueriesVehicleApi::class, 'getVehicleDetailById']);
     Route::get('/detail/full/{id}', [QueriesVehicleApi::class, 'getVehicleFullDetailById']);
     Route::get('/trip/summary/{id}', [QueriesVehicleApi::class, 'getVehicleTripSummaryById']);
-    Route::put('/detail/{id}', [CommandsVehicleApi::class, 'putVehicleDetailById']);
+    Route::put('/detail/{id}', [CommandsVehicleApi::class, 'putUpdateVehicleDetailById']);
     Route::post('/image/{id}', [CommandsVehicleApi::class, 'postUpdateVehicleImageById']);
     Route::post('/image_collection/{id}', [CommandsVehicleApi::class, 'postUpdateVehicleImageCollectionById']);
     Route::put('/recover/{id}', [CommandsVehicleApi::class, 'putRecoverVehicleById']);

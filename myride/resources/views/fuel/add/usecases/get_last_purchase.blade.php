@@ -27,7 +27,7 @@
                     const data = response.data
                     
                     $(`#${holder_fuel}`).html(`
-                        <div class="container-fluid bg-info">
+                        <div class="container-fluid bg-primary">
                             <div class="d-flex justify-content-between align-items-center mb-2">
                                 <div>
                                     <h5 class="mb-0">${data.fuel_brand}${data.fuel_type ? ` | ${data.fuel_type}`:''}</h5>
@@ -39,7 +39,7 @@
                                 </div>
                             </div>
                             ${
-                                data.fuel_price_total ? `<h6 class="chip bg-warning d-inline mx-0">Rp. ${data.fuel_price_total.toLocaleString()},00</h6>` : `<div class="chip m-0 bg-success d-inline">Free</div>`
+                                data.fuel_price_total ? `<h6 class="chip text-dark bg-warning d-inline mx-0">Rp. ${data.fuel_price_total.toLocaleString()},00</h6>` : `<div class="chip m-0 bg-success d-inline">Free</div>`
                             }
                         </div>
                     `)

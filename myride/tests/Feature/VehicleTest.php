@@ -129,10 +129,10 @@ class VehicleTest extends TestCase
         Audit::auditRecordSheet("Test - Get Vehicle Readiness", "TC-XXX", 'TC-XXX test_get_vehicle_readiness', json_encode($data));
     }
 
-    public function test_get_vehicle_detail(): void
+    public function test_get_vehicle_detail_by_id(): void
     {
         // Exec
-        $vehicle_id = "4f33d5e4-de9f-11ed-b5ea-0242ac120002";
+        $vehicle_id = "3fd091f0-68e9-87e8-0b38-ff129e29e0af";
         $token = $this->login_trait("user");
         $response = $this->httpClient->get("detail/$vehicle_id", [
             'headers' => [
@@ -205,8 +205,221 @@ class VehicleTest extends TestCase
 
         $this->assertEquals(36,strlen($data['data']['id']));
 
-        Audit::auditRecordText("Test - Get All Vehicle Detail", "TC-XXX", "Result : ".json_encode($data));
-        Audit::auditRecordSheet("Test - Get All Vehicle Detail", "TC-XXX", 'TC-XXX test_get_all_vehicle_detail', json_encode($data));
+        Audit::auditRecordText("Test - Get Vehicle Detail By ID", "TC-XXX", "Result : ".json_encode($data));
+        Audit::auditRecordSheet("Test - Get Vehicle Detail By ID", "TC-XXX", 'TC-XXX test_get_vehicle_detail_by_id', json_encode($data));
+    }
+
+    public function test_get_vehicle_full_detail_by_id(): void
+    {
+        // Exec
+        $vehicle_id = "3fd091f0-68e9-87e8-0b38-ff129e29e0af";
+        $token = $this->login_trait("user");
+        $response = $this->httpClient->get("detail/full/$vehicle_id", [
+            'headers' => [
+                'Authorization' => "Bearer $token"
+            ]
+        ]);
+
+        $data = json_decode($response->getBody(), true);
+
+        // Test Parameter
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertArrayHasKey('status', $data);
+        $this->assertEquals('success', $data['status']);
+        $this->assertArrayHasKey('message', $data);
+        $this->assertArrayHasKey('data', $data);
+
+        $detail_data = $data['data']['detail'];
+        $trip_data = $data['data']['trip']['data'];
+        $wash_data = $data['data']['wash']['data'];
+        $driver_data = $data['data']['driver'];
+        
+        // Test Detail Data
+        $check_object_detail = ["id","vehicle_name", "vehicle_merk", "vehicle_type", "vehicle_price", "vehicle_desc", 
+            "vehicle_distance", "vehicle_category", "vehicle_status", "vehicle_year_made", "vehicle_plate_number", 
+            "vehicle_fuel_status", "vehicle_fuel_capacity", "vehicle_default_fuel", "vehicle_color", "vehicle_transmission", 
+            "vehicle_img_url", "vehicle_other_img_url", "vehicle_capacity", "vehicle_document", "created_at", "updated_at", "deleted_at"];
+
+        foreach ($check_object_detail as $col) {
+            $this->assertArrayHasKey($col, $detail_data);
+        }
+
+        $check_not_null_str_detail = ["id", "vehicle_name", "vehicle_merk", "vehicle_type", "vehicle_category", "vehicle_status", "vehicle_plate_number", 
+            "vehicle_fuel_status", "vehicle_default_fuel", "vehicle_color", "vehicle_transmission", "created_at"];
+        foreach ($check_not_null_str_detail as $col) {
+            $this->assertNotNull($detail_data[$col]);
+            $this->assertIsString($detail_data[$col]);
+        }
+
+        $check_nullable_str_detail = ["vehicle_desc", "vehicle_img_url", "updated_at", "deleted_at"];
+        foreach ($check_nullable_str_detail as $col) {
+            if (!is_null($detail_data[$col])) {
+                $this->assertIsString($detail_data[$col]);
+            }
+        }
+
+        $check_not_null_int_detail = ["vehicle_price", "vehicle_distance", "vehicle_capacity"];
+        foreach ($check_not_null_int_detail as $col) {
+            $this->assertNotNull($detail_data[$col]);
+            $this->assertIsInt($detail_data[$col]);
+            $this->assertGreaterThan(0, $detail_data[$col]);
+        }
+
+        $check_nullable_int_detail = ["vehicle_fuel_capacity"];
+        foreach ($check_nullable_int_detail as $col) {
+            if (!is_null($detail_data[$col])) {
+                $this->assertIsInt($detail_data[$col]);
+                $this->assertGreaterThan(0, $detail_data[$col]);
+            }
+        }
+
+        if (!is_null($detail_data['vehicle_document'])) {
+            foreach ($detail_data['vehicle_document'] as $dt) {
+                $check_object_detail_doc = ["id", "attach_type", "attach_name", "attach_url"];
+
+                foreach ($check_object_detail_doc as $col) {
+                    $this->assertArrayHasKey($col, $dt);
+                }
+
+                $check_not_null_str_detail_doc = ["id", "attach_type", "attach_name", "attach_url"];
+                foreach ($check_not_null_str_detail_doc as $col) {
+                    $this->assertNotNull($dt[$col]);
+                    $this->assertIsString($dt[$col]);
+                }
+            }
+        }
+
+        $this->assertEquals(36,strlen($detail_data['id']));
+
+        // Test Detail Data Trip
+        foreach ($trip_data as $dt) {
+            $check_object_trip = ["id", "trip_desc", "trip_category", "trip_origin_name", "trip_person", "trip_origin_coordinate", "trip_destination_name", "trip_destination_coordinate", "created_at"];
+
+            foreach ($check_object_trip as $col) {
+                $this->assertArrayHasKey($col, $dt);
+            }
+
+            $check_not_null_str_trip = ["id", "trip_desc", "trip_category", "trip_origin_name", "trip_destination_name", "created_at"];
+            foreach ($check_not_null_str_trip as $col) {
+                $this->assertNotNull($dt[$col]);
+                $this->assertIsString($dt[$col]);
+            }
+
+            $check_nullable_str_trip = ["trip_person", "trip_origin_coordinate", "trip_destination_coordinate"];
+            foreach ($check_nullable_str_trip as $col) {
+                if (!is_null($dt[$col])) {
+                    $this->assertIsString($dt[$col]);
+                }
+            }
+
+            $this->assertEquals(36,strlen($dt['id']));
+        }
+
+        // Test Detail Data Wash
+        foreach ($wash_data as $dt) {
+            $check_object = ["id", "wash_desc", "wash_by", "is_wash_body", "is_wash_window", 
+                "is_wash_dashboard", "is_wash_tires", "is_wash_trash", "is_wash_engine", "is_wash_seat", "is_wash_carpet", "is_wash_pillows", "wash_address", 
+                "wash_start_time", "wash_end_time", "is_fill_window_washing_water",  "is_wash_hollow", "created_at", "updated_at"];
+
+            foreach ($check_object as $col) {
+                $this->assertArrayHasKey($col, $dt);
+            }
+
+            $check_not_null_str = ["id", "wash_start_time", "created_at"];
+            foreach ($check_not_null_str as $col) {
+                $this->assertNotNull($dt[$col]);
+                $this->assertIsString($dt[$col]);
+            }
+
+            $check_nullable_str = ["wash_desc", "wash_by", "wash_address", "wash_end_time", "updated_at"];
+            foreach ($check_nullable_str as $col) {
+                if (!is_null($dt[$col])) {
+                    $this->assertIsString($dt[$col]);
+                }
+            }
+
+            $check_not_null_int = ["is_wash_body", "is_wash_window", "is_wash_dashboard", "is_wash_tires", "is_wash_trash", "is_wash_engine", "is_wash_seat", 
+                "is_wash_carpet", "is_wash_pillows", "is_fill_window_washing_water", "is_wash_hollow"];
+            foreach ($check_not_null_int as $col) {
+                $this->assertNotNull($dt[$col]);
+                $this->assertIsInt($dt[$col]);
+                $this->assertTrue($dt[$col] === 0 || $dt[$col] === 1);
+            }
+
+            $this->assertEquals(36,strlen($dt['id']));
+        }
+
+        // Test Detail Data Driver
+        foreach ($driver_data as $dt) {
+            $check_object = ['username', 'fullname', 'email', 'telegram_user_id', 'telegram_is_valid', 'phone', 'notes', 'assigned_at'];
+
+            foreach ($check_object as $col) {
+                $this->assertArrayHasKey($col, $dt);
+            }
+
+            $check_not_null_str = ['username', 'fullname', 'email', 'phone', 'assigned_at'];
+            foreach ($check_not_null_str as $col) {
+                $this->assertNotNull($dt[$col]);
+                $this->assertIsString($dt[$col]);
+            }
+
+            $check_nullable_str = ['telegram_user_id', 'notes'];
+            foreach ($check_nullable_str as $col) {
+                if($dt[$col]){
+                    $this->assertNotNull($dt[$col]);
+                    $this->assertIsString($dt[$col]);
+                }
+            }
+
+            $this->assertNotNull($dt["telegram_is_valid"]);
+            $this->assertIsInt($dt["telegram_is_valid"]);
+            $this->assertContains($dt["telegram_is_valid"], [0, 1]);
+        }
+
+        Audit::auditRecordText("Test - Get Vehicle Full Detail By ID", "TC-XXX", "Result : ".json_encode($data));
+        Audit::auditRecordSheet("Test - Get Vehicle Full Detail By ID", "TC-XXX", 'TC-XXX test_get_vehicle_full_detail_by_id', json_encode($data));
+    }
+
+    public function test_get_vehicle_trip_summary_by_id(): void
+    {
+        // Exec
+        $vehicle_id = "3fd091f0-68e9-87e8-0b38-ff129e29e0af";
+        $token = $this->login_trait("user");
+        $response = $this->httpClient->get("trip/summary/$vehicle_id", [
+            'headers' => [
+                'Authorization' => "Bearer $token"
+            ]
+        ]);
+
+        $data = json_decode($response->getBody(), true);
+
+        // Test Parameter
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertArrayHasKey('status', $data);
+        $this->assertEquals('success', $data['status']);
+        $this->assertArrayHasKey('message', $data);
+        $this->assertArrayHasKey('data', $data);
+
+        $check_object_trip = ["most_person_with","vehicle_total_trip_distance","most_origin","most_destination","most_category"];
+        foreach ($check_object_trip as $col) {
+            $this->assertArrayHasKey($col, $data["data"]);
+        }
+
+        $check_not_null_str_trip = ["most_origin","most_destination","most_category"];
+        foreach ($check_not_null_str_trip as $col) {
+            $this->assertNotNull($data["data"][$col]);
+            $this->assertIsString($data["data"][$col]);
+        }
+
+        if (!is_null($data["data"]["most_person_with"])) {
+            $this->assertIsString($data["data"]["most_person_with"]);
+        }
+
+        $this->assertIsFloat($data["data"]["vehicle_total_trip_distance"]);
+        $this->assertGreaterThan(0, $data["data"]["vehicle_total_trip_distance"]);
+
+        Audit::auditRecordText("Test - Get Vehicle Trip Summary By ID", "TC-XXX", "Result : ".json_encode($data));
+        Audit::auditRecordSheet("Test - Get Vehicle Trip Summary By ID", "TC-XXX", 'TC-XXX test_get_vehicle_trip_summary_by_id', json_encode($data));
     }
 
     public function test_get_all_vehicle_name(): void
@@ -500,6 +713,51 @@ class VehicleTest extends TestCase
 
         Audit::auditRecordText("Test - Put Recover Vehicle By ID", "TC-XXX", "Result : ".json_encode($data));
         Audit::auditRecordSheet("Test - Put Recover Vehicle By ID", "TC-XXX", 'TC-XXX test_put_recover_vehicle_by_id', json_encode($data));
+    }
+
+    public function test_put_update_vehicle_detail_by_id(): void
+    {
+        // Exec
+        $token = $this->login_trait("user");
+        $id = "3fd091f0-68e9-87e8-0b38-ff129e29e0af";
+
+        $body = [
+            'vehicle_name' => 'Kijang Innova 2.0 Type G MT',
+            'vehicle_merk' => 'Toyota',
+            'vehicle_type' => 'Minibus',
+            'vehicle_price' => 275000000,
+            'vehicle_desc' => 'sudah jarang digunakan 2',
+            'vehicle_distance' => 90000,
+            'vehicle_category' => 'Parents Car',
+            'vehicle_status' => 'Available',
+            'vehicle_year_made' => 2011,
+            'vehicle_plate_number' => 'PA 1234 ZX',
+            'vehicle_fuel_status' => 'Not Monitored',
+            'vehicle_fuel_capacity' => 50,
+            'vehicle_default_fuel' => 'Pertamina Pertalite',
+            'vehicle_color' => 'White',
+            'vehicle_transmission' => 'Manual',
+            'vehicle_capacity' => 8,
+        ];
+
+        $response = $this->httpClient->put("detail/$id", [
+            'headers' => [
+                'Authorization' => "Bearer $token"
+            ],
+            'json' => $body
+        ]);
+
+        $data = json_decode($response->getBody(), true);
+
+        // Test Parameter
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertArrayHasKey('status', $data);
+        $this->assertEquals('success', $data['status']);
+        $this->assertArrayHasKey('message', $data);
+        $this->assertEquals("vehicle updated", $data['message']);
+
+        Audit::auditRecordText("Test - Put Update Vehicle Detail By ID", "TC-XXX", "Result : ".json_encode($data));
+        Audit::auditRecordSheet("Test - Put Update Vehicle Detail By ID", "TC-XXX", 'TC-XXX test_put_update_vehicle_detail_by_id', json_encode($data));
     }
 
     public function test_hard_delete_vehicle_image_collection_by_id(): void

@@ -119,7 +119,7 @@ class Commands extends Controller
      *     )
      * )
      */
-    public function putVehicleDetailById(Request $request, $id)
+    public function putUpdateVehicleDetailById(Request $request, $id)
     {
         try{
             // Validate request body

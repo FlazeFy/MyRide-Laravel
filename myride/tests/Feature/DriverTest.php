@@ -91,7 +91,7 @@ class DriverTest extends TestCase
             foreach ($check_not_null_int as $col) {
                 $this->assertNotNull($dt[$col]);
                 $this->assertIsInt($dt[$col]);
-                $this->assertGreaterThan(0, $dt[$col]);
+                $this->assertContains($dt[$col], [0, 1]);
             }
 
             $this->assertEquals(36,strlen($dt['id']));
@@ -145,6 +145,7 @@ class DriverTest extends TestCase
             foreach ($check_not_null_int as $col) {
                 $this->assertNotNull($dt[$col]);
                 $this->assertIsInt($dt[$col]);
+                $this->assertContains($dt[$col], [0, 1]);
             }
         }
        

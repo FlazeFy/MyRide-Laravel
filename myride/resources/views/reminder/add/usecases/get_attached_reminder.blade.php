@@ -27,15 +27,15 @@
                     $(`#${reminder_holder}`).empty()
                     data.forEach(dt => {
                         $(`#${reminder_holder}`).append(`
-                            <div class="container-fluid bg-success">
-                                <div class="d-flex justify-content-between">
+                            <div class="container-fluid bg-primary">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
                                     <div>
                                         <h5 class="mb-0">${dt.reminder_title}</h5>
-                                        <p class="text-secondary text-dark">Reminder at ${getDateToContext(dt.remind_at,'calendar')}</p>
+                                        <p class="text-secondary text-dark mb-0">Reminder at ${getDateToContext(dt.remind_at,'calendar')}</p>
                                     </div>
-                                    <h5 class="chip bg-info">${dt.reminder_context}</h5>
+                                    <div class="chip bg-success m-0">${dt.reminder_context}</div>
                                 </div>
-                                <h6 class="chip bg-warning d-inline" style="font-size:var(--textXLG);">${dt.reminder_body}</h6>
+                                <p class="mb-0">${dt.reminder_body}</p>
                             </div>
                         `)
                     })

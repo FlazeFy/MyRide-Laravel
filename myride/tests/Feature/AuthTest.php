@@ -59,6 +59,8 @@ class AuthTest extends TestCase
             }
         }
 
+        $this->assertContains($data["result"]["telegram_is_valid"], [0, 1]);
+
         Audit::auditRecordText("Integration Test - Success Post Login With Valid Data", "TC-INT-AU-001-01", "Token : ".$data['token']);
         Audit::auditRecordSheet("Integration Test - Success Post Login With Valid Data", "TC-INT-AU-001-01", json_encode($param), $data['token']);
         return $data['token'];
