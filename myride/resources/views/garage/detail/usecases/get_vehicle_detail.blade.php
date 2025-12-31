@@ -153,7 +153,7 @@
 
                             detail.vehicle_other_img_url.forEach((dt, idx) => {
                                 carouselInner += `
-                                    <div class="carousel-item ${idx === 0 ? 'active' :''}">
+                                    <div class="carousel-item px-2 ${idx === 0 ? 'active' :''}">
                                         <img src="${dt.vehicle_img_url}" alt="${dt.vehicle_img_url}" class="d-block w-100">
                                     </div>
                                 `

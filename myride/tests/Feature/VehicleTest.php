@@ -1,11 +1,14 @@
 <?php
 
 namespace Tests\Feature;
-
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\File;
 use GuzzleHttp\Client;
 use Tests\TestCase;
+
+// Helper
 use App\Helpers\Audit;
 
 class VehicleTest extends TestCase
@@ -277,5 +280,146 @@ class VehicleTest extends TestCase
 
         Audit::auditRecordText("Test - Get All Vehicle Fuel", "TC-XXX", "Result : ".json_encode($data));
         Audit::auditRecordSheet("Test - Get All Vehicle Fuel", "TC-XXX", 'TC-XXX test_get_all_vehicle_fuel', json_encode($data));
+    }
+
+    public function test_post_vehicle(): void
+    {
+        // Exec
+        $token = $this->login_trait("user");
+        
+        // Create fake images
+        $img1 = UploadedFile::fake()->image('image1.jpg');
+        $img2 = UploadedFile::fake()->image('image2.jpg');
+        $img3 = UploadedFile::fake()->image('image3.jpg');
+
+        $form = [
+            ['name' => 'vehicle_name', 'contents' => 'Kijang Innova 2.0 Type G MT'],
+            ['name' => 'vehicle_merk', 'contents' => 'Toyota'],
+            ['name' => 'vehicle_type', 'contents' => 'Minibus'], 
+            ['name' => 'vehicle_price', 'contents' => 275000000],
+            ['name' => 'vehicle_desc', 'contents' => 'sudah jarang digunakan 2'],
+            ['name' => 'vehicle_distance', 'contents' => 90000],
+            ['name' => 'vehicle_category', 'contents' => 'Parents Car'], 
+            ['name' => 'vehicle_status', 'contents' => 'Available'], 
+            ['name' => 'vehicle_year_made', 'contents' => 2011],
+            ['name' => 'vehicle_plate_number', 'contents' => 'PA 1234 ZX'],
+            ['name' => 'vehicle_fuel_status', 'contents' => 'Not Monitored'], 
+            ['name' => 'vehicle_fuel_capacity', 'contents' => 50],
+            ['name' => 'vehicle_default_fuel', 'contents' => 'Pertamina Pertalite'],
+            ['name' => 'vehicle_color', 'contents' => 'White'],
+            ['name' => 'vehicle_transmission', 'contents' => 'Manual'], 
+            ['name' => 'vehicle_capacity', 'contents' => 8],
+            [
+                'name'     => 'vehicle_image',
+                'contents' => fopen($img1->getPathname(), 'r'),
+                'filename' => 'image1.jpg',
+            ],
+            [
+                'name'     => 'vehicle_other_img_url[]',
+                'contents' => fopen($img2->getPathname(), 'r'),
+                'filename' => 'image2.jpg',
+            ],
+            [
+                'name'     => 'vehicle_other_img_url[]',
+                'contents' => fopen($img3->getPathname(), 'r'),
+                'filename' => 'image3.jpg',
+            ],
+        ];
+
+        $response = $this->httpClient->post("", [
+            'headers' => [
+                'Authorization' => "Bearer $token"
+            ],
+            'multipart' => $form,
+        ]);
+
+        $data = json_decode($response->getBody(), true);
+
+        // Test Parameter
+        $this->assertEquals(201, $response->getStatusCode());
+        $this->assertArrayHasKey('status', $data);
+        $this->assertEquals('success', $data['status']);
+        $this->assertArrayHasKey('message', $data);
+        $this->assertEquals("vehicle created", $data['message']);
+
+        Audit::auditRecordText("Test - Post Vehicle", "TC-XXX", "Result : ".json_encode($data));
+        Audit::auditRecordSheet("Test - Post Vehicle", "TC-XXX", 'TC-XXX test_post_vehicle', json_encode($data));
+    }
+
+    public function test_post_vehicle_doc(): void
+    {
+        // Exec
+        $token = $this->login_trait("user");
+        $id = "563e01b3-e06f-01a9-2fae-4d525177fdd1";
+        
+        // Create fake images & doc
+        $img1 = UploadedFile::fake()->image('image1.jpg');
+        $pdf1 = UploadedFile::fake()->create('document1.pdf', 100, 'application/pdf'); 
+
+        $form = [
+            [
+                'name'     => 'vehicle_document[]',
+                'contents' => fopen($img1->getPathname(), 'r'),
+                'filename' => 'image1.jpg',
+            ],
+            [
+                'name'     => 'vehicle_document[]',
+                'contents' => fopen($pdf1->getPathname(), 'r'),
+                'filename' => 'document1.pdf',
+            ],
+            [
+                'name'     => 'vehicle_document_caption[]',
+                'contents' => 'this is an image',
+            ],
+            [
+                'name'     => 'vehicle_document_caption[]',
+                'contents' => 'this is a doc',
+            ],
+        ];
+
+        $response = $this->httpClient->post("doc/$id", [
+            'headers' => [
+                'Authorization' => "Bearer $token"
+            ],
+            'multipart' => $form,
+        ]);
+
+        $data = json_decode($response->getBody(), true);
+
+        // Test Parameter
+        $this->assertEquals(201, $response->getStatusCode());
+        $this->assertArrayHasKey('status', $data);
+        $this->assertEquals('success', $data['status']);
+        $this->assertArrayHasKey('message', $data);
+        $this->assertEquals("vehicle document created", $data['message']);
+
+        Audit::auditRecordText("Test - Post Vehicle Doc", "TC-XXX", "Result : ".json_encode($data));
+        Audit::auditRecordSheet("Test - Post Vehicle Doc", "TC-XXX", 'TC-XXX test_post_vehicle_doc', json_encode($data));
+    }
+
+    public function test_hard_delete_vehicle_image_collection_by_id(): void
+    {
+        // Exec
+        $token = $this->login_trait("user");
+        $vehicle_id = "563e01b3-e06f-01a9-2fae-4d525177fdd1";
+        $image_id = "3be503d1-5566-1bd0-2864-9c25404294ca";
+
+        $response = $this->httpClient->delete("image_collection/destroy/$vehicle_id/$image_id", [
+            'headers' => [
+                'Authorization' => "Bearer $token"
+            ]
+        ]);
+
+        $data = json_decode($response->getBody(), true);
+
+        // Test Parameter
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertArrayHasKey('status', $data);
+        $this->assertEquals('success', $data['status']);
+        $this->assertArrayHasKey('message', $data);
+        $this->assertEquals("vehicle image deleted", $data['message']);
+
+        Audit::auditRecordText("Test - Hard Delete Vehicle Image Collection By ID", "TC-XXX", "Result : ".json_encode($data));
+        Audit::auditRecordSheet("Test - Hard Delete Vehicle Image Collection By ID", "TC-XXX", 'TC-XXX test_hard_delete_vehicle_image_collection_by_id', json_encode($data));
     }
 }

@@ -649,7 +649,7 @@ class Commands extends Controller
      *                  @OA\Property(property="vehicle_color", type="string", example="White"),
      *                  @OA\Property(property="vehicle_transmission", type="string", example="Manual"),
      *                  @OA\Property(property="vehicle_capacity", type="integer", example=8),
-     *                  @OA\Property(property="vehicle_img_url", type="string", format="binary"),
+     *                  @OA\Property(property="vehicle_image", type="string", format="binary"),
      *                  @OA\Property(property="vehicle_other_img_url", type="string", format="binary")
      *              )
      *         )
@@ -717,8 +717,10 @@ class Commands extends Controller
                 $vehicle_name = $request->vehicle_name." ".$request->vehicle_transmission;
                 $vehicle_plate_number = $request->vehicle_plate_number;
                 $extra_msg = null;
-
                 $vehicle_image = null;
+
+                // Get user data
+                $user = UserModel::getSocial($user_id);
                 // Check if file attached
                 if ($request->hasFile('vehicle_image')) {
                     $file = $request->file('vehicle_image');
@@ -740,8 +742,6 @@ class Commands extends Controller
                         }
         
                         try {
-                            // Get user data
-                            $user = UserModel::getSocial($user_id);
                             // Upload file to Firebase storage
                             $vehicle_image = Firebase::uploadFile('vehicle', $user_id, $user->username, $file, $file_ext); 
                         } catch (\Exception $e) {
@@ -755,9 +755,6 @@ class Commands extends Controller
 
                 $vehicle_other_img_url = [];
                 if ($request->hasFile('vehicle_other_img_url')) {
-                    // Get user data
-                    $user = UserModel::getSocial($user_id);
-
                     // Iterate to upload file
                     foreach ($request->file('vehicle_other_img_url') as $file) {
                         if ($file->isValid()) {
@@ -940,6 +937,9 @@ class Commands extends Controller
                 $vehicle_document = $vehicle->vehicle_document ?? [];
                 // Check if file attached
                 if ($request->hasFile('vehicle_document')) {
+                    // Get user data
+                    $user = UserModel::getSocial($user_id);
+
                     // Iterate to upload file
                     foreach ($request->file('vehicle_document') as $idx => $file) {
                         if ($file->isValid()) {
@@ -961,16 +961,21 @@ class Commands extends Controller
                             }
             
                             try {
-                                // Get user data
-                                $user = UserModel::getSocial($user_id);
-                                // Upload file to Firebase storage
-                                $vehicle_document_url = Firebase::uploadFile('vehicle_document', $user_id, $user->username, $file, $file_ext); 
-                                $vehicle_document[] = (object)[
-                                    'vehicle_document_id' => Generator::getUUID(),
-                                    'vehicle_document_url' => $vehicle_document_url,
-                                    'vehicle_document_caption' => $request->vehicle_document_caption[$idx],
-                                    'vehicle_document_type' => $file_ext === "pdf" ? "pdf" : "image"
-                                ];
+                                if($request->has('vehicle_document_caption')){
+                                    // Upload file to Firebase storage
+                                    $vehicle_document_url = Firebase::uploadFile('vehicle_document', $user_id, $user->username, $file, $file_ext); 
+                                    $vehicle_document[] = (object)[
+                                        'vehicle_document_id' => Generator::getUUID(),
+                                        'vehicle_document_url' => $vehicle_document_url,
+                                        'vehicle_document_caption' => $request->vehicle_document_caption[$idx],
+                                        'vehicle_document_type' => $file_ext === "pdf" ? "pdf" : "image"
+                                    ];
+                                } else {
+                                    return response()->json([
+                                        'status' => 'failed',
+                                        'message' => Generator::getMessageTemplate("custom", "document caption can't be empty"),
+                                    ], Response::HTTP_UNPROCESSABLE_ENTITY);
+                                }
                             } catch (\Exception $e) {
                                 return response()->json([
                                     'status' => 'error',
@@ -991,7 +996,7 @@ class Commands extends Controller
                     // Return success response
                     return response()->json([
                         'status' => 'success',
-                        'message' => Generator::getMessageTemplate("custom", "vehicle document created"),
+                        'message' => Generator::getMessageTemplate("create", "$this->module document"),
                     ], Response::HTTP_CREATED);
                 } else {
                     return response()->json([
