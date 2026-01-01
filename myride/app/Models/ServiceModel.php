@@ -53,7 +53,7 @@ class ServiceModel extends Model
     }
 
     public static function getServiceByVehicle($user_id = null,$vehicle_id){
-        $res = ServiceModel::select('service.id', 'service_category', 'service_price_total', 'service_location', 'service_note', 'created_at', 'remind_at');
+        $res = ServiceModel::select('service_category', 'service_price_total', 'service_location', 'service_note', 'created_at', 'remind_at');
 
         if($user_id){
             $res = $res->where('created_by', $user_id);

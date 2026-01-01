@@ -119,6 +119,14 @@ class Queries extends Controller
      *     description="This request is used to get all service history. This request interacts with the MySQL database, and has a protected routes.",
      *     tags={"Service"},
      *     security={{"bearerAuth":{}}},
+     *     @OA\Parameter(
+     *         name="vehicle_id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="string"),
+     *         description="Vehicle ID",
+     *         example="e1288783-a5d4-1c4c-2cd6-0e92f7cc3bf9",
+     *     ),
      *     @OA\Response(
      *         response=200,
      *         description="Service fetched successfully. Ordered in descending order by `remind_at` and `created_at`",
@@ -127,12 +135,12 @@ class Queries extends Controller
      *             @OA\Property(property="message", type="string", example="service fetched"),
      *             @OA\Property(property="data", type="array",
      *                  @OA\Items(
-     *                      @OA\Property(property="id", type="string", example="6f59235e-c398-8a83-2f95-3f1fbe95ca6e"),
      *                      @OA\Property(property="service_category", type="string", example="Routine"),
      *                      @OA\Property(property="service_note", type="string", example="Lorem ipsum"),
      *                      @OA\Property(property="service_price_total", type="integer", example=15000000),
      *                      @OA\Property(property="service_location", type="string", example="Honda Tandean"),
      *                      @OA\Property(property="created_at", type="string", format="date-time", example="2024-09-20 22:53:47"),
+     *                      @OA\Property(property="remind_at", type="string", format="date-time", example="2024-09-20 22:53:47"),
      *                  )
      *             )
      *         )

@@ -37,6 +37,7 @@ class Queries extends Controller
      *                     @OA\Property(property="reminder_context", type="string", example="Service"),
      *                     @OA\Property(property="reminder_body", type="string", example="at 90.000 KM"),
      *                     @OA\Property(property="remind_at", type="string", example="2025-09-05 00:00:00"),
+     *                     @OA\Property(property="vehicle_id", type="string", example="2d98f524-de02-11ed-b5ea-0242ac120002"),
      *             )
      *         )
      *     ),
@@ -278,6 +279,14 @@ class Queries extends Controller
      *     description="This request is used to get reminder by `vehicle_id`. This request interacts with the MySQL database, and has a protected routes.",
      *     tags={"Reminder"},
      *     security={{"bearerAuth":{}}},
+     *     @OA\Parameter(
+     *         name="vehicle_id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="string"),
+     *         description="Vehicle ID",
+     *         example="e1288783-a5d4-1c4c-2cd6-0e92f7cc3bf9",
+     *     ),
      *     @OA\Response(
      *         response=200,
      *         description="Reminder fetched successfully. Ordered in ascending order by `remind_at`",

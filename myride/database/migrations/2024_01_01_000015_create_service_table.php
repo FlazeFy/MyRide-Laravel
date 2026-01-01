@@ -15,7 +15,6 @@ return new class extends Migration
             $table->string('service_category', 36);
             $table->integer('service_price_total')->length(9)->nullable();
             $table->string('service_location', 255);
-            $table->string('notes', 1000)->nullable();
 
             // Props
             $table->dateTime('created_at', $precision = 0);

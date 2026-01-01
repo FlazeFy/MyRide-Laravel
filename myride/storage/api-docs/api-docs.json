@@ -4675,7 +4675,7 @@
                 ],
                 "summary": "Post Create Reminder",
                 "description": "This request is used to create a reminder by using given `vehicle_id`, `reminder_title`, `reminder_context`, `reminder_body`, `reminder_location`, `reminder_image`, and `reminder_at`. This request interacts with the MySQL database, firebase storage, google calendar API, has a protected routes, and audited activity (history).",
-                "operationId": "d976dc76a89edab9b2bce746c019980f",
+                "operationId": "ef98d358c067316f4d341758817a1671",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -4852,6 +4852,10 @@
                                                 "remind_at": {
                                                     "type": "string",
                                                     "example": "2025-09-05 00:00:00"
+                                                },
+                                                "vehicle_id": {
+                                                    "type": "string",
+                                                    "example": "2d98f524-de02-11ed-b5ea-0242ac120002"
                                                 }
                                             },
                                             "type": "object"
@@ -5074,6 +5078,18 @@
                 "summary": "Get Reminder By Vehicle ID",
                 "description": "This request is used to get reminder by `vehicle_id`. This request interacts with the MySQL database, and has a protected routes.",
                 "operationId": "73387d06e291173fd973bab044aa3b38",
+                "parameters": [
+                    {
+                        "name": "vehicle_id",
+                        "in": "path",
+                        "description": "Vehicle ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "e1288783-a5d4-1c4c-2cd6-0e92f7cc3bf9"
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "Reminder fetched successfully. Ordered in ascending order by `remind_at`",
@@ -5736,6 +5752,18 @@
                 "summary": "Get Service By Vehicle ID",
                 "description": "This request is used to get all service history. This request interacts with the MySQL database, and has a protected routes.",
                 "operationId": "372f13c4dc92a804af46c297dca8fe4c",
+                "parameters": [
+                    {
+                        "name": "vehicle_id",
+                        "in": "path",
+                        "description": "Vehicle ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "e1288783-a5d4-1c4c-2cd6-0e92f7cc3bf9"
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "Service fetched successfully. Ordered in descending order by `remind_at` and `created_at`",
@@ -5755,10 +5783,6 @@
                                             "type": "array",
                                             "items": {
                                                 "properties": {
-                                                    "id": {
-                                                        "type": "string",
-                                                        "example": "6f59235e-c398-8a83-2f95-3f1fbe95ca6e"
-                                                    },
                                                     "service_category": {
                                                         "type": "string",
                                                         "example": "Routine"
@@ -5776,6 +5800,11 @@
                                                         "example": "Honda Tandean"
                                                     },
                                                     "created_at": {
+                                                        "type": "string",
+                                                        "format": "date-time",
+                                                        "example": "2024-09-20 22:53:47"
+                                                    },
+                                                    "remind_at": {
                                                         "type": "string",
                                                         "format": "date-time",
                                                         "example": "2024-09-20 22:53:47"

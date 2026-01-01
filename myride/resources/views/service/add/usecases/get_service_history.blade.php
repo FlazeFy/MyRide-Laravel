@@ -3,9 +3,10 @@
     <table class="table">
         <thead>
             <tr>
-                <th scope="col">Notes</th>
-                <th scope="col">Category</th>
-                <th scope="col">Info</th>
+                <th scope="col" style="min-width: 260px;">Notes</th>
+                <th scope="col" style="min-width: 140px;">Category</th>
+                <th scope="col" style="min-width: 160px;">Info</th>
+                <th scope="col" style="min-width: 160px;">Props</th>
             </tr>
         </thead>
         <tbody id="list_service_history">
@@ -35,12 +36,22 @@
                     $(`#${holder}`).append(`
                         <tr>
                             <td scope="col">${dt.service_note}</td>
-                            <td scope="col" style="width:120px;">${dt.service_category}</td>
-                            <td scope="col" class="text-start" style="width:150px;">
-                                <h6>Price</h6>
+                            <td scope="col">${dt.service_category}</td>
+                            <td scope="col" class="text-start">
+                                <h6 class="mb-0">Price</h6>
                                 <p>Rp. ${dt.service_price_total.toLocaleString()},00</p>
-                                <h6>Location</h6>
-                                <p>${dt.service_location}</p>
+                                <h6 class="mb-0">Location</h6>
+                                <p class="mb-0">${dt.service_location}</p>
+                            </td>
+                            <td scope="col" class="text-start">
+                                <h6 class="mb-0">Created At</h6>
+                                <p>${getDateToContext(dt.created_at,'calendar')}</p>
+                                ${
+                                    dt.remind_at ? `
+                                        <h6 class="mb-0">Remind At</h6>
+                                        <p class="mb-0">${getDateToContext(dt.remind_at,'calendar')}</p>
+                                    ` : ''
+                                }
                             </td>
                         </tr>
                     `)
