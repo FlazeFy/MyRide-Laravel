@@ -22,9 +22,6 @@ return new class extends Migration
             $table->timestamp('expires_at')->nullable();
             $table->timestamp('created_at')->nullable();
             $table->timestamp('updated_at')->nullable();
-
-            // References
-            $table->foreign('tokenable_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

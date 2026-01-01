@@ -85,7 +85,7 @@ class Queries extends Controller
             if($check_admin){
                 // Get all error
                 $res = ErrorModel::getAllError($paginate);
-                if (count($res) > 0) {
+                if($res) {
                     // Return success response
                     return response()->json([
                         'status' => 'success',
