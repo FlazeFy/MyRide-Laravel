@@ -256,7 +256,7 @@ class Commands extends Controller
      *     ),
      * )
      */
-    public function updateService(Request $request, $id){
+    public function putUpdateServiceById(Request $request, $id){
         try{
             $user_id = $request->user()->id;
 
@@ -286,7 +286,7 @@ class Commands extends Controller
                     return response()->json([
                         'status' => 'success',
                         'message' => Generator::getMessageTemplate("update", $this->module),
-                    ], Response::HTTP_CREATED);
+                    ], Response::HTTP_OK);
                 } else {
                     return response()->json([
                         'status' => 'error',
