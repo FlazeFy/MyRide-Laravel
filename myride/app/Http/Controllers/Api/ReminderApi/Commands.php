@@ -191,7 +191,7 @@ class Commands extends Controller
      *     ),
      * )
      */
-    public function postReminder(Request $request){
+    public function postCreateReminder(Request $request){
         try{
             // Init firebase factory to use in Google Calendar
             $factory = (new Factory)->withServiceAccount(base_path('/firebase/myride-a0077-firebase-adminsdk-7x7j4-6b7da5321a.json'));

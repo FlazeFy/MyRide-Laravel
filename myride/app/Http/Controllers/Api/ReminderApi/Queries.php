@@ -286,21 +286,9 @@ class Queries extends Controller
      *             @OA\Property(property="message", type="string", example="reminder fetched"),
      *                 @OA\Property(property="data", type="array",
      *                     @OA\Items(
-     *                         @OA\Property(property="id", type="string", format="uuid", example="28668090-5653-dff5-2d8f-af603fc36b45"),
      *                         @OA\Property(property="reminder_title", type="string", example="Routine service"),
      *                         @OA\Property(property="reminder_context", type="string", example="Service"),
      *                         @OA\Property(property="reminder_body", type="string", example="Lorem ipsum"),
-     *                         @OA\Property(property="reminder_attachment", type="array",
-     *                             @OA\Items(
-     *                                 type="object",
-     *                                 @OA\Property(property="attachment_type", type="string", example="location"),
-     *                                 @OA\Property(property="attachment_value", type="string", example="-6.223617982933017, 106.84620287273809")
-     *                             ),
-     *                             example={{
-     *                                 "attachment_type": "location",
-     *                                 "attachment_value": "-6.223617982933017, 106.84620287273809"
-     *                             }}
-     *                         ),
      *                         @OA\Property(property="remind_at", type="string", nullable=true, example="2025-06-24 10:54:42"),
      *                     )
      *                 ),

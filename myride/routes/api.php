@@ -113,7 +113,7 @@ Route::prefix('/v1/reminder')->middleware(['auth:sanctum'])->group(function () {
     Route::get('/recently', [QueriesReminderController::class, 'getRecentlyReminder']);
     Route::get('/vehicle/{vehicle_id}', [QueriesReminderController::class, 'getReminderByVehicle']);
     Route::delete('/destroy/{id}', [CommandsReminderController::class, 'hardDeleteReminderById']);
-    Route::post('/', [CommandsReminderController::class, 'postReminder']);
+    Route::post('/', [CommandsReminderController::class, 'postCreateReminder']);
 });
 
 Route::prefix('/v1/service')->middleware(['auth:sanctum'])->group(function () {

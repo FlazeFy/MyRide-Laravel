@@ -5093,11 +5093,6 @@
                                             "type": "array",
                                             "items": {
                                                 "properties": {
-                                                    "id": {
-                                                        "type": "string",
-                                                        "format": "uuid",
-                                                        "example": "28668090-5653-dff5-2d8f-af603fc36b45"
-                                                    },
                                                     "reminder_title": {
                                                         "type": "string",
                                                         "example": "Routine service"
@@ -5109,28 +5104,6 @@
                                                     "reminder_body": {
                                                         "type": "string",
                                                         "example": "Lorem ipsum"
-                                                    },
-                                                    "reminder_attachment": {
-                                                        "type": "array",
-                                                        "items": {
-                                                            "properties": {
-                                                                "attachment_type": {
-                                                                    "type": "string",
-                                                                    "example": "location"
-                                                                },
-                                                                "attachment_value": {
-                                                                    "type": "string",
-                                                                    "example": "-6.223617982933017, 106.84620287273809"
-                                                                }
-                                                            },
-                                                            "type": "object"
-                                                        },
-                                                        "example": [
-                                                            {
-                                                                "attachment_type": "location",
-                                                                "attachment_value": "-6.223617982933017, 106.84620287273809"
-                                                            }
-                                                        ]
                                                     },
                                                     "remind_at": {
                                                         "type": "string",
@@ -12878,7 +12851,7 @@
                 ],
                 "summary": "Put Update Wash Finish Status By ID",
                 "description": "This request is used to update a wash history based on the provided `ID` and the updated fields `wash_end_time`. This request interacts with the MySQL database, has a protected routes, and audited activity (history).",
-                "operationId": "f11a368a53de5b987f852c44f301ba63",
+                "operationId": "cd1131c13b1763ed214b1440e6fbfd6d",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -12995,7 +12968,7 @@
                 ],
                 "summary": "Put Update Wash By ID",
                 "description": "This request is used to update a wash history based on the provided `ID`. The updated fields are `vehicle_id`, `wash_desc`, `wash_by`, `is_wash_body`, `is_wash_window`, `is_wash_dashboard`, `is_wash_tires`, `is_wash_trash`, `is_wash_engine`, `is_wash_seat`, `is_wash_carpet`, `is_wash_pillows`, `wash_address`, `wash_start_time`, `wash_end_time`, `wash_price`, `is_fill_window_washing_water`, and `is_wash_hollow`. This request interacts with the MySQL database, has a protected routes, and audited activity (history).",
-                "operationId": "ad2428ef907d4a04894c216c9a649abc",
+                "operationId": "24c3e0ff48ec5c178443e8c767a78240",
                 "requestBody": {
                     "required": true,
                     "content": {
