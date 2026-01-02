@@ -18,7 +18,7 @@ class FuelRonRules implements Rule
 
     public function passes($attribute, $value)
     {
-        $type = ['90','92','95','98'];
+        $type = [90, 92, 95, 98];
 
         foreach ($type as $format) {
             if ($format === $value) {

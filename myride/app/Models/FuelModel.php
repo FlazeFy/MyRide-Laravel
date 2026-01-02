@@ -110,7 +110,7 @@ class FuelModel extends Model
     }
 
     public static function getLastFuel($user_id, $vehicle_id = null){
-        $res = FuelModel::select('fuel.id', 'vehicle_plate_number', 'vehicle_type', 'fuel_volume', 'fuel_price_total', 'fuel_brand', 'fuel_type', 'fuel_ron', 'fuel.created_at', 'fuel_bill')
+        $res = FuelModel::select('vehicle_plate_number', 'vehicle_type', 'fuel_volume', 'fuel_price_total', 'fuel_brand', 'fuel_type', 'fuel_ron', 'fuel.created_at')
             ->join('vehicle','vehicle.id','=','fuel.vehicle_id')
             ->where('fuel.created_by',$user_id);
         

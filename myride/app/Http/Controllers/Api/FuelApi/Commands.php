@@ -315,7 +315,7 @@ class Commands extends Controller
      *     ),
      * )
      */
-    public function updateFuelById(Request $request, $id){
+    public function putUpdateFuelById(Request $request, $id){
         try{
             $user_id = $request->user()->id;
 
