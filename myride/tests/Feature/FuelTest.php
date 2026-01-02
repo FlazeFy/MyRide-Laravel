@@ -3,6 +3,8 @@
 namespace Tests\Feature;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\File;
 use GuzzleHttp\Client;
 use Tests\TestCase;
 
@@ -84,5 +86,46 @@ class FuelTest extends TestCase
 
         Audit::auditRecordText("Test - Get Monthly Fuel Summary", "TC-XXX", "Result : ".json_encode($data));
         Audit::auditRecordSheet("Test - Get Monthly Fuel Summary", "TC-XXX", 'TC-XXX test_get_monthly_fuel_summary', json_encode($data));
+    }
+
+    public function test_post_create_fuel(): void
+    {
+        $token = $this->login_trait("user");
+
+        $fuelBill = UploadedFile::fake()->image('fuel_bill.jpg');
+
+        $form = [
+            ['name' => 'vehicle_id', 'contents' => 'ac278923-14ab-cb8b-0ca5-6cb6cdff094b'],
+            ['name' => 'fuel_volume', 'contents' => 20],
+            ['name' => 'fuel_price_total', 'contents' => 300000],
+            ['name' => 'fuel_brand', 'contents' => 'Shell'],
+            ['name' => 'fuel_type', 'contents' => 'Shell Super'],
+            ['name' => 'fuel_ron', 'contents' => 92],
+            [
+                'name' => 'fuel_bill', 
+                'contents' => fopen($fuelBill->getPathname(), 'r'), 
+                'filename' => 'fuel_bill.jpg'
+            ],
+        ];
+
+        // Exec
+        $response = $this->httpClient->post("", [
+            'headers' => [
+                'Authorization' => "Bearer $token"
+            ],
+            'multipart' => $form,
+        ]);
+
+        $data = json_decode($response->getBody(), true);
+
+        // Test Parameter
+        $this->assertEquals(201, $response->getStatusCode());
+        $this->assertArrayHasKey('status', $data);
+        $this->assertEquals('success', $data['status']);
+        $this->assertArrayHasKey('message', $data);
+        $this->assertEquals("fuel created", $data['message']);
+
+        Audit::auditRecordText("Test - Post Create Fuel", "TC-XXX", "Result : ".json_encode($data));
+        Audit::auditRecordSheet("Test - Post Create Fuel", "TC-XXX", 'TC-XXX test_post_create_fuel', json_encode($data));
     }
 }

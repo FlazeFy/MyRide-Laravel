@@ -70,7 +70,7 @@
                             </td>
                             <td>${getDateToContext(dt.created_at,'calendar')}</td>
                             <td>
-                                <div class='d-flex flex-wrap gap-2'>
+                                <div class='d-flex flex-wrap gap-2 justify-content-center'>
                                     ${dt.fuel_bill != null ? `
                                         <a class="btn btn-primary" style="width:50px;" data-bs-target="#fuel_bill_${dt.id}-modal" data-bs-toggle="modal"><i class="fa-solid fa-receipt"></i></a>
                                         <div class="modal fade" id="fuel_bill_${dt.id}-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

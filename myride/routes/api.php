@@ -152,7 +152,7 @@ Route::prefix('/v1/fuel')->middleware(['auth:sanctum'])->group(function () {
     Route::get('/last', [QueriesFuelController::class, 'getLastFuel']);
     Route::get('/summary/{month_year}', [QueriesFuelController::class, 'getMonthlyFuelSummary']);
     Route::delete('/destroy/{id}', [CommandsFuelController::class, 'hardDeleteFuelById']);
-    Route::post('/', [CommandsFuelController::class, 'postFuel']);
+    Route::post('/', [CommandsFuelController::class, 'postCreateFuel']);
     Route::put('/{id}', [CommandsFuelController::class, 'updateFuelById']);
 });
 

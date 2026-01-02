@@ -47,6 +47,30 @@ class DriverTest extends TestCase
         Audit::auditRecordSheet("Test - Hard Delete Driver By Id", "TC-XXX", 'TC-XXX test_hard_delete_driver_by_id', json_encode($data));
     }
 
+    public function test_hard_delete_driver_relation_by_id(): void
+    {
+        // Exec
+        $token = $this->login_trait("user");
+        $id = "8e57f7c5-2828-8948-1208-b012b3bb8365";
+        $response = $this->httpClient->delete("destroy/relation/$id", [
+            'headers' => [
+                'Authorization' => "Bearer $token"
+            ]
+        ]);
+
+        $data = json_decode($response->getBody(), true);
+
+        // Test Parameter
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertArrayHasKey('status', $data);
+        $this->assertEquals('success', $data['status']);
+        $this->assertArrayHasKey('message', $data);
+        $this->assertEquals('driver relation permentally deleted',$data['message']);
+
+        Audit::auditRecordText("Test - Hard Delete Driver Relation By Id", "TC-XXX", "Result : ".json_encode($data));
+        Audit::auditRecordSheet("Test - Hard Delete Driver Relation By Id", "TC-XXX", 'TC-XXX test_hard_delete_driver_relation_by_id', json_encode($data));
+    }
+
     public function test_get_all_driver(): void
     {
         // Exec
@@ -202,6 +226,40 @@ class DriverTest extends TestCase
 
         Audit::auditRecordText("Test - Post Create Driver", "TC-XXX", "Result : ".json_encode($data));
         Audit::auditRecordSheet("Test - Post Create Driver", "TC-XXX", 'TC-XXX test_post_create_driver', json_encode($data));
+    }
+
+    public function test_put_update_driver_by_id(): void
+    {
+        $token = $this->login_trait("user");
+        $id = "558bd768-392a-d389-09f3-a28933ca9183";
+
+        $body = [
+            'username' => 'tester_01',
+            'fullname' => 'Tester User',
+            'email' => 'flazen.study@gmail.com',
+            'phone' => '08123456789',
+            'notes' => 'Lorem ipsum test',
+        ];
+
+        // Exec
+        $response = $this->httpClient->put("$id", [
+            'headers' => [
+                'Authorization' => "Bearer $token"
+            ],
+            'json' => $body,
+        ]);
+
+        $data = json_decode($response->getBody(), true);
+
+        // Test Parameter
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertArrayHasKey('status', $data);
+        $this->assertEquals('success', $data['status']);
+        $this->assertArrayHasKey('message', $data);
+        $this->assertEquals("driver updated", $data['message']);
+
+        Audit::auditRecordText("Test - Put Update Driver By ID", "TC-XXX", "Result : ".json_encode($data));
+        Audit::auditRecordSheet("Test - Put Update Driver By ID", "TC-XXX", 'TC-XXX test_put_update_driver_by_id', json_encode($data));
     }
 
     public function test_get_driver_vehicle(): void

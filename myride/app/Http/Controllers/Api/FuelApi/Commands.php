@@ -180,7 +180,7 @@ class Commands extends Controller
      *     ),
      * )
      */
-    public function postFuel(Request $request){
+    public function postCreateFuel(Request $request){
         try{
             $user_id = $request->user()->id;
 
