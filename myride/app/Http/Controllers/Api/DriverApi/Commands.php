@@ -204,6 +204,20 @@ class Commands extends Controller
      *     description="This request is used to create a driver by using given `username`, `fullname`, `password`, `telegram_user_id`, `email`, `phone`, and `notes`. This request interacts with the MySQL database, has a protected routes, and audited activity (history).",
      *     tags={"Driver"},
      *     security={{"bearerAuth":{}}},
+     *     @OA\RequestBody(
+     *          required=true,
+     *          @OA\JsonContent(
+     *              required={"username","fullname","email","password","password_confirmation","phone"},
+     *              @OA\Property(property="username", type="string", example="tester_01"),
+     *              @OA\Property(property="fullname", type="string", example="Tester User"),
+     *              @OA\Property(property="email", type="string", example="tester@mail.com"),
+     *              @OA\Property(property="phone", type="string", example="08123456789"),
+     *              @OA\Property(property="notes", type="string", example="Lorem ipsum"),
+     *              @OA\Property(property="telegram_user_id", type="string", example="1317625977"),
+     *              @OA\Property(property="password", type="string", example="nopass123"),
+     *              @OA\Property(property="password_confirmation", type="string", example="nopass123")
+     *          )
+     *     ),
      *     @OA\Response(
      *         response=201,
      *         description="driver created",
@@ -238,7 +252,7 @@ class Commands extends Controller
      *     ),
      * )
      */
-    public function postDriver(Request $request){
+    public function postCreateDriver(Request $request){
         try{
             // Validate request body
             $validator = Validation::getValidateDriver($request,'create');
@@ -336,7 +350,7 @@ class Commands extends Controller
      *     ),
      * )
      */
-    public function updateDriver(Request $request, $id){
+    public function putUpdateDriverById(Request $request, $id){
         try{
             // Validate request body
             $validator = Validation::getValidateDriver($request,'update');
@@ -397,6 +411,15 @@ class Commands extends Controller
      *     description="This request is used to create a driver - vehicle relation by using given `vehicle_id`, `driver_id`, and `relation_note`. This request interacts with the MySQL database, has a protected routes, broadcast message with Telegram, and audited activity (history).",
      *     tags={"Driver"},
      *     security={{"bearerAuth":{}}},
+     *     @OA\RequestBody(
+     *          required=true,
+     *          @OA\JsonContent(
+     *              required={"driver_id","vehicle_id"},
+     *              @OA\Property(property="driver_id", type="string", example="830b1ba4-3e90-28d4-1f0b-aadcd406090f"),
+     *              @OA\Property(property="vehicle_id", type="string", example="6c1ff866-ce85-fa03-21ce-b30905b43b1a"),
+     *              @OA\Property(property="relation_note", type="string", example="Driver weekday")
+     *          )
+     *     ),
      *     @OA\Response(
      *         response=201,
      *         description="driver relation created",
@@ -431,7 +454,7 @@ class Commands extends Controller
      *     ),
      * )
      */
-    public function postDriverVehicle(Request $request){
+    public function postCreateDriverVehicle(Request $request){
         try{
             // Validate request body
             $validator = Validation::getValidateDriver($request,'create_relation');

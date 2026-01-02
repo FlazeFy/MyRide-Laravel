@@ -131,11 +131,11 @@ Route::prefix('/v1/driver')->middleware(['auth:sanctum'])->group(function () {
     Route::get('/name', [QueriesDriverController::class, 'getAllDriverName']);
     Route::get('/vehicle', [QueriesDriverController::class, 'getDriverVehicle']);
     Route::get('/vehicle/list', [QueriesDriverController::class, 'getDriverVehicleManageList']);
-    Route::post('/vehicle', [CommandsDriverController::class, 'postDriverVehicle']);
-    Route::post('/', [CommandsDriverController::class, 'postDriver']);
+    Route::post('/vehicle', [CommandsDriverController::class, 'postCreateDriverVehicle']);
+    Route::post('/', [CommandsDriverController::class, 'postCreateDriver']);
     Route::delete('/destroy/{id}', [CommandsDriverController::class, 'hardDeleteDriverById']);
     Route::delete('/destroy/relation/{id}', [CommandsDriverController::class, 'hardDeleteDriverRelationById']);
-    Route::put('/{id}', [CommandsDriverController::class, 'updateDriver']);
+    Route::put('/{id}', [CommandsDriverController::class, 'putUpdateDriverById']);
 });
 
 Route::prefix('/v1/stats')->middleware(['auth:sanctum'])->group(function () {

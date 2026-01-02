@@ -24,7 +24,6 @@ class DriverVehicleRelationModelFactory extends Factory
             'vehicle_id' => VehicleModel::getRandom(0,$user_id), 
             'driver_id' => DriverModel::getRandom(0,$user_id), 
             'relation_note' => $ranDesc === 0 ? null : fake()->sentence($ranDesc), 
-            'created_by' => $user_id, 
             'created_at' => Generator::getRandomDate(0), 
         ];
     }

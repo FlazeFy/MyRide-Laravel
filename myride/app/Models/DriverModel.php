@@ -29,7 +29,7 @@ class DriverModel extends Authenticatable
             $res = $res->where('driver.created_by', $user_id);
         }
 
-        if($col == '*,COUNT(trip.id) as total_trip'){
+        if($col == 'driver.*,COUNT(trip.id) as total_trip'){
             $res = $res->groupby('driver.id');
         }
             
@@ -42,7 +42,7 @@ class DriverModel extends Authenticatable
 
     public static function getAllDriverName($user_id){
         return DriverModel::select('id', 'username', 'fullname')
-            ->where('driver.created_by',$user_id)
+            ->where('created_by',$user_id)
             ->orderby('fullname','asc')
             ->get();
     }

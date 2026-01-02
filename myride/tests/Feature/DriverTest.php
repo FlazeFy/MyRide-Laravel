@@ -101,6 +101,109 @@ class DriverTest extends TestCase
         Audit::auditRecordSheet("Test - Get All Driver", "TC-XXX", 'TC-XXX test_get_all_driver', json_encode($data));
     }
 
+    public function test_get_all_driver_name(): void
+    {
+        $token = $this->login_trait("user");
+
+        // Exec
+        $response = $this->httpClient->get("name", [
+            'headers' => [
+                'Authorization' => "Bearer $token"
+            ]
+        ]);
+
+        $data = json_decode($response->getBody(), true);
+
+        // Test Parameter
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertArrayHasKey('status', $data);
+        $this->assertEquals('success', $data['status']);
+        $this->assertArrayHasKey('message', $data);
+        $this->assertArrayHasKey('data', $data);
+
+        foreach ($data['data'] as $dt) {
+            $check_object = ['id', 'username', 'fullname'];
+
+            foreach ($check_object as $col) {
+                $this->assertArrayHasKey($col, $dt);
+                $this->assertNotNull($dt[$col]);
+                $this->assertIsString($dt[$col]);
+            }
+
+            $this->assertEquals(36,strlen($dt['id']));
+        }
+       
+        Audit::auditRecordText("Test - Get All Driver Name", "TC-XXX", "Result : ".json_encode($data));
+        Audit::auditRecordSheet("Test - Get All Driver Name", "TC-XXX", 'TC-XXX test_get_all_driver_name', json_encode($data));
+    }
+
+    public function test_post_create_driver_vehicle(): void
+    {
+        $token = $this->login_trait("user");
+
+        $body = [
+            'vehicle_id' => '830b1ba4-3e90-28d4-1f0b-aadcd406090f',
+            'driver_id' => '6c1ff866-ce85-fa03-21ce-b30905b43b1a',
+            'relation_note' => 'Driver weekday'
+        ];
+
+        // Exec
+        $response = $this->httpClient->post("vehicle", [
+            'headers' => [
+                'Authorization' => "Bearer $token"
+            ],
+            'json' => $body,
+        ]);
+
+        $data = json_decode($response->getBody(), true);
+
+        // Test Parameter
+        $this->assertEquals(201, $response->getStatusCode());
+        $this->assertArrayHasKey('status', $data);
+        $this->assertEquals('success', $data['status']);
+        $this->assertArrayHasKey('message', $data);
+        $this->assertEquals("driver relation created", $data['message']);
+
+        Audit::auditRecordText("Test - Post Create Driver Vehicle", "TC-XXX", "Result : ".json_encode($data));
+        Audit::auditRecordSheet("Test - Post Create Driver Vehicle", "TC-XXX", 'TC-XXX test_post_create_driver_vehicle', json_encode($data));
+    }
+
+    public function test_post_create_driver(): void
+    {
+        $token = $this->login_trait("user");
+
+        $body = [
+            'username' => 'tester_01',
+            'fullname' => 'Tester User',
+            'email' => 'flazen.work@gmail.com',
+            'phone' => '08123456789',
+            'notes' => 'Lorem ipsum',
+            'telegram_user_id' => '1317625977',
+            'password' => 'nopass123',
+            'password_confirmation' => 'nopass123'
+        ];
+
+        // Exec
+        $response = $this->httpClient->post("", [
+            'headers' => [
+                'Authorization' => "Bearer $token"
+            ],
+            'json' => $body,
+        ]);
+
+        $data = json_decode($response->getBody(), true);
+
+        // Test Parameter
+        $this->assertEquals(201, $response->getStatusCode());
+        $this->assertArrayHasKey('status', $data);
+        $this->assertEquals('success', $data['status']);
+        $this->assertArrayHasKey('message', $data);
+        $this->assertEquals("driver created", $data['message']);
+
+        Audit::auditRecordText("Test - Post Create Driver", "TC-XXX", "Result : ".json_encode($data));
+        Audit::auditRecordSheet("Test - Post Create Driver", "TC-XXX", 'TC-XXX test_post_create_driver', json_encode($data));
+    }
+
     public function test_get_driver_vehicle(): void
     {
         // Exec

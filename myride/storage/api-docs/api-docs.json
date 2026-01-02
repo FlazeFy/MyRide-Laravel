@@ -1278,7 +1278,59 @@
                 ],
                 "summary": "Post Create Driver",
                 "description": "This request is used to create a driver by using given `username`, `fullname`, `password`, `telegram_user_id`, `email`, `phone`, and `notes`. This request interacts with the MySQL database, has a protected routes, and audited activity (history).",
-                "operationId": "03c269702e9c152dd0c9d742184be583",
+                "operationId": "d05a6d6777ae016d45fd1b127a0dd972",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "username",
+                                    "fullname",
+                                    "email",
+                                    "password",
+                                    "password_confirmation",
+                                    "phone"
+                                ],
+                                "properties": {
+                                    "username": {
+                                        "type": "string",
+                                        "example": "tester_01"
+                                    },
+                                    "fullname": {
+                                        "type": "string",
+                                        "example": "Tester User"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "example": "tester@mail.com"
+                                    },
+                                    "phone": {
+                                        "type": "string",
+                                        "example": "08123456789"
+                                    },
+                                    "notes": {
+                                        "type": "string",
+                                        "example": "Lorem ipsum"
+                                    },
+                                    "telegram_user_id": {
+                                        "type": "string",
+                                        "example": "1317625977"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "nopass123"
+                                    },
+                                    "password_confirmation": {
+                                        "type": "string",
+                                        "example": "nopass123"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "201": {
                         "description": "driver created",
@@ -1375,7 +1427,7 @@
                 ],
                 "summary": "Put Update Driver",
                 "description": "This request is used to update a driver by using given `username`, `fullname`, `email`, `phone`, and `notes`. This request interacts with the MySQL database, has a protected routes, and audited activity (history).",
-                "operationId": "25163ca64bc304f0b8b4e3d24406591c",
+                "operationId": "6892ba5809f603ad7e96a9750a39b55f",
                 "responses": {
                     "200": {
                         "description": "driver updated",
@@ -1608,7 +1660,35 @@
                 ],
                 "summary": "Post Create Driver Vehicle Relation",
                 "description": "This request is used to create a driver - vehicle relation by using given `vehicle_id`, `driver_id`, and `relation_note`. This request interacts with the MySQL database, has a protected routes, broadcast message with Telegram, and audited activity (history).",
-                "operationId": "746c9aa03930889a98e6dba1b70850ea",
+                "operationId": "43b825efb599cc1bcd9b06879ec9e8d7",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "driver_id",
+                                    "vehicle_id"
+                                ],
+                                "properties": {
+                                    "driver_id": {
+                                        "type": "string",
+                                        "example": "830b1ba4-3e90-28d4-1f0b-aadcd406090f"
+                                    },
+                                    "vehicle_id": {
+                                        "type": "string",
+                                        "example": "6c1ff866-ce85-fa03-21ce-b30905b43b1a"
+                                    },
+                                    "relation_note": {
+                                        "type": "string",
+                                        "example": "Driver weekday"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "201": {
                         "description": "driver relation created",
@@ -5611,7 +5691,7 @@
                 ],
                 "summary": "Put Update Service By ID",
                 "description": "This request is used to update service by using given `ID`. The updated field are `vehicle_id`, `service_note`, `service_category`, `service_location`, `service_price_total`, and `remind_at`. This request interacts with the MySQL database, has a protected routes, and audited activity (history).",
-                "operationId": "a2dff3a0dae84d2dda6b08b1bc6713d9",
+                "operationId": "2efd88fce691f061bcc8b94d3e7cde11",
                 "requestBody": {
                     "required": true,
                     "content": {

@@ -1,5 +1,5 @@
 <div class="modal fade" id="assign_driver_vehicle-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title fw-bold" id="exampleModalLabel">Choose Driver</h4>
