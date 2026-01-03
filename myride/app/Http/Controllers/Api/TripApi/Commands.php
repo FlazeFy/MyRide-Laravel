@@ -93,7 +93,7 @@ class Commands extends Controller
      *     )
      * )
      */
-    public function postTrip(Request $request)
+    public function postCreateTrip(Request $request)
     {
         try{
             // Prepare request body
@@ -348,7 +348,7 @@ class Commands extends Controller
      *     ),
      * )
      */
-    public function updateTripById(Request $request, $id){
+    public function putUpdateTripById(Request $request, $id){
         try{
             $user_id = $request->user()->id;
             $driver_id = $request->driver_id === "-" ? null : $request->driver_id;
@@ -402,7 +402,7 @@ class Commands extends Controller
                     return response()->json([
                         'status' => 'success',
                         'message' => Generator::getMessageTemplate("update", $this->module),
-                    ], Response::HTTP_CREATED);
+                    ], Response::HTTP_OK);
                 } else {
                     return response()->json([
                         'status' => 'error',

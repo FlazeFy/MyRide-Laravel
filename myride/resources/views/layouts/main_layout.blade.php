@@ -60,7 +60,7 @@
     <?php if(preg_match('(stats|embed|detail|dashboard|fuel|inventory|service)', $cleanedUrl)): ?>
         <script src="{{ asset('/js/chart_v1.0.js')}}"></script>
     <?php endif; ?>
-    <?php if(preg_match('(fuel|garage|service|wash|trip)', $cleanedUrl)): ?>
+    <?php if(preg_match('(fuel|garage|service|wash|trip|driver)', $cleanedUrl)): ?>
         <script src="{{ asset('/js/math_v1.0.js')}}"></script>
     <?php endif; ?>
     <?php if(preg_match('(calendar)', $cleanedUrl)): ?>

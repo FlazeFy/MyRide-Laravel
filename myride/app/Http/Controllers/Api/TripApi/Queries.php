@@ -129,6 +129,7 @@ class Queries extends Controller
      *                 @OA\Property(property="current_page", type="integer", example=1),
      *                 @OA\Property(property="data", type="array",
      *                     @OA\Items(
+     *                         @OA\Property(property="id", type="string", format="uuid", example="28668090-5653-dff5-2d8f-af603fc36b45"),
      *                         @OA\Property(property="vehicle_name", type="string", example="Brio RS MT"),
      *                         @OA\Property(property="vehicle_plate_number", type="string", example="D 1610 ZBC"),
      *                         @OA\Property(property="trip_desc", type="string", example="jalan2"),
@@ -181,10 +182,10 @@ class Queries extends Controller
 
             // Get all trip with pagination by driver_id
             $res = TripModel::getAllTrip($user_id,$limit,$driver_id);
-            if(count($res) > 0) {
-                // Remove id and driver_fullname
+            if($res && count($res) > 0) {
+                // Remove driver_fullname
                 $res->getCollection()->transform(function ($item) {
-                    unset($item->id, $item->driver_fullname); 
+                    unset($item->driver_fullname); 
                     return $item;
                 });
 

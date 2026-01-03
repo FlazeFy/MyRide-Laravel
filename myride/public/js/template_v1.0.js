@@ -40,12 +40,12 @@ const buildDeleteModal = (url, context, token, action) => {
     });
 }
 
-const templateTripBox = (dt, extra_class = '') => {
+const templateTripBox = (dt, extra_class = '', showLocation = true) => {
     const coorOrigin = dt.trip_origin_coordinate ? dt.trip_origin_coordinate.split(",").map(Number) : null
     const coorDestination = dt.trip_destination_coordinate ? dt.trip_destination_coordinate.split(",").map(Number) : null
     const deletedStyle = dt.deleted_at ? "background-color: rgba(221, 0, 33, 0.3);" : ""
     const deletedTitle = dt.deleted_at ? "title='Deleted Item'" : ""
-    const clickFunc = coorOrigin ? `onclick="show_location(${coorOrigin[0]}, ${coorOrigin[1]}, ${coorDestination[0]}, ${coorDestination[1]})"` : ''
+    const clickFunc = coorOrigin && showLocation ? `onclick="show_location(${coorOrigin[0]}, ${coorOrigin[1]}, ${coorDestination[0]}, ${coorDestination[1]})"` : ''
 
     return `
         <button class="container-fluid text-start mb-4 ${extra_class}" style="${deletedStyle}" ${deletedTitle} ${clickFunc}>

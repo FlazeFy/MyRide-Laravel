@@ -1194,7 +1194,7 @@ class Queries extends Controller
      *             @OA\Property(property="message", type="string", example="stats fetched"),
      *                 @OA\Property(property="data", type="array",
      *                     @OA\Items(
-     *                          @OA\Property(property="context", type="string", example="Leo"),
+     *                          @OA\Property(property="context", type="string", example="John Doe"),
      *                          @OA\Property(property="total", type="integer", example=3)
      *                 )
      *             )

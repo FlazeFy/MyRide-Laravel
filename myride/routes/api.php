@@ -157,14 +157,14 @@ Route::prefix('/v1/fuel')->middleware(['auth:sanctum'])->group(function () {
 });
 
 Route::prefix('/v1/trip')->middleware(['auth:sanctum'])->group(function () {
-    Route::post('/', [CommandsTripController::class, 'postTrip']);
+    Route::post('/', [CommandsTripController::class, 'postCreateTrip']);
     Route::get('/', [QueriesTripApi::class, 'getAllTrip']);
     Route::get('/last', [QueriesTripApi::class, 'getLastTrip']);
     Route::get('/calendar', [QueriesTripApi::class, 'getTripCalendar']);
     Route::get('/coordinate/{trip_location_name}', [QueriesTripApi::class, 'getCoordinateByTripLocationName']);
     Route::get('/driver/{driver_id}', [QueriesTripApi::class, 'getAllTripByDriverId']);
     Route::delete('/destroy/{id}', [CommandsTripController::class, 'hardDeleteTripById']);
-    Route::put('/{id}', [CommandsTripController::class, 'updateTripById']);
+    Route::put('/{id}', [CommandsTripController::class, 'putUpdateTripById']);
 });
 
 Route::prefix('/v1/trip')->group(function () {

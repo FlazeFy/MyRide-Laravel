@@ -2945,7 +2945,7 @@
                 ],
                 "summary": "Post Create Fuel",
                 "description": "This request is used to create a fuel by using given `vehicle_id`, `fuel_volume`, `fuel_price_total`, `fuel_brand`, `fuel_type`, `fuel_ron`, and `fuel_bill` (Fuel Receipt image). This request interacts with the MySQL database, firebase storage, has a protected routes, and audited activity (history).",
-                "operationId": "781edfda28dbc20a06ab30716f078d1c",
+                "operationId": "4f27739a6bdac597135dc08047f95476",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -3088,7 +3088,7 @@
                 ],
                 "summary": "Put Update Fuel By ID",
                 "description": "This request is used to update a fuel by using given `ID`. The updated field are `vehicle_id`, `fuel_volume`, `fuel_price_total`, `fuel_brand`, `fuel_type`, and `fuel_ron`. This request interacts with the MySQL database, has a protected routes, and audited activity (history).",
-                "operationId": "197240b06afa4c99bfb2322feaa42da4",
+                "operationId": "094b17511e17cc75dbe7712c95e2d3b1",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -7547,7 +7547,7 @@
                                                 "properties": {
                                                     "context": {
                                                         "type": "string",
-                                                        "example": "Leo"
+                                                        "example": "John Doe"
                                                     },
                                                     "total": {
                                                         "type": "integer",
@@ -7817,7 +7817,7 @@
                 ],
                 "summary": "Post Create Trip",
                 "description": "This request is used to create a new trip using `vehicle_id`, `driver_id`, `trip_desc`, `trip_category`, `trip_origin_name`, `trip_person`, `trip_origin_coordinate`, `trip_destination_coordinate`, and `trip_destination_name`. This request interacts with the MySQL database, has a protected routes, broadcast message with Telegram, and audited activity (history).",
-                "operationId": "882a6a351df5af828e955f4b761b82db",
+                "operationId": "16a52b1d9e8093e72f7060d9e07a6629",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -8095,7 +8095,7 @@
                 ],
                 "summary": "Put Update Trip By ID",
                 "description": "This request is used to update a trip using given `ID`. The updated field are `vehicle_id`, `driver_id`, `trip_desc`, `trip_category`, `trip_origin_name`, `trip_person`, `trip_origin_coordinate`, `trip_destination_coordinate`, and `trip_destination_name`. This request interacts with the MySQL database, has a protected routes, broadcast message with Telegram, and audited activity (history).",
-                "operationId": "6aa90fb5999d7e68edd0d15cfe5fb53f",
+                "operationId": "800a3910ac3ff29d350aef93304f604e",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -8272,6 +8272,11 @@
                                                     "type": "array",
                                                     "items": {
                                                         "properties": {
+                                                            "id": {
+                                                                "type": "string",
+                                                                "format": "uuid",
+                                                                "example": "28668090-5653-dff5-2d8f-af603fc36b45"
+                                                            },
                                                             "vehicle_name": {
                                                                 "type": "string",
                                                                 "example": "Brio RS MT"
@@ -12018,7 +12023,7 @@
                                                                     },
                                                                     "trip_person": {
                                                                         "type": "string",
-                                                                        "example": "budi",
+                                                                        "example": "John Doe",
                                                                         "nullable": true
                                                                     },
                                                                     "trip_origin_name": {
@@ -12334,7 +12339,7 @@
                                                     "properties": {
                                                         "most_person_with": {
                                                             "type": "string",
-                                                            "example": "budi"
+                                                            "example": "John Doe"
                                                         },
                                                         "vehicle_total_trip_distance": {
                                                             "type": "decimal",
