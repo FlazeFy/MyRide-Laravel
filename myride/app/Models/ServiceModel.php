@@ -34,9 +34,7 @@ class ServiceModel extends Model
             $res = $res->where('service.created_by', $user_id);
         }
             
-        return $res->orderBy('service.remind_at', 'desc') 
-            ->orderBy('service.created_at', 'desc')     
-            ->paginate($limit);                       
+        return $res->orderByRaw('COALESCE(service.remind_at, service.created_at) DESC')->paginate($limit);                       
     }
 
     public static function getAllServiceSpending($user_id = null){

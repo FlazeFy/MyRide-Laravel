@@ -301,7 +301,7 @@ class Queries extends Controller
      *             @OA\Property(property="message", type="string", example="trip fetched"),
      *                 @OA\Property(property="data", type="object",
      *                     @OA\Property(property="total_trip", type="integer", example=20),
-     *                     @OA\Property(property="distance_km", type="string", example="10.000 km"),
+     *                     @OA\Property(property="distance_km", type="integer", example=559.99),
      *                     @OA\Property(property="last_update", type="string", example="2025-09-05 00:00:00")
      *             )
      *         )
@@ -438,7 +438,7 @@ class Queries extends Controller
         } catch(\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => $e->getMessage(),
+                'message' => Generator::getMessageTemplate("unknown_error", null),
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }

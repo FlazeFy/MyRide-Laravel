@@ -8568,8 +8568,8 @@
                                                     "example": 20
                                                 },
                                                 "distance_km": {
-                                                    "type": "string",
-                                                    "example": "10.000 km"
+                                                    "type": "integer",
+                                                    "example": 559.99
                                                 },
                                                 "last_update": {
                                                     "type": "string",

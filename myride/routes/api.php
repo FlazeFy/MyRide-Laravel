@@ -58,6 +58,10 @@ Route::prefix('/v1/dictionary')->group(function () {
     Route::get('/type/{type}', [QueriesDictionaryApi::class, 'getDictionaryByType']);
 });
 
+Route::prefix('/v1/trip')->group(function () {
+    Route::get('/discovered', [QueriesTripApi::class, 'getTripDiscovered']);
+});
+
 ######################### Private Route #########################
 
 Route::post('/v1/logout', [CommandAuthApi::class, 'postLogout'])->middleware(['auth:sanctum']);
@@ -167,15 +171,11 @@ Route::prefix('/v1/trip')->middleware(['auth:sanctum'])->group(function () {
     Route::put('/{id}', [CommandsTripController::class, 'putUpdateTripById']);
 });
 
-Route::prefix('/v1/trip')->group(function () {
-    Route::get('/discovered', [QueriesTripApi::class, 'getTripDiscovered']);
-});
-
 Route::prefix('/v1/inventory')->middleware(['auth:sanctum'])->group(function () {
     Route::get('/', [QueriesInventoryController::class, 'getAllInventory']);
     Route::get('/vehicle/{vehicle_id}', [QueriesInventoryController::class, 'getInventoryByVehicle']);
     Route::delete('/destroy/{id}', [CommandsInventoryController::class, 'hardDeleteInventoryById']);
-    Route::post('/', [CommandsInventoryController::class, 'postInventory']);
+    Route::post('/', [CommandsInventoryController::class, 'postCreateInventory']);
     Route::put('/{id}', [CommandsInventoryController::class, 'updateInventory']);
 });
 

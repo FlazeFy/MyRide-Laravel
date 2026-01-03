@@ -45,10 +45,7 @@ class InventoryModel extends Model
             $res = $res->where('inventory.created_by', $user_id);
         }
             
-        return $res->orderBy('gudangku_inventory_id', 'desc') 
-            ->orderBy('inventory.updated_at', 'desc') 
-            ->orderBy('inventory.created_at', 'desc')     
-            ->paginate($limit);                       
+        return $res->orderByRaw('COALESCE(inventory.updated_at, inventory.created_at) DESC')->paginate($limit);                       
     }
 
     public static function hardDeleteInventoryById($id, $user_id = null){

@@ -291,4 +291,67 @@ class TripTest extends TestCase
         Audit::auditRecordText("Test - Put Update Trip By ID", "TC-XXX", "Result : ".json_encode($data));
         Audit::auditRecordSheet("Test - Put Update Trip By ID", "TC-XXX", 'TC-XXX test_put_update_trip_by_id', json_encode($data));
     }
+
+    public function test_hard_delete_trip_by_id(): void
+    {
+        // Exec
+        $token = $this->login_trait("user");
+        $id = "9ebacf20-e193-5ed7-241d-ac549f9c3ea9";
+        $response = $this->httpClient->delete("destroy/$id", [
+            'headers' => [
+                'Authorization' => "Bearer $token"
+            ]
+        ]);
+
+        $data = json_decode($response->getBody(), true);
+
+        // Test Parameter
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertArrayHasKey('status', $data);
+        $this->assertEquals('success', $data['status']);
+        $this->assertArrayHasKey('message', $data);
+        $this->assertEquals('trip permentally deleted',$data['message']);
+
+        Audit::auditRecordText("Test - Hard Delete Trip By Id", "TC-XXX", "Result : ".json_encode($data));
+        Audit::auditRecordSheet("Test - Hard Delete Trip By Id", "TC-XXX", 'TC-XXX test_hard_delete_trip_by_id', json_encode($data));
+    }
+
+    public function test_get_trip_discovered(): void
+    {
+        // Exec
+        $token = $this->login_trait("user");
+        $response = $this->httpClient->get("discovered", [
+            'headers' => [
+                'Authorization' => "Bearer $token"
+            ]
+        ]);
+
+        $data = json_decode($response->getBody(), true);
+
+        // Test Parameter
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertArrayHasKey('status', $data);
+        $this->assertEquals('success', $data['status']);
+        $this->assertArrayHasKey('message', $data);
+        $this->assertArrayHasKey('data', $data);
+
+        $check_object = ["total_trip","distance_km","last_update"];
+        $check_not_null_int = ["total_trip","distance_km"];
+
+        foreach ($check_object as $col) {
+            $this->assertNotNull($data['data'][$col]);
+            $this->assertArrayHasKey($col, $data['data']);
+        }
+
+        foreach ($check_not_null_int as $col) {
+            $this->assertGreaterThan(0, $data['data'][$col]);
+        }
+
+        $this->assertIsInt($data['data']["total_trip"]);
+        $this->assertIsFloat($data['data']["distance_km"]);
+        $this->assertIsString($data['data']["last_update"]);
+
+        Audit::auditRecordText("Test - Get Trip Discovered", "TC-XXX", "Result : ".json_encode($data));
+        Audit::auditRecordSheet("Test - Get Trip Discovered", "TC-XXX", 'TC-XXX test_get_trip_discovered', json_encode($data));
+    }
 }

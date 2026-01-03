@@ -181,7 +181,7 @@ class Commands extends Controller
      *     ),
      * )
      */
-    public function postInventory(Request $request){
+    public function postCreateInventory(Request $request){
         try{
             $user_id = $request->user()->id;
 

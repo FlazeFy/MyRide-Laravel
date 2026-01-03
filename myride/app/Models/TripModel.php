@@ -241,7 +241,7 @@ class TripModel extends Model
 
         return [
             'total_trip' => $totalTrip,
-            'distance_km' => number_format($totalDistance, 2),
+            'distance_km' => round($totalDistance, 2),
             'last_update' => $lastUpdate,
         ];
     }

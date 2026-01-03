@@ -3,6 +3,8 @@
 namespace Tests\Feature;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\File;
 use GuzzleHttp\Client;
 use Tests\TestCase;
 
@@ -91,5 +93,48 @@ class InventoryTest extends TestCase
        
         Audit::auditRecordText("Test - Get All Inventory", "TC-XXX", "Result : ".json_encode($data));
         Audit::auditRecordSheet("Test - Get All Inventory", "TC-XXX", 'TC-XXX test_get_all_inventory', json_encode($data));
+    }
+
+    public function test_post_create_inventory(): void
+    {
+        $token = $this->login_trait("user");
+
+        // Create fake image
+        $img1 = UploadedFile::fake()->image('image1.jpg');
+
+        $form = [
+            ['name' => 'vehicle_id', 'contents' => 'ac278923-14ab-cb8b-0ca5-6cb6cdff094b'],
+            ['name' => 'inventory_name', 'contents' => 'Secondary Tire'],
+            ['name' => 'inventory_category', 'contents' => 'Maintenance'], 
+            ['name' => 'inventory_storage', 'contents' => 'Trunk'],
+            ['name' => 'inventory_qty', 'contents' => 1],
+            [
+                'name' => 'inventory_image_url',
+                'contents' => fopen($img1->getPathname(), 'r'),
+                'filename' => 'image1.jpg',
+            ]
+        ];
+
+        // Exec
+        $response = $this->httpClient->post("", [
+            'headers' => [
+                'Authorization' => "Bearer $token"
+            ],
+            'multipart' => $form
+        ]);
+
+        $data = json_decode($response->getBody(), true);
+
+        print_r($data);
+
+        // Test Parameter
+        $this->assertEquals(201, $response->getStatusCode());
+        $this->assertArrayHasKey('status', $data);
+        $this->assertEquals('success', $data['status']);
+        $this->assertArrayHasKey('message', $data);
+        $this->assertEquals("inventory created", $data['message']);
+
+        Audit::auditRecordText("Test - Post Create Inventory", "TC-XXX", "Result : ".json_encode($data));
+        Audit::auditRecordSheet("Test - Post Create Inventory", "TC-XXX", 'TC-XXX test_post_create_inventory', json_encode($data));
     }
 }

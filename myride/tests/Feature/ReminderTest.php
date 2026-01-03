@@ -174,7 +174,7 @@ class ReminderTest extends TestCase
         // Exec
         $token = $this->login_trait("user");
         
-        // Create fake images
+        // Create fake image
         $img1 = UploadedFile::fake()->image('image1.jpg');
 
         $form = [
