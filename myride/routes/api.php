@@ -176,7 +176,7 @@ Route::prefix('/v1/inventory')->middleware(['auth:sanctum'])->group(function () 
     Route::get('/vehicle/{vehicle_id}', [QueriesInventoryController::class, 'getInventoryByVehicle']);
     Route::delete('/destroy/{id}', [CommandsInventoryController::class, 'hardDeleteInventoryById']);
     Route::post('/', [CommandsInventoryController::class, 'postCreateInventory']);
-    Route::put('/{id}', [CommandsInventoryController::class, 'updateInventory']);
+    Route::put('/{id}', [CommandsInventoryController::class, 'putUpdateInventoryById']);
 });
 
 Route::prefix('/v1/user')->middleware(['auth:sanctum'])->group(function () {
@@ -185,7 +185,7 @@ Route::prefix('/v1/user')->middleware(['auth:sanctum'])->group(function () {
     Route::get('/my_profile', [QueriesUserController::class, 'getMyProfile']);
     Route::put('/update_telegram_id', [CommandsUserController::class, 'updateTelegramId']);
     Route::put('/validate_telegram_id', [CommandsUserController::class, 'validateTelegramId']);
-    Route::put('/update_profile', [CommandsUserController::class, 'updateProfile']);
+    Route::put('/update_profile', [CommandsUserController::class, 'putUpdateProfile']);
 });
 
 Route::prefix('/v1/export')->middleware(['auth:sanctum'])->group(function () {

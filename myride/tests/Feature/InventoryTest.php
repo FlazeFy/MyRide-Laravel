@@ -125,8 +125,6 @@ class InventoryTest extends TestCase
 
         $data = json_decode($response->getBody(), true);
 
-        print_r($data);
-
         // Test Parameter
         $this->assertEquals(201, $response->getStatusCode());
         $this->assertArrayHasKey('status', $data);
@@ -136,5 +134,80 @@ class InventoryTest extends TestCase
 
         Audit::auditRecordText("Test - Post Create Inventory", "TC-XXX", "Result : ".json_encode($data));
         Audit::auditRecordSheet("Test - Post Create Inventory", "TC-XXX", 'TC-XXX test_post_create_inventory', json_encode($data));
+    }
+
+    public function test_put_update_inventory_by_id(): void
+    {
+        $token = $this->login_trait("user");
+        $id = "a892e8e3-f89e-8d74-064b-66d6b2dcb8af";
+
+        $body = [
+            'vehicle_id' => 'ac278923-14ab-cb8b-0ca5-6cb6cdff094b', 
+            'inventory_name' => 'Secondary Tire', 
+            'inventory_category' => 'Maintenance', 
+            'inventory_qty' => 2, 
+            'inventory_storage' => 'Trunk'
+        ];
+
+        // Exec
+        $response = $this->httpClient->put("$id", [
+            'headers' => [
+                'Authorization' => "Bearer $token"
+            ],
+            'json' => $body
+        ]);
+
+        $data = json_decode($response->getBody(), true);
+
+        // Test Parameter
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertArrayHasKey('status', $data);
+        $this->assertEquals('success', $data['status']);
+        $this->assertArrayHasKey('message', $data);
+        $this->assertEquals("inventory updated", $data['message']);
+
+        Audit::auditRecordText("Test - Put Update Inventory By ID", "TC-XXX", "Result : ".json_encode($data));
+        Audit::auditRecordSheet("Test - Put Update Inventory By ID", "TC-XXX", 'TC-XXX test_put_update_inventory_by_id', json_encode($data));
+    }
+
+    public function test_get_inventory_by_vehicle_id(): void
+    {
+        $token = $this->login_trait("user");
+        $vehicle_id = "ac278923-14ab-cb8b-0ca5-6cb6cdff094b";
+
+        // Exec
+        $response = $this->httpClient->get("vehicle/$vehicle_id", [
+            'headers' => [
+                'Authorization' => "Bearer $token"
+            ]
+        ]);
+
+        $data = json_decode($response->getBody(), true);
+
+        // Test Parameter
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertArrayHasKey('status', $data);
+        $this->assertEquals('success', $data['status']);
+        $this->assertArrayHasKey('message', $data);
+        $this->assertArrayHasKey('data', $data);
+
+        $check_object = ["id", "inventory_name", "inventory_category", "inventory_qty", "inventory_storage", "created_at"];
+        $check_not_null_str = ["id", "inventory_name", "inventory_category", "inventory_storage", "created_at"];
+        foreach ($data['data'] as $dt) {
+            foreach ($check_object as $col) {
+                $this->assertArrayHasKey($col, $dt);
+            }
+            foreach ($check_not_null_str as $col) {
+                $this->assertNotNull($dt[$col]);
+                $this->assertIsString($dt[$col]);
+            }
+
+            $this->assertNotNull($dt["inventory_qty"]);
+            $this->assertIsInt($dt["inventory_qty"]);
+            $this->assertGreaterThan(0,$dt["inventory_qty"]);
+        }
+
+        Audit::auditRecordText("Test - Get Inventory By Vehicle ID", "TC-XXX", "Result : ".json_encode($data));
+        Audit::auditRecordSheet("Test - Get Inventory By Vehicle ID", "TC-XXX", 'TC-XXX test_get_inventory_by_vehicle_id', json_encode($data));
     }
 }

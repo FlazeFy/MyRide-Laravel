@@ -135,4 +135,32 @@ class UserTest extends TestCase
         Audit::auditRecordText("Test - Get Content Year", "TC-XXX", "Result : ".json_encode($data));
         Audit::auditRecordSheet("Test - Get Content Year", "TC-XXX", 'TC-XXX test_get_content_year', json_encode($data));
     }
+
+    public function test_put_update_profile(): void
+    {
+        // Exec
+        $token = $this->login_trait("user");
+        $body = [
+            "email" => "flazen.edu@gmail.com",
+            "username" => "flazefy"
+        ];
+        $response = $this->httpClient->put("update_profile", [
+            'headers' => [
+                'Authorization' => "Bearer $token"
+            ],
+            'json' => $body
+        ]);
+
+        $data = json_decode($response->getBody(), true);
+
+        // Test Parameter
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertArrayHasKey('status', $data);
+        $this->assertEquals('success', $data['status']);
+        $this->assertArrayHasKey('message', $data);
+        $this->assertEquals('profile updated',$data['message']);
+
+        Audit::auditRecordText("Test - Put Update Profile", "TC-XXX", "Result : ".json_encode($data));
+        Audit::auditRecordSheet("Test - Put Update Profile", "TC-XXX", 'TC-XXX test_put_update_profile', json_encode($data));
+    }
 }

@@ -280,7 +280,7 @@ class Commands extends Controller
      *     ),
      * )
      */
-    public function updateProfile(Request $request)
+    public function putUpdateProfile(Request $request)
     {
         try{
             $user_id = $request->user()->id;

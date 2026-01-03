@@ -36,6 +36,9 @@ class InventoryModel extends Model
     protected $table = 'inventory';
     protected $primaryKey = 'id';
     protected $fillable = ['id', 'gudangku_inventory_id', 'vehicle_id', 'inventory_name', 'inventory_category', 'inventory_qty', 'inventory_storage', 'inventory_image_url', 'created_at', 'created_by', 'updated_at'];
+    protected $casts = [
+        'inventory_qty' => 'integer',
+    ];
 
     public static function getAllInventory($user_id = null, $limit){
         $res = InventoryModel::select('inventory.id','inventory_name', 'inventory_category', 'inventory_qty', 'inventory_storage', 'inventory_image_url', 'inventory.created_at', 'inventory.updated_at', 'vehicle_plate_number','vehicle_type')

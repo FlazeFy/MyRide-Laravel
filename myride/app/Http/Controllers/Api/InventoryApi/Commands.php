@@ -315,7 +315,7 @@ class Commands extends Controller
      *     ),
      * )
      */
-    public function updateInventory(Request $request, $id){
+    public function putUpdateInventoryById(Request $request, $id){
         try{
             $user_id = $request->user()->id;
 
@@ -344,7 +344,7 @@ class Commands extends Controller
                     return response()->json([
                         'status' => 'success',
                         'message' => Generator::getMessageTemplate("update", $this->module),
-                    ], Response::HTTP_CREATED);
+                    ], Response::HTTP_OK);
                 } else {
                     return response()->json([
                         'status' => 'error',
