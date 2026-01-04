@@ -1,21 +1,17 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 // Helpers
 use App\Helpers\Generator;
-
 // Models
 use App\Models\WashModel;
 use App\Models\TripModel;
 use App\Models\VehicleModel;
-
 // Export
 use App\Exports\DataExport;
-
-use Maatwebsite\Excel\Facades\Excel;
 
 class StatsController extends Controller
 {

@@ -13,8 +13,7 @@ class ReminderController extends Controller
         $user_id = Generator::getUserId(session()->get('role_key'));
 
         if($user_id != null){
-            return view('reminder.index')
-                ->with('active_menu','reminder');
+            return view('reminder.index')->with('active_menu','reminder');
         } else {
             return redirect("/login");
         }

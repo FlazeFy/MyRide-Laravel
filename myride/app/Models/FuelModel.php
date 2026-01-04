@@ -1,9 +1,9 @@
 <?php
 
 namespace App\Models;
-
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+
 // Helper
 use App\Helpers\Generator;
 
@@ -48,8 +48,7 @@ class FuelModel extends Model
             $res = $res->where('vehicle_id',$vehicle_id);
         }
 
-        return $res->orderby('fuel.created_at','desc')
-            ->paginate($paginate);
+        return $res->orderby('fuel.created_at','desc')->paginate($paginate);
     } 
 
     public static function getTotalFuelByVehiclePerYear($user_id = null, $vehicle_id = null, $context, $year){

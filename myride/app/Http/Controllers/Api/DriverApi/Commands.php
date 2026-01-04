@@ -312,10 +312,21 @@ class Commands extends Controller
     /**
      * @OA\PUT(
      *     path="/api/v1/driver/{id}",
-     *     summary="Put Update Driver",
+     *     summary="Put Update Driver By ID",
      *     description="This request is used to update a driver by using given `username`, `fullname`, `email`, `phone`, and `notes`. This request interacts with the MySQL database, has a protected routes, and audited activity (history).",
      *     tags={"Driver"},
      *     security={{"bearerAuth":{}}},
+     *     @OA\RequestBody(
+     *          required=true,
+     *          @OA\JsonContent(
+     *              required={"username","fullname","email","phone"},
+     *              @OA\Property(property="username", type="string", example="tester_01"),
+     *              @OA\Property(property="fullname", type="string", example="Tester User"),
+     *              @OA\Property(property="email", type="string", example="tester@mail.com"),
+     *              @OA\Property(property="phone", type="string", example="08123456789"),
+     *              @OA\Property(property="notes", type="string", example="Lorem ipsum")
+     *          )
+     *     ),
      *     @OA\Response(
      *         response=200,
      *         description="driver updated",

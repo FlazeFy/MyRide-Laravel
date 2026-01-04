@@ -1,9 +1,11 @@
 <?php
 
 namespace App\Models;
-
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+
+// Helper
+use App\Helpers\Generator;
 
 /**
  * @OA\Schema(
@@ -28,4 +30,11 @@ class FailedJob extends Model
     protected $table = 'failed_jobs';
     protected $primaryKey = 'id';
     protected $fillable = ['id', 'type', 'status', 'payload', 'created_at'];
+
+    public static function createFailedJob($data){
+        $data['id'] = Generator::getUUID();
+        $data['created_at'] = date('Y-m-d H:i:s');
+        
+        return FailedJob::create($data);
+    }
 }

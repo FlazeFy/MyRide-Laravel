@@ -160,6 +160,14 @@ class Commands extends Controller
      *     summary="Post Register Token",
      *     description="This authentication request is used to get token validation after register. This request interacts with the MySQL database and using mailer.",
      *     tags={"Auth"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"username", "email"},
+     *             @OA\Property(property="username", type="string", example="flazefy"),
+     *             @OA\Property(property="email", type="string", example="flazen.work@gmail.com")
+     *         )
+     *     ),
      *     @OA\Response(
      *         response=200,
      *         description="the validation token has been sended to {email} email account",
@@ -249,6 +257,16 @@ class Commands extends Controller
      *     summary="Post Register Account",
      *     description="This authentication request is used to get token validation after register. This request interacts with the MySQL database and using mailer.",
      *     tags={"Auth"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"username", "email", "password", "telegram_user_id"},
+     *             @OA\Property(property="username", type="string", example="flazefy"),
+     *             @OA\Property(property="email", type="string", example="flazen.work@gmail.com"),
+     *             @OA\Property(property="password", type="string", example="nopass123"),
+     *             @OA\Property(property="telegram_user_id", type="string", example="123456789")
+     *         )
+     *     ),
      *     @OA\Response(
      *         response=200,
      *         description="account is registered",
@@ -383,6 +401,14 @@ class Commands extends Controller
      *     summary="Post Regenerate Registration Token",
      *     description="This authentication request is used to regenerate a token after user has failed to validate their previous token. This request interacts with the MySQL database and using mailer.",
      *     tags={"Auth"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"username", "email"},
+     *             @OA\Property(property="username", type="string", example="flazefy"),
+     *             @OA\Property(property="email", type="string", example="flazen.work@gmail.com")
+     *         )
+     *     ),
      *     @OA\Response(
      *         response=200,
      *         description="the validation token has been sended to {email} email account",

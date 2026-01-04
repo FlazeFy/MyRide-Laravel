@@ -4,13 +4,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Sanctum\HasApiTokens;
+
 // Helper
 use App\Helpers\Generator;
 
 class DriverVehicleRelationModel extends Authenticatable
 {
     use HasFactory;
-    //use HasUuids;
     use HasApiTokens;
     public $incrementing = false;
     public $timestamps = false;
@@ -23,8 +23,7 @@ class DriverVehicleRelationModel extends Authenticatable
         $res = DriverVehicleRelationModel::where('driver_vehicle_relation.id',$id);
 
         if($user_id){
-            $res = $res->join('driver','driver.id','=','driver_vehicle_relation.driver_id')
-                ->where('driver.created_by',$user_id);
+            $res = $res->join('driver','driver.id','=','driver_vehicle_relation.driver_id')->where('driver.created_by',$user_id);
         }
             
         return $res->delete();

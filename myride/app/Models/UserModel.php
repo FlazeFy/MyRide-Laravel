@@ -35,7 +35,6 @@ use App\Helpers\Generator;
 class UserModel extends Authenticatable
 {
     use HasFactory;
-    //use HasUuids;
     use HasApiTokens;
     public $incrementing = false;
 

@@ -13,8 +13,7 @@ class WashController extends Controller
         $user_id = Generator::getUserId(session()->get('role_key'));
 
         if($user_id != null){
-            return view('wash.index')
-                ->with('active_menu','wash');
+            return view('wash.index')->with('active_menu','wash');
         } else {
             return redirect("/login");
         }

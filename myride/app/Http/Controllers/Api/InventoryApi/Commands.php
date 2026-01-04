@@ -31,7 +31,7 @@ class Commands extends Controller
     /**
      * @OA\DELETE(
      *     path="/api/v1/inventory/destroy/{id}",
-     *     summary="Delete Inventory By ID",
+     *     summary="Hard Delete Inventory By ID",
      *     description="This request is used to permanently delete an inventory based on the provided `ID`. This request interacts with the MySQL database, firebase storage (for remove uploaded `inventory_image_url`), has a protected routes, and audited activity (history).",
      *     tags={"Inventory"},
      *     security={{"bearerAuth":{}}},

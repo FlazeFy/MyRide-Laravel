@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+
+// Controller
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\GarageController;
 use App\Http\Controllers\GarageEditController;
@@ -54,16 +56,12 @@ Route::prefix('/dashboard')->middleware(['auth_v2:sanctum'])->group(function () 
 Route::prefix('/garage')->middleware(['auth_v2:sanctum'])->group(function () {
     Route::get('/', [GarageController::class, 'index'])->name('garage');
     Route::get('/add', [GarageAddController::class, 'index'])->name('add_vehicle');
-
     Route::get('/edit/{id}', [GarageEditController::class, 'index'])->name('edit_garage');
-    Route::post('/edit_doc/{id}', [GarageEditController::class, 'edit_vehicle_doc']);
-
     Route::get('/detail/{id}', [GarageDetailController::class, 'index'])->name('detail_garage');
 });
 
 Route::prefix('/wash')->middleware(['auth_v2:sanctum'])->group(function () {
     Route::get('/', [WashController::class, 'index'])->name('wash');
-
     Route::get('/add', [AddWashController::class, 'index'])->name('add_wash');
 });
 
@@ -80,7 +78,6 @@ Route::prefix('/reminder')->middleware(['auth_v2:sanctum'])->group(function () {
 
 Route::prefix('/inventory')->middleware(['auth_v2:sanctum'])->group(function () {
     Route::get('/', [InventoryController::class, 'index'])->name('inventory');
-
     Route::get('/add', [AddInventoryController::class, 'index'])->name('add_inventory');
 });
 
@@ -90,7 +87,6 @@ Route::prefix('/history')->middleware(['auth_v2:sanctum'])->group(function () {
 
 Route::prefix('/driver')->middleware(['auth_v2:sanctum'])->group(function () {
     Route::get('/', [DriverController::class, 'index'])->name('driver');
-
     Route::get('/add', [AddDriverController::class, 'index'])->name('add_driver');
 });
 
@@ -106,7 +102,6 @@ Route::prefix('/fuel')->middleware(['auth_v2:sanctum'])->group(function () {
 
 Route::prefix('/stats')->middleware(['auth_v2:sanctum'])->group(function () {
     Route::get('/', [StatsController::class, 'index'])->name('stats');
-
     Route::post('/convert/csv', [StatsController::class, 'convert_csv']);
     Route::post('/toogle_month_year', [StatsController::class, 'toogle_month_year']);
 });

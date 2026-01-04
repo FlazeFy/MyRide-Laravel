@@ -3,13 +3,13 @@
 namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+
 // Helper
 use App\Helpers\Generator;
 
 class ServiceModel extends Model
 {
     use HasFactory;
-    //use HasUuids;
     public $incrementing = false;
 
     protected $table = 'service';

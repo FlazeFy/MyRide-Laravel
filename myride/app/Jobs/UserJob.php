@@ -11,8 +11,6 @@ use Illuminate\Support\Facades\Mail;
 
 // Mail
 use App\Mail\UserMail;
-// Helper
-use App\Helpers\Generator;
 // Model
 use App\Models\FailedJob;
 
@@ -25,11 +23,6 @@ class UserJob implements ShouldQueue
     protected $username;
     protected $receiver;
 
-    /**
-     * Create a new job instance.
-     *
-     * @return void
-     */
     public function __construct($context, $body, $username, $receiver)
     {
         $this->context = $context;
@@ -38,11 +31,6 @@ class UserJob implements ShouldQueue
         $this->receiver = $receiver;
     }
 
-    /**
-     * Execute the job.
-     *
-     * @return void
-     */
     public function handle()
     {
         try{
@@ -55,12 +43,10 @@ class UserJob implements ShouldQueue
                 'file' => $e->getFile(), 
                 'line' => $e->getLine(), 
             ];
-            FailedJob::create([
-                'id' => Generator::getUUID(), 
+            FailedJob::createFailedJob([ 
                 'type' => "token", 
                 'status' => "failed",  
-                'payload' => json_encode($obj),
-                'created_at' => date("Y-m-d H:i:s"), 
+                'payload' => json_encode($obj)
             ]);
         }
     }

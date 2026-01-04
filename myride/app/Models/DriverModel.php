@@ -4,13 +4,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Sanctum\HasApiTokens;
+
 // Helper
 use App\Helpers\Generator;
 
 class DriverModel extends Authenticatable
 {
     use HasFactory;
-    //use HasUuids;
     use HasApiTokens;
     public $incrementing = false;
 

@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
+// Controller
 use App\Http\Controllers\Api\AuthApi\Commands as CommandAuthApi;
 use App\Http\Controllers\Api\VehicleApi\Queries as QueriesVehicleApi;
 use App\Http\Controllers\Api\VehicleApi\Commands as CommandsVehicleApi;

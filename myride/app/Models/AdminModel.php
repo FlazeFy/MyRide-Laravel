@@ -46,44 +46,35 @@ class AdminModel extends Authenticatable
     protected $fillable = ['id', 'username', 'password', 'email', 'telegram_user_id', 'telegram_is_valid', 'created_at', 'updated_at'];
 
     public static function  getAllContact(){
-        $res = AdminModel::select('id','username','email','telegram_user_id','telegram_is_valid')
-            ->get();
+        $res = AdminModel::select('id','username','email','telegram_user_id','telegram_is_valid')->get();
 
         return count($res) > 0 ? $res : null;
     }
 
     public static function getAppsSummaryForLastNDays($days){
         $res_inventory = InventoryModel::selectRaw('count(1) as total')
-            ->whereDate('created_at', '>=', Carbon::now()->subDays($days))
-            ->first();
+            ->whereDate('created_at', '>=', Carbon::now()->subDays($days))->first();
 
         $res_user = UserModel::selectRaw('count(1) as total')
-            ->whereDate('created_at', '>=', Carbon::now()->subDays($days))
-            ->first();
+            ->whereDate('created_at', '>=', Carbon::now()->subDays($days))->first();
 
         $res_vehicle = VehicleModel::selectRaw('count(1) as total')
-            ->whereDate('created_at', '>=', Carbon::now()->subDays($days))
-            ->first();
+            ->whereDate('created_at', '>=', Carbon::now()->subDays($days))->first();
 
         $res_trip = TripModel::selectRaw('count(1) as total')
-            ->whereDate('created_at', '>=', Carbon::now()->subDays($days))
-            ->first();
+            ->whereDate('created_at', '>=', Carbon::now()->subDays($days))->first();
 
         $res_fuel = FuelModel::selectRaw('count(1) as total')
-            ->whereDate('created_at', '>=', Carbon::now()->subDays($days))
-            ->first();
+            ->whereDate('created_at', '>=', Carbon::now()->subDays($days))->first();
         
         $res_service = ServiceModel::selectRaw('count(1) as total')
-            ->whereDate('created_at', '>=', Carbon::now()->subDays($days))
-            ->first();
+            ->whereDate('created_at', '>=', Carbon::now()->subDays($days))->first();
         
         $res_wash = WashModel::selectRaw('count(1) as total')
-            ->whereDate('created_at', '>=', Carbon::now()->subDays($days))
-            ->first();
+            ->whereDate('created_at', '>=', Carbon::now()->subDays($days))->first();
 
         $res_error = ErrorModel::selectRaw('count(1) as total')
-            ->whereDate('created_at', '>=', Carbon::now()->subDays($days))
-            ->first();
+            ->whereDate('created_at', '>=', Carbon::now()->subDays($days))->first();
 
         $final_res = (object)[
             'vehicle_created' => $res_vehicle->total,

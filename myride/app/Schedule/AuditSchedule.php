@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Schedule;
-
 use Carbon\Carbon;
 use DateTime;
 use Kreait\Firebase\Messaging\CloudMessage;
@@ -22,7 +21,6 @@ use Illuminate\Support\Str;
 // Helper
 use App\Helpers\Generator;
 use App\Helpers\TelegramMessage;
-
 // Model
 use App\Models\ErrorModel;
 use App\Models\AdminModel;

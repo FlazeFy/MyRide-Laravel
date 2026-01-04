@@ -172,6 +172,30 @@
                 "summary": "Post Register Token",
                 "description": "This authentication request is used to get token validation after register. This request interacts with the MySQL database and using mailer.",
                 "operationId": "92a091431ace008d65f1c2d53cd590c3",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "username",
+                                    "email"
+                                ],
+                                "properties": {
+                                    "username": {
+                                        "type": "string",
+                                        "example": "flazefy"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "example": "flazen.work@gmail.com"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "200": {
                         "description": "the validation token has been sended to {email} email account",
@@ -244,6 +268,40 @@
                 "summary": "Post Register Account",
                 "description": "This authentication request is used to get token validation after register. This request interacts with the MySQL database and using mailer.",
                 "operationId": "3ae1ac790e1d34518fd37d4fafb3e56e",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "username",
+                                    "email",
+                                    "password",
+                                    "telegram_user_id"
+                                ],
+                                "properties": {
+                                    "username": {
+                                        "type": "string",
+                                        "example": "flazefy"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "example": "flazen.work@gmail.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "nopass123"
+                                    },
+                                    "telegram_user_id": {
+                                        "type": "string",
+                                        "example": "123456789"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "200": {
                         "description": "account is registered",
@@ -364,6 +422,30 @@
                 "summary": "Post Regenerate Registration Token",
                 "description": "This authentication request is used to regenerate a token after user has failed to validate their previous token. This request interacts with the MySQL database and using mailer.",
                 "operationId": "4a13a14dbf02f10af1ee233002116e66",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "username",
+                                    "email"
+                                ],
+                                "properties": {
+                                    "username": {
+                                        "type": "string",
+                                        "example": "flazefy"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "example": "flazen.work@gmail.com"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "200": {
                         "description": "the validation token has been sended to {email} email account",
@@ -1425,9 +1507,47 @@
                 "tags": [
                     "Driver"
                 ],
-                "summary": "Put Update Driver",
+                "summary": "Put Update Driver By ID",
                 "description": "This request is used to update a driver by using given `username`, `fullname`, `email`, `phone`, and `notes`. This request interacts with the MySQL database, has a protected routes, and audited activity (history).",
                 "operationId": "6892ba5809f603ad7e96a9750a39b55f",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "username",
+                                    "fullname",
+                                    "email",
+                                    "phone"
+                                ],
+                                "properties": {
+                                    "username": {
+                                        "type": "string",
+                                        "example": "tester_01"
+                                    },
+                                    "fullname": {
+                                        "type": "string",
+                                        "example": "Tester User"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "example": "tester@mail.com"
+                                    },
+                                    "phone": {
+                                        "type": "string",
+                                        "example": "08123456789"
+                                    },
+                                    "notes": {
+                                        "type": "string",
+                                        "example": "Lorem ipsum"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "200": {
                         "description": "driver updated",
@@ -3725,7 +3845,7 @@
                 "tags": [
                     "Inventory"
                 ],
-                "summary": "Delete Inventory By ID",
+                "summary": "Hard Delete Inventory By ID",
                 "description": "This request is used to permanently delete an inventory based on the provided `ID`. This request interacts with the MySQL database, firebase storage (for remove uploaded `inventory_image_url`), has a protected routes, and audited activity (history).",
                 "operationId": "344d7c237f1e008bee49ac4e624c2e10",
                 "parameters": [
@@ -3987,7 +4107,7 @@
                 ],
                 "summary": "Post Create Inventory",
                 "description": "This request is used to create an inventory by using given `vehicle_id`, `inventory_name`, `inventory_category`, `inventory_storage`, `inventory_qty`, and `inventory_image_url`. This request interacts with the MySQL database, firebase storage, has a protected routes, and audited activity (history).",
-                "operationId": "4674b1921101b03eb103dc6acea8108b",
+                "operationId": "f79608a67c92ef274c9e582016e8fa68",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -4127,7 +4247,7 @@
                 ],
                 "summary": "Put Update Inventory By ID",
                 "description": "This request is used to update an inventory by using given `ID`. The updated field are `vehicle_id`, `inventory_name`, `inventory_category`, `inventory_storage`, and `inventory_qty`. This request interacts with the MySQL database, has a protected routes, and audited activity (history).",
-                "operationId": "9954cea5a79b0b22c6d7d14e5871b773",
+                "operationId": "b244889cdca5a751abb63f5022e077dc",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -8890,7 +9010,7 @@
                 ],
                 "summary": "Put Update Telegram ID",
                 "description": "This request is used to update user's `telegram_user_id` using given `ID`. This request interacts with the MySQL database, has a protected routes, broadcast message with Telegram, and audited activity (history).",
-                "operationId": "c70d54943ca3414fe4365878ff52e309",
+                "operationId": "0e0a4b71e6e0a4702d9ee7ce6f337abd",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -9006,7 +9126,7 @@
                 ],
                 "summary": "Put Validate Telegram ID Change",
                 "description": "This request is used to validate user's `telegram_user_id` changing request by using given `ID`. This request interacts with the MySQL database, has a protected routes, broadcast message with Telegram, and audited activity (history).",
-                "operationId": "877b4295ac0cfe56576db89f4d4b4762",
+                "operationId": "55a918238fc000e5e0546c25d0b24835",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -9097,7 +9217,7 @@
                 ],
                 "summary": "Put Update Profile",
                 "description": "This request is used to update user profile. The updated field are `email`, `username`, and `telegram_user_id`. This request interacts with the MySQL database, has a protected routes, broadcast message with Telegram, and audited activity (history).",
-                "operationId": "d5ace13a02be6746143b151df9c9cde0",
+                "operationId": "d858646501b81840456aad3cf5a4add1",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -10801,7 +10921,7 @@
                 "tags": [
                     "Vehicle"
                 ],
-                "summary": "Recover Vehicle By ID",
+                "summary": "Put Recover Vehicle By ID",
                 "description": "This request is used to recover deleted vehicle based on the provided `ID`. This request interacts with the MySQL database, has a protected routes, and audited activity (history).",
                 "operationId": "38e3c6f69d9dbf8489659f13856315cd",
                 "parameters": [

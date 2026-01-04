@@ -1238,7 +1238,7 @@ class Commands extends Controller
     /**
      * @OA\PUT(
      *     path="/api/v1/vehicle/recover/{id}",
-     *     summary="Recover Vehicle By ID",
+     *     summary="Put Recover Vehicle By ID",
      *     description="This request is used to recover deleted vehicle based on the provided `ID`. This request interacts with the MySQL database, has a protected routes, and audited activity (history).",
      *     tags={"Vehicle"},
      *     security={{"bearerAuth":{}}},

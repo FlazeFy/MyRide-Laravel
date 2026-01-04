@@ -1,10 +1,13 @@
 <?php
+
 namespace App\Helpers;
-use App\Helpers\Generator;
 use Kreait\Firebase\Factory;
 use Illuminate\Support\Facades\Storage;
 use Kreait\Firebase\ServiceAccount;
 use DateTime;
+
+// Helper
+use App\Helpers\Generator;
 
 class Firebase
 {

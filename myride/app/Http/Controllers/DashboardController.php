@@ -1,19 +1,14 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 // Helpers
 use App\Helpers\Generator;
 
-use Illuminate\Support\Facades\Session;
-
 class DashboardController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         $user_id = Generator::getUserId(session()->get('role_key'));
@@ -23,8 +18,7 @@ class DashboardController extends Controller
                 session()->put('toogle_select_year', date('Y'));
             }
             
-            return view('dashboard.index')
-                ->with('active_menu','dashboard');
+            return view('dashboard.index')->with('active_menu','dashboard');
         } else {
             return redirect("/login");
         }

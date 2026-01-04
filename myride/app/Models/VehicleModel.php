@@ -8,7 +8,6 @@ use Carbon\Carbon;
 
 // Helper
 use App\Helpers\Generator;
-use App\Helpers\Query;
 
 class VehicleModel extends Model
 {
@@ -19,7 +18,6 @@ class VehicleModel extends Model
     protected $table = 'vehicle';
     protected $primaryKey = 'id';
     protected $fillable = ['id', 'vehicle_name', 'vehicle_merk', 'vehicle_type', 'vehicle_price', 'vehicle_desc', 'vehicle_distance', 'vehicle_category', 'vehicle_status', 'vehicle_year_made', 'vehicle_plate_number', 'vehicle_fuel_status', 'vehicle_fuel_capacity', 'vehicle_default_fuel', 'vehicle_color', 'vehicle_transmission', 'vehicle_img_url', 'vehicle_other_img_url', 'vehicle_capacity', 'vehicle_document', 'created_by', 'created_at', 'updated_at', 'deleted_at'];
-
     protected $casts = [
         'vehicle_document' => 'array',
         'vehicle_other_img_url' => 'array'
@@ -74,11 +72,15 @@ class VehicleModel extends Model
     }
 
     public static function getAllVehicleHeader($user_id = null,$limit){
-        $query_header_vehicle = Query::get_select_template('vehicle_header');
-        $res = VehicleModel::selectRaw($query_header_vehicle);
+        $res = VehicleModel::selectRaw("
+            id, vehicle_name, vehicle_desc, vehicle_merk, vehicle_type, vehicle_distance, vehicle_category, vehicle_status, vehicle_plate_number, 
+            vehicle_fuel_status, vehicle_default_fuel, vehicle_color, vehicle_capacity, vehicle_img_url, vehicle_transmission, updated_at
+        ");
+
         if($user_id){
             $res = $res->where('created_by',$user_id);
         }
+
         $res = $res->orderBy('updated_at','desc')
             ->orderBy('created_at','desc')
             ->paginate($limit);
@@ -120,9 +122,11 @@ class VehicleModel extends Model
 
     public static function getVehicleDetailById($user_id = null,$id){
         $res = VehicleModel::where('id',$id);
+
         if($user_id){
             $res = $res->where('created_by',$user_id);
         }
+
         $res = $res->first();
 
         unset($res->created_by);
@@ -141,9 +145,11 @@ class VehicleModel extends Model
 
     public static function getContextTotalStats($context,$user_id = null){
         $res = VehicleModel::selectRaw("$context as context, COUNT(1) as total");
+
         if($user_id){
             $res = $res->where('created_by', $user_id);
         }
+
         $res = $res->groupby($context)
             ->orderby('total','desc')
             ->limit(7)
@@ -154,6 +160,7 @@ class VehicleModel extends Model
 
     public static function hardDeleteVehicleById($user_id = null,$id){
         $res = VehicleModel::whereNotNull("deleted_at")->where('id',$id);
+
         if($user_id){
             $res = $res->where('created_by',$user_id);
         }
