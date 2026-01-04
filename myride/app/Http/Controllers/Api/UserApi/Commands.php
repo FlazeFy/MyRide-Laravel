@@ -18,7 +18,6 @@ use App\Models\HistoryModel;
 use App\Models\UserModel;
 use App\Models\AdminModel;
 use App\Models\ValidateRequestModel;
-
 // Mailer
 use App\Jobs\UserMailer;
 

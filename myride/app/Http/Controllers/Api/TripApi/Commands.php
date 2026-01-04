@@ -4,9 +4,8 @@ namespace App\Http\Controllers\Api\TripApi;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
-
-// Telegram
 use Telegram\Bot\Laravel\Facades\Telegram;
+
 // Model
 use App\Models\VehicleModel;
 use App\Models\TripModel;

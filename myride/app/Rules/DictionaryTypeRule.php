@@ -1,24 +1,13 @@
 <?php
 
 namespace App\Rules;
-
 use Illuminate\Contracts\Validation\Rule;
 
-class ReminderContextRules implements Rule
+class DictionaryTypeRule implements Rule
 {
-    /**
-     * Create a new rule instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        //
-    }
-
     public function passes($attribute, $value)
     {
-        $type = ['Service','Trip','Warm Up','Pick Up','Drop Off'];
+        $type = ['trip_category','vehicle_type','vehicle_category','vehicle_status','vehicle_default_fuel','vehicle_fuel_status','vehicle_transmission'];
 
         foreach ($type as $format) {
             if ($format === $value) {
@@ -31,6 +20,6 @@ class ReminderContextRules implements Rule
 
     public function message()
     {
-        return 'Reminder Context Type is not available';
+        return 'Dictionary Type is not available';
     }
 }

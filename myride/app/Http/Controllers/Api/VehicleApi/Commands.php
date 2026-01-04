@@ -4,8 +4,6 @@ namespace App\Http\Controllers\Api\VehicleApi;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
-
-// Telegram
 use Telegram\Bot\Laravel\Facades\Telegram;
 
 // Model

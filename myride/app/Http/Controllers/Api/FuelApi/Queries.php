@@ -8,7 +8,6 @@ use App\Http\Controllers\Controller;
 // Model
 use App\Models\FuelModel;
 use App\Models\AdminModel;
-
 // Helper
 use App\Helpers\Generator;
 
