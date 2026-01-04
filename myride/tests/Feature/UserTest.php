@@ -163,4 +163,62 @@ class UserTest extends TestCase
         Audit::auditRecordText("Test - Put Update Profile", "TC-XXX", "Result : ".json_encode($data));
         Audit::auditRecordSheet("Test - Put Update Profile", "TC-XXX", 'TC-XXX test_put_update_profile', json_encode($data));
     }
+
+    public function test_put_update_telegram_id(): void
+    {
+        $token = $this->login_trait("user");
+
+        $body = [
+            "telegram_user_id" => "1317625977"
+        ];
+
+        // Exec
+        $response = $this->httpClient->put("update_telegram_id", [
+            'headers' => [
+                'Authorization' => "Bearer $token"
+            ],
+            'json' => $body
+        ]);
+
+        $data = json_decode($response->getBody(), true);
+
+        // Test Parameter
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertArrayHasKey('status', $data);
+        $this->assertEquals('success', $data['status']);
+        $this->assertArrayHasKey('message', $data);
+        $this->assertEquals('telegram id updated! and validation has been sended to you',$data['message']);
+
+        Audit::auditRecordText("Test - Put Update Telegram ID", "TC-XXX", "Result : ".json_encode($data));
+        Audit::auditRecordSheet("Test - Put Update Telegram ID", "TC-XXX", 'TC-XXX test_put_update_telegram_id', json_encode($data));
+    }
+
+    public function test_put_validate_telegram_id(): void
+    {
+        $token = $this->login_trait("user");
+
+        $body = [
+            "request_context" => "R8WEO4"
+        ];
+
+        // Exec
+        $response = $this->httpClient->put("validate_telegram_id", [
+            'headers' => [
+                'Authorization' => "Bearer $token"
+            ],
+            'json' => $body
+        ]);
+
+        $data = json_decode($response->getBody(), true);
+
+        // Test Parameter
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertArrayHasKey('status', $data);
+        $this->assertEquals('success', $data['status']);
+        $this->assertArrayHasKey('message', $data);
+        $this->assertEquals('telegram ID has been validated',$data['message']);
+
+        Audit::auditRecordText("Test - Put Validate Telegram ID", "TC-XXX", "Result : ".json_encode($data));
+        Audit::auditRecordSheet("Test - Put Validate Telegram ID", "TC-XXX", 'TC-XXX test_put_validate_telegram_id', json_encode($data));
+    }
 }

@@ -72,7 +72,7 @@ class Commands extends Controller
      *     ),
      * )
      */
-    public function updateTelegramId(Request $request)
+    public function putUpdateTelegramId(Request $request)
     {
         try{
             $user_id = $request->user()->id;
@@ -177,15 +177,12 @@ class Commands extends Controller
      *     ),
      * )
      */
-    public function validateTelegramId(Request $request){
+    public function putValidateTelegramId(Request $request){
         try{
             $user_id = $request->user()->id;
 
             // Check if token is valid
-            $res = ValidateRequestModel::where('request_type','telegram_id_validation')
-                ->where('created_by',$user_id)
-                ->where('request_context',$request->request_context)
-                ->delete();
+            $res = ValidateRequestModel::deleteValidateRequestByRequestContext($request->request_context, $user_id);
             if($res > 0){
                 // Get user by ID
                 $user = UserModel::getSocial($user_id);
@@ -208,12 +205,12 @@ class Commands extends Controller
                     // Return success response
                     return response()->json([
                         'status' => 'success',
-                        'message' => Generator::getMessageTemplate("custom", 'Telegram ID has been validated'),
+                        'message' => Generator::getMessageTemplate("custom", 'telegram ID has been validated'),
                     ], Response::HTTP_OK);
                 } else {
                     return response()->json([
                         'status' => 'failed',
-                        'message' => Generator::getMessageTemplate("custom", 'Telegram ID is invalid'),
+                        'message' => Generator::getMessageTemplate("custom", 'telegram ID is invalid'),
                     ], Response::HTTP_NOT_FOUND);
                 }
             } else {

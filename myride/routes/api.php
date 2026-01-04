@@ -183,8 +183,8 @@ Route::prefix('/v1/user')->middleware(['auth:sanctum'])->group(function () {
     Route::get('/', [QueriesUserController::class, 'getAllUser']);
     Route::get('/my_year', [QueriesUserController::class, 'getContentYear']);
     Route::get('/my_profile', [QueriesUserController::class, 'getMyProfile']);
-    Route::put('/update_telegram_id', [CommandsUserController::class, 'updateTelegramId']);
-    Route::put('/validate_telegram_id', [CommandsUserController::class, 'validateTelegramId']);
+    Route::put('/update_telegram_id', [CommandsUserController::class, 'putUpdateTelegramId']);
+    Route::put('/validate_telegram_id', [CommandsUserController::class, 'putValidateTelegramId']);
     Route::put('/update_profile', [CommandsUserController::class, 'putUpdateProfile']);
 });
 

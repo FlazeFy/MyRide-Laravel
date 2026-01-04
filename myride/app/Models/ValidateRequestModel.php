@@ -61,15 +61,18 @@ class ValidateRequestModel extends Model
     }
 
     public static function createValidateRequest($data, $user_id){
-        $res = ValidateRequestModel::create([
-            'id' => Generator::getUUID(), 
-            'request_type' => $data->request_type, 
-            'request_context' => $data->request_context, 
-            'created_at' => date('Y-m-d H:i:s'), 
-            'created_by' => $user_id
-        ]);
+        $data['id'] = Generator::getUUID();
+        $data['created_at'] = date('Y-m-d H:i:s');
+        $data['created_by'] = $user_id;
 
-        return $res;
+        return ValidateRequestModel::create($data);
+    }
+
+    public static function deleteValidateRequestByRequestContext($request_context, $user_id){
+        return ValidateRequestModel::where('request_type','telegram_id_validation')
+            ->where('created_by',$user_id)
+            ->where('request_context',$request_context)
+            ->delete();
     }
 
     public static function isUserRequestDuplicate($ctx,$user){
