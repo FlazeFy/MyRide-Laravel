@@ -7,6 +7,40 @@ use Illuminate\Database\Eloquent\Model;
 // Helper
 use App\Helpers\Generator;
 
+/**
+ * @OA\Schema(
+ *     schema="Wash",
+ *     type="object",
+ *     required={
+ *         "id", "vehicle_id", "wash_by", "is_wash_body", "is_wash_window", "is_wash_dashboard", "is_wash_tires", "is_wash_trash", 
+ *         "is_wash_engine", "is_wash_seat", "is_wash_carpet", "is_wash_pillows", "is_fill_window_washing_water", "is_wash_hollow", "created_at", "created_by"
+ *     },
+ *
+ *     @OA\Property(property="id", type="string", format="uuid", description="Primary key for the wash record"),
+ *     @OA\Property(property="vehicle_id", type="string", format="uuid", description="ID of the washed vehicle"),
+ *     @OA\Property(property="wash_desc", type="string", maxLength=500, nullable=true, description="Additional description or notes for the wash"),
+ *     @OA\Property(property="wash_by", type="string", maxLength=75, description="Person or service that performed the wash"),
+ *     @OA\Property(property="is_wash_body", type="boolean", description="Indicates whether the vehicle body was washed"),
+ *     @OA\Property(property="is_wash_window", type="boolean", description="Indicates whether the vehicle windows were washed"),
+ *     @OA\Property(property="is_wash_dashboard", type="boolean", description="Indicates whether the dashboard was cleaned"),
+ *     @OA\Property(property="is_wash_tires", type="boolean", description="Indicates whether the tires were cleaned"),
+ *     @OA\Property(property="is_wash_trash", type="boolean", description="Indicates whether trash inside the vehicle was removed"),
+ *     @OA\Property(property="is_wash_engine", type="boolean", description="Indicates whether the engine area was cleaned"),
+ *     @OA\Property(property="is_wash_seat", type="boolean", description="Indicates whether the seats were cleaned"),
+ *     @OA\Property(property="is_wash_carpet", type="boolean", description="Indicates whether the carpet was cleaned"),
+ *     @OA\Property(property="is_wash_pillows", type="boolean", description="Indicates whether pillows or cushions were cleaned"),
+ *     @OA\Property(property="wash_address", type="string", maxLength=255, nullable=true, description="Address where the wash was performed"),
+ *     @OA\Property(property="wash_start_time", type="string", format="date-time", nullable=true, description="Start time of the washing process"),
+ *     @OA\Property(property="wash_end_time", type="string", format="date-time", nullable=true, description="End time of the washing process"),
+ *     @OA\Property(property="is_fill_window_washing_water", type="boolean", description="Indicates whether window washing water was refilled"),
+ *     @OA\Property(property="is_wash_hollow", type="boolean", description="Indicates whether vehicle hollows or gaps were cleaned"),
+ *     @OA\Property(property="wash_price", type="integer", nullable=true, description="Total cost of the washing service"),
+ *     @OA\Property(property="created_at", type="string", format="date-time", description="Timestamp when the wash record was created"),
+ *     @OA\Property(property="created_by", type="string", format="uuid", description="ID of the user who created the wash record"),
+ *     @OA\Property(property="updated_at", type="string", format="date-time", nullable=true, description="Timestamp when the wash record was last updated")
+ * )
+ */
+
 class WashModel extends Model
 {
     use HasFactory;

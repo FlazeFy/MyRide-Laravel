@@ -8,6 +8,29 @@ use Illuminate\Database\Eloquent\Model;
 use App\Helpers\Converter;
 use App\Helpers\Generator;
 
+/**
+ * @OA\Schema(
+ *     schema="Trip",
+ *     type="object",
+ *     required={"id", "vehicle_id", "trip_desc", "trip_category", "trip_origin_name", "trip_destination_name", "created_at", "created_by"},
+ *
+ *     @OA\Property(property="id", type="string", format="uuid", description="Primary key for the trip"),
+ *     @OA\Property(property="vehicle_id", type="string", format="uuid", description="ID of the vehicle used for the trip"),
+ *     @OA\Property(property="driver_id", type="string", format="uuid", nullable=true, description="ID of the driver assigned to the trip"),
+ *     @OA\Property(property="trip_desc", type="string", maxLength=500, description="Description or purpose of the trip"),
+ *     @OA\Property(property="trip_category", type="string", maxLength=36, description="Category of the trip, referenced from dictionary"),
+ *     @OA\Property(property="trip_person", type="string", maxLength=255, nullable=true, description="Person or passenger related to the trip"),
+ *     @OA\Property(property="trip_origin_name", type="string", maxLength=75, description="Name of the trip origin location"),
+ *     @OA\Property(property="trip_origin_coordinate", type="string", maxLength=144, nullable=true, description="Coordinate of the trip origin location"),
+ *     @OA\Property(property="trip_destination_name", type="string", maxLength=75, description="Name of the trip destination location"),
+ *     @OA\Property(property="trip_destination_coordinate", type="string", maxLength=144, nullable=true, description="Coordinate of the trip destination location"),
+ *     @OA\Property(property="created_at", type="string", format="date-time", description="Timestamp when the trip was created"),
+ *     @OA\Property(property="created_by", type="string", format="uuid", description="ID of the user who created the trip"),
+ *     @OA\Property(property="updated_at", type="string", format="date-time", nullable=true, description="Timestamp when the trip was last updated"),
+ *     @OA\Property(property="deleted_at", type="string", format="date-time", nullable=true, description="Timestamp when the trip was soft deleted")
+ * )
+ */
+
 class TripModel extends Model
 {
     use HasFactory;

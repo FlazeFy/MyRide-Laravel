@@ -9,6 +9,43 @@ use Carbon\Carbon;
 // Helper
 use App\Helpers\Generator;
 
+/**
+ * @OA\Schema(
+ *     schema="Vehicle",
+ *     type="object",
+ *     required={
+ *         "id", "vehicle_name", "vehicle_merk", "vehicle_type", "vehicle_price", "vehicle_distance", "vehicle_category", "vehicle_status", "vehicle_year_made",
+ *         "vehicle_plate_number", "vehicle_fuel_status", "vehicle_fuel_capacity", "vehicle_default_fuel", "vehicle_color", "vehicle_transmission",
+ *         "vehicle_capacity", "created_at", "created_by"
+ *     },
+ *
+ *     @OA\Property(property="id", type="string", format="uuid", description="Primary key for the vehicle"),
+ *     @OA\Property(property="vehicle_name", type="string", maxLength=75, description="Name of the vehicle"),
+ *     @OA\Property(property="vehicle_merk", type="string", maxLength=36, description="Brand or manufacturer of the vehicle"),
+ *     @OA\Property(property="vehicle_type", type="string", maxLength=36, description="Type of the vehicle, referenced from dictionary"),
+ *     @OA\Property(property="vehicle_price", type="integer", description="Purchase price of the vehicle"),
+ *     @OA\Property(property="vehicle_desc", type="string", maxLength=500, nullable=true, description="Additional description of the vehicle"),
+ *     @OA\Property(property="vehicle_distance", type="integer", description="Total distance traveled by the vehicle"),
+ *     @OA\Property(property="vehicle_category", type="string", maxLength=36, description="Category of the vehicle, referenced from dictionary"),
+ *     @OA\Property(property="vehicle_status", type="string", maxLength=36, description="Current status of the vehicle, referenced from dictionary"),
+ *     @OA\Property(property="vehicle_year_made", type="integer", description="Manufacturing year of the vehicle"),
+ *     @OA\Property(property="vehicle_plate_number", type="string", maxLength=14, description="Vehicle plate number"),
+ *     @OA\Property(property="vehicle_fuel_status", type="string", maxLength=36, description="Fuel status of the vehicle, referenced from dictionary"),
+ *     @OA\Property(property="vehicle_fuel_capacity", type="integer", description="Fuel tank capacity of the vehicle"),
+ *     @OA\Property(property="vehicle_default_fuel", type="string", maxLength=36, description="Default fuel type for the vehicle, referenced from dictionary"),
+ *     @OA\Property(property="vehicle_color", type="string", maxLength=36, description="Color of the vehicle"),
+ *     @OA\Property(property="vehicle_transmission", type="string", maxLength=14, description="Transmission type of the vehicle, referenced from dictionary"),
+ *     @OA\Property(property="vehicle_img_url", type="string", format="url", maxLength=1000, nullable=true, description="Main image URL of the vehicle"),
+ *     @OA\Property(property="vehicle_other_img_url", type="object", nullable=true, description="Additional image URLs of the vehicle"),
+ *     @OA\Property(property="vehicle_capacity", type="integer", description="Passenger capacity of the vehicle"),
+ *     @OA\Property(property="vehicle_document", type="object", nullable=true, description="Additional documents related to the vehicle"),
+ *     @OA\Property(property="created_at", type="string", format="date-time", description="Timestamp when the vehicle was created"),
+ *     @OA\Property(property="created_by", type="string", format="uuid", description="ID of the user who created the vehicle"),
+ *     @OA\Property(property="updated_at", type="string", format="date-time", nullable=true, description="Timestamp when the vehicle was last updated"),
+ *     @OA\Property(property="deleted_at", type="string", format="date-time", nullable=true, description="Timestamp when the vehicle was soft deleted")
+ * )
+ */
+
 class VehicleModel extends Model
 {
     use HasFactory;

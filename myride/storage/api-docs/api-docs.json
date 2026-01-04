@@ -14315,6 +14315,162 @@
                 },
                 "type": "object"
             },
+            "Service": {
+                "required": [
+                    "id",
+                    "vehicle_id",
+                    "service_category",
+                    "service_location",
+                    "created_at",
+                    "created_by"
+                ],
+                "properties": {
+                    "id": {
+                        "description": "Primary key for the service record",
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "vehicle_id": {
+                        "description": "ID of the related vehicle",
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "service_note": {
+                        "description": "Additional notes or details about the service",
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "service_category": {
+                        "description": "Category of the service",
+                        "type": "string",
+                        "maxLength": 36
+                    },
+                    "service_price_total": {
+                        "description": "Total cost of the service",
+                        "type": "integer",
+                        "nullable": true
+                    },
+                    "service_location": {
+                        "description": "Location where the service was performed",
+                        "type": "string",
+                        "maxLength": 255
+                    },
+                    "created_at": {
+                        "description": "Timestamp when the service record was created",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "description": "Timestamp when the service record was last updated",
+                        "type": "string",
+                        "format": "date-time",
+                        "nullable": true
+                    },
+                    "remind_at": {
+                        "description": "Optional reminder timestamp for the service",
+                        "type": "string",
+                        "format": "date-time",
+                        "nullable": true
+                    },
+                    "created_by": {
+                        "description": "ID of the user who created the service record",
+                        "type": "string",
+                        "format": "uuid"
+                    }
+                },
+                "type": "object"
+            },
+            "Trip": {
+                "required": [
+                    "id",
+                    "vehicle_id",
+                    "trip_desc",
+                    "trip_category",
+                    "trip_origin_name",
+                    "trip_destination_name",
+                    "created_at",
+                    "created_by"
+                ],
+                "properties": {
+                    "id": {
+                        "description": "Primary key for the trip",
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "vehicle_id": {
+                        "description": "ID of the vehicle used for the trip",
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "driver_id": {
+                        "description": "ID of the driver assigned to the trip",
+                        "type": "string",
+                        "format": "uuid",
+                        "nullable": true
+                    },
+                    "trip_desc": {
+                        "description": "Description or purpose of the trip",
+                        "type": "string",
+                        "maxLength": 500
+                    },
+                    "trip_category": {
+                        "description": "Category of the trip, referenced from dictionary",
+                        "type": "string",
+                        "maxLength": 36
+                    },
+                    "trip_person": {
+                        "description": "Person or passenger related to the trip",
+                        "type": "string",
+                        "maxLength": 255,
+                        "nullable": true
+                    },
+                    "trip_origin_name": {
+                        "description": "Name of the trip origin location",
+                        "type": "string",
+                        "maxLength": 75
+                    },
+                    "trip_origin_coordinate": {
+                        "description": "Coordinate of the trip origin location",
+                        "type": "string",
+                        "maxLength": 144,
+                        "nullable": true
+                    },
+                    "trip_destination_name": {
+                        "description": "Name of the trip destination location",
+                        "type": "string",
+                        "maxLength": 75
+                    },
+                    "trip_destination_coordinate": {
+                        "description": "Coordinate of the trip destination location",
+                        "type": "string",
+                        "maxLength": 144,
+                        "nullable": true
+                    },
+                    "created_at": {
+                        "description": "Timestamp when the trip was created",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "created_by": {
+                        "description": "ID of the user who created the trip",
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "updated_at": {
+                        "description": "Timestamp when the trip was last updated",
+                        "type": "string",
+                        "format": "date-time",
+                        "nullable": true
+                    },
+                    "deleted_at": {
+                        "description": "Timestamp when the trip was soft deleted",
+                        "type": "string",
+                        "format": "date-time",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
             "User": {
                 "required": [
                     "id",
@@ -14394,6 +14550,278 @@
                         "description": "ID of the user who make the request",
                         "type": "string",
                         "format": "uuid"
+                    }
+                },
+                "type": "object"
+            },
+            "Vehicle": {
+                "required": [
+                    "id",
+                    "vehicle_name",
+                    "vehicle_merk",
+                    "vehicle_type",
+                    "vehicle_price",
+                    "vehicle_distance",
+                    "vehicle_category",
+                    "vehicle_status",
+                    "vehicle_year_made",
+                    "vehicle_plate_number",
+                    "vehicle_fuel_status",
+                    "vehicle_fuel_capacity",
+                    "vehicle_default_fuel",
+                    "vehicle_color",
+                    "vehicle_transmission",
+                    "vehicle_capacity",
+                    "created_at",
+                    "created_by"
+                ],
+                "properties": {
+                    "id": {
+                        "description": "Primary key for the vehicle",
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "vehicle_name": {
+                        "description": "Name of the vehicle",
+                        "type": "string",
+                        "maxLength": 75
+                    },
+                    "vehicle_merk": {
+                        "description": "Brand or manufacturer of the vehicle",
+                        "type": "string",
+                        "maxLength": 36
+                    },
+                    "vehicle_type": {
+                        "description": "Type of the vehicle, referenced from dictionary",
+                        "type": "string",
+                        "maxLength": 36
+                    },
+                    "vehicle_price": {
+                        "description": "Purchase price of the vehicle",
+                        "type": "integer"
+                    },
+                    "vehicle_desc": {
+                        "description": "Additional description of the vehicle",
+                        "type": "string",
+                        "maxLength": 500,
+                        "nullable": true
+                    },
+                    "vehicle_distance": {
+                        "description": "Total distance traveled by the vehicle",
+                        "type": "integer"
+                    },
+                    "vehicle_category": {
+                        "description": "Category of the vehicle, referenced from dictionary",
+                        "type": "string",
+                        "maxLength": 36
+                    },
+                    "vehicle_status": {
+                        "description": "Current status of the vehicle, referenced from dictionary",
+                        "type": "string",
+                        "maxLength": 36
+                    },
+                    "vehicle_year_made": {
+                        "description": "Manufacturing year of the vehicle",
+                        "type": "integer"
+                    },
+                    "vehicle_plate_number": {
+                        "description": "Vehicle plate number",
+                        "type": "string",
+                        "maxLength": 14
+                    },
+                    "vehicle_fuel_status": {
+                        "description": "Fuel status of the vehicle, referenced from dictionary",
+                        "type": "string",
+                        "maxLength": 36
+                    },
+                    "vehicle_fuel_capacity": {
+                        "description": "Fuel tank capacity of the vehicle",
+                        "type": "integer"
+                    },
+                    "vehicle_default_fuel": {
+                        "description": "Default fuel type for the vehicle, referenced from dictionary",
+                        "type": "string",
+                        "maxLength": 36
+                    },
+                    "vehicle_color": {
+                        "description": "Color of the vehicle",
+                        "type": "string",
+                        "maxLength": 36
+                    },
+                    "vehicle_transmission": {
+                        "description": "Transmission type of the vehicle, referenced from dictionary",
+                        "type": "string",
+                        "maxLength": 14
+                    },
+                    "vehicle_img_url": {
+                        "description": "Main image URL of the vehicle",
+                        "type": "string",
+                        "format": "url",
+                        "maxLength": 1000,
+                        "nullable": true
+                    },
+                    "vehicle_other_img_url": {
+                        "description": "Additional image URLs of the vehicle",
+                        "type": "object",
+                        "nullable": true
+                    },
+                    "vehicle_capacity": {
+                        "description": "Passenger capacity of the vehicle",
+                        "type": "integer"
+                    },
+                    "vehicle_document": {
+                        "description": "Additional documents related to the vehicle",
+                        "type": "object",
+                        "nullable": true
+                    },
+                    "created_at": {
+                        "description": "Timestamp when the vehicle was created",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "created_by": {
+                        "description": "ID of the user who created the vehicle",
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "updated_at": {
+                        "description": "Timestamp when the vehicle was last updated",
+                        "type": "string",
+                        "format": "date-time",
+                        "nullable": true
+                    },
+                    "deleted_at": {
+                        "description": "Timestamp when the vehicle was soft deleted",
+                        "type": "string",
+                        "format": "date-time",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "Wash": {
+                "required": [
+                    "id",
+                    "vehicle_id",
+                    "wash_by",
+                    "is_wash_body",
+                    "is_wash_window",
+                    "is_wash_dashboard",
+                    "is_wash_tires",
+                    "is_wash_trash",
+                    "is_wash_engine",
+                    "is_wash_seat",
+                    "is_wash_carpet",
+                    "is_wash_pillows",
+                    "is_fill_window_washing_water",
+                    "is_wash_hollow",
+                    "created_at",
+                    "created_by"
+                ],
+                "properties": {
+                    "id": {
+                        "description": "Primary key for the wash record",
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "vehicle_id": {
+                        "description": "ID of the washed vehicle",
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "wash_desc": {
+                        "description": "Additional description or notes for the wash",
+                        "type": "string",
+                        "maxLength": 500,
+                        "nullable": true
+                    },
+                    "wash_by": {
+                        "description": "Person or service that performed the wash",
+                        "type": "string",
+                        "maxLength": 75
+                    },
+                    "is_wash_body": {
+                        "description": "Indicates whether the vehicle body was washed",
+                        "type": "boolean"
+                    },
+                    "is_wash_window": {
+                        "description": "Indicates whether the vehicle windows were washed",
+                        "type": "boolean"
+                    },
+                    "is_wash_dashboard": {
+                        "description": "Indicates whether the dashboard was cleaned",
+                        "type": "boolean"
+                    },
+                    "is_wash_tires": {
+                        "description": "Indicates whether the tires were cleaned",
+                        "type": "boolean"
+                    },
+                    "is_wash_trash": {
+                        "description": "Indicates whether trash inside the vehicle was removed",
+                        "type": "boolean"
+                    },
+                    "is_wash_engine": {
+                        "description": "Indicates whether the engine area was cleaned",
+                        "type": "boolean"
+                    },
+                    "is_wash_seat": {
+                        "description": "Indicates whether the seats were cleaned",
+                        "type": "boolean"
+                    },
+                    "is_wash_carpet": {
+                        "description": "Indicates whether the carpet was cleaned",
+                        "type": "boolean"
+                    },
+                    "is_wash_pillows": {
+                        "description": "Indicates whether pillows or cushions were cleaned",
+                        "type": "boolean"
+                    },
+                    "wash_address": {
+                        "description": "Address where the wash was performed",
+                        "type": "string",
+                        "maxLength": 255,
+                        "nullable": true
+                    },
+                    "wash_start_time": {
+                        "description": "Start time of the washing process",
+                        "type": "string",
+                        "format": "date-time",
+                        "nullable": true
+                    },
+                    "wash_end_time": {
+                        "description": "End time of the washing process",
+                        "type": "string",
+                        "format": "date-time",
+                        "nullable": true
+                    },
+                    "is_fill_window_washing_water": {
+                        "description": "Indicates whether window washing water was refilled",
+                        "type": "boolean"
+                    },
+                    "is_wash_hollow": {
+                        "description": "Indicates whether vehicle hollows or gaps were cleaned",
+                        "type": "boolean"
+                    },
+                    "wash_price": {
+                        "description": "Total cost of the washing service",
+                        "type": "integer",
+                        "nullable": true
+                    },
+                    "created_at": {
+                        "description": "Timestamp when the wash record was created",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "created_by": {
+                        "description": "ID of the user who created the wash record",
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "updated_at": {
+                        "description": "Timestamp when the wash record was last updated",
+                        "type": "string",
+                        "format": "date-time",
+                        "nullable": true
                     }
                 },
                 "type": "object"

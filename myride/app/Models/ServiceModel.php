@@ -7,6 +7,25 @@ use Illuminate\Database\Eloquent\Model;
 // Helper
 use App\Helpers\Generator;
 
+/**
+ * @OA\Schema(
+ *     schema="Service",
+ *     type="object",
+ *     required={"id", "vehicle_id", "service_category", "service_location", "created_at", "created_by"},
+ *
+ *     @OA\Property(property="id", type="string", format="uuid", description="Primary key for the service record"),
+ *     @OA\Property(property="vehicle_id", type="string", format="uuid", description="ID of the related vehicle"),
+ *     @OA\Property(property="service_note", type="string", nullable=true, description="Additional notes or details about the service"),
+ *     @OA\Property(property="service_category", type="string", maxLength=36, description="Category of the service"),
+ *     @OA\Property(property="service_price_total", type="integer", nullable=true, description="Total cost of the service"),
+ *     @OA\Property(property="service_location", type="string", maxLength=255, description="Location where the service was performed"),
+ *     @OA\Property(property="created_at", type="string", format="date-time", description="Timestamp when the service record was created"),
+ *     @OA\Property(property="updated_at", type="string", format="date-time", nullable=true, description="Timestamp when the service record was last updated"),
+ *     @OA\Property(property="remind_at", type="string", format="date-time", nullable=true, description="Optional reminder timestamp for the service"),
+ *     @OA\Property(property="created_by", type="string", format="uuid", description="ID of the user who created the service record")
+ * )
+ */
+
 class ServiceModel extends Model
 {
     use HasFactory;
