@@ -7,6 +7,20 @@ use Illuminate\Database\Eloquent\Model;
 // Helper 
 use App\Helpers\Generator;
 
+/**
+ * @OA\Schema(
+ *     schema="Dictionary",
+ *     type="object",
+ *     required={"id", "dictionary_type", "dictionary_name", "created_at"},
+ *
+ *     @OA\Property(property="id", type="string", format="uuid", description="Primary key for the dictionary"),
+ *     @OA\Property(property="dictionary_type", type="string", maxLength=36, description="Type or group of the dictionary"),
+ *     @OA\Property(property="dictionary_name", type="string", maxLength=75, description="Unique name of the dictionary"),
+ *     @OA\Property(property="created_at", type="string", format="date-time", description="Timestamp when the dictionary was created"),
+ *     @OA\Property(property="created_by", type="string", format="uuid", nullable=true, description="ID of the user who created the dictionary")
+ * )
+ */
+
 class DictionaryModel extends Model
 {
     use HasFactory;

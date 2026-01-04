@@ -8,6 +8,24 @@ use Carbon\Carbon;
 // Helper
 use App\Helpers\Generator;
 
+/**
+ * @OA\Schema(
+ *     schema="Reminder",
+ *     type="object",
+ *     required={"id", "vehicle_id", "reminder_title", "reminder_context", "reminder_body", "created_at", "remind_at", "created_by"},
+ *
+ *     @OA\Property(property="id", type="string", format="uuid", description="Primary key for the reminder"),
+ *     @OA\Property(property="vehicle_id", type="string", format="uuid", description="ID of the related vehicle"),
+ *     @OA\Property(property="reminder_title", type="string", maxLength=75, description="Title of the reminder"),
+ *     @OA\Property(property="reminder_context", type="string", maxLength=36, description="Context or category of the reminder"),
+ *     @OA\Property(property="reminder_body", type="string", maxLength=255, description="Detailed reminder message"),
+ *     @OA\Property(property="reminder_attachment", type="object", nullable=true, description="Optional attachment data for the reminder. This is an array of objects containing two keys: attachment_type (image or location) and attachment_value (an uploaded image URL or a location coordinate)"),
+ *     @OA\Property(property="created_at", type="string", format="date-time", description="Timestamp when the reminder was created"),
+ *     @OA\Property(property="remind_at", type="string", format="date-time", description="Timestamp when the reminder should be triggered"),
+ *     @OA\Property(property="created_by", type="string", format="uuid", description="ID of the user who created the reminder")
+ * )
+ */
+
 class ReminderModel extends Model
 {
     use HasFactory;

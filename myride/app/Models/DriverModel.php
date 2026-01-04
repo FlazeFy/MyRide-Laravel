@@ -8,6 +8,28 @@ use Laravel\Sanctum\HasApiTokens;
 // Helper
 use App\Helpers\Generator;
 
+/**
+ * @OA\Schema(
+ *     schema="Driver",
+ *     type="object",
+ *     required={"id", "username", "fullname", "password", "email", "telegram_is_valid", "phone", "created_at", "created_by"},
+ *
+ *     @OA\Property(property="id", type="string", format="uuid", description="Primary key for the driver"),
+ *     @OA\Property(property="username", type="string", maxLength=36, description="Username used by the driver"),
+ *     @OA\Property(property="fullname", type="string", maxLength=50, description="Full name of the driver"),
+ *     @OA\Property(property="password", type="string", maxLength=255, description="Hashed password of the driver"),
+ *     @OA\Property(property="email", type="string", format="email", maxLength=255, description="Email address of the driver"),
+ *     @OA\Property(property="telegram_user_id", type="string", maxLength=36, nullable=true, description="Telegram user ID associated with the driver"),
+ *     @OA\Property(property="telegram_is_valid", type="boolean", description="Indicates whether the Telegram account is verified"),
+ *     @OA\Property(property="phone", type="string", maxLength=16, description="Phone number of the driver"),
+ *     @OA\Property(property="notes", type="string", maxLength=500, nullable=true, description="Additional notes about the driver"),
+ *     @OA\Property(property="created_at", type="string", format="date-time", description="Timestamp when the driver was created"),
+ *     @OA\Property(property="updated_at", type="string", format="date-time", nullable=true, description="Timestamp when the driver was last updated"),
+ *     @OA\Property(property="created_by", type="string", format="uuid", description="ID of the user who created the driver"),
+ *     @OA\Property(property="updated_by", type="string", format="uuid", nullable=true, description="ID of the user who last updated the driver")
+ * )
+ */
+
 class DriverModel extends Authenticatable
 {
     use HasFactory;

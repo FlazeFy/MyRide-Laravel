@@ -8,6 +8,20 @@ use Laravel\Sanctum\HasApiTokens;
 // Helper
 use App\Helpers\Generator;
 
+/**
+ * @OA\Schema(
+ *     schema="DriverVehicleRelation",
+ *     type="object",
+ *     required={"id", "vehicle_id", "driver_id", "created_at"},
+ *
+ *     @OA\Property(property="id", type="string", format="uuid", description="Primary key for the driver-vehicle relation"),
+ *     @OA\Property(property="vehicle_id", type="string", format="uuid", description="ID of the related vehicle"),
+ *     @OA\Property(property="driver_id", type="string", format="uuid", description="ID of the related driver"),
+ *     @OA\Property(property="relation_note", type="string", maxLength=255, nullable=true, description="Additional note describing the driver-vehicle relation"),
+ *     @OA\Property(property="created_at", type="string", format="date-time", description="Timestamp when the relation was created")
+ * )
+ */
+
 class DriverVehicleRelationModel extends Authenticatable
 {
     use HasFactory;

@@ -29,7 +29,6 @@ use App\Models\AdminModel;
  *     @OA\Property(property="username", type="string", description="Unique Identifier for admin"),
  *     @OA\Property(property="email", type="string", description="Email for Auth and Task Scheduling"),
  *     @OA\Property(property="password", type="string", description="Sanctum Hashed Password"),
- * 
  *     @OA\Property(property="created_at", type="string", format="date-time", description="Timestamp when the admin was created"),
  *     @OA\Property(property="updated_at", type="string", format="date-time", description="Timestamp when the admin was updated")
  * )
