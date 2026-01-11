@@ -109,7 +109,6 @@ class Queries extends Controller {
         
             // Save at local storage (temp)
             $storagePath = storage_path("app/public/$file_name");
-            $publicPath = public_path($file_name);
             if (!file_exists($storagePath)) {
                 throw new \Exception("File not found: $storagePath");
             }
@@ -137,7 +136,7 @@ class Queries extends Controller {
             // Download the file as an Excel sheet and delete it locally after a successful download
             return response()->download($storagePath, $file_name, [
                 'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-                'Content-Disposition' => 'attachment; filename="' . $file_name . '"',
+                'Content-Disposition' => 'attachment; filename="'.$file_name.'"',
             ])->deleteFileAfterSend(true);
         } catch(\Exception $e) {
             return response()->json([
@@ -217,7 +216,6 @@ class Queries extends Controller {
         
             // Save at local storage (temp)
             $storagePath = storage_path("app/public/$file_name");
-            $publicPath = public_path($file_name);
             if (!file_exists($storagePath)) {
                 throw new \Exception("File not found: $storagePath");
             }
@@ -245,7 +243,7 @@ class Queries extends Controller {
             // Download the file as an Excel sheet and delete it locally after a successful download
             return response()->download($storagePath, $file_name, [
                 'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-                'Content-Disposition' => 'attachment; filename="' . $file_name . '"',
+                'Content-Disposition' => 'attachment; filename="'.$file_name.'"',
             ])->deleteFileAfterSend(true);
         } catch(\Exception $e) {
             return response()->json([
@@ -325,7 +323,6 @@ class Queries extends Controller {
         
             // Save at local storage (temp)
             $storagePath = storage_path("app/public/$file_name");
-            $publicPath = public_path($file_name);
             if (!file_exists($storagePath)) {
                 throw new \Exception("File not found: $storagePath");
             }
@@ -353,7 +350,7 @@ class Queries extends Controller {
             // Download the file as an Excel sheet and delete it locally after a successful download
             return response()->download($storagePath, $file_name, [
                 'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-                'Content-Disposition' => 'attachment; filename="' . $file_name . '"',
+                'Content-Disposition' => 'attachment; filename="'.$file_name.'"',
             ])->deleteFileAfterSend(true);
         } catch(\Exception $e) {
             return response()->json([
@@ -434,7 +431,6 @@ class Queries extends Controller {
         
             // Save at local storage (temp)
             $storagePath = storage_path("app/public/$file_name");
-            $publicPath = public_path($file_name);
             if (!file_exists($storagePath)) {
                 throw new \Exception("File not found: $storagePath");
             }
@@ -542,7 +538,6 @@ class Queries extends Controller {
         
             // Save at local storage (temp)
             $storagePath = storage_path("app/public/$file_name");
-            $publicPath = public_path($file_name);
             if (!file_exists($storagePath)) {
                 throw new \Exception("File not found: $storagePath");
             }
@@ -570,7 +565,7 @@ class Queries extends Controller {
             // Download the file as an Excel sheet and delete it locally after a successful download
             return response()->download($storagePath, $file_name, [
                 'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-                'Content-Disposition' => 'attachment; filename="' . $file_name . '"',
+                'Content-Disposition' => 'attachment; filename="'.$file_name.'"',
             ])->deleteFileAfterSend(true);
         } catch(\Exception $e) {
             return response()->json([
@@ -654,7 +649,6 @@ class Queries extends Controller {
         
             // Save at local storage (temp)
             $storagePath = storage_path("app/public/$file_name");
-            $publicPath = public_path($file_name);
             if (!file_exists($storagePath)) {
                 throw new \Exception("File not found: $storagePath");
             }
@@ -682,7 +676,7 @@ class Queries extends Controller {
             // Download the file as an Excel sheet and delete it locally after a successful download
             return response()->download($storagePath, $file_name, [
                 'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-                'Content-Disposition' => 'attachment; filename="' . $file_name . '"',
+                'Content-Disposition' => 'attachment; filename="'.$file_name.'"',
             ])->deleteFileAfterSend(true);
         } catch(\Exception $e) {
             return response()->json([

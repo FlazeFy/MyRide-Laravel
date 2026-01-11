@@ -32,12 +32,10 @@ class DictionaryModel extends Model
     protected $fillable = ['id', 'dictionary_type', 'dictionary_name', 'created_at', 'created_by'];
 
     public static function getDictionaryByType($type){
-        $res = DictionaryModel::select("dictionary_name")
+        return DictionaryModel::select("dictionary_name")
             ->where('dictionary_type', $type)
             ->orderBy('dictionary_name', 'ASC')
             ->get();
-
-        return $res;
     }
 
     public static function getDictionaryByTypeAndUserID($type,$user_id){

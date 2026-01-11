@@ -103,19 +103,19 @@ class WashModel extends Model
         $res = WashModel::selectRaw("
             vehicle_type, CONCAT(vehicle.vehicle_merk, ' - ', vehicle.vehicle_name) as vehicle_name, vehicle_plate_number,
             COUNT(*) AS total_wash,
-            CAST(SUM(is_wash_body) as INT) AS total_wash_body,
-            CAST(SUM(is_wash_window) as INT) AS total_wash_window,
-            CAST(SUM(is_wash_dashboard) as INT) AS total_wash_dashboard,
-            CAST(SUM(is_wash_tires) as INT) AS total_wash_tires,
-            CAST(SUM(is_wash_trash) as INT) AS total_wash_trash,
-            CAST(SUM(is_wash_engine) as INT) AS total_wash_engine,
-            CAST(SUM(is_wash_seat) as INT) AS total_wash_seat,
-            CAST(SUM(is_wash_carpet) as INT) AS total_wash_carpet,
-            CAST(SUM(is_wash_pillows) as INT) AS total_wash_pillows,
-            CAST(SUM(is_fill_window_washing_water) as INT) AS total_fill_window_washing_water,
-            CAST(SUM(is_wash_hollow) as INT) AS total_wash_hollow,
-            CAST(SUM(wash_price) as INT) AS total_price,
-            CAST(AVG(wash_price) as INT) AS avg_price_per_wash
+            CAST(SUM(is_wash_body) as SIGNED) AS total_wash_body,
+            CAST(SUM(is_wash_window) as SIGNED) AS total_wash_window,
+            CAST(SUM(is_wash_dashboard) as SIGNED) AS total_wash_dashboard,
+            CAST(SUM(is_wash_tires) as SIGNED) AS total_wash_tires,
+            CAST(SUM(is_wash_trash) as SIGNED) AS total_wash_trash,
+            CAST(SUM(is_wash_engine) as SIGNED) AS total_wash_engine,
+            CAST(SUM(is_wash_seat) as SIGNED) AS total_wash_seat,
+            CAST(SUM(is_wash_carpet) as SIGNED) AS total_wash_carpet,
+            CAST(SUM(is_wash_pillows) as SIGNED) AS total_wash_pillows,
+            CAST(SUM(is_fill_window_washing_water) as SIGNED) AS total_fill_window_washing_water,
+            CAST(SUM(is_wash_hollow) as SIGNED) AS total_wash_hollow,
+            CAST(SUM(wash_price) as SIGNED) AS total_price,
+            CAST(AVG(wash_price) as SIGNED) AS avg_price_per_wash
         ")->where('vehicle.created_by',$user_id);
 
         if($vehicle_id){

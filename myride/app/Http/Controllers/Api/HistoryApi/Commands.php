@@ -80,7 +80,7 @@ class Commands extends Controller
             // Hard Delete history by ID
             $rows = HistoryModel::hardDeleteHistory($id, $user_id);
             if($rows > 0){
-                // Return response code
+                // Return success response
                 return response()->json([
                     'status' => 'success',
                     'message' => Generator::getMessageTemplate("permentally delete", $this->module),

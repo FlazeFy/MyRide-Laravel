@@ -53,11 +53,9 @@ class HistoryModel extends Model
         }
         if($type == "user" || $user_id) {
             $res = $res->where('created_by',$user_id);
-        }    
-        $res = $res->orderby('history.created_at', 'DESC')
-            ->paginate($paginate);
+        }   
 
-        return $res;
+        return $res->orderby('history.created_at', 'DESC')->paginate($paginate);
     }
 
     public static function hardDeleteHistory($id, $user_id = null){

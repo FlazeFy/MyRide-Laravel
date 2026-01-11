@@ -58,7 +58,7 @@ class Commands extends Controller
      *             @OA\Property(property="status", type="string", example="success"),
      *             @OA\Property(property="token", type="string", example="286|L5fqrLCDDCzPRLKngtm2FM9wq1IU2xFZSVAm10yp874a1a85"),
      *             @OA\Property(property="role", type="integer", example=1),
-     *             @OA\Property(property="result", type="object",
+     *             @OA\Property(property="message", type="object",
      *                 @OA\Property(property="id", type="string", example="83ce75db-4016-d87c-2c3c-db1e222d0001"),
      *                 @OA\Property(property="username", type="string", example="flazefy"),
      *                 @OA\Property(property="email", type="string", example="flazen.edu@gmail.com"),
@@ -74,7 +74,7 @@ class Commands extends Controller
      *         description="{validation_msg}",
      *         @OA\JsonContent(
      *             @OA\Property(property="status", type="string", example="failed"),
-     *             @OA\Property(property="result", type="string", example="{field validation message}")
+     *             @OA\Property(property="message", type="string", example="{field validation message}")
      *         )
      *     ),
      *     @OA\Response(
@@ -82,7 +82,7 @@ class Commands extends Controller
      *         description="account is not found or have wrong password",
      *         @OA\JsonContent(
      *             @OA\Property(property="status", type="string", example="failed"),
-     *             @OA\Property(property="result", type="string", example="wrong username or password")
+     *             @OA\Property(property="message", type="string", example="wrong username or password")
      *         )
      *     ),
      *     @OA\Response(
@@ -103,7 +103,7 @@ class Commands extends Controller
             if ($validator->fails()) {
                 return response()->json([
                     'status' => 'failed',
-                    'result' => $validator->messages(),
+                    'message' => $validator->messages(),
                 ], Response::HTTP_BAD_REQUEST);
             } else {
                 // Check for Admin account
@@ -120,7 +120,7 @@ class Commands extends Controller
                         if($check_register){
                             return response()->json([
                                 'status' => 'failed',
-                                'result' => 'your account is not validated yet, check your email and validate again',
+                                'message' => Generator::getMessageTemplate("custom", 'your account is not validated yet, check your email and validate again'),
                             ], Response::HTTP_UNAUTHORIZED);
                         }
                     }
@@ -130,7 +130,7 @@ class Commands extends Controller
                 if (!$user || !Hash::check($request->password, $user->password)) {
                     return response()->json([
                         'status' => 'failed',
-                        'result' => 'wrong username or password',
+                        'message' => Generator::getMessageTemplate("custom", 'wrong password or username'),
                     ], Response::HTTP_UNAUTHORIZED);
                 } else {
                     // Create Token
@@ -140,7 +140,7 @@ class Commands extends Controller
                     // Return success response
                     return response()->json([
                         'status' => 'success',
-                        'result' => $user,
+                        'message' => $user,
                         'token' => $token,  
                         'role' => $role                  
                     ], Response::HTTP_OK);

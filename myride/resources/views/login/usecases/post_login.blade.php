@@ -16,7 +16,6 @@
     <input hidden name="token" value="" id="token">
     <input hidden name="email" value="" id="email">
     <input hidden name="role" value="" id="role">
-    <input hidden name="profile_pic" value="" id="profile_pic">
     <a onclick="login()" class="btn btn-success w-100 mb-3"><i class="fa-solid fa-arrow-right-to-bracket mx-1"></i> Enter the Garage</a>
     <a href="/auth/google" class="btn btn-primary w-100"><i class="fa-brands fa-google mx-1"></i> Sign In With Google</a>
     <hr>
@@ -61,8 +60,7 @@
                 if(found){
                     $('#token').val(response.token)
                     $('#role').val(response.role)
-                    $('#email').val(response.result.email)
-                    $('#profile_pic').val(response.result.image_url)
+                    $('#email').val(response.message.email)
                     $('#form-login').submit()
                 } else {
                     $('#username_msg').html("")
@@ -80,21 +78,21 @@
                 var allMsg = null
                 var icon = `<i class='fa-solid fa-triangle-exclamation'></i> `
 
-                if (response && response.responseJSON && response.responseJSON.hasOwnProperty('result')) {   
+                if (response && response.responseJSON && response.responseJSON.hasOwnProperty('message')) {   
                     //Error validation
-                    if(typeof response.responseJSON.result === "string"){
-                        allMsg = response.responseJSON.result
+                    if(typeof response.responseJSON.message === "string"){
+                        allMsg = response.responseJSON.message
                     } else {
-                        if(response.responseJSON.result.hasOwnProperty('username')){
-                            usernameMsg = response.responseJSON.result.username[0]
+                        if(response.responseJSON.message.hasOwnProperty('username')){
+                            usernameMsg = response.responseJSON.message.username[0]
                         }
-                        if(response.responseJSON.result.hasOwnProperty('password')){
-                            passMsg = response.responseJSON.result.password[0]
+                        if(response.responseJSON.message.hasOwnProperty('password')){
+                            passMsg = response.responseJSON.message.password[0]
                         }
                     }
                     
                 } else if(response && response.responseJSON && response.responseJSON.hasOwnProperty('errors')){
-                    allMsg = response.responseJSON.errors.result[0]
+                    allMsg = response.responseJSON.errors.message[0]
                 } else {
                     allMsg = errorMessage
                 }

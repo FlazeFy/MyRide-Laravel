@@ -39,27 +39,27 @@ class AuthTest extends TestCase
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertArrayHasKey('token', $data);
         $this->assertArrayHasKey('role', $data);
-        $this->assertArrayHasKey('result', $data);
+        $this->assertArrayHasKey('message', $data);
 
         $check_object = ['id','username','email','telegram_user_id','telegram_is_valid','created_at','updated_at'];
         foreach ($check_object as $col) {
-            $this->assertArrayHasKey($col, $data['result']);
+            $this->assertArrayHasKey($col, $data['message']);
         }
 
         $check_not_null_str = ['id','username','email','created_at'];
         foreach ($check_not_null_str as $col) {
-            $this->assertNotNull($col, $data['result'][$col]);
-            $this->assertIsString($col, $data['result'][$col]);
+            $this->assertNotNull($col, $data['message'][$col]);
+            $this->assertIsString($col, $data['message'][$col]);
         }
 
         $check_nullable_str = ['telegram_user_id','updated_at'];
         foreach ($check_nullable_str as $col) {
-            if(!is_null($data['result'][$col])){
-                $this->assertIsString($col, $data['result'][$col]);
+            if(!is_null($data['message'][$col])){
+                $this->assertIsString($col, $data['message'][$col]);
             }
         }
 
-        $this->assertContains($data["result"]["telegram_is_valid"], [0, 1]);
+        $this->assertContains($data['message']["telegram_is_valid"], [0, 1]);
 
         Audit::auditRecordText("Integration Test - Success Post Login With Valid Data", "TC-INT-AU-001-01", "Token : ".$data['token']);
         Audit::auditRecordSheet("Integration Test - Success Post Login With Valid Data", "TC-INT-AU-001-01", json_encode($param), $data['token']);

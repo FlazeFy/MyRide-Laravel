@@ -57,7 +57,7 @@ class ServiceModel extends Model
     }
 
     public static function getAllServiceSpending($user_id = null){
-        $res = ServiceModel::selectRaw('vehicle_plate_number,MAX(vehicle_type) as vehicle_type,CAST(SUM(service_price_total) as INT) as total')
+        $res = ServiceModel::selectRaw('vehicle_plate_number,MAX(vehicle_type) as vehicle_type,CAST(SUM(service_price_total) as SIGNED) as total')
             ->leftjoin('vehicle','vehicle.id','=','service.vehicle_id');
 
         if($user_id){
