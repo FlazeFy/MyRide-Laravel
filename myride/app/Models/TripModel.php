@@ -67,12 +67,21 @@ class TripModel extends Model
     }
 
     public static function getTotalTripByCategory($user_id){
-        return TripModel::selectRaw('trip_category as context, COUNT(1) as total')
+        $res = TripModel::selectRaw('trip_category as context, COUNT(1) as total')
             ->where('created_by', $user_id)
             ->orderBy('total','DESC')
             ->groupBy('trip_category')
             ->limit(6)
             ->get();
+
+        if ($res->isEmpty()) {
+            return null;
+        }
+    
+        return $res->map(function ($row) {
+            $row->total = (int) $row->total;
+            return $row;
+        });
     }
 
     public static function getCoordinateByTripLocationName($user_id,$trip_location_name){
@@ -104,12 +113,21 @@ class TripModel extends Model
     }
 
     public static function getTotalTripByDestinationOrigion($user_id, $type){
-        return TripModel::selectRaw('trip_'.$type.'_name context, COUNT(1) as total')
+        $res = TripModel::selectRaw('trip_'.$type.'_name context, COUNT(1) as total')
             ->where('created_by', $user_id)
             ->orderBy('total','DESC')
             ->groupBy('trip_'.$type.'_name')
             ->limit(6)
             ->get();
+        
+        if ($res->isEmpty()) {
+            return null;
+        }
+    
+        return $res->map(function ($row) {
+            $row->total = (int) $row->total;
+            return $row;
+        });
     }
 
     public static function getTripByVehicleId($user_id, $vehicle_id, $limit = null, $page = 1){
@@ -225,7 +243,14 @@ class TripModel extends Model
             ->groupByRaw('MONTH(trip.created_at)')
             ->get();
 
-        return $res;
+        if ($res->isEmpty()) {
+            return null;
+        }
+    
+        return $res->map(function ($row) {
+            $row->total = (int) $row->total;
+            return $row;
+        });
     }
 
     public static function getTripDiscovered($user_id = null, $vehicle_id = null)

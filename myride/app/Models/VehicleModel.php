@@ -192,7 +192,14 @@ class VehicleModel extends Model
             ->limit(7)
             ->get();
         
-        return count($res) > 0 ? $res : null;
+        if ($res->isEmpty()) {
+            return null;
+        }
+    
+        return $res->map(function ($row) {
+            $row->total = (int) $row->total;
+            return $row;
+        });
     }
 
     public static function hardDeleteVehicleById($user_id = null,$id){
