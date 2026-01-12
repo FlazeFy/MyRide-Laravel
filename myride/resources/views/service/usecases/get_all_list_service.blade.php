@@ -50,7 +50,7 @@
                                 <h6 class="mb-0">Price Total</h6>
                                 <p class="mb-0">Rp. ${dt.service_price_total.toLocaleString()},00</p>
                             </td>
-                            <td class="text-start">${dt.service_note}</td>
+                            <td class="text-center">${dt.service_note}</td>
                             <td class="text-start">
                                 <h6 class="mb-0">Created At</h6>
                                 <p class="mb-0">${getDateToContext(dt.created_at,'calendar')}</p>

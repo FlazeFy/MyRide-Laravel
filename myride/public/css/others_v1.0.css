@@ -97,12 +97,30 @@
 } 
 
 /* Maps Dialog */
+.gm-style-iw-d {
+    width: 100vw !important;
+    max-width: 300px !important;
+}
+@media (max-width: 992px) {
+    .gm-style-iw-d {
+        min-height: 215px;
+    }
+    .gm-style-iw.gm-style-iw-c {
+        min-height: 215px;
+        max-width: 80vw !important;
+        padding-top: 0 !important;
+        overflow-y: auto !important;
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+    }
+}
+.gm-style-iw.gm-style-iw-c {
+    background: var(--firstColor) !important;
+    border-bottom: var(--spaceXXSM) solid var(--secondaryColor) !important;
+}
 .gm-ui-hover-effect {
-    background: black !important;
-    border-radius: 100%;
+    display: none !important;
     position: absolute !important;
-    right: 6px !important;
-    top: 6px !important;
 }
 .gm-ui-hover-effect span {
     color: var(--firstColor) !important;
@@ -127,7 +145,4 @@
 .maps-toolbar button {
     margin: var(--spaceMD) !important;
     border-radius: var(--roundedMD) !important;
-}
-.maps-info-box p, .maps-info-box h6 {
-    color: var(--textWhite) !important;
 }

@@ -64,6 +64,23 @@
         });
     })
 
+    const markerInfoHTML = (trip_desc, trip_category, created_at, placeLabel, placeName, originCoord, destinationCoord, vehicle_type) => {
+        return `
+            <div class="d-flex justify-content-between mb-2">
+                <button class="btn btn-danger custom-close-btn py-1" style="font-size:var(--textMD); margin:0 !important;"><i class="fa-solid fa-arrow-left"></i> Back</button>
+                <span class="btn btn-primary rounded-pill px-3 py-1 text-capitalize" style="font-size:var(--textMD)px;">${trip_category}</span>
+            </div><hr>
+            <h6 class="mb-1">${trip_desc}</h6>
+            <p class="mt-2 mb-0 fw-bold">${placeLabel}</p>
+            <p>${placeName}</p>
+            <p class="mt-2 mb-0 fw-bold">Created At</p>
+            <p class="mb-0">${created_at}</p>
+            <a class="btn btn-success py-1 mt-2 btn-set-route" data-trip-origin-coordinate="${originCoord}" data-trip-destination-coordinate="${destinationCoord}" data-vehicle-type="${vehicle_type}" style="font-size:var(--textMD)px;">
+                <i class="fa-solid fa-map-pin"></i> Set Route
+            </a>
+        `
+    }
+
     const place_marker = (dt) => {
         const coorOrigin = dt.trip_origin_coordinate.split(", ").map(Number)
         const coorDestination = dt.trip_destination_coordinate.split(", ").map(Number)
@@ -71,29 +88,15 @@
         markers.push(
             {
                 coords: { lat: coorOrigin[0], lng: coorOrigin[1] },
-                content: `<div class='maps-info-box'>
-                    <h6>${dt.trip_desc}</h6>
-                    <span class='bg-dark rounded-pill px-2 py-1 text-white'>${dt.trip_category}</span>
-                    ${dt.trip_origin_name ? `<p class='mt-2 mb-0 fw-bold'>Origin</p><p>${dt.trip_origin_name}</p>` : ""}
-                    <p class='mt-2 mb-0 fw-bold'>Created At</p>
-                    <p>${dt.created_at}</p>
-                    <a class='btn btn-dark rounded-pill px-2 py-1' style='font-size:12px;'>
-                        <i class='fa-solid fa-location-arrow'></i> Set Direction
-                    </a>
-                </div>`
+                content: markerInfoHTML(
+                    dt.trip_desc, dt.trip_category, dt.created_at, "Origin", dt.trip_origin_name, dt.trip_origin_coordinate, `${coorOrigin[0]},${coorOrigin[1]}`, dt.vehicle_type
+                )
             },
             {
                 coords: { lat: coorDestination[0], lng: coorDestination[1] },
-                content: `<div class='maps-info-box'>
-                    <h6>${dt.trip_desc}</h6>
-                    <span class='bg-dark rounded-pill px-2 py-1 text-white'>${dt.trip_category}</span>
-                    ${dt.trip_destination_name ? `<p class='mt-2 mb-0 fw-bold'>Destination</p><p>${dt.trip_destination_name}</p>` : ""}
-                    <p class='mt-2 mb-0 fw-bold'>Created At</p>
-                    <p>${dt.created_at}</p>
-                    <a class='btn btn-dark rounded-pill px-2 py-1' style='font-size:12px;'>
-                        <i class='fa-solid fa-location-arrow'></i> Set Direction
-                    </a>
-                </div>`
+                content: markerInfoHTML(
+                    dt.trip_desc, dt.trip_category, dt.created_at, "Destination", dt.trip_origin_name, dt.trip_origin_coordinate, `${coorDestination[0]},${coorDestination[1]}`, dt.vehicle_type
+                )
             }
         );
     }
@@ -102,7 +105,10 @@
         var marker = new google.maps.Marker({
             position: props.coords,
             map: map,
-            icon: props.icon
+            icon: {
+                url: 'https://maps.google.com/mapfiles/ms/icons/orange-dot.png',
+                scaledSize: new google.maps.Size(40, 40),
+            }
         });
 
         if(props.iconImage){
@@ -114,6 +120,11 @@
             });
             marker.addListener('click', function(){
                 infoWindow.open(map, marker)
+            });
+            google.maps.event.addListener(infoWindow, 'domready', () => {
+                document.querySelector('.custom-close-btn')?.addEventListener('click', () => {
+                    infoWindow.close();
+                });
             });
         }
 
