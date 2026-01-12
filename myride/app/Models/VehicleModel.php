@@ -57,7 +57,12 @@ class VehicleModel extends Model
     protected $fillable = ['id', 'vehicle_name', 'vehicle_merk', 'vehicle_type', 'vehicle_price', 'vehicle_desc', 'vehicle_distance', 'vehicle_category', 'vehicle_status', 'vehicle_year_made', 'vehicle_plate_number', 'vehicle_fuel_status', 'vehicle_fuel_capacity', 'vehicle_default_fuel', 'vehicle_color', 'vehicle_transmission', 'vehicle_img_url', 'vehicle_other_img_url', 'vehicle_capacity', 'vehicle_document', 'created_by', 'created_at', 'updated_at', 'deleted_at'];
     protected $casts = [
         'vehicle_document' => 'array',
-        'vehicle_other_img_url' => 'array'
+        'vehicle_other_img_url' => 'array',
+        'vehicle_price' => 'integer',
+        'vehicle_distance' => 'integer',
+        'vehicle_year_made' => 'integer',
+        'vehicle_fuel_capacity' => 'integer',
+        'vehicle_capacity' => 'integer',
     ];
 
     public static function createVehicle($data, $user_id){

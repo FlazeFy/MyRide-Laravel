@@ -5,10 +5,11 @@
     const get_wash_summary = () => {
         Swal.showLoading()
         const ctx = 'summary_wash'
+        const ctx_holder = 'wash_summary-holder'
 
         const generate_summary = (data) => {
             data.forEach((dt,idx) => {
-                $('#wash_summary-holder').append(`
+                $(`#${ctx_holder}`).append(`
                     <div class="col-lg-12 col-md-6 col-sm-12">
                         <button class="btn btn-primary w-100 text-start mb-2" type="button" data-bs-toggle="collapse" data-bs-target="#wash_${dt.vehicle_plate_number.replaceAll(' ','_')}_summary-collapse" aria-expanded="false" aria-controls="collapseExample">
                             <div class="d-flex flex-wrap align-items-center gap-2">
@@ -56,7 +57,12 @@
                     generate_summary(data)
                 },
                 error: function(response, jqXHR, textStatus, errorThrown) {
-                    generateApiError(response, true)
+                    Swal.close()
+                    if(response.status != 404){
+                        generateApiError(response, true)
+                    } else {
+                        templateAlertContainer(ctx_holder, 'no-data', "No wash found for this context to generate the stats", 'add a wash', '<i class="fa-solid fa-soap"></i>','/wash/add')
+                    }
                 }
             });
         }

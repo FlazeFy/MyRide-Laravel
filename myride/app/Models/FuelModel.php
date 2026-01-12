@@ -36,6 +36,11 @@ class FuelModel extends Model
     protected $table = 'fuel';
     protected $primaryKey = 'id';
     protected $fillable = ['id', 'vehicle_id', 'fuel_volume', 'fuel_price_total', 'fuel_brand', 'fuel_type', 'fuel_ron', 'created_at', 'created_by', 'fuel_bill', 'updated_at'];
+    protected $casts = [
+        'fuel_volume' => 'integer',
+        'fuel_price_total' => 'integer',
+        'fuel_ron' => 'integer',
+    ];
 
     public static function getAllFuel($user_id = null, $vehicle_id = null, $paginate){
         $res = FuelModel::select('fuel.id', 'vehicle_plate_number', 'vehicle_type', 'fuel_volume', 'fuel_price_total', 'fuel_brand', 'fuel_type', 'fuel_ron', 'fuel.created_at', 'fuel_bill')
@@ -158,6 +163,15 @@ class FuelModel extends Model
             $res = $res->whereMonth('created_at', $month)->whereYear('created_at', $year);
         }
 
-        return $res->first();
+        $row = $res->first();
+        if (!$row) {
+            return null;
+        }
+
+        $row->total_fuel_price = (int) $row->total_fuel_price;
+        $row->total_fuel_volume = (int) $row->total_fuel_volume;
+        $row->total_refueling  = (int) $row->total_refueling;
+
+        return $row;
     }
 }

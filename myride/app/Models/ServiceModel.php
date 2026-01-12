@@ -34,6 +34,9 @@ class ServiceModel extends Model
     protected $table = 'service';
     protected $primaryKey = 'id';
     protected $fillable = ['id', 'vehicle_id', 'service_category', 'service_price_total', 'service_location', 'service_note', 'created_at', 'created_by', 'updated_at', 'remind_at'];
+    protected $casts = [
+        'service_price_total' => 'integer',
+    ];
 
     public static function getNextService($user_id){
         return ServiceModel::select('service_category', 'service_price_total', 'service_location', 'service_note',"remind_at","vehicle_plate_number")
@@ -64,9 +67,18 @@ class ServiceModel extends Model
             $res = $res->where('service.created_by', $user_id);
         }
             
-        return $res->groupBy('vehicle_plate_number')
+        $res = $res->groupBy('vehicle_plate_number')
             ->orderBy('total', 'desc')  
             ->get(); 
+
+        if ($res->isEmpty()) {
+            return null;
+        }
+    
+        return $res->map(function ($row) {
+            $row->total = (int) $row->total;
+            return $row;
+        });
     }
 
     public static function getServiceByVehicle($user_id = null,$vehicle_id){
@@ -105,7 +117,14 @@ class ServiceModel extends Model
             ->groupByRaw('MONTH(created_at)')
             ->get();
 
-        return $res;
+        if ($res->isEmpty()) {
+            return null;
+        }
+    
+        return $res->map(function ($row) {
+            $row->total = (int) $row->total;
+            return $row;
+        });
     }
 
     public static function getExportData($user_id, $vehicle_id = null){
@@ -116,10 +135,9 @@ class ServiceModel extends Model
             $res = $res->where('vehicle_id',$vehicle_id);
         }
 
-        $res = $res->where('service.created_by',$user_id)
-            ->orderBy('service.created_at', 'desc');
-
-        return $res->get();
+        return $res->where('service.created_by',$user_id)
+            ->orderBy('service.created_at', 'desc')
+            ->get();
     }
 
     public static function createService($data, $user_id){

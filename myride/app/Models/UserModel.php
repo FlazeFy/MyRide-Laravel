@@ -122,6 +122,10 @@ class UserModel extends Authenticatable
         $res = $res_vehicle->concat($res_trip)
             ->concat($res_wash)
             ->concat($res_service)
+            ->map(function ($row) {
+                $row->year = (int) $row->year;
+                return $row;
+            })
             ->unique('year') 
             ->sortBy('year')
             ->values(); 

@@ -304,7 +304,7 @@ class Queries extends Controller
                         // Get the total by context in the service table
                         $res[] = [
                             'context' => $dt,
-                            'data' => MultiModel::getContextTotalStats($dt,$user_id,'service',"CAST(SUM(service_price_total) AS INT)")
+                            'data' => MultiModel::getContextTotalStats($dt,$user_id,'service',"CAST(SUM(service_price_total) AS SIGNED)")
                         ];
                     } else {
                         // Context not valid
@@ -316,7 +316,7 @@ class Queries extends Controller
                 }
             } else {
                 // Get the total by context in the service table
-                $res = MultiModel::getContextTotalStats($context,$user_id,'service',"CAST(SUM(service_price_total) AS INT)");
+                $res = MultiModel::getContextTotalStats($context,$user_id,'service',"CAST(SUM(service_price_total) AS SIGNED)");
             }
                 
             if ($res) {
