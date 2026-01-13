@@ -32,6 +32,7 @@ use App\Http\Controllers\Api\DriverApi\Queries as QueriesDriverController;
 use App\Http\Controllers\Api\DriverApi\Commands as CommandsDriverController;
 use App\Http\Controllers\Api\ErrorApi\Queries as QueriesErrorController;
 use App\Http\Controllers\Api\ErrorApi\Commands as CommandsErrorController;
+use App\Http\Controllers\Api\ChatApi\Commands as CommandsChatController;
 
 ######################### Public Route #########################
 
@@ -105,6 +106,10 @@ Route::prefix('/v1/wash')->middleware(['auth:sanctum'])->group(function () {
 Route::prefix('/v1/history')->middleware(['auth:sanctum'])->group(function () {
     Route::get('/', [QueriesHistoryController::class, 'getAllHistory']);
     Route::delete('/destroy/{id}', [CommandsHistoryController::class, 'hardDeleteHistoryById']);
+});
+
+Route::prefix('/v1/chat')->middleware(['auth:sanctum'])->group(function () {
+    Route::get('/', [CommandsChatController::class, 'postChat']);
 });
 
 Route::prefix('/v1/error')->middleware(['auth:sanctum'])->group(function () {

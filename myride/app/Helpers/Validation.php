@@ -28,6 +28,12 @@ class Validation
         ]);
     }
 
+    public static function getValidateChat($request){
+        return Validator::make($request->all(), [
+            'question' => 'required|min:2|max:255|string'
+        ]);
+    }
+
     public static function getValidateRegister($request){
         return Validator::make($request->all(), [
             'username' => 'required|min:6|max:36|string',
