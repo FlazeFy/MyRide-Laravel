@@ -41,9 +41,8 @@ const getDateToContext = (datetime, type) => {
 }
 
 const getUTCHourOffset = () => {
-    const offsetMi = new Date().getTimezoneOffset();
-    const offsetHr = -offsetMi / 60;
-    return offsetHr;
+    const offsetMi = new Date().getTimezoneOffset()
+    return -offsetMi / 60
 }
 
 const formatDateTimeAPI = (value) => {
@@ -61,7 +60,7 @@ const formatDateTimeAPI = (value) => {
 const getUUID = () => {
     return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
         (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
-    );
+    )
 }
 
 const ucEachWord = (val) => {
@@ -69,27 +68,21 @@ const ucEachWord = (val) => {
     for (var i = 0; i < arr.length; i++) {
         arr[i] = arr[i].charAt(0).toUpperCase() + arr[i].slice(1)
     }
-    const res = arr.join(" ")
-
-    return res
+    return arr.join(" ")
 }
 
 const ucFirst = (val) => {
     if (typeof val !== 'string' || val.length === 0) {
-        var res = val
+        return val
     } else {
-        var res = val.charAt(0).toUpperCase() + val.slice(1)
+        return val.charAt(0).toUpperCase() + val.slice(1)
     }
-
-    return res
 }
 
 const generatePagination = (items_holder, fetch_callback, total_page, current_page) => {
     let page_element = ''
     for (let i = 1; i <= total_page; i++) {
-        page_element += `
-            <a class='btn-page ${i === current_page ? 'active' : ''}' href='#' data-page='${i}' title='Open page: ${i}'>${i}</a>
-        `
+        page_element += `<a class='btn-page ${i === current_page ? 'active' : ''}' href='#' data-page='${i}' title='Open page: ${i}'>${i}</a>`
     }
 
     $(`#pagination-${items_holder}`).remove()
@@ -104,14 +97,10 @@ const generatePagination = (items_holder, fetch_callback, total_page, current_pa
     $(document).on('click', `#pagination-${items_holder} .btn-page`, function() {
         const selectedPage = $(this).data('page')
         fetch_callback(selectedPage)
-    });
+    })
 
     const table = $(`#${items_holder}`).closest('table')
-    if (table.length) {
-        table.css('margin-bottom', '0')
-    } else {
-        $(`#${items_holder}`).next('.btn-page-holder').addClass('rounded')
-    }
+    table.length ? table.css('margin-bottom', '0') : $(`#${items_holder}`).next('.btn-page-holder').addClass('rounded')
 }
 
 const generateApiError = (response, is_list_format) => {
@@ -137,17 +126,9 @@ const generateApiError = (response, is_list_format) => {
             icon: "error"
         });
     } else if(response.status === 404){
-        Swal.fire({
-            title: "Oops!",
-            html: "Data not found",
-            icon: "error"
-        });
+        Swal.fire("Oops!", "Data not found", "error")
     } else {
-        Swal.fire({
-            title: "Oops!",
-            text: response.responseJSON?.message || "Something went wrong",
-            icon: "error"
-        });
+        Swal.fire("Oops!", response.responseJSON?.message || "Something went wrong", "error")
     }
 }
 
@@ -182,11 +163,7 @@ const buttonSetRoute = () => {
 
 const checkScreenSize = (width) => {
     if (width < 320) {
-        Swal.fire({
-            title: "Warning!",
-            text: "Your device has a small screen width, so some content may not display properly",
-            icon: "warning"
-        });
+        Swal.fire("Warning!", "Your device has a small screen width, so some content may not display properly", "warning")
     }
 }
 
@@ -310,10 +287,7 @@ const resetLocalStorage = (keys) => {
 
 const initStaticModal = () => {
     $('.modal').each(function () {
-        new bootstrap.Modal(this, {
-            backdrop: 'static',
-            keyboard: false
-        })
+        new bootstrap.Modal(this, { backdrop: 'static', keyboard: false })
     })   
 }
 

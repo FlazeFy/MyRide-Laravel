@@ -40,11 +40,7 @@
                     
                     break;
                 case "token":
-                    Swal.fire({
-                        title: "Oops!",
-                        text: "You must validated your account first!",
-                        icon: "error"
-                    });
+                    Swal.fire("Oops!", "You must validated your account first!", "error")
                     break;
                 case "service":
                     

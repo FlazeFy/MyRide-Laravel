@@ -96,7 +96,7 @@
     })
 
     ;(async () => {
-        await get_context_opt('vehicle_type,vehicle_transmission,vehicle_status,vehicle_fuel_status,vehicle_category,vehicle_default_fuel',token)
+        await getDictionaryByContextOption('vehicle_type,vehicle_transmission,vehicle_status,vehicle_fuel_status,vehicle_category,vehicle_default_fuel',token)
     })()
 
     const post_vehicle = () => {
@@ -160,11 +160,7 @@
             },
             success: function (response) {
                 Swal.close()
-                Swal.fire({
-                    title: "Success!",
-                    text: response.message,
-                    icon: "success"
-                }).then(() => {
+                Swal.fire("Success!", response.message, "success").then(() => {
                     window.location.href = '/garage'
                 })
             },

@@ -48,7 +48,7 @@
     })
     $(document).on('change','#vehicle_holder', function(){
         const id = $(this).val()
-        get_vehicle_detail(id)
+        getVehicleDetail(id)
         get_vehicle_service_history(id)
     })
     $(document).on('change','#service_category_holder', function(){
@@ -56,8 +56,8 @@
     })
 
     ;(async () => {
-        await get_vehicle_name_opt(token)
-        await get_context_opt('service_category,service_type',token)
+        await getVehicleNameOption(token)
+        await getDictionaryByContextOption('service_category,service_type',token)
     })()
 
     const post_service = () => {
@@ -65,7 +65,7 @@
         const service_category = $('#service_category_holder').val()
 
         if(vehicle_id !== "-" && service_category !== "-"){
-            Swal.showLoading();
+            Swal.showLoading()
             $.ajax({
                 url: `/api/v1/service`,
                 type: 'POST',
@@ -84,11 +84,7 @@
                 },
                 success: function(response) {
                     Swal.close()
-                    Swal.fire({
-                        title: "Success!",
-                        text: response.message,
-                        icon: "success"
-                    }).then(() => {
+                    Swal.fire("Success!", response.message, "success").then(() => {
                         window.location.href = '/service'
                     });
                 },

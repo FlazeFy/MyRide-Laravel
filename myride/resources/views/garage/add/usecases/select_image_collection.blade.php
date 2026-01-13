@@ -22,11 +22,7 @@
             $("#vehicle_img_collection-holder .alert-container").remove()
 
             if ($("#vehicle_img_collection-holder .vehicle-image-holder").length > 9) {
-                Swal.fire({
-                    title: "Error!",
-                    text: "You can only add 10 image inputs for vehicle album",
-                    icon: "error"
-                })
+                Swal.fire("Error!", "You can only add 10 image inputs for vehicle album", "error")
                 return
             }
             if($('#vehicle_img_collection_button-holder').find('#clear_attachment-button').length === 0){

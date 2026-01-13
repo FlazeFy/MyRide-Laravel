@@ -49,7 +49,7 @@
         });
     });
 
-    const generate_vehicle_list = (data,ctx_holder) => {
+    const generateVehicleList = (data,ctx_holder) => {
         $(`#${ctx_holder}`).empty()
         data.forEach(dt => {
             $(`#${ctx_holder}`).append(`
@@ -102,7 +102,7 @@
                     localStorage.setItem(ctx_holder,JSON.stringify(data))
                     localStorage.setItem(`last-hit-${ctx_holder}`,Date.now())
                     generate_menu(true, 'sidebar_menu-holder')
-                    generate_vehicle_list(data,ctx_holder)
+                    generateVehicleList(data,ctx_holder)
                 },
                 error: function(response, jqXHR, textStatus, errorThrown) {
                     Swal.close()
@@ -126,7 +126,7 @@
                 const data = JSON.parse(localStorage.getItem(ctx_holder))
                 if(data){
                     generate_menu(true, 'sidebar_menu-holder')
-                    generate_vehicle_list(data,ctx_holder)
+                    generateVehicleList(data,ctx_holder)
                     Swal.close()
                 } else {
                     Swal.close()

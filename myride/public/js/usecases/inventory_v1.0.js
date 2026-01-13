@@ -1,26 +1,20 @@
-const get_vehicle_name_opt = (token) => {
+const getVehicleNameOption = (token) => {
     return new Promise((resolve, reject) => {
         Swal.showLoading()
-
         const ctx = 'vehicle_name_temp'
         const ctx_holder = 'vehicle_holder'
 
-        const generate_vehicle_list = (holder, data) => {
+        const generateVehicleList = (holder, data) => {
             $(`#${holder}`).empty().append(`<option selected>-</option>`)
             data.forEach(el => {
-                $(`#${holder}`).append(
-                    `<option value="${el.id}">${el.vehicle_plate_number} - ${el.vehicle_name}</option>`
-                )
+                $(`#${holder}`).append(`<option value="${el.id}">${el.vehicle_plate_number} - ${el.vehicle_name}</option>`)
             })
 
             const params = new URLSearchParams(window.location.search)
             const vehicle_id = params.get('vehicle_id')
-            if (vehicle_id) {
-                $(`#${holder}`).val(vehicle_id);
-            }
-
+            vehicle_id && $(`#${holder}`).val(vehicle_id)
             resolve()
-        };
+        }
 
         const fetchData = () => {
             $.ajax({
@@ -31,57 +25,54 @@ const get_vehicle_name_opt = (token) => {
                     "Authorization": `Bearer ${token}`
                 },
                 success: function (response) {
-                    Swal.close();
+                    Swal.close()
                     const data = response.data
                     localStorage.setItem(ctx, JSON.stringify(data))
                     localStorage.setItem(`last-hit-${ctx}`, Date.now())
-                    generate_vehicle_list(ctx_holder, data)
+
+                    generateVehicleList(ctx_holder, data)
                 },
                 error: function (response) {
                     Swal.close()
                     generateApiError(response, true)
                     reject(response)
                 }
-            });
-        };
+            })
+        }
 
-        // caching
         if (ctx in localStorage) {
             const lastHit = parseInt(localStorage.getItem(`last-hit-${ctx}`))
             const now = Date.now()
 
-            // still fresh
             if (((now - lastHit) / 1000) < statsFetchRestTime) {
                 const data = JSON.parse(localStorage.getItem(ctx))
 
                 if (data) {
-                    Swal.close()
-                    generate_vehicle_list(ctx_holder, data)
+                    generateVehicleList(ctx_holder, data)
                 } else {
-                    Swal.close()
                     failedMsg(`get the vehicle list`)
                     reject("No cached data")
                 }
+                Swal.close()
             } else {
                 fetchData()
             }
-
         } else {
             fetchData()
         }
     })
 }
 
-const get_driver_name_opt = (token) => {
+const getDriverNameOption = (token) => {
     Swal.showLoading()
     const ctx = 'driver_name_temp'
     const ctx_holder = 'driver_holder'
 
-    const generate_driver_list = (holder,data) => {
+    const generateDriverList = (holder,data) => {
         $(`#${holder}`).html(`<option value="-">-</option>`)
         data.forEach(el => {
             $(`#${holder}`).append(`<option value="${el.id}">${el.username} - ${el.fullname}</option>`)
-        });
+        })
     }
 
     const fetchData = () => {
@@ -97,25 +88,26 @@ const get_driver_name_opt = (token) => {
                 const data = response.data
                 localStorage.setItem(ctx,JSON.stringify(data))
                 localStorage.setItem(`last-hit-${ctx}`,Date.now())
-                generate_driver_list(ctx_holder,data)
+
+                generateDriverList(ctx_holder,data)
             },
             error: function(response, jqXHR, textStatus, errorThrown) {
                 generateApiError(response, true)
             }
-        });
+        })
     }
 
-    if(ctx in localStorage){
+    if (ctx in localStorage){
         const lastHit = parseInt(localStorage.getItem(`last-hit-${ctx}`))
         const now = Date.now()
 
-        if(((now - lastHit) / 1000) < statsFetchRestTime){
+        if (((now - lastHit) / 1000) < statsFetchRestTime){
+            Swal.close()
             const data = JSON.parse(localStorage.getItem(ctx))
+
             if(data){
-                generate_driver_list(ctx_holder,data)
-                Swal.close()
+                generateDriverList(ctx_holder,data)
             } else {
-                Swal.close()
                 failedMsg(`get the driver list`)
             }
         } else {
@@ -126,14 +118,10 @@ const get_driver_name_opt = (token) => {
     }
 }
 
-const wash_select_opt = (target) => {
-    target.forEach(dt => {
-        $(`#${dt}`).val('')
-    });
-}
+const getVehicleDetail = (id) => {
+    const resetSelectedOption = target => target.forEach(dt => $(`#${dt}`).val(''))
 
-const get_vehicle_detail = (id) => {
-    if(id !== "-"){
+    if (id !== "-"){
         Swal.showLoading()
         $.ajax({
             url: `/api/v1/vehicle/detail/${id}`,
@@ -145,6 +133,7 @@ const get_vehicle_detail = (id) => {
             success: function(response) {
                 Swal.close()
                 const data = response.data
+
                 $('#vehicle_type').val(data.vehicle_type)
                 $('#vehicle_category').val(data.vehicle_category)
             },
@@ -153,11 +142,11 @@ const get_vehicle_detail = (id) => {
             }
         });
     } else {
-        wash_select_opt(['vehicle_type','vehicle_category'])
+        resetSelectedOption(['vehicle_type','vehicle_category'])
     }
 }
 
-const get_context_opt = (context, token) => {
+const getDictionaryByContextOption = (context, token) => {
     return new Promise((resolve, reject) => {
         Swal.showLoading()
         let ctx_holder
@@ -165,14 +154,12 @@ const get_context_opt = (context, token) => {
         if (context.includes(',')) {
             ctx_holder = []
             context = context.split(',')
-            context.forEach(el => {
-                ctx_holder.push(`${el}_holder`)
-            })
+            ctx_holder.push(...context.map(el => `${el}_holder`))
         } else {
             ctx_holder = context.includes('fuel_type_') ? 'fuel_type_holder' : `${context}_holder`
         }
 
-        const generate_context_list = (holder, data) => {
+        const generateDictionaryContextList = (holder, data) => {
             if (Array.isArray(holder)) {
                 holder.forEach(dt => {
                     $(`#${dt}`).empty().append(`<option>-</option>`)
@@ -185,12 +172,9 @@ const get_context_opt = (context, token) => {
             } else {
                 $(`#${holder}`).empty().append(`<option>-</option>`)
                 data.forEach(el => {
-                    $(`#${holder}`).append(
-                        `<option value="${el.dictionary_name}">${el.dictionary_name}</option>`
-                    )
+                    $(`#${holder}`).append(`<option value="${el.dictionary_name}">${el.dictionary_name}</option>`)
                 })
             }
-
             resolve()
         }
 
@@ -205,11 +189,10 @@ const get_context_opt = (context, token) => {
                 success: function (response) {
                     Swal.close()
                     const data = response.data
-
                     localStorage.setItem(ctx_holder, JSON.stringify(data))
                     localStorage.setItem(`last-hit-${ctx_holder}`, Date.now())
 
-                    generate_context_list(ctx_holder, data)
+                    generateDictionaryContextList(ctx_holder, data)
                 },
                 error: function (response) {
                     Swal.close()
@@ -227,13 +210,12 @@ const get_context_opt = (context, token) => {
                 const data = JSON.parse(localStorage.getItem(ctx_holder))
 
                 if (data) {
-                    Swal.close()
-                    generate_context_list(ctx_holder, data)
+                    generateDictionaryContextList(ctx_holder, data)
                 } else {
-                    Swal.close()
                     failedMsg(`get the ${context} list`)
                     reject("No cached data")
                 }
+                Swal.close()
             } else {
                 fetchData()
             }

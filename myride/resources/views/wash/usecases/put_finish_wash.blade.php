@@ -16,7 +16,7 @@
     })
 
     const put_wash = (id) => {
-        Swal.showLoading();
+        Swal.showLoading()
         $.ajax({
             url: `/api/v1/wash/finish/${id}`,
             type: 'PUT',
@@ -27,11 +27,7 @@
             },
             success: function(response) {
                 Swal.close()
-                Swal.fire({
-                    title: "Success!",
-                    text: response.message,
-                    icon: "success"
-                }).then(() => {
+                Swal.fire("Success!", response.message, "success").then(() => {
                     window.location.href = '/wash'
                 });
             },

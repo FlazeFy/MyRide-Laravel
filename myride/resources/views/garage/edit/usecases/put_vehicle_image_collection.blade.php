@@ -26,11 +26,7 @@
             $("#vehicle_img_collection-holder .alert-container").remove()
 
             if ($("#vehicle_img_collection-holder .vehicle-image-holder").length > 9) {
-                Swal.fire({
-                    title: "Error!",
-                    text: "You can only add one image",
-                    icon: "error"
-                })
+                Swal.fire("Error!", "You can only add one image", "error")
                 return
             }
 

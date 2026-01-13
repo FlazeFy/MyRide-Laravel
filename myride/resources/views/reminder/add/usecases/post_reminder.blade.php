@@ -106,7 +106,7 @@
     })
     $(document).on('change','#vehicle_holder', function(){
         const id = $(this).val()
-        get_vehicle_detail(id)
+        getVehicleDetail(id)
     })
 
     const cleanAlertContainer = () => {
@@ -130,11 +130,7 @@
             cleanAlertContainer()
 
             if ($("#reminder_attachment-holder .reminder-image-holder").length > 0) {
-                Swal.fire({
-                    title: "Error!",
-                    text: "You can only add one image as attachment",
-                    icon: "error"
-                })
+                Swal.fire("Error!", "You can only add one image as attachment", "error")
                 return
             }
             addClearButton()
@@ -151,11 +147,7 @@
             cleanAlertContainer()
 
             if ($("#reminder_attachment-holder .reminder-location-holder").length > 0) {
-                Swal.fire({
-                    title: "Error!",
-                    text: "You can only add one location as attachment",
-                    icon: "error"
-                })
+                Swal.fire("Error!", "You can only add one location as attachment", "error")
                 return
             }
             addClearButton()
@@ -194,8 +186,8 @@
     })
 
     ;(async () => {
-        await get_vehicle_name_opt(token)
-        await get_context_opt('reminder_context',token)
+        await getVehicleNameOption(token)
+        await getDictionaryByContextOption('reminder_context',token)
     })()
 
     const post_reminder = () => {
@@ -256,11 +248,7 @@
             },
             success: function (response) {
                 Swal.close()
-                Swal.fire({
-                    title: "Success!",
-                    text: response.message,
-                    icon: "success"
-                }).then(() => {
+                Swal.fire("Success!",response.message, "success").then(() => {
                     window.location.href = '/reminder'
                 })
             },

@@ -2,6 +2,6 @@
 
 <script>
     $(document).on('click','#export_excel',function(){
-        getExport('wash',token)
+        exportDatasetByModule('wash',token)
     })
 </script>

@@ -28,7 +28,7 @@
     const get_all_assigned_driver = () => {
         const holder = 'assigned_driver-holder'
 
-        Swal.showLoading();
+        Swal.showLoading()
         $.ajax({
             url: `/api/v1/driver/vehicle/list`,
             type: 'GET',

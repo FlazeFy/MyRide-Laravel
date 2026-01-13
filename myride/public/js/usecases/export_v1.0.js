@@ -1,4 +1,4 @@
-const getExport = (ctx, token) => {
+const exportDatasetByModule = (ctx, token) => {
     Swal.showLoading()
     $.ajax({
         url: `/api/v1/export/${ctx}`,
@@ -10,7 +10,6 @@ const getExport = (ctx, token) => {
         },
         success: function(response, status, xhr) {
             Swal.close()
-            
             let fileName = `${ctx}.xlsx`
             const disposition = xhr.getResponseHeader('Content-Disposition')
             if (disposition && disposition.includes('filename=')) {
@@ -24,20 +23,11 @@ const getExport = (ctx, token) => {
             document.body.appendChild(link)
             link.click()
             link.remove()
-
-            Swal.fire({
-                title: "Success!",
-                text: `${ctx} data downloaded`,
-                icon: "success",
-            });
+            Swal.fire("Success!", `${ctx} data downloaded`,"success")
         },
         error: function() {
             Swal.close()
-            Swal.fire({
-                title: "Oops!",
-                text: "Something went wrong",
-                icon: "error"
-            });
+            failedMsg("export data")
         }
     });
 }

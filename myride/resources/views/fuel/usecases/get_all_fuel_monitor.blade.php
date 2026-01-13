@@ -5,7 +5,7 @@
     const get_fuel_status = () => {
         const holder = 'stats_fuel_status_holder'
 
-        Swal.showLoading();
+        Swal.showLoading()
         $.ajax({
             url: `/api/v1/vehicle/fuel`,
             type: 'GET',

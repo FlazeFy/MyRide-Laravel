@@ -21,7 +21,7 @@
     const getAllDriver = (page) => {
         const holder = 'driver-holder'
 
-        Swal.showLoading();
+        Swal.showLoading()
         $.ajax({
             url: `/api/v1/driver?page=${page}`,
             type: 'GET',

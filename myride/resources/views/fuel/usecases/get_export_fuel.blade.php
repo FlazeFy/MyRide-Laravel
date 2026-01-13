@@ -2,6 +2,6 @@
 
 <script>
     $(document).on('click','#export_excel',function(){
-        getExport('fuel','<?= session()->get('token_key'); ?>')
+        exportDatasetByModule('fuel','<?= session()->get('token_key'); ?>')
     })
 </script>

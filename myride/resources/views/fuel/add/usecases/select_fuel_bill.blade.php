@@ -19,11 +19,7 @@
             $("#fuel_bill-holder .alert-container").remove()
 
             if ($("#fuel_bill-holder .fuel_bill-holder").length > 0) {
-                Swal.fire({
-                    title: "Error!",
-                    text: "You can only add one image as bill",
-                    icon: "error"
-                })
+                Swal.fire("Error!", "You can only add one image as bill", "error")
                 return
             }
             if($('#fuel_bill_button-holder').find('#clear_bill-button').length === 0){

@@ -44,7 +44,7 @@
         const vehicle_id = $('#vehicle_holder').val()
         const driver_category = $('#driver_category_holder').val()
 
-        Swal.showLoading();
+        Swal.showLoading()
         $.ajax({
             url: `/api/v1/driver/${id}`,
             type: 'PUT',
@@ -63,13 +63,9 @@
             },
             success: function(response) {
                 Swal.close()
-                Swal.fire({
-                    title: "Success!",
-                    text: response.message,
-                    icon: "success"
-                }).then(() => {
+                Swal.fire("Success!", response.message, "success").then(() => {
                     window.location.href = '/driver'
-                });
+                })
             },
             error: function(response, jqXHR, textStatus, errorThrown) {
                 Swal.close()

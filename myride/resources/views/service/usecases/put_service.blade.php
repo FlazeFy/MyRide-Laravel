@@ -31,8 +31,8 @@
 <script>
     $(document).on('click','.btn-update', async function(){
         callModal('update-modal')
-        await get_vehicle_name_opt(token)
-        await get_context_opt('service_category,service_storage',token)
+        await getVehicleNameOption(token)
+        await getDictionaryByContextOption('service_category,service_storage',token)
         const vehicle_plate_number = $(this).data('vehicle-plate-number')
 
         $('#vehicle_holder option').each(function () {
@@ -62,7 +62,7 @@
         const service_category = $('#service_category_holder').val()
 
         if(vehicle_id !== "-" && service_category !== "-"){
-            Swal.showLoading();
+            Swal.showLoading()
             $.ajax({
                 url: `/api/v1/service/${id}`,
                 type: 'PUT',
@@ -80,11 +80,7 @@
                 },
                 success: function(response) {
                     Swal.close()
-                    Swal.fire({
-                        title: "Success!",
-                        text: response.message,
-                        icon: "success"
-                    }).then(() => {
+                    Swal.fire("Success!", response.message, "success").then(() => {
                         window.location.href = '/service'
                     });
                 },

@@ -57,32 +57,30 @@
     })
     $(document).on('change','#vehicle_holder', function(){
         const id = $(this).val()
-        get_vehicle_detail(id)
-        if(id !== "-"){
-            get_vehicle_last_fuel(id)
-        }
+        getVehicleDetail(id)
+        id !== "-" && get_vehicle_last_fuel(id)
     })
     $(document).on('change','#fuel_brand_holder', async function(){
         const val = $(this).val()
-        await get_context_opt(`fuel_type_${val}`)
+        await getDictionaryByContextOption(`fuel_type_${val}`)
     })
 
     const init_vehicle_page = async (token) => {
-        await get_vehicle_name_opt(token)
+        await getVehicleNameOption(token)
 
         if ($('#vehicle_holder').val() !== "-") {
             let params = new URLSearchParams(window.location.search)
             let vehicle_id = params.get('vehicle_id')
 
             if (vehicle_id) {
-                get_vehicle_detail(vehicle_id)
+                getVehicleDetail(vehicle_id)
                 get_vehicle_last_fuel(vehicle_id)
             }
         }
     }
     init_vehicle_page(token)
     ;(async () => {
-        await get_context_opt('fuel_brand',token)
+        await getDictionaryByContextOption('fuel_brand',token)
     })()
 
     const post_fuel = () => {
@@ -120,13 +118,9 @@
             },
             success: function(response) {
                 Swal.close()
-                Swal.fire({
-                    title: "Success!",
-                    text: response.message,
-                    icon: "success"
-                }).then(() => {
+                Swal.fire("Success!", response.message,"success").then(() => {
                     window.location.href = '/fuel'
-                });
+                })
             },
             error: function(response, jqXHR, textStatus, errorThrown) {
                 Swal.close()
@@ -135,6 +129,10 @@
                 } else {
                     failedMsg(response.status === 400 ? Object.values(response.responseJSON.message).flat().join('\n') : response.responseJSON.message)
                 }
+
+                response.status === 500 ? generateApiError(response, true) : failedMsg(
+                    response.status === 400 ? Object.values(response.responseJSON.message).flat().join('\n') : response.responseJSON.message
+                )
             }
         });
     }

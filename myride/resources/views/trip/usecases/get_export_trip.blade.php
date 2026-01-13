@@ -2,6 +2,6 @@
 
 <script>
     $(document).on('click','#export_excel',function(){
-        getExport('trip',token)
+        exportDatasetByModule('trip',token)
     })
 </script>

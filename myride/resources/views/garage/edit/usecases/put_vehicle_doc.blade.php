@@ -149,11 +149,7 @@
                 },
                 success: function (response) {
                     Swal.close()
-                    Swal.fire({
-                        title: "Success!",
-                        text: response.message,
-                        icon: "success"
-                    }).then(() => {
+                    Swal.fire("Success!", response.message, "success").then(() => {
                         window.location.href = `/garage/detail/${id}`
                     })
                 },

@@ -15,7 +15,7 @@
     const get_service_spending = () => {
         const holder = 'service_spending-holder'
 
-        Swal.showLoading();
+        Swal.showLoading()
         $.ajax({
             url: `/api/v1/service/spending`,
             type: 'GET',

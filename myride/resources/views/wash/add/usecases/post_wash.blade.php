@@ -63,13 +63,13 @@
     })
     $(document).on('change','#vehicle_holder', function(){
         const id = $(this).val()
-        get_vehicle_detail(id)
+        getVehicleDetail(id)
     })
     setChecklistHolder()
 
     ;(async () => {
-        await get_vehicle_name_opt(token)
-        await get_context_opt('wash_by',token)
+        await getVehicleNameOption(token)
+        await getDictionaryByContextOption('wash_by',token)
     })()
 
     const post_wash = () => {
@@ -78,7 +78,7 @@
         if(vehicle_id !== "-" && $('#wash_by').val() !== "-"){
             const wash_end_time = $('#wash_end_time').val()
 
-            Swal.showLoading();
+            Swal.showLoading()
             $.ajax({
                 url: `/api/v1/wash`,
                 type: 'POST',
@@ -109,18 +109,14 @@
                 },
                 success: function(response) {
                     Swal.close()
-                    Swal.fire({
-                        title: "Success!",
-                        text: response.message,
-                        icon: "success"
-                    }).then(() => {
+                    Swal.fire("Success!", response.message, "success").then(() => {
                         window.location.href = '/wash'
-                    });
+                    })
                 },
                 error: function(response, jqXHR, textStatus, errorThrown) {
                     generateApiError(response, true)
                 }
-            });
+            })
         } else {
             failedMsg('create wash : you must select an item')
         }

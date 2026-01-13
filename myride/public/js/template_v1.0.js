@@ -37,7 +37,7 @@ const buildDeleteModal = (url, context, token, action) => {
                 }
             });
         }
-    });
+    })
 }
 
 const templateTripBox = (dt, extra_class = '', showLocation = true) => {
@@ -120,12 +120,7 @@ const pauseCarousel = (carouselId) => {
     const el = document.getElementById(carouselId)
     if (!el) return
 
-    const instance = bootstrap.Carousel.getOrCreateInstance(el, {
-        interval: false,
-        ride: false,
-        wrap: false
-    })
-
+    const instance = bootstrap.Carousel.getOrCreateInstance(el, { interval: false, ride: false, wrap: false })
     instance.pause()
 }
 
@@ -208,9 +203,7 @@ const navigateCarouselPageWithButtonPage = (el) => {
 
     $(`#${holder} .btn-page`).removeClass('active')
     $(`#${holder} .btn-page`).each(function () {
-        if ($(this).data('slide') + 1 === page) {
-            $(this).addClass('active')
-        }
+        $(this).data('slide') + 1 === page && $(this).addClass('active')
     })
 }
 
@@ -221,7 +214,6 @@ const navigateCarouselPage = (holder, direction) => {
     if (!total) return
 
     let current = Number(activeBtn.data('slide'))
-
     if (direction === 'next') {
         current = current + 1 >= total ? 0 : current + 1
     } else {
@@ -244,7 +236,6 @@ const syncCarouselIndicator = (carouselId) => {
 
     $carousel.on('slid.bs.carousel', function (e) {
         const current = e.to  
-
         const pages = $carousel.find('.btn-page')
         if (!pages.length) return
 

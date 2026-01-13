@@ -195,9 +195,9 @@
     }
 
     ;(async () => {
-        await get_vehicle_name_opt(token)
-        get_driver_name_opt(token)
-        await get_context_opt('trip_category',token)
+        await getVehicleNameOption(token)
+        getDriverNameOption(token)
+        await getDictionaryByContextOption('trip_category',token)
     })()
 </script>
 

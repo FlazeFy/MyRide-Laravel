@@ -19,11 +19,7 @@
             $("#inventory_image-holder .alert-container").remove()
 
             if ($("#inventory_image-holder .inventory_image-holder").length > 0) {
-                Swal.fire({
-                    title: "Error!",
-                    text: "You can only add one image as image",
-                    icon: "error"
-                })
+                Swal.fire("Error!", "You can only add one image as image", "error")
                 return
             }
             if($('#inventory_image_button-holder').find('#clear_image-button').length === 0){

@@ -19,11 +19,7 @@
             $("#vehicle_img-holder .alert-container").remove()
 
             if ($("#vehicle_img-holder .vehicle-image-holder").length > 0) {
-                Swal.fire({
-                    title: "Error!",
-                    text: "You can only add one image as attachment",
-                    icon: "error"
-                })
+                Swal.fire("Error!", "You can only add one image as attachment", "error")
                 return
             }
             if($('#vehicle_image_button-holder').find('#clear_attachment-button').length === 0){

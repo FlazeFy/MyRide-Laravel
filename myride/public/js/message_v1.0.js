@@ -8,11 +8,7 @@ const messageShortImage = (target, image, caption) => {
 }
 
 const failedMsg = (context) => {
-    Swal.fire({
-        title: "Oops!",
-        text: `Failed to ${context}`,
-        icon: "error"
-    });
+    Swal.fire("Oops!", `Failed to ${context}`, "error")
 }
 
 const messageAlertBox = (holder, type, message) => {
@@ -39,5 +35,5 @@ const failedRoute = (context,url_home) => {
         } else if (result.dismiss === Swal.DismissReason.cancel) {
             window.location.reload()
         }
-    });
+    })
 }

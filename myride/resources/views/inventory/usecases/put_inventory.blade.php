@@ -31,8 +31,8 @@
 <script>
     $(document).on('click','.btn-update',async function(){
         callModal('update-modal')
-        await get_vehicle_name_opt(token)
-        await get_context_opt('inventory_category,inventory_storage',token)
+        await getVehicleNameOption(token)
+        await getDictionaryByContextOption('inventory_category,inventory_storage',token)
         const vehicle_plate_number = $(this).data('vehicle-plate-number')
 
         $('#vehicle_holder option').each(function () {
@@ -60,7 +60,7 @@
         const inventory_category = $('#inventory_category_holder').val()
 
         if(vehicle_id !== "-" && inventory_category !== "-"){
-            Swal.showLoading();
+            Swal.showLoading()
             $.ajax({
                 url: `/api/v1/inventory/${id}`,
                 type: 'PUT',
@@ -78,13 +78,9 @@
                 },
                 success: function(response) {
                     Swal.close()
-                    Swal.fire({
-                        title: "Success!",
-                        text: response.message,
-                        icon: "success"
-                    }).then(() => {
+                    Swal.fire("Success!", response.message, "success").then(() => {
                         window.location.href = '/inventory'
-                    });
+                    })
                 },
                 error: function(response, jqXHR, textStatus, errorThrown) {
                     Swal.close()

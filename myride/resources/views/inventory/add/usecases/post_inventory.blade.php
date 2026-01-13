@@ -55,15 +55,15 @@
     })
     $(document).on('change','#vehicle_holder', function(){
         const id = $(this).val()
-        get_vehicle_detail(id)
+        getVehicleDetail(id)
     })
     $(document).on('change','#inventory_category_holder', function(){
         const val = $(this).val()
     })
 
     ;(async () => {
-        await get_vehicle_name_opt(token)
-        await get_context_opt('inventory_category,inventory_storage',token)
+        await getVehicleNameOption(token)
+        await getDictionaryByContextOption('inventory_category,inventory_storage',token)
     })()
 
     const post_inventory = () => {
@@ -99,13 +99,9 @@
             },
             success: function(response) {
                 Swal.close()
-                Swal.fire({
-                    title: "Success!",
-                    text: response.message,
-                    icon: "success"
-                }).then(() => {
+                Swal.fire("Success!", response.message, "success").then(() => {
                     window.location.href = '/inventory'
-                });
+                })
             },
             error: function(response, jqXHR, textStatus, errorThrown) {
                 Swal.close()

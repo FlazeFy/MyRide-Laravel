@@ -52,7 +52,7 @@
         const driver_category = $('#driver_category_holder').val()
 
         if(vehicle_id !== "-" && driver_category !== "-"){
-            Swal.showLoading();
+            Swal.showLoading()
             $.ajax({
                 url: `/api/v1/driver`,
                 type: 'POST',
@@ -72,13 +72,9 @@
                 },
                 success: function(response) {
                     Swal.close()
-                    Swal.fire({
-                        title: "Success!",
-                        text: response.message,
-                        icon: "success"
-                    }).then(() => {
+                    Swal.fire("Success!", response.message, "success").then(() => {
                         window.location.href = '/driver'
-                    });
+                    })
                 },
                 error: function(response, jqXHR, textStatus, errorThrown) {
                     generateApiError(response, true)
