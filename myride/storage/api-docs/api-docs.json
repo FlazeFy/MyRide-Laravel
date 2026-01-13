@@ -60,7 +60,7 @@
                                             "type": "integer",
                                             "example": 1
                                         },
-                                        "result": {
+                                        "message": {
                                             "properties": {
                                                 "id": {
                                                     "type": "string",
@@ -111,7 +111,7 @@
                                             "type": "string",
                                             "example": "failed"
                                         },
-                                        "result": {
+                                        "message": {
                                             "type": "string",
                                             "example": "{field validation message}"
                                         }
@@ -131,7 +131,7 @@
                                             "type": "string",
                                             "example": "failed"
                                         },
-                                        "result": {
+                                        "message": {
                                             "type": "string",
                                             "example": "wrong username or password"
                                         }
@@ -585,6 +585,117 @@
                         "bearerAuth": []
                     }
                 ]
+            }
+        },
+        "/api/v1/chat": {
+            "post": {
+                "tags": [
+                    "Chat"
+                ],
+                "summary": "Post Chat",
+                "description": "This NLP request is used to do analyze and find data using command (prompt). This request interacts with the MySQL database.",
+                "operationId": "2b604313d8bc508d0dc422a1f51d3e79",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "question"
+                                ],
+                                "properties": {
+                                    "question": {
+                                        "type": "string",
+                                        "example": "can you find my vehicle with the most trip?"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "chat answered successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "lorem ipsum"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "{validation_msg}",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "{field validation message}"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "protected route need to include sign in token as authorization bearer",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "you need to include the authorization token from login"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "something wrong. please contact admin"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
             }
         },
         "/api/v1/dictionary/{id}": {
@@ -13782,6 +13893,51 @@
                 },
                 "type": "object"
             },
+            "ChatHistory": {
+                "required": [
+                    "id",
+                    "question",
+                    "is_success",
+                    "created_at",
+                    "created_by"
+                ],
+                "properties": {
+                    "id": {
+                        "description": "Primary key for the chat history record",
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "question": {
+                        "description": "User's chat / prompt",
+                        "type": "string"
+                    },
+                    "answer": {
+                        "description": "System generated answer based on fetch result",
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "intent": {
+                        "description": "Category / topic of the prompt",
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "is_success": {
+                        "description": "Indicates whether the question were understandable",
+                        "type": "boolean"
+                    },
+                    "created_at": {
+                        "description": "Timestamp when the chat history record was created",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "created_by": {
+                        "description": "ID of the user who created the chat history record",
+                        "type": "string",
+                        "format": "uuid"
+                    }
+                },
+                "type": "object"
+            },
             "Dictionary": {
                 "required": [
                     "id",
@@ -14840,6 +14996,10 @@
         {
             "name": "Auth",
             "description": "Auth"
+        },
+        {
+            "name": "Chat",
+            "description": "Chat"
         },
         {
             "name": "Dictionary",

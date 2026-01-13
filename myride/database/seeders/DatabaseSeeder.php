@@ -15,6 +15,7 @@ use App\Models\ServiceModel;
 use App\Models\DriverModel;
 use App\Models\DriverVehicleRelationModel;
 use App\Models\ReminderModel;
+use App\Models\ChatHistoryModel;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -26,6 +27,7 @@ class DatabaseSeeder extends Seeder
         // Delete All 
         DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         TripModel::truncate();
+        ChatHistoryModel::truncate();
         FAQModel::truncate();
         WashModel::truncate();
         FuelModel::truncate();
@@ -55,5 +57,6 @@ class DatabaseSeeder extends Seeder
         ServiceModel::factory(50)->create();
         DriverVehicleRelationModel::factory(70)->create();
         ReminderModel::factory(50)->create();
+        ChatHistoryModel::factory(400)->create();
     }
 }
