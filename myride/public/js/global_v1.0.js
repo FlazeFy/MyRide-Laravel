@@ -183,6 +183,18 @@ const setChecklistHolder = () => {
     });
 }
 
+const setCurrentLocalDateTime = (target) => {
+    const now = new Date()
+    const year = now.getFullYear()
+    const month = String(now.getMonth() + 1).padStart(2, "0")
+    const day = String(now.getDate()).padStart(2, "0")
+    const hour = String(now.getHours()).padStart(2, "0")
+    const minute = String(now.getMinutes()).padStart(2, "0")
+    const formatted = `${year}-${month}-${day}T${hour}:${minute}`
+
+    $(`#${target}`).val(formatted)
+}
+
 const getMonthYear = () => {
     const date = new Date()
     const month = String(date.getMonth() + 1).padStart(2, '0')
@@ -228,6 +240,17 @@ const validatorInput = () => {
 
                 if(chosenDate && chosenDate <= now) {
                     failedMsg('Please choose a future date/time')
+                    $(this).val(null)
+                }
+            })
+        }
+
+        if(validator && validator.trim() === 'must_positive') {
+            $el.on('blur', function() {
+                const val = $el.val()
+
+                if(val <= 0){
+                    failedMsg('Number must be more than 0')
                     $(this).val(null)
                 }
             })

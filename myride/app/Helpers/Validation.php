@@ -192,6 +192,7 @@ class Validation
             'service_location' => 'required|string|max:75|min:1', 
             'service_price_total' => 'nullable|integer|max:999999999|min:1',     
             'remind_at' => 'nullable|date_format:Y-m-d H:i:s',
+            'created_at' => 'nullable|date_format:Y-m-d H:i:s',
         ]);
     }
     

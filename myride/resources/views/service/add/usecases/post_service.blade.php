@@ -27,13 +27,22 @@
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-12">
                     <label>Total Price</label>
-                    <input class="form-control" name="service_price_total" id="service_price_total">
+                    <input class="form-control form-validator" data-validator="must_positive" name="service_price_total" id="service_price_total" type="number" min="0">
                 </div>
             </div>
             <label>Service Location</label>
             <input class="form-control" name="service_location" id="service_location">
-            <label>Remind At</label>
-            <input class="form-control form-validator" data-validator="must_future" type="datetime-local" name="remind_at" id="remind_at">
+            <div class="row">
+                <div class="col">
+                    <label>Created At</label>
+                    <input class="form-control" type="datetime-local" name="created_at" id="created_at">
+                </div>
+                <div class="col">
+                    <label>Remind At</label>
+                    <input class="form-control form-validator" data-validator="must_future" type="datetime-local" name="remind_at" id="remind_at">
+                </div>
+            </div>
+            
             <label>Service Notes</label>
             <textarea class="form-control" name="service_note" id="service_note" style="min-height:120px;"></textarea>
             <hr>
@@ -56,6 +65,7 @@
     })
 
     ;(async () => {
+        setCurrentLocalDateTime('created_at')
         await getVehicleNameOption(token)
         await getDictionaryByContextOption('service_category,service_type',token)
     })()
@@ -76,7 +86,8 @@
                     service_category: $("#service_category_holder").val(),
                     service_location: $("#service_location").val(),
                     service_price_total: $("#service_price_total").val(),
-                    remind_at: formatDateTimeAPI($("#remind_at").val())
+                    remind_at: $("#remind_at").val() ? formatDateTimeAPI($("#remind_at").val()) : null,
+                    created_at: formatDateTimeAPI($("#created_at").val())
                 }),
                 beforeSend: function (xhr) {
                     xhr.setRequestHeader("Accept", "application/json")

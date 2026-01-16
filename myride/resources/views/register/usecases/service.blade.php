@@ -1,6 +1,6 @@
 <div class="position-relative">
     <label>Telegram ID</label>
-    <input type='text' class='form-control form-validated' name='telegram_user_id' id='telegram_user_id' maxlength='36'>
+    <input type='text' class='form-control' name='telegram_user_id' id='telegram_user_id' maxlength='36'>
 </div>
 
 <script>

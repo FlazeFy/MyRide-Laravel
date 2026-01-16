@@ -38,6 +38,7 @@ class Commands extends Controller
      *              @OA\Property(property="service_location", type="string", example="Honda Autobest"),
      *              @OA\Property(property="service_price_total", type="integer", example=4500000),
      *              @OA\Property(property="remind_at", type="string", format="date-time", example="2025-01-20 09:15:00"),
+     *              @OA\Property(property="created_at", type="string", format="date-time", nullable=true, example="2025-01-20 09:15:00"),
      *          )
      *     ),
      *     @OA\Response(
@@ -94,6 +95,7 @@ class Commands extends Controller
                     'service_location' => $request->service_location, 
                     'service_price_total' => $request->service_price_total, 
                     'remind_at' => $request->remind_at, 
+                    'created_at' => $request->created_at ?? date('Y-m-d H:i:s')
                 ];
                 $rows = ServiceModel::createService($data, $user_id);
                 if($rows){
