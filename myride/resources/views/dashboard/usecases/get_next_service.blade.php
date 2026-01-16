@@ -31,10 +31,10 @@
 
             $(`#${ctx}-holder`).html(`
                 <h4 class="fw-bold">${displayDate}</h4>
-                <span class="d-flex justify-align-center align-items-center justify-content-center">
-                    <h4 class="fw-bold chip ${chipClass} d-inline-block me-0">${time}</h4>
-                    ${vehicle_plate_number ? `<div class="plate-number">${vehicle_plate_number}</div>` :''}
-                    <h4 class="fw-bold chip ${chipClass} d-inline-block me-0">${service_category}</h4>
+                <span class="d-flex justify-align-center align-items-center justify-content-center gap-2 mb-2">
+                    <h4 class="fw-bold chip ${chipClass} d-inline-block m-0">${time}</h4>
+                    ${vehicle_plate_number ? `<div class="plate-number m-0">${vehicle_plate_number}</div>` :''}
+                    <h4 class="fw-bold chip ${chipClass} d-inline-block m-0">${service_category}</h4>
                 </span>
                 <p class="text-secondary mb-0"><b>Note:</b> ${service_note}</p>
                 <p class="text-secondary mb-0"><b>Location:</b> ${service_location}</p>

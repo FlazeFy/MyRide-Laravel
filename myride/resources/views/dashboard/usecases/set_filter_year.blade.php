@@ -1,7 +1,9 @@
 <form action="/dashboard/toogle_year" method="POST" id="toogle_year_select">
     @csrf
-    <label>Select Year</label>
-    <select class="form-select" id="toogle_year" name="toogle_year"></select>
+    <div class="d-flex gap-2 align-items-center mb-4">
+        <label class="text-nowrap mb-0">Select Year</label>
+        <select class="form-select mb-0" id="toogle_year" name="toogle_year" style="width:100px;"></select>
+    </div>
 </form>
 
 <script>

@@ -82,10 +82,15 @@ const templateTripBox = (dt, extra_class = '', showLocation = true) => {
                         <p class="mb-0">${dt.trip_category}</p>
                     </div>
                 </div> 
-                ${dt.driver_fullname ? `<div class="mt-3"><h6 class="mb-0">Drive By</h6><p class="mb-0">${dt.driver_fullname}</p></div>` : ''}    
-                ${ coorOrigin ? `
-                    <a class="btn btn-success py-1 mt-2 btn-set-route" data-trip-origin-coordinate="${dt.trip_origin_coordinate}" data-trip-destination-coordinate="${dt.trip_destination_coordinate}" data-vehicle-type="${dt.vehicle_type}"><i class="fa-solid fa-map-pin"></i> Set Route</a>`: ''
-                }      
+                ${
+                    dt.driver_fullname || coorOrigin ?
+                    `<div class="d-flex justify-content-between align-items-center mt-2">
+                        ${dt.driver_fullname ? `<div><h6 class="m-0">Drive By</h6><p class="mb-0">${dt.driver_fullname}</p></div>` : ''}    
+                        ${ coorOrigin ? `
+                            <a class="btn btn-success py-1 m-0 btn-set-route" data-trip-origin-coordinate="${dt.trip_origin_coordinate}" data-trip-destination-coordinate="${dt.trip_destination_coordinate}" data-vehicle-type="${dt.vehicle_type}"><i class="fa-solid fa-map-pin"></i><span class="d-none d-xl-inline"> Set Route</span></a>`: ''
+                        }  
+                    </div>` : ''
+                }    
             </div>
             <hr>
             <div class="d-flex justify-content-between flex-wrap align-items-center gap-1">
