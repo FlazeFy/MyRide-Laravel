@@ -51,18 +51,23 @@ class WashModel extends Model
     protected $primaryKey = 'id';
     protected $fillable = ['id', 'vehicle_id', 'wash_desc', 'wash_by', 'is_wash_body', 'is_wash_window', 'is_wash_dashboard', 'is_wash_tires', 'is_wash_trash', 'is_wash_engine', 'is_wash_seat', 'is_wash_carpet', 'is_wash_pillows', 'wash_address', 'wash_start_time', 'wash_end_time', 'is_fill_window_washing_water', 'is_wash_hollow', 'wash_price', 'created_at', 'created_by', 'updated_at'];
 
-    public static function getAllWashHistory($user_id,$limit){
+    public static function getAllWashHistory($user_id, $limit, $search = null){
         $res = WashModel::selectRaw("
                 wash.id,vehicle_type, CONCAT(vehicle.vehicle_merk, ' - ', vehicle.vehicle_name)  as vehicle_name, vehicle_plate_number, wash_desc, wash_by, wash_price, 
                 is_wash_body, is_wash_window, is_wash_dashboard, is_wash_tires, is_wash_trash, is_wash_engine, is_wash_seat, is_wash_carpet, 
                 is_wash_pillows, wash_address, wash_start_time, wash_end_time, is_fill_window_washing_water, is_wash_hollow, 
                 wash.created_at, wash.updated_at
             ")
-            ->join('vehicle','vehicle.id','=','wash.vehicle_id')
-            ->orderBy('wash.created_at','desc')
-            ->paginate($limit);
+            ->join('vehicle','vehicle.id','=','wash.vehicle_id');
+        
+        if ($search) {
+            $search = strtolower($search);
+            $res->where(function ($q) use ($search) {
+                $q->whereRaw('LOWER(wash_desc) LIKE ?', ["%{$search}%"])->orWhereRaw('LOWER(wash_address) LIKE ?', ["%{$search}%"]);
+            });
+        }
 
-        return $res->isNotEmpty() ? $res : null;
+        return $res->orderBy('wash.created_at','desc')->paginate($limit);
     }
 
     public static function getWashByVehicleId($user_id, $vehicle_id, $limit = null, $page = 1){

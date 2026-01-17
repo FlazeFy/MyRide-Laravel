@@ -5521,7 +5521,7 @@
                     "Service"
                 ],
                 "summary": "Get All Service",
-                "description": "This request is used to get all service history. This request interacts with the MySQL database, has a protected routes, and pagination.",
+                "description": "This request is used to get all service history, you can filter the service data using given `vehicle_id` or `search` to find based on service_location or service_note. This request interacts with the MySQL database, has a protected routes, and pagination.",
                 "operationId": "bc5e51b694b7a5f64005010b7f27c5f1",
                 "responses": {
                     "200": {
@@ -12794,7 +12794,7 @@
                     "Wash"
                 ],
                 "summary": "Get All Wash",
-                "description": "This request is used to get all wash history. This request interacts with the MySQL database, has a protected routes, and a pagination.",
+                "description": "This request is used to get all wash history, you can filter the wash data using given `search` to find based on wash_address or wash_desc. This request interacts with the MySQL database, has a protected routes, and a pagination.",
                 "operationId": "e4734ff42a78318e53bfbd0de0202ad6",
                 "responses": {
                     "200": {

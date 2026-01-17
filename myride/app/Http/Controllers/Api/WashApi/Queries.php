@@ -22,7 +22,7 @@ class Queries extends Controller
      * @OA\GET(
      *     path="/api/v1/wash",
      *     summary="Get All Wash",
-     *     description="This request is used to get all wash history. This request interacts with the MySQL database, has a protected routes, and a pagination.",
+     *     description="This request is used to get all wash history, you can filter the wash data using given `search` to find based on wash_address or wash_desc. This request interacts with the MySQL database, has a protected routes, and a pagination.",
      *     tags={"Wash"},
      *     security={{"bearerAuth":{}}},
      *     @OA\Response(
@@ -95,9 +95,10 @@ class Queries extends Controller
         try{
             $user_id = $request->user()->id;
             $limit = $request->query("limit",15);
+            $search = $request->query("search",null);
 
             // Get all wash history
-            $res = WashModel::getAllWashHistory($user_id,$limit);
+            $res = WashModel::getAllWashHistory($user_id, $limit, $search);
             if($res && count($res) > 0) {
                 // Return success response
                 return response()->json([

@@ -5,7 +5,7 @@
     <div class="col-md-6 col-sm-12">
         <div class="form-group-mini">
             <label class="mb-1">Search by Location / Notes</label>
-            <input class="form-control search_by_location-input mb-0" placeholder="ex : routine service">
+            <input class="form-control search-input mb-0" placeholder="ex : routine service">
         </div>
     </div>
 </div><hr>
@@ -28,7 +28,7 @@
 <script>
     let page = 1
 
-    $(document).on('blur','.search_by_location-input', function(){
+    $(document).on('blur','.search-input', function(){
         const val = $(this).val().trim()
         getAllService(1,val !== "" ? val : null)
     })

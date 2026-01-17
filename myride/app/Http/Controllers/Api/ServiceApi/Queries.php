@@ -24,7 +24,7 @@ class Queries extends Controller
      * @OA\GET(
      *     path="/api/v1/service",
      *     summary="Get All Service",
-     *     description="This request is used to get all service history. This request interacts with the MySQL database, has a protected routes, and pagination.",
+     *     description="This request is used to get all service history, you can filter the service data using given `vehicle_id` or `search` to find based on service_location or service_note. This request interacts with the MySQL database, has a protected routes, and pagination.",
      *     tags={"Service"},
      *     security={{"bearerAuth":{}}},
      *     @OA\Response(

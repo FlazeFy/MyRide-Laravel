@@ -1,4 +1,14 @@
-<h2>All Wash</h2><hr>
+<div class="row d-flex align-items-center">
+    <div class="col-md-6 col-sm-12">
+        <h2 class="mb-0">All Wash</h2>
+    </div>
+    <div class="col-md-6 col-sm-12">
+        <div class="form-group-mini">
+            <label class="mb-1">Search by Location / Notes</label>
+            <input class="form-control search-input mb-0" placeholder="ex : wash using hydraulic">
+        </div>
+    </div>
+</div><hr>
 <div class="table-responsive">
     <table class="table table-bordered">
         <thead>
@@ -17,11 +27,17 @@
 <script>
     let page = 1
 
-    const getAllWash = (page) => {
+    $(document).on('blur','.search-input', function(){
+        const val = $(this).val().trim()
+        getAllWash(1,val !== "" ? val : null)
+    })
+
+    const getAllWash = (page, search) => {
         const holder = 'wash-holder'
+        const searchQuery = search ? `&search=${search}` : ''
 
         $.ajax({
-            url: `/api/v1/wash?page=${page}`,
+            url: `/api/v1/wash?page=${page}${searchQuery}`,
             type: 'GET',
             beforeSend: function (xhr) {
                 Swal.showLoading()
@@ -55,9 +71,9 @@
                                         }
                                     </div>
                                 </div>
-                                <h6 class="mb-0">Address</h6>
+                                <h6 class="mb-0">Location</h6>
                                 <p>${dt.wash_address ?? '-'}</p>
-                                <h6 class="mb-0">Description</h6>
+                                <h6 class="mb-0">Notes</h6>
                                 <p class="mb-0">${dt.wash_desc ?? '-'}</p>
                             </td>
                             <td style="max-width:var(--tcolMinLG);">
@@ -118,5 +134,5 @@
             }
         });
     };
-    getAllWash(page)
+    getAllWash(page, null)
 </script>
