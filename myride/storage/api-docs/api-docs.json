@@ -4066,7 +4066,7 @@
                     "Inventory"
                 ],
                 "summary": "Get All Inventory",
-                "description": "This request is used to get all inventory. This request interacts with the MySQL database, has a protected routes, and a pagination.",
+                "description": "This request is used to get all inventory, you can filter the inventory data using given `search` to find based on inventory_name. This request interacts with the MySQL database, has a protected routes, and a pagination.",
                 "operationId": "ba8b3005bed7008380df0cdd8724f8f3",
                 "responses": {
                     "200": {

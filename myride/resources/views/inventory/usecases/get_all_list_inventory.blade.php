@@ -1,4 +1,14 @@
-<h2>All Inventory</h2><hr>
+<div class="row d-flex align-items-center">
+    <div class="col-md-6 col-sm-12">
+        <h2 class="mb-0">All Inventory</h2>
+    </div>
+    <div class="col-md-6 col-sm-12">
+        <div class="form-group-mini">
+            <label class="mb-1">Search by Name</label>
+            <input class="form-control search-input mb-0" placeholder="ex : emergency tire">
+        </div>
+    </div>
+</div><hr>
 <div class="table-responsive">
     <table class="table table-bordered">
         <thead>
@@ -18,11 +28,17 @@
 <script>
     let page = 1
 
-    const getAllInventory = (page) => {
+    $(document).on('blur','.search-input', function(){
+        const val = $(this).val().trim()
+        getAllInventory(1,val !== "" ? val : null)
+    })
+
+    const getAllInventory = (page, search) => {
         const holder = 'inventory-holder'
+        const searchQuery = search ? `&search=${search}` : ''
 
         $.ajax({
-            url: `/api/v1/inventory?page=${page}`,
+            url: `/api/v1/inventory?page=${page}${searchQuery}`,
             type: 'GET',
             beforeSend: function (xhr) {
                 Swal.showLoading()
@@ -103,5 +119,5 @@
             }
         });
     };
-    getAllInventory(page)
+    getAllInventory(page, null)
 </script>

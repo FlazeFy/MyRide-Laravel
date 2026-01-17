@@ -23,7 +23,7 @@ class Queries extends Controller
      * @OA\GET(
      *     path="/api/v1/inventory",
      *     summary="Get All Inventory",
-     *     description="This request is used to get all inventory. This request interacts with the MySQL database, has a protected routes, and a pagination.",
+     *     description="This request is used to get all inventory, you can filter the inventory data using given `search` to find based on inventory_name. This request interacts with the MySQL database, has a protected routes, and a pagination.",
      *     tags={"Inventory"},
      *     security={{"bearerAuth":{}}},
      *     @OA\Response(
@@ -81,6 +81,7 @@ class Queries extends Controller
         try{
             $user_id = $request->user()->id;
             $paginate = $request->query('per_page_key') ?? 15;
+            $search = $request->query("search",null);
             // This will get all inventory if vehicle_id not attached
             $vehicle_id = $request->query('vehicle_id') ?? null;
             
@@ -89,7 +90,7 @@ class Queries extends Controller
             $user_id = $check_admin ? null : $user_id;
 
             // Get all inventory with paginate
-            $res = InventoryModel::getAllInventory($user_id, $vehicle_id, $paginate);
+            $res = InventoryModel::getAllInventory($user_id, $vehicle_id, $paginate, $search);
             if (count($res) > 0) {
                 // Return success response
                 return response()->json([

@@ -40,12 +40,19 @@ class InventoryModel extends Model
         'inventory_qty' => 'integer',
     ];
 
-    public static function getAllInventory($user_id = null, $limit){
+    public static function getAllInventory($user_id = null, $vehicle_id = null, $limit, $search = null){
         $res = InventoryModel::select('inventory.id','inventory_name', 'inventory_category', 'inventory_qty', 'inventory_storage', 'inventory_image_url', 'inventory.created_at', 'inventory.updated_at', 'vehicle_plate_number','vehicle_type')
             ->leftjoin('vehicle','vehicle.id','=','inventory.vehicle_id');
 
-        if($user_id){
+        if ($user_id){
             $res = $res->where('inventory.created_by', $user_id);
+        }
+        if($vehicle_id){
+            $res = $res->where('vehicle.id', $vehicle_id);
+        }
+        if ($search) {
+            $search = strtolower($search);
+            $res->whereRaw('LOWER(inventory_name) LIKE ?', ["%{$search}%"]);
         }
             
         return $res->orderByRaw('COALESCE(inventory.updated_at, inventory.created_at) DESC')->paginate($limit);                       
