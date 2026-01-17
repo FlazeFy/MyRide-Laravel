@@ -183,9 +183,9 @@
             dayMaxEvents: 4,
             events: [],
             eventClick: function(info) {
-                window.location.href = "/trip?locate=" + info.event.groupId;
+                window.location.href = "/trip?trip_id=" + info.event.groupId
             },
-        });
+        })
         calendar.render()
 
         const get_calendar = () => {

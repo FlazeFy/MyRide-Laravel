@@ -5710,6 +5710,12 @@
                                         "type": "string",
                                         "format": "date-time",
                                         "example": "2025-01-20 09:15:00"
+                                    },
+                                    "created_at": {
+                                        "type": "string",
+                                        "format": "date-time",
+                                        "example": "2025-01-20 09:15:00",
+                                        "nullable": true
                                     }
                                 },
                                 "type": "object"
@@ -9023,6 +9029,11 @@
                                             "type": "array",
                                             "items": {
                                                 "properties": {
+                                                    "id": {
+                                                        "type": "string",
+                                                        "format": "uuid",
+                                                        "example": "28668090-5653-dff5-2d8f-af603fc36b45"
+                                                    },
                                                     "trip_location_name": {
                                                         "type": "string",
                                                         "example": "Location A - Location B"

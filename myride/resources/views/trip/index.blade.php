@@ -24,7 +24,7 @@
             <a class="btn btn-success" href='/trip/add'><i class="fa-solid fa-plus"></i> Trip</a>
             <a class="btn btn-success" href='/trip/calendar'><i class="fa-solid fa-calendar"></i><span class="d-none d-md-inline"> Calendar</span></a>
             @include('trip.usecases.get_export_trip')
-            <button class="btn btn-danger" onclick="initMap()"><i class="fa-solid fa-refresh"></i><span class="d-none d-md-inline"> Show All Trip</span></button>
+            <button class="btn btn-danger" id="show_all_trip-button"><i class="fa-solid fa-refresh"></i><span class="d-none d-md-inline"> Show All Trip</span></button>
             <div id="carousel-nav-holder"></div>
         </div>
         <div class="row mt-3">
@@ -38,4 +38,14 @@
             </div>
         </div>
     </div>
+
+    <script>
+        $(document).ready(function () {
+            const params = new URLSearchParams(window.location.search)
+
+            $(document).on('click','#show_all_trip-button',function(){
+                params.has("trip_id") ? window.location.href = '/trip' : initMap()
+            })
+        })
+    </script>
 @endsection

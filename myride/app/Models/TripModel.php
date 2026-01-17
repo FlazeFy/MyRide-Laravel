@@ -42,7 +42,7 @@ class TripModel extends Model
     protected $primaryKey = 'id';
     protected $fillable = ['id', 'vehicle_id', 'driver_id', 'trip_desc', 'trip_category', 'trip_person', 'trip_origin_name', 'trip_origin_coordinate', 'trip_destination_name', 'trip_destination_coordinate', 'created_at', 'created_by', 'updated_at', 'deleted_at'];
 
-    public static function getAllTrip($user_id, $limit, $driver_id = null){
+    public static function getAllTrip($user_id, $limit, $driver_id = null, $trip_id = null){
         $res = TripModel::select("trip.id", "vehicle_name", "driver.fullname as driver_fullname", "vehicle_plate_number", "trip_desc", "trip_category", "trip_origin_name", "trip_person", "trip_origin_coordinate", "trip_destination_name","trip_destination_coordinate","vehicle_type", "trip.created_at")
             ->join('vehicle','vehicle.id','=','trip.vehicle_id')
             ->leftjoin('driver','driver.id','=','trip.driver_id')
@@ -52,6 +52,9 @@ class TripModel extends Model
         if($driver_id){
             $res = $res->where('trip.driver_id',$driver_id);
         }
+        if($trip_id){
+            $res = $res->where('trip.id',$trip_id);
+        }
 
         $res = $res->paginate($limit);
 
@@ -59,7 +62,7 @@ class TripModel extends Model
     }
 
     public static function getTripCalendar($user_id){
-        return TripModel::selectRaw("CONCAT(trip_origin_name, ' - ', trip_destination_name) AS trip_location_name, vehicle.vehicle_plate_number,trip.created_at")
+        return TripModel::selectRaw("trip.id,CONCAT(trip_origin_name, ' - ', trip_destination_name) AS trip_location_name, vehicle.vehicle_plate_number,trip.created_at")
             ->leftjoin('vehicle','vehicle.id','=','trip.vehicle_id')
             ->where('trip.created_by',$user_id)
             ->orderby('trip.created_at','DESC')

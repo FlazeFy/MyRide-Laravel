@@ -88,9 +88,10 @@ class Queries extends Controller
         try{
             $user_id = $request->user()->id;
             $limit = $request->query("limit",15);
+            $trip_id = $request->query("trip_id",null);
 
             // Get all trip with pagination
-            $res = TripModel::getAllTrip($user_id,$limit);
+            $res = TripModel::getAllTrip($user_id,$limit,null,$trip_id);
             if($res && count($res) > 0) {
                 // Return success response
                 return response()->json([
@@ -458,6 +459,7 @@ class Queries extends Controller
      *             @OA\Property(property="message", type="string", example="trip fetched"),
      *             @OA\Property(property="data", type="array",
      *                  @OA\Items(
+     *                      @OA\Property(property="id", type="string", format="uuid", example="28668090-5653-dff5-2d8f-af603fc36b45"),
      *                      @OA\Property(property="trip_location_name", type="string", example="Location A - Location B"),
      *                      @OA\Property(property="vehicle_plate_number", type="string", example="D 1710 PWT"),
      *                      @OA\Property(property="created_at", type="string", format="date-time", example="2024-03-19 02:37:58")

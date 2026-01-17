@@ -28,51 +28,61 @@
 
     const getAllTrip = (page) => {
         return new Promise((resolve, reject) => {
-            $.ajax({
-                url: `/api/v1/trip?page=${page}`,
-                type: 'GET',
-                beforeSend: function (xhr) {
-                    Swal.showLoading()
-                    xhr.setRequestHeader("Accept", "application/json")
-                    xhr.setRequestHeader("Authorization", `Bearer ${token}`)
-                },
-                success: function(response) {
-                    Swal.close()
-                    const payload = response.data
-                    const data = payload.data
-                    lastPageCarousel = payload.last_page
-                    nextPageUrlCarousel = payload.next_page_url
+            let queryTripId = ''
 
-                    if (page === 1) {
-                        dt_all_trip_location = data
-                        markers = []
-                        buildLayoutTrip(payload,"<?= $carouselId ?>")
-                    } else {
-                        appendLayoutTrip(payload,"<?= $carouselId ?>")
-                    }
+            $(document).ready(function () {
+                const params = new URLSearchParams(window.location.search)
 
-                    data.forEach(dt => place_marker(dt))
-                    initMap()
-                    resolve()
-
-                    if (data.length > 3) {
-                        templateCarouselNavigation("carousel-nav-holder", "<?= $carouselId ?>")
-                    }
-
-                    pauseCarousel("<?= $carouselId ?>")
-                    syncCarouselIndicator("<?= $carouselId ?>")
-                },
-                error: function(response, jqXHR, textStatus, errorThrown) {
-                    Swal.close()
-                    if(response.status != 404){
-                        reject(errorThrown)
-                        generateApiError(response, true)
-                    } else {
-                        templateAlertContainer(`<?= $carouselId ?>`, 'no-data', "No trip found", 'add a trip', '<i class="fa-solid fa-car"></i>','/trip/add')
-                    }
+                if (params.has("trip_id")) {
+                    queryTripId = `&trip_id=${params.get("trip_id")}`
                 }
-            });
-        });
+           
+                $.ajax({
+                    url: `/api/v1/trip?page=${page}${queryTripId}`,
+                    type: 'GET',
+                    beforeSend: function (xhr) {
+                        Swal.showLoading()
+                        xhr.setRequestHeader("Accept", "application/json")
+                        xhr.setRequestHeader("Authorization", `Bearer ${token}`)
+                    },
+                    success: function(response) {
+                        Swal.close()
+                        const payload = response.data
+                        const data = payload.data
+                        lastPageCarousel = payload.last_page
+                        nextPageUrlCarousel = payload.next_page_url
+
+                        if (page === 1) {
+                            dt_all_trip_location = data
+                            markers = []
+                            buildLayoutTrip(payload,"<?= $carouselId ?>")
+                        } else {
+                            appendLayoutTrip(payload,"<?= $carouselId ?>")
+                        }
+
+                        data.forEach(dt => place_marker(dt))
+                        initMap()
+                        resolve()
+
+                        if (data.length > 3) {
+                            templateCarouselNavigation("carousel-nav-holder", "<?= $carouselId ?>")
+                        }
+
+                        pauseCarousel("<?= $carouselId ?>")
+                        syncCarouselIndicator("<?= $carouselId ?>")
+                    },
+                    error: function(response, jqXHR, textStatus, errorThrown) {
+                        Swal.close()
+                        if(response.status != 404){
+                            reject(errorThrown)
+                            generateApiError(response, true)
+                        } else {
+                            templateAlertContainer(`<?= $carouselId ?>`, 'no-data', "No trip found", 'add a trip', '<i class="fa-solid fa-car"></i>','/trip/add')
+                        }
+                    }
+                })
+            })
+        })
     }
     getAllTrip(page)
 
