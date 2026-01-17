@@ -96,8 +96,8 @@
                     $('#vehicle_fuel_status').html(detail.vehicle_fuel_status)
                     $('#vehicle_capacity').html(`${detail.vehicle_capacity} person`)
                     $('#vehicle_status').html(
-                        `${detail.deleted_at ? `<span class="btn btn-danger rounded-pill px-2 py-1 m-0" style="font-size:var(--textXSM);">Deleted at <span class="date-holder">${getDateToContext(detail.deleted_at,'calendar')}</span></span>` :''}
-                        <span class="btn btn-success rounded-pill px-2 py-1 m-0" style="font-size:var(--textMD);">${detail.vehicle_status}</span>`
+                        `${detail.deleted_at ? `<span class="btn btn-danger rounded-pill px-2 py-1 m-0" style="font-size: var(--textXSM);">Deleted at <span class="date-holder">${getDateToContext(detail.deleted_at,'calendar')}</span></span>` :''}
+                        <span class="btn btn-success rounded-pill px-2 py-1 m-0" style="font-size: var(--textMD);">${detail.vehicle_status}</span>`
                     )
                     $('#vehicle_distance').html(`${detail.vehicle_distance} Km`)
                     $('#vehicle_desc').html(detail.vehilce_desc ?? '<span class="fst-italic">- No Description Provided -</span>')

@@ -1,6 +1,6 @@
 <div class="text-center mt-3 section-form">
     <h3>Validate</h3><br>
-    <h4 class="my-2 fw-bold" style="font-size:var(--textJumbo);" id="timer">15:00</h4>
+    <h4 class="my-2 fw-bold" style="font-size: var(--textJumbo);" id="timer">15:00</h4>
     <label>Type the Token that has sended to your email</label><br>
     <div class="pin-code" id="pin-holder">
         <input type="text" maxlength="1" oninput="validatePin()" autofocus>

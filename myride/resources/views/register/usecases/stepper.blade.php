@@ -3,17 +3,12 @@
         position: sticky;
         top: var(--spaceMD);
         background: var(--firstColor);
-        border: 2px solid var(--secondaryColor);
         padding: var(--spaceLG);
         z-index: 999;
         width: 100%;
         border-radius: var(--roundedMD);
         display: block;
         box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-    }
-    .title {
-        font-weight: 600;
-        font-size: var(--textXLG);
     }
 </style>
 <div class="step mb-4">

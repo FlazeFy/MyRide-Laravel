@@ -7,8 +7,6 @@
         visibility: hidden;
         opacity: 0;
         padding: var(--spaceLG);
-        border: 2px solid var(--secondaryColor);
-        border-bottom: var(--spaceXXSM) solid var(--secondaryColor);
         border-radius:var(--roundedLG);
     }
     .carousel-item img {
@@ -26,7 +24,6 @@
         height: 9.5vw !important;
         margin: 0 !important;
         padding: 0 !important;
-        cursor: pointer;
         padding: calc(var(--spaceXMD)*0.2) calc(var(--spaceXMD)*0.4);
         justify-content: center;
         align-items: center;
@@ -38,7 +35,6 @@
         background-size: cover;
         background-position: center;
         box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-        transition: all 0.3s ease;
         color: white;
         border-radius: var(--roundedLG);
     }
@@ -54,13 +50,10 @@
         display: none !important;
     }
     .indicator-top {
-        font-size: var(--textXLG);
-        font-weight: 700;
         letter-spacing: var(--spaceMini);
         margin: 0;
     }
     .indicator-bottom {
-        font-size: var(--textSM);
         margin: 0;
     }
     .carousel-indicators button.active .indicator-box {
@@ -196,7 +189,7 @@
                         }
 
                         $("#vehicle-content-list").append(`
-                            <div class="carousel-item ${idx === 0 ? "active" : ""}" data-bs-interval="10000">
+                            <div class="carousel-item ${idx === 0 ? "active" : ""} vehicle-carousel" data-bs-interval="10000">
                                 <div class="row">
                                     <div class="col-xl-4 col-lg-5 col-md-6">
                                         <img src="${imageUrl}" class="d-block w-100" alt="Vehicle Image">

@@ -40,7 +40,7 @@
                         <p class="text-secondary mt-2 mb-0 fw-bold">${dt.fullname}</p>
                     </td>
                     <td>
-                        <a class="btn btn-success pt-2 pb-1 px-3 ms-2" id="submit_assigned_driver-modal" data-vehicle_id="${vehicle_id}" data-driver_id="${dt.id}" data-driver_fullname="${dt.fullname}" data-vehicle_plate_number="${vehicle_plate_number}" style="font-size:var(--textMD);">
+                        <a class="btn btn-success pt-2 pb-1 px-3 ms-2" id="submit_assigned_driver-modal" data-vehicle_id="${vehicle_id}" data-driver_id="${dt.id}" data-driver_fullname="${dt.fullname}" data-vehicle_plate_number="${vehicle_plate_number}" style="font-size: var(--textMD);">
                             <i class="fa-solid fa-plus"></i>
                         </a>
                     </td>

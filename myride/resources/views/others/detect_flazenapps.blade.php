@@ -24,7 +24,7 @@
         color: var(--flazenDarkColor) !important;
     }
     #alert-flazenapps p, #alert-flazenapps a {
-        font-size:var(--textMD);
+        font-size: var(--textMD);
         text-decoration: none;
     }
     #alert-flazenapps .btn-danger {

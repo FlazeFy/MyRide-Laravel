@@ -7,7 +7,7 @@
     $( document ).ready(function() {
         $(document).on('input','#telegram_user_id', function(){
             if($(this).val().length == 10){
-                $(this).after(`<a class='btn btn-success position-absolute' style='bottom:var(--spaceSM); right:var(--spaceSM); padding:var(--spaceXXSM) var(--spaceMD) !important; font-size:var(--textXMD); font-weight:600;' id='validate-telegram-id-btn'><i class="fa-solid fa-paper-plane"></i> Validate</a>`)
+                $(this).after(`<a class='btn btn-success position-absolute' style='bottom:var(--spaceSM); right:var(--spaceSM); padding:var(--spaceXXSM) var(--spaceMD) !important; font-size: var(--textXMD); font-weight:600;' id='validate-telegram-id-btn'><i class="fa-solid fa-paper-plane"></i> Validate</a>`)
             } else {
                 $('#validate-telegram-id-btn').remove()
             }

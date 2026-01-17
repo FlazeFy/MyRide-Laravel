@@ -45,7 +45,7 @@
                                 ${locationName.toLowerCase() === dt.trip_location_name.toLowerCase() ? `<span class="chip bg-success m-0">Matched</span>`:""}
                             </div>
                             <p class="text-secondary mb-1">${dt.trip_location_coordinate}</p>
-                            <a class="btn btn-success py-1 px-3 use_coordinate-btn" data-location-coordinate="${dt.trip_location_coordinate}" data-location-name="${dt.trip_location_name}" data-active-input="${id}" style="font-size:var(--textMD);">Use This</a>
+                            <a class="btn btn-success py-1 px-3 use_coordinate-btn" data-location-coordinate="${dt.trip_location_coordinate}" data-location-name="${dt.trip_location_name}" data-active-input="${id}" style="font-size: var(--textMD);">Use This</a>
                         </div>
                     `)
                 });

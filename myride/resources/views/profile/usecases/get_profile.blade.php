@@ -1,10 +1,7 @@
 <style>
-    #telegram_validated_status {
-        font-size:var(--textLG);
-    }
     @media (max-width: 767px) {
         #telegram_validated_status {
-            font-size:var(--textMD);
+            font-size: var(--textMD);
         } 
     }
 </style>

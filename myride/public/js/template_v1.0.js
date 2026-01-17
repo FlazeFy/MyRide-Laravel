@@ -61,7 +61,7 @@ const templateTripBox = (dt, extra_class = '', showLocation = true) => {
                 ${ coorOrigin ? `
                     <div class="text-center">
                         <a><i class="fa-solid fa-arrow-right"></i></a>
-                        <p class="mb-0" style="font-size:var(--textMD);">${calculateDistance(coorOrigin[0], coorOrigin[1], coorDestination[0], coorDestination[1])} Km</p>
+                        <p class="mb-0" style="font-size: var(--textMD);">${calculateDistance(coorOrigin[0], coorOrigin[1], coorDestination[0], coorDestination[1])} Km</p>
                     </div>`: ''
                 }
                 <div class="text-end">
@@ -104,15 +104,15 @@ const templateTripBox = (dt, extra_class = '', showLocation = true) => {
                         <p class="mb-0 text-secondary">${dt.updated_at}</p>
                     </div>` : ""}
                 <div>
-                    <a class="btn btn-warning py-2 px-3 btn-update" style="font-size:var(--textMD);" data-vehicle-plate-number="${dt.vehicle_plate_number}" data-id="${dt.id}"
+                    <a class="btn btn-warning py-2 px-3 btn-update" style="font-size: var(--textMD);" data-vehicle-plate-number="${dt.vehicle_plate_number}" data-id="${dt.id}"
                         data-trip-category="${dt.trip_category}" data-trip-person="${dt.trip_person}" data-trip-destination-name="${dt.trip_destination_name}" data-trip-origin-name="${dt.trip_origin_name}"
                         data-trip-desc="${dt.trip_desc}" data-trip-origin-coordinate="${dt.trip_origin_coordinate}" data-trip-destination-coordinate="${dt.trip_destination_coordinate}">
                         <i class="fa-solid fa-pen-to-square"></i>
                     </a>
-                    <a class="btn btn-danger py-2 px-3 ms-2 btn-delete" data-url="/api/v1/trip/destroy/${dt.id}" data-context="Trip" style="font-size:var(--textMD);">
+                    <a class="btn btn-danger py-2 px-3 ms-2 btn-delete" data-url="/api/v1/trip/destroy/${dt.id}" data-context="Trip" style="font-size: var(--textMD);">
                         <i class="fa-solid fa-trash"></i>
                     </a>
-                    <a class="btn btn-primary py-2 px-3 ms-2" data-bs-toggle="collapse" href="#collapseDetailTrip${dt.id}" role="button" aria-expanded="false" style="font-size:var(--textMD);">
+                    <a class="btn btn-primary py-2 px-3 ms-2" data-bs-toggle="collapse" href="#collapseDetailTrip${dt.id}" role="button" aria-expanded="false" style="font-size: var(--textMD);">
                         <i class="fa-solid fa-up-right-and-down-left-from-center"></i>
                     </a>
                 </div>

@@ -1,27 +1,83 @@
 /* Typography */
 a {
     text-decoration: none;
+}
+
+/* Font Size */
+.summary-label {
+    font-size: var(--textJumbo);
+}
+.form-control, .form-select, .input-group-text, .popover-header, th.fc-col-header-cell.fc-day a, .title, .indicator-top  {
+    font-size: var(--textXLG);
+}
+#telegram_validated_status {
+    font-size: var(--textLG);
+}
+table tbody h6, thead th, .message.small p, a.fc-daygrid-day-number {
+    font-size: var(--textXMD);
+}
+.text-secondary, .no-msg-text, input[type="file"].form-control, .apexcharts-tooltip-title, table tbody,
+.fc-daygrid-more-link.fc-more-link, .chip, .plate-number, .chip-mini {
+    font-size: var(--textMD);
+}
+.btn.small, .btn-page, .indicator-bottom, #wash_tb tbody h6, #wash_tb tbody p {
+    font-size: var(--textSM);
+}
+.fc-daygrid-event .fc-event-title, .fc-timegrid-event .fc-event-title {
+    font-size: var(--textXSM);
+}
+
+/* Font Weight */
+.navbar .navbar-brand, .summary-number, .indicator-top, .chip, .plate-number {
+    font-weight: 700;
+}
+.summary-label, .sidebar .group-menu, .chip-mini, thead th, .title, .fc-popover-close.fc-icon.fc-icon-x {
+    font-weight: 600;
+}
+.btn, .sidebar .nav-link.active, .gm-control-active, .swal2-actions button, .fc-event-title, .fc-daygrid-event, .fc-timegrid-event,
+.fc-daygrid-event .fc-event-title, .fc-timegrid-event .fc-event-title, .fc-popover.fc-more-popover .fc-popover-title {
+    font-weight: 500;
+}
+.fc-daygrid-more-link.fc-more-link {
+    font-weight: 400;
+}
+
+/* Font Style */
+.text-secondary, .no-msg-text {
+    font-style: italic;
+}
+
+/* Text Align */
+.no-msg-text, .sidebar .nav-link i, .chip, .plate-number, .chip-mini, .pin-code input, tr:not(.calendar-holder tr), 
+td:not(.calendar-holder td), thead th {
+    text-align: center !important;
+}
+
+/* Color */
+h6, p, .swal2-html-container, .swal2-title, tbody td, a, .sidebar .nav-link, input:focus, textarea:focus, .form-control, 
+.form-select, .input-group-text, .apexcharts-legend-text, .apexcharts-tooltip-title, .apexcharts-tooltip, .apexcharts-xaxistooltip, 
+.apexcharts-xaxistooltip.apexcharts-theme-light, .apexcharts-xaxistooltip.apexcharts-theme-dark, .box-reminder-recently,
+.calendar-tag-holder .btn-primary, .fc-popover.fc-more-popover .fc-popover-title, .fc-popover-close.fc-icon.fc-icon-x,
+.fc-daygrid-more-link.fc-more-link {
     color: var(--secondaryColor) !important;
 }
-h6, p, .swal2-html-container, .swal2-title, tbody td {
-    color: var(--secondaryColor) !important;
+.input-group-text, .gm-ui-hover-effect span, .btn-trip-box, .popover-header {
+    color: var(--firstColor) !important;
 }
+.text-dark, nav a, .chip, .plate-number, .chip-mini, .fc .fc-daygrid-day.fc-day-today a.fc-daygrid-day-number,
+.fc-event-title, .apexcharts-tooltip-title, #scroll-to-top-btn {
+    color: var(--darkColor) !important;
+}
+.no-msg-text, .text-secondary {
+    color: var(--greyColor) !important;
+}
+thead th, .btn, .sidebar .nav-link.active, .gm-control-active, .swal2-actions button, .btn-page, .btn-page-holder label,
+th.fc-col-header-cell.fc-day a {
+    color: var(--whiteColor) !important;
+}
+
 label, input, textarea, select {
     margin-bottom: var(--spaceMD);
-}
-.no-msg-text {
-    color: var(--greyColor);
-    text-align: center !important;
-    font-style: italic;
-    font-size: var(--textMD);
-}
-.text-secondary {
-    font-style: italic;
-    color: var(--greyColor) !important;
-    font-size: var(--textMD);
-}
-.text-dark {
-    color: var(--darkColor) !important;
 }
 
 /* Table */
@@ -30,34 +86,18 @@ table {
     width: 100%;
     border: 1.75px solid var(--secondaryColor) !important;
 }
-tr:not(.calendar-holder tr), td:not(.calendar-holder td) {
-    text-align: center;         
+tr:not(.calendar-holder tr), td:not(.calendar-holder td) {      
     vertical-align: middle;    
     border: 1.75px solid var(--secondaryColor) !important; 
 }
 thead th {
-    text-align: center;
     background: var(--blueColor) !important;
-    color: var(--whiteColor);
     letter-spacing: 0.5px;
-    font-weight: 600;
-    font-size: var(--textXMD);
-}
-table tbody {
-    font-size: var(--textMD);
-}
-table tbody h6 {
-    font-size: var(--textXMD);
 }
 
 /* Summary */
-.summary-label {
-    font-size: var(--textJumbo);
-    font-weight: 600;
-}
 .summary-number {
     font-size: calc(2*var(--textJumbo));
-    font-weight: 700;
     margin: 0;
 }
 
@@ -67,5 +107,4 @@ table tbody h6 {
 .message.small p {
     margin-top: var(--spaceSM);
     margin-bottom: 0;
-    font-size: var(--textXMD);
 }

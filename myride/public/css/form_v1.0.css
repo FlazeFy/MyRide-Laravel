@@ -2,17 +2,14 @@ hr {
     background: var(--secondaryColor);
 }
 .btn, .sidebar .nav-link.active, .gm-control-active, .swal2-actions button {
-    color: var(--whiteColor) !important;
     border-left: none;
     border-top: none;
     border-right: none;
     padding: var(--spaceSM) var(--spaceMD);
-    font-weight: 500;
 }
 
 /* Button */
 .btn.small, .btn-page {
-    font-size: var(--textSM);
     padding: var(--spaceXSM) var(--spaceMD);
 }
 .btn:hover, .hover-grow:hover, .btn-page:hover {
@@ -47,12 +44,10 @@ hr {
     border: 1.5px solid var(--secondaryColor) !important;
 }
 .btn-page {
-    cursor: pointer;
     padding: var(--spaceMini) var(--spaceMD);
 }
 .btn-page, .btn-page-holder label {
     margin: 0;
-    color: var(--whiteColor) !important;
 }
 .btn-page-holder label {
     margin-right: var(--spaceXSM);
@@ -66,29 +61,20 @@ hr {
 .form-label, label, .btn-page {
     font-weight: 500;
 }
-input:focus, textarea:focus {
-    color: var(--secondaryColor) !important;
-}
 .form-control, .form-select, .input-group-text {
     background: transparent !important;
-    font-size: var(--textXLG);
-    color: var(--secondaryColor);
 }
 .form-control, .form-select, .input-group-text , .rounded {
     border-radius: var(--roundedLG) !important;   
 }
 input[type="file"].form-control {
     margin-bottom: 0;
-    font-size: var(--textMD);
 }
 .progress-bar {
     background: var(--successColor);
 }
 
 /* Input Group */
-.input-group-text {
-    color: var(--firstColor);
-}
 .input-group .input-group-text {
     padding: var(--spaceSM);
     background: var(--warningColor) !important;

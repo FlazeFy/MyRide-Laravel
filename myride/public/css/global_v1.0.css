@@ -105,3 +105,15 @@ body {
 img:not(.gm-style img) {
     border-radius: var(--roundedLG);
 }
+
+.btn-page, .carousel-indicators button, .fc-daygrid-event, .fc-timegrid-event {
+    cursor: pointer;
+}
+
+.btn, .container, .sidebar .nav-link, .hover-grow, .plate-number, .chip, .bordered, .chip-mini, .container-fluid, .navbar-brand,
+.fc-daygrid-event, .fc-timegrid-event, .fc-daygrid-event, .fc-timegrid-event, .fc-popover.fc-more-popover, .sidebar,
+.sidebar .nav-link span, .sidebar .nav-link i, .sidebar .nav-link, .sidebar .group-menu, .indicator-box {
+    -webkit-transition: all 0.4s !important;
+    -o-transition: all 0.4s !important;
+    transition: all 0.4s !important;
+}

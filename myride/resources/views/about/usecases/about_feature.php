@@ -1,5 +1,5 @@
 <h2>Our Futures</h2><hr>
-<ul>
+<ul class="mb-0">
     <li><b>Manage Vehicle</b> You can add your vehicle details such as brand, type, category, and other specifications. Based on this data, you can track fuel consumption, set service or washing schedules, and much more.</li>
     <li><b>Assign Driver</b> Easily assign drivers to specific vehicles and monitor their usage, making it ideal for families, teams, or fleet operations.</li>
     <li><b>Fuel Monitoring</b> Track fuel volume, brand, type, and cost to analyze consumption patterns and optimize efficiency.</li>

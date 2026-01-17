@@ -2,23 +2,15 @@
     background:var(--warningColor) !important; 
     z-index: 98;
 }
-.chip-mini {
-    font-size:var(--textSM); 
+.chip-mini { 
     border-radius: var(--roundedLG);
-    font-weight: 600;
     margin-inline: var(--spaceXXSM);
 }
 .chip, .plate-number, .chip-mini {
     padding: var(--spaceMini) var(--spaceSM) !important;
-    text-align: center;
 }
 .chip, .plate-number {
-    font-weight: bold;
     margin-inline: var(--spaceSM);
-    font-size:var(--textMD); 
-}
-.chip, .plate-number, .chip-mini {
-    color: var(--darkColor);
 }
 
 /* Carousel */
@@ -51,23 +43,17 @@
 .apexcharts-yaxis-label, .apexcharts-xaxis-label, .apexcharts-datalabel-value {
     fill: var(--secondaryColor) !important;
 }
-.apexcharts-legend-text {
-    color: var(--secondaryColor) !important;
-}
 .apexcharts-yaxis-label, .apexcharts-xaxis-label, .apexcharts-tooltip, .apexcharts-legend-text  {
     text-transform: capitalize !important;
 }
 .apexcharts-tooltip-title, .apexcharts-tooltip, .apexcharts-xaxistooltip, .apexcharts-xaxistooltip.apexcharts-theme-light, .apexcharts-xaxistooltip.apexcharts-theme-dark {
-    background: var(--firstColor) !important;  
-    color: var(--secondaryColor) !important;
+    background: var(--firstColor) !important; 
 }
 .apexcharts-tooltip-title {
     padding-inline: var(--spaceMD) !important;
     border-radius: none !important;
     background: var(--warningColor) !important;
     font-weight: 600 !important;
-    font-size: var(--textMD) !important;
-    color: var(--darkColor) !important;
     border-bottom: 1.5px solid var(--secondaryColor) !important;
 }
 .apexcharts-tooltip, .apexcharts-xaxistooltip, .apexcharts-xaxistooltip.apexcharts-theme-light, .apexcharts-xaxistooltip.apexcharts-theme-dark {
@@ -80,16 +66,15 @@
     padding: 0; 
     margin: 0 auto; 
     display: flex;
-    justify-content:center;
+    justify-content: center;
 } 
 .pin-code input { 
-    border: 1.75px solid var(--firstColor); 
-    text-align: center; 
+    border: 1.75px solid var(--firstColor);
     width: 48px;
-    height:48px;
+    height: 48px;
     font-size: 36px; 
-    background-color: #F3F3F3;
-    margin-right:5px;
+    background-color: var(--whiteColor);
+    margin-right: 5px;
 } 
 .pin-code input:focus { 
     border: 1px solid var(--secondaryColor);
@@ -116,14 +101,10 @@
 }
 .gm-style-iw.gm-style-iw-c {
     background: var(--firstColor) !important;
-    border-bottom: var(--spaceXXSM) solid var(--secondaryColor) !important;
 }
 .gm-ui-hover-effect {
     display: none !important;
     position: absolute !important;
-}
-.gm-ui-hover-effect span {
-    color: var(--firstColor) !important;
 }
 .gm-control-active {
     fill: var(--firstColor) !important;

@@ -1,6 +1,6 @@
 <div class="d-block d-md-flex justify-content-between align-items-center mb-2">
     <div>
-        <label style="font-size:var(--textXLG);" class="mb-0">Auto Background</label>
+        <label style="font-size: var(--textXLG);" class="mb-0">Auto Background</label>
         <p class="mb-0 text-secondary">Ligth / Dark Mode theme based on your current local time</p>
     </div>
     <div class="d-grid d-md-inline-block">

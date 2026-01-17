@@ -1,10 +1,14 @@
 /* Container */
 .container, .form-control, .form-select, .modal-content, .swal2-popup, .popover, .plate-number, .chip, .bordered, .container-fluid, .input-group-text,
-.apexcharts-tooltip, .apexcharts-xaxistooltip, .apexcharts-xaxistooltip.apexcharts-theme-light, .apexcharts-xaxistooltip.apexcharts-theme-dark, .gm-style-iw.gm-style-iw-c {
+.apexcharts-tooltip, .apexcharts-xaxistooltip, .apexcharts-xaxistooltip.apexcharts-theme-light, .apexcharts-xaxistooltip.apexcharts-theme-dark, .gm-style-iw.gm-style-iw-c,
+.carousel-item.vehicle-carousel, .box-reminder-recently, .step {
     border: 2px solid var(--secondaryColor) !important;
 }
-.container, .modal-content, .swal2-popup, .popover, .plate-number, .chip, .container-fluid {
+.carousel-item.vehicle-carousel, .container, .modal-content, .swal2-popup, .popover, .plate-number, .chip, .container-fluid,
+.gm-style-iw.gm-style-iw-c {
     border-bottom: var(--spaceXXSM) solid var(--secondaryColor) !important;
+}
+.container, .modal-content, .swal2-popup, .popover, .plate-number, .chip, .container-fluid {
     padding: var(--spaceXLG);
     margin-bottom: var(--spaceLG);
     background: var(--firstColor);
@@ -32,18 +36,12 @@
 .container-landing {
     border-radius: var(--roundedJumbo);
     padding: var(--spaceXLG);
-    border: 4px solid transparent;
     margin-bottom: var(--spaceLG);
-    border: 4px solid var(--firstColor);
+    border: var(--spaceMini) solid var(--firstColor);
 }
 .container, .container-fluid, .modal-content, .gm-style-iw.gm-style-iw-c {
     border-radius: var(--roundedLG) !important;
 } 
-.btn, .container, .sidebar .nav-link, .hover-grow, .plate-number, .chip, .bordered, .chip-mini, .container-fluid, .navbar-brand {
-    -webkit-transition: all 0.4s !important;
-    -o-transition: all 0.4s !important;
-    transition: all 0.4s !important;
-}
 .modal-content, .swal2-popup, .popover, .btn:hover, .container-landing, .apexcharts-tooltip {
     box-shadow: rgba(0, 0, 0, 0.2) 1.975px 1.975px 2.8px !important;
 }

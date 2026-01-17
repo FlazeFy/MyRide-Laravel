@@ -1,6 +1,5 @@
 <style>
     #wash_tb tbody h6, #wash_tb tbody p {
-        font-size:var(--textSM) !important;
         margin-bottom:0;
     }
 </style>
@@ -80,7 +79,7 @@
                                         { key: "is_wash_hollow", label: "Vehicle Hollow Washing" },
                                         { key: "is_fill_window_washing_water", label: "Window Washing Water Fill" },
                                     ].map(wash => 
-                                        dt[wash.key] ? `<span style='font-size:var(--textMD);'>${wash.label}</span>, ` : ''
+                                        dt[wash.key] ? `<span style='font-size: var(--textMD);'>${wash.label}</span>, ` : ''
                                     ).join('')}
                                 </p>
                             </div>

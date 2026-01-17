@@ -1,9 +1,6 @@
 /* Navbar */
-nav a {
-    color: var(--darkColor) !important;
-}
 .navbar, .footer {
-    border-bottom: 2px solid var(--secondaryColor);
+    border-bottom: calc(var(--spaceMini)/2) solid var(--secondaryColor);
     padding: var(--spaceLG);
     position: sticky;
     top: 0;
@@ -11,7 +8,6 @@ nav a {
     z-index: 1000;
 }
 .navbar .navbar-brand {
-    font-weight: 700;
     font-size: calc(var(--textJumbo)*1.15);
     margin-bottom: var(--spaceXXSM) !important;
 }
@@ -60,7 +56,7 @@ nav a {
 }
 
 .footer {
-    border-top: 2px solid var(--secondaryColor);
+    border-top: calc(var(--spaceMini)/2) solid var(--secondaryColor);
 }
 
 /* Sidebar */
@@ -71,33 +67,23 @@ nav a {
     z-index: 999;
     top: 0;
     left: 0;
-    background-color: #111;
+    background-color: var(--darkColor);
     overflow-x: hidden;
-    transition: 0.5s;
     padding-top: calc(var(--spaceJumbo)*3);
     background-color: var(--firstColor);
 }
 .sidebar .group-menu {
-    font-weight: 600;
     margin-top: var(--spaceMD);
-    transition: opacity 0.3s ease, margin 0.3s ease;
 }
 .sidebar .nav-link {
-    border: 2px solid transparent;
-    color: var(--secondaryColor);
+    border: calc(var(--spaceMini)/2) solid transparent;
     margin-bottom: var(--spaceMini);
     display: flex;
     align-items: center;
     gap: 8px;
-    transition: background 0.3s ease, border 0.3s ease, padding 0.3s ease;
 }
 .sidebar .nav-link i {
     min-width: 24px;
-    text-align: center;
-    transition: margin 0.3s ease;
-}
-.sidebar .nav-link span {
-    transition: opacity 0.3s ease;
 }
 .sidebar .nav-link.active {
     background: var(--blueColor) !important;
@@ -105,7 +91,7 @@ nav a {
 }
 .sidebar .nav-link:hover {
     background: var(--firstColor);
-    border: 2px solid var(--secondaryBlueColor);
+    border: calc(var(--spaceMini)/2) solid var(--secondaryBlueColor);
     border-bottom: var(--spaceXXSM) solid var(--secondaryBlueColor);
 }
 .sidebar #vehicle_menu-list .nav-link:hover {

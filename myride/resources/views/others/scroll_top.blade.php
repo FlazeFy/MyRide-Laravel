@@ -5,9 +5,6 @@
         bottom: var(--spaceLG); 
         z-index: 1000; 
     }
-    #scroll-to-top-btn {
-        color: var(--darkColor) !important;
-    }
 </style>
 
 <div id="nav_scroll-holder"></div>

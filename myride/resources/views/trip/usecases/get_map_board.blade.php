@@ -67,15 +67,15 @@
     const markerInfoHTML = (trip_desc, trip_category, created_at, placeLabel, placeName, originCoord, destinationCoord, vehicle_type) => {
         return `
             <div class="d-flex justify-content-between mb-2">
-                <button class="btn btn-danger custom-close-btn py-1" style="font-size:var(--textMD); margin:0 !important;"><i class="fa-solid fa-arrow-left"></i> Back</button>
-                <span class="btn btn-primary rounded-pill px-3 py-1 text-capitalize" style="font-size:var(--textMD)px;">${trip_category}</span>
+                <button class="btn btn-danger custom-close-btn py-1" style="font-size: var(--textMD); margin:0 !important;"><i class="fa-solid fa-arrow-left"></i> Back</button>
+                <span class="btn btn-primary rounded-pill px-3 py-1 text-capitalize" style="font-size: var(--textMD)px;">${trip_category}</span>
             </div><hr>
             <h6 class="mb-1">${trip_desc}</h6>
             <p class="mt-2 mb-0 fw-bold">${placeLabel}</p>
             <p>${placeName}</p>
             <p class="mt-2 mb-0 fw-bold">Created At</p>
             <p class="mb-0">${created_at}</p>
-            <a class="btn btn-success py-1 mt-2 btn-set-route" data-trip-origin-coordinate="${originCoord}" data-trip-destination-coordinate="${destinationCoord}" data-vehicle-type="${vehicle_type}" style="font-size:var(--textMD)px;">
+            <a class="btn btn-success py-1 mt-2 btn-set-route" data-trip-origin-coordinate="${originCoord}" data-trip-destination-coordinate="${destinationCoord}" data-vehicle-type="${vehicle_type}" style="font-size: var(--textMD)px;">
                 <i class="fa-solid fa-map-pin"></i> Set Route
             </a>
         `
