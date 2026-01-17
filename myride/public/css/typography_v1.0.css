@@ -26,6 +26,9 @@ table tbody h6, thead th, .message.small p, a.fc-daygrid-day-number {
 .fc-daygrid-event .fc-event-title, .fc-timegrid-event .fc-event-title {
     font-size: var(--textXSM);
 }
+.form-group-mini > * {
+    font-size: var(--textSM);
+}
 
 /* Font Weight */
 .navbar .navbar-brand, .summary-number, .indicator-top, .chip, .plate-number {

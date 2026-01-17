@@ -48,12 +48,21 @@ class ServiceModel extends Model
             ->first();                       
     }
 
-    public static function getAllService($user_id = null, $limit){
+    public static function getAllService($user_id = null, $vehicle_id = null, $limit, $search = null){
         $res = ServiceModel::select('service.id', 'service_category', 'service_price_total', 'service_location', 'service_note', 'service.created_at', 'service.updated_at', 'vehicle_plate_number','vehicle_type','remind_at')
             ->leftjoin('vehicle','vehicle.id','=','service.vehicle_id');
 
         if($user_id){
             $res = $res->where('service.created_by', $user_id);
+        }
+        if($vehicle_id){
+            $res = $res->where('vehicle.id', $vehicle_id);
+        }
+        if ($search) {
+            $search = strtolower($search);
+            $res->where(function ($q) use ($search) {
+                $q->whereRaw('LOWER(service_note) LIKE ?', ["%{$search}%"])->orWhereRaw('LOWER(service_location) LIKE ?', ["%{$search}%"]);
+            });
         }
             
         return $res->orderByRaw('COALESCE(service.remind_at, service.created_at) DESC')->paginate($limit);                       

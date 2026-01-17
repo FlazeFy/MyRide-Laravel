@@ -82,6 +82,7 @@ class Queries extends Controller
         try{
             $user_id = $request->user()->id;
             $paginate = $request->query('per_page_key') ?? 15;
+            $search = $request->query("search",null);
             // This will get all service if vehicle_id not attached
             $vehicle_id = $request->query('vehicle_id') ?? null;
 
@@ -90,7 +91,7 @@ class Queries extends Controller
             $user_id = $check_admin ? null : $user_id;
 
             // Get all service
-            $res = ServiceModel::getAllService($user_id, $vehicle_id, $paginate);            
+            $res = ServiceModel::getAllService($user_id, $vehicle_id, $paginate, $search);            
             if (count($res) > 0) {
                 // Return success response
                 return response()->json([

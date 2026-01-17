@@ -1,4 +1,14 @@
-<h2>All Service</h2><hr>
+<div class="row d-flex align-items-center">
+    <div class="col-md-6 col-sm-12">
+        <h2 class="mb-0">All Service</h2>
+    </div>
+    <div class="col-md-6 col-sm-12">
+        <div class="form-group-mini">
+            <label class="mb-1">Search by Location / Notes</label>
+            <input class="form-control search_by_location-input mb-0" placeholder="ex : routine service">
+        </div>
+    </div>
+</div><hr>
 <div class="table-responsive">
     <table class="table table-bordered">
         <thead>
@@ -18,11 +28,17 @@
 <script>
     let page = 1
 
-    const getAllService = (page) => {
+    $(document).on('blur','.search_by_location-input', function(){
+        const val = $(this).val().trim()
+        getAllService(1,val !== "" ? val : null)
+    })
+
+    const getAllService = (page, search) => {
         const holder = 'service-holder'
+        const searchQuery = search ? `&search=${search}` : ''
 
         $.ajax({
-            url: `/api/v1/service?page=${page}`,
+            url: `/api/v1/service?page=${page}${searchQuery}`,
             type: 'GET',
             beforeSend: function (xhr) {
                 Swal.showLoading()
@@ -93,5 +109,5 @@
             }
         });
     };
-    getAllService(page)
+    getAllService(page, null)
 </script>
