@@ -23,7 +23,7 @@ class Queries extends Controller
      * @OA\GET(
      *     path="/api/v1/trip",
      *     summary="Get All Trip History",
-     *     description="This request is used to get all trip history. This request interacts with the MySQL database, has a protected routes, and a pagination.",
+     *     description="This request is used to get all trip history, you can filter the trip data using given `search` to find based on trip_description, trip_destination_name, or trip_origin_name. This request interacts with the MySQL database, has a protected routes, and a pagination.",
      *     tags={"Trip"},
      *     security={{"bearerAuth":{}}},
      *     @OA\Response(
@@ -89,9 +89,10 @@ class Queries extends Controller
             $user_id = $request->user()->id;
             $limit = $request->query("limit",15);
             $trip_id = $request->query("trip_id",null);
+            $search = $request->query("search",null);
 
             // Get all trip with pagination
-            $res = TripModel::getAllTrip($user_id,$limit,null,$trip_id);
+            $res = TripModel::getAllTrip($user_id, $limit, null, $trip_id, $search);
             if($res && count($res) > 0) {
                 // Return success response
                 return response()->json([

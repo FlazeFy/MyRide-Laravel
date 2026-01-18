@@ -26,19 +26,25 @@
     let nextPageUrlCarousel = null
     let isFetchingNextCarousel = false
 
-    const getAllTrip = (page) => {
+    $(document).on('blur','.search-input', function(){
+        const val = $(this).val().trim()
+        getAllTrip(1,val !== "" ? val : null)
+    })
+
+    const getAllTrip = (page, search) => {
         return new Promise((resolve, reject) => {
             let queryTripId = ''
 
             $(document).ready(function () {
                 const params = new URLSearchParams(window.location.search)
+                const searchQuery = search ? `&search=${search}` : ''
 
                 if (params.has("trip_id")) {
                     queryTripId = `&trip_id=${params.get("trip_id")}`
                 }
            
                 $.ajax({
-                    url: `/api/v1/trip?page=${page}${queryTripId}`,
+                    url: `/api/v1/trip?page=${page}${queryTripId}${searchQuery}`,
                     type: 'GET',
                     beforeSend: function (xhr) {
                         Swal.showLoading()
@@ -84,7 +90,7 @@
             })
         })
     }
-    getAllTrip(page)
+    getAllTrip(page, null)
 
     $(document).ready(function() {
         $('#<?= $carouselId ?>').on('slid.bs.carousel', function (e) {

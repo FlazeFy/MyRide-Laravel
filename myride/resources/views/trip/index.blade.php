@@ -20,11 +20,15 @@
     </style>
 
     <div class="position-relative">
-        <div class="d-flex flex-wrap gap-2">
+        <div class="d-flex flex-wrap gap-2 align-items-center">
             <a class="btn btn-success" href='/trip/add'><i class="fa-solid fa-plus"></i> Trip</a>
             <a class="btn btn-success" href='/trip/calendar'><i class="fa-solid fa-calendar"></i><span class="d-none d-md-inline"> Calendar</span></a>
             @include('trip.usecases.get_export_trip')
             <button class="btn btn-danger" id="show_all_trip-button"><i class="fa-solid fa-refresh"></i><span class="d-none d-md-inline"> Show All Trip</span></button>
+            <div class="form-group-mini">
+                <label class="mb-1">Search by Location Name, Description, or Person With</label>
+                <input class="form-control search-input mb-0" placeholder="ex : cafe, jhon doe, or hangout">
+            </div>
             <div id="carousel-nav-holder"></div>
         </div>
         <div class="row mt-3">

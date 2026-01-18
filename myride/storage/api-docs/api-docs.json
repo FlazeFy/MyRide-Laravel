@@ -7874,7 +7874,7 @@
                     "Trip"
                 ],
                 "summary": "Get All Trip History",
-                "description": "This request is used to get all trip history. This request interacts with the MySQL database, has a protected routes, and a pagination.",
+                "description": "This request is used to get all trip history, you can filter the trip data using given `search` to find based on trip_description, trip_destination_name, or trip_origin_name. This request interacts with the MySQL database, has a protected routes, and a pagination.",
                 "operationId": "f1bd5ed3638a68bd70161cf74ffafcb8",
                 "responses": {
                     "200": {
