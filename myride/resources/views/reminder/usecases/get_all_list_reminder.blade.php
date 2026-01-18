@@ -5,7 +5,17 @@
     }
 </style>
 
-<h2>All Reminder</h2><hr>
+<div class="row d-flex align-items-center">
+    <div class="col-md-6 col-sm-12">
+        <h2 class="mb-0">All Reminder</h2>
+    </div>
+    <div class="col-md-6 col-sm-12">
+        <div class="form-group-mini">
+            <label class="mb-1">Search by Title or Body</label>
+            <input class="form-control search-input mb-0" placeholder="ex : pick up Jhon at the airport">
+        </div>
+    </div>
+</div><hr>
 <div class="table-responsive">
     <table class="table text-center table-bordered">
         <thead>
@@ -25,6 +35,11 @@
 <script>
     let page = 1
 
+    $(document).on('blur','.search-input', function(){
+        const val = $(this).val().trim()
+        getAllReminder(1,val !== "" ? val : null)
+    })
+
     const initDynamicMap = (elementId, coords) => {
         const map = new google.maps.Map(document.getElementById(elementId), {
             center: { lat: coords[0], lng: coords[1] },
@@ -37,11 +52,12 @@
         });
     }
 
-    const getAllReminder = (page) => {
+    const getAllReminder = (page, search) => {
         const holder = 'reminder-holder'
+        const searchQuery = search ? `&search=${search}` : ''
 
         $.ajax({
-            url: `/api/v1/reminder?page=${page}`,
+            url: `/api/v1/reminder?page=${page}${searchQuery}`,
             type: 'GET',
             beforeSend: function (xhr) {
                 Swal.showLoading()
@@ -141,5 +157,5 @@
             }
         });
     }
-    getAllReminder(page)
+    getAllReminder(page, null)
 </script>

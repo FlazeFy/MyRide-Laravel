@@ -4820,7 +4820,7 @@
                     "Reminder"
                 ],
                 "summary": "Get All Reminder",
-                "description": "This request is used to get all reminder. This request interacts with the MySQL database, has a protected routes, and a pagination.",
+                "description": "This request is used to get all reminder, you can filter the reminder data using given `search` to find based on reminder_title or reminder_body. This request interacts with the MySQL database, has a protected routes, and a pagination.",
                 "operationId": "0e57a988ebf3ad38c9c240003759a8c0",
                 "responses": {
                     "200": {

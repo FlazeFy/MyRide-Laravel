@@ -99,7 +99,7 @@ class Queries extends Controller
      * @OA\GET(
      *     path="/api/v1/reminder",
      *     summary="Get All Reminder",
-     *     description="This request is used to get all reminder. This request interacts with the MySQL database, has a protected routes, and a pagination.",
+     *     description="This request is used to get all reminder, you can filter the reminder data using given `search` to find based on reminder_title or reminder_body. This request interacts with the MySQL database, has a protected routes, and a pagination.",
      *     tags={"Reminder"},
      *     security={{"bearerAuth":{}}},
      *     @OA\Response(
@@ -166,9 +166,10 @@ class Queries extends Controller
         try{
             $user_id = $request->user()->id;
             $limit = $request->query("limit",15);
+            $search = $request->query("search",null);
 
             // Get all reminder with pagination
-            $res = ReminderModel::getAllReminder($user_id,$limit);
+            $res = ReminderModel::getAllReminder($user_id, $limit, $search);
             if(count($res) > 0) {
                 // Return success response
                 return response()->json([
