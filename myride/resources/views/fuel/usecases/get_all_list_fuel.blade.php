@@ -68,7 +68,7 @@
                                     <p class="mb-0">${dt.fuel_type}</p>` :''
                                 }
                             </td>
-                            <td>${getDateToContext(dt.created_at,'calendar')}</td>
+                            <td>${getDateToContext(dt.created_at,'calendar',false)}</td>
                             <td>
                                 <div class='d-flex flex-wrap gap-2 justify-content-center'>
                                     ${dt.fuel_bill != null ? `

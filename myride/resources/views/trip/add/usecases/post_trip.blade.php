@@ -81,9 +81,7 @@
     let map
     let markerCounter = 0
 
-    let now = new Date()
-    let departureAt = now.getFullYear() + "-" + String(now.getMonth() + 1).padStart(2, '0') + "-" + String(now.getDate()).padStart(2, '0') + "T" + String(now.getHours()).padStart(2, '0') + ":" + String(now.getMinutes()).padStart(2, '0');
-    $("#departure_at").val(departureAt)
+    setCurrentLocalDateTime("departure_at")
 
     function initMap() {
         map = new google.maps.Map(document.getElementById("map-board"), {

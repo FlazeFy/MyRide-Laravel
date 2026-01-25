@@ -38,8 +38,16 @@
                     <input class="form-control" name="fuel_volume" id="fuel_volume" type="number" min="1" value="1">
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-12">
-                    <label>Total Price</label>
-                    <input class="form-control" name="fuel_price_total" id="fuel_price_total">
+                    <div class="row">
+                        <div class="col-sm-6 col-12">
+                            <label>Total Price</label>
+                            <input class="form-control form-validator" name="fuel_price_total" id="fuel_price_total" type="number" data-validator="must_positive" min="0">
+                        </div>
+                        <div class="col-sm-6 col-12">
+                            <label>Fuel At</label>
+                            <input class="form-control" name="fuel_at" id="fuel_at" type="datetime-local">
+                        </div>
+                    </div>
                 </div>
             </div>
             <hr>
@@ -52,14 +60,18 @@
 </form>
 
 <script type="text/javascript">
+    setCurrentLocalDateTime("fuel_at")
+
     $(document).on('click','#submit-add-fuel-btn', function(){
         post_fuel()
     })
+
     $(document).on('change','#vehicle_holder', function(){
         const id = $(this).val()
         getVehicleDetail(id)
         id !== "-" && get_vehicle_last_fuel(id)
     })
+
     $(document).on('change','#fuel_brand_holder', async function(){
         const val = $(this).val()
         await getDictionaryByContextOption(`fuel_type_${val}`)
@@ -100,6 +112,7 @@
         fd.append("fuel_type", fuel_type === "-" ? null : fuel_type)
         fd.append("fuel_ron", $("#fuel_ron").val())
         fd.append("fuel_volume", $('#fuel_volume').val())
+        fd.append("fuel_at", $('#fuel_at').val())
         fd.append("fuel_price_total", $('#fuel_price_total').val())
 
         const img = $("#fuel_bill")[0] ? $("#fuel_bill")[0].files[0] : null

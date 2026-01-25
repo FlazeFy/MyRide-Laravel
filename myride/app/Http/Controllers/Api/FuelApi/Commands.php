@@ -237,6 +237,10 @@ class Commands extends Controller
                     'fuel_ron' => $request->fuel_ron, 
                     'fuel_bill' => $fuel_bill
                 ];
+                // If refuel time not defined, just use current time
+                if($request->fuel_at){
+                    $data['created_at'] = $request->fuel_at;
+                }
                 $rows = FuelModel::createFuel($data, $user_id);
                 if($rows){
                     // Create history

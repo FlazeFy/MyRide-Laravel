@@ -31,7 +31,7 @@
                             <div class="d-flex justify-content-between align-items-center mb-2">
                                 <div>
                                     <h5 class="mb-0">${data.fuel_brand}${data.fuel_type ? ` | ${data.fuel_type}`:''}</h5>
-                                    <p class="text-secondary text-dark mb-0">Fuel at ${getDateToContext(data.created_at,'calendar')}</p>
+                                    <p class="text-secondary text-dark mb-0">Fuel at ${getDateToContext(data.created_at,'calendar',false)}</p>
                                 </div>
                                 <div class="d-flex gap-2">
                                     ${data.fuel_ron ? `<h5 class="chip bg-warning m-0">RON ${data.fuel_ron}</h5>`:''}

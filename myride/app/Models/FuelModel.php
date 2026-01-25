@@ -127,7 +127,7 @@ class FuelModel extends Model
     }
 
     public static function createFuel($data, $user_id){
-        $data['created_at'] = date('Y-m-d H:i:s');
+        $data['created_at'] = $data['created_at'] ?? date('Y-m-d H:i:s');
         $data['created_by'] = $user_id;
         $data['id'] = Generator::getUUID();
             

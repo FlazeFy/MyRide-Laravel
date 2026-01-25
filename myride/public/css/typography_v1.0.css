@@ -7,10 +7,10 @@ a {
 .summary-label {
     font-size: var(--textJumbo);
 }
-.form-control, .form-select, .input-group-text, .popover-header, th.fc-col-header-cell.fc-day a, .title, .indicator-top  {
+.input-group-text, .popover-header, th.fc-col-header-cell.fc-day a, .title, .indicator-top  {
     font-size: var(--textXLG);
 }
-#telegram_validated_status {
+#telegram_validated_status, .form-select, .form-control {
     font-size: var(--textLG);
 }
 table tbody h6, thead th, .message.small p, a.fc-daygrid-day-number {
