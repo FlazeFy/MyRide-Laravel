@@ -45,7 +45,7 @@
                         </div>
                         <div class="col-sm-6 col-12">
                             <label>Fuel At</label>
-                            <input class="form-control" name="fuel_at" id="fuel_at" type="datetime-local">
+                            <input class="form-control form-validator" data-validator="must_past" name="fuel_at" id="fuel_at" type="datetime-local">
                         </div>
                     </div>
                 </div>

@@ -62,7 +62,7 @@
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-12">
                     <label>Departure At</label>
-                    <input class="form-control" name="departure_at" id="departure_at" type="datetime-local">
+                    <input class="form-control form-validator" data-validator="must_past" name="departure_at" id="departure_at" type="datetime-local">
                 </div>
             </div>
             <div class="row">

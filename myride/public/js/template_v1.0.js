@@ -106,7 +106,7 @@ const templateTripBox = (dt, extra_class = '', showLocation = true) => {
                 <div>
                     <a class="btn btn-warning py-2 px-3 btn-update" style="font-size: var(--textMD);" data-vehicle-plate-number="${dt.vehicle_plate_number}" data-id="${dt.id}"
                         data-trip-category="${dt.trip_category}" data-trip-person="${dt.trip_person}" data-trip-destination-name="${dt.trip_destination_name}" data-trip-origin-name="${dt.trip_origin_name}"
-                        data-trip-desc="${dt.trip_desc}" data-trip-origin-coordinate="${dt.trip_origin_coordinate}" data-trip-destination-coordinate="${dt.trip_destination_coordinate}">
+                        data-trip-desc="${dt.trip_desc}" data-trip-origin-coordinate="${dt.trip_origin_coordinate}" data-trip-destination-coordinate="${dt.trip_destination_coordinate}" data-departure-at="${dt.created_at}">
                         <i class="fa-solid fa-pen-to-square"></i>
                     </a>
                     <a class="btn btn-danger py-2 px-3 ms-2 btn-delete" data-url="/api/v1/trip/destroy/${dt.id}" data-context="Trip" style="font-size: var(--textMD);">

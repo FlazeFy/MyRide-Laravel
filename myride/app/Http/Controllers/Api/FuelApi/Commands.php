@@ -339,6 +339,7 @@ class Commands extends Controller
                     'fuel_brand' => $request->fuel_brand, 
                     'fuel_type' => $request->fuel_type, 
                     'fuel_ron' => $request->fuel_ron, 
+                    'created_at' => $request->fuel_at, 
                 ];
                 $rows = FuelModel::updateFuelById($data, $user_id, $id);
                 if($rows > 0){

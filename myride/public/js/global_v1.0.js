@@ -186,15 +186,21 @@ const setChecklistHolder = () => {
     });
 }
 
-const setCurrentLocalDateTime = (target) => {
-    const now = new Date()
-    const year = now.getFullYear()
-    const month = String(now.getMonth() + 1).padStart(2, "0")
-    const day = String(now.getDate()).padStart(2, "0")
-    const hour = String(now.getHours()).padStart(2, "0")
-    const minute = String(now.getMinutes()).padStart(2, "0")
-    const formatted = `${year}-${month}-${day}T${hour}:${minute}`
+const setCurrentLocalDateTime = (target, datetime = null) => {
+    let date
 
+    if (datetime) {
+        date = new Date(datetime.replace(" ", "T"))
+    } else {
+        date = new Date()
+    }
+
+    const year = date.getFullYear()
+    const month = String(date.getMonth() + 1).padStart(2, "0")
+    const day = String(date.getDate()).padStart(2, "0")
+    const hour = String(date.getHours()).padStart(2, "0")
+    const minute = String(date.getMinutes()).padStart(2, "0")
+    const formatted = `${year}-${month}-${day}T${hour}:${minute}`
     $(`#${target}`).val(formatted)
 }
 
@@ -227,7 +233,7 @@ const validatorInput = () => {
             failedMsg(`Input with id="${$el.attr('id')}" is missing or has empty data-validator`)
         }
 
-        if(validator && validator.trim() === 'must_future') {
+        if(validator && (validator.trim() === 'must_future' || validator.trim() === 'must_past')) {
             $el.on('blur', function() {
                 const type = $el.attr('type')
                 const val = $el.val()
@@ -241,12 +247,13 @@ const validatorInput = () => {
                     chosenDate = new Date(val + 'T00:00:00')
                 }
 
-                if(chosenDate && chosenDate <= now) {
-                    failedMsg('Please choose a future date/time')
+                let con = validator.trim() === 'must_future' ? chosenDate <= now : chosenDate >= now
+                if(chosenDate && con) {
+                    failedMsg(`Please choose a ${validator.trim().replace('must_','')} date/time`)
                     $(this).val(null)
                 }
             })
-        }
+        } 
 
         if(validator && validator.trim() === 'must_positive') {
             $el.on('blur', function() {

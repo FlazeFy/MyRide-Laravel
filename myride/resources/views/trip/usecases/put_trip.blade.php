@@ -53,6 +53,12 @@
                             <input class="form-control" name="trip_destination_coordinate" id="trip_destination_coordinate" requried>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6 col-sm-12">
+                            <label>Departure At</label>
+                            <input class="form-control form-validator" data-validator="must_past" name="departure_at" id="departure_at" type="datetime-local">
+                        </div>
+                    </div>
                 </form>
                 <hr>
                 <div class="d-grid d-md-inline-block">
@@ -82,6 +88,7 @@
                 return false
             }
         })
+
         $('#trip_id').val($(this).data('id'))
         $('#trip_desc').val($(this).data('trip-desc'))
         $('#trip_category_holder').val($(this).data('trip-category'))
@@ -90,12 +97,14 @@
         $('#trip_origin_coordinate').val($(this).data('trip-origin-coordinate'))
         $('#trip_destination_name').val($(this).data('trip-destination-name'))
         $('#trip_destination_coordinate').val($(this).data('trip-destination-coordinate'))
+        setCurrentLocalDateTime('departure_at',$(this).data('departure-at'))
     })
 
     $(document).on('click','#submit_update-btn', function(){
         const id = $('#trip_id').val()
         put_trip(id)
     })
+
     const put_trip = (id) => {
         const vehicleId = $('#vehicle_holder').val()
         const tripCategory = $('#trip_category_holder').val()
@@ -135,7 +144,12 @@
                 })
             },
             error: function(response, jqXHR, textStatus, errorThrown) {
-                generateApiError(response, true)
+                Swal.close()
+                if(response.status === 500){
+                    generateApiError(response, true)
+                } else {
+                    failedMsg(response.status === 400 ? Object.values(response.responseJSON.message).flat().join('\n') : response.responseJSON.message)
+                }
             }
         })
     }

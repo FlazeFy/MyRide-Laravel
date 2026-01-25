@@ -140,6 +140,7 @@ class Validation
             'fuel_brand' => ['required', new FuelBrandRule], 
             'fuel_type' => 'nullable|string|max:36|min:1',
             'fuel_ron' => ['required', new FuelRonRule],
+            'fuel_at' => 'required',
         ]);
     }
 
