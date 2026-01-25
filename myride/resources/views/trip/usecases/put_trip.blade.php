@@ -97,35 +97,46 @@
         put_trip(id)
     })
     const put_trip = (id) => {
-        const vehicle_id = $('#vehicle_holder').val()
-        const trip_category = $('#trip_category_holder').val()
+        const vehicleId = $('#vehicle_holder').val()
+        const tripCategory = $('#trip_category_holder').val()
 
-        if(vehicle_id !== "-" && trip_category !== "-"){
-            if ($('#driver_holder').val() === "-") {
-                $('#driver_holder').val('')
-            }
-
-            Swal.showLoading()
-            $.ajax({
-                url: `/api/v1/trip/${id}`,
-                type: 'PUT',
-                data: $('#form-update-trip').serialize(),
-                beforeSend: function (xhr) {
-                    xhr.setRequestHeader("Accept", "application/json")
-                    xhr.setRequestHeader("Authorization", `Bearer ${token}`)
-                },
-                success: function(response) {
-                    Swal.close()
-                    Swal.fire("Success!", response.message, "success").then(() => {
-                        window.location.href = '/trip'
-                    });
-                },
-                error: function(response, jqXHR, textStatus, errorThrown) {
-                    generateApiError(response, true)
-                }
-            });
-        } else {
+        if (vehicleId === "-" || tripCategory === "-") {
             failedMsg('update trip : you must select an item')
+            return
         }
+
+        if ($('#trip_origin_name').val().trim() === $('#trip_destination_name').val().trim()){
+            failedMsg('update trip : trip origin and destination name must be different')
+            return
+        }
+
+        if ($('#trip_origin_coordinate').val().trim() === $('#trip_destination_coordinate').val().trim()){
+            failedMsg('update trip : trip origin and destination coordinate must be different')
+            return
+        }
+
+        if ($('#driver_holder').val() === "-") {
+            $('#driver_holder').val('')
+        }
+
+        Swal.showLoading()
+        $.ajax({
+            url: `/api/v1/trip/${id}`,
+            type: 'PUT',
+            data: $('#form-update-trip').serialize(),
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Accept", "application/json")
+                xhr.setRequestHeader("Authorization", `Bearer ${token}`)
+            },
+            success: function(response) {
+                Swal.close()
+                Swal.fire("Success!", response.message, "success").then(() => {
+                    window.location.href = '/trip'
+                })
+            },
+            error: function(response, jqXHR, textStatus, errorThrown) {
+                generateApiError(response, true)
+            }
+        })
     }
 </script>

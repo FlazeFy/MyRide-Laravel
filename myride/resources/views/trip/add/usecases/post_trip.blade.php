@@ -134,7 +134,7 @@
         location.reload()
     }
 
-    window.initMap = initMap;
+    window.initMap = initMap
 
     $(document).on('click','#submit-add-trip-btn', function(){
         post_trip()
@@ -165,6 +165,22 @@
 
     const post_trip = () => {
         Swal.showLoading()
+
+        if ($('#vehicle_holder').val() === "-" || $('#trip_category').val() === "-") {
+            failedMsg('create trip : you must select an item')
+            return
+        }
+
+        if ($('#trip_origin_name').val().trim() === $('#trip_destination_name').val().trim()){
+            failedMsg('create trip : trip origin and destination name must be different')
+            return
+        }
+
+        if ($('#trip_origin_coordinate').val().trim() === $('#trip_destination_coordinate').val().trim()){
+            failedMsg('create trip : trip origin and destination coordinate must be different')
+            return
+        }
+
         $.ajax({
             url: `/api/v1/trip`,
             type: 'POST',
@@ -184,12 +200,17 @@
                     if (result.isConfirmed) {
                         window.location.href = '/trip'
                     }   
-                });
+                })
             },
             error: function(response, jqXHR, textStatus, errorThrown) {
-                generateApiError(response, true)
+                Swal.close()
+                if(response.status === 500){
+                    generateApiError(response, true)
+                } else {
+                    failedMsg(response.status === 400 ? Object.values(response.responseJSON.message).flat().join('\n') : response.responseJSON.message)
+                }
             }
-        });
+        })
     }
 
     ;(async () => {

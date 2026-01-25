@@ -113,14 +113,30 @@ class Commands extends Controller
             } else {
                 $user_id = $request->user()->id;
                 $vehicle_id = $request->vehicle_id;
+                $trip_origin_name = $request->trip_origin_name;
+                $trip_destination_name = $request->trip_destination_name;
+                $trip_origin_coordinate = $request->trip_origin_coordinate;
+                $trip_destination_coordinate = $request->trip_destination_coordinate;
+
+                if ($trip_origin_name === $trip_destination_name){
+                    return response()->json([
+                        'status' => 'error',
+                        'message' => Generator::getMessageTemplate("custom", 'trip origin and destination coordinate must be different')
+                    ], Response::HTTP_BAD_REQUEST);
+                }
+
+                if ($trip_origin_coordinate === $trip_destination_coordinate){
+                    return response()->json([
+                        'status' => 'error',
+                        'message' => Generator::getMessageTemplate("custom", 'trip origin and destination coordinate must be different')
+                    ], Response::HTTP_BAD_REQUEST);
+                }
 
                 // Get vehicle by ID
                 $vehicle = VehicleModel::getVehicleIdentity($user_id,$vehicle_id);
-                if($vehicle){
+                if ($vehicle){
                     $vehicle_plate_number = $vehicle->vehicle_plate_number;
                     $vehicle_name = $vehicle->vehicle_name;
-                    $trip_origin_name = $request->trip_origin_name;
-                    $trip_destination_name = $request->trip_destination_name;
 
                     // Create trip
                     $data = [
@@ -130,9 +146,9 @@ class Commands extends Controller
                         'trip_category' => $request->trip_category, 
                         'trip_person' => $request->trip_person, 
                         'trip_origin_name' => $trip_origin_name, 
-                        'trip_origin_coordinate' => $request->trip_origin_coordinate, 
+                        'trip_origin_coordinate' => $trip_origin_coordinate, 
                         'trip_destination_name' => $trip_destination_name, 
-                        'trip_destination_coordinate' => $request->trip_destination_coordinate, 
+                        'trip_destination_coordinate' => $trip_destination_coordinate, 
                     ];
                     // If departure time not defined, just use current time
                     if($request->departure_at){
@@ -360,6 +376,25 @@ class Commands extends Controller
                     'message' => $validator->errors()
                 ], Response::HTTP_BAD_REQUEST);
             } else {
+                $trip_origin_name = $request->trip_origin_name;
+                $trip_destination_name = $request->trip_destination_name;
+                $trip_origin_coordinate = $request->trip_origin_coordinate;
+                $trip_destination_coordinate = $request->trip_destination_coordinate;
+
+                if ($trip_origin_name === $trip_destination_name){
+                    return response()->json([
+                        'status' => 'error',
+                        'message' => Generator::getMessageTemplate("custom", 'trip origin and destination coordinate must be different')
+                    ], Response::HTTP_BAD_REQUEST);
+                }
+
+                if ($trip_origin_coordinate === $trip_destination_coordinate){
+                    return response()->json([
+                        'status' => 'error',
+                        'message' => Generator::getMessageTemplate("custom", 'trip origin and destination coordinate must be different')
+                    ], Response::HTTP_BAD_REQUEST);
+                }
+
                 // Update trip by ID
                 $data = [
                     'vehicle_id' => $request->vehicle_id, 
@@ -367,10 +402,10 @@ class Commands extends Controller
                     'trip_desc' => $request->trip_desc, 
                     'trip_category' => $request->trip_category, 
                     'trip_person' => $request->trip_person, 
-                    'trip_origin_name' => $request->trip_origin_name, 
-                    'trip_origin_coordinate' => $request->trip_origin_coordinate, 
-                    'trip_destination_name' => $request->trip_destination_name, 
-                    'trip_destination_coordinate' => $request->trip_destination_coordinate, 
+                    'trip_origin_name' => $trip_origin_name, 
+                    'trip_origin_coordinate' => $trip_origin_coordinate, 
+                    'trip_destination_name' => $trip_destination_name, 
+                    'trip_destination_coordinate' => $trip_destination_coordinate, 
                 ];
                 $rows = TripModel::updateTripById($data, $user_id, $id);
                 if($rows > 0){
