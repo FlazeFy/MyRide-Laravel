@@ -38,9 +38,7 @@
                                     <h5 class="chip bg-warning m-0">+ ${data.fuel_volume}${data.fuel_brand !== 'Electric' ? 'L':'%'}</h5>
                                 </div>
                             </div>
-                            ${
-                                data.fuel_price_total ? `<h6 class="chip text-dark bg-warning d-inline mx-0">Rp. ${data.fuel_price_total.toLocaleString()},00</h6>` : `<div class="chip m-0 bg-success d-inline">Free</div>`
-                            }
+                            ${data.fuel_price_total ? `<h6 class="chip text-dark bg-warning d-inline mx-0">Rp. ${data.fuel_price_total.toLocaleString()},00</h6>` : `<div class="chip m-0 bg-success d-inline">Free</div>`}
                         </div>
                     `)
                 },

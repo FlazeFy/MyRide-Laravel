@@ -38,6 +38,7 @@
             $(document).ready(function () {
                 const params = new URLSearchParams(window.location.search)
                 const searchQuery = search ? `&search=${search}` : ''
+                const holder = '<?= $carouselId ?>';
 
                 if (params.has("trip_id")) {
                     queryTripId = `&trip_id=${params.get("trip_id")}`
@@ -47,6 +48,9 @@
                     url: `/api/v1/trip?page=${page}${queryTripId}${searchQuery}`,
                     type: 'GET',
                     beforeSend: function (xhr) {
+                        if ($(`#${holder}`).find('.carousel-inner').length === 0){
+                            $(`#${holder}`).html('<div class="carousel-inner pt-4"></div>')
+                        }
                         Swal.showLoading()
                         xhr.setRequestHeader("Accept", "application/json")
                         xhr.setRequestHeader("Authorization", `Bearer ${token}`)
@@ -61,9 +65,9 @@
                         if (page === 1) {
                             dt_all_trip_location = data
                             markers = []
-                            buildLayoutTrip(payload,"<?= $carouselId ?>")
+                            buildLayoutTrip(payload, holder)
                         } else {
-                            appendLayoutTrip(payload,"<?= $carouselId ?>")
+                            appendLayoutTrip(payload, holder)
                         }
 
                         data.forEach(dt => place_marker(dt))
@@ -71,11 +75,11 @@
                         resolve()
 
                         if (data.length > 3) {
-                            templateCarouselNavigation("carousel-nav-holder", "<?= $carouselId ?>")
+                            templateCarouselNavigation("carousel-nav-holder", holder)
                         }
 
-                        pauseCarousel("<?= $carouselId ?>")
-                        syncCarouselIndicator("<?= $carouselId ?>")
+                        pauseCarousel(holder)
+                        syncCarouselIndicator(holder)
                     },
                     error: function(response, jqXHR, textStatus, errorThrown) {
                         Swal.close()
@@ -83,7 +87,7 @@
                             reject(errorThrown)
                             generateApiError(response, true)
                         } else {
-                            templateAlertContainer(`<?= $carouselId ?>`, 'no-data', "No trip found", 'add a trip', '<i class="fa-solid fa-car"></i>','/trip/add')
+                            templateAlertContainer(holder, 'no-data', "No trip found", 'add a trip', '<i class="fa-solid fa-car"></i>','/trip/add')
                         }
                     }
                 })
