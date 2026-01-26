@@ -37,7 +37,7 @@
                 <div class="col-md-6 col-sm-12">
                     <div class="container-fluid vehicle-image-holder mt-2">
                         <input type="file" class="vehicle_other_images form-control" accept="image/jpeg,image/png,image/gif"><br>
-                        <img class="image-preview mt-1 d-none" style="max-width: 200px;">
+                        <img class="image-preview mt-1 d-none" style="max-width: 200px">
                     </div>
                 </div>
             `)

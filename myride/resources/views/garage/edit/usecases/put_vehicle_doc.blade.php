@@ -66,14 +66,10 @@
             reader.onload = function(event) {
 
                 if (type === "application/pdf") {
-                    previewHolder.html(`
-                        <iframe src="${event.target.result}" width="100%" height="400px"></iframe>
-                    `)
+                    previewHolder.html(`<iframe src="${event.target.result}" width="100%" height="400px"></iframe>`)
                 } 
                 else if (type.startsWith("image/")) {
-                    previewHolder.html(`
-                        <img src="${event.target.result}" class="img-fluid rounded border" style="max-height: 300px;"/>
-                    `)
+                    previewHolder.html(`<img src="${event.target.result}" class="img-fluid rounded border" style="max-height: 300px"/>`)
                 } 
                 else {
                     failedMsg('Unsupported file format')
@@ -112,7 +108,7 @@
                     $("#doc_attachment-holder").empty()
                     templateAlertContainer('doc_attachment-holder', 'no-data', "No document attached", null, '<i class="fa-solid fa-link"></i>', null)
                 }
-            });
+            })
         })
 
         const post_document = (id) => {
@@ -124,12 +120,12 @@
                 const files = this.files
                 if (!files.length) return
 
-                totalFiles += files.length;
+                totalFiles += files.length
                 for (let i = 0; i < files.length; i++) {
                     fd.append("vehicle_document[]", files[i])
                     fd.append("vehicle_document_caption[]", $(this).closest('.vehicle_document-holder').find('.vehicle_document_caption').val())
                 }
-            });
+            })
 
             if (totalFiles > 10) {
                 failedMsg("You can only upload up to 5 at one time")

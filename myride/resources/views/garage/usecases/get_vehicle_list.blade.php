@@ -111,8 +111,8 @@
     <div class="carousel-indicators" id="vehicle-nav-list"></div>
     <div class="carousel-inner" id="vehicle-content-list"></div>
     <div id="carousel-nav-holder"></div>
-    <button id="btnPrev" style="display:none;"></button>    
-    <button id="btnNext" style="display:none;"></button>
+    <button id="btnPrev" style="display:none"></button>    
+    <button id="btnNext" style="display:none"></button>
 </div>
 
 <script>
@@ -236,7 +236,7 @@
                     $(document).on('keydown', function(e) {
                         if (e.key === 'ArrowLeft') goPrev()
                         if (e.key === 'ArrowRight') goNext()
-                    });
+                    })
 
                     if (data.length > 1 && width < 767) {
                         $("#vehicle-nav-list").addClass("mobile-scroll")
@@ -257,7 +257,7 @@
                                 ride: false
                             })
                         }
-                    });
+                    })
                 },
                 error: function(response, jqXHR, textStatus, errorThrown) {
                     if(response.status != 404){
@@ -267,7 +267,7 @@
                         templateAlertContainer(holder, 'no-data', "No vehicle found", 'add a vehicle', '<i class="fa-solid fa-car"></i>','/garage/add')
                     }
                 }
-            });
+            })
 
             $(document).on('click', `#${holder} .carousel-indicators li`, function () {
                 pauseThenResume()

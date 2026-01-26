@@ -48,7 +48,7 @@
                         messageAlertBox(reminder_holder, "danger", "No active reminder attached to this vehicle")
                     }
                 }
-            });
+            })
         } else {
             messageAlertBox(reminder_holder, "danger", "You must select a vehicle first")
         }

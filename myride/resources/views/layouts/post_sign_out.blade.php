@@ -44,6 +44,6 @@
                     window.location.href = "/login"
                 }
             }
-        });
+        })
     }
 </script>

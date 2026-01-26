@@ -13,7 +13,7 @@
         <h6 class="summary-label">Refueling</h6>
     </div>
     <div class="col-12 col-6 text-center">
-        <h5 class="summary-number" style="font-size:calc(var(--textJumbo)*1.5);" id="total_fuel_price-holder">Rp. 0</h5>
+        <h5 class="summary-number" style="font-size:calc(var(--textJumbo)*1.5)" id="total_fuel_price-holder">Rp. 0</h5>
         <h6 class="summary-label">Spending</h6>
     </div>
 </div>
@@ -30,7 +30,7 @@
         }
 
         const fetchData = () => {
-            const month_year = <?= session()->get('toogle_month_year') ? "'".session()->get('toogle_month_year')."'" : 'getMonthYear()' ?>;
+            const month_year = <?= session()->get('toogle_month_year') ? "'".session()->get('toogle_month_year')."'" : 'getMonthYear()' ?>
             $.ajax({
                 url: `/api/v1/fuel/summary/${month_year}`,
                 type: 'GET',
@@ -48,7 +48,7 @@
                 error: function(response, jqXHR, textStatus, errorThrown) {
                     generateApiError(response, true)
                 }
-            });
+            })
         }
 
         if(ctx in localStorage){

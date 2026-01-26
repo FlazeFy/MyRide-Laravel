@@ -4,5 +4,5 @@
         const context = $(this).data('context')
 
         buildDeleteModal(url, context, token, () => getAllService(1))
-    });
+    })
 </script>

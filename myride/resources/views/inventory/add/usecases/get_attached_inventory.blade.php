@@ -3,9 +3,9 @@
     <table class="table">
         <thead>
             <tr>
-                <th scope="col" style='min-width: 240px;'>Inventory Name</th>
-                <th scope="col" style='min-width: 160px;'>Category</th>
-                <th scope="col" style='min-width: 160px;'>Storage</th>
+                <th scope="col" style='min-width: 240px'>Inventory Name</th>
+                <th scope="col" style='min-width: 160px'>Category</th>
+                <th scope="col" style='min-width: 160px'>Storage</th>
                 <th scope="col">Qty</th>
             </tr>
         </thead>
@@ -49,7 +49,7 @@
                             <td scope="col">${dt.inventory_qty}</td>
                         </tr>
                     `)
-                });
+                })
             },
             error: function(response, jqXHR, textStatus, errorThrown) {
                 Swal.close()
@@ -59,6 +59,6 @@
                     $(`#${holder}`).html(`<tr><td scope="row" colspan="4" class="no-msg-text">- No Inventory Found -</td></tr>`)
                 }
             }
-        });
+        })
     }
 </script>

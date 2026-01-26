@@ -26,8 +26,7 @@
 @endif
 
 <script>
-    //Modal setting.
     $(window).on('load', function() {
-        $('#success_modal').modal('show');
-    });
+        $('#success_modal').modal('show')
+    })
 </script>

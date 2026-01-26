@@ -96,8 +96,8 @@
                     $('#vehicle_fuel_status').html(detail.vehicle_fuel_status)
                     $('#vehicle_capacity').html(`${detail.vehicle_capacity} person`)
                     $('#vehicle_status').html(
-                        `${detail.deleted_at ? `<span class="btn btn-danger rounded-pill px-2 py-1 m-0" style="font-size: var(--textXSM);">Deleted at <span class="date-holder">${getDateToContext(detail.deleted_at,'calendar')}</span></span>` :''}
-                        <span class="btn btn-success rounded-pill px-2 py-1 m-0" style="font-size: var(--textMD);">${detail.vehicle_status}</span>`
+                        `${detail.deleted_at ? `<span class="btn btn-danger rounded-pill px-2 py-1 m-0" style="font-size: var(--textXSM)">Deleted at <span class="date-holder">${getDateToContext(detail.deleted_at,'calendar')}</span></span>` :''}
+                        <span class="btn btn-success rounded-pill px-2 py-1 m-0" style="font-size: var(--textMD)">${detail.vehicle_status}</span>`
                     )
                     $('#vehicle_distance').html(`${detail.vehicle_distance} Km`)
                     $('#vehicle_desc').html(detail.vehilce_desc ?? '<span class="fst-italic">- No Description Provided -</span>')
@@ -116,7 +116,7 @@
                             let preview = ""
 
                             if (dt.vehicle_document_type === "image") {
-                                preview = `<img src="${dt.vehicle_document_url}" class="img img-fluid my-2"style="max-width: 200px;">`
+                                preview = `<img src="${dt.vehicle_document_url}" class="img img-fluid my-2" style="max-width: 200px">`
                             } else if (dt.vehicle_document_type === "pdf") {
                                 preview = `<iframe src="${dt.vehicle_document_url}" style="width: 200px; height: 200px;" class="my-2"></iframe>`
                             } 
@@ -129,14 +129,14 @@
                                     </div>
                                 </div>
                             `
-                        });
+                        })
 
                         $("#vehicle_document_url-holder").html(`
                             <div class="container-fluid">
                                 <h2>Document</h2><hr>
                                 <div class="row">${docPreviewHolder}</div>
                             </div>
-                        `);
+                        `)
                     }
 
                     if(detail.vehicle_other_img_url){
@@ -158,13 +158,13 @@
                                     </div>
                                 `
                                 carouselIndicator += `<button type="button" data-bs-target="#carousel_other_image" data-bs-slide-to="${idx}" class="active" aria-current="true" aria-label="Slide ${idx+1}"></button>`
-                            });
+                            })
 
                             $('#vehicle_img_collection_url-holder').html(`
                                 <div class="container-fluid">
                                     <h2>Others Image</h2><hr>
                                     <div id="carousel_other_image" class="carousel slide position-relative mb-4" data-bs-ride="carousel">
-                                        <div class="carousel-indicators position-absolute" style="bottom: -50px;">${carouselIndicator}</div>
+                                        <div class="carousel-indicators position-absolute" style="bottom: -50px">${carouselIndicator}</div>
                                         <div class="carousel-inner">${carouselInner}</div>
                                         <div class="carousel-button-holder">
                                             <button class="btn btn-primary carousel-control-prev ms-2" type="button" data-bs-target="#carousel_other_image" data-bs-slide="prev">
@@ -239,7 +239,7 @@
                         failedRoute('vehicle','/garage')
                     }
                 }
-            });
+            })
         })
     }
     get_vehicle_by_id("<?= $id ?>",page_trip,page_wash,true)

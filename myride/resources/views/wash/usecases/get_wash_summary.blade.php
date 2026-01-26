@@ -64,7 +64,7 @@
                         templateAlertContainer(ctx_holder, 'no-data', "No wash found for this context to generate the stats", 'add a wash', '<i class="fa-solid fa-soap"></i>','/wash/add')
                     }
                 }
-            });
+            })
         }
 
         if(ctx in localStorage){

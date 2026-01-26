@@ -1,4 +1,5 @@
 <div id="stats_total_trip_monthly_holder"></div>
+
 <script>
     const get_total_trip_monthly = (year) => {
         Swal.showLoading()
@@ -31,7 +32,7 @@
                         $(`#${ctx_holder}`).prepend(`<h2 class='title-chart'>${ucEachWord(title)}</h2>`)
                     }
                 }
-            });
+            })
         }
 
         if(ctx in localStorage){

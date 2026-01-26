@@ -83,7 +83,7 @@
                         messageAlertBox(wash_holder, "danger", "You never wash this vehicle")
                     }
                 }
-            });
+            })
         } else {
             messageAlertBox(wash_holder, "danger", "You must select a vehicle first")
         }

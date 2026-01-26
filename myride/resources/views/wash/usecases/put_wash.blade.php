@@ -127,7 +127,7 @@
                         Swal.close()
                         Swal.fire("Success!", response.message, "success").then(() => {
                             window.location.href = '/wash'
-                        });
+                        })
                     },
                     error: function(response, jqXHR, textStatus, errorThrown) {
                         Swal.close()
@@ -137,7 +137,7 @@
                             failedMsg(response.status === 400 ? Object.values(response.responseJSON.message).flat().join('\n') : response.responseJSON.message)
                         }
                     }
-                });
+                })
             } else {
                 failedMsg('create wash : you must select an item')
             }

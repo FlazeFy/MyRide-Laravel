@@ -20,7 +20,7 @@
 
             $(`#${ctx}-holder`).html(`
                 <h4 class="fw-bold">${total_trip} Trip</h4>
-                <h4 class="fw-bold chip ${chipClass} d-inline-block mb-2" style="font-size: var(--textJumbo);">${distance_km} km</h4>
+                <h4 class="fw-bold chip ${chipClass} d-inline-block mb-2" style="font-size: var(--textJumbo)">${distance_km} km</h4>
                 <p class="text-secondary mb-0"><b>Last Updated:</b> ${date}</p>
             `)
         }
@@ -48,7 +48,7 @@
                         messageShortImage(`${ctx}-holder`,`{{asset('assets/empty.png')}}`,`there's no trip history`)
                     }
                 }
-            });
+            })
         }
 
         if(ctx in localStorage){

@@ -45,6 +45,6 @@
             error: function(response, jqXHR, textStatus, errorThrown) {
                 generateApiError(response, true)
             }
-        });
+        })
     }
 </script>

@@ -32,7 +32,7 @@
                         $(`#${ctx_holder}`).prepend(`<h2 class='title-chart'>${ucEachWord(title)}</h2>`)
                     }
                 }
-            });
+            })
         }
 
         if(ctx in localStorage){

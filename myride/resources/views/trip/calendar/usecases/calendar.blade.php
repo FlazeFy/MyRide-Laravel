@@ -168,7 +168,7 @@
 
 <script type="text/javascript">
     document.addEventListener('DOMContentLoaded', function() {
-        var calendarEl = document.getElementById('calendar');
+        var calendarEl = document.getElementById('calendar')
         var calendar = new FullCalendar.Calendar(calendarEl, {
             locale: sessionStorage.getItem('locale'),
             initialView: 'dayGridMonth',
@@ -208,7 +208,7 @@
                             start: getDateToContext(el.created_at, 'calendar'),
                             end: getDateToContext(el.created_at, 'calendar')
                         })
-                    });
+                    })
                     calendar.addEventSource(events)
                 },
                 error: function(response, jqXHR, textStatus, errorThrown) {
@@ -216,10 +216,10 @@
                         generate_api_error(response, true)
                     }
                 }
-            });
-        };
+            })
+        }
 
         get_calendar()
-    });
+    })
 </script>
 

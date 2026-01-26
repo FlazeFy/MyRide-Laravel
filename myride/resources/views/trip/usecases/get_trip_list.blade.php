@@ -38,7 +38,7 @@
             $(document).ready(function () {
                 const params = new URLSearchParams(window.location.search)
                 const searchQuery = search ? `&search=${search}` : ''
-                const holder = '<?= $carouselId ?>';
+                const holder = '<?= $carouselId ?>'
 
                 if (params.has("trip_id")) {
                     queryTripId = `&trip_id=${params.get("trip_id")}`

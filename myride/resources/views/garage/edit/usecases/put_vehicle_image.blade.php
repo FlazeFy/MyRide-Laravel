@@ -43,7 +43,7 @@
             $("#vehicle_img-holder").append(`
                 <div class="container-fluid vehicle-image-holder mt-2">
                     <input type="file" id="vehicle_image" class="form-control" accept="image/jpeg,image/png,image/gif"><br>
-                    <img id="image-preview" class="mt-1 d-none" style="max-width: 200px;">
+                    <img id="image-preview" class="mt-1 d-none" style="max-width: 200px">
                 </div>
             `)
             $("#vehicle_img-holder img").addClass('d-none')
@@ -105,9 +105,9 @@
                         error: function(response, jqXHR, textStatus, errorThrown) {
                             generateApiError(response, true)
                         }
-                    });
+                    })
                 }
-            });
+            })
         })
 
         $(document).on('click', '#save_image-button', function () {
@@ -134,7 +134,7 @@
                 error: function(response, jqXHR, textStatus, errorThrown) {
                     generateApiError(response, true)
                 }
-            });
+            })
         })
     })
 </script>

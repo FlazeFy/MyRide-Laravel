@@ -4,5 +4,5 @@
         const context = $(this).data('context')
 
         buildDeleteModal(url, context, token, () => getAllWash(1))
-    });
+    })
 </script>

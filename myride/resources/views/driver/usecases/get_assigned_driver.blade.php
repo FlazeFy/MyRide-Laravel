@@ -11,9 +11,9 @@
                     <table class="table">
                         <thead>
                             <tr>
-                                <th style="min-width: 180px;">Vehicle</th>
-                                <th style="min-width: 400px;">Driver</th>
-                                <th style="min-width: 120px;">Action</th>
+                                <th style="min-width: 180px">Vehicle</th>
+                                <th style="min-width: 400px">Driver</th>
+                                <th style="min-width: 120px">Action</th>
                             </tr>
                         </thead>
                         <tbody id="assigned_driver-holder"></tbody>
@@ -64,14 +64,14 @@
                             <td>
                                 ${
                                     listDriver === "" && data.driver && data.driver.length > 0 ?
-                                    `<a class="btn btn-success pt-2 pb-1 px-3 ms-2 btn-assigned-driver-vehicle" data-vehicle_id="${dt.id}" data-vehicle="<b>(${dt.vehicle_plate_number})</b> ${dt.vehicle_name}" style="font-size: var(--textMD);"
+                                    `<a class="btn btn-success pt-2 pb-1 px-3 ms-2 btn-assigned-driver-vehicle" data-vehicle_id="${dt.id}" data-vehicle="<b>(${dt.vehicle_plate_number})</b> ${dt.vehicle_name}" style="font-size: var(--textMD)"
                                         data-driver='${JSON.stringify(data.driver)}' data-vehicle_plate_number="${dt.vehicle_plate_number}"
                                         ><i class="fa-solid fa-plus"></i> Driver</a>`: "<p class='no-msg-text mx-2'>- Assigned -</p>"
                                 }
                             </td>
                         </tr>
                     `)
-                });
+                })
             },
             error: function(response, jqXHR, textStatus, errorThrown) {
                 Swal.close()
@@ -83,7 +83,7 @@
                     templateAlertContainer(`msg-${holder}`, 'no-data', "No driver found", 'add a driver', '<i class="fa-solid fa-user"></i>','/driver/add')
                 }
             }
-        });
-    };
+        })
+    }
     get_all_assigned_driver()
 </script>

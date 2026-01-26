@@ -12,7 +12,7 @@
             if (result.isConfirmed) {
                 put_wash($(this).data('id'))
             }
-        });
+        })
     })
 
     const put_wash = (id) => {
@@ -29,11 +29,11 @@
                 Swal.close()
                 Swal.fire("Success!", response.message, "success").then(() => {
                     window.location.href = '/wash'
-                });
+                })
             },
             error: function(response, jqXHR, textStatus, errorThrown) {
                 generateApiError(response, true)
             }
-        });
+        })
     }
 </script>

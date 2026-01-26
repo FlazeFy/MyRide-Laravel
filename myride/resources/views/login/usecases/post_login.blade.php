@@ -108,7 +108,7 @@
                     $('#all_msg').html(icon + allMsg)
                 }
             }
-        });
+        })
     }
 
     const auto_login = () => {
@@ -137,7 +137,7 @@
                     localStorage.clear()
                     generateApiError(response, true)
                 }
-            });
+            })
         } else {
             sessionStorage.clear()
             localStorage.clear()

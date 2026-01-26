@@ -3,7 +3,7 @@
     <table class="table table-bordered">
         <thead>
             <tr>
-                <th scope="col" style="width: 140px;">Vehicle</th>
+                <th scope="col" style="width: 140px">Vehicle</th>
                 <th scope="col">Price Total</th>
             </tr>
         </thead>
@@ -38,7 +38,7 @@
                             <td class="text-center">Rp. ${dt.total.toLocaleString()},00</td>
                         </tr>
                     `)
-                });
+                })
             },
             error: function(response, jqXHR, textStatus, errorThrown) {
                 Swal.close()
@@ -49,7 +49,7 @@
                     templateAlertContainer(`msg-${holder}`, 'no-data', "No service found", 'add a service', '<i class="fa-solid fa-screwdriver-wrench"></i>','/service/add')
                 }
             }
-        });
-    };
+        })
+    }
     get_service_spending()
 </script>

@@ -5,5 +5,5 @@
         const token = "<?= session()->get('token_key'); ?>"
 
         buildDeleteModal(url, context, token, () => get_all_fuel(1))
-    });
+    })
 </script>

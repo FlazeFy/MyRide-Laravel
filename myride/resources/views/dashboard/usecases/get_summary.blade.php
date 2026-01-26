@@ -53,7 +53,7 @@
                 error: function(response, jqXHR, textStatus, errorThrown) {
                     generateApiError(response, true)
                 }
-            });
+            })
         }
 
         if(ctx in localStorage){

@@ -3,8 +3,8 @@
     <table class="table">
         <thead>
             <tr>
-                <th scope="col" style="min-width:160px;">Driver</th>
-                <th scope="col" style="min-width:280px;">Vehicle</th>
+                <th scope="col" style="min-width:160px">Driver</th>
+                <th scope="col" style="min-width:280px">Vehicle</th>
             </tr>
         </thead>
         <tbody id="list_assigned_driver-holder"></tbody>
@@ -34,7 +34,7 @@
                     const vehicleList = dt.vehicle_list ? dt.vehicle_list.split(', ').map(vh => {
                         const [plate, name] = vh.split('-')
                         return `<li><span class="plate-number">${plate.trim()}</span> ${name.trim()}</li>`
-                    }) : '<span class="no-msg-text">- No Vehicle Assigned -</span>';
+                    }) : '<span class="no-msg-text">- No Vehicle Assigned -</span>'
 
                     $(`#${holder}`).append(`
                         <tr>
@@ -49,18 +49,17 @@
                             </td>
                         </tr>
                     `)
-                });
+                })
             },
             error: function(response, jqXHR, textStatus, errorThrown) {
                 Swal.close()
-
                 if(response.status != 404){
                     generateApiError(response, true)
                 } else {
                     $(`#${holder}`).html(`<tr><td colspan="5" id="msg-${holder}" class="no-msg-text">- No Driver Found -</td></tr>`)
                 }
             }
-        });
-    };
+        })
+    }
     get_asigned_driver(page)
 </script>

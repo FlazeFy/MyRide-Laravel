@@ -3,6 +3,7 @@
         <div id="stats_person_most_trip_with"></div>
     </div>
 </div>
+
 <script>
     const get_person_most_trip_with = () => {
         Swal.showLoading()
@@ -34,7 +35,7 @@
                         $(`#${ctx_holder}`).prepend(`<h2 class='title-chart'>${ucEachWord(title)}</h2>`)
                     }
                 }
-            });
+            })
         }
 
         if(ctx in localStorage){

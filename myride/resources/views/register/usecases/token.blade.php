@@ -1,6 +1,6 @@
 <div class="text-center mt-3 section-form">
     <h3>Validate</h3><br>
-    <h4 class="my-2 fw-bold" style="font-size: var(--textJumbo);" id="timer">15:00</h4>
+    <h4 class="my-2 fw-bold" style="font-size: var(--textJumbo)" id="timer">15:00</h4>
     <label>Type the Token that has sended to your email</label><br>
     <div class="pin-code" id="pin-holder">
         <input type="text" maxlength="1" oninput="validatePin()" autofocus>
@@ -10,7 +10,7 @@
         <input type="text" maxlength="1" oninput="validatePin()">
         <input type="text" maxlength="1" oninput="validatePin()">
     </div>
-    <div id="token_validate_msg" class="msg-error-input mb-2" style="font-size:13px;"></div>
+    <div id="token_validate_msg" class="msg-error-input mb-2" style="font-size:var(--textMD)"></div>
     <div class="d-inline-block mx-auto">
         <a class="btn btn-success rounded-pill px-3 mt-3" id="btn-regenerate-token">Don't receive the token. Send again!</a>
     </div>
@@ -40,7 +40,7 @@
         }
 
         if (myLength === 0) {
-            var next = target;
+            var next = target
             while (next = next.previousElementSibling) {
                 if (next == null) break
                 if (next.tagName.toLowerCase() == "input") {
@@ -49,17 +49,17 @@
                 }
             }
         }
-    }, false);
+    }, false)
 
     function formatTime(seconds){
-        var minutes = Math.floor(seconds / 60);
-        var remainingSeconds = seconds % 60;
-        return minutes + ':' + remainingSeconds.toString().padStart(2, '0');
+        var minutes = Math.floor(seconds / 60)
+        var remainingSeconds = seconds % 60
+        return minutes + ':' + remainingSeconds.toString().padStart(2, '0')
     }
 
     function controlPin(type) {
-        var pins = pin_holder.querySelectorAll('input');
-        var result = "";
+        var pins = pin_holder.querySelectorAll('input')
+        var result = ""
 
         pins.forEach(function(e) {
             if(type == "time_out"){
@@ -75,9 +75,9 @@
             } else if(type == "fetch"){
                 result += e.value
             }
-        });
+        })
 
-        return result;
+        return result
     }
 
     function validatePin(){
@@ -89,7 +89,7 @@
                 is_empty = true
                 return
             }
-        });
+        })
 
         if(is_empty == false){
             const token = controlPin('fetch')
@@ -145,7 +145,7 @@
                     $('#service-section').addClass('d-block').removeClass('d-none')
                     $('#back-button').html('<i class="fa-solid fa-house mx-1"></i> Login').attr('data-current-step', 'service').attr('href','/login')
                 }
-            });
+            })
         })
         .fail(function (response, xhr, ajaxOptions, thrownError) {
             generateApiError(response, true)
@@ -157,7 +157,7 @@
                 if (index === 0) {
                     e.focus()
                 }
-            });
+            })
         })
     }
     
@@ -186,5 +186,5 @@
     pinContainer.addEventListener('keydown', function (event) {
         var target = event.srcElement
         target.value = ""
-    }, false);
+    }, false)
 </script>

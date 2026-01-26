@@ -33,7 +33,7 @@
                             <a class="btn btn-danger btn-delete small" data-url="/api/v1/history/destroy/${dt.id}" data-context="History"><i class="fa-solid fa-trash"></i> Delete</a>
                         </div>
                     `)
-                });
+                })
 
                 generatePagination(holder, getAllHistory, total_page, current_page)
             },
@@ -44,7 +44,7 @@
                     templateAlertContainer(holder, 'no-data', "No history found", null, '<i class="fa-solid fa-rotate-left"></i>',null)
                 }
             }
-        });
-    };
+        })
+    }
     getAllHistory(page)
 </script>

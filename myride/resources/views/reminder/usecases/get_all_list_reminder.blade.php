@@ -20,11 +20,11 @@
     <table class="table text-center table-bordered">
         <thead>
             <tr>
-                <th scope="col" style="min-width: 160px;">Vehicle</th>
-                <th scope="col" style="min-width: 240px;">Title</th>
-                <th scope="col" style="min-width: 240px;">Context & Body</th>
+                <th scope="col" style="min-width: 160px">Vehicle</th>
+                <th scope="col" style="min-width: 240px">Title</th>
+                <th scope="col" style="min-width: 240px">Context & Body</th>
                 <th scope="col">Attachment</th>
-                <th scope="col" style="min-width: 160px;">Properties</th>
+                <th scope="col" style="min-width: 160px">Properties</th>
                 <th scope="col">Action</th>
             </tr>
         </thead>
@@ -44,12 +44,12 @@
         const map = new google.maps.Map(document.getElementById(elementId), {
             center: { lat: coords[0], lng: coords[1] },
             zoom: 14,
-        });
+        })
 
         new google.maps.Marker({
             position: { lat: coords[0], lng: coords[1] },
             map: map,
-        });
+        })
     }
 
     const getAllReminder = (page, search) => {
@@ -106,10 +106,10 @@
                                 const coords = at.attachment_value.split(",").map(Number)
 
                                 $(document).on("shown.bs.modal", `#attachment_${dt.id}_${idx}-modal`, function () {
-                                    initDynamicMap(`map_${dt.id}_${idx}-holder`, coords);
-                                });
+                                    initDynamicMap(`map_${dt.id}_${idx}-holder`, coords)
+                                })
                             }
-                        });
+                        })
                     }
 
                     if(dt.reminder_context.includes(['Service','Pick Up','Drop Off','Trip'])){
@@ -136,11 +136,11 @@
                                 <p class="mb-0 text-secondary">${getDateToContext(dt.created_at,'calendar')}</p>
                             </td>
                             <td>
-                                <a class="btn btn-danger btn-delete" style="width:50px;" data-url="/api/v1/reminder/destroy/${dt.id}" data-context="Reminder"><i class="fa-solid fa-trash"></i></a>
+                                <a class="btn btn-danger btn-delete" style="width:50px" data-url="/api/v1/reminder/destroy/${dt.id}" data-context="Reminder"><i class="fa-solid fa-trash"></i></a>
                             </td>
                         </tr>
                     `)
-                });
+                })
 
                 generatePagination(holder, getAllReminder, total_page, current_page)
                 initStaticModal()
@@ -155,7 +155,7 @@
                 }
                 reject(errorThrown)
             }
-        });
+        })
     }
     getAllReminder(page, null)
 </script>

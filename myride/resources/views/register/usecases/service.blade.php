@@ -12,6 +12,7 @@
                 $('#validate-telegram-id-btn').remove()
             }
         })
+        
         $(document).on('click','#validate-telegram-id-btn', function(){
             const token = localStorage.getItem('token_key')
             $.ajax({
@@ -23,8 +24,8 @@
                 dataType: 'json',
                 beforeSend: function (xhr) {
                     Swal.showLoading()
-                    xhr.setRequestHeader("Accept", "application/json");
-                    xhr.setRequestHeader("Authorization", `Bearer ${token}`);    
+                    xhr.setRequestHeader("Accept", "application/json")
+                    xhr.setRequestHeader("Authorization", `Bearer ${token}`)    
                 },
                 success: function(response) {
                     Swal.hideLoading()
@@ -47,13 +48,14 @@
                             $('.progress-bar').css('width', '100%').attr('aria-valuenow', 100) 
                             $('.step-mobile .title').text("Finish!")
                         }
-                    });
+                    })
                 },
                 error: function(response, jqXHR, textStatus, errorThrown) {
                     generateApiError(response, true)
                 }
-            });
+            })
         })
+
         $(document).on('input','#telegram_token_validation', function(){
             if($(this).val().length == 6){
                 const token = localStorage.getItem('token_key')
@@ -66,8 +68,8 @@
                     dataType: 'json',
                     beforeSend: function (xhr) {
                         Swal.showLoading()
-                        xhr.setRequestHeader("Accept", "application/json");
-                        xhr.setRequestHeader("Authorization", `Bearer ${token}`);    
+                        xhr.setRequestHeader("Accept", "application/json")
+                        xhr.setRequestHeader("Authorization", `Bearer ${token}`)    
                     },
                     success: function(response) {
                         Swal.hideLoading()
@@ -80,13 +82,13 @@
                             if (result.isConfirmed) {
                                 $('#telegram-validation-box').removeClass('alert-danger').addClass('alert-success').html(`<span class='text-success'><i class="fa-solid fa-check"></i> Telegram is validated!</span>`)
                             }
-                        });
+                        })
                     },
                     error: function(response, jqXHR, textStatus, errorThrown) {
                         generateApiError(response, true)
                     }
-                });
+                })
             }
         })
-    });
+    })
 </script>

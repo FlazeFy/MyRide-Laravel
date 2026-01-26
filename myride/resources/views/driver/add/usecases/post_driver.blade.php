@@ -79,7 +79,7 @@
                 error: function(response, jqXHR, textStatus, errorThrown) {
                     generateApiError(response, true)
                 }
-            });
+            })
         } else {
             failedMsg('create driver : you must select an item')
         }

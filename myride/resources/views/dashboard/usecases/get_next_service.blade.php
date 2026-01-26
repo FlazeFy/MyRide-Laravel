@@ -65,7 +65,7 @@
                         messageShortImage(`${ctx}-holder`,`{{asset('assets/empty.png')}}`,`there's no active service`)
                     }
                 }
-            });
+            })
         }
 
         if(ctx in localStorage){

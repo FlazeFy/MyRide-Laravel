@@ -43,7 +43,7 @@
                 <div class="col-md-6 col-sm-12">
                     <div class="container-fluid vehicle-image-holder mt-2">
                         <input type="file" class="vehicle_other_images form-control" accept="image/jpeg,image/png,image/gif"><br>
-                        <img class="image-preview mt-1 d-none" style="max-width: 200px;">
+                        <img class="image-preview mt-1 d-none" style="max-width: 200px">
                     </div>
                 </div>
             `)
@@ -106,9 +106,9 @@
                         error: function(response, jqXHR, textStatus, errorThrown) {
                             generateApiError(response, true)
                         }
-                    });
+                    })
                 }
-            });
+            })
         })
 
         $(document).on('click', '#save_image_collection-button', function () {
@@ -120,11 +120,11 @@
                 const files = this.files
                 if (!files.length) return
 
-                totalFiles += files.length;
+                totalFiles += files.length
                 for (let i = 0; i < files.length; i++) {
                     fd.append("vehicle_other_img_url[]", files[i])
                 }
-            });
+            })
 
             if (totalFiles > 10) {
                 failedMsg("You can only upload up to 10 other images")
@@ -148,7 +148,7 @@
                 error: function(response, jqXHR, textStatus, errorThrown) {
                     generateApiError(response, true)
                 }
-            });
+            })
         })
     })
 </script>

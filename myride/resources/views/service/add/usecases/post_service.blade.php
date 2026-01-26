@@ -44,7 +44,7 @@
             </div>
             
             <label>Service Notes</label>
-            <textarea class="form-control" name="service_note" id="service_note" style="min-height:120px;"></textarea>
+            <textarea class="form-control" name="service_note" id="service_note" style="min-height:120px"></textarea>
             <hr>
             <a class="btn btn-success rounded-pill py-3 w-100 mt-3" id="submit-add-service-btn"><i class="fa-solid fa-floppy-disk"></i> Save Service</a>
         </div>
@@ -55,11 +55,13 @@
     $(document).on('click','#submit-add-service-btn', function(){
         post_service()
     })
+
     $(document).on('change','#vehicle_holder', function(){
         const id = $(this).val()
         getVehicleDetail(id)
         get_vehicle_service_history(id)
     })
+
     $(document).on('change','#service_category_holder', function(){
         const val = $(this).val()
     })
@@ -97,12 +99,12 @@
                     Swal.close()
                     Swal.fire("Success!", response.message, "success").then(() => {
                         window.location.href = '/service'
-                    });
+                    })
                 },
                 error: function(response, jqXHR, textStatus, errorThrown) {
                     generateApiError(response, true)
                 }
-            });
+            })
         } else {
             failedMsg('create service : you must select an item')
         }

@@ -50,7 +50,7 @@
                         messageAlertBox(holder_fuel, "danger", "You never refuel this vehicle")
                     }
                 }
-            });
+            })
         } else {
             messageAlertBox(holder_fuel, "danger", "You must select a vehicle first")
         }

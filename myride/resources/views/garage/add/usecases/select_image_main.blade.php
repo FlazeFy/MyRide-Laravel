@@ -31,7 +31,7 @@
             $("#vehicle_img-holder").append(`
                 <div class="container-fluid vehicle-image-holder mt-2">
                     <input type="file" id="vehicle_image" class="form-control" accept="image/jpeg,image/png,image/gif"><br>
-                    <img id="image-preview" class="mt-1 d-none" style="max-width: 200px;">
+                    <img id="image-preview" class="mt-1 d-none" style="max-width: 200px">
                 </div>
             `)
         })

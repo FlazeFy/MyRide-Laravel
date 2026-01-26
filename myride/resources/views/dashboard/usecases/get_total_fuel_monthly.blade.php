@@ -1,4 +1,5 @@
 <div id="stats_total_fuel_monthly_holder"></div>
+
 <script>
     const context = '<?= session()->get('toogle_total_stats_fuel') ?? 'fuel_volume' ?>'
     
@@ -32,7 +33,7 @@
                         $(`#${ctx_holder}`).prepend(`<h2 class='title-chart'>${ucEachWord(title)}</h2>`)
                     }
                 }
-            });
+            })
         }
 
         if(ctx in localStorage){

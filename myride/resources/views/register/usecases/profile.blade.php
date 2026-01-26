@@ -1,4 +1,4 @@
-<h2 class="fw-bold" style="font-size:36px;">Profile</h2>
+<h2 class="fw-bold" style="font-size:36px">Profile</h2>
 <label>Username</label>
 <input type="text" name="username" id="username" class="form-control"/>
 <label>Email</label>
@@ -17,7 +17,7 @@
             } else {
                 $('#username, #email, #password, #password_validation').val('')
             }
-        });
+        })
 
         $('#btn-regenerate-token').on('click', function(){
             $.ajax({
@@ -41,7 +41,7 @@
             })
             .fail(function (response, textStatus, errorThrown) {
                 generateApiError(response, true)
-            });
+            })
         })
 
         $('#btn-register-acc').on('click', function(){
@@ -82,8 +82,7 @@
                                         $('#token-section').addClass('d-block').removeClass('d-none')
                                         $('#back-button').html('<i class="fa-solid fa-arrow-left mx-1"></i> Profile').attr('data-current-step', 'token')
                                     }
-                                });
-
+                                })
                             },
                             error: function(response, jqXHR, textStatus, errorThrown) {
                                 generateApiError(response, true)
@@ -99,5 +98,5 @@
                 Swal.fire("Oops!", `Some field may not valid. Check again!`, "error")
             }
         })
-    });
+    })
 </script>

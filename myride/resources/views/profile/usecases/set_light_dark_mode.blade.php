@@ -1,6 +1,6 @@
 <div class="d-block d-md-flex justify-content-between align-items-center">
     <div>
-        <label style="font-size: var(--textXLG);" class="mb-0">Background Color</label>
+        <label style="font-size: var(--textXLG)" class="mb-0">Background Color</label>
         <p class="mb-0 text-secondary">Set your background color manually</p>
     </div>
     <div class="d-grid d-md-inline-block">
@@ -33,5 +33,5 @@
                 $(this).html(lightCaption)
             }
         })
-    });
+    })
 </script>

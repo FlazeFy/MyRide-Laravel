@@ -90,7 +90,7 @@
                         failedMsg(response.status === 400 ? Object.values(response.responseJSON.message).flat().join('\n') : response.responseJSON.message)
                     }
                 }
-            });
+            })
         } else {
             failedMsg('update inventory : you must select an item')
         }

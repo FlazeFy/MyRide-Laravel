@@ -1,4 +1,5 @@
 <div id="recover_vehicle_button-holder"></div>
+
 <script>
     $(document).on('click', '.btn-recover', function () {
         Swal.fire({
@@ -30,13 +31,12 @@
                                 location.reload()
                             }
                         })
-
                     },
                     error: function(response, jqXHR, textStatus, errorThrown) {
                         generateApiError(response, true)
                     }
-                });
+                })
             }
-        });
-    });
+        })
+    })
 </script>

@@ -63,7 +63,7 @@
                         messageShortImage(`${ctx}-holder`,`{{asset('assets/free.png')}}`,`there's no active reminder`)
                     }
                 }
-            });
+            })
         }
 
         if(ctx in localStorage){

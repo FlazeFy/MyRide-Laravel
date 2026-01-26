@@ -13,12 +13,12 @@
     <table class="table table-bordered">
         <thead>
             <tr>
-                <th scope="col" style="min-width: 160px;">Vehicle</th>
-                <th scope="col" style="min-width: 160px;">Inventory Name</th>
+                <th scope="col" style="min-width: 160px">Vehicle</th>
+                <th scope="col" style="min-width: 160px">Inventory Name</th>
                 <th scope="col">Qty</th>
-                <th scope="col" style="min-width: 160px;">Info</th>
-                <th scope="col" style="min-width: 160px;">Properties</th>
-                <th scope="col" style="width: 130px;">Action</th>
+                <th scope="col" style="min-width: 160px">Info</th>
+                <th scope="col" style="min-width: 160px">Properties</th>
+                <th scope="col" style="width: 130px">Action</th>
             </tr>
         </thead>
         <tbody id="inventory-holder"></tbody>
@@ -80,7 +80,7 @@
                             <td>
                                 <div class="d-flex flex-wrap gap-2 justify-content-center">
                                     ${dt.inventory_image_url != null ? `
-                                        <a class="btn btn-primary" style="width:50px;" data-bs-target="#inventory_image_url_${dt.id}-modal" data-bs-toggle="modal"><i class="fa-solid fa-image"></i></a>
+                                        <a class="btn btn-primary" style="width:50px" data-bs-target="#inventory_image_url_${dt.id}-modal" data-bs-toggle="modal"><i class="fa-solid fa-image"></i></a>
                                         <div class="modal fade" id="inventory_image_url_${dt.id}-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                             <div class="modal-dialog">
                                                 <div class="modal-content">
@@ -95,8 +95,8 @@
                                             </div>
                                         </div>
                                     ` : ""}
-                                    <a class="btn btn-danger btn-delete" style="width:50px;" data-url="/api/v1/inventory/destroy/${dt.id}" data-context="Inventory"><i class="fa-solid fa-trash"></i></a>
-                                    <a class="btn btn-warning btn-update" style="width:50px;" 
+                                    <a class="btn btn-danger btn-delete" style="width:50px" data-url="/api/v1/inventory/destroy/${dt.id}" data-context="Inventory"><i class="fa-solid fa-trash"></i></a>
+                                    <a class="btn btn-warning btn-update" style="width:50px" 
                                         data-vehicle-plate-number="${dt.vehicle_plate_number}" data-id="${dt.id}" 
                                         data-inventory-name="${dt.inventory_name}" data-inventory-qty="${dt.inventory_qty}" 
                                         data-inventory-category="${dt.inventory_category}" data-inventory-storage="${dt.inventory_storage}"><i class="fa-solid fa-pen-to-square"></i></a>
@@ -104,7 +104,7 @@
                             </td>
                         </tr>
                     `)
-                });
+                })
 
                 generatePagination(holder, getAllInventory, total_page, current_page)
             },
@@ -117,7 +117,7 @@
                     templateAlertContainer(`msg-${holder}`, 'no-data', "No inventory found", 'add a inventory', '<i class="fa-solid fa-boxes-stacked"></i>','/inventory/add')
                 }
             }
-        });
-    };
+        })
+    }
     getAllInventory(page, null)
 </script>

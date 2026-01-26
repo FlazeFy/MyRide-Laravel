@@ -46,7 +46,7 @@
 
                         generateSemiGaugeChart(null, `stats_${dt.id}`, percentage)
                     } 
-                });
+                })
             },
             error: function(response, jqXHR, textStatus, errorThrown) {
                 Swal.close()
@@ -57,7 +57,7 @@
                     templateAlertContainer(holder, 'no-data', "No vehicle found", 'add a vehicle', '<i class="fa-solid fa-gas-pump"></i>','/garage/add')
                 }
             }
-        });
-    };
+        })
+    }
     get_fuel_status()
 </script>

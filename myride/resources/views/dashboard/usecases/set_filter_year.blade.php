@@ -2,7 +2,7 @@
     @csrf
     <div class="d-flex gap-2 align-items-center mb-4">
         <label class="text-nowrap mb-0">Select Year</label>
-        <select class="form-select mb-0" id="toogle_year" name="toogle_year" style="width:100px;"></select>
+        <select class="form-select mb-0" id="toogle_year" name="toogle_year" style="width:100px"></select>
     </div>
 </form>
 
@@ -25,16 +25,16 @@
             success: function(response) {
                 Swal.close()
                 const data = response.data
-                const selected_year = year;
+                const selected_year = year
 
                 data.forEach(el => {
                     $('#toogle_year').append(`<option value="${el.year}" ${selected_year == el.year ? 'selected' :''}>${el.year}</option>`) 
-                });
+                })
             },
             error: function(response, jqXHR, textStatus, errorThrown) {
                 generateApiError(response, true)
             }
-        });
+        })
     }
     get_available_year()
 </script>

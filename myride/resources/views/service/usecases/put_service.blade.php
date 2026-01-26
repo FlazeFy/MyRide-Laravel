@@ -57,6 +57,7 @@
         const id = $('#service_id').val()
         put_service(id)
     })
+
     const put_service = (id) => {
         const vehicle_id = $('#vehicle_holder').val()
         const service_category = $('#service_category_holder').val()
@@ -82,12 +83,12 @@
                     Swal.close()
                     Swal.fire("Success!", response.message, "success").then(() => {
                         window.location.href = '/service'
-                    });
+                    })
                 },
                 error: function(response, jqXHR, textStatus, errorThrown) {
                     generateApiError(response, true)
                 }
-            });
+            })
         } else {
             failedMsg('update service : you must select an item')
         }

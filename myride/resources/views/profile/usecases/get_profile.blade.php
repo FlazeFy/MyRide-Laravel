@@ -60,7 +60,7 @@
             error: function(response, jqXHR, textStatus, errorThrown) {
                 generateApiError(response, true)
             }
-        });
+        })
     }
     get_profile()
 
@@ -83,12 +83,12 @@
                     if (result.isConfirmed) {
                         get_my_profile()
                     }
-                });
+                })
             },
             error: function(response, textStatus, errorThrown) {
                 generateApiError(response, true)
             }
-        });
+        })
     })
 
     $(document).on('input','#telegram_user_id', function(){
@@ -116,11 +116,11 @@
                     if (result.isConfirmed) {
                         get_profile()
                     }
-                });
+                })
             },
             error: function(response, textStatus, errorThrown) {
                 generateApiError(response, true)
             }
-        });
+        })
     })
 </script>

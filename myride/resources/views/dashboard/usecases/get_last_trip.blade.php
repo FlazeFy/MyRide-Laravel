@@ -47,7 +47,7 @@
                         messageShortImage(`${ctx}-holder`,`{{asset('assets/empty.png')}}`,`there's no last the trip history`)
                     }
                 }
-            });
+            })
         }
 
         if(ctx in localStorage){

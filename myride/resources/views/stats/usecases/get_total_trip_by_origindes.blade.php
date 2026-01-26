@@ -12,7 +12,7 @@
                     <div class="container-fluid mb-0"><div id="${el}-holder"></div></div>
                 </div>
             `)
-        });
+        })
 
         const fetchData = () => {
             const context = list_context.join(',')
@@ -30,7 +30,7 @@
                     localStorage.setItem(`last-hit-${ctx}`,Date.now())
                     data.forEach(dt => {
                         generateBarChart(`Most ${dt.context.replaceAll('_',' ')}`,`${dt.context}-holder`,dt.data)
-                    });
+                    })
                 },
                 error: function(response, jqXHR, textStatus, errorThrown) {
                     Swal.close()
@@ -41,7 +41,7 @@
                         $(`#${ctx_holder}`).prepend(`<h2 class='title-chart'>${ucEachWord(title)}</h2>`)
                     }
                 }
-            });
+            })
         }
 
         if(ctx in localStorage){
@@ -53,7 +53,7 @@
                 if(data){
                     data.forEach(dt => {
                         generateBarChart(`Most ${dt.context.replaceAll('_',' ')}`,`${dt.context}-holder`,dt.data)
-                    });
+                    })
                     Swal.close()
                 } else {
                     Swal.close()

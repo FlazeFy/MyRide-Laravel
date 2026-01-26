@@ -11,6 +11,7 @@
         box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     }
 </style>
+
 <div class="step mb-4">
     <div class="mb-3">
         <a class="btn btn-danger py-1" id="back-button" data-current-step="tnc"><i class="fa-solid fa-arrow-left mx-1"></i> Back to Login</a>
@@ -30,19 +31,18 @@
             switch (currentStep) {
                 case "tnc":
                     window.location.href = '/login'
-                    break;
+                    break
                 case "profile":
                     
-                    break;
+                    break
                 case "token":
                     Swal.fire("Oops!", "You must validated your account first!", "error")
-                    break;
+                    break
                 case "service":
                     
-                    break;
-            
+                    break
                 default:
-                    break;
+                    break
             }
         })
     });

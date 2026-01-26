@@ -3,10 +3,10 @@
     <table class="table text-center table-bordered">
         <thead>
             <tr>
-                <th scope="col" style="min-width: 160px;">Plate Number</th>
-                <th scope="col" style="min-width: 160px;">Vehicle Name & Type</th>
-                <th scope="col" style="min-width: 200px;">Status</th>
-                <th scope="col" style="min-width: 160px;">Fuel</th>
+                <th scope="col" style="min-width: 160px">Plate Number</th>
+                <th scope="col" style="min-width: 160px">Vehicle Name & Type</th>
+                <th scope="col" style="min-width: 200px">Status</th>
+                <th scope="col" style="min-width: 160px">Fuel</th>
                 <th scope="col">Capacity</th>
                 <th scope="col">Action</th>
             </tr>
@@ -41,7 +41,7 @@
                         <tr>
                             <td><span class="plate-number">${dt.vehicle_plate_number}</span></td>
                             <td class="text-start">
-                                <p class="mb-0" style="font-weight:500;">
+                                <p class="mb-0" style="font-weight:500">
                                     ${dt.vehicle_name} ${dt.vehicle_transmission == 'Automatic' ? 'AT' : dt.vehicle_transmission == 'Manual' ? 'MT' : dt.vehicle_transmission}
                                     ${dt.deleted_at ? '<span class="chip-mini bg-danger">Deleted</span>' : ''}
                                 </p>
@@ -53,7 +53,7 @@
                             <td><a class="btn btn-success px-4 btn-action-readiness" data-id="${dt.id}" data-vehicle_name="${dt.vehicle_name}" data-vehicle_plate_number="${dt.vehicle_plate_number}"><i class="fa-solid fa-play"></i></a></td>
                         </tr>
                     `)
-                });
+                })
 
                 generatePagination(holder, getVehicleReadiness, total_page, current_page)
             },
@@ -66,7 +66,7 @@
                     templateAlertContainer(`msg-${holder}`, 'no-data', "No vehicle found", 'add a vehicle', '<i class="fa-solid fa-car"></i>','/garage/add')
                 }
             }
-        });
+        })
     }
 
     getVehicleReadiness(page)

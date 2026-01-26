@@ -9,8 +9,8 @@
     <table class="table table-bordered">
         <thead>
             <tr>
-                <th scope="col" style="min-width: 240px;">Washing Info & Detail</th>
-                <th scope="col" style="min-width: 160px;">Time</th>
+                <th scope="col" style="min-width: 240px">Washing Info & Detail</th>
+                <th scope="col" style="min-width: 160px">Time</th>
             </tr>
         </thead>
         <tbody id="wash_tb"></tbody>
@@ -28,12 +28,11 @@
 
         $(`#pagination-${items_holder}`).remove()
         $(`<div id='pagination-${items_holder}' class='btn-page-holder'><label>Page</label>${page_element}</div>`).insertAfter($(`#${items_holder}`).closest('table'))
-
         $(document).off('click', `#pagination-${items_holder} .btn-page`)
         $(document).on('click', `#pagination-${items_holder} .btn-page`, function() {
             const selectedPage = $(this).data('page')
             fetch_callback(id, page_trip, selectedPage,false)
-        });
+        })
 
         $(`#${items_holder}`).closest('table').css('margin-bottom', '0')
     }
@@ -79,7 +78,7 @@
                                         { key: "is_wash_hollow", label: "Vehicle Hollow Washing" },
                                         { key: "is_fill_window_washing_water", label: "Window Washing Water Fill" },
                                     ].map(wash => 
-                                        dt[wash.key] ? `<span style='font-size: var(--textMD);'>${wash.label}</span>, ` : ''
+                                        dt[wash.key] ? `<span style='font-size: var(--textMD)'>${wash.label}</span>, ` : ''
                                     ).join('')}
                                 </p>
                             </div>
@@ -92,15 +91,11 @@
                         </td> 
                     </tr>
                 `)
-            });
+            })
 
             generatePaginationWash(holder, fetch_callback, total_page, current_page, page_trip, id)
         } else {
-            $(`#${holder}`).html(`
-                <tr>
-                    <td colspan="3"><p class="m-0 fst-italic text-secondary">- No Wash History -</p></td>
-                </tr>
-            `)
+            $(`#${holder}`).html(`<tr><td colspan="3"><p class="m-0 fst-italic text-secondary">- No Wash History -</p></td></tr>`)
         }
     }
 </script>

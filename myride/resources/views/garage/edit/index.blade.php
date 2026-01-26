@@ -78,11 +78,11 @@
                                 <div class="col-md-6 col-sm-12">
                                     <div class="container-fluid">
                                         <img class="img img-fluid mb-2" src="${dt.vehicle_img_url}" alt="${dt.vehicle_img_url}"/>
-                                        <a class="btn btn-danger btn-delete w-100" style="width:50px;" data-url="/api/v1/vehicle/image_collection/destroy/<?= $id ?>/${dt.vehicle_img_id}" data-context="Vehicle Image Collection"><i class="fa-solid fa-trash"></i> Delete</a>
+                                        <a class="btn btn-danger btn-delete w-100" style="width:50px" data-url="/api/v1/vehicle/image_collection/destroy/<?= $id ?>/${dt.vehicle_img_id}" data-context="Vehicle Image Collection"><i class="fa-solid fa-trash"></i> Delete</a>
                                     </div>
                                 </div>
                             `)
-                        });
+                        })
                         $('#add_image_collection-button span').text(' Change Image')
                         $('#vehicle_image_collection_button-holder').prepend(`<a class="btn btn-danger py-1" id="remove_image_collection-button"><i class="fa-solid fa-trash"></i><span class="d-none d-md-inline"> Remove Image</span></a>`)
                         vehicle_other_img_url = data.vehicle_other_img_url
@@ -96,7 +96,7 @@
                             let preview = ""
 
                             if (dt.vehicle_document_type === "image") {
-                                preview = `<img src="${dt.vehicle_document_url}" class="img img-fluid my-2"style="max-width: 200px;">`
+                                preview = `<img src="${dt.vehicle_document_url}" class="img img-fluid my-2"style="max-width: 200px">`
                             } else if (dt.vehicle_document_type === "pdf") {
                                 preview = `<iframe src="${dt.vehicle_document_url}" style="width: 200px; height: 200px;" class="my-2"></iframe>`
                             } 
@@ -106,11 +106,11 @@
                                     <div class="container-fluid my-3 text-center">
                                         ${preview}
                                         <p class="mt-1"><b>Caption:</b> ${dt.vehicle_document_caption ?? "-"}</p>
-                                        <a class="btn btn-danger btn-delete w-100" style="width:50px;" data-url="/api/v1/vehicle/document/destroy/<?= $id ?>/${dt.vehicle_document_id}" data-context="Vehicle Document"><i class="fa-solid fa-trash"></i> Delete</a>
+                                        <a class="btn btn-danger btn-delete w-100" style="width:50px" data-url="/api/v1/vehicle/document/destroy/<?= $id ?>/${dt.vehicle_document_id}" data-context="Vehicle Document"><i class="fa-solid fa-trash"></i> Delete</a>
                                     </div>
                                 </div>
                             `)
-                        });
+                        })
                         
                     }
 
@@ -126,7 +126,7 @@
                         failedRoute('vehicle','/garage')
                     }
                 }
-            });
+            })
         }
         get_vehicle('<?= $id ?>')
     </script>

@@ -53,7 +53,7 @@
                                         <p class='date-text m-0 mt-2 text-italic'>Received At : ${getDateToContext(el.created_at,'calendar')}</p>
                                     </button>
                                 `)
-                            });
+                            })
                         },
                         error: function(response, jqXHR, textStatus, errorThrown) {
                             if(response.status != 404){
@@ -62,10 +62,10 @@
                                 templateAlertContainer(item_holder, 'no-data', "No notification to show", null, '<i class="fa-solid fa-rotate-left"></i>')
                             }
                         }
-                    });
-                });
+                    })
+                })
             }
             get_reminder_history(page_reminder) 
-        });
+        })
     })
 </script>

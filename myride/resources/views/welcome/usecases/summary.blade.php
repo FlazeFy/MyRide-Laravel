@@ -1,6 +1,6 @@
 <div style="margin: 10vh 0; max-width: 1080px;" class="d-block mx-auto">
     <br>
-    <h2 class="fw-bold" style="font-size:50px;">Facts About Us</h2>
+    <h2 class="fw-bold" style="font-size:50px">Facts About Us</h2>
     <div class="row mt-4">
         <div class="col-lg-4 col-md-4 col-6 mx-auto">
             <div class="container-landing bg-danger">
@@ -63,7 +63,7 @@
             error: function(response, jqXHR, textStatus, errorThrown) {
                 generateApiError(response, true)
             }
-        });
+        })
     }
     get_summary()
 </script>

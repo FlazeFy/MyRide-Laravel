@@ -15,7 +15,7 @@
                     </div>
                 </div>
             `)
-        });
+        })
 
         const fetchData = () => {
             const context = list_context.join(',')
@@ -45,7 +45,7 @@
                         $(`#${ctx_holder}`).prepend(`<h2 class='title-chart'>${ucEachWord(title)}</h2>`)
                     }
                 }
-            });
+            })
         }
 
         if(ctx in localStorage){
@@ -57,7 +57,7 @@
                 if(data){
                     data.forEach(dt => {
                         generatePieChart(`${dt.context.replaceAll('_',' ')} Distribution`,`${dt.context}-holder`,dt.data)
-                    });
+                    })
                     Swal.close()
                 } else {
                     Swal.close()

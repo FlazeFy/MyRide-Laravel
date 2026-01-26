@@ -91,6 +91,7 @@
     $(document).on('click','#submit-add-vehicle-btn', function(){
         post_vehicle()
     })
+
     $(document).on('change','#vehicle_category_holder', function(){
         const val = $(this).val()
     })
@@ -136,11 +137,11 @@
             const files = this.files
             if (!files.length) return
 
-            totalFiles += files.length;
+            totalFiles += files.length
             for (let i = 0; i < files.length; i++) {
                 fd.append("vehicle_other_img_url[]", files[i])
             }
-        });
+        })
 
         if (totalFiles > 10) {
             failedMsg("You can only upload up to 10 other images")

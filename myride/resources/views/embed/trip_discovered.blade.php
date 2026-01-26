@@ -1,7 +1,7 @@
 @extends('layouts.main_layout')
 
 @section('content')
-<div class="container-fluid text-center" style="width:300px;">
+<div class="container-fluid text-center" style="width:300px">
     <h4>Trip Discovered</h4>
     <div id="trip_discovered-holder"></div>
 
@@ -24,7 +24,7 @@
 
                 $(`#${ctx}-holder`).html(`
                     <h4 class="fw-bold">${total_trip} Trip</h4>
-                    <h2 class="fw-bold chip ${chipClass} d-inline-block" style="font-size: var(--textJumbo);">${distance_km} km</h2>
+                    <h2 class="fw-bold chip ${chipClass} d-inline-block" style="font-size: var(--textJumbo)">${distance_km} km</h2>
                     <p class="text-secondary mb-0"><b>Last Updated:</b> ${date}</p>
                 `)
             }
@@ -46,7 +46,7 @@
                     error: function(response, jqXHR, textStatus, errorThrown) {
                         generateApiError(response, true)
                     }
-                });
+                })
             }
 
             if(ctx in localStorage){

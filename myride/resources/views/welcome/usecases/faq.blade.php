@@ -1,6 +1,6 @@
 <div style="margin: 10vh 0; max-width: 1080px;" class="d-block mx-auto" id="services_section">
     <br>
-    <h2 class="fw-bold" style="font-size:50px;">Most Question They Ask</h2>
+    <h2 class="fw-bold" style="font-size:50px">Most Question They Ask</h2>
     <div class="row mt-4 accordion" id="faq_holder"></div>
 </div>
 
@@ -30,12 +30,12 @@
                             </div>
                         </div>
                     `)
-                });
+                })
             },
             error: function(response, jqXHR, textStatus, errorThrown) {
                 generateApiError(response, true)
             }
-        });
+        })
     }
     get_faq()
 </script>

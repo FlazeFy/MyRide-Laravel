@@ -3,8 +3,8 @@
     <table class="table table-bordered" id="driver_tb">
         <thead>
             <tr>
-                <th scope="col" style="min-width: 160px;">Driver</th>
-                <th scope="col" style="min-width: 160px;">Notes</th>
+                <th scope="col" style="min-width: 160px">Driver</th>
+                <th scope="col" style="min-width: 160px">Notes</th>
             </tr>
         </thead>
         <tbody></tbody>
@@ -25,13 +25,9 @@
                         <td>${dt.notes ?? '<p class="m-0 fst-italic text-secondary">- No Notes Provided -</p>'}</td>
                     </tr>
                 `)
-            });
+            })
         } else {
-            $('#driver_tb tbody').html(`
-                <tr>
-                    <td colspan="3"><p class="m-0 fst-italic text-secondary">- No Driver Attached -</p></td>
-                </tr>
-            `)
+            $('#driver_tb tbody').html(`<tr><td colspan="3"><p class="m-0 fst-italic text-secondary">- No Driver Attached -</p></td></tr>`)
         }
     }
 </script>

@@ -4,5 +4,5 @@
         const context = $(this).data('context')
 
         buildDeleteModal(url, context, token, () => getAllDriver(1))
-    });
+    })
 </script>

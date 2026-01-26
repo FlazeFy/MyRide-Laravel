@@ -42,7 +42,7 @@
 
                 data.forEach(dt => {
                     $(`#${items_holder_history}`).append(templateTripBox(dt,null,false))
-                });
+                })
 
                 if(total_page > 1){
                     generatePagination(items_holder_history,(selectedPage) => { get_all_trip_by_driver_id(selectedPage,id) }, total_page, current_page)
@@ -56,6 +56,6 @@
                     messageAlertBox(items_holder_history, "danger", "No trip history found for this driver")
                 }
             }
-        });
+        })
     }
 </script>

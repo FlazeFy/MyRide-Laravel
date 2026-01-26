@@ -27,7 +27,6 @@
 <script>
     $(document).on('click','.btn-update',function(){
         callModal('update-modal')
-
         $('#driver_id').val($(this).data('id'))
         $('#username').val($(this).data('username'))
         $('#fullname').val($(this).data('fullname'))
@@ -40,6 +39,7 @@
         const id = $('#driver_id').val()
         put_driver(id)
     })
+
     const put_driver = (id) => {
         const vehicle_id = $('#vehicle_holder').val()
         const driver_category = $('#driver_category_holder').val()
@@ -75,6 +75,6 @@
                     failedMsg(response.status === 400 ? Object.values(response.responseJSON.message).flat().join('\n') : response.responseJSON.message)
                 }
             }
-        });
+        })
     }
 </script>

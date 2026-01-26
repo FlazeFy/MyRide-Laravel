@@ -1,4 +1,5 @@
 <div id="delete_vehicle_button-holder"></div>
+
 <script>
     $(document).on('click', '.btn-delete', function () {
         const url = $(this).data('url')
@@ -7,5 +8,5 @@
         const redirect_url = type_delete === 'hard' ? '/garage' : `/garage/detail/<?= $id ?>`
 
         buildDeleteModal(url, context, token, () => window.location.href=redirect_url)
-    });
+    })
 </script>

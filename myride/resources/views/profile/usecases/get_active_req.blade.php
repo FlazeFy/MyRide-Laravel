@@ -7,7 +7,7 @@
                 <div class="alert alert-success telegram-request" role="alert">
                     <p>There is a request for <b class='text-dark'>Telegram verification</b>. We have sended the token to your Telegram, please type the token and validate it</p>
                     <div class='d-flex justify-content-start gap-2'>
-                        <input class="form-control mb-0" type="text" style='color:var(--secondaryColor) !important;' name="telegram_request_context" id="telegram_request_context" required>
+                        <input class="form-control mb-0" type="text" style='color:var(--secondaryColor) !important' name="telegram_request_context" id="telegram_request_context" required>
                         <a class='btn btn-success' id='validate-telegram-req-btn'>Validate</a>
                     </div>
                 </div>
@@ -25,7 +25,7 @@
             dataType: 'json',
             beforeSend: function (xhr) {
                 Swal.showLoading()
-                xhr.setRequestHeader("Accept", "application/json");
+                xhr.setRequestHeader("Accept", "application/json")
                 xhr.setRequestHeader("Authorization", `Bearer ${token}`)    
             },
             success: function(response) {
@@ -40,11 +40,11 @@
                         get_profile()
                         $('#req_holder .telegram-request').remove()
                     }
-                });
+                })
             },
             error: function(response, jqXHR, textStatus, errorThrown) {
                 generateApiError(response, true)
             }
-        });
+        })
     })
 </script>

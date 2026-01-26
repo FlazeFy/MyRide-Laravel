@@ -114,7 +114,7 @@
                     if (result.isConfirmed) {
                         get_vehicle(id)
                     }   
-                });
+                })
             },
             error: function(response, jqXHR, textStatus, errorThrown) {
                 Swal.close()
@@ -124,6 +124,6 @@
                     failedRoute('vehicle','/garage')
                 }
             }
-        });
+        })
     }
 </script>

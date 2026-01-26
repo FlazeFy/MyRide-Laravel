@@ -3,10 +3,10 @@
     <table class="table">
         <thead>
             <tr>
-                <th scope="col" style="min-width: 260px;">Notes</th>
-                <th scope="col" style="min-width: 140px;">Category</th>
-                <th scope="col" style="min-width: 160px;">Info</th>
-                <th scope="col" style="min-width: 160px;">Props</th>
+                <th scope="col" style="min-width: 260px">Notes</th>
+                <th scope="col" style="min-width: 140px">Category</th>
+                <th scope="col" style="min-width: 160px">Info</th>
+                <th scope="col" style="min-width: 160px">Props</th>
             </tr>
         </thead>
         <tbody id="list_service_history">
@@ -55,7 +55,7 @@
                             </td>
                         </tr>
                     `)
-                });
+                })
             },
             error: function(response, jqXHR, textStatus, errorThrown) {
                 Swal.close()
@@ -65,6 +65,6 @@
                     $(`#${holder}`).html(`<tr><td scope="row" colspan="3" class="no-msg-text">- No Service Found -</td></tr>`)
                 }
             }
-        });
+        })
     }
 </script>

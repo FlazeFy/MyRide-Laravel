@@ -8,6 +8,7 @@
 </style>
 
 <div id="nav_scroll-holder"></div>
+
 <script>
     const handle_scroll_top_btn = () => {
         if (window.scrollY > window.innerHeight) {
@@ -16,18 +17,19 @@
                     <button class="btn btn-warning w-100 px-3" id="scroll-to-top-btn">
                         <i class="fa-solid fa-arrow-up"></i><span class="d-none d-md-inline"> Scroll to Top</span>
                     </button>
-                `);
+                `)
 
                 $('#scroll-to-top-btn').on('click', function () {
                     $('html, body').animate({ scrollTop: 0 }, 200)
-                });
+                })
             }
         } else {
             $('#scroll-to-top-btn').remove()
         }
-    };
+    }
+
     handle_scroll_top_btn()
     $(window).on('scroll resize', () => {
         handle_scroll_top_btn()
-    });
+    })
 </script>

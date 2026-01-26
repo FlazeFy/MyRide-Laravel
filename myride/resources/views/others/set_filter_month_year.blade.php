@@ -4,7 +4,7 @@
 </form>
 
 <script>
-    const selectedMonthYear = `<?= session()->get('toogle_month_year') ?>`;
+    const selectedMonthYear = `<?= session()->get('toogle_month_year') ?>`
 
     $(document).on('change','#toogle_month_year-select',function(){
         const keys = ['summary_fuel']
@@ -31,7 +31,7 @@
                         $(`#${holder}`).append(`<option value="${idx}-${dt}" ${selected === `${idx}-${dt}` ? "selected":""}>${idx}-${dt}</option>`)
                     }
                 }
-            });
+            })
         }
 
         const fetchData = () => {
@@ -52,7 +52,7 @@
                 error: function(response, jqXHR, textStatus, errorThrown) {
                     generateApiError(response, true)
                 }
-            });
+            })
         }
 
         if(ctx in localStorage){

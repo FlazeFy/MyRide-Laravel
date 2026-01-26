@@ -13,10 +13,10 @@
     <table class="table table-bordered">
         <thead>
             <tr>
-                <th scope="col" style="min-width: 160px;">Vehicle</th>
-                <th scope="col" style="min-width: 280px;">Washing Info</th>
-                <th scope="col" style="min-width: 240px;">Washing Detail</th>
-                <th scope="col" style="min-width: 160px;">Properties</th>
+                <th scope="col" style="min-width: 160px">Vehicle</th>
+                <th scope="col" style="min-width: 280px">Washing Info</th>
+                <th scope="col" style="min-width: 240px">Washing Detail</th>
+                <th scope="col" style="min-width: 160px">Properties</th>
                 <th scope="col">Action</th>
             </tr>
         </thead>
@@ -76,7 +76,7 @@
                                 <h6 class="mb-0">Notes</h6>
                                 <p class="mb-0">${dt.wash_desc ?? '-'}</p>
                             </td>
-                            <td style="max-width:var(--tcolMinLG);">
+                            <td style="max-width:var(--tcolMinLG)">
                                 <div class="row text-start">
                                     ${[
                                         { key: "is_wash_body", label: "Body" },
@@ -103,9 +103,9 @@
                             </td>
                             <td>
                                 <div class="d-flex flex-wrap gap-2 justify-content-center">
-                                    <a class="btn btn-danger btn-delete" style="width:50px;" data-url="/api/v1/wash/destroy/${dt.id}" data-context="Wash"><i class="fa-solid fa-trash"></i></a>
-                                    ${dt.wash_end_time === null ? `<a class="btn btn-success btn-finish" style="width:50px;" data-id="${dt.id}"><i class="fa-solid fa-check"></i></a>` : ""}
-                                    <a class="btn btn-warning btn-update" style="width:50px;" 
+                                    <a class="btn btn-danger btn-delete" style="width:50px" data-url="/api/v1/wash/destroy/${dt.id}" data-context="Wash"><i class="fa-solid fa-trash"></i></a>
+                                    ${dt.wash_end_time === null ? `<a class="btn btn-success btn-finish" style="width:50px" data-id="${dt.id}"><i class="fa-solid fa-check"></i></a>` : ""}
+                                    <a class="btn btn-warning btn-update" style="width:50px" 
                                         data-vehicle-plate-number="${dt.vehicle_plate_number}" data-id="${dt.id}"
                                         data-wash-by="${dt.wash_by}" data-wash-address="${dt.wash_address}" data-wash-desc="${dt.wash_desc}" data-wash-price="${dt.wash_price}"
                                         data-is-wash-body="${dt.is_wash_body}" data-is-wash-window="${dt.is_wash_window}" data-is-wash-dashboard="${dt.is_wash_dashboard}" 
@@ -118,7 +118,7 @@
                             </td>
                         </tr>
                     `)
-                });
+                })
 
                 generatePagination(holder, getAllWash, total_page, current_page)
             },
@@ -132,7 +132,7 @@
                     templateAlertContainer(`msg-${holder}`, 'no-data', "No wash found", 'add a wash history', '<i class="fa-solid fa-soap"></i>','/wash/add')
                 }
             }
-        });
-    };
+        })
+    }
     getAllWash(page, null)
 </script>

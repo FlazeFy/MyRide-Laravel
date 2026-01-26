@@ -16,7 +16,7 @@
                 Swal.close()
                 const data = response.data
                 $(`#${holder}`).append(`
-                    <div class="row" style="font-size: var(--textMD);">
+                    <div class="row" style="font-size: var(--textMD)">
                         <div class="col-xl-6 col-lg-12 col-md-6 col-sm-12">
                             <ul class="ps-3">
                                 <li>Total Wash : ${data[0].total_wash}</li>
@@ -49,7 +49,7 @@
                     templateAlertContainer(holder, 'no-data', "No wash found for this context to generate the summary", 'add a wash', '<i class="fa-solid fa-soap"></i>','/trip/add')
                 }
             }
-        });
+        })
     }
     get_wash_summary()
 </script>

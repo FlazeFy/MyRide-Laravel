@@ -4,5 +4,5 @@
         const context = $(this).data('context')
 
         buildDeleteModal(url, context, token, () => window.location.href = `/garage/detail/<?= $id ?>`)
-    });
+    })
 </script>
