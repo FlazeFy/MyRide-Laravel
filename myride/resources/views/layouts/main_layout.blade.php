@@ -111,7 +111,6 @@
 @include('others.scroll_top')
 @include('others.popup.success')
 @include('others.popup.failed')
-@include('others.popup.success_mini')
 
 <script>
     const popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))

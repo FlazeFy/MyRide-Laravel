@@ -4,6 +4,7 @@
     <script src="{{ asset('/js/usecases/inventory_v1.0.js')}}"></script>
     <script>
         const token = `<?= session()->get("token_key"); ?>`
+        let markers = {}
     </script>
 
     <div class="position-relative">

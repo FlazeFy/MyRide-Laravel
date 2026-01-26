@@ -83,61 +83,84 @@
 
     setCurrentLocalDateTime("departure_at")
 
-    function initMap() {
+    const initMap = () => {
         map = new google.maps.Map(document.getElementById("map-board"), {
             center: { lat: -6.226838579766097, lng: 106.82157923228753 },
             zoom: 12,
         })
 
         map.addListener("click", (e) => {
-            if(markerCounter < 2) {
-                if(markerCounter == 0){
-                    placeMarkerAndPanTo(e.latLng, map, 'Origin')
-                } else if(markerCounter == 1){
-                    placeMarkerAndPanTo(e.latLng, map, 'Destination')
-                }
-                addContentCoor(e.latLng)
-                markerCounter++
-            } 
+            if(!markers['Origin']){
+                placeMarkerAndPanTo(e.latLng, map, 'Origin')
+                addContentCoor(e.latLng, 'Origin')
+            } else if(!markers['Destination']){
+                placeMarkerAndPanTo(e.latLng, map, 'Destination')
+                addContentCoor(e.latLng, 'Destination')
+            }
         })
     }
 
-    function placeMarkerAndPanTo(latLng, map, type) {
-        new google.maps.Marker({
+    const placeMarkerAndPanTo = (latLng, map, type) => {
+        if(markers[type]){
+            markers[type].setMap(null)
+            delete markers[type]
+        }
+
+        const marker = new google.maps.Marker({
             position: latLng,
             map: map,
             icon: {
-                url: 'https://maps.google.com/mapfiles/ms/icons/red-dot.png',
+                url: 'https://maps.google.com/mapfiles/ms/icons/orange-dot.png',
                 scaledSize: new google.maps.Size(40, 40),
+                labelOrigin: new google.maps.Point(20, 50)
             },
             label: {
                 text: type,
                 color: 'white',
-                fontSize: '14px', 
+                fontSize: '14px',
                 fontWeight: '500'
-            },
+            }
         })
+
+        marker.addListener('click', () => {
+            marker.setMap(null)
+            delete markers[type]
+            $(`#trip_${type.toLowerCase()}_coordinate`).val('')
+            $(`#trip_${type.toLowerCase()}_name`).val('')
+        })
+
+        markers[type] = marker
         map.panTo(latLng)
     }
 
-    function addContentCoor(coor) {
+    const addContentCoor = (coor, type) => {
         coor = coor.toJSON()
-
-        if(markerCounter == 0){
-            $('#trip_origin_coordinate').val(coor['lat'] + ', ' + coor['lng'])
-        } else if(markerCounter == 1){
-            $('#trip_destination_coordinate').val(coor['lat'] + ', ' + coor['lng'])
-        }
+        $(`#trip_${type.toLowerCase()}_coordinate`).val(coor['lat'] + ', ' + coor['lng'])
     }
 
-    function resetMarker() {
-        location.reload()
+    const resetMarker = () => {
+        Object.values(markers).forEach(m => m.setMap(null))
+        markers = {}
+        $('#trip_origin_coordinate').val('')
+        $('#trip_destination_coordinate').val('')
+        $('#trip_origin_name').val('')
+        $('#trip_destination_name').val('')
     }
 
     window.initMap = initMap
 
     $(document).on('click','#submit-add-trip-btn', function(){
         post_trip()
+    })
+
+    $(document).on('blur', '#trip_origin_coordinate, #trip_destination_coordinate', function(){
+        const id = $(this).attr('id')
+        const type = ucFirst(id.split('_')[1])
+
+        if ($(this).val().trim() === ""){
+            markers[type].setMap(null)
+            delete markers[type]
+        }
     })
 
     $(document).on('click','.btn-current-coordinate', function(){
