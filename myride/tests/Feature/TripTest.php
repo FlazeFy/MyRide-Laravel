@@ -107,7 +107,7 @@ class TripTest extends TestCase
     {
         // Exec
         $token = $this->login_trait("user");
-        $location_name = "a";
+        $location_name = "my";
         $response = $this->httpClient->get("coordinate/$location_name", [
             'headers' => [
                 'Authorization' => "Bearer $token"

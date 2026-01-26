@@ -201,12 +201,26 @@ class TripModel extends Model
         return $result;
     }
 
-    public static function getMostContext($user_id, $vehicle_id){
-        return TripModel::selectRaw("MAX(LOWER(trip_destination_name)) as most_destination, MAX(LOWER(trip_origin_name)) as most_origin, MAX(trip_category) as most_category")
-            ->where('vehicle_id',$vehicle_id)
-            ->where('created_by',$user_id)
+    protected static function getMostFrequentValue($user_id, $vehicle_id, $col) {
+        return TripModel::select($col)
+            ->where('vehicle_id', $vehicle_id)
+            ->where('created_by', $user_id)
             ->whereNull('deleted_at')
-            ->first();
+            ->groupBy($col)
+            ->orderByRaw('COUNT(*) DESC')
+            ->limit(1)
+            ->value($col);
+    }
+    public static function getMostContext($user_id, $vehicle_id){
+        $mostDestination = self::getMostFrequentValue($user_id, $vehicle_id, 'trip_destination_name');
+        $mostOrigin = self::getMostFrequentValue($user_id, $vehicle_id, 'trip_origin_name');
+        $mostCategory = self::getMostFrequentValue($user_id, $vehicle_id, 'trip_category');
+
+        return (object)[
+            'most_destination' => $mostDestination,
+            'most_origin' => $mostOrigin,
+            'most_category' => $mostCategory,
+        ];
     }
 
     public static function getTotalTripDistance($user_id,$vehicle_id){
