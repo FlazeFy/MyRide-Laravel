@@ -95,21 +95,21 @@ class TripModel extends Model
         });
     }
 
-    public static function getCoordinateByTripLocationName($user_id,$trip_location_name){
+    public static function getCoordinateByTripLocationName($user_id, $trip_location_name){
         $origin = TripModel::selectRaw('trip_origin_name as trip_location_name, trip_origin_coordinate as trip_location_coordinate')
             ->where('trip_origin_name', 'like', "%{$trip_location_name}%")
             ->where('created_by', $user_id)
             ->groupBy('trip_location_name');
 
         $destination = TripModel::selectRaw('trip_destination_name as trip_location_name, trip_destination_coordinate as trip_location_coordinate')
-            ->where('trip_origin_name', 'like', "%{$trip_location_name}%")
+            ->where('trip_destination_name', 'like', "%{$trip_location_name}%")
             ->where('created_by', $user_id)
             ->groupBy('trip_location_name');
 
         $combined = $origin->union($destination)
+            ->orderByRaw("LOCATE(?, trip_location_name)", [$trip_location_name])
             ->orderBy('trip_location_name','ASC')
-            ->limit(14)
-            ->get();
+            ->paginate(14);
 
         return $combined;
     }

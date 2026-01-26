@@ -383,11 +383,17 @@ class Queries extends Controller
      *         @OA\JsonContent(
      *             @OA\Property(property="status", type="string", example="success"),
      *             @OA\Property(property="message", type="string", example="trip fetched"),
-     *             @OA\Property(property="data", type="array",
-     *                  @OA\Items(
-     *                      @OA\Property(property="trip_location_coordinate", type="string", example="-6.177362076836449,106.79156507985539"),
-     *                      @OA\Property(property="trip_location_name", type="string", example="Location A")
-     *                  )
+     *             @OA\Property(property="data",
+     *                 @OA\Property(property="current_page", type="integer", example=1),
+     *                 @OA\Property(property="data", type="array",
+     *                     @OA\Items(
+     *                         @OA\Property(property="trip_location_coordinate", type="string", example="-6.177362076836449,106.79156507985539"),
+     *                         @OA\Property(property="trip_location_name", type="string", example="Location A")
+     *                     )
+     *                 ),
+     *                 @OA\Property(property="last_page", type="integer", example=1),
+     *                 @OA\Property(property="per_page", type="integer", example=14),
+     *                 @OA\Property(property="total", type="integer", example=1)
      *             )
      *         )
      *     ),

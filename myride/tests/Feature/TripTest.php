@@ -107,7 +107,7 @@ class TripTest extends TestCase
     {
         // Exec
         $token = $this->login_trait("user");
-        $location_name = "my";
+        $location_name = "a";
         $response = $this->httpClient->get("coordinate/$location_name", [
             'headers' => [
                 'Authorization' => "Bearer $token"
@@ -123,7 +123,7 @@ class TripTest extends TestCase
         $this->assertArrayHasKey('message', $data);
         $this->assertArrayHasKey('data', $data);
 
-        foreach ($data['data'] as $dt) {
+        foreach ($data['data']['data'] as $dt) {
             $check_object = ["trip_location_name","trip_location_coordinate"];
 
             foreach ($check_object as $col) {

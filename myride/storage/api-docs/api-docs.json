@@ -8913,20 +8913,41 @@
                                             "example": "trip fetched"
                                         },
                                         "data": {
-                                            "type": "array",
-                                            "items": {
-                                                "properties": {
-                                                    "trip_location_coordinate": {
-                                                        "type": "string",
-                                                        "example": "-6.177362076836449,106.79156507985539"
-                                                    },
-                                                    "trip_location_name": {
-                                                        "type": "string",
-                                                        "example": "Location A"
+                                            "properties": {
+                                                "current_page": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "data": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "trip_location_coordinate": {
+                                                                "type": "string",
+                                                                "example": "-6.177362076836449,106.79156507985539"
+                                                            },
+                                                            "trip_location_name": {
+                                                                "type": "string",
+                                                                "example": "Location A"
+                                                            }
+                                                        },
+                                                        "type": "object"
                                                     }
                                                 },
-                                                "type": "object"
-                                            }
+                                                "last_page": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "per_page": {
+                                                    "type": "integer",
+                                                    "example": 14
+                                                },
+                                                "total": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                }
+                                            },
+                                            "type": "object"
                                         }
                                     },
                                     "type": "object"
