@@ -10,7 +10,8 @@
         <img src="{{asset('assets/journey.png')}}" alt='journey.png' class="img img-fluid w-100 mb-3">
         <h2>Curious to see your journey by vehicle?</h2>
         @include('journey.usecases.monthly_summary')
+        @include('journey.usecases.journey_box')
         @include('journey.usecases.select_vehicle')
-        <div id="journey-holder"></div>
+        <div id="journey-holder" class="text-start"></div>
     </div>
 @endsection

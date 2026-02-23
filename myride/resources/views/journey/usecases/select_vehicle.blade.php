@@ -42,5 +42,10 @@
     const fetchVehicleJourneyByVehicleID = (targetElement) => {
         $(targetElement).empty()
         generateMonthlySummary('Feb 2026', { total: 27, distance: 590 }, { total: 2, amount: 2150000 }, { total: 4, amount: 300000 }, { total: 6, amount: 1500000 }, [{ context: 'Budi', total: 10}, { context: 'Budi2', total: 7}], [{ context: 'Personal', total: 10}, { context: 'Culinary Hunting', total: 7}], targetElement)
+        $(targetElement).append(`<div class="chip d-inline-block m-0 bg-primary me-2">20 Feb 2026</div>`)
+        $(targetElement).append(`<div class="chip d-inline-block m-0 bg-primary">10:00</div>`)
+        generateJourneyBox('Service','Lorem ipsum', '20 Jun 2025 10:30', targetElement)
+        $(targetElement).append(`<div class="chip d-inline-block m-0 bg-primary">11:00</div>`)
+        generateJourneyBox('Service','Lorem ipsum', '20 Jun 2025 10:30', targetElement)
     }
 </script>
