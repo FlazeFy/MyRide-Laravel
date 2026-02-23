@@ -34,6 +34,13 @@
             const text = $(this).find('option:selected').text()
             $('#select_vehicle-modal').modal('hide')
             $('#search-btn').html(text !== "-" ? text : `<i class="fa-solid fa-magnifying-glass"></i> Search now!`)
+            fetchVehicleJourneyByVehicleID('#journey-holder')
         })
+        fetchVehicleJourneyByVehicleID('#journey-holder')
     })
+
+    const fetchVehicleJourneyByVehicleID = (targetElement) => {
+        $(targetElement).empty()
+        generateMonthlySummary('Feb 2026', { total: 27, distance: 590 }, { total: 2, amount: 2150000 }, { total: 4, amount: 300000 }, { total: 6, amount: 1500000 }, [{ context: 'Budi', total: 10}, { context: 'Budi2', total: 7}], [{ context: 'Personal', total: 10}, { context: 'Culinary Hunting', total: 7}], targetElement)
+    }
 </script>
