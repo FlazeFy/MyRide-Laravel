@@ -3,6 +3,7 @@
     <ul class="nav nav-pills flex-column" id="sidebar_menu-holder">
         <li><a href="/dashboard" class="nav-link <?= $active_menu == "dashboard" ? "active" : "" ?>"><i class="fa-solid fa-table"></i> <span>Dashboard</span></a></li>
         <li><a href="/garage" class="nav-link <?= $active_menu == "garage" ? "active" : "" ?>"><i class="fa-solid fa-warehouse"></i> <span>My Garage</span></a></li>
+        <li><a href="/journey" class="nav-link <?= $active_menu == "journey" ? "active" : "" ?>"><i class="fa-solid fa-route"></i> <span>Journey</span></a></li>
     </ul>
     <h5 class="group-menu">My Vehicle</h5>
     <ul class="nav nav-pills flex-column" id="vehicle_menu-list"></ul>

@@ -32,6 +32,7 @@ use App\Http\Controllers\AddDriverController;
 use App\Http\Controllers\GarageAddController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\HelpController;
+use App\Http\Controllers\JourneyController;
 
 Route::prefix('/')->group(function () {
     Route::get('/', [WelcomeController::class, 'index'])->name('welcome');
@@ -93,6 +94,10 @@ Route::prefix('/driver')->middleware(['auth_v2:sanctum'])->group(function () {
 Route::prefix('/service')->middleware(['auth_v2:sanctum'])->group(function () {
     Route::get('/', [ServiceController::class, 'index'])->name('service');
     Route::get('/add', [AddServiceController::class, 'index'])->name('add_service');
+});
+
+Route::prefix('/journey')->middleware(['auth_v2:sanctum'])->group(function () {
+    Route::get('/', [JourneyController::class, 'index'])->name('journey');
 });
 
 Route::prefix('/fuel')->middleware(['auth_v2:sanctum'])->group(function () {
