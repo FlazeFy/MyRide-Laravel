@@ -558,4 +558,40 @@ class StatsTest extends TestCase
         Audit::auditRecordText("Integration Test - Success Get Total Trip Per Year (Protected)", "TC-INT-ST-002-02", "Result : ".json_encode($data));
         Audit::auditRecordSheet("Integration Test - Success Get Total Trip Per Year (Protected)", "TC-INT-ST-002-02", "test_get_total_trip_per_year_protected", json_encode($data));
     }
+
+    public function test_get_journey_by_vehicle_id_protected(): void
+    {
+        // Exec
+        $token = $this->login_trait("user");
+        $vehicle_id = "7d53371a-e363-2ad3-25fe-180dae88c062";
+
+        // Exec
+        $response = $this->httpClient->get("journey/$vehicle_id",[
+            'headers' => [
+                'Authorization' => "Bearer $token"
+            ]
+        ]);
+
+        $data = json_decode($response->getBody(), true);
+
+        // Test Parameter
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertArrayHasKey('status', $data);
+        $this->assertEquals('success', $data['status']);
+        $this->assertArrayHasKey('message', $data);
+        $this->assertArrayHasKey('data', $data);
+
+        $str_not_null_col = ["journey_category", "journey_context", "created_at"];
+
+        foreach ($data['data'] as $dt) {
+            foreach ($str_not_null_col as $col) {
+                $this->assertArrayHasKey($col, $dt);
+                $this->assertNotNull($dt[$col]);
+                $this->assertIsString($dt[$col]);
+            }
+        }
+
+        Audit::auditRecordText("Integration Test - Success Get Journey By Vehicle ID (Protected)", "TC-INT-ST-003-01", "Result : ".json_encode($data));
+        Audit::auditRecordSheet("Integration Test - Success Get Journey By Vehicle ID (Protected)", "TC-INT-ST-003-01", "test_get_journey_by_vehicle_id_protected", json_encode($data));
+    }
 }
