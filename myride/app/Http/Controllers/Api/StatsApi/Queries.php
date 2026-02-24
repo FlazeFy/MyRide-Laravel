@@ -1349,7 +1349,7 @@ class Queries extends Controller
     
             $fuels = FuelModel::getJourney($user_id, $vehicle_id)->map(function ($item) {
                 if ($item->fuel_brand !== "Electric") {
-                    $fuel_brand = "$item->fuel_brand ($item->fuel_ron)";
+                    $fuel_brand = "$item->fuel_brand (Ron $item->fuel_ron)";
                 } else {
                     $fuel_brand = "Electric";
                 }

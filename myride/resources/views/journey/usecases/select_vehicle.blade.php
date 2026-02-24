@@ -32,20 +32,74 @@
     $(document).ready(() => {
         $(document).on('change','#vehicle_holder',function(){
             const text = $(this).find('option:selected').text()
+            const id = $(this).val()
             $('#select_vehicle-modal').modal('hide')
             $('#search-btn').html(text !== "-" ? text : `<i class="fa-solid fa-magnifying-glass"></i> Search now!`)
-            fetchVehicleJourneyByVehicleID('#journey-holder')
+            fetchVehicleJourneyByVehicleID('#journey-holder', id)
         })
-        fetchVehicleJourneyByVehicleID('#journey-holder')
     })
 
-    const fetchVehicleJourneyByVehicleID = (targetElement) => {
+    const fetchVehicleJourneyByVehicleID = (targetElement, vehicle_id) => {
         $(targetElement).empty()
-        generateMonthlySummary('Feb 2026', { total: 27, distance: 590 }, { total: 2, amount: 2150000 }, { total: 4, amount: 300000 }, { total: 6, amount: 1500000 }, [{ context: 'Budi', total: 10}, { context: 'Budi2', total: 7}], [{ context: 'Personal', total: 10}, { context: 'Culinary Hunting', total: 7}], targetElement)
+        // generateMonthlySummary('Feb 2026', { total: 27, distance: 590 }, { total: 2, amount: 2150000 }, { total: 4, amount: 300000 }, { total: 6, amount: 1500000 }, [{ context: 'Budi', total: 10}, { context: 'Budi2', total: 7}], [{ context: 'Personal', total: 10}, { context: 'Culinary Hunting', total: 7}], targetElement)
         $(targetElement).append(`<div class="chip d-inline-block m-0 bg-primary me-2">20 Feb 2026</div>`)
         $(targetElement).append(`<div class="chip d-inline-block m-0 bg-primary">10:00</div>`)
-        generateJourneyBox('Service','Lorem ipsum', '20 Jun 2025 10:30', targetElement)
-        $(targetElement).append(`<div class="chip d-inline-block m-0 bg-primary">11:00</div>`)
-        generateJourneyBox('Service','Lorem ipsum', '20 Jun 2025 10:30', targetElement)
+        $(targetElement).append(`<div class="chip d-inline-block m-0 bg-primary">11:00</div>`)        
+
+        $.ajax({
+            url: `/api/v1/stats/journey/${vehicle_id}`,
+            type: 'GET',
+            beforeSend: function (xhr) {
+                Swal.showLoading()
+                xhr.setRequestHeader("Accept", "application/json")
+                xhr.setRequestHeader("Authorization", `Bearer ${token}`)
+                $(targetElement).empty()
+            },
+            success: function(response) {
+                Swal.close()
+                const data = response.data
+                let lastDate = null
+                let lastHour = null
+                const dateChip = "chip d-inline-block m-0 bg-primary me-2"
+
+                data.forEach(dt => {
+                    const dateObj = new Date(dt.created_at)
+                    const formattedDate = dateObj.toLocaleDateString('en-GB', {
+                        day: '2-digit',
+                        month: 'short',
+                        year: 'numeric'
+                    })
+                    const formattedHour = dateObj.toLocaleTimeString('en-GB', {
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    })
+
+                    if (formattedDate !== lastDate) {
+                        $(targetElement).append(`<div class="${dateChip}">${formattedDate}</div>`)
+                        lastDate = formattedDate
+                        lastHour = null 
+                    }
+                    if (formattedHour !== lastHour) {
+                        $(targetElement).append(`<div class="${dateChip}">${formattedHour}</div>`)
+                        lastHour = formattedHour
+                    }
+
+                    generateJourneyBox(dt.journey_category, dt.journey_context, dt.created_at, targetElement)
+                })
+            },
+            error: function(response, jqXHR, textStatus, errorThrown) {
+                Swal.close()
+                if(response.status != 404){
+                    generateApiError(response, true)
+                } else {
+                    $(targetElement).append(`
+                        <div class="alert alert-danger mt-5 text-center">
+                            <h6>Oops!</h6>
+                            <p class="mb-0">We dont find any journey from this vehicle</p>
+                        </div>
+                    `)
+                }
+            }
+        })
     }
 </script>
