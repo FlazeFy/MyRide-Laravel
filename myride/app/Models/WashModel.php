@@ -158,6 +158,15 @@ class WashModel extends Model
         return $res->whereRaw("YEAR(created_at) = '$year'")->groupByRaw('MONTH(created_at)')->get();
     }
 
+    public static function getJourney($user_id, $vehicle_id){
+        return WashModel::select("wash_desc", "wash_by", "wash_price", "wash_address", "wash_start_time", "wash_end_time", "created_at")
+            ->where('created_by', $user_id)
+            ->where('vehicle_id', $vehicle_id)
+            ->whereNotNull('wash_end_time')
+            ->orderby('created_at','DESC')
+            ->get();
+    }
+
     public static function getTotalWashPerYear($user_id = null, $vehicle_id = null, $context, $year){
         switch ($context) {
             case 'total_item':

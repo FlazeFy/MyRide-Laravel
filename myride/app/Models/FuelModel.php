@@ -126,6 +126,14 @@ class FuelModel extends Model
             ->first();
     }
 
+    public static function getJourney($user_id, $vehicle_id){
+        return FuelModel::select("fuel_volume", "fuel_price_total", "fuel_brand", "fuel_type", "fuel_ron", "created_at")
+            ->where('created_by', $user_id)
+            ->where('vehicle_id', $vehicle_id)
+            ->orderby('created_at','DESC')
+            ->get();
+    }
+
     public static function createFuel($data, $user_id){
         $data['created_at'] = $data['created_at'] ?? date('Y-m-d H:i:s');
         $data['created_by'] = $user_id;

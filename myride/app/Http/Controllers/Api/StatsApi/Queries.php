@@ -1253,4 +1253,133 @@ class Queries extends Controller
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
+
+    /**
+     * @OA\GET(
+     *     path="/api/v1/stats/journey/{vehicle_id}",
+     *     summary="Get Journey By Vehicle ID",
+     *     description="This request is used to get journey (trip, service, wash, and refuel history). This request is using MySql database, and has a protected routes",
+     *     tags={"Stats"},
+     *     security={{"bearerAuth":{}}},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="string"),
+     *         description="Vehicle ID",
+     *         example="e1288783-a5d4-1c4c-2cd6-0e92f7cc3bf9",
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="stats fetched",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="message", type="string", example="stats fetched"),
+     *                 @OA\Property(property="data", type="array",
+     *                     @OA\Items(
+     *                          @OA\Property(property="journey_category", type="string", example="Fuel"),
+     *                          @OA\Property(property="journey_context", type="string", example="You refueled 12L of Pertamina (92)"),
+     *                          @OA\Property(property="created_at", type="string", format="date-time", example="2024-09-20 22:53:47"),
+     *                 )
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="protected route need to include sign in token as authorization bearer",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="failed"),
+     *             @OA\Property(property="message", type="string", example="you need to include the authorization token from login")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="stats failed to fetched",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="failed"),
+     *             @OA\Property(property="message", type="string", example="stats not found")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal Server Error",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="error"),
+     *             @OA\Property(property="message", type="string", example="something wrong. please contact admin")
+     *         )
+     *     ),
+     * )
+     */
+    public function getJourney(Request $request, $vehicle_id)
+    {
+        try {
+            $user_id = $request->user()->id;
+
+            $trips = TripModel::getJourney($user_id, $vehicle_id)->map(function ($item) {
+                $person = $item->trip_person ? " with $item->trip_person" : "";
+    
+                return [
+                    'journey_category' => 'trip',
+                    'journey_context' => "You made a $item->trip_category trip$person from $item->trip_origin_name to $item->trip_destination_name",
+                    'created_at' => $item->created_at
+                ];
+            });
+    
+            $washes = WashModel::getJourney($user_id, $vehicle_id)->map(function ($item) {
+                $desc = $item->wash_desc ? " ({$item->wash_desc})" : "";
+                $price = $item->wash_price ? " costing Rp " . number_format($item->wash_price) : "";
+
+                return [
+                    'journey_category' => 'wash',
+                    'journey_context' => "You washed your vehicle at {$item->wash_address}{$desc}{$price}",
+                    'created_at' => $item->created_at
+                ];
+            });
+    
+            $services = ServiceModel::getJourney($user_id, $vehicle_id)->map(function ($item) {
+                $note = $item->service_note ? " ({$item->service_note})" : "";
+                $price = $item->service_price_total ? " costing Rp " . number_format($item->service_price_total) : "";
+    
+                return [
+                    'journey_category' => 'service',
+                    'journey_context' => "You did $item->service_category service at {$item->service_location}{$note}{$price}",
+                    'created_at' => $item->created_at
+                ];
+            });
+    
+            $fuels = FuelModel::getJourney($user_id, $vehicle_id)->map(function ($item) {
+                if ($item->fuel_brand !== "Electric") {
+                    $fuel_brand = "$item->fuel_brand ($item->fuel_ron)";
+                } else {
+                    $fuel_brand = "Electric";
+                }
+
+                return [
+                    'journey_category' => 'fuel',
+                    'journey_context' => "You refueled {$item->fuel_volume}L of $fuel_brand",
+                    'created_at' => $item->created_at
+                ];
+            });
+    
+            $journey = collect()->merge($trips)->merge($washes)->merge($services)->merge($fuels)->sortByDesc('created_at')->values();
+    
+            if ($journey->isNotEmpty()) {
+                return response()->json([
+                    'status' => 'success',
+                    'message' => Generator::getMessageTemplate("fetch", 'stats'),
+                    'data' => $journey
+                ], Response::HTTP_OK);
+            }
+    
+            return response()->json([
+                'status' => 'failed',
+                'message' => Generator::getMessageTemplate("not_found", 'stats'),
+            ], Response::HTTP_NOT_FOUND);
+        } catch(\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => Generator::getMessageTemplate("unknown_error", null),
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
 }

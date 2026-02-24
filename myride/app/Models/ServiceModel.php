@@ -136,6 +136,14 @@ class ServiceModel extends Model
         });
     }
 
+    public static function getJourney($user_id, $vehicle_id){
+        return ServiceModel::select("service_note", "service_category", "service_price_total", "service_location", "created_at")
+            ->where('created_by',$user_id)
+            ->where('vehicle_id',$vehicle_id)
+            ->orderby('created_at','DESC')
+            ->get();
+    }
+
     public static function getExportData($user_id, $vehicle_id = null){
         $res = ServiceModel::select("vehicle_name","vehicle_plate_number", "vehicle_type", 'service_category', 'service_price_total', 'service_location', 'service_note', 'remind_at', 'service.created_at', 'service.updated_at')
             ->join('vehicle','vehicle.id','=','service.vehicle_id');

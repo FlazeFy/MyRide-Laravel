@@ -77,6 +77,14 @@ class TripModel extends Model
             ->get();
     }
 
+    public static function getJourney($user_id, $vehicle_id){
+        return TripModel::select("trip_category", "trip_desc", "trip_person", "trip_origin_name", "trip_destination_name", "trip_origin_coordinate", "trip_destination_coordinate", "created_at")
+            ->where('created_by',$user_id)
+            ->where('vehicle_id',$vehicle_id)
+            ->orderby('created_at','DESC')
+            ->get();
+    }
+
     public static function getTotalTripByCategory($user_id){
         $res = TripModel::selectRaw('trip_category as context, COUNT(1) as total')
             ->where('created_by', $user_id)

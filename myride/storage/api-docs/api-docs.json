@@ -7868,6 +7868,136 @@
                 ]
             }
         },
+        "/api/v1/stats/journey/{vehicle_id}": {
+            "get": {
+                "tags": [
+                    "Stats"
+                ],
+                "summary": "Get Journey By Vehicle ID",
+                "description": "This request is used to get journey (trip, service, wash, and refuel history). This request is using MySql database, and has a protected routes",
+                "operationId": "b70b07c5dd44a70c0aec3c2c2637e31b",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Vehicle ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "e1288783-a5d4-1c4c-2cd6-0e92f7cc3bf9"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "stats fetched",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "stats fetched"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "journey_category": {
+                                                        "type": "string",
+                                                        "example": "Fuel"
+                                                    },
+                                                    "journey_context": {
+                                                        "type": "string",
+                                                        "example": "You refueled 12L of Pertamina (92)"
+                                                    },
+                                                    "created_at": {
+                                                        "type": "string",
+                                                        "format": "date-time",
+                                                        "example": "2024-09-20 22:53:47"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "protected route need to include sign in token as authorization bearer",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "you need to include the authorization token from login"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "stats failed to fetched",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "stats not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "something wrong. please contact admin"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/v1/trip": {
             "get": {
                 "tags": [
