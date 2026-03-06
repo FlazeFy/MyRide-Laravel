@@ -103,6 +103,52 @@ class TripTest extends TestCase
         Audit::auditRecordSheet("Test - Get All Trip", "TC-XXX", 'TC-XXX test_get_all_trip', json_encode($data));
     }
 
+    public function test_get_all_trip_coordinate(): void
+    {
+        // Exec
+        $token = $this->login_trait("user");
+        $response = $this->httpClient->get("coordinate", [
+            'headers' => [
+                'Authorization' => "Bearer $token"
+            ]
+        ]);
+
+        $data = json_decode($response->getBody(), true);
+
+        // Test Parameter
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertArrayHasKey('status', $data);
+        $this->assertEquals('success', $data['status']);
+        $this->assertArrayHasKey('message', $data);
+        $this->assertArrayHasKey('data', $data);
+
+        foreach ($data['data'] as $dt) {
+            $check_object = ["id", "vehicle_name", "vehicle_plate_number", "vehicle_type", "trip_desc", "trip_category", "trip_origin_name", "trip_person", "trip_origin_coordinate", "trip_destination_name", "trip_destination_coordinate", "created_at"];
+
+            foreach ($check_object as $col) {
+                $this->assertArrayHasKey($col, $dt);
+            }
+
+            $check_not_null_str = ["id", "vehicle_name", "vehicle_plate_number", "vehicle_type",  "trip_category", "trip_origin_name", "trip_origin_coordinate", "trip_destination_name", "trip_destination_coordinate", "created_at"];
+            foreach ($check_not_null_str as $col) {
+                $this->assertNotNull($dt[$col]);
+                $this->assertIsString($dt[$col]);
+            }
+
+            $check_nullable_str = ["trip_person","trip_desc"];
+            foreach ($check_nullable_str as $col) {
+                if (!is_null($dt[$col])) {
+                    $this->assertIsString($dt[$col]);
+                }
+            }
+
+            $this->assertEquals(36,strlen($dt['id']));
+        }
+
+        Audit::auditRecordText("Test - Get All Trip Coordinate", "TC-XXX", "Result : ".json_encode($data));
+        Audit::auditRecordSheet("Test - Get All Trip Coordinate", "TC-XXX", 'TC-XXX test_get_all_trip_coordinate', json_encode($data));
+    }
+
     public function test_get_trip_history_coordinate_by_location_name(): void
     {
         // Exec

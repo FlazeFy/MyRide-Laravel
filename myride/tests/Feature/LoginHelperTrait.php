@@ -13,8 +13,8 @@ trait LoginHelperTrait
         ]);
 
         $param = [
-            'username' => $role == "user" ? 'flazefy' : 'testeradmin',
-            'password' => 'nopass123'
+            'username' => $role == "user" ? env('TEST_USER_USERNAME') : env('TEST_ADMIN_USERNAME'),
+            'password' => env('TEST_PASSWORD')
         ];
         $response = $httpClient->post("/api/v1/login", [
             'json' => $param
