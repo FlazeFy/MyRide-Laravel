@@ -9,7 +9,7 @@
     <div class="py-3">
         <div class="row">
             <div class="col-xl-9 col-lg-8 col-md-12">
-                <div class='container-fluid text-center'>
+                <div class='container-fluid text-center' id="my_summary-section">
                     @include('dashboard.usecases.get_summary')
                 </div>
                 <div class='container-fluid'>
@@ -36,12 +36,12 @@
             <div class="col-xl-3 col-lg-4 col-md-12">
                 <div class="row">
                     <div class="col-lg-12 col-md-6">
-                        <div class='container-fluid text-center'>
+                        <div class='container-fluid text-center' id="next_reminder-section">
                             @include('dashboard.usecases.get_next_reminder')
                         </div>
                     </div>
                     <div class="col-lg-12 col-md-6">
-                        <div class='container-fluid text-center'>
+                        <div class='container-fluid text-center' id="trip_discovered-section">
                             @include('dashboard.usecases.get_trip_discovered')
                         </div>
                     </div>

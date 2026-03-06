@@ -58,6 +58,13 @@
                 }
                 
                 if(found){
+                    const autoTheme = localStorage.getItem("autoTheme")
+
+                    sessionStorage.clear()
+                    localStorage.clear()
+
+                    if (autoTheme !== null) localStorage.setItem("autoTheme", autoTheme)
+                    
                     $('#token').val(response.token)
                     $('#role').val(response.role)
                     $('#email').val(response.message.email)
