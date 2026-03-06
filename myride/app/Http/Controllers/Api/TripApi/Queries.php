@@ -304,6 +304,7 @@ class Queries extends Controller
      *                 @OA\Property(property="data", type="object",
      *                      @OA\Property(property="id", type="string", format="uuid", example="28668090-5653-dff5-2d8f-af603fc36b45"),
      *                      @OA\Property(property="vehicle_name", type="string", example="Brio RS MT"),
+     *                      @OA\Property(property="vehicle_type", type="string", example="City Car"),
      *                      @OA\Property(property="vehicle_plate_number", type="string", example="D 1610 ZBC"),
      *                      @OA\Property(property="trip_desc", type="string", example="jalan2"),
      *                      @OA\Property(property="trip_category", type="string", example="Others"),

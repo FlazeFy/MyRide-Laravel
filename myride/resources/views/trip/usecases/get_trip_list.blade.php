@@ -29,6 +29,7 @@
     $(document).on('blur','.search-input', function(){
         const val = $(this).val().trim()
         getAllTrip(1,val !== "" ? val : null)
+        getAllTripCoordinate(val !== "" ? val : null)
     })
 
     const getAllTrip = (page, search) => {
@@ -70,8 +71,6 @@
                             appendLayoutTrip(payload, holder)
                         }
 
-                        data.forEach(dt => place_marker(dt))
-                        initMap()
                         resolve()
 
                         if (data.length > 3) {

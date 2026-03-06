@@ -64,17 +64,19 @@
         })
     })
 
-    const markerInfoHTML = (trip_desc, trip_category, created_at, placeLabel, placeName, originCoord, destinationCoord, vehicle_type) => {
+    const markerInfoHTML = (type, trip_desc, trip_category, created_at, originName, destinationName, originCoord, destinationCoord, vehicle_type, vehicle) => {
         return `
             <div class="d-flex justify-content-between mb-2">
                 <button class="btn btn-danger custom-close-btn py-1" style="font-size: var(--textMD); margin:0 !important;"><i class="fa-solid fa-arrow-left"></i> Back</button>
                 <span class="btn btn-primary rounded-pill px-3 py-1 text-capitalize" style="font-size: var(--textMD)px">${trip_category}</span>
             </div><hr>
-            <h6 class="mb-1">${trip_desc}</h6>
-            <p class="mt-2 mb-0 fw-bold">${placeLabel}</p>
-            <p>${placeName}</p>
-            <p class="mt-2 mb-0 fw-bold">Created At</p>
+            <p class="mb-3 fw-bold">${trip_desc}</p>
+            <p class="mb-1"><span class="${type === "origin" && "fw-bold"}">Origin : ${originName}</span></p>
+            <p class="mb-0"><span class="${type === "destination" && "fw-bold"}">Destination : ${destinationName}</span></p>
+            <hr><p class="mt-2 mb-0 fw-bold">Created At</p>
             <p class="mb-0">${created_at}</p>
+            <p class="mt-2 mb-0 fw-bold">Vehicle</p>
+            <p class="mb-0">${vehicle}</p>
             <a class="btn btn-success py-1 mt-2 btn-set-route" data-trip-origin-coordinate="${originCoord}" data-trip-destination-coordinate="${destinationCoord}" data-vehicle-type="${vehicle_type}" style="font-size: var(--textMD)px">
                 <i class="fa-solid fa-map-pin"></i> Set Route
             </a>
@@ -89,13 +91,13 @@
             {
                 coords: { lat: coorOrigin[0], lng: coorOrigin[1] },
                 content: markerInfoHTML(
-                    dt.trip_desc, dt.trip_category, dt.created_at, "Origin", dt.trip_origin_name, dt.trip_origin_coordinate, `${coorOrigin[0]},${coorOrigin[1]}`, dt.vehicle_type
+                    "origin", dt.trip_desc, dt.trip_category, dt.created_at, dt.trip_origin_name, dt.trip_destination_name, dt.trip_origin_coordinate, dt.trip_destination_coordinate, dt.vehicle_type, `(${dt.vehicle_plate_number}) ${dt.vehicle_name}`
                 )
             },
             {
                 coords: { lat: coorDestination[0], lng: coorDestination[1] },
                 content: markerInfoHTML(
-                    dt.trip_desc, dt.trip_category, dt.created_at, "Destination", dt.trip_origin_name, dt.trip_origin_coordinate, `${coorDestination[0]},${coorDestination[1]}`, dt.vehicle_type
+                    "destination", dt.trip_desc, dt.trip_category, dt.created_at, dt.trip_origin_name, dt.trip_destination_name, dt.trip_origin_coordinate, dt.trip_destination_coordinate, dt.vehicle_type, `(${dt.vehicle_plate_number}) ${dt.vehicle_name}`
                 )
             }
         )
@@ -170,4 +172,28 @@
     }
 
     window.initMap = initMap
+
+    const getAllTripCoordinate = (search) => {
+        const searchQuery = search ? `?search=${search}` : ''
+        $.ajax({
+            url: `/api/v1/trip/coordinate${searchQuery}`,
+            type: 'GET',
+            beforeSend: function (xhr) {
+                Swal.showLoading()
+                xhr.setRequestHeader("Accept", "application/json")
+                xhr.setRequestHeader("Authorization", `Bearer ${token}`)
+            },
+            success: function(response) {
+                Swal.close()
+                const data = response.data
+                data.forEach(dt => place_marker(dt))
+                initMap()
+            },
+            error: function(response, jqXHR, textStatus, errorThrown) {
+                Swal.close()
+                generateApiError(response, true)
+            }
+        })
+    }
+    getAllTripCoordinate(null)
 </script>
