@@ -11,12 +11,12 @@
             const date = dateObj.toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" })
 
             $(`#${ctx}-holder`).html(`
-                <h4 class="fw-bold">${date}</h4>
+                <h4 class="fw-bold" id="trip-date">${date}</h4>
                 <span class="d-flex justify-align-center justify-content-center gap-2 mb-2">
                     <div class="plate-number m-0">${vehicle_plate_number}</div>
-                    ${driver_username ? `<div class="plate-number m-0"><i class="fa-solid fa-user-tie"></i> ${driver_username}</div>` :''}
+                    ${driver_username ? `<div class="plate-number driver-username m-0"><i class="fa-solid fa-user-tie"></i> ${driver_username}</div>` :''}
                 </span>
-                <p class="text-secondary mb-0"><b>Locate on:</b> ${trip_destination_coordinate ? `${trip_destination_coordinate} | `:''}${trip_destination_name}</p>
+                <p class="text-secondary trip-location mb-0"><b>Locate on:</b> ${trip_destination_coordinate ? `${trip_destination_coordinate} | `:''}${trip_destination_name}</p>
                 ${trip_destination_coordinate ? `
                     <a class="btn btn-success py-1 mt-2 btn-set-route" data-trip-origin-coordinate="now" data-trip-destination-coordinate="${trip_destination_coordinate}" data-vehicle-type="${vehicle_type}"><i class="fa-solid fa-map-pin"></i> Set Route</a> 
                 `:''}

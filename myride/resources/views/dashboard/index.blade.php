@@ -46,7 +46,7 @@
                         </div>
                     </div>
                     <div class="col-lg-12 col-md-6">
-                        <div class='container-fluid text-center'>
+                        <div class='container-fluid text-center' id="last_trip-section">
                             @include('dashboard.usecases.get_last_trip')
                         </div>
                     </div>

@@ -8905,6 +8905,155 @@
                 ]
             }
         },
+        "/api/v1/trip/coordinate": {
+            "get": {
+                "tags": [
+                    "Trip"
+                ],
+                "summary": "Get Trip All Coordinate",
+                "description": "This request is used to get all trip coordinate, using in maps only. This request interacts with the MySQL database, and has a protected routes.",
+                "operationId": "714a89a26b5ea251aef73dbe8aefa461",
+                "responses": {
+                    "200": {
+                        "description": "Trip fetched successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "trip fetched"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "string",
+                                                    "format": "uuid",
+                                                    "example": "28668090-5653-dff5-2d8f-af603fc36b45"
+                                                },
+                                                "vehicle_name": {
+                                                    "type": "string",
+                                                    "example": "Brio RS MT"
+                                                },
+                                                "vehicle_plate_number": {
+                                                    "type": "string",
+                                                    "example": "D 1610 ZBC"
+                                                },
+                                                "trip_desc": {
+                                                    "type": "string",
+                                                    "example": "jalan2"
+                                                },
+                                                "trip_category": {
+                                                    "type": "string",
+                                                    "example": "Others"
+                                                },
+                                                "trip_origin_name": {
+                                                    "type": "string",
+                                                    "example": "Budi House"
+                                                },
+                                                "trip_person": {
+                                                    "type": "string",
+                                                    "example": "Budi",
+                                                    "nullable": true
+                                                },
+                                                "trip_origin_coordinate": {
+                                                    "type": "string",
+                                                    "example": "-6.252640549671855, 106.76424433238519"
+                                                },
+                                                "trip_destination_name": {
+                                                    "type": "string",
+                                                    "example": "Central Park"
+                                                },
+                                                "trip_destination_coordinate": {
+                                                    "type": "string",
+                                                    "example": "-6.177464532426197, 106.7912179194768"
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "format": "datetime",
+                                                    "example": "2025-06-19 07:54:42"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "protected route need to include sign in token as authorization bearer",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "you need to include the authorization token from login"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "trip failed to fetched",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "trip not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "something wrong. please contact admin"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/v1/trip/discovered": {
             "get": {
                 "tags": [

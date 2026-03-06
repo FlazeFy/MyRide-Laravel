@@ -69,6 +69,26 @@ class TripModel extends Model
         return $res->isNotEmpty() ? $res : null;
     }
 
+    public static function getAllCoordinate($user_id, $search = null) {
+        $res = TripModel::select("trip.id", "vehicle_name", "vehicle_plate_number", "trip_desc", "trip_category", "trip_origin_name", "trip_person", "trip_origin_coordinate", "trip_destination_name","trip_destination_coordinate", "trip.created_at")
+            ->join('vehicle','vehicle.id','=','trip.vehicle_id')
+            ->orderBy('trip.created_at','desc')
+            ->where('trip.created_by',$user_id);
+
+        if ($search) {
+            $search = strtolower($search);
+            $res->where(function ($q) use ($search) {
+                $q->whereRaw('LOWER(trip_desc) LIKE ?', ["%{$search}%"])
+                    ->orWhereRaw('LOWER(trip_origin_name) LIKE ?', ["%{$search}%"])
+                    ->orWhereRaw('LOWER(trip_destination_name) LIKE ?', ["%{$search}%"]);
+            });
+        }
+
+        $res = $res->get();
+
+        return $res->isNotEmpty() ? $res : null;
+    }
+
     public static function getTripCalendar($user_id){
         return TripModel::selectRaw("trip.id,CONCAT(trip_origin_name, ' - ', trip_destination_name) AS trip_location_name, vehicle.vehicle_plate_number,trip.created_at")
             ->leftjoin('vehicle','vehicle.id','=','trip.vehicle_id')
