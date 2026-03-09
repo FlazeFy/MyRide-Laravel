@@ -35,7 +35,6 @@ class DriverModel extends Authenticatable
     use HasFactory;
     use HasApiTokens;
     public $incrementing = false;
-
     protected $table = 'driver';
     protected $primaryKey = 'id';
     protected $fillable = ['id', 'username', 'fullname', 'password', 'email', 'telegram_user_id', 'telegram_is_valid', 'phone', 'notes', 'created_at', 'updated_at', 'created_by'];
@@ -43,17 +42,9 @@ class DriverModel extends Authenticatable
     public static function getAllDriver($user_id = null, $limit, $col = 'driver.*,COUNT(trip.id) as total_trip'){
         $res = DriverModel::selectRaw($col);
 
-        if($col == 'driver.*,COUNT(trip.id) as total_trip'){
-            $res = $res->leftjoin('trip','trip.driver_id','=','driver.id');
-        }
-
-        if($user_id){
-            $res = $res->where('driver.created_by', $user_id);
-        }
-
-        if($col == 'driver.*,COUNT(trip.id) as total_trip'){
-            $res = $res->groupby('driver.id');
-        }
+        if($col == 'driver.*,COUNT(trip.id) as total_trip') $res = $res->leftjoin('trip','trip.driver_id','=','driver.id');
+        if($user_id) $res = $res->where('driver.created_by', $user_id);
+        if($col == 'driver.*,COUNT(trip.id) as total_trip') $res = $res->groupby('driver.id');
             
         if($limit !== 0){
             return $res->orderBy('driver.created_at', 'desc')->paginate($limit); 
@@ -74,9 +65,7 @@ class DriverModel extends Authenticatable
             ->leftjoin('driver_vehicle_relation','driver_vehicle_relation.driver_id','=','driver.id')
             ->leftjoin('vehicle','vehicle.id','=','driver_vehicle_relation.vehicle_id');
 
-        if($user_id){
-            $res = $res->where('driver.created_by', $user_id);
-        }
+        if($user_id) $res = $res->where('driver.created_by', $user_id);
             
         return $res->orderBy('driver_vehicle_relation.created_at', 'desc')  
             ->groupBy('driver.id', 'driver.username', 'driver.fullname', 'driver.email', 'driver.telegram_user_id', 'driver.telegram_is_valid', 'driver.phone')
@@ -86,9 +75,7 @@ class DriverModel extends Authenticatable
     public static function hardDeleteDriverById($id, $user_id = null){
         $res = DriverModel::where('id',$id);
 
-        if($user_id){
-            $res = $res->where('created_by',$user_id);
-        }
+        if($user_id) $res = $res->where('created_by',$user_id);
             
         return $res->delete();
     }

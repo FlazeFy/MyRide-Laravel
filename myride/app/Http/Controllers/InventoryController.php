@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Http\Controllers;
-use Illuminate\Http\Request;
 
 // Helpers
 use App\Helpers\Generator;
@@ -12,10 +11,6 @@ class InventoryController extends Controller
     {
         $user_id = Generator::getUserId(session()->get('role_key'));
 
-        if($user_id != null){
-            return view('inventory.index')->with('active_menu','inventory');
-        } else {
-            return redirect("/login");
-        }
+        return $user_id ? view('inventory.index')->with('active_menu', 'inventory') : redirect('/login');
     }
 }

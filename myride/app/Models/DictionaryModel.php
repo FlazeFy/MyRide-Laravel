@@ -26,7 +26,6 @@ class DictionaryModel extends Model
     use HasFactory;
     public $incrementing = false;
     public $timestamps = false;
-
     protected $table = 'dictionary';
     protected $primaryKey = 'id';
     protected $fillable = ['id', 'dictionary_type', 'dictionary_name', 'created_at', 'created_by'];

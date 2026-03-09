@@ -124,7 +124,7 @@ class FuelModel extends Model
         $res = FuelModel::select("vehicle_name","vehicle_plate_number", "vehicle_type", "fuel_volume", "fuel_price_total", "fuel_brand", "fuel_type", "fuel_ron", "fuel.created_at as datetime")
             ->join('vehicle','vehicle.id','=','fuel.vehicle_id');
         
-        if($vehicle_id) $res = $res->where('vehicle_id',$vehicle_id);
+        if ($vehicle_id) $res = $res->where('vehicle_id',$vehicle_id);
 
         return $res->where('fuel.created_by',$user_id)
             ->orderBy('fuel.created_at', 'desc')

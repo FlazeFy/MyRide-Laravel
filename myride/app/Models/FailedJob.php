@@ -25,7 +25,6 @@ class FailedJob extends Model
 {
     use HasFactory;
     public $timestamps = false;
-
     protected $table = 'failed_jobs';
     protected $primaryKey = 'id';
     protected $fillable = ['id', 'type', 'status', 'payload', 'created_at'];

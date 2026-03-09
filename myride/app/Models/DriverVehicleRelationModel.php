@@ -28,7 +28,6 @@ class DriverVehicleRelationModel extends Authenticatable
     use HasApiTokens;
     public $incrementing = false;
     public $timestamps = false;
-
     protected $table = 'driver_vehicle_relation';
     protected $primaryKey = 'id';
     protected $fillable = ['id', 'vehicle_id', 'driver_id', 'relation_note', 'created_at'];
@@ -36,9 +35,7 @@ class DriverVehicleRelationModel extends Authenticatable
     public static function hardDeleteDriverVehicleRelationById($id, $user_id = null){
         $res = DriverVehicleRelationModel::where('driver_vehicle_relation.id',$id);
 
-        if($user_id){
-            $res = $res->join('driver','driver.id','=','driver_vehicle_relation.driver_id')->where('driver.created_by',$user_id);
-        }
+        if ($user_id) $res = $res->join('driver','driver.id','=','driver_vehicle_relation.driver_id')->where('driver.created_by',$user_id);
             
         return $res->delete();
     }

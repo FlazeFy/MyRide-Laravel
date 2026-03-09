@@ -18,10 +18,7 @@ class AuthenticateMiddleware
     public function handle($request, Closure $next)
     {
         $token = session()->get('token_key');
-
-        if ($token == null) {
-            return redirect()->route('login')->with('failed_message', 'Session lost, please sign in again');
-        }
+        if ($token == null) return redirect()->route('login')->with('failed_message', 'Session lost, please sign in again');
 
         return $next($request);
     }
