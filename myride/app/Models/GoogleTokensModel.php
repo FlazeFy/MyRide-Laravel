@@ -26,7 +26,6 @@ class GoogleTokensModel extends Model
     use HasFactory;
     public $incrementing = false;
     public $timestamps = false;
-
     protected $table = 'google_tokens';
     protected $primaryKey = 'id';
     protected $fillable = ['id', 'access_token', 'expiry', 'created_at', 'created_by'];

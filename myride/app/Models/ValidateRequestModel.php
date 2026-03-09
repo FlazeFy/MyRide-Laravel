@@ -26,17 +26,14 @@ class ValidateRequestModel extends Model
     use HasFactory;
     public $incrementing = false;
     public $timestamps = false;
-
     protected $table = 'validate_request';
     protected $primaryKey = 'id';
     protected $fillable = ['id', 'request_type', 'request_context', 'created_at', 'created_by']; 
 
     public static function getActiveRequest($user_id){
-        $res = ValidateRequestModel::select('id','request_type', 'request_context', 'created_at')
+        return ValidateRequestModel::select('id','request_type', 'request_context', 'created_at')
             ->where('created_by', $user_id)
             ->first();
-
-        return $res;
     }   
 
     public static function getCheckRegisterToken($username){
@@ -74,18 +71,13 @@ class ValidateRequestModel extends Model
     }
 
     public static function isUserRequestDuplicate($ctx,$user){
-        return ValidateRequestModel::where('request_type',$ctx)
-            ->where('created_by',$user)
-            ->exists();
+        return ValidateRequestModel::where('request_type',$ctx)->where('created_by',$user)->exists();
     }
 
     public static function isUserRequestValid($ctx,$token,$user){
-        $res = ValidateRequestModel::select('id')
-            ->where('request_type',$ctx);
+        $res = ValidateRequestModel::select('id')->where('request_type',$ctx);
         
-        if($token){
-            $res = $res->where('request_context',$token);
-        }
+        if($token) $res = $res->where('request_context',$token);
             
         return $res->where('created_by',$user)->first();
     }

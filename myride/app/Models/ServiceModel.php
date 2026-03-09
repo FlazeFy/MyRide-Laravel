@@ -103,7 +103,7 @@ class ServiceModel extends Model
             ->get();  
     }
 
-    public static function getTotalServicePerYear($user_id = null, $context, $year){
+    public static function getTotalServiceMonthlyByYear($user_id = null, $context, $year){
         switch ($context) {
             case 'total_item':
                 $context = 'COUNT(id)';

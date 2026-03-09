@@ -635,7 +635,7 @@ class Queries extends Controller
      *     ),
      * )
      */
-    public function getTotalTripPerYear(Request $request, $year)
+    public function getTotalTripMonthlyByYear(Request $request, $year)
     {
         try{
             // Check whether authentication is attached. If yes, retrieve statistics by user; if not, retrieve statistics for all users
@@ -763,7 +763,7 @@ class Queries extends Controller
      *     ),
      * )
      */
-    public function getTotalFuelPerYear(Request $request, $context, $year)
+    public function getTotalFuelMonthlyByYear(Request $request, $context, $year)
     {
         try{
             // Check whether authentication is attached. If yes, retrieve statistics by user; if not, retrieve statistics for all users
@@ -891,7 +891,7 @@ class Queries extends Controller
      *     ),
      * )
      */
-    public function getTotalServicePerYear(Request $request, $context, $year)
+    public function getTotalServiceMonthlyByYear(Request $request, $context, $year)
     {
         try{
             // Check whether authentication is attached. If yes, retrieve statistics by user; if not, retrieve statistics for all users
@@ -905,7 +905,7 @@ class Queries extends Controller
             // Check if context valid
             if($context !== "total_item" || $context !== "total_price"){
                 // Get total service per year by context
-                $res = ServiceModel::getTotalServicePerYear($user_id, $context, $year);
+                $res = ServiceModel::getTotalServiceMonthlyByYear($user_id, $context, $year);
                 if ($res && count($res) > 0) {
                     $res_final = [];
                     // Mapping per month
@@ -1027,7 +1027,7 @@ class Queries extends Controller
      *     ),
      * )
      */
-    public function getTotalWashPerYear(Request $request, $context, $year)
+    public function getTotalWashMonthlyByYear(Request $request, $context, $year)
     {
         try{
             // Check whether authentication is attached. If yes, retrieve statistics by user; if not, retrieve statistics for all users
@@ -1042,7 +1042,7 @@ class Queries extends Controller
             // Check if context valid
             if($context !== "total_item" || $context !== "total_price"){
                 // Get total wash for specific year per vehicle by vehicle_id or all vehicle
-                $res = WashModel::getTotalWashPerYear($user_id, $vehicle_id, $context, $year);
+                $res = WashModel::getTotalWashMonthlyByYear($user_id, $vehicle_id, $context, $year);
                 
                 if ($res && count($res) > 0) {
                     $res_final = [];

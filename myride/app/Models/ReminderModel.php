@@ -31,7 +31,6 @@ class ReminderModel extends Model
     use HasFactory;
     public $incrementing = false;
     public $timestamps = false;
-    
     protected $table = 'reminder';
     protected $primaryKey = 'id';
     protected $fillable = ['id', 'reminder_title', 'reminder_context', 'reminder_body', 'reminder_attachment', 'created_at', 'created_by', 'remind_at', 'vehicle_id'];
@@ -53,9 +52,7 @@ class ReminderModel extends Model
         $res = ReminderModel::select('reminder.id','reminder_title', 'reminder_context', 'reminder_body', 'reminder_attachment', 'reminder.created_at', 'remind_at', 'vehicle.id as vehicle_id','vehicle_plate_number')
             ->leftjoin('vehicle','vehicle.id','=','reminder.vehicle_id');
 
-        if ($user_id){
-            $res = $res->where('reminder.created_by', $user_id);
-        }
+        if ($user_id) $res = $res->where('reminder.created_by', $user_id);
         if ($search) {
             $search = strtolower($search);
             $res->where(function ($q) use ($search) {
@@ -72,9 +69,7 @@ class ReminderModel extends Model
         $res = ReminderModel::select('reminder.id','reminder_title', 'reminder_context', 'reminder_body', 'remind_at', 'vehicle_plate_number')
             ->leftjoin('vehicle','vehicle.id','=','reminder.vehicle_id');
 
-        if ($user_id){
-            $res = $res->where('reminder.created_by', $user_id);
-        }
+        if ($user_id) $res = $res->where('reminder.created_by', $user_id);
             
         return $res->whereNotNull('remind_at')
             ->whereBetween('remind_at', [now()->subDays(3), now()])
@@ -85,9 +80,7 @@ class ReminderModel extends Model
     public static function getReminderByVehicle($user_id = null,$vehicle_id){
         $res = ReminderModel::select('reminder_title', 'reminder_context', 'reminder_body', 'remind_at');
 
-        if ($user_id){
-            $res = $res->where('reminder.created_by', $user_id);
-        }
+        if ($user_id) $res = $res->where('reminder.created_by', $user_id);
             
         return $res->whereNotNull('remind_at')
             ->where('remind_at', '>=', now()) 
@@ -98,9 +91,7 @@ class ReminderModel extends Model
     public static function hardDeleteReminderById($id, $user_id = null){
         $res = ReminderModel::where('id',$id);
 
-        if ($user_id){
-            $res = $res->where('created_by',$user_id);
-        }
+        if ($user_id) $res = $res->where('created_by',$user_id);
             
         return $res->delete();
     }
@@ -108,9 +99,7 @@ class ReminderModel extends Model
     public static function hardDeleteByVehicleId($vehicle_id, $user_id = null){
         $res = ReminderModel::where('vehicle_id',$vehicle_id);
 
-        if ($user_id){
-            $res = $res->where('created_by',$user_id);
-        }
+        if ($user_id) $res = $res->where('created_by',$user_id);
             
         return $res->delete();
     }

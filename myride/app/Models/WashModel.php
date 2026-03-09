@@ -46,7 +46,6 @@ class WashModel extends Model
     use HasFactory;
     public $timestamps = false;
     public $incrementing = false;
-
     protected $table = 'wash';
     protected $primaryKey = 'id';
     protected $fillable = ['id', 'vehicle_id', 'wash_desc', 'wash_by', 'is_wash_body', 'is_wash_window', 'is_wash_dashboard', 'is_wash_tires', 'is_wash_trash', 'is_wash_engine', 'is_wash_seat', 'is_wash_carpet', 'is_wash_pillows', 'wash_address', 'wash_start_time', 'wash_end_time', 'is_fill_window_washing_water', 'is_wash_hollow', 'wash_price', 'created_at', 'created_by', 'updated_at'];
@@ -83,11 +82,7 @@ class WashModel extends Model
             ->where('vehicle_id', $vehicle_id)
             ->orderBy('wash.created_at', 'desc');
 
-        if($limit){
-            $res = $res->paginate($limit, ['*'], 'page_wash', $page);
-        } else {
-            $res = $res->get();
-        }
+        $res = $limit ? $res->paginate($limit, ['*'], 'page_wash', $page) : $res->get();
     
         return $res->isEmpty() ? null : $res;
     }
@@ -123,9 +118,7 @@ class WashModel extends Model
             CAST(AVG(wash_price) as SIGNED) AS avg_price_per_wash
         ")->where('vehicle.created_by',$user_id);
 
-        if($vehicle_id){
-            $res = $res->where('vehicle_id',$vehicle_id);
-        }
+        if($vehicle_id) $res = $res->where('vehicle_id',$vehicle_id);
 
         return $res->join('vehicle','vehicle.id','=','wash.vehicle_id')
             ->groupby('vehicle_id')
@@ -141,9 +134,7 @@ class WashModel extends Model
             ")
             ->join('vehicle','vehicle.id','=','wash.vehicle_id');
         
-        if($vehicle_id){
-            $res = $res->where('vehicle_id',$vehicle_id);
-        }
+        if($vehicle_id) $res = $res->where('vehicle_id',$vehicle_id);
 
         return $res->where('wash.created_by',$user_id)->orderBy('wash.created_at', 'desc')->get();
     }
@@ -151,9 +142,7 @@ class WashModel extends Model
     public static function getTotalWashSpendingPerMonth($user_id = null, $year, $is_admin){
         $res = WashModel::selectRaw("SUM(wash_price) as total, MONTH(created_at) as context");
         
-        if($user_id){
-            $res = $res->where('created_by', $user_id);
-        }
+        if($user_id) $res = $res->where('created_by', $user_id);
 
         return $res->whereRaw("YEAR(created_at) = '$year'")->groupByRaw('MONTH(created_at)')->get();
     }
@@ -167,7 +156,7 @@ class WashModel extends Model
             ->get();
     }
 
-    public static function getTotalWashPerYear($user_id = null, $vehicle_id = null, $context, $year){
+    public static function getTotalWashMonthlyByYear($user_id = null, $vehicle_id = null, $context, $year){
         switch ($context) {
             case 'total_item':
                 $context = 'COUNT(id)';
@@ -182,12 +171,8 @@ class WashModel extends Model
 
         $res = WashModel::selectRaw("$context as total, MONTH(created_at) as context");
         
-        if($user_id){
-            $res = $res->where('created_by',$user_id);
-        }
-        if($vehicle_id){
-            $res = $res->where('vehicle_id',$vehicle_id);
-        }
+        if($user_id) $res = $res->where('created_by',$user_id);
+        if($vehicle_id) $res = $res->where('vehicle_id',$vehicle_id);
 
         return $res->whereRaw("YEAR(created_at) = '$year'")->groupByRaw('MONTH(created_at)')->get();
     }
@@ -195,9 +180,7 @@ class WashModel extends Model
     public static function hardDeleteWashById($id, $user_id = null){
         $res = WashModel::where('id',$id);
 
-        if($user_id){
-            $res = $res->where('created_by',$user_id);
-        }
+        if($user_id) $res = $res->where('created_by',$user_id);
             
         return $res->delete();
     }
@@ -205,9 +188,7 @@ class WashModel extends Model
     public static function hardDeleteByVehicleId($vehicle_id, $user_id = null){
         $res = WashModel::where('vehicle_id',$vehicle_id);
 
-        if($user_id){
-            $res = $res->where('created_by',$user_id);
-        }
+        if($user_id) $res = $res->where('created_by',$user_id);
             
         return $res->delete();
     }

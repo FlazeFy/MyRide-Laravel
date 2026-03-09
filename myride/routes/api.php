@@ -46,10 +46,10 @@ Route::prefix('/v1/register')->group(function () {
 
 Route::prefix('/v1/stats')->group(function () {
     Route::get('/summary', [QueriesStatsApi::class, 'getSummaryApps']);
-    Route::get('/total/trip/monthly/{year}', [QueriesStatsApi::class, 'getTotalTripPerYear']);
-    Route::get('/total/fuel/monthly/{context}/{year}', [QueriesStatsApi::class, 'getTotalFuelPerYear']);
-    Route::get('/total/service/monthly/{context}/{year}', [QueriesStatsApi::class, 'getTotalServicePerYear']);
-    Route::get('/total/wash/monthly/{context}/{year}', [QueriesStatsApi::class, 'getTotalWashPerYear']);
+    Route::get('/total/trip/monthly/{year}', [QueriesStatsApi::class, 'getTotalTripMonthlyByYear']);
+    Route::get('/total/fuel/monthly/{context}/{year}', [QueriesStatsApi::class, 'getTotalFuelMonthlyByYear']);
+    Route::get('/total/service/monthly/{context}/{year}', [QueriesStatsApi::class, 'getTotalServiceMonthlyByYear']);
+    Route::get('/total/wash/monthly/{context}/{year}', [QueriesStatsApi::class, 'getTotalWashMonthlyByYear']);
 });
 
 Route::prefix('/v1/question')->group(function () {

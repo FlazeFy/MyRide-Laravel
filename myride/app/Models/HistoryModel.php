@@ -27,7 +27,6 @@ class HistoryModel extends Model
     use HasFactory;
     public $incrementing = false;
     public $timestamps = false;
-
     protected $table = 'history';
     protected $primaryKey = 'id';
     protected $fillable = ['id', 'history_type', 'history_context', 'created_at', 'created_by'];
@@ -48,12 +47,8 @@ class HistoryModel extends Model
         $select_query = $type == "admin" ? 'history.id, username, history_type, history_context, history.created_at' : '*';
         
         $res = HistoryModel::selectRaw($select_query);
-        if($type == "admin"){
-            $res = $res->join('users','users.id','=','history.created_by');
-        }
-        if($type == "user" || $user_id) {
-            $res = $res->where('created_by',$user_id);
-        }   
+        if ($type == "admin") $res = $res->join('users','users.id','=','history.created_by');
+        if ($type == "user" || $user_id) $res = $res->where('created_by',$user_id);
 
         return $res->orderby('history.created_at', 'DESC')->paginate($paginate);
     }
@@ -61,9 +56,7 @@ class HistoryModel extends Model
     public static function hardDeleteHistory($id, $user_id = null){
         $res = HistoryModel::where('id',$id);
 
-        if($user_id){
-            $res = $res->where('created_by',$user_id);
-        }
+        if ($user_id) $res = $res->where('created_by',$user_id);
             
         return $res->delete();
     }

@@ -34,10 +34,8 @@ use App\Helpers\Generator;
 class TripModel extends Model
 {
     use HasFactory;
-
     public $timestamps = false;
     public $incrementing = false;
-
     protected $table = 'trip';
     protected $primaryKey = 'id';
     protected $fillable = ['id', 'vehicle_id', 'driver_id', 'trip_desc', 'trip_category', 'trip_person', 'trip_origin_name', 'trip_origin_coordinate', 'trip_destination_name', 'trip_destination_coordinate', 'created_at', 'created_by', 'updated_at', 'deleted_at'];
@@ -49,12 +47,8 @@ class TripModel extends Model
             ->orderBy('trip.created_at','desc')
             ->where('trip.created_by',$user_id);
 
-        if ($driver_id){
-            $res = $res->where('trip.driver_id',$driver_id);
-        }
-        if ($trip_id){
-            $res = $res->where('trip.id',$trip_id);
-        }
+        if ($driver_id) $res = $res->where('trip.driver_id',$driver_id);
+        if ($trip_id) $res = $res->where('trip.id',$trip_id);
         if ($search) {
             $search = strtolower($search);
             $res->where(function ($q) use ($search) {
@@ -113,9 +107,7 @@ class TripModel extends Model
             ->limit(6)
             ->get();
 
-        if ($res->isEmpty()) {
-            return null;
-        }
+        if ($res->isEmpty()) return null;
     
         return $res->map(function ($row) {
             $row->total = (int) $row->total;
@@ -159,9 +151,7 @@ class TripModel extends Model
             ->limit(6)
             ->get();
         
-        if ($res->isEmpty()) {
-            return null;
-        }
+        if ($res->isEmpty()) return null;
     
         return $res->map(function ($row) {
             $row->total = (int) $row->total;
@@ -176,11 +166,7 @@ class TripModel extends Model
             ->whereNull('deleted_at')
             ->orderBy('created_at', 'desc');
     
-        if($limit){
-            $res = $res->paginate($limit, ['*'], 'page_trip', $page);
-        } else {
-            $res = $res->get();
-        }
+        $res = $limit ? $res->paginate($limit, ['*'], 'page_trip', $page) : $res->get();
     
         return $res->isEmpty() ? null : $res;
     }
@@ -188,9 +174,7 @@ class TripModel extends Model
     public static function getPersonWithMostTripWith($user_id, $vehicle_id = null, $limit = 7){
         $res = TripModel::selectRaw("LOWER(trip_person) as context");
 
-        if($vehicle_id){
-            $res = $res->where('vehicle_id', $vehicle_id);
-        }
+        if($vehicle_id) $res = $res->where('vehicle_id', $vehicle_id);
             
         $res = $res->where('created_by', $user_id)
             ->whereNull('deleted_at')
@@ -203,14 +187,10 @@ class TripModel extends Model
                 $names = preg_split('/, and |, /', $row->context);
                 
                 foreach ($names as $name) {
-                    $name = trim(strtolower($name)); 
-                    if (!empty($name)) {
-                        if (isset($name_counts[$name])) {
-                            $name_counts[$name]++;
-                        } else {
-                            $name_counts[$name] = 1;
-                        }
-                    }
+                    $name = trim(strtolower($name));
+                    if (!$name) continue;
+                
+                    $name_counts[$name] = ($name_counts[$name] ?? 0) + 1;
                 }
             }
         }
@@ -221,9 +201,7 @@ class TripModel extends Model
         foreach ($name_counts as $context => $total) {
             $result[] = (object)['context' => $context, 'total' => $total];
             
-            if (++$i >= $limit) {
-                break;
-            }
+            if (++$i >= $limit) break;
         }
     
         return $result;
@@ -280,25 +258,16 @@ class TripModel extends Model
     }
 
     public static function getTotalTripByVehiclePerYear($user_id = null, $vehicle_id = null, $year = null){
-        if($year == null){
-            $year = date('Y');
-        }
+        if($year == null) $year = date('Y');
         $res = TripModel::selectRaw("COUNT(DISTINCT trip.id) as total, MONTH(trip.created_at) as context");
 
-        if($vehicle_id){
-            $res = $res->where('vehicle_id',$vehicle_id);
-        }
-        if($user_id){
-            $res = $res->where('created_by',$user_id);
-        }
-
+        if($vehicle_id) $res = $res->where('vehicle_id',$vehicle_id);
+        if($user_id) $res = $res->where('created_by',$user_id);
         $res = $res->whereRaw("YEAR(trip.created_at) = '$year'")
             ->groupByRaw('MONTH(trip.created_at)')
             ->get();
 
-        if ($res->isEmpty()) {
-            return null;
-        }
+        if ($res->isEmpty()) return null;
     
         return $res->map(function ($row) {
             $row->total = (int) $row->total;
@@ -311,31 +280,23 @@ class TripModel extends Model
         $res = TripModel::selectRaw("trip_origin_coordinate, trip_destination_coordinate, COUNT(1) as total,MAX(trip.created_at) as last_update")
             ->join('vehicle', 'vehicle.id', '=', 'trip.vehicle_id');
 
-        if ($vehicle_id) {
-            $res = $res->where('vehicle_id', $vehicle_id);
-        }
-        if ($user_id) {
-            $res = $res->where('trip.created_by', $user_id);
-        }
+        if ($vehicle_id) $res = $res->where('vehicle_id', $vehicle_id);
+        if ($user_id) $res = $res->where('trip.created_by', $user_id);
 
         $res = $res->groupBy('trip_origin_coordinate', 'trip_destination_coordinate')->get();
 
         $totalTrip = 0;
         $totalDistance = 0;
         $lastUpdate = null;
-
         foreach ($res as $item) {
             if($item->trip_origin_coordinate && $item->trip_destination_coordinate){
                 [$originLat, $originLng] = explode(',', $item->trip_origin_coordinate);
                 [$destLat, $destLng] = explode(',', $item->trip_destination_coordinate);
 
                 $distance = Converter::calculate_distance((float) $originLat,(float) $originLng,(float) $destLat,(float) $destLng,'km');
-
                 $totalDistance += (float) $distance;
 
-                if (is_null($lastUpdate) || $item->last_update > $lastUpdate) {
-                    $lastUpdate = $item->last_update;
-                }
+                if (is_null($lastUpdate) || $item->last_update > $lastUpdate) $lastUpdate = $item->last_update;
             }
             $totalTrip += $item->total;
         }
@@ -355,12 +316,9 @@ class TripModel extends Model
             ->join('vehicle','vehicle.id','=','trip.vehicle_id')
             ->leftjoin('driver','driver.id','=','trip.driver_id');
         
-        if($vehicle_id){
-            $res = $res->where('vehicle_id',$vehicle_id);
-        }
+        if($vehicle_id) $res = $res->where('vehicle_id',$vehicle_id);
 
-        $res = $res->where('trip.created_by',$user_id)
-            ->orderBy('trip.created_at', 'desc');
+        $res = $res->where('trip.created_by',$user_id)->orderBy('trip.created_at', 'desc');
 
         return $res->get();
     }
@@ -368,9 +326,7 @@ class TripModel extends Model
     public static function hardDeleteByVehicleId($vehicle_id, $user_id = null){
         $res = TripModel::where('vehicle_id',$vehicle_id);
 
-        if($user_id){
-            $res = $res->where('created_by',$user_id);
-        }
+        if($user_id) $res = $res->where('created_by',$user_id);
             
         return $res->delete();
     }
@@ -378,9 +334,7 @@ class TripModel extends Model
     public static function hardDeleteTripById($id, $user_id = null){
         $res = TripModel::where('id',$id);
 
-        if($user_id){
-            $res = $res->where('created_by',$user_id);
-        }
+        if($user_id) $res = $res->where('created_by',$user_id);
             
         return $res->delete();
     }

@@ -10,9 +10,7 @@ class DictionaryTypeRule implements Rule
         $type = ['trip_category','vehicle_type','vehicle_category','vehicle_status','vehicle_default_fuel','vehicle_fuel_status','vehicle_transmission'];
 
         foreach ($type as $format) {
-            if ($format === $value) {
-                return true;
-            }
+            if ($format === $value) return true;
         }
 
         return false;

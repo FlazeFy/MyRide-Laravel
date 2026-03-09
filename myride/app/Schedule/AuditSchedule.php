@@ -45,13 +45,7 @@ class AuditSchedule
                     <tr>
                         <td>$dt->message</td>
                         <td style='text-align:center;'>$dt->created_at</td>
-                        <td style='text-align:center;'>";
-                        if($dt->faced_by){
-                            $audit .= $dt->faced_by;
-                        } else {
-                            $audit .= "-";
-                        }
-                        $audit.= "</td>
+                        <td style='text-align:center;'>".($dt->faced_by ?? "-")."</td>
                         <td style='text-align:center;'>$dt->total</td>
                     </tr>
                 ";
@@ -132,7 +126,6 @@ class AuditSchedule
             foreach ($listCols as $col) {
                 // Model
                 $res = VehicleModel::getContextTotalStats($col, $us->id);
-    
                 if ($res == null || $res->isEmpty()) continue;
     
                 // Dataset
@@ -193,14 +186,10 @@ class AuditSchedule
             // Wash up File
             foreach ($chartFiles as $file) {
                 $chartPath = storage_path("app/public/$file");
-                if (file_exists($chartPath)) {
-                    unlink($chartPath);
-                }
+                if (file_exists($chartPath)) unlink($chartPath);
             }
 
-            if (file_exists($tmpPdfPath)) {
-                unlink($tmpPdfPath);
-            }
+            if (file_exists($tmpPdfPath)) unlink($tmpPdfPath);
         }
     }
 
@@ -236,8 +225,8 @@ class AuditSchedule
             // Total Fuel Spending Per Month
             // Model
             $res_fuel_monthly = FuelModel::getTotalFuelSpendingPerMonth($us->id, $year, false);
-
             if ($res_fuel_monthly == null || $res_fuel_monthly->isEmpty()) continue;
+
             $res_final_fuel_monthly = [];
             for ($i=1; $i <= 12; $i++) { 
                 $total = 0;
@@ -247,6 +236,7 @@ class AuditSchedule
                         break;
                     }
                 }
+
                 array_push($res_final_fuel_monthly, [
                     'context' => Generator::generateMonthName($i,'short'),
                     'total' => $total,
@@ -264,8 +254,8 @@ class AuditSchedule
             // Total Wash Spending Per Month
             // Model
             $res_wash_monthly = WashModel::getTotalWashSpendingPerMonth($us->id, $year, false);
-
             if ($res_wash_monthly == null || $res_wash_monthly->isEmpty()) continue;
+
             $res_final_wash_monthly = [];
             for ($i=1; $i <= 12; $i++) { 
                 $total = 0;
@@ -275,6 +265,7 @@ class AuditSchedule
                         break;
                     }
                 }
+
                 array_push($res_final_wash_monthly, [
                     'context' => Generator::generateMonthName($i,'short'),
                     'total' => $total,
@@ -320,14 +311,10 @@ class AuditSchedule
             // Wash up File
             foreach ($chartFiles as $file) {
                 $chartPath = storage_path("app/public/$file");
-                if (file_exists($chartPath)) {
-                    unlink($chartPath);
-                }
+                if (file_exists($chartPath)) unlink($chartPath);
             }
 
-            if (file_exists($tmpPdfPath)) {
-                unlink($tmpPdfPath);
-            }
+            if (file_exists($tmpPdfPath)) unlink($tmpPdfPath);
         }
     }
 

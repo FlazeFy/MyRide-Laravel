@@ -36,7 +36,6 @@ class UserModel extends Authenticatable
     use HasFactory;
     use HasApiTokens;
     public $incrementing = false;
-
     protected $table = 'users';
     protected $primaryKey = 'id';
     protected $fillable = ['id', 'username', 'password', 'email', 'telegram_user_id', 'telegram_is_valid', 'created_at', 'updated_at'];
@@ -69,54 +68,38 @@ class UserModel extends Authenticatable
 
     public static function getUserById($user_id){
         $select_query = 'id,username,email,telegram_user_id,telegram_is_valid,created_at,updated_at';
+        $res = UserModel::selectRaw($select_query)->where('id',$user_id)->first();
 
-        $res = UserModel::selectRaw($select_query)
-            ->where('id',$user_id)
-            ->first();
-        if($res){
-            $res->role = 'user';
-        }
+        if($res) $res->role = 'user';
         if(!$res){
             $res = AdminModel::selectRaw($select_query)
                 ->where('id',$user_id)
                 ->first();
-            if($res){
-                $res->role = 'admin';
-            }
+            if($res) $res->role = 'admin';
         }
 
         return $res;
     }
 
     public static function getUserByUsernameOrEmail($username,$email){
-        return UserModel::where('username',$username)
-            ->orwhere('email',$email)
-            ->first();
+        return UserModel::where('username',$username)->orwhere('email',$email)->first();
     }
 
     public static function getAvailableYear($user_id, $is_admin){
         $res_vehicle = VehicleModel::selectRaw('YEAR(created_at) as year');
-        if (!$is_admin) {
-            $res_vehicle = $res_vehicle->where('created_by', $user_id);
-        }
+        if (!$is_admin) $res_vehicle = $res_vehicle->where('created_by', $user_id);
         $res_vehicle = $res_vehicle->groupBy('year')->get();
     
         $res_trip = TripModel::selectRaw('YEAR(created_at) as year');
-        if (!$is_admin) {
-            $res_trip = $res_trip->where('created_by', $user_id);
-        }
+        if (!$is_admin) $res_trip = $res_trip->where('created_by', $user_id);
         $res_trip = $res_trip->groupBy('year')->get();
 
         $res_wash = WashModel::selectRaw('YEAR(created_at) as year');
-        if (!$is_admin) {
-            $res_wash = $res_wash->where('created_by', $user_id);
-        }
+        if (!$is_admin) $res_wash = $res_wash->where('created_by', $user_id);
         $res_wash = $res_wash->groupBy('year')->get();
 
         $res_service = ServiceModel::selectRaw('YEAR(created_at) as year');
-        if (!$is_admin) {
-            $res_service = $res_service->where('created_by', $user_id);
-        }
+        if (!$is_admin) $res_service = $res_service->where('created_by', $user_id);
         $res_service = $res_service->groupBy('year')->get();
     
         $res = $res_vehicle->concat($res_trip)
@@ -148,6 +131,7 @@ class UserModel extends Authenticatable
 
     public static function updateUserById($data,$id){
         $data['updated_at'] = date('Y-m-d H:i:s');
+        
         return UserModel::where('id',$id)->update($data);
     }
 

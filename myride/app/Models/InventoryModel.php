@@ -32,7 +32,6 @@ class InventoryModel extends Model
     use HasFactory;
     public $timestamps = false;
     public $incrementing = false;
-
     protected $table = 'inventory';
     protected $primaryKey = 'id';
     protected $fillable = ['id', 'gudangku_inventory_id', 'vehicle_id', 'inventory_name', 'inventory_category', 'inventory_qty', 'inventory_storage', 'inventory_image_url', 'created_at', 'created_by', 'updated_at'];
@@ -44,12 +43,8 @@ class InventoryModel extends Model
         $res = InventoryModel::select('inventory.id','inventory_name', 'inventory_category', 'inventory_qty', 'inventory_storage', 'inventory_image_url', 'inventory.created_at', 'inventory.updated_at', 'vehicle_plate_number','vehicle_type')
             ->leftjoin('vehicle','vehicle.id','=','inventory.vehicle_id');
 
-        if ($user_id){
-            $res = $res->where('inventory.created_by', $user_id);
-        }
-        if($vehicle_id){
-            $res = $res->where('vehicle.id', $vehicle_id);
-        }
+        if ($user_id) $res = $res->where('inventory.created_by', $user_id);
+        if ($vehicle_id) $res = $res->where('vehicle.id', $vehicle_id);
         if ($search) {
             $search = strtolower($search);
             $res->whereRaw('LOWER(inventory_name) LIKE ?', ["%{$search}%"]);
@@ -61,9 +56,7 @@ class InventoryModel extends Model
     public static function hardDeleteInventoryById($id, $user_id = null){
         $res = InventoryModel::where('id',$id);
 
-        if($user_id){
-            $res = $res->where('created_by',$user_id);
-        }
+        if ($user_id) $res = $res->where('created_by',$user_id);
             
         return $res->delete();
     }
@@ -71,9 +64,7 @@ class InventoryModel extends Model
     public static function hardDeleteByVehicleId($vehicle_id, $user_id = null){
         $res = InventoryModel::where('vehicle_id',$vehicle_id);
 
-        if($user_id){
-            $res = $res->where('created_by',$user_id);
-        }
+        if ($user_id) $res = $res->where('created_by',$user_id);
             
         return $res->delete();
     }
@@ -82,27 +73,21 @@ class InventoryModel extends Model
         $res = InventoryModel::select("vehicle_name","vehicle_plate_number", "vehicle_type", 'inventory_name', 'inventory_category', 'inventory_qty', 'inventory_storage', 'inventory.created_at', 'inventory.updated_at')
             ->join('vehicle','vehicle.id','=','inventory.vehicle_id');
         
-        if($vehicle_id){
-            $res = $res->where('vehicle_id',$vehicle_id);
-        }
+        if ($vehicle_id) $res = $res->where('vehicle_id',$vehicle_id);
 
-        $res = $res->where('inventory.created_by',$user_id)
-            ->orderBy('inventory.created_at', 'desc');
-
-        return $res->get();
+        return $res->where('inventory.created_by',$user_id)
+            ->orderBy('inventory.created_at', 'desc')
+            ->get();
     }
 
     public static function getInventoryByVehicle($user_id, $vehicle_id){
         $res = InventoryModel::select('inventory.id','inventory_name', 'inventory_category', 'inventory_qty', 'inventory_storage', 'inventory.created_at');
         
-        if($vehicle_id){
-            $res = $res->where('vehicle_id',$vehicle_id);
-        }
+        if($vehicle_id) $res = $res->where('vehicle_id',$vehicle_id);
 
-        $res = $res->where('inventory.created_by',$user_id)
-            ->orderBy('inventory_name', 'desc');
-
-        return $res->get();
+        return $res->where('inventory.created_by',$user_id)
+            ->orderBy('inventory_name', 'desc')
+            ->get();
     }
 
     public static function createInventory($data, $user_id){

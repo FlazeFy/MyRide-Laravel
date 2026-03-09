@@ -51,7 +51,6 @@ class VehicleModel extends Model
     use HasFactory;
     public $timestamps = false;
     public $incrementing = false;
-
     protected $table = 'vehicle';
     protected $primaryKey = 'id';
     protected $fillable = ['id', 'vehicle_name', 'vehicle_merk', 'vehicle_type', 'vehicle_price', 'vehicle_desc', 'vehicle_distance', 'vehicle_category', 'vehicle_status', 'vehicle_year_made', 'vehicle_plate_number', 'vehicle_fuel_status', 'vehicle_fuel_capacity', 'vehicle_default_fuel', 'vehicle_color', 'vehicle_transmission', 'vehicle_img_url', 'vehicle_other_img_url', 'vehicle_capacity', 'vehicle_document', 'created_by', 'created_at', 'updated_at', 'deleted_at'];
@@ -81,9 +80,7 @@ class VehicleModel extends Model
 
     public static function updateVehicleById($data, $id, $user_id){
         $keys = array_keys($data);
-        if (!(count($keys) === 1 && $keys[0] === 'deleted_at')) {
-            $data['updated_at'] = date('Y-m-d H:i:s');
-        }
+        if (!(count($keys) === 1 && $keys[0] === 'deleted_at')) $data['updated_at'] = date('Y-m-d H:i:s');
 
         return VehicleModel::where('id',$id)->where('created_by',$user_id)->update($data);
     }
@@ -119,9 +116,7 @@ class VehicleModel extends Model
             vehicle_fuel_status, vehicle_default_fuel, vehicle_color, vehicle_capacity, vehicle_img_url, vehicle_transmission, updated_at
         ");
 
-        if($user_id){
-            $res = $res->where('created_by',$user_id);
-        }
+        if($user_id) $res = $res->where('created_by',$user_id);
 
         $res = $res->orderBy('updated_at','desc')
             ->orderBy('created_at','desc')
@@ -151,9 +146,7 @@ class VehicleModel extends Model
                 ")
             );
         
-        if($user_id){
-            $res = $res->where('created_by',$user_id);
-        }
+        if($user_id) $res = $res->where('created_by',$user_id);
 
         $res = $res->orderBy('readiness','desc')
             ->orderBy('created_at','desc')
@@ -165,41 +158,32 @@ class VehicleModel extends Model
     public static function getVehicleDetailById($user_id = null,$id){
         $res = VehicleModel::where('id',$id);
 
-        if($user_id){
-            $res = $res->where('created_by',$user_id);
-        }
+        if($user_id) $res = $res->where('created_by',$user_id);
 
         $res = $res->first();
-
         unset($res->created_by);
 
         return $res;
     }
 
     public static function getVehicleIdentity($user_id,$id){
-        $res = VehicleModel::select('vehicle_name','vehicle_plate_number')
+        return VehicleModel::select('vehicle_name','vehicle_plate_number')
             ->where('id',$id)
             ->where('created_by',$user_id)
             ->first();
-
-        return $res;
     }
 
     public static function getContextTotalStats($context,$user_id = null){
         $res = VehicleModel::selectRaw("$context as context, COUNT(1) as total");
 
-        if($user_id){
-            $res = $res->where('created_by', $user_id);
-        }
+        if($user_id) $res = $res->where('created_by', $user_id);
 
         $res = $res->groupby($context)
             ->orderby('total','desc')
             ->limit(7)
             ->get();
         
-        if ($res->isEmpty()) {
-            return null;
-        }
+        if ($res->isEmpty()) return null;
     
         return $res->map(function ($row) {
             $row->total = (int) $row->total;
@@ -210,9 +194,7 @@ class VehicleModel extends Model
     public static function hardDeleteVehicleById($user_id = null,$id){
         $res = VehicleModel::whereNotNull("deleted_at")->where('id',$id);
 
-        if($user_id){
-            $res = $res->where('created_by',$user_id);
-        }
+        if($user_id) $res = $res->where('created_by',$user_id);
 
         return $res->delete();
     }
