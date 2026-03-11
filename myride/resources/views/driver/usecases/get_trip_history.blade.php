@@ -15,7 +15,7 @@
 <script>
     const items_holder_history = 'trip-content-holder'
 
-    $(document).on('click','.btn-history-trip',function(){
+    $(document).on('click','.btn-history-trip',function() {
         const id = $(this).data('id')
         const username = $(this).data('username')
         let page = 1
@@ -44,13 +44,13 @@
                     $(`#${items_holder_history}`).append(templateTripBox(dt,null,false))
                 })
 
-                if(total_page > 1){
+                if (total_page > 1) {
                     generatePagination(items_holder_history,(selectedPage) => { get_all_trip_by_driver_id(selectedPage,id) }, total_page, current_page)
                 }
             },
             error: function(response, jqXHR, textStatus, errorThrown) {
                 Swal.close()
-                if(response.status !== 404){
+                if (response.status !== 404) {
                     generateApiError(response, true)
                 } else {
                     messageAlertBox(items_holder_history, "danger", "No trip history found for this driver")

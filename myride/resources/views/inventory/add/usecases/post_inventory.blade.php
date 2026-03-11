@@ -50,14 +50,14 @@
 </form>
 
 <script type="text/javascript">    
-    $(document).on('click','#submit-add-inventory-btn', function(){
+    $(document).on('click','#submit-add-inventory-btn', function() {
         post_inventory()
     })
-    $(document).on('change','#vehicle_holder', function(){
+    $(document).on('change','#vehicle_holder', function() {
         const id = $(this).val()
         getVehicleDetail(id)
     })
-    $(document).on('change','#inventory_category_holder', function(){
+    $(document).on('change','#inventory_category_holder', function() {
         const val = $(this).val()
     })
 
@@ -105,7 +105,7 @@
             },
             error: function(response, jqXHR, textStatus, errorThrown) {
                 Swal.close()
-                if(response.status === 500){
+                if (response.status === 500) {
                     generateApiError(response, true)
                 } else {
                     failedMsg(response.status === 400 ? Object.values(response.responseJSON.message).flat().join('\n') : response.responseJSON.message)

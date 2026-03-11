@@ -20,7 +20,7 @@ class LoginController extends Controller
         return view('login.index');
     }
 
-    public function login_auth(Request $request){
+    public function login_auth(Request $request) {
         $request->session()->put('username_key', $request->username);
         $request->session()->put('role_key', $request->role);
         $request->session()->put('token_key', $request->token);
@@ -29,14 +29,14 @@ class LoginController extends Controller
         return redirect()->route('dashboard');
     }
 
-    public function redirect_to_google(){
+    public function redirect_to_google() {
         return Socialite::driver('google')
             ->scopes(['https://www.googleapis.com/auth/calendar']) 
             ->with(['access_type' => 'offline', 'prompt' => 'consent'])
             ->redirect();    
     }
 
-    public function login_google_callback(Request $request){
+    public function login_google_callback(Request $request) {
         try {
             $googleUser = Socialite::driver('google')
                 ->stateless()
@@ -54,7 +54,7 @@ class LoginController extends Controller
             $expiry_date = now()->addSeconds($googleUser->expiresIn);
 
             $user = UserModel::getUserByUsernameOrEmail($username,$email);
-            if($user){
+            if ($user) {
                 $user_id = $user->id;
                 $token = $user->createToken('login')->plainTextToken;
                 $request->session()->put('username_key', $user->username);
@@ -74,7 +74,7 @@ class LoginController extends Controller
                     "email" => $email,
                     "telegram_user_id" => null
                 ]);
-                if($user){
+                if ($user) {
                     $user_id = $user->id;
                     $token = $user->createToken('login')->plainTextToken;
                     $request->session()->put('username_key', $user->username);

@@ -9,7 +9,7 @@ use App\Helpers\Generator;
 
 class Audit
 {
-    public static function auditRecordText($ctx, $name, $data){ 
+    public static function auditRecordText($ctx, $name, $data) { 
         $props = time(); 
         $filePath = "tests_reports/text/$name-$props.txt";
 
@@ -27,7 +27,7 @@ class Audit
         }
     }
 
-    public static function auditRecordSheet($ctx, $name, $request, $response){ 
+    public static function auditRecordSheet($ctx, $name, $request, $response) { 
         $props = time(); 
         $filePath = "tests_reports/csv/template-report.csv";
     
@@ -49,14 +49,14 @@ class Audit
         }
     }
 
-    public static function countTime($start){
+    public static function countTime($start) {
         $end = microtime(true);
         $elp = round($end - $start, 4); 
 
         return "Time taken: {$elp} seconds";
     }
     
-    public static function createHistory($type, $ctx){
+    public static function createHistory($type, $ctx) {
         $user_id = Generator::getUserId(session()->get('role_key'));
         
         HistoryModel::createHistory(['history_type' => $type, 'history_context' => $ctx], $user_id);

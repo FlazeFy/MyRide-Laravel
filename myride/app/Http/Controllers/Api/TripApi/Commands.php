@@ -118,14 +118,14 @@ class Commands extends Controller
                 $trip_origin_coordinate = $request->trip_origin_coordinate;
                 $trip_destination_coordinate = $request->trip_destination_coordinate;
 
-                if ($trip_origin_name === $trip_destination_name){
+                if ($trip_origin_name === $trip_destination_name) {
                     return response()->json([
                         'status' => 'error',
                         'message' => Generator::getMessageTemplate("custom", 'trip origin and destination coordinate must be different')
                     ], Response::HTTP_BAD_REQUEST);
                 }
 
-                if ($trip_origin_coordinate === $trip_destination_coordinate){
+                if ($trip_origin_coordinate === $trip_destination_coordinate) {
                     return response()->json([
                         'status' => 'error',
                         'message' => Generator::getMessageTemplate("custom", 'trip origin and destination coordinate must be different')
@@ -134,7 +134,7 @@ class Commands extends Controller
 
                 // Get vehicle by ID
                 $vehicle = VehicleModel::getVehicleIdentity($user_id,$vehicle_id);
-                if ($vehicle){
+                if ($vehicle) {
                     $vehicle_plate_number = $vehicle->vehicle_plate_number;
                     $vehicle_name = $vehicle->vehicle_name;
 
@@ -151,17 +151,17 @@ class Commands extends Controller
                         'trip_destination_coordinate' => $trip_destination_coordinate, 
                     ];
                     // If departure time not defined, just use current time
-                    if($request->departure_at){
+                    if ($request->departure_at) {
                         $data['created_at'] = $request->departure_at;
                     }
                     $rows = TripModel::createTrip($data,$user_id);
 
-                    if($rows){
+                    if ($rows) {
                         // Get user social contact
                         $user = UserModel::getSocial($user_id);
                         // Check if user's Telegram ID is valid
-                        if($user->telegram_user_id && $user->telegram_is_valid === 1){
-                            if(TelegramMessage::checkTelegramID($user->telegram_user_id)){
+                        if ($user->telegram_user_id && $user->telegram_is_valid === 1) {
+                            if (TelegramMessage::checkTelegramID($user->telegram_user_id)) {
                                 $message = "Hello $user->username, your have added trip history from $trip_origin_name to $trip_destination_name using $vehicle_name ($vehicle_plate_number)";
                                 // Send telegram message
                                 $response = Telegram::sendMessage([
@@ -175,12 +175,12 @@ class Commands extends Controller
                             }
                         }
 
-                        if($driver_id){
+                        if ($driver_id) {
                             // Get driver by ID
                             $driver = DriverModel::getDriverContact($driver_id);
                             // Check if driver's Telegram ID is valid
-                            if($driver->telegram_user_id && $driver->telegram_is_valid === 1){
-                                if(TelegramMessage::checkTelegramID($driver->telegram_user_id)){
+                            if ($driver->telegram_user_id && $driver->telegram_is_valid === 1) {
+                                if (TelegramMessage::checkTelegramID($driver->telegram_user_id)) {
                                     $message = "Hello $driver->username, $user->username have added trip history with you as the driver. The trip from $trip_origin_name to $trip_destination_name using $vehicle_name ($vehicle_plate_number)";
                                     // Send telegram message
                                     $response = Telegram::sendMessage([
@@ -284,7 +284,7 @@ class Commands extends Controller
 
             // Hard Delete trip by ID
             $rows = TripModel::hardDeleteTripById($id, $user_id);
-            if($rows > 0){
+            if ($rows > 0) {
                 // Create history
                 HistoryModel::createHistory(['history_type' => 'Trip', 'history_context' => "removed a trip history"], $user_id);
 
@@ -363,7 +363,7 @@ class Commands extends Controller
      *     ),
      * )
      */
-    public function putUpdateTripById(Request $request, $id){
+    public function putUpdateTripById(Request $request, $id) {
         try{
             $user_id = $request->user()->id;
             $driver_id = $request->driver_id === "-" ? null : $request->driver_id;
@@ -381,14 +381,14 @@ class Commands extends Controller
                 $trip_origin_coordinate = $request->trip_origin_coordinate;
                 $trip_destination_coordinate = $request->trip_destination_coordinate;
 
-                if ($trip_origin_name === $trip_destination_name){
+                if ($trip_origin_name === $trip_destination_name) {
                     return response()->json([
                         'status' => 'error',
                         'message' => Generator::getMessageTemplate("custom", 'trip origin and destination coordinate must be different')
                     ], Response::HTTP_BAD_REQUEST);
                 }
 
-                if ($trip_origin_coordinate === $trip_destination_coordinate){
+                if ($trip_origin_coordinate === $trip_destination_coordinate) {
                     return response()->json([
                         'status' => 'error',
                         'message' => Generator::getMessageTemplate("custom", 'trip origin and destination coordinate must be different')
@@ -409,13 +409,13 @@ class Commands extends Controller
                     'created_at' => $request->departure_at,
                 ];
                 $rows = TripModel::updateTripById($data, $user_id, $id);
-                if($rows > 0){
-                    if($driver_id){
+                if ($rows > 0) {
+                    if ($driver_id) {
                         // Get driver by ID
                         $driver = DriverModel::getDriverContact($driver_id);
                         // Check if driver's Telegram ID is valid
-                        if($driver->telegram_user_id && $driver->telegram_is_valid === 1){
-                            if(TelegramMessage::checkTelegramID($driver->telegram_user_id)){
+                        if ($driver->telegram_user_id && $driver->telegram_is_valid === 1) {
+                            if (TelegramMessage::checkTelegramID($driver->telegram_user_id)) {
                                 $message = "Hello $driver->username, $user->username have added trip history with you as the driver. The trip from $trip_origin_name to $trip_destination_name using $vehicle_name ($vehicle_plate_number)";
                                 // Send telegram message
                                 $response = Telegram::sendMessage([

@@ -6,7 +6,7 @@
 <script>
     const selectedMonthYear = `<?= session()->get('toogle_month_year') ?>`
 
-    $(document).on('change','#toogle_month_year-select',function(){
+    $(document).on('change','#toogle_month_year-select',function() {
         const keys = ['summary_fuel']
         resetLocalStorage(keys)
         $('#toogle_month_year-form').submit()
@@ -27,7 +27,7 @@
             const years = data.map(dt => dt.year)
             years.forEach(dt => {
                 for (let idx = 1; idx < 13; idx++) {
-                    if(now !== `${idx}-${dt}`){
+                    if (now !== `${idx}-${dt}`) {
                         $(`#${holder}`).append(`<option value="${idx}-${dt}" ${selected === `${idx}-${dt}` ? "selected":""}>${idx}-${dt}</option>`)
                     }
                 }
@@ -55,13 +55,13 @@
             })
         }
 
-        if(ctx in localStorage){
+        if (ctx in localStorage) {
             const lastHit = parseInt(localStorage.getItem(`last-hit-${ctx}`))
             const now = Date.now()
 
-            if(((now - lastHit) / 1000) < statsFetchRestTime){
+            if (((now - lastHit) / 1000) < statsFetchRestTime) {
                 const data = JSON.parse(localStorage.getItem(ctx))
-                if(data){
+                if (data) {
                     generate_month_year(ctx_holder,data,selectedMonthYear)
                     Swal.close()
                 } else {

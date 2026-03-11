@@ -40,27 +40,177 @@ class TripModel extends Model
     protected $primaryKey = 'id';
     protected $fillable = ['id', 'vehicle_id', 'driver_id', 'trip_desc', 'trip_category', 'trip_person', 'trip_origin_name', 'trip_origin_coordinate', 'trip_destination_name', 'trip_destination_coordinate', 'created_at', 'created_by', 'updated_at', 'deleted_at'];
 
-    public static function getAllTrip($user_id, $limit, $driver_id = null, $trip_id = null, $search = null){
-        $res = TripModel::select("trip.id", "vehicle_name", "driver.fullname as driver_fullname", "vehicle_plate_number", "trip_desc", "trip_category", "trip_origin_name", "trip_person", "trip_origin_coordinate", "trip_destination_name","trip_destination_coordinate","vehicle_type", "trip.created_at")
-            ->join('vehicle','vehicle.id','=','trip.vehicle_id')
-            ->leftjoin('driver','driver.id','=','trip.driver_id')
-            ->orderBy('trip.created_at','desc')
-            ->where('trip.created_by',$user_id);
+    public static function getTripDiscovered($user_id = null, $vehicle_id = null)
+    {
+        $res = TripModel::selectRaw("trip_origin_coordinate, trip_destination_coordinate, COUNT(1) as total,MAX(trip.created_at) as last_update")
+            ->join('vehicle', 'vehicle.id', '=', 'trip.vehicle_id');
 
-        if ($driver_id) $res = $res->where('trip.driver_id',$driver_id);
-        if ($trip_id) $res = $res->where('trip.id',$trip_id);
-        if ($search) {
-            $search = strtolower($search);
-            $res->where(function ($q) use ($search) {
-                $q->whereRaw('LOWER(trip_desc) LIKE ?', ["%{$search}%"])
-                    ->orWhereRaw('LOWER(trip_origin_name) LIKE ?', ["%{$search}%"])
-                    ->orWhereRaw('LOWER(trip_destination_name) LIKE ?', ["%{$search}%"]);
-            });
+        if ($vehicle_id) $res = $res->where('vehicle_id', $vehicle_id);
+        if ($user_id) $res = $res->where('trip.created_by', $user_id);
+
+        $res = $res->groupBy('trip_origin_coordinate', 'trip_destination_coordinate')->get();
+
+        $totalTrip = 0;
+        $totalDistance = 0;
+        $lastUpdate = null;
+        foreach ($res as $item) {
+            if ($item->trip_origin_coordinate && $item->trip_destination_coordinate) {
+                [$originLat, $originLng] = explode(',', $item->trip_origin_coordinate);
+                [$destLat, $destLng] = explode(',', $item->trip_destination_coordinate);
+
+                $distance = Converter::calculate_distance((float) $originLat,(float) $originLng,(float) $destLat,(float) $destLng,'km');
+                $totalDistance += (float) $distance;
+
+                if (is_null($lastUpdate) || $item->last_update > $lastUpdate) $lastUpdate = $item->last_update;
+            }
+            $totalTrip += $item->total;
         }
 
-        $res = $res->paginate($limit);
+        return [
+            'total_trip' => $totalTrip,
+            'distance_km' => round($totalDistance, 2),
+            'last_update' => $lastUpdate,
+        ];
+    }
 
-        return $res->isNotEmpty() ? $res : null;
+    protected static function getMostFrequentValue($user_id, $vehicle_id, $col) {
+        return TripModel::select($col)
+            ->where('vehicle_id', $vehicle_id)
+            ->where('created_by', $user_id)
+            ->whereNull('deleted_at')
+            ->groupBy($col)
+            ->orderByRaw('COUNT(*) DESC')
+            ->limit(1)
+            ->value($col);
+    }
+    public static function getMostContext($user_id, $vehicle_id) {
+        $mostDestination = self::getMostFrequentValue($user_id, $vehicle_id, 'trip_destination_name');
+        $mostOrigin = self::getMostFrequentValue($user_id, $vehicle_id, 'trip_origin_name');
+        $mostCategory = self::getMostFrequentValue($user_id, $vehicle_id, 'trip_category');
+
+        return (object)[
+            'most_destination' => $mostDestination,
+            'most_origin' => $mostOrigin,
+            'most_category' => $mostCategory,
+        ];
+    }
+
+    public static function getLastTrip($user_id) {
+        return TripModel::select('trip_destination_name','trip_destination_coordinate','driver.username as driver_username','vehicle_plate_number','trip.created_at','vehicle_type')
+            ->join('vehicle','vehicle.id','=','trip.vehicle_id')
+            ->leftjoin('driver','driver.id','=','trip.driver_id')
+            ->where('trip.created_by', $user_id)
+            ->orderBy('trip.created_at','DESC')
+            ->first();
+    }
+
+    public static function getTotalTripDistance($user_id,$vehicle_id) {
+        $res = TripModel::select("trip_origin_coordinate","trip_destination_coordinate")
+            ->where('vehicle_id',$vehicle_id)
+            ->where('created_by',$user_id)
+            ->whereNull('deleted_at')
+            ->whereNotNull("trip_origin_coordinate")
+            ->whereNotNull("trip_destination_coordinate")
+            ->get();
+
+        $total_distance = 0;
+
+        if (count($res) > 0) {
+            foreach ($res as $dt) {
+                $origin_coor = explode(",", $dt->trip_origin_coordinate);
+                $destination_coor = explode(",", $dt->trip_destination_coordinate);
+                $lat1 = $origin_coor[0];
+                $lon1 = $origin_coor[1];
+                $lat2 = $destination_coor[0];
+                $lon2 = $destination_coor[1];
+
+                $distance = Converter::calculate_distance($lat1, $lon1, $lat2, $lon2, $unit = 'km');
+                $total_distance = $total_distance + $distance;
+            }
+        }
+
+        return $total_distance;
+    }
+
+    public static function getTotalTripByCategory($user_id) {
+        $res = TripModel::selectRaw('trip_category as context, COUNT(1) as total')
+            ->where('created_by', $user_id)
+            ->orderBy('total','DESC')
+            ->groupBy('trip_category')
+            ->limit(6)
+            ->get();
+
+        if ($res->isEmpty()) return null;
+    
+        return $res->map(function ($row) {
+            $row->total = (int) $row->total;
+            return $row;
+        });
+    }
+
+    public static function getCoordinateByTripLocationName($user_id, $trip_location_name) {
+        $origin = TripModel::selectRaw('trip_origin_name as trip_location_name, trip_origin_coordinate as trip_location_coordinate')
+            ->where('trip_origin_name', 'like', "%{$trip_location_name}%")
+            ->where('created_by', $user_id)
+            ->groupBy('trip_location_name');
+
+        $destination = TripModel::selectRaw('trip_destination_name as trip_location_name, trip_destination_coordinate as trip_location_coordinate')
+            ->where('trip_destination_name', 'like', "%{$trip_location_name}%")
+            ->where('created_by', $user_id)
+            ->groupBy('trip_location_name');
+
+        $combined = $origin->union($destination)
+            ->orderByRaw("LOCATE(?, trip_location_name)", [$trip_location_name])
+            ->orderBy('trip_location_name','ASC')
+            ->paginate(14);
+
+        return $combined;
+    }
+
+    public static function getTotalTripByDestinationOrigion($user_id, $type) {
+        $res = TripModel::selectRaw('trip_'.$type.'_name context, COUNT(1) as total')
+            ->where('created_by', $user_id)
+            ->orderBy('total','DESC')
+            ->groupBy('trip_'.$type.'_name')
+            ->limit(6)
+            ->get();
+        
+        if ($res->isEmpty()) return null;
+    
+        return $res->map(function ($row) {
+            $row->total = (int) $row->total;
+            return $row;
+        });
+    }
+
+    public static function getTripByVehicleId($user_id, $vehicle_id, $limit = null, $page = 1) {
+        $res = TripModel::select("id","trip_desc","trip_category","trip_person", "trip_origin_name","trip_origin_coordinate","trip_destination_name","trip_destination_coordinate","created_at")
+            ->where('vehicle_id', $vehicle_id)
+            ->where('created_by', $user_id)
+            ->whereNull('deleted_at')
+            ->orderBy('created_at', 'desc');
+    
+        $res = $limit ? $res->paginate($limit, ['*'], 'page_trip', $page) : $res->get();
+    
+        return $res->isEmpty() ? null : $res;
+    }
+
+    public static function getTotalTripByVehiclePerYear($user_id = null, $vehicle_id = null, $year = null) {
+        if ($year == null) $year = date('Y');
+        $res = TripModel::selectRaw("COUNT(DISTINCT trip.id) as total, MONTH(trip.created_at) as context");
+
+        if ($vehicle_id) $res = $res->where('vehicle_id',$vehicle_id);
+        if ($user_id) $res = $res->where('created_by',$user_id);
+        $res = $res->whereRaw("YEAR(trip.created_at) = '$year'")
+            ->groupByRaw('MONTH(trip.created_at)')
+            ->get();
+
+        if ($res->isEmpty()) return null;
+    
+        return $res->map(function ($row) {
+            $row->total = (int) $row->total;
+            return $row;
+        });
     }
 
     public static function getAllCoordinate($user_id, $search = null) {
@@ -83,7 +233,7 @@ class TripModel extends Model
         return $res->isNotEmpty() ? $res : null;
     }
 
-    public static function getTripCalendar($user_id){
+    public static function getTripCalendar($user_id) {
         return TripModel::selectRaw("trip.id,CONCAT(trip_origin_name, ' - ', trip_destination_name) AS trip_location_name, vehicle.vehicle_plate_number,trip.created_at")
             ->leftjoin('vehicle','vehicle.id','=','trip.vehicle_id')
             ->where('trip.created_by',$user_id)
@@ -91,90 +241,10 @@ class TripModel extends Model
             ->get();
     }
 
-    public static function getJourney($user_id, $vehicle_id){
-        return TripModel::select("trip_category", "trip_desc", "trip_person", "trip_origin_name", "trip_destination_name", "trip_origin_coordinate", "trip_destination_coordinate", "created_at")
-            ->where('created_by',$user_id)
-            ->where('vehicle_id',$vehicle_id)
-            ->orderby('created_at','DESC')
-            ->get();
-    }
-
-    public static function getTotalTripByCategory($user_id){
-        $res = TripModel::selectRaw('trip_category as context, COUNT(1) as total')
-            ->where('created_by', $user_id)
-            ->orderBy('total','DESC')
-            ->groupBy('trip_category')
-            ->limit(6)
-            ->get();
-
-        if ($res->isEmpty()) return null;
-    
-        return $res->map(function ($row) {
-            $row->total = (int) $row->total;
-            return $row;
-        });
-    }
-
-    public static function getCoordinateByTripLocationName($user_id, $trip_location_name){
-        $origin = TripModel::selectRaw('trip_origin_name as trip_location_name, trip_origin_coordinate as trip_location_coordinate')
-            ->where('trip_origin_name', 'like', "%{$trip_location_name}%")
-            ->where('created_by', $user_id)
-            ->groupBy('trip_location_name');
-
-        $destination = TripModel::selectRaw('trip_destination_name as trip_location_name, trip_destination_coordinate as trip_location_coordinate')
-            ->where('trip_destination_name', 'like', "%{$trip_location_name}%")
-            ->where('created_by', $user_id)
-            ->groupBy('trip_location_name');
-
-        $combined = $origin->union($destination)
-            ->orderByRaw("LOCATE(?, trip_location_name)", [$trip_location_name])
-            ->orderBy('trip_location_name','ASC')
-            ->paginate(14);
-
-        return $combined;
-    }
-
-    public static function getLastTrip($user_id){
-        return TripModel::select('trip_destination_name','trip_destination_coordinate','driver.username as driver_username','vehicle_plate_number','trip.created_at','vehicle_type')
-            ->join('vehicle','vehicle.id','=','trip.vehicle_id')
-            ->leftjoin('driver','driver.id','=','trip.driver_id')
-            ->where('trip.created_by', $user_id)
-            ->orderBy('trip.created_at','DESC')
-            ->first();
-    }
-
-    public static function getTotalTripByDestinationOrigion($user_id, $type){
-        $res = TripModel::selectRaw('trip_'.$type.'_name context, COUNT(1) as total')
-            ->where('created_by', $user_id)
-            ->orderBy('total','DESC')
-            ->groupBy('trip_'.$type.'_name')
-            ->limit(6)
-            ->get();
-        
-        if ($res->isEmpty()) return null;
-    
-        return $res->map(function ($row) {
-            $row->total = (int) $row->total;
-            return $row;
-        });
-    }
-
-    public static function getTripByVehicleId($user_id, $vehicle_id, $limit = null, $page = 1){
-        $res = TripModel::select("id","trip_desc","trip_category","trip_person", "trip_origin_name","trip_origin_coordinate","trip_destination_name","trip_destination_coordinate","created_at")
-            ->where('vehicle_id', $vehicle_id)
-            ->where('created_by', $user_id)
-            ->whereNull('deleted_at')
-            ->orderBy('created_at', 'desc');
-    
-        $res = $limit ? $res->paginate($limit, ['*'], 'page_trip', $page) : $res->get();
-    
-        return $res->isEmpty() ? null : $res;
-    }
-
-    public static function getPersonWithMostTripWith($user_id, $vehicle_id = null, $limit = 7){
+    public static function getPersonWithMostTripWith($user_id, $vehicle_id = null, $limit = 7) {
         $res = TripModel::selectRaw("LOWER(trip_person) as context");
 
-        if($vehicle_id) $res = $res->where('vehicle_id', $vehicle_id);
+        if ($vehicle_id) $res = $res->where('vehicle_id', $vehicle_id);
             
         $res = $res->where('created_by', $user_id)
             ->whereNull('deleted_at')
@@ -207,108 +277,38 @@ class TripModel extends Model
         return $result;
     }
 
-    protected static function getMostFrequentValue($user_id, $vehicle_id, $col) {
-        return TripModel::select($col)
-            ->where('vehicle_id', $vehicle_id)
-            ->where('created_by', $user_id)
-            ->whereNull('deleted_at')
-            ->groupBy($col)
-            ->orderByRaw('COUNT(*) DESC')
-            ->limit(1)
-            ->value($col);
-    }
-    public static function getMostContext($user_id, $vehicle_id){
-        $mostDestination = self::getMostFrequentValue($user_id, $vehicle_id, 'trip_destination_name');
-        $mostOrigin = self::getMostFrequentValue($user_id, $vehicle_id, 'trip_origin_name');
-        $mostCategory = self::getMostFrequentValue($user_id, $vehicle_id, 'trip_category');
-
-        return (object)[
-            'most_destination' => $mostDestination,
-            'most_origin' => $mostOrigin,
-            'most_category' => $mostCategory,
-        ];
-    }
-
-    public static function getTotalTripDistance($user_id,$vehicle_id){
-        $res = TripModel::select("trip_origin_coordinate","trip_destination_coordinate")
-            ->where('vehicle_id',$vehicle_id)
+    public static function getJourney($user_id, $vehicle_id) {
+        return TripModel::select("trip_category", "trip_desc", "trip_person", "trip_origin_name", "trip_destination_name", "trip_origin_coordinate", "trip_destination_coordinate", "created_at")
             ->where('created_by',$user_id)
-            ->whereNull('deleted_at')
-            ->whereNotNull("trip_origin_coordinate")
-            ->whereNotNull("trip_destination_coordinate")
+            ->where('vehicle_id',$vehicle_id)
+            ->orderby('created_at','DESC')
             ->get();
+    }
 
-        $total_distance = 0;
+    public static function getAllTrip($user_id, $limit, $driver_id = null, $trip_id = null, $search = null) {
+        $res = TripModel::select("trip.id", "vehicle_name", "driver.fullname as driver_fullname", "vehicle_plate_number", "trip_desc", "trip_category", "trip_origin_name", "trip_person", "trip_origin_coordinate", "trip_destination_name","trip_destination_coordinate","vehicle_type", "trip.created_at")
+            ->join('vehicle','vehicle.id','=','trip.vehicle_id')
+            ->leftjoin('driver','driver.id','=','trip.driver_id')
+            ->orderBy('trip.created_at','desc')
+            ->where('trip.created_by',$user_id);
 
-        if(count($res) > 0){
-            foreach ($res as $dt) {
-                $origin_coor = explode(",", $dt->trip_origin_coordinate);
-                $destination_coor = explode(",", $dt->trip_destination_coordinate);
-                $lat1 = $origin_coor[0];
-                $lon1 = $origin_coor[1];
-                $lat2 = $destination_coor[0];
-                $lon2 = $destination_coor[1];
-
-                $distance = Converter::calculate_distance($lat1, $lon1, $lat2, $lon2, $unit = 'km');
-                $total_distance = $total_distance + $distance;
-            }
+        if ($driver_id) $res = $res->where('trip.driver_id',$driver_id);
+        if ($trip_id) $res = $res->where('trip.id',$trip_id);
+        if ($search) {
+            $search = strtolower($search);
+            $res->where(function ($q) use ($search) {
+                $q->whereRaw('LOWER(trip_desc) LIKE ?', ["%{$search}%"])
+                    ->orWhereRaw('LOWER(trip_origin_name) LIKE ?', ["%{$search}%"])
+                    ->orWhereRaw('LOWER(trip_destination_name) LIKE ?', ["%{$search}%"]);
+            });
         }
 
-        return $total_distance;
+        $res = $res->paginate($limit);
+
+        return $res->isNotEmpty() ? $res : null;
     }
 
-    public static function getTotalTripByVehiclePerYear($user_id = null, $vehicle_id = null, $year = null){
-        if($year == null) $year = date('Y');
-        $res = TripModel::selectRaw("COUNT(DISTINCT trip.id) as total, MONTH(trip.created_at) as context");
-
-        if($vehicle_id) $res = $res->where('vehicle_id',$vehicle_id);
-        if($user_id) $res = $res->where('created_by',$user_id);
-        $res = $res->whereRaw("YEAR(trip.created_at) = '$year'")
-            ->groupByRaw('MONTH(trip.created_at)')
-            ->get();
-
-        if ($res->isEmpty()) return null;
-    
-        return $res->map(function ($row) {
-            $row->total = (int) $row->total;
-            return $row;
-        });
-    }
-
-    public static function getTripDiscovered($user_id = null, $vehicle_id = null)
-    {
-        $res = TripModel::selectRaw("trip_origin_coordinate, trip_destination_coordinate, COUNT(1) as total,MAX(trip.created_at) as last_update")
-            ->join('vehicle', 'vehicle.id', '=', 'trip.vehicle_id');
-
-        if ($vehicle_id) $res = $res->where('vehicle_id', $vehicle_id);
-        if ($user_id) $res = $res->where('trip.created_by', $user_id);
-
-        $res = $res->groupBy('trip_origin_coordinate', 'trip_destination_coordinate')->get();
-
-        $totalTrip = 0;
-        $totalDistance = 0;
-        $lastUpdate = null;
-        foreach ($res as $item) {
-            if($item->trip_origin_coordinate && $item->trip_destination_coordinate){
-                [$originLat, $originLng] = explode(',', $item->trip_origin_coordinate);
-                [$destLat, $destLng] = explode(',', $item->trip_destination_coordinate);
-
-                $distance = Converter::calculate_distance((float) $originLat,(float) $originLng,(float) $destLat,(float) $destLng,'km');
-                $totalDistance += (float) $distance;
-
-                if (is_null($lastUpdate) || $item->last_update > $lastUpdate) $lastUpdate = $item->last_update;
-            }
-            $totalTrip += $item->total;
-        }
-
-        return [
-            'total_trip' => $totalTrip,
-            'distance_km' => round($totalDistance, 2),
-            'last_update' => $lastUpdate,
-        ];
-    }
-
-    public static function getExportData($user_id, $vehicle_id = null){
+    public static function getExportData($user_id, $vehicle_id = null) {
         $res = TripModel::selectRaw("
                 vehicle_name, vehicle_type, vehicle_plate_number, driver.fullname as driver_name, trip_desc, trip_category, trip_person, trip_origin_name, trip_origin_coordinate, 
                 trip_destination_name, trip_destination_coordinate, trip.created_at, trip.updated_at
@@ -316,30 +316,14 @@ class TripModel extends Model
             ->join('vehicle','vehicle.id','=','trip.vehicle_id')
             ->leftjoin('driver','driver.id','=','trip.driver_id');
         
-        if($vehicle_id) $res = $res->where('vehicle_id',$vehicle_id);
+        if ($vehicle_id) $res = $res->where('vehicle_id',$vehicle_id);
 
         $res = $res->where('trip.created_by',$user_id)->orderBy('trip.created_at', 'desc');
 
         return $res->get();
     }
 
-    public static function hardDeleteByVehicleId($vehicle_id, $user_id = null){
-        $res = TripModel::where('vehicle_id',$vehicle_id);
-
-        if($user_id) $res = $res->where('created_by',$user_id);
-            
-        return $res->delete();
-    }
-
-    public static function hardDeleteTripById($id, $user_id = null){
-        $res = TripModel::where('id',$id);
-
-        if($user_id) $res = $res->where('created_by',$user_id);
-            
-        return $res->delete();
-    }
-
-    public static function createTrip($data, $user_id){
+    public static function createTrip($data, $user_id) {
         $data['id'] = Generator::getUUID();
         $data['created_at'] = $data['created_at'] ?? date('Y-m-d H:i:s');
         $data['created_by'] = $user_id;
@@ -349,9 +333,25 @@ class TripModel extends Model
         return TripModel::create($data);
     }
 
-    public static function updateTripById($data, $user_id, $id){
+    public static function updateTripById($data, $user_id, $id) {
         $data['updated_at'] = date('Y-m-d H:i:s');
         
         return TripModel::where('created_by',$user_id)->where('id',$id)->update($data);
+    }
+
+    public static function hardDeleteByVehicleId($vehicle_id, $user_id = null) {
+        $res = TripModel::where('vehicle_id',$vehicle_id);
+
+        if ($user_id) $res = $res->where('created_by',$user_id);
+            
+        return $res->delete();
+    }
+
+    public static function hardDeleteTripById($id, $user_id = null) {
+        $res = TripModel::where('id',$id);
+
+        if ($user_id) $res = $res->where('created_by',$user_id);
+            
+        return $res->delete();
     }
 }

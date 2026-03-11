@@ -59,7 +59,7 @@
                 error: function(response, jqXHR, textStatus, errorThrown) {
                     Swal.close()
 
-                    if(response.status != 404){
+                    if (response.status != 404) {
                         generateApiError(response, true)
                     } else {
                         messageShortImage(`${ctx}-holder`,`{{asset('assets/empty.png')}}`,`there's no active service`)
@@ -68,13 +68,13 @@
             })
         }
 
-        if(ctx in localStorage){
+        if (ctx in localStorage) {
             const lastHit = parseInt(localStorage.getItem(`last-hit-${ctx}`))
             const now = Date.now()
 
-            if(((now - lastHit) / 1000) < summaryFetchRestTime){
+            if (((now - lastHit) / 1000) < summaryFetchRestTime) {
                 const data = JSON.parse(localStorage.getItem(ctx))
-                if(data){
+                if (data) {
                     generate_summary(data.remind_at,data.service_note,data.service_price_total,data.service_location,data.vehicle_plate_number,data.service_category)
                     Swal.close()
                 } else {

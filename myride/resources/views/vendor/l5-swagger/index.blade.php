@@ -25,7 +25,7 @@
       background: #fafafa;
     }
     </style>
-    @if(config('l5-swagger.defaults.ui.display.dark_mode'))
+    @if (config('l5-swagger.defaults.ui.display.dark_mode'))
         <style>
             body#dark-mode,
             #dark-mode .scheme-container {
@@ -106,7 +106,7 @@
                 border-color: rgba(255,255,255,10%);
                 border-top-color: rgba(255,255,255,.6);
             }
-            #dark-mode svg:not(:root){
+            #dark-mode svg:not(:root) {
                 fill: #e7e7e7;
             }
             #dark-mode .opblock-summary-description {
@@ -116,7 +116,7 @@
     @endif
 </head>
 
-<body @if(config('l5-swagger.defaults.ui.display.dark_mode')) id="dark-mode" @endif>
+<body @if (config('l5-swagger.defaults.ui.display.dark_mode')) id="dark-mode" @endif>
 <div id="swagger-ui"></div>
 
 <script src="{{ l5_swagger_asset($documentation, 'swagger-ui-bundle.js') }}"></script>
@@ -156,7 +156,7 @@
 
         window.ui = ui
 
-        @if(in_array('oauth2', array_column(config('l5-swagger.defaults.securityDefinitions.securitySchemes'), 'type')))
+        @if (in_array('oauth2', array_column(config('l5-swagger.defaults.securityDefinitions.securitySchemes'), 'type')))
         ui.initOAuth({
             usePkceWithAuthorizationCodeGrant: "{!! (bool)config('l5-swagger.defaults.ui.authorization.oauth2.use_pkce_with_authorization_code_grant') !!}"
         })

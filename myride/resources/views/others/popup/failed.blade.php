@@ -1,4 +1,4 @@
-@if(Session::has('failed_message'))
+@if (Session::has('failed_message'))
     <div class="modal fade" id="error_modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">

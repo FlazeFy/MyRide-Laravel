@@ -38,7 +38,7 @@ class ReminderModelFactory extends Factory
         $ranCoor = mt_rand(0, 1);
 
         $reminder_location = null;
-        if($ranCoor === 1){
+        if ($ranCoor === 1) {
             $reminder_location = (object)[
                 'attachment_type' => 'location',
                 'attachment_value' => $this->getRandomLocationFromCsv(),

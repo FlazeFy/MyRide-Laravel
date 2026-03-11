@@ -51,7 +51,7 @@
         }
     }, false)
 
-    function formatTime(seconds){
+    function formatTime(seconds) {
         var minutes = Math.floor(seconds / 60)
         var remainingSeconds = seconds % 60
         return minutes + ':' + remainingSeconds.toString().padStart(2, '0')
@@ -62,17 +62,17 @@
         var result = ""
 
         pins.forEach(function(e) {
-            if(type == "time_out"){
+            if (type == "time_out") {
                 e.disabled = true
                 e.style = "background: var(--hoverBG);"
-            } else if(type == "regenerate"){
+            } else if (type == "regenerate") {
                 e.disabled = false
                 e.value = ""
                 e.style = "background: var(--firstColor);"
-            } else if(type == "invalid"){
+            } else if (type == "invalid") {
                 e.value = ""
                 e.style = "border: 1.5px solid var(--warningBG); "
-            } else if(type == "fetch"){
+            } else if (type == "fetch") {
                 result += e.value
             }
         })
@@ -80,24 +80,24 @@
         return result
     }
 
-    function validatePin(){
+    function validatePin() {
         var pins = pin_holder.querySelectorAll('input')
         var is_empty = false
 
         pins.forEach(function(e) {
-            if(e.value == "" || e.value == null){
+            if (e.value == "" || e.value == null) {
                 is_empty = true
                 return
             }
         })
 
-        if(is_empty == false){
+        if (is_empty == false) {
             const token = controlPin('fetch')
             validateToken(token)
         }
     }
 
-    function validateToken(token){
+    function validateToken(token) {
         $.ajax({
             url: `/api/v1/register/account`,
             dataType: 'json',

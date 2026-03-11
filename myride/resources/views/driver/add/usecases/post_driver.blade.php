@@ -43,7 +43,7 @@
 </form>
 
 <script type="text/javascript">
-    $(document).on('click','#submit-add-driver-btn', function(){
+    $(document).on('click','#submit-add-driver-btn', function() {
         post_driver()
     })
 
@@ -51,7 +51,7 @@
         const vehicle_id = $('#vehicle_holder').val()
         const driver_category = $('#driver_category_holder').val()
 
-        if(vehicle_id !== "-" && driver_category !== "-"){
+        if (vehicle_id !== "-" && driver_category !== "-") {
             Swal.showLoading()
             $.ajax({
                 url: `/api/v1/driver`,

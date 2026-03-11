@@ -29,7 +29,7 @@ class StatsTest extends TestCase
         $token = $this->login_trait("user");
         $context = ["vehicle_merk","vehicle_fuel_status","vehicle_category","vehicle_status","vehicle_transmission"];
 
-        foreach($context as $ctx){
+        foreach($context as $ctx) {
             $response = $this->httpClient->get("total/vehicle/$ctx", [
                 'headers' => [
                     'Authorization' => "Bearer $token"
@@ -69,7 +69,7 @@ class StatsTest extends TestCase
         $token = $this->login_trait("user");
         $context = ["trip_category","trip_origin_name","trip_destination_name"];
 
-        foreach($context as $ctx){
+        foreach($context as $ctx) {
             $response = $this->httpClient->get("total/trip/$ctx", [
                 'headers' => [
                     'Authorization' => "Bearer $token"
@@ -109,7 +109,7 @@ class StatsTest extends TestCase
         $token = $this->login_trait("user");
         $context = ["inventory_category","inventory_storage"];
 
-        foreach($context as $ctx){
+        foreach($context as $ctx) {
             $response = $this->httpClient->get("total/inventory/$ctx", [
                 'headers' => [
                     'Authorization' => "Bearer $token"
@@ -149,7 +149,7 @@ class StatsTest extends TestCase
         $token = $this->login_trait("user");
         $context = ["service_category","service_location"];
 
-        foreach($context as $ctx){
+        foreach($context as $ctx) {
             $response = $this->httpClient->get("total/service/$ctx", [
                 'headers' => [
                     'Authorization' => "Bearer $token"
@@ -249,7 +249,7 @@ class StatsTest extends TestCase
         $context = ["fuel_volume","fuel_price_total"];
         $year = 2025;
 
-        foreach($context as $ctx){
+        foreach($context as $ctx) {
             // Exec
             $response = $this->httpClient->get("total/fuel/monthly/$ctx/$year",[
                 'headers' => [
@@ -292,7 +292,7 @@ class StatsTest extends TestCase
         $context = ["fuel_volume","fuel_price_total"];
         $year = 2025;
 
-        foreach($context as $ctx){
+        foreach($context as $ctx) {
             // Exec
             $response = $this->httpClient->get("total/fuel/monthly/$ctx/$year");
 
@@ -331,7 +331,7 @@ class StatsTest extends TestCase
         $context = ["total_item","total_price"];
         $year = 2024;
 
-        foreach($context as $ctx){
+        foreach($context as $ctx) {
             // Exec
             $response = $this->httpClient->get("total/service/monthly/$ctx/$year",[
                 'headers' => [
@@ -373,7 +373,7 @@ class StatsTest extends TestCase
         $context = ["total_item","total_price"];
         $year = 2024;
 
-        foreach($context as $ctx){
+        foreach($context as $ctx) {
             // Exec
             $response = $this->httpClient->get("total/service/monthly/$ctx/$year");
 
@@ -412,7 +412,7 @@ class StatsTest extends TestCase
         $context = ["total_item","total_price"];
         $year = 2025;
 
-        foreach($context as $ctx){
+        foreach($context as $ctx) {
             // Exec
             $response = $this->httpClient->get("total/wash/monthly/$ctx/$year",[
                 'headers' => [
@@ -454,7 +454,7 @@ class StatsTest extends TestCase
         $context = ["total_item","total_price"];
         $year = 2025;
 
-        foreach($context as $ctx){
+        foreach($context as $ctx) {
             // Exec
             $response = $this->httpClient->get("total/wash/monthly/$ctx/$year");
 

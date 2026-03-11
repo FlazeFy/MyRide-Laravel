@@ -19,7 +19,7 @@
             }
         })
 
-        $('#btn-regenerate-token').on('click', function(){
+        $('#btn-regenerate-token').on('click', function() {
             $.ajax({
                 url: `/api/v1/register/regen_token`,
                 dataType: 'json',
@@ -44,10 +44,10 @@
             })
         })
 
-        $('#btn-register-acc').on('click', function(){
-            if(validateInput('text', 'username', 36, 6) && validateInput('text', 'password', 36, 6) && validateInput('text', 'email', 255, 10)){
-                if($('#password').val() == $('#password_validation').val()){
-                    if($('#email').val().includes("gmail")){
+        $('#btn-register-acc').on('click', function() {
+            if (validateInput('text', 'username', 36, 6) && validateInput('text', 'password', 36, 6) && validateInput('text', 'email', 255, 10)) {
+                if ($('#password').val() == $('#password_validation').val()) {
+                    if ($('#email').val().includes("gmail")) {
                         $.ajax({
                             url: `/api/v1/register/token`,
                             dataType: 'json',

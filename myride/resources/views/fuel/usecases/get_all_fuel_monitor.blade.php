@@ -19,7 +19,7 @@
                 const data = response.data
                 
                 data.forEach(dt => {
-                    if(dt.vehicle_fuel_status !== 'Not Monitored'){
+                    if (dt.vehicle_fuel_status !== 'Not Monitored') {
                         $(`#${holder}`).append(`
                             <div class="col-xl-6 col-lg-12 col-md-6 col-sm-6 col-6 text-center mx-auto">
                                 <div id="stats_${dt.id}" class="mb-2"></div>
@@ -32,13 +32,13 @@
                         
                         let percentage
 
-                        if(dt.vehicle_fuel_status === 'Fuel'){
+                        if (dt.vehicle_fuel_status === 'Fuel') {
                             percentage = 100
-                        } else if(dt.vehicle_fuel_status === 'High'){
+                        } else if (dt.vehicle_fuel_status === 'High') {
                             percentage = 75
-                        } else if(dt.vehicle_fuel_status === 'Normal'){
+                        } else if (dt.vehicle_fuel_status === 'Normal') {
                             percentage = 50
-                        } else if(dt.vehicle_fuel_status === 'Low'){
+                        } else if (dt.vehicle_fuel_status === 'Low') {
                             percentage = 25
                         } else {
                             percentage = 0
@@ -51,7 +51,7 @@
             error: function(response, jqXHR, textStatus, errorThrown) {
                 Swal.close()
 
-                if(response.status != 404){
+                if (response.status != 404) {
                     generateApiError(response, true)
                 } else {
                     templateAlertContainer(holder, 'no-data', "No vehicle found", 'add a vehicle', '<i class="fa-solid fa-gas-pump"></i>','/garage/add')

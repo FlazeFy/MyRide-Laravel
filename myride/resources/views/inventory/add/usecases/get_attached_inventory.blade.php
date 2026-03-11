@@ -16,9 +16,9 @@
 </div>
 
 <script>
-    $(document).on('change','#vehicle_holder', function(){
+    $(document).on('change','#vehicle_holder', function() {
         const id = $(this).val()
-        if(id !== "-"){
+        if (id !== "-") {
             get_vehicle_attached_inventory(id)
         } else {
             $(`#${holder}`).html(`<tr><td scope="row" colspan="4" class="no-msg-text">- No Inventory Found -</td></tr>`)
@@ -53,7 +53,7 @@
             },
             error: function(response, jqXHR, textStatus, errorThrown) {
                 Swal.close()
-                if(response.status !== 404){
+                if (response.status !== 404) {
                     generateApiError(response, true)                
                 } else {
                     $(`#${holder}`).html(`<tr><td scope="row" colspan="4" class="no-msg-text">- No Inventory Found -</td></tr>`)

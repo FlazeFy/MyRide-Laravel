@@ -93,15 +93,15 @@ class Commands extends Controller
             $old_reminder = ReminderModel::find($id);
             // Hard Delete reminder by ID
             $rows = ReminderModel::hardDeleteReminderById($id, $user_id);
-            if($rows > 0){
+            if ($rows > 0) {
                 // Delete Firebase Uploaded Image
-                if($old_reminder->reminder_attachment){
+                if ($old_reminder->reminder_attachment) {
                     $attachments = $old_reminder->reminder_attachment;
                     foreach ($attachments as $att) {
                         if ($att['attachment_type'] === 'image') {
                             $image_url = $att['attachment_value'];
                             // Delete failed if file not found (already gone)
-                            if(!Firebase::deleteFile($image_url)){
+                            if (!Firebase::deleteFile($image_url)) {
                                 return response()->json([
                                     'status' => 'failed',
                                     'message' => Generator::getMessageTemplate("not_found", 'failed to delete reminder image'),
@@ -191,7 +191,7 @@ class Commands extends Controller
      *     ),
      * )
      */
-    public function postCreateReminder(Request $request){
+    public function postCreateReminder(Request $request) {
         try{
             // Init firebase factory to use in Google Calendar
             $factory = (new Factory)->withServiceAccount(base_path('/firebase/myride-a0077-firebase-adminsdk-7x7j4-6b7da5321a.json'));
@@ -269,10 +269,10 @@ class Commands extends Controller
                     'remind_at' => $request->remind_at, 
                 ];
                 $rows = ReminderModel::createReminder($data, $user_id);
-                if($rows){
+                if ($rows) {
                     // Get google token by user ID
                     $google_token = GoogleTokensModel::getGoogleTokensByUserId($user_id);
-                    if($google_token){
+                    if ($google_token) {
                         // Sync reminder with user Google Calendar account
                         $reminder_desc = "$request->reminder_context | $request->reminder_title\n$request->reminder_body";
                         GoogleCalendar::createSingleEvent($google_token->access_token, $reminder_desc, $request->remind_at, 60);

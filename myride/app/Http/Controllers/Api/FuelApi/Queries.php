@@ -90,7 +90,7 @@ class Queries extends Controller
 
             // Get all fuel with pagination
             $res = FuelModel::getAllFuel($user_id, $vehicle_id, $paginate);
-            if(count($res) > 0) {
+            if (count($res) > 0) {
                 // Return success response
                 return response()->json([
                     'status' => 'success',
@@ -164,7 +164,7 @@ class Queries extends Controller
      *     ),
      * )
      */
-    public function getLastFuel(Request $request){
+    public function getLastFuel(Request $request) {
         try{
             $user_id = $request->user()->id;
             // This will get all fuel history if vehicle_id not attached
@@ -172,7 +172,7 @@ class Queries extends Controller
 
             // Get last fuel
             $res = FuelModel::getLastFuel($user_id, $vehicle_id);
-            if($res) {
+            if ($res) {
                 // Return success response
                 return response()->json([
                     'status' => 'success',
@@ -239,7 +239,7 @@ class Queries extends Controller
      *     ),
      * )
      */
-    public function getMonthlyFuelSummary(Request $request, $month_year){
+    public function getMonthlyFuelSummary(Request $request, $month_year) {
         try{
             $user_id = $request->user()->id;
             // This will get all fuel history if vehicle_id not attached
@@ -247,7 +247,7 @@ class Queries extends Controller
 
             // Get monthly fuel summary
             $res = FuelModel::getMonthlyFuelSummary($user_id, $vehicle_id, $month_year);
-            if($res){
+            if ($res) {
                 // Return success response
                 return response()->json([
                     'status' => 'success',

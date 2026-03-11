@@ -75,7 +75,7 @@ class FuelTest extends TestCase
             $this->assertIsInt($dt["fuel_volume"]);
             $this->assertGreaterThan(0, $dt["fuel_volume"]);
 
-            if(!is_null($dt["fuel_ron"])){
+            if (!is_null($dt["fuel_ron"])) {
                 $this->assertContains($dt["fuel_ron"], [90,92,95,98]);
             }
 
@@ -135,7 +135,7 @@ class FuelTest extends TestCase
         $this->assertIsInt($data['data']["fuel_volume"]);
         $this->assertGreaterThan(0, $data['data']["fuel_volume"]);
 
-        if(!is_null($data['data']["fuel_ron"])){
+        if (!is_null($data['data']["fuel_ron"])) {
             $this->assertContains($data['data']["fuel_ron"], [90,92,95,98]);
         }
 
@@ -191,7 +191,7 @@ class FuelTest extends TestCase
         foreach ($check_not_nullable_int as $col) {
             $this->assertNotNull($data['data'][$col]);
             
-            if($data['data'][$col]){
+            if ($data['data'][$col]) {
                 $this->assertIsInt($data['data'][$col]);
             }
         }

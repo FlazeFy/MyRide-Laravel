@@ -1,5 +1,5 @@
 <script>
-    $(document).on('click','.btn-finish',function(){
+    $(document).on('click','.btn-finish',function() {
         Swal.fire({
             title: 'Are you sure?',
             text: 'Do you really want to mark this wash data as finished?',

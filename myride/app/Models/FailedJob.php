@@ -29,7 +29,7 @@ class FailedJob extends Model
     protected $primaryKey = 'id';
     protected $fillable = ['id', 'type', 'status', 'payload', 'created_at'];
 
-    public static function createFailedJob($data){
+    public static function createFailedJob($data) {
         $data['id'] = Generator::getUUID();
         $data['created_at'] = date('Y-m-d H:i:s');
         

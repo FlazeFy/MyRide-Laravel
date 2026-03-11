@@ -58,10 +58,10 @@
 </form>
 
 <script type="text/javascript">
-    $(document).on('click','#submit-add-wash-btn', function(){
+    $(document).on('click','#submit-add-wash-btn', function() {
         post_wash()
     })
-    $(document).on('change','#vehicle_holder', function(){
+    $(document).on('change','#vehicle_holder', function() {
         const id = $(this).val()
         getVehicleDetail(id)
     })
@@ -75,7 +75,7 @@
     const post_wash = () => {
         const vehicle_id = $('#vehicle_holder').val()
 
-        if(vehicle_id !== "-" && $('#wash_by').val() !== "-"){
+        if (vehicle_id !== "-" && $('#wash_by').val() !== "-") {
             const wash_end_time = $('#wash_end_time').val()
 
             Swal.showLoading()

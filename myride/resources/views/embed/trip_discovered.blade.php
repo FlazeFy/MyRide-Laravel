@@ -16,9 +16,9 @@
                 const time = dateObj.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", hour12: true })
 
                 let chipClass = "bg-danger"
-                if(parseInt(distance_km) < 25000){
+                if (parseInt(distance_km) < 25000) {
                     chipClass = "bg-success"
-                } else if(parseInt(distance_km) < 75000){
+                } else if (parseInt(distance_km) < 75000) {
                     chipClass = "bg-warning"
                 }
 
@@ -49,13 +49,13 @@
                 })
             }
 
-            if(ctx in localStorage){
+            if (ctx in localStorage) {
                 const lastHit = parseInt(localStorage.getItem(`last-hit-${ctx}`))
                 const now = Date.now()
 
-                if(((now - lastHit) / 1000) < summaryFetchRestTime){
+                if (((now - lastHit) / 1000) < summaryFetchRestTime) {
                     const data = JSON.parse(localStorage.getItem(ctx))
-                    if(data){
+                    if (data) {
                         generate_trip_discovered(data.total_trip,data.distance_km,data.last_update,ctx)
                         Swal.close()
                     } else {

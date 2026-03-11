@@ -41,7 +41,7 @@
                 error: function(response, jqXHR, textStatus, errorThrown) {
                     Swal.close()
 
-                    if(response.status != 404){
+                    if (response.status != 404) {
                         generateApiError(response, true)
                     } else {
                         messageShortImage(`${ctx}-holder`,`{{asset('assets/empty.png')}}`,`there's no last the trip history`)
@@ -50,13 +50,13 @@
             })
         }
 
-        if(ctx in localStorage){
+        if (ctx in localStorage) {
             const lastHit = parseInt(localStorage.getItem(`last-hit-${ctx}`))
             const now = Date.now()
 
-            if(((now - lastHit) / 1000) < summaryFetchRestTime){
+            if (((now - lastHit) / 1000) < summaryFetchRestTime) {
                 const data = JSON.parse(localStorage.getItem(ctx))
-                if(data){
+                if (data) {
                     generate_last_trip(data.created_at,data.trip_destination_name,data.trip_destination_coordinate,data.vehicle_plate_number,data.driver_username)
                     Swal.close()
                 } else {

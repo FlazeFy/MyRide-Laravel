@@ -25,7 +25,7 @@
 <script>
     let page_reminder = 1
 
-    $(document).on('click','.open-notification-btn', function(){
+    $(document).on('click','.open-notification-btn', function() {
         $(document).ready(function() {
             const get_reminder_history = (page) => {
                 ['1','2'].forEach(hd => {
@@ -56,7 +56,7 @@
                             })
                         },
                         error: function(response, jqXHR, textStatus, errorThrown) {
-                            if(response.status != 404){
+                            if (response.status != 404) {
                                 generateApiError(response, true)
                             } else {
                                 templateAlertContainer(item_holder, 'no-data', "No notification to show", null, '<i class="fa-solid fa-rotate-left"></i>')

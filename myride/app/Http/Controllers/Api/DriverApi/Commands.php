@@ -91,7 +91,7 @@ class Commands extends Controller
 
             // Permanently delete driver
             $rows = DriverModel::hardDeleteDriverById($id, $user_id);
-            if($rows > 0){
+            if ($rows > 0) {
                 // Permanently delete driver relation with vehicle
                 DriverVehicleRelationModel::hardDeleteDriverVehicleRelationByDriverId($id, $user_id);
                 
@@ -177,7 +177,7 @@ class Commands extends Controller
 
             // Permanently delete driver relation with vehicle
             $rows = DriverVehicleRelationModel::hardDeleteDriverVehicleRelationById($id, $user_id);
-            if($rows > 0){
+            if ($rows > 0) {
                 // Return success response
                 return response()->json([
                     'status' => 'success',
@@ -252,7 +252,7 @@ class Commands extends Controller
      *     ),
      * )
      */
-    public function postCreateDriver(Request $request){
+    public function postCreateDriver(Request $request) {
         try{
             // Validate request body
             $validator = Validation::getValidateDriver($request,'create');
@@ -266,7 +266,7 @@ class Commands extends Controller
 
                 // Check if driver username is available
                 $check = DriverModel::getDriverByUsernameOrEmail($request->username,$request->email,null);
-                if(!$check){
+                if (!$check) {
                     // Create driver
                     $data = [
                         'username' => $request->username, 
@@ -279,7 +279,7 @@ class Commands extends Controller
                         'notes' => $request->notes,
                     ];
                     $row = DriverModel::createDriver($data, $user_id);
-                    if($row){
+                    if ($row) {
                         // Create history
                         HistoryModel::createHistory(['history_type' => 'Driver', 'history_context' => "added $request->username as a driver"], $user_id);
 
@@ -361,7 +361,7 @@ class Commands extends Controller
      *     ),
      * )
      */
-    public function putUpdateDriverById(Request $request, $id){
+    public function putUpdateDriverById(Request $request, $id) {
         try{
             // Validate request body
             $validator = Validation::getValidateDriver($request,'update');
@@ -375,7 +375,7 @@ class Commands extends Controller
 
                 // Check if driver username is available
                 $check = DriverModel::getDriverByUsernameOrEmail($request->username,$request->email,$id);   
-                if(!$check){
+                if (!$check) {
                     // Update driver
                     $data = [
                         'username' => $request->username, 
@@ -385,7 +385,7 @@ class Commands extends Controller
                         'notes' => $request->notes,
                     ];
                     $rows = DriverModel::updateDriverById($data, $user_id, $id);
-                    if($rows > 0){
+                    if ($rows > 0) {
                         // Create history
                         HistoryModel::createHistory(['history_type' => 'Driver', 'history_context' => "updated $request->username driver's data"], $user_id);
 
@@ -465,7 +465,7 @@ class Commands extends Controller
      *     ),
      * )
      */
-    public function postCreateDriverVehicle(Request $request){
+    public function postCreateDriverVehicle(Request $request) {
         try{
             // Validate request body
             $validator = Validation::getValidateDriver($request,'create_relation');
@@ -477,7 +477,7 @@ class Commands extends Controller
             } else {
                 // Check if driver relation with vehicle already exist
                 $check = DriverVehicleRelationModel::getRelationByVehicleAndDriver($request->vehicle_id,$request->driver_id);
-                if(!$check){
+                if (!$check) {
                     // Create driver relation with vehicle
                     $data = [
                         'vehicle_id' => $request->vehicle_id, 
@@ -485,13 +485,13 @@ class Commands extends Controller
                         'relation_note' => $request->relation_note,
                     ];
                     $row = DriverVehicleRelationModel::createDriverVehicleRelation($data);
-                    if($row){
+                    if ($row) {
                         // Get driver contact to broadcast and check if its has valid telegram
                         $driver = DriverModel::getDriverContact($request->driver_id);
-                        if($driver->telegram_user_id && $driver->telegram_is_valid === 1){
+                        if ($driver->telegram_user_id && $driver->telegram_is_valid === 1) {
                             $user_id = $request->user()->id;
                             // Validate telegram id
-                            if(TelegramMessage::checkTelegramID($driver->telegram_user_id)){
+                            if (TelegramMessage::checkTelegramID($driver->telegram_user_id)) {
                                 // Get username to put in message
                                 $user = UserModel::getSocial($user_id);
                                 // Get vehicle plate number to put in message

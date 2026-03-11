@@ -30,7 +30,7 @@
     init_vehicle_page(token)
     
     $(document).ready(() => {
-        $(document).on('change','#vehicle_holder',function(){
+        $(document).on('change','#vehicle_holder',function() {
             const text = $(this).find('option:selected').text()
             const id = $(this).val()
             $('#select_vehicle-modal').modal('hide')
@@ -92,7 +92,7 @@
             },
             error: function(response, jqXHR, textStatus, errorThrown) {
                 Swal.close()
-                if(response.status != 404){
+                if (response.status != 404) {
                     generateApiError(response, true)
                 } else {
                     $(targetElement).append(`

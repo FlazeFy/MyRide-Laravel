@@ -12,9 +12,9 @@ const warningNoDataVisualize = (holder) => {
 const generateLineChart = (title, holder, data) => {
     $(`#${holder}`).before(`<h2>${ucEachWord(title)}</h2><hr>`)
 
-    if(data.length > 0){
+    if (data.length > 0) {
         let keys = Object.keys(data[0])
-        if(keys.length == 2 && (typeof data[0][keys[0]] === 'string' && Number.isInteger(data[0][keys[1]]) || typeof data[0][keys[1]] === 'string' && Number.isInteger(data[0][keys[0]]))){
+        if (keys.length == 2 && (typeof data[0][keys[0]] === 'string' && Number.isInteger(data[0][keys[1]]) || typeof data[0][keys[1]] === 'string' && Number.isInteger(data[0][keys[0]]))) {
             const totals = data.map(c => c[Number.isInteger(data[0][keys[1]]) ? keys[1] : keys[0]])
             const contexts = data.map(c => c[typeof data[0][keys[0]] === 'string' ? keys[0] : keys[1]])
 
@@ -80,9 +80,9 @@ const generateLineChart = (title, holder, data) => {
 const generatePieChart = (title, holder, data) => {
     $(`#${holder}`).addClass("d-flex flex-wrap justify-content-center").before(`<h2 class="text-center">${ucEachWord(title)}</h2><hr class="w-100">`)
 
-    if(data && data.length > 0){
+    if (data && data.length > 0) {
         let keys = Object.keys(data[0])
-        if(keys.length == 2 && (typeof data[0][keys[0]] === 'string' && Number.isInteger(data[0][keys[1]]) || typeof data[0][keys[1]] === 'string' && Number.isInteger(data[0][keys[0]]))){
+        if (keys.length == 2 && (typeof data[0][keys[0]] === 'string' && Number.isInteger(data[0][keys[1]]) || typeof data[0][keys[1]] === 'string' && Number.isInteger(data[0][keys[0]]))) {
             const totals = data.map(c => c[Number.isInteger(data[0][keys[1]]) ? keys[1] : keys[0]])
             const contexts = data.map(c => c[typeof data[0][keys[0]] === 'string' ? keys[0] : keys[1]])
 
@@ -122,9 +122,9 @@ const generatePieChart = (title, holder, data) => {
 const generateBarChart = (title, holder, data) => {
     $(`#${holder}`).before(`<h2 class="text-center">${ucEachWord(title)}</h2><hr>`)
 
-    if(data.length > 0){
+    if (data.length > 0) {
         let keys = Object.keys(data[0])
-        if(keys.length == 2 && (typeof data[0][keys[0]] === 'string' && Number.isInteger(data[0][keys[1]]) || typeof data[0][keys[1]] === 'string' && Number.isInteger(data[0][keys[0]]))){
+        if (keys.length == 2 && (typeof data[0][keys[0]] === 'string' && Number.isInteger(data[0][keys[1]]) || typeof data[0][keys[1]] === 'string' && Number.isInteger(data[0][keys[0]]))) {
             const totals = data.map(c => c[Number.isInteger(data[0][keys[1]]) ? keys[1] : keys[0]])
             const contexts = data.map(c => c[typeof data[0][keys[0]] === 'string' ? keys[0] : keys[1]])
 
@@ -179,7 +179,7 @@ const generateBarChart = (title, holder, data) => {
 }
 
 const generateSemiGaugeChart = (title = null, holder, percentage) => {
-    if(title){
+    if (title) {
         $(`#${holder}`).before(`<h2 class='title-chart'>${ucEachWord(title)}</h2>`)
     }
 

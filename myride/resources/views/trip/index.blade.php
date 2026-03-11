@@ -47,7 +47,7 @@
         $(document).ready(function () {
             const params = new URLSearchParams(window.location.search)
 
-            $(document).on('click','#show_all_trip-button',function(){
+            $(document).on('click','#show_all_trip-button',function() {
                 params.has("trip_id") ? window.location.href = '/trip' : initMap()
             })
         })

@@ -97,15 +97,15 @@ const getDriverNameOption = (token) => {
         })
     }
 
-    if (ctx in localStorage){
+    if (ctx in localStorage) {
         const lastHit = parseInt(localStorage.getItem(`last-hit-${ctx}`))
         const now = Date.now()
 
-        if (((now - lastHit) / 1000) < statsFetchRestTime){
+        if (((now - lastHit) / 1000) < statsFetchRestTime) {
             Swal.close()
             const data = JSON.parse(localStorage.getItem(ctx))
 
-            if(data){
+            if (data) {
                 generateDriverList(ctx_holder,data)
             } else {
                 failedMsg(`get the driver list`)
@@ -121,7 +121,7 @@ const getDriverNameOption = (token) => {
 const getVehicleDetail = (id) => {
     const resetSelectedOption = target => target.forEach(dt => $(`#${dt}`).val(''))
 
-    if (id !== "-"){
+    if (id !== "-") {
         Swal.showLoading()
         $.ajax({
             url: `/api/v1/vehicle/detail/${id}`,

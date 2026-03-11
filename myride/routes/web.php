@@ -43,7 +43,7 @@ Route::prefix('/')->group(function () {
     Route::get('/help', [HelpController::class, 'index'])->name('help');
 });
 
-Route::prefix('/auth')->group(function (){
+Route::prefix('/auth')->group(function () {
     Route::get('/google', [LoginController::class, 'redirect_to_google']);
     Route::get('/google/callback', [LoginController::class, 'login_google_callback']);
 });

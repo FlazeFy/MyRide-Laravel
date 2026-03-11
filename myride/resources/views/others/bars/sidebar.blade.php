@@ -19,7 +19,7 @@
     $(document).ready(function() {
         $(".toogle_nav-button").on("click", function() {
             let width = $(window).width()
-            if($(this).hasClass("close")){
+            if ($(this).hasClass("close")) {
                 $('#sidebar').css({
                     width: "250px",
                     paddingInline: 'var(--spaceMD)',
@@ -68,7 +68,7 @@
     }
 
     const generate_menu = (is_have_vehicle, holder) => {
-        if(is_have_vehicle){
+        if (is_have_vehicle) {
             $(`#${holder}`).append(`
                 <li><a href="/trip" class="nav-link <?= $active_menu == "trip" ? "active" : "" ?>"><i class="fa-solid fa-suitcase"></i> Trip</a></li>
                 <li><a href="/fuel" class="nav-link <?= $active_menu == "fuel" ? "active" : "" ?>"><i class="fa-solid fa-gas-pump"></i> Fuel</a></li>
@@ -107,9 +107,9 @@
                 },
                 error: function(response, jqXHR, textStatus, errorThrown) {
                     Swal.close()
-                    if(response.status !== 404 && response.status !== 401){
+                    if (response.status !== 404 && response.status !== 401) {
                         generateApiError(response, true)
-                    } else if(response.status === 401){
+                    } else if (response.status === 401) {
                         $('#sidebar').css({paddingTop: $(window).width() < 767 ? '120px' : '100px' })
                         templateAlertContainer('sidebar', 'expired_session', "Your session was lost", 'go to login', '<i class="fa-solid fa-arrow-right-to-bracket"></i>','/login')
                     } else {
@@ -119,13 +119,13 @@
             })
         }
 
-        if(ctx_holder in localStorage){
+        if (ctx_holder in localStorage) {
             const lastHit = parseInt(localStorage.getItem(`last-hit-${ctx_holder}`))
             const now = Date.now()
 
-            if(((now - lastHit) / 1000) < listVehicleNameFetchRestTime){
+            if (((now - lastHit) / 1000) < listVehicleNameFetchRestTime) {
                 const data = JSON.parse(localStorage.getItem(ctx_holder))
-                if(data){
+                if (data) {
                     generate_menu(true, 'sidebar_menu-holder')
                     generateVehicleList(data,ctx_holder)
                     Swal.close()

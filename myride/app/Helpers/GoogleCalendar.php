@@ -14,6 +14,7 @@ class GoogleCalendar
         $client = new Google_Client();
         $client->setAccessToken($accessToken);
         $client->addScope(Google_Service_Calendar::CALENDAR);
+        
         return new Google_Service_Calendar($client);
     }
 

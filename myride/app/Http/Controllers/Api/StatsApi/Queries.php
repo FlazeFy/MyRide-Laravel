@@ -86,10 +86,10 @@ class Queries extends Controller
 
             $res = null;
             // Check if context contain multiple item that separate using comma
-            if(str_contains($context,",")){
+            if (str_contains($context,",")) {
                 $list_context = explode(",",$context);
                 foreach ($list_context as $dt) {
-                    if($dt == "trip_category" || $dt == "trip_origin_name" || $dt == "trip_destination_name"){
+                    if ($dt == "trip_category" || $dt == "trip_origin_name" || $dt == "trip_destination_name") {
                         // Get the total by context in the trip table
                         $res[] = [
                             'context' => $dt,
@@ -193,10 +193,10 @@ class Queries extends Controller
 
             $res = null;
             // Check if context contain multiple item that separate using comma
-            if(str_contains($context,",")){
+            if (str_contains($context,",")) {
                 $list_context = explode(",",$context);
                 foreach ($list_context as $dt) {
-                    if($dt == "inventory_category" || $dt == "inventory_storage"){
+                    if ($dt == "inventory_category" || $dt == "inventory_storage") {
                         // Get the total by context in the inventory table
                         $res[] = [
                             'context' => $dt,
@@ -293,16 +293,16 @@ class Queries extends Controller
      *     ),
      * )
      */
-    public function getTotalServicePriceByContext(Request $request, $context){
+    public function getTotalServicePriceByContext(Request $request, $context) {
         try{
             $user_id = $request->user()->id;
 
             $res = null;
             // Check if context contain multiple item that separate using comma
-            if(str_contains($context,",")){
+            if (str_contains($context,",")) {
                 $list_context = explode(",",$context);
                 foreach ($list_context as $dt) {
-                    if($dt == "service_category" || $dt == "service_location"){
+                    if ($dt == "service_category" || $dt == "service_location") {
                         // Get the total by context in the service table
                         $res[] = [
                             'context' => $dt,
@@ -407,7 +407,7 @@ class Queries extends Controller
             
             $res = null;
             // Check if context contain multiple item that separate using comma
-            if(str_contains($context, ",")){
+            if (str_contains($context, ",")) {
                 $context_list = explode(",", $context);
                 $res = [];
                 foreach ($context_list as $dt) {
@@ -538,7 +538,7 @@ class Queries extends Controller
                 for ($i=1; $i <= 12; $i++) { 
                     $total = 0;
                     foreach ($res as $idx => $val) {
-                        if($i == $val->context){
+                        if ($i == $val->context) {
                             $total = $val->total;
                             break;
                         }
@@ -656,7 +656,7 @@ class Queries extends Controller
                 for ($i=1; $i <= 12; $i++) { 
                     $total = 0;
                     foreach ($res as $idx => $val) {
-                        if($i == $val->context){
+                        if ($i == $val->context) {
                             $total = (int)$val->total;
                             break;
                         }
@@ -778,7 +778,7 @@ class Queries extends Controller
             $vehicle_id = $request->query('vehicle_id') ?? null;
 
             // Check if context valid
-            if($context !== "fuel_volume" || $context !== "fuel_price_total"){
+            if ($context !== "fuel_volume" || $context !== "fuel_price_total") {
                 // Get total fuel for specific year per vehicle by vehicle_id or all vehicle
                 $res = FuelModel::getTotalFuelByVehiclePerYear($user_id, $vehicle_id, $context, $year);
                 
@@ -788,7 +788,7 @@ class Queries extends Controller
                     for ($i=1; $i <= 12; $i++) { 
                         $total = 0;
                         foreach ($res as $idx => $val) {
-                            if($i == $val->context){
+                            if ($i == $val->context) {
                                 $total = (int)$val->total;
                                 break;
                             }
@@ -905,7 +905,7 @@ class Queries extends Controller
             }
 
             // Check if context valid
-            if($context !== "total_item" || $context !== "total_price"){
+            if ($context !== "total_item" || $context !== "total_price") {
                 // Get total service per year by context
                 $res = ServiceModel::getTotalServiceMonthlyByYear($user_id, $context, $year);
                 if ($res && count($res) > 0) {
@@ -914,7 +914,7 @@ class Queries extends Controller
                     for ($i=1; $i <= 12; $i++) { 
                         $total = 0;
                         foreach ($res as $idx => $val) {
-                            if($i == $val->context){
+                            if ($i == $val->context) {
                                 $total = (int)$val->total;
                                 break;
                             }
@@ -1042,7 +1042,7 @@ class Queries extends Controller
             $vehicle_id = $request->query('vehicle_id') ?? null;
 
             // Check if context valid
-            if($context !== "total_item" || $context !== "total_price"){
+            if ($context !== "total_item" || $context !== "total_price") {
                 // Get total wash for specific year per vehicle by vehicle_id or all vehicle
                 $res = WashModel::getTotalWashMonthlyByYear($user_id, $vehicle_id, $context, $year);
                 
@@ -1052,7 +1052,7 @@ class Queries extends Controller
                     for ($i=1; $i <= 12; $i++) { 
                         $total = 0;
                         foreach ($res as $idx => $val) {
-                            if($i == $val->context){
+                            if ($i == $val->context) {
                                 $total = (int)$val->total;
                                 break;
                             }
@@ -1137,7 +1137,7 @@ class Queries extends Controller
      *     ),
      * )
      */
-    public function getSummaryApps(Request $request){
+    public function getSummaryApps(Request $request) {
         try{
             // Check whether authentication is attached. If yes, retrieve statistics by user; if not, retrieve statistics for all users
             if ($request->hasHeader('Authorization')) {
@@ -1162,7 +1162,7 @@ class Queries extends Controller
             ];
 
             // If authentication is not attached, also get total user
-            if($user_id == null){
+            if ($user_id == null) {
                 $total_user = MultiModel::countTotalContext('users',$user_id);
                 $data['total_user'] = $total_user;
             }
@@ -1272,16 +1272,53 @@ class Queries extends Controller
      *         example="e1288783-a5d4-1c4c-2cd6-0e92f7cc3bf9",
      *     ),
      *     @OA\Response(
-     *         response=200,
-     *         description="stats fetched",
+     *         response=200, description="stats fetched",
      *         @OA\JsonContent(
      *             @OA\Property(property="status", type="string", example="success"),
      *             @OA\Property(property="message", type="string", example="stats fetched"),
-     *                 @OA\Property(property="data", type="array",
-     *                     @OA\Items(
-     *                          @OA\Property(property="journey_category", type="string", example="Fuel"),
-     *                          @OA\Property(property="journey_context", type="string", example="You refueled 12L of Pertamina (92)"),
-     *                          @OA\Property(property="created_at", type="string", format="date-time", example="2024-09-20 22:53:47"),
+     *             @OA\Property(
+     *                 property="data", type="array",
+     *                 @OA\Items(
+     *                     oneOf={
+     *                         @OA\Schema(
+     *                             description="Fuel journey entry",
+     *                             @OA\Property(property="journey_category", type="string", example="fuel"),
+     *                             @OA\Property(property="journey_context", type="string", example="You refueled <b>12L</b> of Pertamax (Ron 92)"),
+     *                             @OA\Property(property="created_at", type="string", format="date-time", example="2024-09-20 22:53:47"),
+     *                             @OA\Property(property="distance", type="number", format="float", example=0),
+     *                             @OA\Property(property="spending_wash", type="number", format="float", example=0),
+     *                             @OA\Property(property="spending_service", type="number", format="float", example=0),
+     *                             @OA\Property(property="spending_fuel", type="number", format="float", example=85000),
+     *                             @OA\Property(property="fuel_volume", type="number", format="float", example=12),
+     *                         ),
+     *                         @OA\Schema(
+     *                             description="Monthly summary entry",
+     *                             @OA\Property(property="journey_category", type="string", example="summary"),
+     *                             @OA\Property(property="month", type="string", example="2024-09"),
+     *                             @OA\Property(
+     *                                 property="total_trip", type="object",
+     *                                 @OA\Property(property="total", type="integer", example=5),
+     *                                 @OA\Property(property="distance", type="number", format="float", example=123.45),
+     *                             ),
+     *                             @OA\Property(
+     *                                 property="total_service", type="object",
+     *                                 @OA\Property(property="total", type="integer", example=1),
+     *                                 @OA\Property(property="amount", type="number", format="float", example=250000),
+     *                             ),
+     *                             @OA\Property(
+     *                                 property="total_wash", type="object",
+     *                                 @OA\Property(property="total", type="integer", example=2),
+     *                                 @OA\Property(property="amount", type="number", format="float", example=100000),
+     *                             ),
+     *                             @OA\Property(
+     *                                 property="total_fuel", type="object",
+     *                                 @OA\Property(property="total", type="integer", example=3),
+     *                                 @OA\Property(property="amount", type="number", format="float", example=255000),
+     *                                 @OA\Property(property="volume", type="number", format="float", example=36),
+     *                             ),
+     *                             @OA\Property(property="created_at", type="string", format="date-time", example="2024-09-20 22:53:47"),
+     *                         ),
+     *                     }
      *                 )
      *             )
      *         )

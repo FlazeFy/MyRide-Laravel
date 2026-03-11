@@ -176,15 +176,15 @@
                         `)
 
                         let markFuel = "success"
-                        if (dt.vehicle_fuel_status === "Empty"){
+                        if (dt.vehicle_fuel_status === "Empty") {
                             markFuel = "danger"
-                        } else if (dt.vehicle_fuel_status === "Low"){
+                        } else if (dt.vehicle_fuel_status === "Low") {
                             markFuel = "warning"
                         }
                         let markStatus = "success"
-                        if (dt.vehicle_status === "Broken"){ 
+                        if (dt.vehicle_status === "Broken") { 
                             markStatus = "warning"
-                        } else if (dt.vehicle_status === "Fatal Broken"){
+                        } else if (dt.vehicle_status === "Fatal Broken") {
                             markStatus = "danger"
                         }
 
@@ -222,7 +222,7 @@
                         ext_class = ''
                     })
 
-                    if(data.length > 3){
+                    if (data.length > 3) {
                         templateCarouselNavigation("carousel-nav-holder", "carouselVehicle")
                     }
                     
@@ -260,7 +260,7 @@
                     })
                 },
                 error: function(response, jqXHR, textStatus, errorThrown) {
-                    if(response.status != 404){
+                    if (response.status != 404) {
                         generateApiError(response, true)
                     } else {
                         $(`#${holder}`).css('margin-top','var(--spaceMD)')

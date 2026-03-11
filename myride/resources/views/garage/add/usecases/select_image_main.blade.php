@@ -10,7 +10,7 @@
     templateAlertContainer('vehicle_img-holder', 'no-data', "No image selected", null, '<i class="fa-solid fa-image"></i>', null)
 
     $(document).ready(function() {
-        $(document).on('click', '#clear_attachment-button', function(){
+        $(document).on('click', '#clear_attachment-button', function() {
             $('#vehicle_image_button-holder').find(this).remove()
             templateAlertContainer('vehicle_img-holder', 'no-data', "No image selected", null, '<i class="fa-solid fa-image"></i>', null)
         })
@@ -22,7 +22,7 @@
                 Swal.fire("Error!", "You can only add one image as attachment", "error")
                 return
             }
-            if($('#vehicle_image_button-holder').find('#clear_attachment-button').length === 0){
+            if ($('#vehicle_image_button-holder').find('#clear_attachment-button').length === 0) {
                 $('#vehicle_image_button-holder').prepend(`
                     <a class="btn btn-danger py-1" id="clear_attachment-button"><i class="fa-solid fa-circle-xmark"></i><span class="d-none d-md-inline"> Clear</span></a>
                 `)

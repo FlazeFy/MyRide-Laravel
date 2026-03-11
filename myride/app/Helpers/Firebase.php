@@ -26,7 +26,7 @@ class Firebase
         }
     }
 
-    public static function uploadFile($ctx, $user_id, $username, $file, $file_ext){
+    public static function uploadFile($ctx, $user_id, $username, $file, $file_ext) {
         self::init();
         // Firebase Storage instance
         $storage = self::$factory->createStorage();
@@ -36,7 +36,7 @@ class Firebase
 
         // Upload file to Firebase Storage
         $object = $bucket->upload($uploadedFile, [
-            'name' => $ctx.'/' . $user_id . '_' . $username . '/' . $id . '.' . $file_ext,
+            'name' => $ctx.'/'.$user_id.'_'.$username.'/'.$id.'.'.$file_ext,
             'predefinedAcl' => 'publicRead',
             // 'contentType' => $file_ext,
             'metadata' => [
@@ -58,26 +58,19 @@ class Firebase
         return $fileUrl;
     }
 
-    public static function deleteFile($url){
+    public static function deleteFile($url) {
         self::init();
         $storage = self::$factory->createStorage();
         $bucket = $storage->getBucket();
         $parsedUrl = parse_url($url);
-    
-        if (!isset($parsedUrl['path'])) {
-            return false;
-        }
+        if (!isset($parsedUrl['path'])) return false;
     
         $bucketName = $bucket->name(); 
         $pos = strpos($parsedUrl['path'], $bucketName);
-        if ($pos === false) {
-            return false;
-        }
+        if ($pos === false) return false;
     
         $path = substr($parsedUrl['path'], $pos + strlen($bucketName) + 1);
-        if (isset($parsedUrl['query'])) {
-            $path = explode('?', $path)[0];
-        }
+        if (isset($parsedUrl['query'])) $path = explode('?', $path)[0];
     
         $path = urldecode($path);
         $object = $bucket->object($path);

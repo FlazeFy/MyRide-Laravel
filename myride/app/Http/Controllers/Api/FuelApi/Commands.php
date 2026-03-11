@@ -89,11 +89,11 @@ class Commands extends Controller
 
             // Permanently delete fuel
             $rows = FuelModel::hardDeleteFuelById($id, $user_id);
-            if($rows > 0){
+            if ($rows > 0) {
                 // Delete Firebase uploaded image
-                if($fuel->fuel_bill){
+                if ($fuel->fuel_bill) {
                     // Delete failed if file not found (already gone)
-                    if(!Firebase::deleteFile($fuel->fuel_bill)){
+                    if (!Firebase::deleteFile($fuel->fuel_bill)) {
                         return response()->json([
                             'status' => 'failed',
                             'message' => Generator::getMessageTemplate("not_found", 'failed to delete fuel bill'),
@@ -180,7 +180,7 @@ class Commands extends Controller
      *     ),
      * )
      */
-    public function postCreateFuel(Request $request){
+    public function postCreateFuel(Request $request) {
         try{
             $user_id = $request->user()->id;
 
@@ -238,11 +238,11 @@ class Commands extends Controller
                     'fuel_bill' => $fuel_bill
                 ];
                 // If refuel time not defined, just use current time
-                if($request->fuel_at){
+                if ($request->fuel_at) {
                     $data['created_at'] = $request->fuel_at;
                 }
                 $rows = FuelModel::createFuel($data, $user_id);
-                if($rows){
+                if ($rows) {
                     // Create history
                     HistoryModel::createHistory(['history_type' => 'Fuel', 'history_context' => "added a fuel history"], $user_id);
 
@@ -319,7 +319,7 @@ class Commands extends Controller
      *     ),
      * )
      */
-    public function putUpdateFuelById(Request $request, $id){
+    public function putUpdateFuelById(Request $request, $id) {
         try{
             $user_id = $request->user()->id;
 
@@ -342,7 +342,7 @@ class Commands extends Controller
                     'created_at' => $request->fuel_at, 
                 ];
                 $rows = FuelModel::updateFuelById($data, $user_id, $id);
-                if($rows > 0){
+                if ($rows > 0) {
                     // Create history
                     HistoryModel::createHistory(['history_type' => 'Fuel', 'history_context' => "edited a fuel history"], $user_id);
 

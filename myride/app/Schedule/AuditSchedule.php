@@ -36,11 +36,11 @@ class AuditSchedule
     {
         $summary = ErrorModel::getAllErrorAudit();
         
-        if($summary){
+        if ($summary) {
             $audit = "";
             $total = count($summary);
 
-            foreach($summary as $dt){
+            foreach($summary as $dt) {
                 $audit .= "
                     <tr>
                         <td>$dt->message</td>
@@ -53,7 +53,7 @@ class AuditSchedule
             
             $admin = AdminModel::getAllContact();
 
-            if($admin){
+            if ($admin) {
                 $datetime = date("Y-m-d H:i:s");    
                 $options = new DompdfOptions();
                 $options->set('defaultFont', 'Helvetica');
@@ -94,11 +94,11 @@ class AuditSchedule
                 file_put_contents($pdfFilePath, $pdfContent);
                 $inputFile = InputFile::create($pdfFilePath, $pdfFilePath);
 
-                foreach($admin as $dt){
+                foreach($admin as $dt) {
                     $message = "[ADMIN] Hello $dt->username, the system just run an audit error, with result of $total error found. Here's the document";
                     
-                    if($dt->telegram_user_id && $dt->telegram_is_valid == 1){
-                        if(TelegramMessage::checkTelegramID($dt->telegram_user_id)){
+                    if ($dt->telegram_user_id && $dt->telegram_is_valid == 1) {
+                        if (TelegramMessage::checkTelegramID($dt->telegram_user_id)) {
                             $response = Telegram::sendDocument([
                                 'chat_id' => $dt->telegram_user_id,
                                 'document' => $inputFile,
@@ -169,7 +169,7 @@ class AuditSchedule
 
             // Send Telegram
             if ($us->telegram_user_id) {
-                if(TelegramMessage::checkTelegramID($us->telegram_user_id)){
+                if (TelegramMessage::checkTelegramID($us->telegram_user_id)) {
                     $message = "[ADMIN] Hello {$us->username}, here is your weekly vehicle audit report.";
 
                     Telegram::sendDocument([
@@ -193,7 +193,7 @@ class AuditSchedule
         }
     }
 
-    private static function generateBarChart($label, $value, $context, $year, $user_id){
+    private static function generateBarChart($label, $value, $context, $year, $user_id) {
         // Filename
         $chartFilename = "bar_chart_".$context."_monthly_$year-$user_id.png";
         $chartPath = storage_path("app/public/$chartFilename");
@@ -231,7 +231,7 @@ class AuditSchedule
             for ($i=1; $i <= 12; $i++) { 
                 $total = 0;
                 foreach ($res_fuel_monthly as $idx => $val) {
-                    if($i == $val->context){
+                    if ($i == $val->context) {
                         $total = $val->total;
                         break;
                     }
@@ -260,7 +260,7 @@ class AuditSchedule
             for ($i=1; $i <= 12; $i++) { 
                 $total = 0;
                 foreach ($res_wash_monthly as $idx => $val) {
-                    if($i == $val->context){
+                    if ($i == $val->context) {
                         $total = $val->total;
                         break;
                     }
@@ -294,7 +294,7 @@ class AuditSchedule
 
             // Send Telegram
             if ($us->telegram_user_id) {
-                if(TelegramMessage::checkTelegramID($us->telegram_user_id)){
+                if (TelegramMessage::checkTelegramID($us->telegram_user_id)) {
                     $message = "[ADMIN] Hello {$us->username}, here is your yearly fuel audit report.";
 
                     Telegram::sendDocument([
@@ -323,12 +323,12 @@ class AuditSchedule
         $days = 7;
         $summary = AdminModel::getAppsSummaryForLastNDays($days);
 
-        if($summary){
+        if ($summary) {
             $admin = AdminModel::getAllContact();
 
-            foreach($admin as $dt){
-                if($dt->telegram_user_id && $dt->telegram_is_valid == 1){
-                    if(TelegramMessage::checkTelegramID($dt->telegram_user_id)){    
+            foreach($admin as $dt) {
+                if ($dt->telegram_user_id && $dt->telegram_is_valid == 1) {
+                    if (TelegramMessage::checkTelegramID($dt->telegram_user_id)) {    
                         $message_template = "[ADMIN] Hello $dt->username, here's the apps summary for the last $days days:";
                         $message = "$message_template\n\n- Vehicle Created: $summary->vehicle_created\n- Inventory Created: $summary->inventory_created\n- New User : $summary->new_user\n- Trip Created : $summary->trip_created\n- Fuel Created : $summary->fuel_created\n- Service Created : $summary->service_created\n- Wash Created : $summary->wash_created\n- Error Happen : $summary->error_happen";
 
@@ -345,19 +345,19 @@ class AuditSchedule
         }
     }
 
-    public static function audit_dashboard(){
+    public static function audit_dashboard() {
         $users = UserModel::getUserBroadcastAll();
 
-        if($users && count($users) > 0){
-            foreach($users as $index => $dt){
+        if ($users && count($users) > 0) {
+            foreach($users as $index => $dt) {
                 $total_vehicle = MultiModel::countTotalContext('vehicle',$dt->id);
                 $total_wash = MultiModel::countTotalContext('wash',$dt->id);
                 $total_driver = MultiModel::countTotalContext('driver',$dt->id);
                 $total_service = MultiModel::countTotalContext('service',$dt->id);
                 $total_trip = MultiModel::countTotalContext('trip',$dt->id);
                 
-                if($dt->telegram_user_id && $dt->telegram_is_valid == 1){
-                    if(TelegramMessage::checkTelegramID($dt->telegram_user_id)){    
+                if ($dt->telegram_user_id && $dt->telegram_is_valid == 1) {
+                    if (TelegramMessage::checkTelegramID($dt->telegram_user_id)) {    
                         $message_template = "Hello $dt->username, here's the weekly dashboard we've gathered so far from your account :";
                         $message = "$message_template\n\n- Total Vehicle : $total_vehicle\n- Total Wash : $total_wash\n- Total Driver : $total_driver\n- Total Service : $total_service\n- Total Trip : $total_trip";        
 

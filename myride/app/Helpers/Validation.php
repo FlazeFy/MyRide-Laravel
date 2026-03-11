@@ -21,20 +21,20 @@ use App\Rules\WashByRule;
 
 class Validation
 {
-    public static function getValidateLogin($request){
+    public static function getValidateLogin($request) {
         return Validator::make($request->all(), [
             'username' => 'required|min:6|max:36|string',
             'password' => 'required|min:6|max:36|string',
         ]);
     }
 
-    public static function getValidateChat($request){
+    public static function getValidateChat($request) {
         return Validator::make($request->all(), [
             'question' => 'required|min:2|max:255|string'
         ]);
     }
 
-    public static function getValidateRegister($request){
+    public static function getValidateRegister($request) {
         return Validator::make($request->all(), [
             'username' => 'required|min:6|max:36|string',
             'password' => 'required|min:6|max:36|string',
@@ -44,7 +44,7 @@ class Validation
         ]);
     }
 
-    public static function getValidateDriver($request,$type){
+    public static function getValidateDriver($request,$type) {
         $rules = [
             'username' => 'required|string|min:6|max:36',
             'email' => 'required|string|min:10|max:255',
@@ -70,28 +70,28 @@ class Validation
         return Validator::make($request->all(), $rules);
     }
 
-    public static function getValidateRegisterValidation($request){
+    public static function getValidateRegisterValidation($request) {
         return Validator::make($request->all(), [
             'username' => 'required|min:6|max:36|string',
             'token' => 'required|min:6|max:6|string',
         ]);
     }
 
-    public static function getValidateDictionary($request,$type){
-        if($type == 'create'){
+    public static function getValidateDictionary($request,$type) {
+        if ($type == 'create') {
             return Validator::make($request->all(), [
                 'dictionary_name' => 'required|string|max:75|min:2',
                 'dictionary_type' => ['required', new DictionaryTypeRule],
             ]);  
-        } else if($type == 'delete'){
+        } else if ($type == 'delete') {
             return Validator::make($request->all(), [
                 'id' => 'required|string|max:36|min:36',
             ]); 
         }
     }
 
-    public static function getValidateVehicle($request, $type){
-        if($type == 'detail'){
+    public static function getValidateVehicle($request, $type) {
+        if ($type == 'detail') {
             return Validator::make($request->all(), [
                 'vehicle_name' => 'required|string|min:2|max:75',
                 'vehicle_merk' => 'required|string|max:36',
@@ -113,7 +113,7 @@ class Validation
         }
     }
 
-    public static function getValidateTrip($request,$type){
+    public static function getValidateTrip($request,$type) {
         $rules = [
             'driver_id' => 'nullable|string|max:36|min:36', 
             'trip_desc' => 'nullable|string|max:500', 
@@ -132,7 +132,7 @@ class Validation
         return Validator::make($request->all(), $rules);
     }
 
-    public static function getValidateFuel($request){
+    public static function getValidateFuel($request) {
         return Validator::make($request->all(), [
             'vehicle_id' => 'required|string|max:36|min:36', 
             'fuel_volume' => 'required|integer|min:1|max:99', 
@@ -144,7 +144,7 @@ class Validation
         ]);
     }
 
-    public static function getValidateUser($request){
+    public static function getValidateUser($request) {
         return Validator::make($request->all(), [
             'username' => 'required|min:6|max:30|string',
             'email' => 'nullable|string|max:144|min:10', 
@@ -152,7 +152,7 @@ class Validation
         ]);
     }
 
-    public static function getValidateWash($request){
+    public static function getValidateWash($request) {
         return Validator::make($request->all(), [
             'vehicle_id' => 'required|string|max:36|min:36', 
             'wash_desc' => 'nullable|string|min:1|max:500',
@@ -175,7 +175,7 @@ class Validation
         ]);
     }
 
-    public static function getValidateReminder($request){
+    public static function getValidateReminder($request) {
         return Validator::make($request->all(), [
             'vehicle_id' => 'required|string|max:36|min:36', 
             'reminder_title' => 'required|string|max:75|min:1', 
@@ -185,7 +185,7 @@ class Validation
         ]);
     }
 
-    public static function getValidateService($request){
+    public static function getValidateService($request) {
         return Validator::make($request->all(), [
             'vehicle_id' => 'required|string|max:36|min:36', 
             'service_note' => 'required|string|min:1', 
@@ -197,7 +197,7 @@ class Validation
         ]);
     }
     
-    public static function getValidateInventory($request,$type){
+    public static function getValidateInventory($request,$type) {
         $rules = [
             'vehicle_id' => 'required|string|size:36',
             'inventory_name' => 'required|string|min:1|max:75',

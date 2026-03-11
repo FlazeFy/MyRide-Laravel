@@ -25,7 +25,7 @@
 
 <script>
     $( document ).ready(function() {
-        $(document).on('click','#back-button',function(){
+        $(document).on('click','#back-button',function() {
             const currentStep = $(this).data('current-step')
             
             switch (currentStep) {

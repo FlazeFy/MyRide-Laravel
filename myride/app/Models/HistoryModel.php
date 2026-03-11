@@ -31,19 +31,7 @@ class HistoryModel extends Model
     protected $primaryKey = 'id';
     protected $fillable = ['id', 'history_type', 'history_context', 'created_at', 'created_by'];
 
-    public static function createHistory($data, $user_id){
-        $data['created_at'] = date('Y-m-d H:i:s');
-        $data['created_by'] = $user_id;
-        $data['id'] = Generator::getUUID();
-            
-        return HistoryModel::create($data);
-    }
-
-    public static function deleteHistoryForLastNDays($days){
-        return HistoryModel::whereDate('created_at', '<', Carbon::now()->subDays($days))->delete();
-    }
-
-    public static function getAllHistory($type, $user_id, $paginate){
+    public static function getAllHistory($type, $user_id, $paginate) {
         $select_query = $type == "admin" ? 'history.id, username, history_type, history_context, history.created_at' : '*';
         
         $res = HistoryModel::selectRaw($select_query);
@@ -53,11 +41,23 @@ class HistoryModel extends Model
         return $res->orderby('history.created_at', 'DESC')->paginate($paginate);
     }
 
-    public static function hardDeleteHistory($id, $user_id = null){
+    public static function createHistory($data, $user_id) {
+        $data['created_at'] = date('Y-m-d H:i:s');
+        $data['created_by'] = $user_id;
+        $data['id'] = Generator::getUUID();
+            
+        return HistoryModel::create($data);
+    }
+
+    public static function hardDeleteHistory($id, $user_id = null) {
         $res = HistoryModel::where('id',$id);
 
         if ($user_id) $res = $res->where('created_by',$user_id);
             
         return $res->delete();
+    }
+
+    public static function deleteHistoryForLastNDays($days) {
+        return HistoryModel::whereDate('created_at', '<', Carbon::now()->subDays($days))->delete();
     }
 }

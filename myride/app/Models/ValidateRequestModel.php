@@ -30,13 +30,25 @@ class ValidateRequestModel extends Model
     protected $primaryKey = 'id';
     protected $fillable = ['id', 'request_type', 'request_context', 'created_at', 'created_by']; 
 
-    public static function getActiveRequest($user_id){
+    public static function isUserRequestDuplicate($ctx,$user) {
+        return ValidateRequestModel::where('request_type',$ctx)->where('created_by',$user)->exists();
+    }
+
+    public static function isUserRequestValid($ctx,$token,$user) {
+        $res = ValidateRequestModel::select('id')->where('request_type',$ctx);
+        
+        if ($token) $res = $res->where('request_context',$token);
+            
+        return $res->where('created_by',$user)->first();
+    }
+
+    public static function getActiveRequest($user_id) {
         return ValidateRequestModel::select('id','request_type', 'request_context', 'created_at')
             ->where('created_by', $user_id)
             ->first();
     }   
 
-    public static function getCheckRegisterToken($username){
+    public static function getCheckRegisterToken($username) {
         $res = ValidateRequestModel::select('id')
             ->where('request_type','register')
             ->where('created_by',$username)
@@ -45,7 +57,7 @@ class ValidateRequestModel extends Model
         return $res ? $res->id : null;
     }
 
-    public static function getActiveRequestByCreatedByTokenAndType($created_by,$token,$type){
+    public static function getActiveRequestByCreatedByTokenAndType($created_by,$token,$type) {
         $res = ValidateRequestModel::select('id')
             ->where('request_type',$type)
             ->where('request_context',$token)
@@ -55,7 +67,7 @@ class ValidateRequestModel extends Model
         return $res ? $res->id : null;
     }
 
-    public static function createValidateRequest($data, $user_id){
+    public static function createValidateRequest($data, $user_id) {
         $data['id'] = Generator::getUUID();
         $data['created_at'] = date('Y-m-d H:i:s');
         $data['created_by'] = $user_id;
@@ -63,22 +75,10 @@ class ValidateRequestModel extends Model
         return ValidateRequestModel::create($data);
     }
 
-    public static function deleteValidateRequestByRequestContext($request_context, $user_id){
+    public static function deleteValidateRequestByRequestContext($request_context, $user_id) {
         return ValidateRequestModel::where('request_type','telegram_id_validation')
             ->where('created_by',$user_id)
             ->where('request_context',$request_context)
             ->delete();
-    }
-
-    public static function isUserRequestDuplicate($ctx,$user){
-        return ValidateRequestModel::where('request_type',$ctx)->where('created_by',$user)->exists();
-    }
-
-    public static function isUserRequestValid($ctx,$token,$user){
-        $res = ValidateRequestModel::select('id')->where('request_type',$ctx);
-        
-        if($token) $res = $res->where('request_context',$token);
-            
-        return $res->where('created_by',$user)->first();
     }
 }

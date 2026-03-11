@@ -88,11 +88,11 @@
 </form>
 
 <script>
-    $(document).on('click','#submit-add-vehicle-btn', function(){
+    $(document).on('click','#submit-add-vehicle-btn', function() {
         post_vehicle()
     })
 
-    $(document).on('change','#vehicle_category_holder', function(){
+    $(document).on('change','#vehicle_category_holder', function() {
         const val = $(this).val()
     })
 

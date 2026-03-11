@@ -81,7 +81,7 @@ class Commands extends Controller
 
             // Hard Delete wash by ID
             $rows = WashModel::hardDeleteWashById($id, $user_id);
-            if($rows > 0){
+            if ($rows > 0) {
                 // Create history
                 HistoryModel::createHistory(['history_type' => 'Wash', 'history_context' => "removed a wash history"], $user_id);
                 
@@ -169,7 +169,7 @@ class Commands extends Controller
      *     ),
      * )
      */
-    public function postCreateWash(Request $request){
+    public function postCreateWash(Request $request) {
         try{
             $user_id = $request->user()->id;
 
@@ -203,7 +203,7 @@ class Commands extends Controller
                     'is_wash_hollow' => $request->is_wash_hollow
                 ];
                 $rows = WashModel::createWash($data, $user_id);
-                if($rows){
+                if ($rows) {
                     // Create history
                     HistoryModel::createHistory(['history_type' => 'Wash', 'history_context' => "added a wash history"], $user_id);
 
@@ -275,13 +275,13 @@ class Commands extends Controller
      *     ),
      * )
      */
-    public function putFinishWashById(Request $request,$id){
+    public function putFinishWashById(Request $request,$id) {
         try{
             $user_id = $request->user()->id;
 
             // Update wash by ID
             $rows = WashModel::updateWashById(['wash_end_time' => date('Y-m-d H:i:s')], $user_id, $id);
-            if($rows > 0){
+            if ($rows > 0) {
                 // Return success response
                 return response()->json([
                     'status' => 'success',
@@ -366,7 +366,7 @@ class Commands extends Controller
      *     ),
      * )
      */
-    public function putUpdateWashById(Request $request,$id){
+    public function putUpdateWashById(Request $request,$id) {
         try{
             $user_id = $request->user()->id;
 
@@ -400,7 +400,7 @@ class Commands extends Controller
                     'is_wash_hollow' => $request->is_wash_hollow
                 ];
                 $rows = WashModel::updateWashById($data, $user_id, $id);
-                if($rows > 0){
+                if ($rows > 0) {
                     // Create history
                     HistoryModel::createHistory(['history_type' => 'Wash', 'history_context' => "edited a wash history"], $user_id);
 

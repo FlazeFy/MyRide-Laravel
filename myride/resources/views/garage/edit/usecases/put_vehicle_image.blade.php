@@ -8,12 +8,12 @@
 
 <script>
     $(document).ready(function() {
-        $(document).on('click', '#clear_image-button', function(){
+        $(document).on('click', '#clear_image-button', function() {
             $('#clear_image-button').remove()
             $('#save_image-button').remove()
             $('#add_image-button').removeClass('d-none').html(`<i class="fa-solid fa-image"></i><span class="d-none d-md-inline"> ${vehicle_img_url ? 'Change' : 'Add'} Image`)
             $('#vehicle_img-holder').empty()
-            if(vehicle_img_url){
+            if (vehicle_img_url) {
                 $('#vehicle_img-holder').html(`<img class="img img-fluid" src="${vehicle_img_url}" alt="${vehicle_img_url}"/>`)
             } else {
                 templateAlertContainer('vehicle_img-holder', 'no-data', "No image selected", null, '<i class="fa-solid fa-image"></i>', null)
@@ -31,7 +31,7 @@
             }
 
             $('#add_image-button').addClass('d-none')
-            if($('#clear_image-button').length === 0){
+            if ($('#clear_image-button').length === 0) {
                 $('#vehicle_image_button-holder').prepend(`
                     <a class="btn btn-danger py-1" id="clear_image-button">
                         <i class="fa-solid fa-circle-xmark"></i><span class="d-none d-md-inline"> Clear</span>
@@ -68,7 +68,7 @@
             reader.readAsDataURL(file)
 
             $('#remove_image-button').addClass('d-none')
-            if($('#save_image-button').length === 0){
+            if ($('#save_image-button').length === 0) {
                 $('#vehicle_image_button-holder').append(`
                     <a class="btn btn-success py-1" id="save_image-button">
                         <i class="fa-solid fa-floppy-disk"></i> <span class="d-none d-md-inline"> Save Image</span>

@@ -75,7 +75,7 @@ class Commands extends Controller
      *     ),
      * )
      */
-    public function postService(Request $request){
+    public function postService(Request $request) {
         try{
             $user_id = $request->user()->id;
 
@@ -98,7 +98,7 @@ class Commands extends Controller
                     'created_at' => $request->created_at ?? date('Y-m-d H:i:s')
                 ];
                 $rows = ServiceModel::createService($data, $user_id);
-                if($rows){
+                if ($rows) {
                     // Create history
                     HistoryModel::createHistory(['history_type' => 'Service', 'history_context' => "added a service history"], $user_id);
 
@@ -182,7 +182,7 @@ class Commands extends Controller
 
             // Hard Delete service by ID
             $rows = ServiceModel::hardDeleteServiceById($id, $user_id);
-            if($rows > 0){
+            if ($rows > 0) {
                 // Create history
                 HistoryModel::createHistory(['history_type' => 'Service', 'history_context' => "removed a service history"], $user_id);
 
@@ -258,7 +258,7 @@ class Commands extends Controller
      *     ),
      * )
      */
-    public function putUpdateServiceById(Request $request, $id){
+    public function putUpdateServiceById(Request $request, $id) {
         try{
             $user_id = $request->user()->id;
 
@@ -280,7 +280,7 @@ class Commands extends Controller
                     'remind_at' => $request->remind_at 
                 ];
                 $rows = ServiceModel::updateServiceById($data, $user_id, $id);
-                if($rows > 0){
+                if ($rows > 0) {
                     // Create history
                     HistoryModel::createHistory(['history_type' => 'Service', 'history_context' => "edited a service history"], $user_id);
 

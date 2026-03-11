@@ -14,7 +14,7 @@
 <script>
     const build_layout_driver = (data) => {
         $('#driver_tb tbody').empty()
-        if(data){
+        if (data) {
             data.forEach((dt, idx) => {
                 $('#driver_tb tbody').append(`
                     <tr>

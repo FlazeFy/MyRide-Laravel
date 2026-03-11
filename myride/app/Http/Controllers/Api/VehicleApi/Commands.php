@@ -151,13 +151,13 @@ class Commands extends Controller
                     'vehicle_transmission' => $request->vehicle_transmission,
                     'vehicle_capacity' => $request->vehicle_capacity,
                 ], $id, $user_id);
-                if($rows > 0){
+                if ($rows > 0) {
                     // Get user social contact
                     $user = UserModel::getSocial($user_id);
                     // Check if user's Telegram ID is valid
                     $message = "Hello $user->username, your vehicle with name $vehicle_name ($vehicle_plate_number) data has been updated";
-                    if($user->telegram_user_id && $user->telegram_is_valid === 1){
-                        if(TelegramMessage::checkTelegramID($user->telegram_user_id)){
+                    if ($user->telegram_user_id && $user->telegram_is_valid === 1) {
+                        if (TelegramMessage::checkTelegramID($user->telegram_user_id)) {
                             // Send telegram message
                             $response = Telegram::sendMessage([
                                 'chat_id' => $user->telegram_user_id,
@@ -257,12 +257,12 @@ class Commands extends Controller
 
             // Get vehicle by ID
             $vehicle = VehicleModel::getVehicleByIdAndUserId($id, $user_id);
-            if ($vehicle){
+            if ($vehicle) {
                 $vehicle_image = null;
 
                 // Check if a vehicle image exists in the old vehicle data
-                if ($vehicle->vehicle_img_url){
-                    if(!Firebase::deleteFile($vehicle->vehicle_img_url)){
+                if ($vehicle->vehicle_img_url) {
+                    if (!Firebase::deleteFile($vehicle->vehicle_img_url)) {
                         return response()->json([
                             'status' => 'failed',
                             'message' => Generator::getMessageTemplate("not_found", 'failed to delete vehicle image'),
@@ -311,7 +311,7 @@ class Commands extends Controller
 
                 // Update vehicle by ID
                 $rows = VehicleModel::updateVehicleById([ 'vehicle_img_url' => $vehicle_image], $id, $user_id);
-                if($rows > 0){
+                if ($rows > 0) {
                     // Create history
                     HistoryModel::createHistory(['history_type' => 'Vehicle', 'history_context' => "edited a vehicle image of $vehicle->vehicle_name"], $user_id);
 
@@ -404,10 +404,10 @@ class Commands extends Controller
 
             // Get vehicle by ID
             $vehicle = VehicleModel::getVehicleByIdAndUserId($id, $user_id);
-            if($vehicle){
+            if ($vehicle) {
                 $vehicle_other_img_url = [];
                 // Check if file attached
-                if($request->hasFile('vehicle_other_img_url')){
+                if ($request->hasFile('vehicle_other_img_url')) {
                     // Iterate to upload file
                     foreach ($request->file('vehicle_other_img_url') as $file) {
                         if ($file->isValid()) {
@@ -444,11 +444,11 @@ class Commands extends Controller
                             }
                         }
                     }
-                } else if($vehicle->vehicle_other_img_url && !$request->hasFile('vehicle_other_img_url')){
+                } else if ($vehicle->vehicle_other_img_url && !$request->hasFile('vehicle_other_img_url')) {
                     // If file not attached and there is some image exist in the old data
                     foreach ($vehicle->vehicle_other_img_url as $dt) {
                         // Delete failed if file not found (already gone)
-                        if(!Firebase::deleteFile($dt['vehicle_img_url'])){
+                        if (!Firebase::deleteFile($dt['vehicle_img_url'])) {
                             return response()->json([
                                 'status' => 'failed',
                                 'message' => Generator::getMessageTemplate("not_found", 'failed to delete vehicle image'),
@@ -458,10 +458,10 @@ class Commands extends Controller
                 }
 
                 // Make null if array image empty
-                if(count($vehicle_other_img_url) === 0){
+                if (count($vehicle_other_img_url) === 0) {
                     $vehicle_other_img_url = null;
                 } else {
-                    if($vehicle->vehicle_other_img_url){
+                    if ($vehicle->vehicle_other_img_url) {
                         // If old image collection not empty, combine with the new image collection
                         $vehicle_other_img_url = array_merge($vehicle_other_img_url, $vehicle->vehicle_other_img_url);
                     }
@@ -469,7 +469,7 @@ class Commands extends Controller
 
                 // Update vehicle by ID
                 $rows = VehicleModel::updateVehicleById([ 'vehicle_other_img_url' => $vehicle_other_img_url ], $id, $user_id);
-                if($rows > 0){
+                if ($rows > 0) {
                     // Return success response
                     return response()->json([
                         'status' => 'success',
@@ -565,13 +565,13 @@ class Commands extends Controller
 
             // Get vehicle by ID
             $vehicle = VehicleModel::getVehicleByIdAndUserId($vehicle_id,$user_id);
-            if($vehicle){
+            if ($vehicle) {
                 $vehicle_other_img_urls = $vehicle->vehicle_other_img_url;
                 // Iterate to delete file
                 foreach ($vehicle_other_img_urls as $dt) {
                     if ($dt['vehicle_img_id'] === $image_id) {
                         // Delete failed if file not found (already gone)
-                        if(!Firebase::deleteFile($dt['vehicle_img_url'])){
+                        if (!Firebase::deleteFile($dt['vehicle_img_url'])) {
                             return response()->json([
                                 'status' => 'failed',
                                 'message' => Generator::getMessageTemplate("not_found", 'failed to delete vehicle image'),
@@ -592,7 +592,7 @@ class Commands extends Controller
                     'vehicle_other_img_url' => count($vehicle_other_img_url) > 0 ? $vehicle_other_img_url : null,
                 ], $vehicle_id, $user_id);
 
-                if($rows > 0){
+                if ($rows > 0) {
                     // Return success response
                     return response()->json([
                         'status' => 'success',
@@ -790,7 +790,7 @@ class Commands extends Controller
                     }
                 }
                 // Make vehicle image collection null if empty array
-                if(count($vehicle_other_img_url) === 0){
+                if (count($vehicle_other_img_url) === 0) {
                     $vehicle_other_img_url = null;
                 }
 
@@ -815,14 +815,14 @@ class Commands extends Controller
                     'vehicle_transmission' => $request->vehicle_transmission,
                     'vehicle_capacity' => $request->vehicle_capacity,
                 ], $user_id);
-                if($rows){
+                if ($rows) {
                     $vehicle_plate_number_and_name = "$vehicle_name ($vehicle_plate_number)";
 
                     // Get user data
                     $user = UserModel::getSocial($user_id);
-                    if($user->telegram_user_id && $user->telegram_is_valid === 1){
+                    if ($user->telegram_user_id && $user->telegram_is_valid === 1) {
                         // Check if user Telegram ID is valid
-                        if(TelegramMessage::checkTelegramID($user->telegram_user_id)){
+                        if (TelegramMessage::checkTelegramID($user->telegram_user_id)) {
                             $message = "Hello $user->username, your vehicle with name $vehicle_plate_number_and_name data has been created";
                             // Send telegram message
                             $response = Telegram::sendMessage([
@@ -841,7 +841,7 @@ class Commands extends Controller
                     HistoryModel::createHistory(['history_type' => 'Vehicle', 'history_context' => "added a vehicle called $vehicle_plate_number_and_name"], $user_id);
                     
                     // Return success response
-                    if($extra_msg){
+                    if ($extra_msg) {
                         return response()->json([
                             'status' => 'success',
                             'message' => Generator::getMessageTemplate("custom", "vehicle created, but$message"),
@@ -931,7 +931,7 @@ class Commands extends Controller
 
             // Get vehicle by ID
             $vehicle = VehicleModel::getVehicleByIdAndUserId($id,$user_id);
-            if($vehicle){
+            if ($vehicle) {
                 $vehicle_document = $vehicle->vehicle_document ?? [];
                 // Check if file attached
                 if ($request->hasFile('vehicle_document')) {
@@ -959,7 +959,7 @@ class Commands extends Controller
                             }
             
                             try {
-                                if($request->has('vehicle_document_caption')){
+                                if ($request->has('vehicle_document_caption')) {
                                     // Upload file to Firebase storage
                                     $vehicle_document_url = Firebase::uploadFile('vehicle_document', $user_id, $user->username, $file, $file_ext); 
                                     $vehicle_document[] = (object)[
@@ -984,13 +984,13 @@ class Commands extends Controller
                     }
                 }
                 // Make null if array document empty
-                if(count($vehicle_document) === 0){
+                if (count($vehicle_document) === 0) {
                     $vehicle_document = null;
                 }
 
                 // Update vehicle by ID
                 $rows = VehicleModel::updateVehicleById(['vehicle_document' => $vehicle_document], $id, $user_id);
-                if($rows){
+                if ($rows) {
                     // Return success response
                     return response()->json([
                         'status' => 'success',
@@ -1076,14 +1076,14 @@ class Commands extends Controller
 
             // Soft Delete vehicle by ID
             $rows = VehicleModel::updateVehicleById(["deleted_at" => date("Y-m-d H:i")], $id, $user_id);
-            if($rows > 0){
+            if ($rows > 0) {
                 // Get user data
                 $user = UserModel::getSocial($user_id);
                 // Get vehicle data
                 $vehicle = VehicleModel::getVehicleByIdAndUserId($id,$user_id);
-                if($user->telegram_user_id && $user->telegram_is_valid === 1){
+                if ($user->telegram_user_id && $user->telegram_is_valid === 1) {
                     // Check if user's Telegram ID is valid
-                    if(TelegramMessage::checkTelegramID($user->telegram_user_id)){
+                    if (TelegramMessage::checkTelegramID($user->telegram_user_id)) {
                         $message = "Hello $user->username, your vehicle with name $vehicle->vehicle_name ($vehicle->vehicle_plate_number) data has been deleted. You can still recovered deleted vehicle before 30 days after deletion process";
                         // Send telegram message
                         $response = Telegram::sendMessage([
@@ -1176,19 +1176,19 @@ class Commands extends Controller
      *     ),
      * )
      */
-    public function hardDeleteVehicleDocById(Request $request, $vehicle_id, $doc_id){
+    public function hardDeleteVehicleDocById(Request $request, $vehicle_id, $doc_id) {
         try{
             $user_id = $request->user()->id;
 
             // Get vehicle by ID
             $vehicle = VehicleModel::getVehicleByIdAndUserId($vehicle_id,$user_id);
-            if($vehicle){
+            if ($vehicle) {
                 $vehicle_documents = $vehicle->vehicle_document;
                 // Delete Firebase uploaded document
                 foreach ($vehicle_documents as $dt) {
                     if ($dt['vehicle_document_id'] === $doc_id) {
                         // Delete failed if file not found (already gone)
-                        if(!Firebase::deleteFile($dt['vehicle_document_url'])){
+                        if (!Firebase::deleteFile($dt['vehicle_document_url'])) {
                             return response()->json([
                                 'status' => 'failed',
                                 'message' => Generator::getMessageTemplate("not_found", 'failed to delete inventory image'),
@@ -1209,7 +1209,7 @@ class Commands extends Controller
                     'vehicle_document' => count($vehicle_document) > 0 ? $vehicle_document : null,
                 ], $vehicle_id, $user_id);
 
-                if($rows > 0){
+                if ($rows > 0) {
                     // Return success response
                     return response()->json([
                         'status' => 'success',
@@ -1295,7 +1295,7 @@ class Commands extends Controller
 
             // Update vehicle by ID
             $rows = VehicleModel::updateVehicleById(["deleted_at" => null], $id, $user_id);
-            if($rows > 0){
+            if ($rows > 0) {
                 // Get vehicle by ID
                 $vehicle = VehicleModel::getVehicleByIdAndUserId($id,$user_id);
                 // Create history
@@ -1383,11 +1383,11 @@ class Commands extends Controller
             $vehicle = VehicleModel::getVehicleByIdAndUserId($id,$user_id);
             // Hard Delete vehicle by ID
             $rows = VehicleModel::hardDeleteVehicleById($user_id,$id);
-            if($rows > 0){
+            if ($rows > 0) {
                 // Delete Firebase uploaded image
-                if($vehicle->vehicle_img_url){
+                if ($vehicle->vehicle_img_url) {
                     // Delete failed if file not found (already gone)
-                    if(!Firebase::deleteFile($vehicle->vehicle_img_url)){
+                    if (!Firebase::deleteFile($vehicle->vehicle_img_url)) {
                         return response()->json([
                             'status' => 'failed',
                             'message' => Generator::getMessageTemplate("not_found", 'failed to delete vehicle image'),
@@ -1408,8 +1408,8 @@ class Commands extends Controller
                 $vehicle_plate_number_and_name = "$vehicle->vehicle_name ($vehicle->vehicle_plate_number)";
 
                 // Check if user's Telegram ID is valid
-                if($user->telegram_user_id && $user->telegram_is_valid === 1){
-                    if(TelegramMessage::checkTelegramID($user->telegram_user_id)){
+                if ($user->telegram_user_id && $user->telegram_is_valid === 1) {
+                    if (TelegramMessage::checkTelegramID($user->telegram_user_id)) {
                         $message = "Hello $user->username, your vehicle $vehicle_plate_number_and_name is permanently deleted";
                         // Send telegram message
                         $response = Telegram::sendMessage([

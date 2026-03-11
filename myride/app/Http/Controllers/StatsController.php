@@ -24,7 +24,7 @@ class StatsController extends Controller
         $total_trip_by_destination = TripModel::getTotalTripByDestinationOrigion($user_id, 'destination');
         $total_trip_by_origin = TripModel::getTotalTripByDestinationOrigion($user_id, 'origin');
 
-        if($user_id != null){    
+        if ($user_id != null) {    
             return view('stats.index')
                 ->with('total_trip_by_category',$total_trip_by_category)
                 ->with('total_vehicle_by_category',$total_vehicle_by_category)
@@ -40,17 +40,17 @@ class StatsController extends Controller
     {
         $user_id = Generator::getUserId(session()->get('role_key'));
 
-        if($request->module == 'Vehicle'){
+        if ($request->module == 'Vehicle') {
             $data = VehicleModel::select('*')
                 ->where('created_by', $user_id)
                 ->orderBy('created_at', 'DESC')
                 ->get();
-        } else if($request->module == 'Trip'){
+        } else if ($request->module == 'Trip') {
             $data = TripModel::select('*')
                 ->where('created_by', $user_id)
                 ->orderBy('created_at', 'DESC')
                 ->get();
-        } else if($request->module == 'Wash'){
+        } else if ($request->module == 'Wash') {
             $data = WashModel::select('*')
                 ->where('created_by', $user_id)
                 ->orderBy('created_at', 'DESC')
@@ -62,7 +62,7 @@ class StatsController extends Controller
         return Excel::download(new DataExport($data), "$file_name-$request->module Data.xlsx");
     }
 
-    public function toogle_month_year(Request $request){
+    public function toogle_month_year(Request $request) {
         $request->session()->put('toogle_month_year', $request->toogle_month_year);
 
         return redirect()->back();

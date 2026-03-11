@@ -53,7 +53,7 @@
 </div>
 
 <script>
-    $(document).on('click','.btn-update',async function(){
+    $(document).on('click','.btn-update',async function() {
         callModal('update-modal')
         await getVehicleNameOption(token)
         await getDictionaryByContextOption('fuel_type,fuel_brand',token)
@@ -79,12 +79,12 @@
         await getDictionaryByContextOption(`fuel_type_${$(this).data('fuel-brand')}`,token)
     })
 
-    $(document).on('change','#fuel_brand_holder', async function(){
+    $(document).on('change','#fuel_brand_holder', async function() {
         const val = $(this).val()
         await getDictionaryByContextOption(`fuel_type_${val}`,token)
     })
 
-    $(document).on('click','#submit_update-btn', function(){
+    $(document).on('click','#submit_update-btn', function() {
         const id = $('#fuel_id').val()
         put_fuel(id)
     })
@@ -93,7 +93,7 @@
         const vehicle_id = $('#vehicle_holder').val()
         const fuel_category = $('#fuel_category_holder').val()
 
-        if(vehicle_id !== "-" && fuel_category !== "-"){
+        if (vehicle_id !== "-" && fuel_category !== "-") {
             Swal.showLoading()
             $.ajax({
                 url: `/api/v1/fuel/${id}`,
@@ -111,7 +111,7 @@
                 },
                 error: function(response, jqXHR, textStatus, errorThrown) {
                     Swal.close()
-                    if(response.status === 500){
+                    if (response.status === 500) {
                         generateApiError(response, true)
                     } else {
                         failedMsg(response.status === 400 ? Object.values(response.responseJSON.message).flat().join('\n') : response.responseJSON.message)

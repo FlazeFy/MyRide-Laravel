@@ -39,18 +39,19 @@ class AdminModel extends Authenticatable
     use HasFactory;
     use HasApiTokens;
     public $incrementing = false;
-
     protected $table = 'admin';
     protected $primaryKey = 'id';
     protected $fillable = ['id', 'username', 'password', 'email', 'telegram_user_id', 'telegram_is_valid', 'created_at', 'updated_at'];
 
-    public static function  getAllContact(){
-        $res = AdminModel::select('id','username','email','telegram_user_id','telegram_is_valid')->get();
-
-        return count($res) > 0 ? $res : null;
+    public static function isUsernameUsed($username) {
+        return AdminModel::where('username',$username)->exists();
     }
 
-    public static function getAppsSummaryForLastNDays($days){
+    public static function getByUsername($username) {
+        return AdminModel::where('username',$username)->first();
+    }
+
+    public static function getAppsSummaryForLastNDays($days) {
         $res_inventory = InventoryModel::selectRaw('count(1) as total')
             ->whereDate('created_at', '>=', Carbon::now()->subDays($days))->first();
 
@@ -89,17 +90,15 @@ class AdminModel extends Authenticatable
         return $final_res;
     }
 
-    public static function updateAdminById($data,$id){
+    public static function  getAllContact() {
+        $res = AdminModel::select('id','username','email','telegram_user_id','telegram_is_valid')->get();
+
+        return count($res) > 0 ? $res : null;
+    }
+
+    public static function updateAdminById($data,$id) {
         $data['updated_at'] = date('Y-m-d H:i:s');
         
         return AdminModel::where('id',$id)->update($data);
-    }
-
-    public static function isUsernameUsed($username){
-        return AdminModel::where('username',$username)->exists();
-    }
-
-    public static function getByUsername($username){
-        return AdminModel::where('username',$username)->first();
     }
 }

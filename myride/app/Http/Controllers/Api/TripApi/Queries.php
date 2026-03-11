@@ -93,7 +93,7 @@ class Queries extends Controller
 
             // Get all trip with pagination
             $res = TripModel::getAllTrip($user_id, $limit, null, $trip_id, $search);
-            if($res && count($res) > 0) {
+            if ($res && count($res) > 0) {
                 // Return success response
                 return response()->json([
                     'status' => 'success',
@@ -184,7 +184,7 @@ class Queries extends Controller
 
             // Get all trip with pagination by driver_id
             $res = TripModel::getAllTrip($user_id,$limit,$driver_id);
-            if($res && count($res) > 0) {
+            if ($res && count($res) > 0) {
                 // Remove driver_fullname
                 $res->getCollection()->transform(function ($item) {
                     unset($item->driver_fullname); 
@@ -267,7 +267,7 @@ class Queries extends Controller
 
             // Get last trip
             $res = TripModel::getLastTrip($user_id);
-            if($res) {
+            if ($res) {
                 // Return success response
                 return response()->json([
                     'status' => 'success',
@@ -351,7 +351,7 @@ class Queries extends Controller
 
             // Get all trip coordinate
             $res = TripModel::getAllCoordinate($user_id, $search);
-            if($res) {
+            if ($res) {
                 // Return success response
                 return response()->json([
                     'status' => 'success',
@@ -514,7 +514,7 @@ class Queries extends Controller
 
             // Get trip history's coordinate by trip location name
             $res = TripModel::getCoordinateByTripLocationName($user_id,$trip_location_name);
-            if(count($res) > 0) {
+            if (count($res) > 0) {
                 // Return success response
                 return response()->json([
                     'status' => 'success',

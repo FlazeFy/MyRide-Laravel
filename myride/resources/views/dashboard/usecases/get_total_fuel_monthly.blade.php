@@ -26,7 +26,7 @@
                 },
                 error: function(response, jqXHR, textStatus, errorThrown) {
                     Swal.close()
-                    if(response.status != 404){
+                    if (response.status != 404) {
                         generateApiError(response, true)
                     } else {
                         templateAlertContainer(ctx_holder, 'no-data', "No fuel found for this context to generate the stats", 'add a fuel', '<i class="fa-solid fa-gas-pump"></i>','/fuel/add')
@@ -36,13 +36,13 @@
             })
         }
 
-        if(ctx in localStorage){
+        if (ctx in localStorage) {
             const lastHit = parseInt(localStorage.getItem(`last-hit-${ctx}`))
             const now = Date.now()
 
-            if(((now - lastHit) / 1000) < statsFetchRestTime){
+            if (((now - lastHit) / 1000) < statsFetchRestTime) {
                 const data = JSON.parse(localStorage.getItem(ctx))
-                if(data){
+                if (data) {
                     generateLineChart(title,ctx_holder,data)
                     Swal.close()
                 } else {

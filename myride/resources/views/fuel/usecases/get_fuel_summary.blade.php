@@ -51,13 +51,13 @@
             })
         }
 
-        if(ctx in localStorage){
+        if (ctx in localStorage) {
             const lastHit = parseInt(localStorage.getItem(`last-hit-${ctx}`))
             const now = Date.now()
 
-            if(((now - lastHit) / 1000) < summaryFetchRestTime){
+            if (((now - lastHit) / 1000) < summaryFetchRestTime) {
                 const data = JSON.parse(localStorage.getItem(ctx))
-                if(data){
+                if (data) {
                     generate_summary(data.total_fuel_price, data.total_fuel_volume, data.total_refueling)
                     Swal.close()
                 } else {

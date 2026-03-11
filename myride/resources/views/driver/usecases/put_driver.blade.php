@@ -25,7 +25,7 @@
 </div>
 
 <script>
-    $(document).on('click','.btn-update',function(){
+    $(document).on('click','.btn-update',function() {
         callModal('update-modal')
         $('#driver_id').val($(this).data('id'))
         $('#username').val($(this).data('username'))
@@ -35,7 +35,7 @@
         $('#notes').val($(this).data('notes'))
     })
 
-    $(document).on('click','#submit_update-btn', function(){
+    $(document).on('click','#submit_update-btn', function() {
         const id = $('#driver_id').val()
         put_driver(id)
     })
@@ -69,7 +69,7 @@
             },
             error: function(response, jqXHR, textStatus, errorThrown) {
                 Swal.close()
-                if(response.status === 500){
+                if (response.status === 500) {
                     generateApiError(response, true)
                 } else {
                     failedMsg(response.status === 400 ? Object.values(response.responseJSON.message).flat().join('\n') : response.responseJSON.message)

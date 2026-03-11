@@ -8,12 +8,12 @@
 
 <script>
     $(document).ready(function() {
-        $(document).on('click', '#clear_image_collection-button', function(){
+        $(document).on('click', '#clear_image_collection-button', function() {
             $('#clear_image_collection-button').remove()
             $('#save_image_collection-button').remove()
             $('#add_image_collection-button').removeClass('d-none').html(`<i class="fa-solid fa-image"></i><span class="d-none d-md-inline"> ${vehicle_img_url ? 'Change' : 'Add'} Image`)
             $('#vehicle_img_collection-holder').empty()
-            if(vehicle_img_url){
+            if (vehicle_img_url) {
                 $('#vehicle_img_collection-holder').html(`<img class="img img-fluid" src="${vehicle_img_url}" alt="${vehicle_img_url}"/>`)
             } else {
                 templateAlertContainer('vehicle_img_collection-holder', 'no-data', "No image selected", null, '<i class="fa-solid fa-image"></i>', null)
@@ -30,7 +30,7 @@
                 return
             }
 
-            if($('#clear_image_collection-button').length === 0){
+            if ($('#clear_image_collection-button').length === 0) {
                 $('#vehicle_image_collection_button-holder').prepend(`
                     <a class="btn btn-danger py-1" id="clear_image_collection-button">
                         <i class="fa-solid fa-circle-xmark"></i><span class="d-none d-md-inline"> Clear</span>
@@ -69,7 +69,7 @@
             reader.readAsDataURL(file)
 
             $('#remove_image_collection-button').addClass('d-none')
-            if($('#save_image_collection-button').length === 0){
+            if ($('#save_image_collection-button').length === 0) {
                 $('#vehicle_image_collection_button-holder').append(`
                     <a class="btn btn-success py-1" id="save_image_collection-button">
                         <i class="fa-solid fa-floppy-disk"></i><span class="d-none d-md-inline"> Save Image</span>

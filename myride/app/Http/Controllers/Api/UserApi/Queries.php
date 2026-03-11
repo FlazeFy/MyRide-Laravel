@@ -166,10 +166,10 @@ class Queries extends Controller
 
             // Make sure only admin can access the request
             $check_admin = AdminModel::find($user_id);
-            if($check_admin){
+            if ($check_admin) {
                 // Get all user with pagination
                 $res = UserModel::getAllUser($paginate);
-                if(count($res) > 0) {
+                if (count($res) > 0) {
                     // Return success response
                     return response()->json([
                         'status' => 'success',
@@ -242,7 +242,7 @@ class Queries extends Controller
      *     ),
      * )
      */
-    public function getContentYear(Request $request){
+    public function getContentYear(Request $request) {
         try{
             $user_id = $request->user()->id;
 

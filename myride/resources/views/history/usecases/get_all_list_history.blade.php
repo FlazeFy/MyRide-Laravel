@@ -38,7 +38,7 @@
                 generatePagination(holder, getAllHistory, total_page, current_page)
             },
             error: function(response, jqXHR, textStatus, errorThrown) {
-                if(response.status != 404){
+                if (response.status != 404) {
                     generateApiError(response, true)
                 } else {
                     templateAlertContainer(holder, 'no-data', "No history found", null, '<i class="fa-solid fa-rotate-left"></i>',null)

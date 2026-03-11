@@ -50,26 +50,19 @@ class WashModel extends Model
     protected $primaryKey = 'id';
     protected $fillable = ['id', 'vehicle_id', 'wash_desc', 'wash_by', 'is_wash_body', 'is_wash_window', 'is_wash_dashboard', 'is_wash_tires', 'is_wash_trash', 'is_wash_engine', 'is_wash_seat', 'is_wash_carpet', 'is_wash_pillows', 'wash_address', 'wash_start_time', 'wash_end_time', 'is_fill_window_washing_water', 'is_wash_hollow', 'wash_price', 'created_at', 'created_by', 'updated_at'];
 
-    public static function getAllWashHistory($user_id, $limit, $search = null){
-        $res = WashModel::selectRaw("
-                wash.id,vehicle_type, CONCAT(vehicle.vehicle_merk, ' - ', vehicle.vehicle_name)  as vehicle_name, vehicle_plate_number, wash_desc, wash_by, wash_price, 
+    public static function getLastWashByVehicleId($user_id,$vehicle_id) {
+        return WashModel::selectRaw("
+                wash_desc, wash_by, wash.created_at,
                 is_wash_body, is_wash_window, is_wash_dashboard, is_wash_tires, is_wash_trash, is_wash_engine, is_wash_seat, is_wash_carpet, 
-                is_wash_pillows, wash_address, wash_start_time, wash_end_time, is_fill_window_washing_water, is_wash_hollow, 
-                wash.created_at, wash.updated_at
+                is_wash_pillows, wash_address, is_fill_window_washing_water, is_wash_hollow 
             ")
-            ->join('vehicle','vehicle.id','=','wash.vehicle_id');
-        
-        if ($search) {
-            $search = strtolower($search);
-            $res->where(function ($q) use ($search) {
-                $q->whereRaw('LOWER(wash_desc) LIKE ?', ["%{$search}%"])->orWhereRaw('LOWER(wash_address) LIKE ?', ["%{$search}%"]);
-            });
-        }
-
-        return $res->orderBy('wash.created_at','desc')->paginate($limit);
+            ->where('vehicle_id',$vehicle_id)
+            ->where('created_by',$user_id)
+            ->orderBy('wash.created_at','DESC')
+            ->first();
     }
 
-    public static function getWashByVehicleId($user_id, $vehicle_id, $limit = null, $page = 1){
+    public static function getWashByVehicleId($user_id, $vehicle_id, $limit = null, $page = 1) {
         $res = WashModel::selectRaw("
                 wash.id, wash_desc, wash_by,
                 is_wash_body, is_wash_window, is_wash_dashboard, is_wash_tires,
@@ -87,19 +80,7 @@ class WashModel extends Model
         return $res->isEmpty() ? null : $res;
     }
 
-    public static function getLastWashByVehicleId($user_id,$vehicle_id){
-        return WashModel::selectRaw("
-                wash_desc, wash_by, wash.created_at,
-                is_wash_body, is_wash_window, is_wash_dashboard, is_wash_tires, is_wash_trash, is_wash_engine, is_wash_seat, is_wash_carpet, 
-                is_wash_pillows, wash_address, is_fill_window_washing_water, is_wash_hollow 
-            ")
-            ->where('vehicle_id',$vehicle_id)
-            ->where('created_by',$user_id)
-            ->orderBy('wash.created_at','DESC')
-            ->first();
-    }
-
-    public static function getWashSummaryByVehicleId($user_id,$vehicle_id){
+    public static function getWashSummaryByVehicleId($user_id,$vehicle_id) {
         $res = WashModel::selectRaw("
             vehicle_type, CONCAT(vehicle.vehicle_merk, ' - ', vehicle.vehicle_name) as vehicle_name, vehicle_plate_number,
             COUNT(*) AS total_wash,
@@ -118,7 +99,7 @@ class WashModel extends Model
             CAST(AVG(wash_price) as SIGNED) AS avg_price_per_wash
         ")->where('vehicle.created_by',$user_id);
 
-        if($vehicle_id) $res = $res->where('vehicle_id',$vehicle_id);
+        if ($vehicle_id) $res = $res->where('vehicle_id',$vehicle_id);
 
         return $res->join('vehicle','vehicle.id','=','wash.vehicle_id')
             ->groupby('vehicle_id')
@@ -126,37 +107,15 @@ class WashModel extends Model
             ->get();
     }
 
-    public static function getExportData($user_id, $vehicle_id = null){
-        $res = WashModel::selectRaw("
-                vehicle_name, wash_desc, wash_by, is_wash_body, is_wash_window, is_wash_dashboard, is_wash_tires, is_wash_trash, 
-                is_wash_engine, is_wash_seat, is_wash_carpet, is_wash_pillows, wash_address, wash_start_time, wash_end_time, is_fill_window_washing_water, 
-                is_wash_hollow, wash.created_at as datetime
-            ")
-            ->join('vehicle','vehicle.id','=','wash.vehicle_id');
-        
-        if($vehicle_id) $res = $res->where('vehicle_id',$vehicle_id);
-
-        return $res->where('wash.created_by',$user_id)->orderBy('wash.created_at', 'desc')->get();
-    }
-
-    public static function getTotalWashSpendingPerMonth($user_id = null, $year, $is_admin){
+    public static function getTotalWashSpendingPerMonth($user_id = null, $year, $is_admin) {
         $res = WashModel::selectRaw("SUM(wash_price) as total, MONTH(created_at) as context");
         
-        if($user_id) $res = $res->where('created_by', $user_id);
+        if ($user_id) $res = $res->where('created_by', $user_id);
 
         return $res->whereRaw("YEAR(created_at) = '$year'")->groupByRaw('MONTH(created_at)')->get();
     }
 
-    public static function getJourney($user_id, $vehicle_id){
-        return WashModel::select("wash_desc", "wash_by", "wash_price", "wash_address", "wash_start_time", "wash_end_time", "created_at")
-            ->where('created_by', $user_id)
-            ->where('vehicle_id', $vehicle_id)
-            ->whereNotNull('wash_end_time')
-            ->orderby('created_at','DESC')
-            ->get();
-    }
-
-    public static function getTotalWashMonthlyByYear($user_id = null, $vehicle_id = null, $context, $year){
+    public static function getTotalWashMonthlyByYear($user_id = null, $vehicle_id = null, $context, $year) {
         switch ($context) {
             case 'total_item':
                 $context = 'COUNT(id)';
@@ -171,29 +130,54 @@ class WashModel extends Model
 
         $res = WashModel::selectRaw("$context as total, MONTH(created_at) as context");
         
-        if($user_id) $res = $res->where('created_by',$user_id);
-        if($vehicle_id) $res = $res->where('vehicle_id',$vehicle_id);
+        if ($user_id) $res = $res->where('created_by',$user_id);
+        if ($vehicle_id) $res = $res->where('vehicle_id',$vehicle_id);
 
         return $res->whereRaw("YEAR(created_at) = '$year'")->groupByRaw('MONTH(created_at)')->get();
     }
 
-    public static function hardDeleteWashById($id, $user_id = null){
-        $res = WashModel::where('id',$id);
+    public static function getAllWashHistory($user_id, $limit, $search = null) {
+        $res = WashModel::selectRaw("
+                wash.id,vehicle_type, CONCAT(vehicle.vehicle_merk, ' - ', vehicle.vehicle_name)  as vehicle_name, vehicle_plate_number, wash_desc, wash_by, wash_price, 
+                is_wash_body, is_wash_window, is_wash_dashboard, is_wash_tires, is_wash_trash, is_wash_engine, is_wash_seat, is_wash_carpet, 
+                is_wash_pillows, wash_address, wash_start_time, wash_end_time, is_fill_window_washing_water, is_wash_hollow, 
+                wash.created_at, wash.updated_at
+            ")
+            ->join('vehicle','vehicle.id','=','wash.vehicle_id');
+        
+        if ($search) {
+            $search = strtolower($search);
+            $res->where(function ($q) use ($search) {
+                $q->whereRaw('LOWER(wash_desc) LIKE ?', ["%{$search}%"])->orWhereRaw('LOWER(wash_address) LIKE ?', ["%{$search}%"]);
+            });
+        }
 
-        if($user_id) $res = $res->where('created_by',$user_id);
-            
-        return $res->delete();
+        return $res->orderBy('wash.created_at','desc')->paginate($limit);
     }
 
-    public static function hardDeleteByVehicleId($vehicle_id, $user_id = null){
-        $res = WashModel::where('vehicle_id',$vehicle_id);
-
-        if($user_id) $res = $res->where('created_by',$user_id);
-            
-        return $res->delete();
+    public static function getJourney($user_id, $vehicle_id) {
+        return WashModel::select("wash_desc", "wash_by", "wash_price", "wash_address", "wash_start_time", "wash_end_time", "created_at")
+            ->where('created_by', $user_id)
+            ->where('vehicle_id', $vehicle_id)
+            ->whereNotNull('wash_end_time')
+            ->orderby('created_at','DESC')
+            ->get();
     }
 
-    public static function createWash($data, $user_id){
+    public static function getExportData($user_id, $vehicle_id = null) {
+        $res = WashModel::selectRaw("
+                vehicle_name, wash_desc, wash_by, is_wash_body, is_wash_window, is_wash_dashboard, is_wash_tires, is_wash_trash, 
+                is_wash_engine, is_wash_seat, is_wash_carpet, is_wash_pillows, wash_address, wash_start_time, wash_end_time, is_fill_window_washing_water, 
+                is_wash_hollow, wash.created_at as datetime
+            ")
+            ->join('vehicle','vehicle.id','=','wash.vehicle_id');
+        
+        if ($vehicle_id) $res = $res->where('vehicle_id',$vehicle_id);
+
+        return $res->where('wash.created_by',$user_id)->orderBy('wash.created_at', 'desc')->get();
+    }
+
+    public static function createWash($data, $user_id) {
         $data['created_at'] = date('Y-m-d H:i:s');
         $data['created_by'] = $user_id;
         $data['updated_at'] = null;
@@ -202,9 +186,25 @@ class WashModel extends Model
         return WashModel::create($data);
     }
 
-    public static function updateWashById($data, $user_id, $id){
+    public static function updateWashById($data, $user_id, $id) {
         $data['updated_at'] = date('Y-m-d H:i:s');
         
         return WashModel::where('created_by',$user_id)->where('id',$id)->update($data);
+    }
+
+    public static function hardDeleteWashById($id, $user_id = null) {
+        $res = WashModel::where('id',$id);
+
+        if ($user_id) $res = $res->where('created_by',$user_id);
+            
+        return $res->delete();
+    }
+
+    public static function hardDeleteByVehicleId($vehicle_id, $user_id = null) {
+        $res = WashModel::where('vehicle_id',$vehicle_id);
+
+        if ($user_id) $res = $res->where('created_by',$user_id);
+            
+        return $res->delete();
     }
 }

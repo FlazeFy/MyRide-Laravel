@@ -10,7 +10,7 @@
     templateAlertContainer('inventory_image-holder', 'no-data', "No inventory image selected", null, '<i class="fa-solid fa-image"></i>', null)
 
     $(document).ready(function() {
-        $(document).on('click', '#clear_image-button', function(){
+        $(document).on('click', '#clear_image-button', function() {
             $('#inventory_image_button-holder').find(this).remove()
             templateAlertContainer('inventory_image-holder', 'no-data', "No inventory image selected", null, '<i class="fa-solid fa-receipt"></i>', null)
         })
@@ -22,7 +22,7 @@
                 Swal.fire("Error!", "You can only add one image as image", "error")
                 return
             }
-            if($('#inventory_image_button-holder').find('#clear_image-button').length === 0){
+            if ($('#inventory_image_button-holder').find('#clear_image-button').length === 0) {
                 $('#inventory_image_button-holder').prepend(`
                     <a class="btn btn-danger py-1" id="clear_image-button"><i class="fa-solid fa-circle-xmark"></i><span class="d-none d-md-inline"> Clear</span></a>
                 `)

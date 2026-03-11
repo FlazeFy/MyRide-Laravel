@@ -59,7 +59,7 @@ class Queries extends Controller {
      *     ),
      * )
      */
-    public function exportWashHistory(Request $request){
+    public function exportWashHistory(Request $request) {
         try {
             $user_id = $request->user()->id;
 
@@ -116,7 +116,7 @@ class Queries extends Controller {
             // Check if user has valid Telegram
             if ($user && $user->telegram_is_valid == 1 && $user->telegram_user_id) {
                 // Check if user's Telegram ID is valid
-                if(TelegramMessage::checkTelegramID($user->telegram_user_id)){
+                if (TelegramMessage::checkTelegramID($user->telegram_user_id)) {
                     // Create input file to attach in Telegram message
                     $inputFile = InputFile::create($storagePath, $file_name);
 
@@ -175,7 +175,7 @@ class Queries extends Controller {
      *     ),
      * )
      */
-    public function exportFuelHistory(Request $request){
+    public function exportFuelHistory(Request $request) {
         try {
             $user_id = $request->user()->id;
 
@@ -223,7 +223,7 @@ class Queries extends Controller {
             // Check if user has valid Telegram
             if ($user && $user->telegram_is_valid == 1 && $user->telegram_user_id) {
                 // Check if user's Telegram ID is valid
-                if(TelegramMessage::checkTelegramID($user->telegram_user_id)){
+                if (TelegramMessage::checkTelegramID($user->telegram_user_id)) {
                     // Create input file to attach in Telegram message
                     $inputFile = InputFile::create($storagePath, $file_name);
 
@@ -282,7 +282,7 @@ class Queries extends Controller {
      *     ),
      * )
      */
-    public function exportInventory(Request $request){
+    public function exportInventory(Request $request) {
         try {
             $user_id = $request->user()->id;
 
@@ -328,9 +328,9 @@ class Queries extends Controller {
             }
 
             // Check if user has valid Telegram
-            if ($user && $user->telegram_is_valid == 1 && $user->telegram_user_id){
+            if ($user && $user->telegram_is_valid == 1 && $user->telegram_user_id) {
                 // Check if user's Telegram ID is valid
-                if(TelegramMessage::checkTelegramID($user->telegram_user_id)){
+                if (TelegramMessage::checkTelegramID($user->telegram_user_id)) {
                     // Create input file to attach in Telegram message
                     $inputFile = InputFile::create($storagePath, $file_name);
 
@@ -389,7 +389,7 @@ class Queries extends Controller {
      *     ),
      * )
      */
-    public function exportService(Request $request){
+    public function exportService(Request $request) {
         try {
             $user_id = $request->user()->id;
 
@@ -436,9 +436,9 @@ class Queries extends Controller {
             }
 
             // Check if user has valid Telegram
-            if ($user && $user->telegram_is_valid == 1 && $user->telegram_user_id){
+            if ($user && $user->telegram_is_valid == 1 && $user->telegram_user_id) {
                 // Check if user's Telegram ID is valid
-                if(TelegramMessage::checkTelegramID($user->telegram_user_id)){
+                if (TelegramMessage::checkTelegramID($user->telegram_user_id)) {
                     // Create input file to attach in Telegram message
                     $inputFile = InputFile::create($storagePath, $file_name);
 
@@ -497,7 +497,7 @@ class Queries extends Controller {
      *     ),
      * )
      */
-    public function exportDriver(Request $request){
+    public function exportDriver(Request $request) {
         try {
             $user_id = $request->user()->id;
 
@@ -543,9 +543,9 @@ class Queries extends Controller {
             }
 
             // Check if user has valid Telegram
-            if ($user && $user->telegram_is_valid == 1 && $user->telegram_user_id){
+            if ($user && $user->telegram_is_valid == 1 && $user->telegram_user_id) {
                 // Check if user's Telegram ID is valid
-                if(TelegramMessage::checkTelegramID($user->telegram_user_id)){
+                if (TelegramMessage::checkTelegramID($user->telegram_user_id)) {
                     // Create input file to attach in Telegram message
                     $inputFile = InputFile::create($storagePath, $file_name);
 
@@ -604,7 +604,7 @@ class Queries extends Controller {
      *     ),
      * )
      */
-    public function exportTripHistory(Request $request){
+    public function exportTripHistory(Request $request) {
         try {
             $user_id = $request->user()->id;
 
@@ -654,9 +654,9 @@ class Queries extends Controller {
             }
 
             // Check if user has valid Telegram 
-            if ($user && $user->telegram_is_valid == 1 && $user->telegram_user_id){
+            if ($user && $user->telegram_is_valid == 1 && $user->telegram_user_id) {
                 // Check if user's Telegram ID is valid
-                if(TelegramMessage::checkTelegramID($user->telegram_user_id)){
+                if (TelegramMessage::checkTelegramID($user->telegram_user_id)) {
                     // Create input file to attach in Telegram message
                     $inputFile = InputFile::create($storagePath, $file_name);
 

@@ -91,11 +91,11 @@ class Commands extends Controller
 
             // Hard Delete inventory by ID
             $rows = InventoryModel::hardDeleteInventoryById($id, $user_id);
-            if($rows > 0){
+            if ($rows > 0) {
                 // Delete Firebase uploaded image
-                if($inventory->inventory_image_url){
+                if ($inventory->inventory_image_url) {
                     // Delete failed if file not found (already gone)
-                    if(!Firebase::deleteFile($inventory->inventory_image_url)){
+                    if (!Firebase::deleteFile($inventory->inventory_image_url)) {
                         return response()->json([
                             'status' => 'failed',
                             'message' => Generator::getMessageTemplate("not_found", 'failed to delete inventory image'),
@@ -181,7 +181,7 @@ class Commands extends Controller
      *     ),
      * )
      */
-    public function postCreateInventory(Request $request){
+    public function postCreateInventory(Request $request) {
         try{
             $user_id = $request->user()->id;
 
@@ -239,7 +239,7 @@ class Commands extends Controller
                     'inventory_image_url' => $inventory_image
                 ];
                 $rows = InventoryModel::createInventory($data, $user_id);
-                if($rows){
+                if ($rows) {
                     // Create history
                     HistoryModel::createHistory(['history_type' => 'Inventory', 'history_context' => "added an inventory"], $user_id);
 
@@ -315,7 +315,7 @@ class Commands extends Controller
      *     ),
      * )
      */
-    public function putUpdateInventoryById(Request $request, $id){
+    public function putUpdateInventoryById(Request $request, $id) {
         try{
             $user_id = $request->user()->id;
 
@@ -336,7 +336,7 @@ class Commands extends Controller
                     'inventory_storage' => $request->inventory_storage 
                 ];
                 $rows = InventoryModel::updateInventoryById($data, $user_id, $id);
-                if($rows > 0){
+                if ($rows > 0) {
                     // Create history
                     HistoryModel::createHistory(['history_type' => 'Inventory', 'history_context' => "edited an inventory"], $user_id);
 

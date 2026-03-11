@@ -7085,7 +7085,7 @@
                 ],
                 "summary": "Get Total Trip Per Year",
                 "description": "This request is used to get total trip per month by given `year`. This request interacts with the MySQL database, and has a protected routes.",
-                "operationId": "19bc6ecaef31b2de7cb78518bd3c2daa",
+                "operationId": "63b42e886b3372535b88e3123429abaa",
                 "parameters": [
                     {
                         "name": "year",
@@ -7220,7 +7220,7 @@
                 ],
                 "summary": "Get Total Fuel Per Year",
                 "description": "This request is used to get total fuel per month by given `year` and `context`. This request interacts with the MySQL database, and has a protected routes.",
-                "operationId": "fbf7f9d0144a4927e7213a1ab148ff3c",
+                "operationId": "9a5b075cdc51c2415ebf1dcbca29f3d7",
                 "parameters": [
                     {
                         "name": "year",
@@ -7365,7 +7365,7 @@
                 ],
                 "summary": "Get Total Service Per Year",
                 "description": "This request is used to get total service per month by given `year` and `context`. This request is using MySql database.",
-                "operationId": "3f353360be994874a11587e69a5acb5e",
+                "operationId": "ec23a1f5ae2dc02cd1721f03a02d404d",
                 "parameters": [
                     {
                         "name": "year",
@@ -7500,7 +7500,7 @@
                 ],
                 "summary": "Get Total Wash Per Month",
                 "description": "This request is used to get total wash per month by given `year` and `context`. This request is using MySql database.",
-                "operationId": "502d13bbd681d7ff0831f99750098ff4",
+                "operationId": "68c13215406081d0c05e6b56e7e32e03",
                 "parameters": [
                     {
                         "name": "year",
@@ -7906,22 +7906,132 @@
                                         "data": {
                                             "type": "array",
                                             "items": {
-                                                "properties": {
-                                                    "journey_category": {
-                                                        "type": "string",
-                                                        "example": "Fuel"
+                                                "oneOf": [
+                                                    {
+                                                        "description": "Fuel journey entry",
+                                                        "properties": {
+                                                            "journey_category": {
+                                                                "type": "string",
+                                                                "example": "fuel"
+                                                            },
+                                                            "journey_context": {
+                                                                "type": "string",
+                                                                "example": "You refueled <b>12L</b> of Pertamax (Ron 92)"
+                                                            },
+                                                            "created_at": {
+                                                                "type": "string",
+                                                                "format": "date-time",
+                                                                "example": "2024-09-20 22:53:47"
+                                                            },
+                                                            "distance": {
+                                                                "type": "number",
+                                                                "format": "float",
+                                                                "example": 0
+                                                            },
+                                                            "spending_wash": {
+                                                                "type": "number",
+                                                                "format": "float",
+                                                                "example": 0
+                                                            },
+                                                            "spending_service": {
+                                                                "type": "number",
+                                                                "format": "float",
+                                                                "example": 0
+                                                            },
+                                                            "spending_fuel": {
+                                                                "type": "number",
+                                                                "format": "float",
+                                                                "example": 85000
+                                                            },
+                                                            "fuel_volume": {
+                                                                "type": "number",
+                                                                "format": "float",
+                                                                "example": 12
+                                                            }
+                                                        },
+                                                        "type": "object"
                                                     },
-                                                    "journey_context": {
-                                                        "type": "string",
-                                                        "example": "You refueled 12L of Pertamina (92)"
-                                                    },
-                                                    "created_at": {
-                                                        "type": "string",
-                                                        "format": "date-time",
-                                                        "example": "2024-09-20 22:53:47"
+                                                    {
+                                                        "description": "Monthly summary entry",
+                                                        "properties": {
+                                                            "journey_category": {
+                                                                "type": "string",
+                                                                "example": "summary"
+                                                            },
+                                                            "month": {
+                                                                "type": "string",
+                                                                "example": "2024-09"
+                                                            },
+                                                            "total_trip": {
+                                                                "properties": {
+                                                                    "total": {
+                                                                        "type": "integer",
+                                                                        "example": 5
+                                                                    },
+                                                                    "distance": {
+                                                                        "type": "number",
+                                                                        "format": "float",
+                                                                        "example": 123.45
+                                                                    }
+                                                                },
+                                                                "type": "object"
+                                                            },
+                                                            "total_service": {
+                                                                "properties": {
+                                                                    "total": {
+                                                                        "type": "integer",
+                                                                        "example": 1
+                                                                    },
+                                                                    "amount": {
+                                                                        "type": "number",
+                                                                        "format": "float",
+                                                                        "example": 250000
+                                                                    }
+                                                                },
+                                                                "type": "object"
+                                                            },
+                                                            "total_wash": {
+                                                                "properties": {
+                                                                    "total": {
+                                                                        "type": "integer",
+                                                                        "example": 2
+                                                                    },
+                                                                    "amount": {
+                                                                        "type": "number",
+                                                                        "format": "float",
+                                                                        "example": 100000
+                                                                    }
+                                                                },
+                                                                "type": "object"
+                                                            },
+                                                            "total_fuel": {
+                                                                "properties": {
+                                                                    "total": {
+                                                                        "type": "integer",
+                                                                        "example": 3
+                                                                    },
+                                                                    "amount": {
+                                                                        "type": "number",
+                                                                        "format": "float",
+                                                                        "example": 255000
+                                                                    },
+                                                                    "volume": {
+                                                                        "type": "number",
+                                                                        "format": "float",
+                                                                        "example": 36
+                                                                    }
+                                                                },
+                                                                "type": "object"
+                                                            },
+                                                            "created_at": {
+                                                                "type": "string",
+                                                                "format": "date-time",
+                                                                "example": "2024-09-20 22:53:47"
+                                                            }
+                                                        },
+                                                        "type": "object"
                                                     }
-                                                },
-                                                "type": "object"
+                                                ]
                                             }
                                         }
                                     },

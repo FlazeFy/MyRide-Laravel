@@ -22,7 +22,7 @@
 
 <script>
     $(document).ready(function() {
-        $(document).on('click','.btn-action-readiness',function(){
+        $(document).on('click','.btn-action-readiness',function() {
             const id = $(this).data('id')
             const vehicle_name = $(this).data('vehicle_name')
             const vehicle_plate_number = $(this).data('vehicle_plate_number')

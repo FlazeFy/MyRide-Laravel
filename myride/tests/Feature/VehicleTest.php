@@ -365,7 +365,7 @@ class VehicleTest extends TestCase
 
             $check_nullable_str = ['telegram_user_id', 'notes'];
             foreach ($check_nullable_str as $col) {
-                if($dt[$col]){
+                if ($dt[$col]) {
                     $this->assertNotNull($dt[$col]);
                     $this->assertIsString($dt[$col]);
                 }

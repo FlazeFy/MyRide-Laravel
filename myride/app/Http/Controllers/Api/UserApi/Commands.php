@@ -78,11 +78,11 @@ class Commands extends Controller
             $new_telegram_id = $request->telegram_user_id;
 
             // Check if user's Telegram ID is valid
-            if(TelegramMessage::checkTelegramID($request->telegram_user_id)){
+            if (TelegramMessage::checkTelegramID($request->telegram_user_id)) {
                 // Check if Telegram ID has been used
                 $check = UserModel::isTelegramIDUsed($new_telegram_id);
 
-                if($check == null){
+                if ($check == null) {
                     // Update user by ID
                     $res = UserModel::updateUserById(['telegram_user_id' => $new_telegram_id, 'telegram_is_valid' => 0],$user_id);;
                     
@@ -176,13 +176,13 @@ class Commands extends Controller
      *     ),
      * )
      */
-    public function putValidateTelegramId(Request $request){
+    public function putValidateTelegramId(Request $request) {
         try{
             $user_id = $request->user()->id;
 
             // Check if token is valid
             $res = ValidateRequestModel::deleteValidateRequestByRequestContext($request->request_context, $user_id);
-            if($res > 0){
+            if ($res > 0) {
                 // Get user by ID
                 $user = UserModel::getSocial($user_id);
 
@@ -190,7 +190,7 @@ class Commands extends Controller
                 UserModel::updateUserById([ 'telegram_is_valid' => 1 ],$user_id);
 
                 // Check if user's Telegram ID is valid
-                if(TelegramMessage::checkTelegramID($user->telegram_user_id)){
+                if (TelegramMessage::checkTelegramID($user->telegram_user_id)) {
                     // Send telegram message
                     $response = Telegram::sendMessage([
                         'chat_id' => $user->telegram_user_id,
@@ -292,7 +292,7 @@ class Commands extends Controller
                 // Check username and email availability
                 $check = UserModel::isUsernameEmailUsed($request->email, $request->username, $user_id);
 
-                if($check == null){
+                if ($check == null) {
                     $is_telegram_updated = false;
                     $extra_msg = "";
                     $new_telegram_id = $request->telegram_user_id;
@@ -304,7 +304,7 @@ class Commands extends Controller
                     $res = UserModel::updateUserById(['email' => $request->email, 'username' => $request->username],$user_id);
 
                     // If there is a change in telegram ID
-                    if($old_data->telegram_user_id != $new_telegram_id){
+                    if ($old_data->telegram_user_id != $new_telegram_id) {
                         $is_telegram_updated = true;
 
                         // Generate token
@@ -314,16 +314,16 @@ class Commands extends Controller
                         // Create new token validation
                         $create_new_req = ValidateRequestModel::createValidateRequest(['request_type' => 'telegram_id_validation', 'request_context' => $token], $user_id);;
                         
-                        if($create_new_req){
+                        if ($create_new_req) {
                             // Update user by ID (Update Telegram)
                             $res_update_user_token = UserModel::updateUserById(['telegram_user_id' => $new_telegram_id, 'telegram_is_valid' => 0],$user_id);
-                            if($res_update_user_token > 0){
+                            if ($res_update_user_token > 0) {
                                 $extra_msg = " and telegram id updated! and validation has been sended to you";
                             }
                         }
 
                         // Check if user's Telegram ID is valid
-                        if(TelegramMessage::checkTelegramID($new_telegram_id)){
+                        if (TelegramMessage::checkTelegramID($new_telegram_id)) {
                             // Send telegram message
                             $response = Telegram::sendMessage([
                                 'chat_id' => $new_telegram_id,
@@ -340,8 +340,8 @@ class Commands extends Controller
                         // Get user social contact
                         $user = UserModel::getSocial($user_id);
                         // Check if user's Telegram ID is valid
-                        if($user->telegram_is_valid == 1 && !$is_telegram_updated){
-                            if(TelegramMessage::checkTelegramID($new_telegram_id)){
+                        if ($user->telegram_is_valid == 1 && !$is_telegram_updated) {
+                            if (TelegramMessage::checkTelegramID($new_telegram_id)) {
                                 // Send telegram message
                                 $response = Telegram::sendMessage([
                                     'chat_id' => $new_telegram_id,

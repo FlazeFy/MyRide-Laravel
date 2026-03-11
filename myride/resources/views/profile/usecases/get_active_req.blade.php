@@ -2,7 +2,7 @@
 
 <script>
     const telegram_req_holder = (data) => {
-        if(data){
+        if (data) {
             $('#req_holder').html(`
                 <div class="alert alert-success telegram-request" role="alert">
                     <p>There is a request for <b class='text-dark'>Telegram verification</b>. We have sended the token to your Telegram, please type the token and validate it</p>
@@ -15,7 +15,7 @@
         }
     }
 
-    $(document).on('click','#validate-telegram-req-btn', function(){
+    $(document).on('click','#validate-telegram-req-btn', function() {
         $.ajax({
             url: '/api/v1/user/validate_telegram_id',
             type: 'PUT',

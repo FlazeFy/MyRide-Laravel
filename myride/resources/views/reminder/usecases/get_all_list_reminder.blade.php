@@ -35,7 +35,7 @@
 <script>
     let page = 1
 
-    $(document).on('blur','.search-input', function(){
+    $(document).on('blur','.search-input', function() {
         const val = $(this).val().trim()
         getAllReminder(1,val !== "" ? val : null)
     })
@@ -75,7 +75,7 @@
                     let reminder_attachment_el = ''
                     let class_chip = ''
 
-                    if(dt.reminder_attachment){
+                    if (dt.reminder_attachment) {
                         dt.reminder_attachment.forEach((at,idx) => {
                             reminder_attachment_el += `
                                 <a class="chip bg-info fw-normal m-0" data-bs-toggle="modal" data-bs-target="#attachment_${dt.id}_${idx}-modal">
@@ -112,7 +112,7 @@
                         })
                     }
 
-                    if(dt.reminder_context.includes(['Service','Pick Up','Drop Off','Trip'])){
+                    if (dt.reminder_context.includes(['Service','Pick Up','Drop Off','Trip'])) {
                         class_chip = 'bg-danger'
                     } else {
                         class_chip = 'bg-success'
@@ -147,7 +147,7 @@
             },
             error: function(response, jqXHR, textStatus, errorThrown) {
                 Swal.close()
-                if(response.status != 404){
+                if (response.status != 404) {
                     generateApiError(response, true)
                 } else {
                     $(`#${holder}`).html(`<tr><td colspan="6" id="msg-${holder}"></td></tr>`)

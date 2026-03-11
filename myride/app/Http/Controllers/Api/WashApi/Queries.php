@@ -99,7 +99,7 @@ class Queries extends Controller
 
             // Get all wash history
             $res = WashModel::getAllWashHistory($user_id, $limit, $search);
-            if($res && count($res) > 0) {
+            if ($res && count($res) > 0) {
                 // Return success response
                 return response()->json([
                     'status' => 'success',
@@ -178,13 +178,13 @@ class Queries extends Controller
      *     ),
      * )
      */
-    public function getLastWashByVehicleId(Request $request, $vehicle_id){
+    public function getLastWashByVehicleId(Request $request, $vehicle_id) {
         try{
             $user_id = $request->user()->id;
 
             // Get last wash by vehicle id
             $res = WashModel::getLastWashByVehicleId($user_id,$vehicle_id);
-            if($res) {
+            if ($res) {
                 // Return success response
                 return response()->json([
                     'status' => 'success',
@@ -267,14 +267,14 @@ class Queries extends Controller
      *     ),
      * )
      */
-    public function getWashSummaryByVehicleId(Request $request){
+    public function getWashSummaryByVehicleId(Request $request) {
         try{
             $user_id = $request->user()->id;
             $vehicle_id = $request->query('vehicle_id') ?? null;
 
             // Get wash summary by vehicle id
             $res = WashModel::getWashSummaryByVehicleId($user_id,$vehicle_id);
-            if($res && count($res) > 0) {
+            if ($res && count($res) > 0) {
                 // Return success response
                 return response()->json([
                     'status' => 'success',

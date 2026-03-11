@@ -163,7 +163,7 @@ class Queries extends Controller
      *     ),
      * )
      */
-    public function getInventoryByVehicle(Request $request,$vehicle_id){
+    public function getInventoryByVehicle(Request $request,$vehicle_id) {
         try{
             $user_id = $request->user()->id;
 

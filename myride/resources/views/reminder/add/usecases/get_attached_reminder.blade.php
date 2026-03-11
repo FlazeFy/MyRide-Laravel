@@ -5,13 +5,13 @@
     const reminder_holder = 'reminder-holder'
     messageAlertBox(reminder_holder, "danger", "You must select a vehicle first")
 
-    $(document).on('change','#vehicle_holder', function(){
+    $(document).on('change','#vehicle_holder', function() {
         const id = $(this).val()
         get_vehicle_attached_reminder(id)
     })
 
     const get_vehicle_attached_reminder = (id) => {
-        if(id !== "-"){
+        if (id !== "-") {
             Swal.showLoading()
             $.ajax({
                 url: `/api/v1/reminder/vehicle/${id}`,
@@ -42,7 +42,7 @@
                 },
                 error: function(response, jqXHR, textStatus, errorThrown) {
                     Swal.close()
-                    if(response.status !== 404){
+                    if (response.status !== 404) {
                         generateApiError(response, true)                
                     } else {
                         messageAlertBox(reminder_holder, "danger", "No active reminder attached to this vehicle")

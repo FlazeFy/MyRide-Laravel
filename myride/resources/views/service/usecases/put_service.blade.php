@@ -29,7 +29,7 @@
 </div>
 
 <script>
-    $(document).on('click','.btn-update', async function(){
+    $(document).on('click','.btn-update', async function() {
         callModal('update-modal')
         await getVehicleNameOption(token)
         await getDictionaryByContextOption('service_category,service_storage',token)
@@ -53,7 +53,7 @@
         $('#remind_at').val($(this).data('remind-at'))
     })
 
-    $(document).on('click','#submit_update-btn', function(){
+    $(document).on('click','#submit_update-btn', function() {
         const id = $('#service_id').val()
         put_service(id)
     })
@@ -62,7 +62,7 @@
         const vehicle_id = $('#vehicle_holder').val()
         const service_category = $('#service_category_holder').val()
 
-        if(vehicle_id !== "-" && service_category !== "-"){
+        if (vehicle_id !== "-" && service_category !== "-") {
             Swal.showLoading()
             $.ajax({
                 url: `/api/v1/service/${id}`,

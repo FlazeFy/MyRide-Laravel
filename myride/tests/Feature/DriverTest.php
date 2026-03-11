@@ -105,7 +105,7 @@ class DriverTest extends TestCase
 
             $check_nullable_str = ['telegram_user_id', 'notes','updated_at'];
             foreach ($check_nullable_str as $col) {
-                if($dt[$col]){
+                if ($dt[$col]) {
                     $this->assertNotNull($dt[$col]);
                     $this->assertIsString($dt[$col]);
                 }
@@ -296,7 +296,7 @@ class DriverTest extends TestCase
 
             $check_nullable_str = ['telegram_user_id'];
             foreach ($check_nullable_str as $col) {
-                if($dt[$col]){
+                if ($dt[$col]) {
                     $this->assertNotNull($dt[$col]);
                     $this->assertIsString($dt[$col]);
                 }

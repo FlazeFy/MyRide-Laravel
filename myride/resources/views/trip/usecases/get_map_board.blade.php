@@ -35,28 +35,28 @@
     let map
     
     $(document).ready(() => {
-        if($(window).width() < 767){
+        if ($(window).width() < 767) {
             $('#map-board').css('box-shadow','rgba(0, 0, 0, 0.35) 0px 5px 15px')
         }
-        $(document).on('click','#toggle_close-map',function(){
+        $(document).on('click','#toggle_close-map',function() {
             $(this).toggleClass('btn-danger mt-2 btn-primary mt-0')
             $(this).find('i').toggleClass('fa-circle-xmark fa-map')
             $('#map-board').toggleClass('d-block d-none')
-            if($('#map-board').hasClass('d-block')){
+            if ($('#map-board').hasClass('d-block')) {
                 $('#map-board').css('box-shadow','rgba(0, 0, 0, 0.35) 0px 5px 15px')
             } else {
                 $('#map-board').css('box-shadow','none')
             }
         })
         $(window).on('resize', function() {
-            if($(window).width() < 767){
+            if ($(window).width() < 767) {
                 $('#map-board').css('box-shadow','rgba(0, 0, 0, 0.35) 0px 5px 15px')
-                if($('#toggle_close-map').find('i').hasClass('fa-map') && $('#map-board').hasClass('d-none')){
+                if ($('#toggle_close-map').find('i').hasClass('fa-map') && $('#map-board').hasClass('d-none')) {
                     $('#toggle_close-map').find('i').toggleClass('fa-circle-xmark fa-map')
                     $('#toggle_close-map').toggleClass('btn-danger mt-2 btn-primary mt-0')
                 }
             } else {
-                if($('#map-board').hasClass('d-none')){
+                if ($('#map-board').hasClass('d-none')) {
                     $('#map-board').toggleClass('d-none d-block')
                 }
                 $('#map-board').css('box-shadow','none')
@@ -103,7 +103,7 @@
         )
     }
 
-    function add_marker(props){
+    function add_marker(props) {
         var marker = new google.maps.Marker({
             position: props.coords,
             map: map,
@@ -113,14 +113,14 @@
             }
         })
 
-        if(props.iconImage){
+        if (props.iconImage) {
             marker.setIcon(props.iconImage)
         }
-        if(props.content){
+        if (props.content) {
             var infoWindow = new google.maps.InfoWindow({
                 content: props.content
             })
-            marker.addListener('click', function(){
+            marker.addListener('click', function() {
                 infoWindow.open(map, marker)
             })
             google.maps.event.addListener(infoWindow, 'domready', () => {
@@ -144,7 +144,7 @@
     }
 
 
-    function show_location(lat1, long1, lat2, long2){
+    function show_location(lat1, long1, lat2, long2) {
         refresh_map(lat1, long1)
         place_marker_and_pan_to(lat1, long1, map)
         place_marker_and_pan_to(lat2, long2, map)

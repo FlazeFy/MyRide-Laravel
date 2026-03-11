@@ -48,7 +48,7 @@
 
 <script>
     $(document).ready(function() {
-        $(document).on('click','.btn-update',async function(){
+        $(document).on('click','.btn-update',async function() {
             callModal('update-modal')
             await getVehicleNameOption(token)
             await getDictionaryByContextOption('wash_by',token)
@@ -84,14 +84,14 @@
             $('#is_fill_window_washing_water').prop('checked', $(this).data('is-fill-window-washing-water'))
         })
 
-        $(document).on('click','#submit_update-btn', function(){
+        $(document).on('click','#submit_update-btn', function() {
             const id = $('#wash_id').val()
             put_wash(id)
         })
         const put_wash = (id) => {
             const vehicle_id = $('#vehicle_holder').val()
 
-            if(vehicle_id !== "-" && $('#wash_by').val() !== "-"){
+            if (vehicle_id !== "-" && $('#wash_by').val() !== "-") {
                 const wash_end_time = $('#wash_end_time').val()
 
                 Swal.showLoading()
@@ -131,7 +131,7 @@
                     },
                     error: function(response, jqXHR, textStatus, errorThrown) {
                         Swal.close()
-                        if(response.status === 500){
+                        if (response.status === 500) {
                             generateApiError(response, true)
                         } else {
                             failedMsg(response.status === 400 ? Object.values(response.responseJSON.message).flat().join('\n') : response.responseJSON.message)

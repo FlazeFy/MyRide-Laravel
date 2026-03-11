@@ -44,16 +44,49 @@ class UserModel extends Authenticatable
         'updated_at' => 'datetime:Y-m-d H:i:s',
     ];
 
-    public static function getAllUser($paginate){
+    public static function isTelegramIDUsed($telegram_id) {
+        return UserModel::where('telegram_user_id', $telegram_id)->exists();
+    }    
+
+    public static function isUsernameEmailUsed($email, $username, $exceptional_id) {
+        return UserModel::where(function ($query) use ($email, $username) {
+                $query->where('email', $email)
+                    ->orWhere('username', $username);
+            })
+            ->where('id', '!=', $exceptional_id)
+            ->exists();
+    }
+
+    public static function isUsernameUsed($username) {
+        return UserModel::where('username',$username)->exists();
+    }
+
+    public static function getByUsername($username) {
+        return UserModel::where('username',$username)->first();
+    }
+
+    public static function getCheckUserByUsernameAndEmail($username, $email) {
+        $res = UserModel::where('username',$username)
+            ->orwhere('email',$email)
+            ->first();
+
+        if ($res) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public static function getAllUser($paginate) {
         return UserModel::select('*')->orderby('created_at','desc')->paginate($paginate);
     } 
 
-    public static function getSocial($id){
+    public static function getSocial($id) {
         $res = UserModel::select('username','telegram_user_id','telegram_is_valid','email')
             ->where('id',$id)
             ->first();
 
-        if($res == null){
+        if ($res == null) {
             $res = AdminModel::select('username','telegram_user_id','telegram_is_valid','email')
                 ->where('id',$id)
                 ->first();
@@ -62,30 +95,30 @@ class UserModel extends Authenticatable
         return $res;
     }
 
-    public static function getUserBroadcastAll(){
+    public static function getUserBroadcastAll() {
         return UserModel::select('id','username','telegram_user_id','telegram_is_valid','email')->get();
     }
 
-    public static function getUserById($user_id){
+    public static function getUserById($user_id) {
         $select_query = 'id,username,email,telegram_user_id,telegram_is_valid,created_at,updated_at';
         $res = UserModel::selectRaw($select_query)->where('id',$user_id)->first();
 
-        if($res) $res->role = 'user';
-        if(!$res){
+        if ($res) $res->role = 'user';
+        if (!$res) {
             $res = AdminModel::selectRaw($select_query)
                 ->where('id',$user_id)
                 ->first();
-            if($res) $res->role = 'admin';
+            if ($res) $res->role = 'admin';
         }
 
         return $res;
     }
 
-    public static function getUserByUsernameOrEmail($username,$email){
+    public static function getUserByUsernameOrEmail($username,$email) {
         return UserModel::where('username',$username)->orwhere('email',$email)->first();
     }
 
-    public static function getAvailableYear($user_id, $is_admin){
+    public static function getAvailableYear($user_id, $is_admin) {
         $res_vehicle = VehicleModel::selectRaw('YEAR(created_at) as year');
         if (!$is_admin) $res_vehicle = $res_vehicle->where('created_by', $user_id);
         $res_vehicle = $res_vehicle->groupBy('year')->get();
@@ -116,40 +149,9 @@ class UserModel extends Authenticatable
         return $res;
     }
 
-    public static function createUser($data){
-        return UserModel::create([
-            'id' => Generator::getUUID(), 
-            'username' => $data->username, 
-            'password' => $data->password !== "GOOGLE_SIGN_IN" ? Hash::make($data->password) : $data->password,
-            'email' => $data->email, 
-            'telegram_user_id' => $data->telegram_user_id, 
-            'telegram_is_valid' => 0, 
-            'created_at' => date('Y-m-d H:i:s'), 
-            'updated_at' => null
-        ]);
-    }
-
-    public static function updateUserById($data,$id){
-        $data['updated_at'] = date('Y-m-d H:i:s');
-        
-        return UserModel::where('id',$id)->update($data);
-    }
-
-    public static function getCheckUserByUsernameAndEmail($username, $email){
-        $res = UserModel::where('username',$username)
-            ->orwhere('email',$email)
-            ->first();
-
-        if($res){
-            return true;
-        } else {
-            return false;
-        }
-    }
-
     // For Seeder
-    public static function getRandom($null){
-        if($null == 0){
+    public static function getRandom($null) {
+        if ($null == 0) {
             $data = UserModel::inRandomOrder()->take(1)->first();
             $res = $data->id;
         } else {
@@ -159,8 +161,8 @@ class UserModel extends Authenticatable
         return $res;
     }
 
-    public static function getRandomWithVehicle($null){
-        if($null == 0){
+    public static function getRandomWithVehicle($null) {
+        if ($null == 0) {
             $data = UserModel::select('users.id')
                 ->join('vehicle','users.id','=','vehicle.created_by')
                 ->inRandomOrder()
@@ -174,8 +176,8 @@ class UserModel extends Authenticatable
         return $res;
     }
 
-    public static function getRandomWithVehicleDriver($null){
-        if($null == 0){
+    public static function getRandomWithVehicleDriver($null) {
+        if ($null == 0) {
             $data = UserModel::select('users.id')
                 ->join('vehicle','users.id','=','vehicle.created_by')
                 ->join('driver','users.id','=','driver.created_by')
@@ -190,24 +192,22 @@ class UserModel extends Authenticatable
         return $res;
     }
 
-    public static function isTelegramIDUsed($telegram_id){
-        return UserModel::where('telegram_user_id', $telegram_id)->exists();
-    }    
-
-    public static function isUsernameEmailUsed($email, $username, $exceptional_id){
-        return UserModel::where(function ($query) use ($email, $username) {
-                $query->where('email', $email)
-                    ->orWhere('username', $username);
-            })
-            ->where('id', '!=', $exceptional_id)
-            ->exists();
+    public static function createUser($data) {
+        return UserModel::create([
+            'id' => Generator::getUUID(), 
+            'username' => $data->username, 
+            'password' => $data->password !== "GOOGLE_SIGN_IN" ? Hash::make($data->password) : $data->password,
+            'email' => $data->email, 
+            'telegram_user_id' => $data->telegram_user_id, 
+            'telegram_is_valid' => 0, 
+            'created_at' => date('Y-m-d H:i:s'), 
+            'updated_at' => null
+        ]);
     }
 
-    public static function isUsernameUsed($username){
-        return UserModel::where('username',$username)->exists();
-    }
-
-    public static function getByUsername($username){
-        return UserModel::where('username',$username)->first();
+    public static function updateUserById($data,$id) {
+        $data['updated_at'] = date('Y-m-d H:i:s');
+        
+        return UserModel::where('id',$id)->update($data);
     }
 }

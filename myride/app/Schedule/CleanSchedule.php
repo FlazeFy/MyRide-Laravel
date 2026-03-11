@@ -27,12 +27,12 @@ class CleanSchedule
         $total = HistoryModel::deleteHistoryForLastNDays($days);
         $admin = AdminModel::getAllContact();
 
-        if($admin){
-            foreach($admin as $dt){
+        if ($admin) {
+            foreach($admin as $dt) {
                 $message = "[ADMIN] Hello $dt->username, the system just run a clean history, with result of $total history executed";
 
-                if($dt->telegram_user_id && $dt->telegram_is_valid == 1){
-                    if(TelegramMessage::checkTelegramID($dt->telegram_user_id)){
+                if ($dt->telegram_user_id && $dt->telegram_is_valid == 1) {
+                    if (TelegramMessage::checkTelegramID($dt->telegram_user_id)) {
                         $response = Telegram::sendMessage([
                             'chat_id' => $dt->telegram_user_id,
                             'text' => $message,
@@ -52,12 +52,12 @@ class CleanSchedule
         $total = ReminderModel::deleteReminderForLastNDays($days);
         $admin = AdminModel::getAllContact();
 
-        if($admin){
-            foreach($admin as $dt){
+        if ($admin) {
+            foreach($admin as $dt) {
                 $message = "[ADMIN] Hello $dt->username, the system just run a clean reminder, with result of $total reminder executed";
 
-                if($dt->telegram_user_id && $dt->telegram_is_valid == 1){
-                    if(TelegramMessage::checkTelegramID($dt->telegram_user_id)){
+                if ($dt->telegram_user_id && $dt->telegram_is_valid == 1) {
+                    if (TelegramMessage::checkTelegramID($dt->telegram_user_id)) {
                         $response = Telegram::sendMessage([
                             'chat_id' => $dt->telegram_user_id,
                             'text' => $message,
@@ -76,7 +76,7 @@ class CleanSchedule
         $days = 30;
         $summary = VehicleModel::getVehiclePlanDestroy($days);
         
-        if($summary){
+        if ($summary) {
             $firebaseRealtime = new Firebase();
             $admin = AdminModel::getAllContact();
             $summary_exec = "";
@@ -89,8 +89,8 @@ class CleanSchedule
                 $vehicle_data = "$vh->vehicle_merk $vh->vehicle_name ($vh->vehicle_plate_number)";
 
                 // Report to user & execute destroy
-                if($vh->telegram_user_id){
-                    if(TelegramMessage::checkTelegramID($vh->telegram_user_id)){
+                if ($vh->telegram_user_id) {
+                    if (TelegramMessage::checkTelegramID($vh->telegram_user_id)) {
                         $message = "Hello $vh->username, your vehicle $vehicle_data is permanently deleted";
                         // Report to user
                         $response = Telegram::sendMessage([
@@ -105,10 +105,10 @@ class CleanSchedule
         
                 // Destroy vehicle items
                 $rows = VehicleModel::hardDeleteVehicleById($vh->created_by,$vh->id);
-                if($rows > 0){
+                if ($rows > 0) {
                     // Delete Firebase Uploaded Image
-                    if($vh->vehicle_img_url){
-                        if(!Firebase::deleteFile($vh->vehicle_img_url)){
+                    if ($vh->vehicle_img_url) {
+                        if (!Firebase::deleteFile($vh->vehicle_img_url)) {
                             return response()->json([
                                 'status' => 'failed',
                                 'message' => Generator::getMessageTemplate("not_found", 'failed to delete vehicle image'),
@@ -128,11 +128,11 @@ class CleanSchedule
             }
 
             // Report to admin
-            foreach($admin as $dt){
+            foreach($admin as $dt) {
                 $message_admin = "[ADMIN] Hello $dt->username, the system just run a clean vehicle, here's the detail:\n\n$summary_exec";
 
-                if($dt->telegram_user_id){
-                    if(TelegramMessage::checkTelegramID($dt->telegram_user_id)){
+                if ($dt->telegram_user_id) {
+                    if (TelegramMessage::checkTelegramID($dt->telegram_user_id)) {
                         // Report to admin
                         $response = Telegram::sendMessage([
                             'chat_id' => $dt->telegram_user_id,

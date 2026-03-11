@@ -17,10 +17,10 @@
     let page = 1
     const holder = '#trip_location-holder'
     
-    $(document).on('blur','#trip_origin_name,#trip_destination_name',function(){
+    $(document).on('blur','#trip_origin_name,#trip_destination_name',function() {
         const locationName = $(this).val()
 
-        if(locationName.trim() !== ""){
+        if (locationName.trim() !== "") {
             $(holder).empty()
             getTripCoordinateByLocationName(locationName, $(this).attr('id'), page)
         }
@@ -54,13 +54,13 @@
                 })
                 callModal('trip_coordinate-modal')
 
-                if (lastPage > page){
+                if (lastPage > page) {
                     $(holder).append(`<a class="btn btn-warning py-1 mx-auto see_more-button" data-location-name="${locationName}" data-id="${id}" data-current-page="${page}"><i class="fa-solid fa-magnifying-glass"></i> See More</a>`)
                 }
             },
             error: function(response, jqXHR, textStatus, errorThrown) {
                 Swal.close()
-                if(response.status != 404){
+                if (response.status != 404) {
                     generateApiError(response, true)
                 } 
             }
@@ -68,7 +68,7 @@
     }
 
     $(document).ready(() => {
-        $(document).on('click','.use_coordinate-btn',function(){
+        $(document).on('click','.use_coordinate-btn',function() {
             const coordinate = $(this).data('location-coordinate')
             const locName = $(this).data('location-name')
             const id = $(this).data('active-input')
@@ -81,7 +81,7 @@
             $('#trip_coordinate-modal').modal('hide')
         })
 
-        $(document).on('click', '.see_more-button', function(){
+        $(document).on('click', '.see_more-button', function() {
             const locationName = $(this).data('location-name')
             const id = $(this).data('id')
             const page = parseInt($(this).data('current-page')) + 1

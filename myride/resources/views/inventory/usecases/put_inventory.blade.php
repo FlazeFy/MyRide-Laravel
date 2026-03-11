@@ -29,7 +29,7 @@
 </div>
 
 <script>
-    $(document).on('click','.btn-update',async function(){
+    $(document).on('click','.btn-update',async function() {
         callModal('update-modal')
         await getVehicleNameOption(token)
         await getDictionaryByContextOption('inventory_category,inventory_storage',token)
@@ -51,7 +51,7 @@
         $('#inventory_storage_holder').val($(this).data('inventory-storage'))
     })
 
-    $(document).on('click','#submit_update-btn', function(){
+    $(document).on('click','#submit_update-btn', function() {
         const id = $('#inventory_id').val()
         put_inventory(id)
     })
@@ -59,7 +59,7 @@
         const vehicle_id = $('#vehicle_holder').val()
         const inventory_category = $('#inventory_category_holder').val()
 
-        if(vehicle_id !== "-" && inventory_category !== "-"){
+        if (vehicle_id !== "-" && inventory_category !== "-") {
             Swal.showLoading()
             $.ajax({
                 url: `/api/v1/inventory/${id}`,
@@ -84,7 +84,7 @@
                 },
                 error: function(response, jqXHR, textStatus, errorThrown) {
                     Swal.close()
-                    if(response.status === 500){
+                    if (response.status === 500) {
                         generateApiError(response, true)
                     } else {
                         failedMsg(response.status === 400 ? Object.values(response.responseJSON.message).flat().join('\n') : response.responseJSON.message)

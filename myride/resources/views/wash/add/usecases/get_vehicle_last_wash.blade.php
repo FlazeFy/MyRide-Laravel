@@ -7,13 +7,13 @@
     const wash_holder = 'last_wash-holder'
     messageAlertBox(wash_holder, "danger", "You must select a vehicle first")
 
-    $(document).on('change','#vehicle_holder', function(){
+    $(document).on('change','#vehicle_holder', function() {
         const id = $(this).val()
         get_vehicle_last_wash(id)
     })
 
     const get_vehicle_last_wash = (id) => {
-        if(id !== "-"){
+        if (id !== "-") {
             Swal.showLoading()
             $.ajax({
                 url: `/api/v1/wash/last/${id}`,
@@ -77,7 +77,7 @@
                 },
                 error: function(response, jqXHR, textStatus, errorThrown) {
                     Swal.close()
-                    if(response.status !== 404){
+                    if (response.status !== 404) {
                         generateApiError(response, true)
                     } else {
                         messageAlertBox(wash_holder, "danger", "You never wash this vehicle")

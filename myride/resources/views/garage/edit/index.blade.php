@@ -63,7 +63,7 @@
                     $(`#vehicle_fuel_capacity`).val(data.vehicle_fuel_capacity)
                     $(`#vehicle_capacity`).val(data.vehicle_capacity)
 
-                    if(data.vehicle_img_url){
+                    if (data.vehicle_img_url) {
                         $('#vehicle_img-holder').html(`<img class="img img-fluid" src="${data.vehicle_img_url}" alt="${data.vehicle_img_url}"/>`)
                         $('#add_image-button span').text(' Change Image')
                         $('#vehicle_image_button-holder').prepend(`<a class="btn btn-danger py-1" id="remove_image-button"><i class="fa-solid fa-trash"></i><span class="d-none d-md-inline"> Remove Image</span></a>`)
@@ -72,7 +72,7 @@
                         templateAlertContainer('vehicle_img-holder', 'no-data', "No image selected", null, '<i class="fa-solid fa-image"></i>', null)
                     }
 
-                    if(data.vehicle_other_img_url){
+                    if (data.vehicle_other_img_url) {
                         data.vehicle_other_img_url.forEach(dt => {
                             $('#vehicle_img_collection-holder').append(`
                                 <div class="col-md-6 col-sm-12">
@@ -90,7 +90,7 @@
                         templateAlertContainer('vehicle_img_collection-holder', 'no-data', "No image collection added", null, '<i class="fa-solid fa-image"></i>', null)
                     }
 
-                    if(data.vehicle_document){
+                    if (data.vehicle_document) {
                         $('#doc_attachment-holder').empty()
                         data.vehicle_document.forEach(dt => {
                             let preview = ""
@@ -120,7 +120,7 @@
                 },
                 error: function(response, jqXHR, textStatus, errorThrown) {
                     Swal.close()
-                    if(response.status !== 404){
+                    if (response.status !== 404) {
                         generateApiError(response, true)
                     } else {
                         failedRoute('vehicle','/garage')

@@ -41,17 +41,17 @@ class FuelModel extends Model
         'fuel_ron' => 'integer',
     ];
 
-    public static function getAllFuel($user_id = null, $vehicle_id = null, $paginate){
-        $res = FuelModel::select('fuel.id', 'vehicle_plate_number', 'vehicle_type', 'fuel_volume', 'fuel_price_total', 'fuel_brand', 'fuel_type', 'fuel_ron', 'fuel.created_at', 'fuel_bill')
-            ->join('vehicle','vehicle.id','=','fuel.vehicle_id');
-
-        if ($user_id) $res = $res->where('fuel.created_by',$user_id);
+    public static function getLastFuel($user_id, $vehicle_id = null) {
+        $res = FuelModel::select('vehicle_plate_number', 'vehicle_type', 'fuel_volume', 'fuel_price_total', 'fuel_brand', 'fuel_type', 'fuel_ron', 'fuel.created_at')
+            ->join('vehicle','vehicle.id','=','fuel.vehicle_id')
+            ->where('fuel.created_by',$user_id);
+        
         if ($vehicle_id) $res = $res->where('vehicle_id',$vehicle_id);
 
-        return $res->orderby('fuel.created_at','desc')->paginate($paginate);
-    } 
+        return $res->orderby('fuel.created_at','desc')->first();
+    }
 
-    public static function getTotalFuelByVehiclePerYear($user_id = null, $vehicle_id = null, $context, $year){
+    public static function getTotalFuelByVehiclePerYear($user_id = null, $vehicle_id = null, $context, $year) {
         $res = FuelModel::selectRaw("SUM($context) as total, MONTH(created_at) as context");
 
         if ($vehicle_id) $res = $res->where('vehicle_id',$vehicle_id);
@@ -62,7 +62,7 @@ class FuelModel extends Model
             ->get();
     }
 
-    public static function getTotalFuelSpendingPerMonth($user_id = null, $year, $is_admin){
+    public static function getTotalFuelSpendingPerMonth($user_id = null, $year, $is_admin) {
         $res = FuelModel::selectRaw("SUM(fuel_price_total) as total, MONTH(created_at) as context");
         
         if ($user_id) $res = $res->where('created_by', $user_id);
@@ -72,71 +72,12 @@ class FuelModel extends Model
             ->get();
     }
 
-    public static function hardDeleteFuelById($id, $user_id = null){
-        $res = FuelModel::where('id',$id);
-
-        if ($user_id) $res = $res->where('created_by',$user_id);
-            
-        return $res->delete();
-    }
-
-    public static function hardDeleteByVehicleId($vehicle_id, $user_id = null){
-        $res = FuelModel::where('vehicle_id',$vehicle_id);
-
-        if ($user_id) $res = $res->where('created_by',$user_id);
-            
-        return $res->delete();
-    }
-
-    public static function updateFuelById($data, $user_id, $id){
-        $data['updated_at'] = date('Y-m-d H:i:s');
-        
-        return FuelModel::where('created_by',$user_id)->where('id',$id)->update($data);
-    }
-
-    public static function getLastFuel($user_id, $vehicle_id = null){
-        $res = FuelModel::select('vehicle_plate_number', 'vehicle_type', 'fuel_volume', 'fuel_price_total', 'fuel_brand', 'fuel_type', 'fuel_ron', 'fuel.created_at')
-            ->join('vehicle','vehicle.id','=','fuel.vehicle_id')
-            ->where('fuel.created_by',$user_id);
-        
-        if ($vehicle_id) $res = $res->where('vehicle_id',$vehicle_id);
-
-        return $res->orderby('fuel.created_at','desc')->first();
-    }
-
-    public static function getJourney($user_id, $vehicle_id){
-        return FuelModel::select("fuel_volume", "fuel_price_total", "fuel_brand", "fuel_type", "fuel_ron", "created_at")
-            ->where('created_by', $user_id)
-            ->where('vehicle_id', $vehicle_id)
-            ->orderby('created_at','DESC')
-            ->get();
-    }
-
-    public static function createFuel($data, $user_id){
-        $data['created_at'] = $data['created_at'] ?? date('Y-m-d H:i:s');
-        $data['created_by'] = $user_id;
-        $data['id'] = Generator::getUUID();
-            
-        return FuelModel::create($data);
-    }
-
-    public static function getExportData($user_id, $vehicle_id = null){
-        $res = FuelModel::select("vehicle_name","vehicle_plate_number", "vehicle_type", "fuel_volume", "fuel_price_total", "fuel_brand", "fuel_type", "fuel_ron", "fuel.created_at as datetime")
-            ->join('vehicle','vehicle.id','=','fuel.vehicle_id');
-        
-        if ($vehicle_id) $res = $res->where('vehicle_id',$vehicle_id);
-
-        return $res->where('fuel.created_by',$user_id)
-            ->orderBy('fuel.created_at', 'desc')
-            ->get();
-    }
-
-    public static function getMonthlyFuelSummary($user_id = null, $vehicle_id = null, $month_year = "all"){
+    public static function getMonthlyFuelSummary($user_id = null, $vehicle_id = null, $month_year = "all") {
         $res = FuelModel::selectRaw("CAST(SUM(fuel_price_total) as SIGNED) as total_fuel_price, CAST(SUM(fuel_volume) as SIGNED) as total_fuel_volume, COUNT(1) as total_refueling");
         
         if ($vehicle_id) $res = $res->where('vehicle_id',$vehicle_id);
         if ($user_id) $res = $res->where('created_by',$user_id);
-        if ($month_year !== "all"){
+        if ($month_year !== "all") {
             [$month, $year] = explode('-', $month_year);
             $res = $res->whereMonth('created_at', $month)->whereYear('created_at', $year);
         }
@@ -149,5 +90,64 @@ class FuelModel extends Model
         $row->total_refueling  = (int) $row->total_refueling;
 
         return $row;
+    }
+
+    public static function getAllFuel($user_id = null, $vehicle_id = null, $paginate) {
+        $res = FuelModel::select('fuel.id', 'vehicle_plate_number', 'vehicle_type', 'fuel_volume', 'fuel_price_total', 'fuel_brand', 'fuel_type', 'fuel_ron', 'fuel.created_at', 'fuel_bill')
+            ->join('vehicle','vehicle.id','=','fuel.vehicle_id');
+
+        if ($user_id) $res = $res->where('fuel.created_by',$user_id);
+        if ($vehicle_id) $res = $res->where('vehicle_id',$vehicle_id);
+
+        return $res->orderby('fuel.created_at','desc')->paginate($paginate);
+    } 
+
+    public static function getJourney($user_id, $vehicle_id) {
+        return FuelModel::select("fuel_volume", "fuel_price_total", "fuel_brand", "fuel_type", "fuel_ron", "created_at")
+            ->where('created_by', $user_id)
+            ->where('vehicle_id', $vehicle_id)
+            ->orderby('created_at','DESC')
+            ->get();
+    }
+
+    public static function getExportData($user_id, $vehicle_id = null) {
+        $res = FuelModel::select("vehicle_name","vehicle_plate_number", "vehicle_type", "fuel_volume", "fuel_price_total", "fuel_brand", "fuel_type", "fuel_ron", "fuel.created_at as datetime")
+            ->join('vehicle','vehicle.id','=','fuel.vehicle_id');
+        
+        if ($vehicle_id) $res = $res->where('vehicle_id',$vehicle_id);
+
+        return $res->where('fuel.created_by',$user_id)
+            ->orderBy('fuel.created_at', 'desc')
+            ->get();
+    }
+
+    public static function createFuel($data, $user_id) {
+        $data['created_at'] = $data['created_at'] ?? date('Y-m-d H:i:s');
+        $data['created_by'] = $user_id;
+        $data['id'] = Generator::getUUID();
+            
+        return FuelModel::create($data);
+    }
+
+    public static function updateFuelById($data, $user_id, $id) {
+        $data['updated_at'] = date('Y-m-d H:i:s');
+        
+        return FuelModel::where('created_by',$user_id)->where('id',$id)->update($data);
+    }
+
+    public static function hardDeleteFuelById($id, $user_id = null) {
+        $res = FuelModel::where('id',$id);
+
+        if ($user_id) $res = $res->where('created_by',$user_id);
+            
+        return $res->delete();
+    }
+
+    public static function hardDeleteByVehicleId($vehicle_id, $user_id = null) {
+        $res = FuelModel::where('vehicle_id',$vehicle_id);
+
+        if ($user_id) $res = $res->where('created_by',$user_id);
+            
+        return $res->delete();
     }
 }

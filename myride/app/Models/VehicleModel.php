@@ -64,28 +64,29 @@ class VehicleModel extends Model
         'vehicle_capacity' => 'integer',
     ];
 
-    public static function createVehicle($data, $user_id){
-        $data['created_at'] = date('Y-m-d H:i:s');
-        $data['created_by'] = $user_id;
-        $data['updated_at'] = null;
-        $data['deleted_at'] = null;
-        $data['id'] = Generator::getUUID();
-            
-        return VehicleModel::create($data);
+    public static function getVehicleDetailById($user_id = null,$id) {
+        $res = VehicleModel::where('id',$id);
+
+        if ($user_id) $res = $res->where('created_by',$user_id);
+
+        $res = $res->first();
+        unset($res->created_by);
+
+        return $res;
     }
 
-    public static function getVehicleByIdAndUserId($id, $user_id){
+    public static function getVehicleIdentity($user_id,$id) {
+        return VehicleModel::select('vehicle_name','vehicle_plate_number')
+            ->where('id',$id)
+            ->where('created_by',$user_id)
+            ->first();
+    }
+
+    public static function getVehicleByIdAndUserId($id, $user_id) {
         return VehicleModel::where('id',$id)->where('created_by',$user_id)->first();
     }
 
-    public static function updateVehicleById($data, $id, $user_id){
-        $keys = array_keys($data);
-        if (!(count($keys) === 1 && $keys[0] === 'deleted_at')) $data['updated_at'] = date('Y-m-d H:i:s');
-
-        return VehicleModel::where('id',$id)->where('created_by',$user_id)->update($data);
-    }
-
-    public static function getTotalVehicleByCategory($user_id){
+    public static function getTotalVehicleByCategory($user_id) {
         return VehicleModel::selectRaw('vehicle_category as context, COUNT(1) as total')
             ->where('created_by', $user_id)
             ->orderBy('total','DESC')
@@ -94,7 +95,25 @@ class VehicleModel extends Model
             ->get();
     }
 
-    public static function getAllVehicleName($user_id){
+    public static function getContextTotalStats($context,$user_id = null) {
+        $res = VehicleModel::selectRaw("$context as context, COUNT(1) as total");
+
+        if ($user_id) $res = $res->where('created_by', $user_id);
+
+        $res = $res->groupby($context)
+            ->orderby('total','desc')
+            ->limit(7)
+            ->get();
+        
+        if ($res->isEmpty()) return null;
+    
+        return $res->map(function ($row) {
+            $row->total = (int) $row->total;
+            return $row;
+        });
+    }
+
+    public static function getAllVehicleName($user_id) {
         return VehicleModel::select('id','vehicle_name','vehicle_plate_number','deleted_at')
             ->where('created_by', $user_id)
             ->orderBy('deleted_at','ASC')
@@ -103,20 +122,20 @@ class VehicleModel extends Model
             ->get();
     }
 
-    public static function getAllVehicleFuel($user_id){
+    public static function getAllVehicleFuel($user_id) {
         return VehicleModel::select('id','vehicle_name','vehicle_plate_number','vehicle_fuel_status', 'vehicle_fuel_capacity')
             ->where('created_by', $user_id)
             ->orderByRaw("FIELD(vehicle_fuel_status, 'Empty', 'Low', 'Normal', 'High', 'Full', 'Not Monitored')")
             ->get();
     }
 
-    public static function getAllVehicleHeader($user_id = null,$limit){
+    public static function getAllVehicleHeader($user_id = null,$limit) {
         $res = VehicleModel::selectRaw("
             id, vehicle_name, vehicle_desc, vehicle_merk, vehicle_type, vehicle_distance, vehicle_category, vehicle_status, vehicle_plate_number, 
             vehicle_fuel_status, vehicle_default_fuel, vehicle_color, vehicle_capacity, vehicle_img_url, vehicle_transmission, updated_at
         ");
 
-        if($user_id) $res = $res->where('created_by',$user_id);
+        if ($user_id) $res = $res->where('created_by',$user_id);
 
         $res = $res->orderBy('updated_at','desc')
             ->orderBy('created_at','desc')
@@ -125,7 +144,7 @@ class VehicleModel extends Model
         return $res->isNotEmpty() ? $res : null;
     }
 
-    public static function getVehicleReadiness($user_id = null,$limit){
+    public static function getVehicleReadiness($user_id = null,$limit) {
         $res = VehicleModel::select('id','vehicle_name','vehicle_type','vehicle_status','vehicle_plate_number','vehicle_fuel_status','vehicle_capacity', 'vehicle_transmission', 'deleted_at',
                 DB::raw("
                     (CASE vehicle_status
@@ -146,7 +165,7 @@ class VehicleModel extends Model
                 ")
             );
         
-        if($user_id) $res = $res->where('created_by',$user_id);
+        if ($user_id) $res = $res->where('created_by',$user_id);
 
         $res = $res->orderBy('readiness','desc')
             ->orderBy('created_at','desc')
@@ -155,53 +174,9 @@ class VehicleModel extends Model
         return $res->isNotEmpty() ? $res : null;
     }
 
-    public static function getVehicleDetailById($user_id = null,$id){
-        $res = VehicleModel::where('id',$id);
-
-        if($user_id) $res = $res->where('created_by',$user_id);
-
-        $res = $res->first();
-        unset($res->created_by);
-
-        return $res;
-    }
-
-    public static function getVehicleIdentity($user_id,$id){
-        return VehicleModel::select('vehicle_name','vehicle_plate_number')
-            ->where('id',$id)
-            ->where('created_by',$user_id)
-            ->first();
-    }
-
-    public static function getContextTotalStats($context,$user_id = null){
-        $res = VehicleModel::selectRaw("$context as context, COUNT(1) as total");
-
-        if($user_id) $res = $res->where('created_by', $user_id);
-
-        $res = $res->groupby($context)
-            ->orderby('total','desc')
-            ->limit(7)
-            ->get();
-        
-        if ($res->isEmpty()) return null;
-    
-        return $res->map(function ($row) {
-            $row->total = (int) $row->total;
-            return $row;
-        });
-    }
-
-    public static function hardDeleteVehicleById($user_id = null,$id){
-        $res = VehicleModel::whereNotNull("deleted_at")->where('id',$id);
-
-        if($user_id) $res = $res->where('created_by',$user_id);
-
-        return $res->delete();
-    }
-
     // For Seeder
-    public static function getRandom($null, $user_id){
-        if($null == 0){
+    public static function getRandom($null, $user_id) {
+        if ($null == 0) {
             $data = VehicleModel::where('created_by',$user_id)->inRandomOrder()->take(1)->first();
             $res = $data->id;
         } else {
@@ -211,11 +186,36 @@ class VehicleModel extends Model
         return $res;
     }
 
-    public static function getVehiclePlanDestroy($days){
+    public static function getVehiclePlanDestroy($days) {
         return VehicleModel::select('vehicle.id','vehicle_name','deleted_at','username','telegram_user_id','telegram_is_valid','created_by','vehicle_plate_number','vehicle_merk','vehicle_img_url')
             ->join('users','users.id','=','vehicle.created_by')
             ->whereDate('deleted_at', '<', Carbon::now()->subDays($days))
             ->orderby('username','asc')
             ->get();
+    }
+
+    public static function createVehicle($data, $user_id) {
+        $data['created_at'] = date('Y-m-d H:i:s');
+        $data['created_by'] = $user_id;
+        $data['updated_at'] = null;
+        $data['deleted_at'] = null;
+        $data['id'] = Generator::getUUID();
+            
+        return VehicleModel::create($data);
+    }
+
+    public static function updateVehicleById($data, $id, $user_id) {
+        $keys = array_keys($data);
+        if (!(count($keys) === 1 && $keys[0] === 'deleted_at')) $data['updated_at'] = date('Y-m-d H:i:s');
+
+        return VehicleModel::where('id',$id)->where('created_by',$user_id)->update($data);
+    }
+
+    public static function hardDeleteVehicleById($user_id = null,$id) {
+        $res = VehicleModel::whereNotNull("deleted_at")->where('id',$id);
+
+        if ($user_id) $res = $res->where('created_by',$user_id);
+
+        return $res->delete();
     }
 }

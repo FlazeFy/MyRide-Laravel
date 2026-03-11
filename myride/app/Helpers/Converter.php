@@ -5,11 +5,7 @@ namespace App\Helpers;
 class Converter
 {
     public static function convert_price_k($val) {
-        if ($val >= 1000) {
-            return round($val / 1000, 1) . 'K';
-        } else {
-            return $val;
-        }
+        return $val >= 1000 ? round($val / 1000, 1) . 'K' : $val;
     }
 
     public static function calculate_distance($lat1, $lon1, $lat2, $lon2, $unit = 'km') {
@@ -18,11 +14,7 @@ class Converter
         $distance = acos($distance);
         $distance = rad2deg($distance);
         $distance = $distance * 60 * 1.1515; 
-
-        if ($unit == 'km') {
-            $distance = $distance * 1.609344;
-        }
-
+        if ($unit == 'km') $distance = $distance * 1.609344;
         $distance = number_format($distance, 2);
         
         return $distance;

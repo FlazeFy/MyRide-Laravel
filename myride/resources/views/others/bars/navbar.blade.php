@@ -3,7 +3,7 @@
 @endphp
 <nav class="navbar navbar-expand-lg">
     <div class="d-inline-block w-100 d-flex flex-wrap gap-3 align-items-center">
-        @if($path !== '/')
+        @if ($path !== '/')
             <div class="d-inline-block">
                 <button class="toogle_nav-button btn btn-primary px-3 close"><i class="fa-solid fa-bars"></i></button>
             </div>
@@ -40,7 +40,7 @@
             </div>
         </div>
         
-        @if(session()->get('token_key'))
+        @if (session()->get('token_key'))
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto gap-2">
                 <li class="nav-item"><a class="btn btn-primary px-3" id="profile-button" href="<?= Route::current()->uri() === "/" ? "/dashboard" : "/profile"?>"><i class="fa-solid fa-user"></i><span class="button-text"> {{session()->get('username_key')}}</span></a></li>

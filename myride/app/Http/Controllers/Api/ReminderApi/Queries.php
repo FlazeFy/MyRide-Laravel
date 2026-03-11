@@ -170,7 +170,7 @@ class Queries extends Controller
 
             // Get all reminder with pagination
             $res = ReminderModel::getAllReminder($user_id, $limit, $search);
-            if(count($res) > 0) {
+            if (count($res) > 0) {
                 // Return success response
                 return response()->json([
                     'status' => 'success',
@@ -252,7 +252,7 @@ class Queries extends Controller
 
             // Get recently created reminder
             $res = ReminderModel::getRecentlyReminder($user_id,$limit);
-            if(count($res) > 0) {
+            if (count($res) > 0) {
                 // Return success response
                 return response()->json([
                     'status' => 'success',

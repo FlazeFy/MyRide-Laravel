@@ -27,7 +27,7 @@ class FAQModel extends Model
     protected $primaryKey = 'id';
     protected $fillable = ['id', 'faq_question', 'faq_answer', 'created_at', 'is_show'];
 
-    public static function getShowingFAQ(){
+    public static function getShowingFAQ() {
         $res = FAQModel::select("faq_question","faq_answer")
             ->where('is_show',1)
             ->whereNotNull('faq_answer')

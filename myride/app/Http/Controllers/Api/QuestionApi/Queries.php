@@ -60,7 +60,7 @@ class Queries extends Controller
         try{
             // Get Showing FAQ
             $res = FAQModel::getShowingFAQ();
-            if($res) {
+            if ($res) {
                 // Return success response
                 return response()->json([
                     'status' => 'success',

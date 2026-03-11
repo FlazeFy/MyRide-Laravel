@@ -57,13 +57,13 @@
     <script src="{{ asset('/js/global_v1.0.js')}}"></script>
     <script src="{{ asset('/js/message_v1.0.js')}}"></script>
     <script src="{{ asset('/js/template_v1.0.js')}}"></script>
-    <?php if(preg_match('(stats|embed|detail|dashboard|fuel|inventory|service)', $cleanedUrl)): ?>
+    <?php if (preg_match('(stats|embed|detail|dashboard|fuel|inventory|service)', $cleanedUrl)): ?>
         <script src="{{ asset('/js/chart_v1.0.js')}}"></script>
     <?php endif; ?>
-    <?php if(preg_match('(fuel|garage|service|wash|trip|driver)', $cleanedUrl)): ?>
+    <?php if (preg_match('(fuel|garage|service|wash|trip|driver)', $cleanedUrl)): ?>
         <script src="{{ asset('/js/math_v1.0.js')}}"></script>
     <?php endif; ?>
-    <?php if(preg_match('(calendar)', $cleanedUrl)): ?>
+    <?php if (preg_match('(calendar)', $cleanedUrl)): ?>
         <!--Full calendar.-->
         <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js'></script>
     <?php endif; ?>
@@ -73,7 +73,7 @@
     
     <?php 
         // Datatable CDN
-        if($route == 'wash'){
+        if ($route == 'wash') {
             echo "
                 <!-- Jquery DataTables -->
                 <script type='text/javascript' language='javascript' src='https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js'></script>
@@ -91,10 +91,10 @@
 </head>
 <body class="light">
     @include('others.detect_flazenapps')
-    <?php if(!preg_match('(embed)', $cleanedUrl)): ?>
+    <?php if (!preg_match('(embed)', $cleanedUrl)): ?>
         @include('others.bars.navbar')
     <?php endif; ?>
-    <?php if(!preg_match('(embed)', $cleanedUrl) && $route !== "welcome"): ?>
+    <?php if (!preg_match('(embed)', $cleanedUrl) && $route !== "welcome"): ?>
         @include('others.bars.sidebar')
     <?php endif; ?>
 
@@ -102,7 +102,7 @@
     <div class="content flex-grow-1">
         @yield('content')
     </div>
-    <?php if($route === "welcome"): ?>
+    <?php if ($route === "welcome"): ?>
         @include('welcome.usecases.footer')
     <?php endif; ?>
 </body>
@@ -122,7 +122,7 @@
 <!-- Others JS -->
 <?php 
     $route = Route::currentRouteName();
-    if($route == 'add_trip' || $route == 'trip' || $route == 'reminder' || $route == 'add_reminder'){
+    if ($route == 'add_trip' || $route == 'trip' || $route == 'reminder' || $route == 'add_reminder') {
         echo "
             <script src='https://maps.googleapis.com/maps/api/js?key=AIzaSyDXu2ivsJ8Hj6Qg1punir1LR2kY9Q_MSq8&callback=initMap&v=weekly' defer></script>
         ";

@@ -11,7 +11,7 @@
     templateAlertContainer('doc_attachment-holder', 'no-data', "No document attached", null, '<i class="fa-solid fa-link"></i>', null)
 
     $(document).ready(function() {
-        $(document).on('click', '#clear_doc-button', function(){
+        $(document).on('click', '#clear_doc-button', function() {
             $('#vehicle_document_button-holder').find(this).remove()
             $('#vehicle_document_button-holder').find('#save_doc-button').remove()
             $("#doc_attachment-holder").empty()
@@ -19,14 +19,14 @@
         })
 
         $(document).on('click', '#add_doc-button', function () {
-            if($('#vehicle_document_button-holder').find('#clear_doc-button').length === 0){
+            if ($('#vehicle_document_button-holder').find('#clear_doc-button').length === 0) {
                 $('#vehicle_document_button-holder').prepend(`
                     <a class="btn btn-danger" id="clear_doc-button"><i class="fa-solid fa-circle-xmark"></i><span class="d-none d-md-inline"> Clear</span></a>
                     <a class="btn btn-success" id="save_doc-button"><i class="fa-solid fa-floppy-disk"></i><span class="d-none d-md-inline"> Save Doc</span></a>
                 `)
             }
 
-            if($("#doc_attachment-holder").find('.vehicle_document-holder').length === 0){
+            if ($("#doc_attachment-holder").find('.vehicle_document-holder').length === 0) {
                 $("#doc_attachment-holder").empty()
             }
 
@@ -79,9 +79,9 @@
             reader.readAsDataURL(file)
         })
 
-        $(document).on('click','#save_doc-button',function(){
+        $(document).on('click','#save_doc-button',function() {
             let allFilled = true
-            $('.vehicle_document').each(function(){
+            $('.vehicle_document').each(function() {
                 if (!this.files || this.files.length === 0) {
                     allFilled = false
                 }

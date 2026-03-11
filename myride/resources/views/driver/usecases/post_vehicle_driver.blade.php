@@ -23,7 +23,7 @@
 </div>
 
 <script>
-    $(document).on('click','.btn-assigned-driver-vehicle',function(){
+    $(document).on('click','.btn-assigned-driver-vehicle',function() {
         const vehicle_id = $(this).data('vehicle_id')
         const vehicle_data = $(this).data('vehicle_data')
         const driver = $(this).data('driver')
@@ -49,7 +49,7 @@
         })
     })
 
-    $(document).on('click','#submit_assigned_driver-modal',function(){
+    $(document).on('click','#submit_assigned_driver-modal',function() {
         const vehicle_id = $(this).data('vehicle_id')
         const driver_id = $(this).data('driver_id')
         const driver_fullname = $(this).data('driver_fullname')

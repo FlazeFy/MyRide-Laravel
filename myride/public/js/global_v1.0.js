@@ -3,7 +3,7 @@ const summaryFetchRestTime = 360
 const statsFetchRestTime = 120
 
 const getDateToContext = (datetime, type, isFlexible = true) => {
-    if(datetime){
+    if (datetime) {
         const result = new Date(datetime);
 
         if (type == "full") {
@@ -31,7 +31,7 @@ const getDateToContext = (datetime, type, isFlexible = true) => {
         } else if (type == "calendar") {
             const result = new Date(datetime)
 
-            if (isFlexible){
+            if (isFlexible) {
                 const offsetHours = getUTCHourOffset()
                 result.setUTCHours(result.getUTCHours() + offsetHours)
             }
@@ -110,9 +110,9 @@ const generateApiError = (response, is_list_format) => {
     if (response.status === 422) {
         let msg = response.responseJSON.message
         
-        if(typeof msg != 'string'){
+        if (typeof msg != 'string') {
             const allMsg = Object.values(msg).flat()
-            if(is_list_format){
+            if (is_list_format) {
                 msg = '<ol>'
                 allMsg.forEach((dt) => {
                     msg += `<li>- ${dt.replace('.','')}</li>`
@@ -128,7 +128,7 @@ const generateApiError = (response, is_list_format) => {
             html: msg,
             icon: "error"
         });
-    } else if(response.status === 404){
+    } else if (response.status === 404) {
         Swal.fire("Oops!", "Data not found", "error")
     } else {
         Swal.fire("Oops!", response.responseJSON?.message || "Something went wrong", "error")
@@ -136,11 +136,11 @@ const generateApiError = (response, is_list_format) => {
 }
 
 const validateInput = (type, id, max, min) => {
-    if(type == "text"){
+    if (type == "text") {
         const check = $(`#${id}`).val()
         const check_len = check.trim().length
     
-        if(check && check_len > 0 && check_len <= max && check_len >= min){
+        if (check && check_len > 0 && check_len <= max && check_len >= min) {
             return true
         } else {
             return false
@@ -154,7 +154,7 @@ const callModal = (id) => {
 }
 
 const buttonSetRoute = () => {
-    $(document).on('click','.btn-set-route', function(){
+    $(document).on('click','.btn-set-route', function() {
         const coorDestination = $(this).data('trip-destination-coordinate')
         const coorOrigin = $(this).data('trip-origin-coordinate')
         const travelMode = $(this).data('vehicle-type') === 'Motorcycle' ? 'two-wheeler' :'driving'
@@ -229,44 +229,44 @@ const validatorInput = () => {
         const $el = $(this)
         const validator = $el.attr('data-validator')
 
-        if(typeof validator === 'undefined' || validator.trim() === '') {
+        if (typeof validator === 'undefined' || validator.trim() === '') {
             failedMsg(`Input with id="${$el.attr('id')}" is missing or has empty data-validator`)
         }
 
-        if(validator && (validator.trim() === 'must_future' || validator.trim() === 'must_past')) {
+        if (validator && (validator.trim() === 'must_future' || validator.trim() === 'must_past')) {
             $el.on('blur', function() {
                 const type = $el.attr('type')
                 const val = $el.val()
 
-                if(!val) return
+                if (!val) return
                 let chosenDate, now = new Date()
 
-                if(type === 'datetime-local') {
+                if (type === 'datetime-local') {
                     chosenDate = new Date(val)
                 } else if (type === 'date') {
                     chosenDate = new Date(val + 'T00:00:00')
                 }
 
                 let con = validator.trim() === 'must_future' ? chosenDate <= now : chosenDate >= now
-                if(chosenDate && con) {
+                if (chosenDate && con) {
                     failedMsg(`Please choose a ${validator.trim().replace('must_','')} date/time`)
                     $(this).val(null)
                 }
             })
         } 
 
-        if(validator && validator.trim() === 'must_positive') {
+        if (validator && validator.trim() === 'must_positive') {
             $el.on('blur', function() {
                 const val = $el.val()
 
-                if(val <= 0){
+                if (val <= 0) {
                     failedMsg('Number must be more than 0')
                     $(this).val(null)
                 }
             })
         }
 
-        if(validator && validator.trim() === 'must_coordinate') {
+        if (validator && validator.trim() === 'must_coordinate') {
             $el.on('blur', function() {
                 const val = $(this).val()
                 if (!val) return

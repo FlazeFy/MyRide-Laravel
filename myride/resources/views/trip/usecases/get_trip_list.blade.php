@@ -26,7 +26,7 @@
     let nextPageUrlCarousel = null
     let isFetchingNextCarousel = false
 
-    $(document).on('blur','.search-input', function(){
+    $(document).on('blur','.search-input', function() {
         const val = $(this).val().trim()
         getAllTrip(1,val !== "" ? val : null)
         getAllTripCoordinate(val !== "" ? val : null)
@@ -49,7 +49,7 @@
                     url: `/api/v1/trip?page=${page}${queryTripId}${searchQuery}`,
                     type: 'GET',
                     beforeSend: function (xhr) {
-                        if ($(`#${holder}`).find('.carousel-inner').length === 0){
+                        if ($(`#${holder}`).find('.carousel-inner').length === 0) {
                             $(`#${holder}`).html('<div class="carousel-inner pt-4"></div>')
                         }
                         Swal.showLoading()
@@ -82,7 +82,7 @@
                     },
                     error: function(response, jqXHR, textStatus, errorThrown) {
                         Swal.close()
-                        if(response.status != 404){
+                        if (response.status != 404) {
                             reject(errorThrown)
                             generateApiError(response, true)
                         } else {
@@ -101,7 +101,7 @@
             const items = carousel.querySelectorAll('.carousel-item')
             const lastIndex = items.length - 1
 
-            if(e.to === lastIndex && !isFetchingNextCarousel && nextPageUrlCarousel && page < lastPageCarousel){
+            if (e.to === lastIndex && !isFetchingNextCarousel && nextPageUrlCarousel && page < lastPageCarousel) {
                 isFetchingNextCarousel = true
                 page++
 

@@ -20,7 +20,7 @@
 
 <div class="welcome-section">
     <h1 class="fw-bold">Welcome to MyRide</h1>
-    @if(session()->get('username_key'))
+    @if (session()->get('username_key'))
         <h3 class="fw-bold">{{session()->get('username_key')}}</h3>
     @endif
     <img src="{{asset('assets/logo_nocap.png')}}" style='width:30vh;'>
@@ -30,7 +30,7 @@
         Driver, Monitoring Your Stats, Live Tracking, and Many More
     </p>
     <div class="d-flex flex-wrap gap-2 gap-md-4 justify-content-center align-items-center">
-        @if(session()->get('username_key'))
+        @if (session()->get('username_key'))
             <a class="btn btn-success" href="/dashboard"><i class="fa-solid fa-play"></i> Explore Now!</a>
         @else
             <div class="mt-2 text-start border border-2 border-dark p-3 rounded-3">
@@ -41,7 +41,7 @@
                 </div>
             </div>
         @endif
-        @if(session()->get('username_key'))
+        @if (session()->get('username_key'))
             <div class="d-block d-md-none">
                 <a class="btn btn-success px-3" href="#"><i class="fa-solid fa-bell fa-lg"></i></a>
                 <a class="btn btn-danger px-3" data-bs-target="#modalSignOut" data-bs-toggle="modal"><i class="fa-solid fa-right-from-bracket fa-lg"></i></a>

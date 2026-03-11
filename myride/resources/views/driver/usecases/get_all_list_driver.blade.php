@@ -80,7 +80,7 @@
             },
             error: function(response, jqXHR, textStatus, errorThrown) {
                 Swal.close()
-                if(response.status != 404){
+                if (response.status != 404) {
                     generateApiError(response, true)
                 } else {
                     $(`#${holder}`).html(`<tr><td colspan="6" id="msg-${holder}"></td></tr>`)

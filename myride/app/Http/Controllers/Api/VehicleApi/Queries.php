@@ -262,7 +262,7 @@ class Queries extends Controller
      *     ),
      * )
      */
-    public function getAllVehicleName(Request $request){
+    public function getAllVehicleName(Request $request) {
         try{
             $user_id = $request->user()->id;
 
@@ -339,7 +339,7 @@ class Queries extends Controller
      *     ),
      * )
      */
-    public function getAllVehicleFuel(Request $request){
+    public function getAllVehicleFuel(Request $request) {
         try{
             $user_id = $request->user()->id;
 
@@ -617,7 +617,7 @@ class Queries extends Controller
      *     ),
      * )
      */
-    public function getVehicleFullDetailById(Request $request, $id){
+    public function getVehicleFullDetailById(Request $request, $id) {
         try{
             $user_id = $request->user()->id;
             $limit_trip = $request->query("limit_trip",15);
@@ -627,7 +627,7 @@ class Queries extends Controller
 
             // Get vehicle detail
             $res = VehicleModel::getVehicleDetailById($user_id,$id);
-            if($res){
+            if ($res) {
                 // Get trip history by vehicle ID
                 $res_trip = TripModel::getTripByVehicleId($user_id, $id, $limit_trip, $page_trip);
                 // Get wash history by vehicle ID
@@ -720,7 +720,7 @@ class Queries extends Controller
      *     ),
      * )
      */
-    public function getVehicleTripSummaryById(Request $request, $id){
+    public function getVehicleTripSummaryById(Request $request, $id) {
         try{
             $user_id = $request->user()->id;
 

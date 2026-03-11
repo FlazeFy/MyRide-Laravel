@@ -52,17 +52,17 @@
 </form>
 
 <script type="text/javascript">
-    $(document).on('click','#submit-add-service-btn', function(){
+    $(document).on('click','#submit-add-service-btn', function() {
         post_service()
     })
 
-    $(document).on('change','#vehicle_holder', function(){
+    $(document).on('change','#vehicle_holder', function() {
         const id = $(this).val()
         getVehicleDetail(id)
         get_vehicle_service_history(id)
     })
 
-    $(document).on('change','#service_category_holder', function(){
+    $(document).on('change','#service_category_holder', function() {
         const val = $(this).val()
     })
 
@@ -76,7 +76,7 @@
         const vehicle_id = $('#vehicle_holder').val()
         const service_category = $('#service_category_holder').val()
 
-        if(vehicle_id !== "-" && service_category !== "-"){
+        if (vehicle_id !== "-" && service_category !== "-") {
             Swal.showLoading()
             $.ajax({
                 url: `/api/v1/service`,

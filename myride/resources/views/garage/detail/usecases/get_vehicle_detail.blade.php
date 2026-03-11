@@ -109,7 +109,7 @@
                             <img class="img img-fluid" alt="${detail.vehicle_img_url}" src="${detail.vehicle_img_url}">
                         </div>
                     `)
-                    if(detail.vehicle_document){
+                    if (detail.vehicle_document) {
                         let docPreviewHolder = ''
 
                         detail.vehicle_document.forEach((dt, i) => {
@@ -139,8 +139,8 @@
                         `)
                     }
 
-                    if(detail.vehicle_other_img_url){
-                        if(detail.vehicle_other_img_url.length === 1){
+                    if (detail.vehicle_other_img_url) {
+                        if (detail.vehicle_other_img_url.length === 1) {
                             $('#vehicle_img_collection_url-holder').html(`
                                 <div class="container-fluid">
                                     <h2>Others Image</h2><hr>
@@ -182,7 +182,7 @@
                         }
                     }
 
-                    if(detail.deleted_at){
+                    if (detail.deleted_at) {
                         $('#delete_vehicle_button-holder').html(`
                         <a class="btn btn-danger btn-delete" data-type-delete="hard" data-context="Vehicle" data-url="/api/v1/vehicle/destroy/<?= $id ?>">
                             <i class="fa-solid fa-fire"></i> 
@@ -204,7 +204,7 @@
                     build_layout_wash(wash_data,get_vehicle_by_id,page_trip,id)
                     build_layout_driver(driver_data)
 
-                    if(trip_data){
+                    if (trip_data) {
                         lastPageCarousel = trip_data.last_page
                         nextPageUrlCarousel = trip_data.next_page_url
 
@@ -214,7 +214,7 @@
                             appendLayoutTrip(trip_data,"<?= $carouselId ?>")
                         }
 
-                        if(trip_data.data.length > 3){
+                        if (trip_data.data.length > 3) {
                             templateCarouselNavigation("carousel-nav-holder", "<?= $carouselId ?>")
                         }
                         pauseCarousel("<?= $carouselId ?>")
@@ -223,7 +223,7 @@
                         templateAlertContainer(`<?= $carouselId ?>`, 'no-data', "No trip found", 'add a trip', '<i class="fa-solid fa-car"></i>','/trip/add')
                     }
 
-                    if(is_initial){
+                    if (is_initial) {
                         get_vehicle_monthly_trip_stats(<?= date('Y') ?>,id)
                         get_vehicle_summary_trip_by_id(id)
                     }
@@ -232,7 +232,7 @@
                 },
                 error: function(response, jqXHR, textStatus, errorThrown) {
                     Swal.close()
-                    if(response.status !== 404){
+                    if (response.status !== 404) {
                         reject(errorThrown)
                         generateApiError(response, true)
                     } else {
@@ -250,7 +250,7 @@
             const items = carousel.querySelectorAll('.carousel-item')
             const lastIndex = items.length - 1
 
-            if(e.to === lastIndex && !isFetchingNextCarousel && nextPageUrlCarousel && page_trip < lastPageCarousel){
+            if (e.to === lastIndex && !isFetchingNextCarousel && nextPageUrlCarousel && page_trip < lastPageCarousel) {
                 isFetchingNextCarousel = true
                 page_trip++
 

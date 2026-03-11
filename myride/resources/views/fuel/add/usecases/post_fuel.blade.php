@@ -62,17 +62,17 @@
 <script type="text/javascript">
     setCurrentLocalDateTime("fuel_at")
 
-    $(document).on('click','#submit-add-fuel-btn', function(){
+    $(document).on('click','#submit-add-fuel-btn', function() {
         post_fuel()
     })
 
-    $(document).on('change','#vehicle_holder', function(){
+    $(document).on('change','#vehicle_holder', function() {
         const id = $(this).val()
         getVehicleDetail(id)
         id !== "-" && get_vehicle_last_fuel(id)
     })
 
-    $(document).on('change','#fuel_brand_holder', async function(){
+    $(document).on('change','#fuel_brand_holder', async function() {
         const val = $(this).val()
         await getDictionaryByContextOption(`fuel_type_${val}`)
     })
@@ -137,7 +137,7 @@
             },
             error: function(response, jqXHR, textStatus, errorThrown) {
                 Swal.close()
-                if(response.status === 500){
+                if (response.status === 500) {
                     generateApiError(response, true)
                 } else {
                     failedMsg(response.status === 400 ? Object.values(response.responseJSON.message).flat().join('\n') : response.responseJSON.message)

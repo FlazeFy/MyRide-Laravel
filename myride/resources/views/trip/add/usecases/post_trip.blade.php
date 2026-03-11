@@ -90,10 +90,10 @@
         })
 
         map.addListener("click", (e) => {
-            if(!markers['Origin']){
+            if (!markers['Origin']) {
                 placeMarkerAndPanTo(e.latLng, map, 'Origin')
                 addContentCoor(e.latLng, 'Origin')
-            } else if(!markers['Destination']){
+            } else if (!markers['Destination']) {
                 placeMarkerAndPanTo(e.latLng, map, 'Destination')
                 addContentCoor(e.latLng, 'Destination')
             }
@@ -101,7 +101,7 @@
     }
 
     const placeMarkerAndPanTo = (latLng, map, type) => {
-        if(markers[type]){
+        if (markers[type]) {
             markers[type].setMap(null)
             delete markers[type]
         }
@@ -149,21 +149,21 @@
 
     window.initMap = initMap
 
-    $(document).on('click','#submit-add-trip-btn', function(){
+    $(document).on('click','#submit-add-trip-btn', function() {
         post_trip()
     })
 
-    $(document).on('blur', '#trip_origin_coordinate, #trip_destination_coordinate', function(){
+    $(document).on('blur', '#trip_origin_coordinate, #trip_destination_coordinate', function() {
         const id = $(this).attr('id')
         const type = ucFirst(id.split('_')[1])
 
-        if ($(this).val().trim() === ""){
+        if ($(this).val().trim() === "") {
             markers[type].setMap(null)
             delete markers[type]
         }
     })
 
-    $(document).on('click','.btn-current-coordinate', function(){
+    $(document).on('click','.btn-current-coordinate', function() {
         const $wrapper = $(this).closest('.col-lg-6, .col-md-6, .col-sm-12')
         const $input = $wrapper.find('input')
 
@@ -194,12 +194,12 @@
             return
         }
 
-        if ($('#trip_origin_name').val().trim() === $('#trip_destination_name').val().trim()){
+        if ($('#trip_origin_name').val().trim() === $('#trip_destination_name').val().trim()) {
             failedMsg('create trip : trip origin and destination name must be different')
             return
         }
 
-        if ($('#trip_origin_coordinate').val().trim() === $('#trip_destination_coordinate').val().trim()){
+        if ($('#trip_origin_coordinate').val().trim() === $('#trip_destination_coordinate').val().trim()) {
             failedMsg('create trip : trip origin and destination coordinate must be different')
             return
         }
@@ -227,7 +227,7 @@
             },
             error: function(response, jqXHR, textStatus, errorThrown) {
                 Swal.close()
-                if(response.status === 500){
+                if (response.status === 500) {
                     generateApiError(response, true)
                 } else {
                     failedMsg(response.status === 400 ? Object.values(response.responseJSON.message).flat().join('\n') : response.responseJSON.message)

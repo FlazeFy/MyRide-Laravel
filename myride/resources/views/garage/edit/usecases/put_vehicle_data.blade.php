@@ -89,7 +89,7 @@
 </form>
 
 <script>
-    $(document).on('click','#submit-edit-detail-btn', function(){
+    $(document).on('click','#submit-edit-detail-btn', function() {
         update_vehicle_detail('<?= $id ?>')
     })
 
@@ -118,7 +118,7 @@
             },
             error: function(response, jqXHR, textStatus, errorThrown) {
                 Swal.close()
-                if(response.status !== 404){
+                if (response.status !== 404) {
                     generateApiError(response, true)
                 } else {
                     failedRoute('vehicle','/garage')

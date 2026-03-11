@@ -7,13 +7,13 @@
     const holder_fuel = 'last_purchase-holder'
     messageAlertBox(holder_fuel, "danger", "You must select a vehicle first")
 
-    $(document).on('change','#vehicle_holder', function(){
+    $(document).on('change','#vehicle_holder', function() {
         const id = $(this).val()
         get_vehicle_last_fuel(id)
     })
 
     const get_vehicle_last_fuel = (id) => {
-        if(id !== "-"){
+        if (id !== "-") {
             Swal.showLoading()
             $.ajax({
                 url: `/api/v1/fuel/last?vehicle_id=${id}`,
@@ -44,7 +44,7 @@
                 },
                 error: function(response, jqXHR, textStatus, errorThrown) {
                     Swal.close()
-                    if(response.status !== 404){
+                    if (response.status !== 404) {
                         generateApiError(response, true)
                     } else {
                         messageAlertBox(holder_fuel, "danger", "You never refuel this vehicle")

@@ -27,7 +27,6 @@ class ChatHistoryModel extends Model
 {
     use HasFactory;
     public $incrementing = false;
-
     protected $table = 'chat_history';
     protected $primaryKey = 'id';
     protected $fillable = ['id', 'question', 'answer', 'intent', 'created_at', 'created_by'];

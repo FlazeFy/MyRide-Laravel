@@ -39,7 +39,7 @@ class InventoryModel extends Model
         'inventory_qty' => 'integer',
     ];
 
-    public static function getAllInventory($user_id = null, $vehicle_id = null, $limit, $search = null){
+    public static function getAllInventory($user_id = null, $vehicle_id = null, $limit, $search = null) {
         $res = InventoryModel::select('inventory.id','inventory_name', 'inventory_category', 'inventory_qty', 'inventory_storage', 'inventory_image_url', 'inventory.created_at', 'inventory.updated_at', 'vehicle_plate_number','vehicle_type')
             ->leftjoin('vehicle','vehicle.id','=','inventory.vehicle_id');
 
@@ -53,23 +53,17 @@ class InventoryModel extends Model
         return $res->orderByRaw('COALESCE(inventory.updated_at, inventory.created_at) DESC')->paginate($limit);                       
     }
 
-    public static function hardDeleteInventoryById($id, $user_id = null){
-        $res = InventoryModel::where('id',$id);
+    public static function getInventoryByVehicle($user_id, $vehicle_id) {
+        $res = InventoryModel::select('inventory.id','inventory_name', 'inventory_category', 'inventory_qty', 'inventory_storage', 'inventory.created_at');
+        
+        if ($vehicle_id) $res = $res->where('vehicle_id',$vehicle_id);
 
-        if ($user_id) $res = $res->where('created_by',$user_id);
-            
-        return $res->delete();
+        return $res->where('inventory.created_by',$user_id)
+            ->orderBy('inventory_name', 'desc')
+            ->get();
     }
 
-    public static function hardDeleteByVehicleId($vehicle_id, $user_id = null){
-        $res = InventoryModel::where('vehicle_id',$vehicle_id);
-
-        if ($user_id) $res = $res->where('created_by',$user_id);
-            
-        return $res->delete();
-    }
-
-    public static function getExportData($user_id, $vehicle_id = null){
+    public static function getExportData($user_id, $vehicle_id = null) {
         $res = InventoryModel::select("vehicle_name","vehicle_plate_number", "vehicle_type", 'inventory_name', 'inventory_category', 'inventory_qty', 'inventory_storage', 'inventory.created_at', 'inventory.updated_at')
             ->join('vehicle','vehicle.id','=','inventory.vehicle_id');
         
@@ -80,17 +74,7 @@ class InventoryModel extends Model
             ->get();
     }
 
-    public static function getInventoryByVehicle($user_id, $vehicle_id){
-        $res = InventoryModel::select('inventory.id','inventory_name', 'inventory_category', 'inventory_qty', 'inventory_storage', 'inventory.created_at');
-        
-        if($vehicle_id) $res = $res->where('vehicle_id',$vehicle_id);
-
-        return $res->where('inventory.created_by',$user_id)
-            ->orderBy('inventory_name', 'desc')
-            ->get();
-    }
-
-    public static function createInventory($data, $user_id){
+    public static function createInventory($data, $user_id) {
         $data['created_at'] = date('Y-m-d H:i:s');
         $data['created_by'] = $user_id;
         $data['updated_at'] = null;
@@ -99,9 +83,25 @@ class InventoryModel extends Model
         return InventoryModel::create($data);
     }
 
-    public static function updateInventoryById($data, $user_id, $id){
+    public static function updateInventoryById($data, $user_id, $id) {
         $data['updated_at'] = date('Y-m-d H:i:s');
         
         return InventoryModel::where('created_by',$user_id)->where('id',$id)->update($data);
+    }
+
+    public static function hardDeleteInventoryById($id, $user_id = null) {
+        $res = InventoryModel::where('id',$id);
+
+        if ($user_id) $res = $res->where('created_by',$user_id);
+            
+        return $res->delete();
+    }
+
+    public static function hardDeleteByVehicleId($vehicle_id, $user_id = null) {
+        $res = InventoryModel::where('vehicle_id',$vehicle_id);
+
+        if ($user_id) $res = $res->where('created_by',$user_id);
+            
+        return $res->delete();
     }
 }

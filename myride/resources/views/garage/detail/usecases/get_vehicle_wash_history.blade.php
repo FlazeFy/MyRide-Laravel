@@ -41,7 +41,7 @@
         const holder = 'wash_tb'
         $(`#${holder}`).empty()
 
-        if(data){
+        if (data) {
             const current_page = data.current_page
             const total_page = data.last_page
 

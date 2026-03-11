@@ -51,7 +51,7 @@
                     (data.telegram_is_valid == 0 && data.telegram_user_id) || data.telegram_user_id === null ? `<span class='text-danger'><i class="fa-solid fa-triangle-exclamation text-danger"></i> Not ${data.telegram_user_id ? 'Validated' : 'Attached'}</span>` : `<span class='text-success'><i class="fa-solid fa-check text-success"></i> Validated</span>` 
                 )
                 current_telegram_id = data.telegram_user_id ?? ''
-                if(data.telegram_is_valid === 0 && data_telegram == null && data.telegram_user_id){
+                if (data.telegram_is_valid === 0 && data_telegram == null && data.telegram_user_id) {
                     $('#telegram_group_id').append(`<a class="btn btn-primary text-nowrap" id="request_validation_token"><i class="fa-solid fa-paper-plane"></i><span class="d-none d-md-inline"> Send Validation</span></a>`)
                 }
 
@@ -64,7 +64,7 @@
     }
     get_profile()
 
-    $(document).on('click','#request_validation_token', function(){
+    $(document).on('click','#request_validation_token', function() {
         $.ajax({
             url: '/api/v1/user/update_telegram_id',
             type: 'PUT',
@@ -91,11 +91,11 @@
         })
     })
 
-    $(document).on('input','#telegram_user_id', function(){
+    $(document).on('input','#telegram_user_id', function() {
         $('#telegram_validated_status').html(current_telegram_id !== $(this).val() ? `<span class='text-danger'><i class="fa-solid fa-triangle-exclamation text-danger"></i> Changes Detected</span>`:`<span class='text-success'><i class="fa-solid fa-check text-success"></i> Validated</span>`)
     })
 
-    $(document).on('click','#save_changes_profile', function(){
+    $(document).on('click','#save_changes_profile', function() {
         $.ajax({
             url: '/api/v1/user/update_profile',
             type: 'PUT',

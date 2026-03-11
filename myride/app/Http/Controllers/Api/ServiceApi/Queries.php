@@ -248,7 +248,7 @@ class Queries extends Controller
      *     ),
      * )
      */
-    public function getAllServiceSpending(Request $request){
+    public function getAllServiceSpending(Request $request) {
         try{
             $user_id = $request->user()->id;
 

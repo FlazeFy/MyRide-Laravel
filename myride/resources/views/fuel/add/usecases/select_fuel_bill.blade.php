@@ -10,7 +10,7 @@
     templateAlertContainer('fuel_bill-holder', 'no-data', "No fuel bill selected", null, '<i class="fa-solid fa-receipt"></i>', null)
 
     $(document).ready(function() {
-        $(document).on('click', '#clear_bill-button', function(){
+        $(document).on('click', '#clear_bill-button', function() {
             $('#fuel_bill_button-holder').find(this).remove()
             templateAlertContainer('fuel_bill-holder', 'no-data', "No fuel bill selected", null, '<i class="fa-solid fa-receipt"></i>', null)
         })
@@ -22,7 +22,7 @@
                 Swal.fire("Error!", "You can only add one image as bill", "error")
                 return
             }
-            if($('#fuel_bill_button-holder').find('#clear_bill-button').length === 0){
+            if ($('#fuel_bill_button-holder').find('#clear_bill-button').length === 0) {
                 $('#fuel_bill_button-holder').prepend(`
                     <a class="btn btn-danger py-1" id="clear_bill-button"><i class="fa-solid fa-circle-xmark"></i><span class="d-none d-md-inline"> Clear</span></a>
                 `)

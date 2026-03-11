@@ -109,15 +109,15 @@ class Commands extends Controller
                 // Check for Admin account
                 $user = AdminModel::getByUsername($request->username);
                 $role = 1;
-                if($user == null){
+                if ($user == null) {
                     // Check for User account
                     $user = UserModel::getByUsername($request->username);
                     $role = 0;
 
-                    if($user){
+                    if ($user) {
                         // Verify that the account has completed registration validation
                         $check_register = ValidateRequestModel::getCheckRegisterToken($request->username);
-                        if($check_register){
+                        if ($check_register) {
                             return response()->json([
                                 'status' => 'failed',
                                 'message' => Generator::getMessageTemplate("custom", 'your account is not validated yet, check your email and validate again'),
@@ -200,10 +200,10 @@ class Commands extends Controller
             // Check if account exist by username
             $username = $request->username;
             $check_user = UserModel::isUsernameUsed($username);
-            if(!$check_user){
+            if (!$check_user) {
                 // Check if request doesnt duplicate
                 $valid = ValidateRequestModel::isUserRequestDuplicate('register',$username);
-                if(!$valid){
+                if (!$valid) {
                     // Generate token
                     $token_length = 6;
                     $token = Generator::getTokenValidation($token_length);
@@ -213,7 +213,7 @@ class Commands extends Controller
                     ];
                     $valid_insert = ValidateRequestModel::createValidateRequest($data_req, $username);
 
-                    if($valid_insert){
+                    if ($valid_insert) {
                         // Send token email
                         $ctx = 'Generate registration token';
                         $email = $request->email;
@@ -326,10 +326,10 @@ class Commands extends Controller
 
                 // Verify that the account has valid registration validation
                 $valid = ValidateRequestModel::isUserRequestValid('register',$request->token,$username);
-                if($valid){
+                if ($valid) {
                     // Verify the username not duplicated
                     $check_user = UserModel::isUsernameUsed($username);
-                    if(!$check_user){
+                    if (!$check_user) {
                         // Delete request after validation
                         ValidateRequestModel::destroy($valid->id);
 
@@ -342,7 +342,7 @@ class Commands extends Controller
                         ];
                         $user = UserModel::createUser($data);
 
-                        if($user){
+                        if ($user) {
                             // Send email
                             $ctx = 'Register new account';
                             $email = $request->email;
@@ -350,7 +350,7 @@ class Commands extends Controller
                             dispatch(new UserJob($ctx, $data, $username, $email));
 
                             // Check this ....
-                            if(Hash::check($request->password, $user->password)){
+                            if (Hash::check($request->password, $user->password)) {
                                 $token = $user->createToken('login')->plainTextToken;
 
                                 // Return success response
@@ -451,14 +451,14 @@ class Commands extends Controller
                 'request_type' => 'register',
                 'request_context' => $token
             ];
-            if($valid){
+            if ($valid) {
                 // If token still fresh but user request a new one
                 // Delete request after validation
                 $delete = ValidateRequestModel::destroy($valid->id);
-                if($delete > 0){
+                if ($delete > 0) {
                     $valid_insert = ValidateRequestModel::createValidateRequest($data_req, $username);
 
-                    if($valid_insert){
+                    if ($valid_insert) {
                         // Send email regenerate token
                         $ctx = 'Generate registration token';
                         $email = $request->email;
@@ -487,7 +487,7 @@ class Commands extends Controller
                 // Create register token
                 $valid_insert = ValidateRequestModel::createValidateRequest($data_req, $username);
 
-                if($valid_insert){
+                if ($valid_insert) {
                     // Send email regenerate token
                     $ctx = 'Generate registration token';
                     $email = $request->email;

@@ -101,10 +101,10 @@
     })
     
     templateAlertContainer('reminder_attachment-holder', 'no-data', "No attachment selected", null, '<i class="fa-solid fa-link"></i>', null)
-    $(document).on('click','#submit-add-reminder-btn', function(){
+    $(document).on('click','#submit-add-reminder-btn', function() {
         post_reminder()
     })
-    $(document).on('change','#vehicle_holder', function(){
+    $(document).on('change','#vehicle_holder', function() {
         const id = $(this).val()
         getVehicleDetail(id)
     })
@@ -113,7 +113,7 @@
         $("#reminder_attachment-holder .alert-container").remove()
     }
     const addClearButton = () => {
-        if($('#reminder_attachment_button-holder').find('#clear_attachment-button').length === 0){
+        if ($('#reminder_attachment_button-holder').find('#clear_attachment-button').length === 0) {
             $('#reminder_attachment_button-holder').prepend(`
                 <a class="btn btn-danger py-1" id="clear_attachment-button"><i class="fa-solid fa-circle-xmark"></i><span class="d-none d-md-inline"> Clear</span></a>
             `)
@@ -121,7 +121,7 @@
     }
 
     $(document).ready(function() {
-        $(document).on('click', '#clear_attachment-button', function(){
+        $(document).on('click', '#clear_attachment-button', function() {
             $('#reminder_attachment_button-holder').find(this).remove()
             templateAlertContainer('reminder_attachment-holder', 'no-data', "No attachment selected", null, '<i class="fa-solid fa-link"></i>', null)
         })
@@ -143,7 +143,7 @@
             `)
         })
 
-        $(document).on('click','#add_location-button',function(){
+        $(document).on('click','#add_location-button',function() {
             cleanAlertContainer()
 
             if ($("#reminder_attachment-holder .reminder-location-holder").length > 0) {

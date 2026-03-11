@@ -43,7 +43,7 @@
                 `)
             },
             error: function(response, jqXHR, textStatus, errorThrown) {
-                if(response.status !== 404){
+                if (response.status !== 404) {
                     generateApiError(response, true)
                 } else {
                     templateAlertContainer(holder, 'no-data', "No wash found for this context to generate the summary", 'add a wash', '<i class="fa-solid fa-soap"></i>','/trip/add')

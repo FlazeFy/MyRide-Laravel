@@ -70,7 +70,7 @@
 </div>
 
 <script>
-    $(document).on('click','.btn-update',async function(){
+    $(document).on('click','.btn-update',async function() {
         callModal('update-modal')
 
         await getVehicleNameOption(token)
@@ -100,7 +100,7 @@
         setCurrentLocalDateTime('departure_at',$(this).data('departure-at'))
     })
 
-    $(document).on('click','#submit_update-btn', function(){
+    $(document).on('click','#submit_update-btn', function() {
         const id = $('#trip_id').val()
         put_trip(id)
     })
@@ -114,12 +114,12 @@
             return
         }
 
-        if ($('#trip_origin_name').val().trim() === $('#trip_destination_name').val().trim()){
+        if ($('#trip_origin_name').val().trim() === $('#trip_destination_name').val().trim()) {
             failedMsg('update trip : trip origin and destination name must be different')
             return
         }
 
-        if ($('#trip_origin_coordinate').val().trim() === $('#trip_destination_coordinate').val().trim()){
+        if ($('#trip_origin_coordinate').val().trim() === $('#trip_destination_coordinate').val().trim()) {
             failedMsg('update trip : trip origin and destination coordinate must be different')
             return
         }
@@ -145,7 +145,7 @@
             },
             error: function(response, jqXHR, textStatus, errorThrown) {
                 Swal.close()
-                if(response.status === 500){
+                if (response.status === 500) {
                     generateApiError(response, true)
                 } else {
                     failedMsg(response.status === 400 ? Object.values(response.responseJSON.message).flat().join('\n') : response.responseJSON.message)

@@ -28,7 +28,7 @@ class ErrorModel extends Model
     protected $primaryKey = 'id';
     protected $fillable = ['id', 'message', 'stack_trace', 'file', 'line', 'faced_by','created_at'];
 
-    public static function getAllErrorAudit(){
+    public static function getAllErrorAudit() {
         $res = ErrorModel::selectRaw('message,created_at,faced_by,COUNT(1) as total')
             ->orderby('total','desc')
             ->orderby('message','asc')
@@ -39,7 +39,7 @@ class ErrorModel extends Model
         return count($res) > 0 ? $res : null;
     } 
 
-    public static function getAllError($paginate){
+    public static function getAllError($paginate) {
         $res = ErrorModel::selectRaw('*')
             ->orderby('created_at','asc')
             ->paginate($paginate);
@@ -47,7 +47,7 @@ class ErrorModel extends Model
         return count($res) > 0 ? $res : null;
     }
 
-    public static function createError($message, $stack_trace, $file, $line){
+    public static function createError($message, $stack_trace, $file, $line) {
         return ErrorModel::create([
             'message' => $message, 
             'stack_trace' => $stack_trace, 
@@ -59,7 +59,7 @@ class ErrorModel extends Model
         ]);
     }
 
-    public static function hardDeleteErrorByMessage($message){
+    public static function hardDeleteErrorByMessage($message) {
         return ErrorModel::where('message',$message)->delete();
     }
 }
