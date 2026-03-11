@@ -5,9 +5,11 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 // Helper
 use App\Helpers\Generator;
+use App\Helpers\Converter;
 // Models
 use App\Models\TripModel;
 use App\Models\VehicleModel;
@@ -1317,51 +1319,114 @@ class Queries extends Controller
 
             $trips = TripModel::getJourney($user_id, $vehicle_id)->map(function ($item) {
                 $person = $item->trip_person ? " with $item->trip_person" : "";
+                $origin_coor = explode(",", $item->trip_origin_coordinate);
+                $destination_coor = explode(",", $item->trip_destination_coordinate);
+                $lat1 = $origin_coor[0];
+                $lon1 = $origin_coor[1];
+                $lat2 = $destination_coor[0];
+                $lon2 = $destination_coor[1];
+                $distance = Converter::calculate_distance($lat1, $lon1, $lat2, $lon2, $unit = 'km');
     
                 return [
                     'journey_category' => 'trip',
-                    'journey_context' => "You made a $item->trip_category trip$person from $item->trip_origin_name to $item->trip_destination_name",
-                    'created_at' => $item->created_at
+                    'journey_context' => "You made a <b>{$distance} Km</b> trip $item->trip_category trip$person from $item->trip_origin_name to $item->trip_destination_name",
+                    'created_at' => $item->created_at,
+                    'distance' => (float) $distance,
+                    'spending_wash' => 0,
+                    'spending_service' => 0,
+                    'spending_fuel' => 0,
+                    'fuel_volume' => 0
                 ];
             });
     
             $washes = WashModel::getJourney($user_id, $vehicle_id)->map(function ($item) {
                 $desc = $item->wash_desc ? " ({$item->wash_desc})" : "";
-                $price = $item->wash_price ? " costing Rp " . number_format($item->wash_price) : "";
+                $price = $item->wash_price ? " costing <b>Rp ".number_format($item->wash_price)."</b>" : "";
 
                 return [
                     'journey_category' => 'wash',
-                    'journey_context' => "You washed your vehicle at {$item->wash_address}{$desc}{$price}",
-                    'created_at' => $item->created_at
+                    'journey_context' => "You washed your vehicle at {$item->wash_address}{$desc}{$price}</b>",
+                    'created_at' => $item->created_at,
+                    'distance' => 0,
+                    'spending_wash' => (float) $price,
+                    'spending_service' => 0,
+                    'spending_fuel' => 0,
+                    'fuel_volume' => 0
                 ];
             });
     
             $services = ServiceModel::getJourney($user_id, $vehicle_id)->map(function ($item) {
                 $note = $item->service_note ? " ({$item->service_note})" : "";
-                $price = $item->service_price_total ? " costing Rp " . number_format($item->service_price_total) : "";
+                $price = $item->service_price_total ? " costing <b>Rp ".number_format($item->service_price_total)."</b>" : "";
     
                 return [
                     'journey_category' => 'service',
                     'journey_context' => "You did $item->service_category service at {$item->service_location}{$note}{$price}",
-                    'created_at' => $item->created_at
+                    'created_at' => $item->created_at,
+                    'distance' => 0,
+                    'spending_wash' => 0,
+                    'spending_service' => (float) $price,
+                    'spending_fuel' => 0,
+                    'fuel_volume' => 0
                 ];
             });
     
             $fuels = FuelModel::getJourney($user_id, $vehicle_id)->map(function ($item) {
-                if ($item->fuel_brand !== "Electric") {
-                    $fuel_brand = "$item->fuel_brand (Ron $item->fuel_ron)";
-                } else {
-                    $fuel_brand = "Electric";
-                }
+                $fuel_brand = $item->fuel_brand !== "Electric" ? "$item->fuel_brand (Ron $item->fuel_ron)" : "Electric";
 
                 return [
                     'journey_category' => 'fuel',
-                    'journey_context' => "You refueled {$item->fuel_volume}L of $fuel_brand",
-                    'created_at' => $item->created_at
+                    'journey_context' => "You refueled <b>{$item->fuel_volume}L</b> of $fuel_brand",
+                    'created_at' => $item->created_at,
+                    'distance' => 0,
+                    'spending_wash' => 0,
+                    'spending_service' => 0,
+                    'spending_fuel' => (float) ($item->fuel_price_total ?? 0),
+                    'fuel_volume' => (float) ($item->fuel_volume ?? 0),
                 ];
             });
     
-            $journey = collect()->merge($trips)->merge($washes)->merge($services)->merge($fuels)->sortByDesc('created_at')->values();
+            $journey = collect()->merge($trips)->merge($washes)->merge($services)->merge($fuels);
+            $monthlySummary = $journey
+                ->groupBy(function ($item) {
+                    return Carbon::parse($item['created_at'])->format('Y-m');
+                })
+                ->map(function ($items, $month) {
+
+                    $trips = $items->where('journey_category', 'trip');
+                    $washes = $items->where('journey_category', 'wash');
+                    $services = $items->where('journey_category', 'service');
+                    $fuels = $items->where('journey_category', 'fuel');
+
+                    return [
+                        'journey_category' => 'summary',
+                        'month' => $month,
+                        'total_trip' => [
+                            'total' => $trips->count(),
+                            'distance' => $trips->sum('distance')
+                        ],
+                        'total_service' => [
+                            'total' => $services->count(),
+                            'amount' => $services->sum('spending_service')
+                        ],
+                        'total_wash' => [
+                            'total' => $washes->count(),
+                            'amount' => $washes->sum('spending_wash')
+                        ],
+                        'total_fuel' => [
+                            'total' => $fuels->count(),
+                            'amount' => $fuels->sum('spending_fuel'),
+                            'volume' => $fuels->sum('fuel_volume')
+                        ],
+                        'created_at' => $items->max('created_at')
+                    ];
+                });
+
+            $journey = $journey->merge($monthlySummary)
+                ->sortByDesc(function ($item) {
+                    return $item['created_at'].($item['journey_category'] === 'summary' ? '1' : '0');
+                })
+                ->values();
     
             if ($journey->isNotEmpty()) {
                 return response()->json([

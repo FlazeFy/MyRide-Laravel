@@ -32,7 +32,7 @@
                 <div class="row tex">
                     <div class="col-lg-3 col-md-4 col-sm-6 mx-auto">
                         <h4 class="fw-bold">${totalTrip.total} Trip</h4>
-                        <h6 class="text-dark">${totalTrip.distance} Km</h6>
+                        <h6 class="text-dark">${totalTrip.distance.toFixed(2)} Km</h6>
                     </div>
                     <div class="col-lg-3 col-md-4 col-sm-6 mx-auto">
                         <h4 class="fw-bold">${totalService.total} Service</h4>
