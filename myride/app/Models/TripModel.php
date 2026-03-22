@@ -133,12 +133,22 @@ class TripModel extends Model
         return $total_distance;
     }
 
-    public static function getTotalTripByCategory($user_id) {
+    public static function getTotalTripByCategory($user_id, $limit = 6, $month_year = null) {
         $res = TripModel::selectRaw('trip_category as context, COUNT(1) as total')
-            ->where('created_by', $user_id)
-            ->orderBy('total','DESC')
+            ->where('created_by', $user_id);
+
+        if ($month_year) {
+            [$year, $month] = explode('-', $month_year);
+    
+            $startDate = Carbon::createFromDate($year, $month, 1)->startOfMonth();
+            $endDate = Carbon::createFromDate($year, $month, 1)->endOfMonth();
+    
+            $res = $res->whereBetween('created_at', [$startDate, $endDate]);
+        }
+        
+        $res = $res->orderBy('total','DESC')
             ->groupBy('trip_category')
-            ->limit(6)
+            ->limit($limit)
             ->get();
 
         if ($res->isEmpty()) return null;
