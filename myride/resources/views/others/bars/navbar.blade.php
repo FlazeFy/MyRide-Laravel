@@ -36,7 +36,7 @@
                 <a class="btn btn-success px-3 open-notification-btn" data-bs-toggle="popover" title="Reminder" data-bs-placement="left" data-bs-custom-class="wide-popover" data-bs-html="true" 
                     data-bs-content="<div id='reminder-holder-1'></div>"><i class="fa-solid fa-bell"></i>
                 </a>
-                <a class="btn btn-danger px-3" data-bs-target="#modalSignOut" data-bs-toggle="modal"><i class="fa-solid fa-right-from-bracket"></i></a>
+                <a class="btn btn-danger px-3" id="sign-out-btn-mobile" data-bs-target="#modalSignOut" data-bs-toggle="modal"><i class="fa-solid fa-right-from-bracket"></i></a>
             </div>
         </div>
         
@@ -49,7 +49,7 @@
                         <i class="fa-solid fa-bell"></i>
                     </a>
                 </li>
-                <li class="nav-item"><a class="btn btn-danger px-3" data-bs-target="#modalSignOut" data-bs-toggle="modal"><i class="fa-solid fa-right-from-bracket"></i></a></li>
+                <li class="nav-item"><a class="btn btn-danger px-3" id="sign-out-btn" data-bs-target="#modalSignOut" data-bs-toggle="modal"><i class="fa-solid fa-right-from-bracket"></i></a></li>
             </ul>
         </div>
         @endif

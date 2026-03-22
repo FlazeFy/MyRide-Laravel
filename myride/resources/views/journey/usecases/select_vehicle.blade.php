@@ -87,7 +87,7 @@
                     dt.journey_category !== 'summary' ? 
                         generateJourneyBox(dt.journey_category, dt.journey_context, dt.created_at, targetElement)
                     : 
-                        generateMonthlySummary(dt.month, dt.total_trip, dt.total_service, dt.total_wash, dt.total_fuel, null, null, targetElement)
+                        generateMonthlySummary(dt.month, dt.total_trip, dt.total_service, dt.total_wash, dt.total_fuel, dt.person_most_trip_with, null, targetElement)
                 })
             },
             error: function(response, jqXHR, textStatus, errorThrown) {

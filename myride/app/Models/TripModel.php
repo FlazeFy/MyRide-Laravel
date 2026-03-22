@@ -3,6 +3,7 @@
 namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 // Helpers
 use App\Helpers\Converter;
@@ -241,10 +242,19 @@ class TripModel extends Model
             ->get();
     }
 
-    public static function getPersonWithMostTripWith($user_id, $vehicle_id = null, $limit = 7) {
+    public static function getPersonWithMostTripWith($user_id, $vehicle_id = null, $limit = 7, $month_year = null) {
         $res = TripModel::selectRaw("LOWER(trip_person) as context");
 
         if ($vehicle_id) $res = $res->where('vehicle_id', $vehicle_id);
+
+        if ($month_year) {
+            [$year, $month] = explode('-', $month_year);
+    
+            $startDate = Carbon::createFromDate($year, $month, 1)->startOfMonth();
+            $endDate = Carbon::createFromDate($year, $month, 1)->endOfMonth();
+    
+            $res = $res->whereBetween('created_at', [$startDate, $endDate]);
+        }
             
         $res = $res->where('created_by', $user_id)
             ->whereNull('deleted_at')

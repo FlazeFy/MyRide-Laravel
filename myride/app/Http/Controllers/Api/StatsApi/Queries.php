@@ -1428,8 +1428,8 @@ class Queries extends Controller
                 ->groupBy(function ($item) {
                     return Carbon::parse($item['created_at'])->format('Y-m');
                 })
-                ->map(function ($items, $month) {
-
+                ->map(function ($items, $month) use ($user_id, $vehicle_id) {
+                    $person_most_trip_with = TripModel::getPersonWithMostTripWith($user_id, $vehicle_id, 5, $month);
                     $trips = $items->where('journey_category', 'trip');
                     $washes = $items->where('journey_category', 'wash');
                     $services = $items->where('journey_category', 'service');
@@ -1438,6 +1438,7 @@ class Queries extends Controller
                     return [
                         'journey_category' => 'summary',
                         'month' => $month,
+                        'person_most_trip_with' => $person_most_trip_with,
                         'total_trip' => [
                             'total' => $trips->count(),
                             'distance' => $trips->sum('distance')

@@ -12,7 +12,7 @@
                 <div class='container-fluid text-center' id="my_summary-section">
                     @include('dashboard.usecases.get_summary')
                 </div>
-                <div class='container-fluid'>
+                <div class='container-fluid' id="vehicle_readiness-section">
                     @include('dashboard.usecases.get_vehicle_readiness')
                     @include('dashboard.usecases.set_action_readiness')
                 </div>
