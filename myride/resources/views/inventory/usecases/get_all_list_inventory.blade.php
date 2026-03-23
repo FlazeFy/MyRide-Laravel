@@ -62,25 +62,33 @@
                             <td class="text-center">${dt.inventory_name}</td>
                             <td class="text-center">${dt.inventory_qty}</td>
                             <td class="text-start">
-                                <h6 class="mb-0">Category</h6>
-                                <p class="mb-0">${dt.inventory_category}</p>
-                                <h6 class="mb-0">Storage</h6>
-                                <p class="mb-0">${dt.inventory_storage}</p>
+                                <div class="inventory-category">
+                                    <h6 class="mb-0">Category</h6>
+                                    <p class="mb-0">${dt.inventory_category}</p>
+                                </div>
+                                <div class="inventory-storage">
+                                    <h6 class="mb-0">Storage</h6>
+                                    <p class="mb-0">${dt.inventory_storage}</p>
+                                </div>
                             </td>
                             <td class="text-start">
-                                <h6 class="mb-0">Created At</h6>
-                                <p class="mb-0">${getDateToContext(dt.created_at,'calendar')}</p>
+                                <div class="created-at">
+                                    <h6 class="mb-0">Created At</h6>
+                                    <p class="mb-0">${getDateToContext(dt.created_at,'calendar')}</p>
+                                </div>
                                 ${
                                     dt.updated_at ? `
-                                        <h6 class="mb-0">Updated At</h6>
-                                        <p class="mb-0">${getDateToContext(dt.updated_at,'calendar')}</p>
+                                        <div class="updated-at">
+                                            <h6 class="mb-0">Updated At</h6>
+                                            <p class="mb-0">${getDateToContext(dt.updated_at,'calendar')}</p>
+                                        </div>
                                     ` : ''
                                 }
                             </td>
                             <td>
                                 <div class="d-flex flex-wrap gap-2 justify-content-center">
                                     ${dt.inventory_image_url != null ? `
-                                        <a class="btn btn-primary" style="width:50px" data-bs-target="#inventory_image_url_${dt.id}-modal" data-bs-toggle="modal"><i class="fa-solid fa-image"></i></a>
+                                        <a class="btn btn-primary btn-image" style="width:50px" data-bs-target="#inventory_image_url_${dt.id}-modal" data-bs-toggle="modal"><i class="fa-solid fa-image"></i></a>
                                         <div class="modal fade" id="inventory_image_url_${dt.id}-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                             <div class="modal-dialog">
                                                 <div class="modal-content">

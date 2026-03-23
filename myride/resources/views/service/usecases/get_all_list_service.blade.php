@@ -61,25 +61,35 @@
                             </td>
                             <td class="text-center">${dt.service_category}</td>
                             <td class="text-start">
-                                <h6 class="mb-0">Location</h6>
-                                <p class="mb-0">${dt.service_location}</p>
-                                <h6 class="mb-0">Price Total</h6>
-                                <p class="mb-0">Rp. ${dt.service_price_total.toLocaleString()},00</p>
+                                <div class="service-location">
+                                    <h6 class="mb-0">Location</h6>
+                                    <p class="mb-0">${dt.service_location}</p>
+                                </div>
+                                <div class="service-price">
+                                    <h6 class="mb-0">Price Total</h6>
+                                    <p class="mb-0">Rp. ${dt.service_price_total.toLocaleString()},00</p>
+                                </div>
                             </td>
                             <td class="text-center">${dt.service_note}</td>
                             <td class="text-start">
-                                <h6 class="mb-0">Created At</h6>
-                                <p class="mb-0">${getDateToContext(dt.created_at,'calendar')}</p>
+                                <div class="created-at">
+                                    <h6 class="mb-0">Created At</h6>
+                                    <p class="mb-0">${getDateToContext(dt.created_at,'calendar')}</p>
+                                </div>
                                 ${
                                     dt.updated_at ? `
-                                        <h6 class="mb-0">Updated At</h6>
-                                        <p class="mb-0">${getDateToContext(dt.updated_at,'calendar')}</p>
+                                        <div class="updated-at">
+                                            <h6 class="mb-0">Updated At</h6>
+                                            <p class="mb-0">${getDateToContext(dt.updated_at,'calendar')}</p>
+                                        </div>
                                     ` : ''
                                 }
                                 ${
                                     dt.remind_at ? `
-                                        <h6 class="mb-0">Remind At</h6>
-                                        <p class="mb-0">${getDateToContext(dt.remind_at,'calendar')}</p>
+                                        <div class="remind-at">
+                                            <h6 class="mb-0">Remind At</h6>
+                                            <p class="mb-0">${getDateToContext(dt.remind_at,'calendar')}</p>
+                                        </div>
                                     ` : ''
                                 }
                             </td>

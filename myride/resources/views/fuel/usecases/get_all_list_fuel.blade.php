@@ -43,36 +43,43 @@
                                 <p class="text-secondary mt-2 mb-0 fw-bold">${dt.vehicle_type}</p>
                             </td>
                             <td class="text-start">
-                                <h6 class="mb-0">Volume</h6>
-                                <p class="mb-0">${dt.fuel_volume}${dt.fuel_brand == 'Electric' ? '%' : ' L'}</p>
-                                <h6 class="mb-0">Price Total</h6>
-                                ${
-                                    dt.fuel_price_total ? `<p class="mb-0">Rp. ${dt.fuel_price_total.toLocaleString()},00</p>` : `<div class="chip bg-success d-inline-block m-0 mt-1">Free</div>`
-                                }
+                                <div class="fuel-volume">
+                                    <h6 class="mb-0">Volume</h6>
+                                    <p class="mb-0">${dt.fuel_volume}${dt.fuel_brand == 'Electric' ? '%' : ' L'}</p>
+                                </div>
+                                <div class="fuel-price">
+                                    <h6 class="mb-0">Price Total</h6>
+                                    ${
+                                        dt.fuel_price_total ? `<p class="mb-0">Rp. ${dt.fuel_price_total.toLocaleString()},00</p>` : `<div class="chip bg-success d-inline-block m-0 mt-1">Free</div>`
+                                    }
+                                </div>
                             </td>
                             <td class="text-start">
                                 <div class="d-flex justify-content-between">
-                                    <div>
+                                    <div class="fuel-brand">
                                         <h6 class="mb-0">Brand</h6>
                                         <p class="mb-0">${dt.fuel_brand}</p>
                                     </div>
                                     ${dt.fuel_brand !== 'Electric' ?  
-                                        `<div>
+                                        `<div class="fuel-ron">
                                             <h6 class="mb-0">RON</h6>
                                             <p class="mb-0">${dt.fuel_ron}</p>
                                         </div>` :''
                                     }
                                 </div>
                                 ${dt.fuel_brand !== 'Electric' ?  
-                                    `<h6 class="mb-0">Type</h6>
-                                    <p class="mb-0">${dt.fuel_type}</p>` :''
+                                    `
+                                    <div class="fuel-type">
+                                        <h6 class="mb-0">Type</h6>
+                                        <p class="mb-0">${dt.fuel_type}</p>
+                                    </div>` :''
                                 }
                             </td>
                             <td>${getDateToContext(dt.created_at,'calendar',false)}</td>
                             <td>
                                 <div class='d-flex flex-wrap gap-2 justify-content-center'>
                                     ${dt.fuel_bill != null ? `
-                                        <a class="btn btn-primary" style="width:50px" data-bs-target="#fuel_bill_${dt.id}-modal" data-bs-toggle="modal"><i class="fa-solid fa-receipt"></i></a>
+                                        <a class="btn btn-primary btn-evidence" style="width:50px" data-bs-target="#fuel_bill_${dt.id}-modal" data-bs-toggle="modal"><i class="fa-solid fa-receipt"></i></a>
                                         <div class="modal fade" id="fuel_bill_${dt.id}-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                             <div class="modal-dialog">
                                                 <div class="modal-content">

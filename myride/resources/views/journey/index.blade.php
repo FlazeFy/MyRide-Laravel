@@ -12,6 +12,6 @@
         @include('journey.usecases.monthly_summary')
         @include('journey.usecases.journey_box')
         @include('journey.usecases.select_vehicle')
-        <div id="journey-holder" class="text-start"></div>
+        <div id="journey-holder" class="text-start mt-4"></div>
     </div>
 @endsection

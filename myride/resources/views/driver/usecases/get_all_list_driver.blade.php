@@ -40,24 +40,32 @@
                     $(`#${holder}`).append(`
                         <tr>
                             <td>
-                                <span class="plate-number"><i class="fa-solid fa-user-tie"></i> ${dt.username}</span>
-                                <p class="text-secondary mt-2 mb-0 fw-bold">${dt.fullname}</p>
+                                <span class="plate-number username"><i class="fa-solid fa-user-tie"></i> ${dt.username}</span>
+                                <p class="text-secondary mt-2 mb-0 fw-bold fullname">${dt.fullname}</p>
                             </td>
                             <td class="text-start">
-                                <h6 class="mb-0">Email</h6>
-                                <p class="mb-0">${dt.email}</p>
-                                <h6 class="mb-0">Phone Number</h6>
-                                <p class="mb-0">${dt.phone ?? '-'}</p>
+                                <div class="email">
+                                    <h6 class="mb-0">Email</h6>
+                                    <p class="mb-0">${dt.email}</p>
+                                </div>
+                                <div class="phone-number">
+                                    <h6 class="mb-0">Phone Number</h6>
+                                    <p class="mb-0">${dt.phone ?? '-'}</p>
+                                </div>
                             </td>
                             <td class="text-start">${dt.notes ?? '-'}</td>
                             <td>${dt.total_trip}</td>
                             <td class="text-start">
-                                <h6 class="mb-0">Created At</h6>
-                                <p class="mb-0">${getDateToContext(dt.created_at,'calendar')}</p>
+                                <div class="created-at">
+                                    <h6 class="mb-0">Created At</h6>
+                                    <p class="mb-0">${getDateToContext(dt.created_at,'calendar')}</p>
+                                </div>
                                 ${
                                     dt.updated_at ? `
-                                        <h6 class="mb-0">Updated At</h6>
-                                        <p class="mb-0">${getDateToContext(dt.updated_at,'calendar')}</p>
+                                        <div class="updated-at">
+                                            <h6 class="mb-0">Updated At</h6>
+                                            <p class="mb-0">${getDateToContext(dt.updated_at,'calendar')}</p>
+                                        </div>
                                     ` : ''
                                 }
                             </td>

@@ -12,7 +12,7 @@
         @include('inventory.usecases.get_export_inventory')
         <div class="row mt-2">
             <div class="col-lg-8 col-md-12">
-                <div class="container-fluid">
+                <div class="container-fluid" id="all_inventory-section">
                     @include('inventory.usecases.get_all_list_inventory')
                     @include('inventory.usecases.hard_delete_inventory')
                     @include('inventory.usecases.put_inventory')

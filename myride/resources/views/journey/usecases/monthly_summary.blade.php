@@ -7,7 +7,7 @@
             mostFavoritePerson.forEach(el => {
                 elFavoritePerson += `
                     <tr>
-                        <td class="text-dark">${el.context}</td>
+                        <td class="text-dark text-capitalize">${el.context}</td>
                         <td class="text-dark">${el.total}</td>
                     </tr>
                 `
@@ -18,7 +18,7 @@
             mostTripCategory.forEach(el => {
                 elMostCategory += `
                     <tr>
-                        <td class="text-dark">${el.context}</td>
+                        <td class="text-dark text-capitalize">${el.context}</td>
                         <td class="text-dark">${el.total}</td>
                     </tr>
                 `
@@ -26,7 +26,7 @@
         }
         
         $(targetElement).append(`
-            <div class="container mt-5 bg-warning text-dark">
+            <div class="container mt-3 bg-warning text-dark">
                 <h3>${monthYear}'s Summary</h3>
                 <hr class="bg-dark">
                 <div class="row tex">

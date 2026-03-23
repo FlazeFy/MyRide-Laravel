@@ -12,7 +12,7 @@
         @include('service.usecases.get_export_service')
         <div class="row mt-2">
             <div class="col-lg-8 col-md-12">
-                <div class="container-fluid">
+                <div class="container-fluid" id="all_service-section">
                     @include('service.usecases.get_all_list_service')
                     @include('service.usecases.hard_delete_service')
                     @include('service.usecases.put_service')
