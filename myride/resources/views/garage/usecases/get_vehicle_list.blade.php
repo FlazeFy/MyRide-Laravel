@@ -133,9 +133,7 @@
                 }, 10000)
             }
 
-            const stopAutoScroll = () => {
-                clearInterval(autoScrollInterval)
-            }
+            const stopAutoScroll = () => clearInterval(autoScrollInterval)
 
             const pauseThenResume = () => {
                 stopAutoScroll()
@@ -222,25 +220,18 @@
                         ext_class = ''
                     })
 
-                    if (data.length > 3) {
-                        templateCarouselNavigation("carousel-nav-holder", "carouselVehicle")
-                    }
+                    if (data.length > 3) templateCarouselNavigation("carousel-nav-holder", "carouselVehicle")
                     
                     // Navigate Carousel Using Keyboard
-                    const goPrev = () => {
-                        $(`#${holder}`).carousel('prev')
-                    }
-                    const goNext = () => {
-                        $(`#${holder}`).carousel('next')
-                    }
+                    const goPrev = () => $(`#${holder}`).carousel('prev')
+                    const goNext = () => $(`#${holder}`).carousel('next')
+
                     $(document).on('keydown', function(e) {
                         if (e.key === 'ArrowLeft') goPrev()
                         if (e.key === 'ArrowRight') goNext()
                     })
 
-                    if (data.length > 1 && width < 767) {
-                        $("#vehicle-nav-list").addClass("mobile-scroll")
-                    }
+                    if (data.length > 1 && width < 767) $("#vehicle-nav-list").addClass("mobile-scroll")
 
                     // Init carousel
                     $carousel.carousel({
@@ -260,7 +251,7 @@
                     })
                 },
                 error: function(response, jqXHR, textStatus, errorThrown) {
-                    if (response.status != 404) {
+                    if (response.status !== 404) {
                         generateApiError(response, true)
                     } else {
                         $(`#${holder}`).css('margin-top','var(--spaceMD)')

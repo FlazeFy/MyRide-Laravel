@@ -25,9 +25,7 @@
             }
 
             const diffHours = (dateObj - now) / (1000 * 60 * 60)
-            if (diffHours > 0 && diffHours < 12) {
-                chipClass = "bg-danger"
-            }
+            if (diffHours > 0 && diffHours < 12) chipClass = "bg-danger"
 
             $(`#${ctx}-holder`).html(`
                 <h4 class="fw-bold">${displayDate}</h4>
@@ -56,12 +54,7 @@
                 },
                 error: function(response, jqXHR, textStatus, errorThrown) {
                     Swal.close()
-
-                    if (response.status != 404) {
-                        generateApiError(response, true)
-                    } else {
-                        messageShortImage(`${ctx}-holder`,`{{asset('assets/free.png')}}`,`there's no active reminder`)
-                    }
+                    response.status !== 404 ? generateApiError(response, true) : messageShortImage(`${ctx}-holder`,`{{asset('assets/free.png')}}`,`there's no active reminder`)
                 }
             })
         }

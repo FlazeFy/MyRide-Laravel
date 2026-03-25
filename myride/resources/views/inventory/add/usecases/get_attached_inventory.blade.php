@@ -18,11 +18,7 @@
 <script>
     $(document).on('change','#vehicle_holder', function() {
         const id = $(this).val()
-        if (id !== "-") {
-            get_vehicle_attached_inventory(id)
-        } else {
-            $(`#${holder}`).html(`<tr><td scope="row" colspan="4" class="no-msg-text">- No Inventory Found -</td></tr>`)
-        }
+        id !== "-" ? get_vehicle_attached_inventory(id) : $(`#${holder}`).html(`<tr><td scope="row" colspan="4" class="no-msg-text">- No Inventory Found -</td></tr>`)
     })
 
     const get_vehicle_attached_inventory = (id) => {
@@ -53,11 +49,7 @@
             },
             error: function(response, jqXHR, textStatus, errorThrown) {
                 Swal.close()
-                if (response.status !== 404) {
-                    generateApiError(response, true)                
-                } else {
-                    $(`#${holder}`).html(`<tr><td scope="row" colspan="4" class="no-msg-text">- No Inventory Found -</td></tr>`)
-                }
+                response.status !== 404 ? generateApiError(response, true) : $(`#${holder}`).html(`<tr><td scope="row" colspan="4" class="no-msg-text">- No Inventory Found -</td></tr>`)
             }
         })
     }

@@ -44,11 +44,7 @@
                 },
                 error: function(response, jqXHR, textStatus, errorThrown) {
                     Swal.close()
-                    if (response.status !== 404) {
-                        generateApiError(response, true)
-                    } else {
-                        messageAlertBox(holder_fuel, "danger", "You never refuel this vehicle")
-                    }
+                    response.status !== 404 ? generateApiError(response, true) : messageAlertBox(holder_fuel, "danger", "You never refuel this vehicle")
                 }
             })
         } else {

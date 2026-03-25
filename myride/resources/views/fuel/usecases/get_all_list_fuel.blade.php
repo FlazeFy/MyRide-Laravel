@@ -78,7 +78,7 @@
                             <td>${getDateToContext(dt.created_at,'calendar',false)}</td>
                             <td>
                                 <div class='d-flex flex-wrap gap-2 justify-content-center'>
-                                    ${dt.fuel_bill != null ? `
+                                    ${dt.fuel_bill !== null ? `
                                         <a class="btn btn-primary btn-evidence" style="width:50px" data-bs-target="#fuel_bill_${dt.id}-modal" data-bs-toggle="modal"><i class="fa-solid fa-receipt"></i></a>
                                         <div class="modal fade" id="fuel_bill_${dt.id}-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                             <div class="modal-dialog">
@@ -108,7 +108,7 @@
             },
             error: function(response, jqXHR, textStatus, errorThrown) {
                 Swal.close()
-                if (response.status != 404) {
+                if (response.status !== 404) {
                     generateApiError(response, true)
                 } else {
                     $(`#${holder}`).html(`<tr><td colspan="5" id="msg-${holder}"></td></tr>`)

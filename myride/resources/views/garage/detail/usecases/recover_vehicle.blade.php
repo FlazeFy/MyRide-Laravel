@@ -27,9 +27,7 @@
                             allowEscapeKey: false,
                             confirmButtonText: "OK"
                         }).then((result) => {
-                            if (result.isConfirmed) {
-                                location.reload()
-                            }
+                            if (result.isConfirmed) location.reload()
                         })
                     },
                     error: function(response, jqXHR, textStatus, errorThrown) {

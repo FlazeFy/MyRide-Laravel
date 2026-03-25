@@ -56,7 +56,7 @@
                             })
                         },
                         error: function(response, jqXHR, textStatus, errorThrown) {
-                            if (response.status != 404) {
+                            if (response.status !== 404) {
                                 generateApiError(response, true)
                             } else {
                                 templateAlertContainer(item_holder, 'no-data', "No notification to show", null, '<i class="fa-solid fa-rotate-left"></i>')

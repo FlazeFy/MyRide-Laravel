@@ -32,13 +32,11 @@
                     const data = response.data
                     localStorage.setItem(ctx,JSON.stringify(data))
                     localStorage.setItem(`last-hit-${ctx}`,Date.now())
-                    data.forEach(dt => {
-                        generatePieChart(`${dt.context.replaceAll('_',' ')} Distribution`,`${dt.context}-holder`,dt.data)
-                    })
+                    data.forEach(dt => generatePieChart(`${dt.context.replaceAll('_',' ')} Distribution`,`${dt.context}-holder`,dt.data))
                 },
                 error: function(response, jqXHR, textStatus, errorThrown) {
                     Swal.close()
-                    if (response.status != 404) {
+                    if (response.status !== 404) {
                         generateApiError(response, true)
                     } else {
                         templateAlertContainer(ctx_holder, 'no-data', "No inventory found for this context to generate the stats", 'add a inventory', '<i class="fa-solid fa-warehouse"></i>','/inventory/add')

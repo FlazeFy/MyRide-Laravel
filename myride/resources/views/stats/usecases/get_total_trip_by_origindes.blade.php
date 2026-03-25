@@ -34,7 +34,7 @@
                 },
                 error: function(response, jqXHR, textStatus, errorThrown) {
                     Swal.close()
-                    if (response.status != 404) {
+                    if (response.status !== 404) {
                         generateApiError(response, true)
                     } else {
                         templateAlertContainer(ctx_holder, 'no-data', "No trip found for this context to generate the stats", 'add a trip', '<i class="fa-solid fa-car"></i>','/trip/add')

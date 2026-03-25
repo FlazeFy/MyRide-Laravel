@@ -304,7 +304,7 @@ class Commands extends Controller
                     $res = UserModel::updateUserById(['email' => $request->email, 'username' => $request->username],$user_id);
 
                     // If there is a change in telegram ID
-                    if ($old_data->telegram_user_id != $new_telegram_id) {
+                    if ($old_data->telegram_user_id !== $new_telegram_id) {
                         $is_telegram_updated = true;
 
                         // Generate token

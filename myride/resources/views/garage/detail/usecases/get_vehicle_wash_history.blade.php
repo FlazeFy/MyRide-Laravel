@@ -21,9 +21,7 @@
     const generatePaginationWash = (items_holder, fetch_callback, total_page, current_page, page_trip, id) => {
         let page_element = ''
         for (let i = 1; i <= total_page; i++) {
-            page_element += `
-                <a class='btn-page ${i === current_page ? 'active' : ''}' href='#' data-page='${i}' title='Open page: ${i}'>${i}</a>
-            `
+            page_element += `<a class='btn-page ${i === current_page ? 'active' : ''}' href='#' data-page='${i}' title='Open page: ${i}'>${i}</a>`
         }
 
         $(`#pagination-${items_holder}`).remove()

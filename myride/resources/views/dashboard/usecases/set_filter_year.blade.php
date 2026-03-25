@@ -27,9 +27,7 @@
                 const data = response.data
                 const selected_year = year
 
-                data.forEach(el => {
-                    $('#toogle_year').append(`<option value="${el.year}" ${selected_year == el.year ? 'selected' :''}>${el.year}</option>`) 
-                })
+                data.forEach(el => $('#toogle_year').append(`<option value="${el.year}" ${selected_year == el.year ? 'selected' :''}>${el.year}</option>`))
             },
             error: function(response, jqXHR, textStatus, errorThrown) {
                 generateApiError(response, true)

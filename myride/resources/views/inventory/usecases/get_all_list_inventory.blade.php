@@ -87,7 +87,7 @@
                             </td>
                             <td>
                                 <div class="d-flex flex-wrap gap-2 justify-content-center">
-                                    ${dt.inventory_image_url != null ? `
+                                    ${dt.inventory_image_url !== null ? `
                                         <a class="btn btn-primary btn-image" style="width:50px" data-bs-target="#inventory_image_url_${dt.id}-modal" data-bs-toggle="modal"><i class="fa-solid fa-image"></i></a>
                                         <div class="modal fade" id="inventory_image_url_${dt.id}-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                             <div class="modal-dialog">
@@ -118,7 +118,7 @@
             },
             error: function(response, jqXHR, textStatus, errorThrown) {
                 Swal.close()
-                if (response.status != 404) {
+                if (response.status !== 404) {
                     generateApiError(response, true)
                 } else {
                     $(`#${holder}`).html(`<tr><td colspan="6" id="msg-${holder}"></td></tr>`)

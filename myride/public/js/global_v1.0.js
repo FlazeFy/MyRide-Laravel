@@ -110,7 +110,7 @@ const generateApiError = (response, is_list_format) => {
     if (response.status === 422) {
         let msg = response.responseJSON.message
         
-        if (typeof msg != 'string') {
+        if (typeof msg !== 'string') {
             const allMsg = Object.values(msg).flat()
             if (is_list_format) {
                 msg = '<ol>'

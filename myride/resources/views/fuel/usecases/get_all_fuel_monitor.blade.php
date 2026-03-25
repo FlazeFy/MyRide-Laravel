@@ -31,17 +31,21 @@
                         `)
                         
                         let percentage
-
-                        if (dt.vehicle_fuel_status === 'Fuel') {
-                            percentage = 100
-                        } else if (dt.vehicle_fuel_status === 'High') {
-                            percentage = 75
-                        } else if (dt.vehicle_fuel_status === 'Normal') {
-                            percentage = 50
-                        } else if (dt.vehicle_fuel_status === 'Low') {
-                            percentage = 25
-                        } else {
-                            percentage = 0
+                        switch (dt.vehicle_fuel_status) {
+                            case 'Fuel':
+                                percentage = 100
+                                break
+                            case 'High':
+                                percentage = 75
+                                break
+                            case 'Normal':
+                                percentage = 50
+                                break
+                            case 'Low':
+                                percentage = 25
+                                break
+                            default:
+                                percentage = 0
                         }
 
                         generateSemiGaugeChart(null, `stats_${dt.id}`, percentage)
@@ -51,7 +55,7 @@
             error: function(response, jqXHR, textStatus, errorThrown) {
                 Swal.close()
 
-                if (response.status != 404) {
+                if (response.status !== 404) {
                     generateApiError(response, true)
                 } else {
                     templateAlertContainer(holder, 'no-data', "No vehicle found", 'add a vehicle', '<i class="fa-solid fa-gas-pump"></i>','/garage/add')

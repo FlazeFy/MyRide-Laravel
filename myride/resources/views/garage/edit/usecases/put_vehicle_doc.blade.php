@@ -26,9 +26,7 @@
                 `)
             }
 
-            if ($("#doc_attachment-holder").find('.vehicle_document-holder').length === 0) {
-                $("#doc_attachment-holder").empty()
-            }
+            if ($("#doc_attachment-holder").find('.vehicle_document-holder').length === 0) $("#doc_attachment-holder").empty()
 
             const uid = Date.now()
             $("#doc_attachment-holder").append(`
@@ -67,11 +65,9 @@
 
                 if (type === "application/pdf") {
                     previewHolder.html(`<iframe src="${event.target.result}" width="100%" height="400px"></iframe>`)
-                } 
-                else if (type.startsWith("image/")) {
+                } else if (type.startsWith("image/")) {
                     previewHolder.html(`<img src="${event.target.result}" class="img-fluid rounded border" style="max-height: 300px"/>`)
-                } 
-                else {
+                } else {
                     failedMsg('Unsupported file format')
                 }
             }
@@ -82,9 +78,7 @@
         $(document).on('click','#save_doc-button',function() {
             let allFilled = true
             $('.vehicle_document').each(function() {
-                if (!this.files || this.files.length === 0) {
-                    allFilled = false
-                }
+                if (!this.files || this.files.length === 0) allFilled = false
             })
 
             if (!allFilled) {
@@ -151,11 +145,7 @@
                 },
                 error: function (response) {
                     Swal.close()
-                    if (response.status === 500) {
-                        generateApiError(response, true)
-                    } else {
-                        failedMsg(response.status === 400 ? Object.values(response.responseJSON.message).flat().join('\n') : response.responseJSON.message)
-                    }
+                    response.status === 500 ? generateApiError(response, true) : failedMsg(response.status === 400 ? Object.values(response.responseJSON.message).flat().join('\n') : response.responseJSON.message)
                 }
             })
         }

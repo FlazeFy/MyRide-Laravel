@@ -24,7 +24,7 @@ class StatsController extends Controller
         $total_trip_by_destination = TripModel::getTotalTripByDestinationOrigion($user_id, 'destination');
         $total_trip_by_origin = TripModel::getTotalTripByDestinationOrigion($user_id, 'origin');
 
-        if ($user_id != null) {    
+        if ($user_id !== null) {    
             return view('stats.index')
                 ->with('total_trip_by_category',$total_trip_by_category)
                 ->with('total_vehicle_by_category',$total_vehicle_by_category)

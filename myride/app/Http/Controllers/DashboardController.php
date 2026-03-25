@@ -13,7 +13,7 @@ class DashboardController extends Controller
     {
         $user_id = Generator::getUserId(session()->get('role_key'));
 
-        if ($user_id != null) {
+        if ($user_id !== null) {
             if (!session()->get('toogle_select_year')) session()->put('toogle_select_year', date('Y'));
             
             return view('dashboard.index')->with('active_menu','dashboard');

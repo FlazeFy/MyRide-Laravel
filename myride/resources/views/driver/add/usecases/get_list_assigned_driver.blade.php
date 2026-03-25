@@ -53,11 +53,7 @@
             },
             error: function(response, jqXHR, textStatus, errorThrown) {
                 Swal.close()
-                if (response.status != 404) {
-                    generateApiError(response, true)
-                } else {
-                    $(`#${holder}`).html(`<tr><td colspan="5" id="msg-${holder}" class="no-msg-text">- No Driver Found -</td></tr>`)
-                }
+                response.status !== 404 ? generateApiError(response, true) : $(`#${holder}`).html(`<tr><td colspan="5" id="msg-${holder}" class="no-msg-text">- No Driver Found -</td></tr>`)
             }
         })
     }

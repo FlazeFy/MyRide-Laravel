@@ -42,11 +42,7 @@
                 },
                 error: function(response, jqXHR, textStatus, errorThrown) {
                     Swal.close()
-                    if (response.status !== 404) {
-                        generateApiError(response, true)
-                    } else {
-                        messageShortImage(`${ctx}-holder`,`{{asset('assets/empty.png')}}`,`there's no trip history`)
-                    }
+                    response.status !== 404 ? generateApiError(response, true) : messageShortImage(`${ctx}-holder`,`{{asset('assets/empty.png')}}`,`there's no trip history`)
                 }
             })
         }

@@ -111,18 +111,12 @@
                     icon: "success",
                     allowOutsideClick: false,
                 }).then((result) => {
-                    if (result.isConfirmed) {
-                        get_vehicle(id)
-                    }   
+                    if (result.isConfirmed) get_vehicle(id)
                 })
             },
             error: function(response, jqXHR, textStatus, errorThrown) {
                 Swal.close()
-                if (response.status !== 404) {
-                    generateApiError(response, true)
-                } else {
-                    failedRoute('vehicle','/garage')
-                }
+                response.status !== 404 ? generateApiError(response, true) : failedRoute('vehicle','/garage')
             }
         })
     }

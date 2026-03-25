@@ -40,21 +40,13 @@
                 const total_page = response.data.last_page
                 const current_page = response.data.current_page
 
-                data.forEach(dt => {
-                    $(`#${items_holder_history}`).append(templateTripBox(dt,null,false))
-                })
+                data.forEach(dt => $(`#${items_holder_history}`).append(templateTripBox(dt,null,false)))
 
-                if (total_page > 1) {
-                    generatePagination(items_holder_history,(selectedPage) => { get_all_trip_by_driver_id(selectedPage,id) }, total_page, current_page)
-                }
+                if (total_page > 1) generatePagination(items_holder_history,(selectedPage) => { get_all_trip_by_driver_id(selectedPage,id) }, total_page, current_page)
             },
             error: function(response, jqXHR, textStatus, errorThrown) {
                 Swal.close()
-                if (response.status !== 404) {
-                    generateApiError(response, true)
-                } else {
-                    messageAlertBox(items_holder_history, "danger", "No trip history found for this driver")
-                }
+                response.status !== 404 ? generateApiError(response, true) : messageAlertBox(items_holder_history, "danger", "No trip history found for this driver")
             }
         })
     }

@@ -150,7 +150,6 @@
                         } else {
                             let carouselInner = ''
                             let carouselIndicator = ''
-
                             detail.vehicle_other_img_url.forEach((dt, idx) => {
                                 carouselInner += `
                                     <div class="carousel-item px-2 ${idx === 0 ? 'active' :''}">
@@ -208,15 +207,8 @@
                         lastPageCarousel = trip_data.last_page
                         nextPageUrlCarousel = trip_data.next_page_url
 
-                        if (page_trip === 1) {
-                            buildLayoutTrip(trip_data,"<?= $carouselId ?>")
-                        } else {
-                            appendLayoutTrip(trip_data,"<?= $carouselId ?>")
-                        }
-
-                        if (trip_data.data.length > 3) {
-                            templateCarouselNavigation("carousel-nav-holder", "<?= $carouselId ?>")
-                        }
+                        page_trip === 1 ? buildLayoutTrip(trip_data,"<?= $carouselId ?>") : appendLayoutTrip(trip_data,"<?= $carouselId ?>")
+                        if (trip_data.data.length > 3) templateCarouselNavigation("carousel-nav-holder", "<?= $carouselId ?>")
                         pauseCarousel("<?= $carouselId ?>")
                         syncCarouselIndicator("<?= $carouselId ?>")
                     } else {

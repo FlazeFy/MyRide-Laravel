@@ -13,11 +13,9 @@
             $('#save_image_collection-button').remove()
             $('#add_image_collection-button').removeClass('d-none').html(`<i class="fa-solid fa-image"></i><span class="d-none d-md-inline"> ${vehicle_img_url ? 'Change' : 'Add'} Image`)
             $('#vehicle_img_collection-holder').empty()
-            if (vehicle_img_url) {
-                $('#vehicle_img_collection-holder').html(`<img class="img img-fluid" src="${vehicle_img_url}" alt="${vehicle_img_url}"/>`)
-            } else {
-                templateAlertContainer('vehicle_img_collection-holder', 'no-data', "No image selected", null, '<i class="fa-solid fa-image"></i>', null)
-            }
+            vehicle_img_url ? 
+                $('#vehicle_img_collection-holder').html(`<img class="img img-fluid" src="${vehicle_img_url}" alt="${vehicle_img_url}"/>`) 
+                : templateAlertContainer('vehicle_img_collection-holder', 'no-data', "No image selected", null, '<i class="fa-solid fa-image"></i>', null)
             $('#remove_image_collection-button').removeClass('d-none') 
             $("#vehicle_img_collection-holder img").removeClass('d-none')
         })

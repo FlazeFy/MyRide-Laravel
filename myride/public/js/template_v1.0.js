@@ -5,7 +5,7 @@ const templateAlertContainer = (target, type, msg, btn_title, icon, href) => {
                 <p class="mb-0" style="font-size: 60px;">${icon}</p>
                 <div>
                     <h6>${msg}</h6>
-                    ${btn_title != null ? `<a class="btn btn-primary py-1" href=${href}><i class="${type === 'no-data'? 'fa-solid fa-plus': type === 'expired_session' ? 'fa-solid fa-rotate-left':''}"></i> ${ucEachWord(btn_title)}</a>`:''}
+                    ${btn_title !== null ? `<a class="btn btn-primary py-1" href=${href}><i class="${type === 'no-data'? 'fa-solid fa-plus': type === 'expired_session' ? 'fa-solid fa-rotate-left':''}"></i> ${ucEachWord(btn_title)}</a>`:''}
                 </div>
             </div>
         </div>
