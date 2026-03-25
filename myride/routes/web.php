@@ -14,6 +14,7 @@ use App\Http\Controllers\StatsController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\TripController;
+use App\Http\Controllers\PartnerController;
 use App\Http\Controllers\TripCalendarController;
 use App\Http\Controllers\AddTripController;
 use App\Http\Controllers\EmbedController;
@@ -98,6 +99,10 @@ Route::prefix('/service')->middleware(['auth_v2:sanctum'])->group(function () {
 
 Route::prefix('/journey')->middleware(['auth_v2:sanctum'])->group(function () {
     Route::get('/', [JourneyController::class, 'index'])->name('journey');
+});
+
+Route::prefix('/partner')->middleware(['auth_v2:sanctum'])->group(function () {
+    Route::get('/', [PartnerController::class, 'index'])->name('partner');
 });
 
 Route::prefix('/fuel')->middleware(['auth_v2:sanctum'])->group(function () {
