@@ -305,6 +305,78 @@ class TripModel extends Model
             ->get();
     }
 
+    public static function getTripPartner($user_id) {
+        $trips = TripModel::select("trip_person", "trip_origin_coordinate", "trip_destination_coordinate", "created_at")
+            ->where('created_by', $user_id)
+            ->orderBy('created_at', 'DESC')
+            ->get();
+
+        $partners = [];
+
+        foreach ($trips as $trip) {
+            // Separate using ", " and ", and "
+            $persons = explode(',', $trip->trip_person);
+            $persons = array_filter(array_map(function ($name) {
+                return trim(str_ireplace('and ', '', $name));
+            }, $persons));
+
+            // Parse coordinates
+            [$lat1, $lon1] = explode(",", $trip->trip_origin_coordinate);
+            [$lat2, $lon2] = explode(",", $trip->trip_destination_coordinate);
+            // Calculate distance
+            $distance = Converter::calculate_distance($lat1, $lon1, $lat2, $lon2, 'km');
+
+            foreach ($persons as $person) {
+                $person = trim($person);
+
+                if (!isset($partners[$person])) {
+                    $partners[$person] = [
+                        'name' => $person,
+                        'total_trip' => 0,
+                        'days' => [],
+                        'total_distance' => 0,
+                        'last_trip' => $trip->created_at,
+                    ];
+                }
+
+                // Count trip
+                $partners[$person]['total_trip']++;
+                // Add distance
+                $partners[$person]['total_distance'] += $distance;
+
+                // Track day
+                $day = date('D', strtotime($trip->created_at));
+                $partners[$person]['days'][] = $day;
+
+                // Track last trip (latest date)
+                if ($trip->created_at > $partners[$person]['last_trip']) $partners[$person]['last_trip'] = $trip->created_at;
+            }
+        }
+
+        $result = [];
+        foreach ($partners as $partner) {
+            // Calculate favorite day 
+            $dayCounts = array_count_values($partner['days']);
+            arsort($dayCounts);
+            $favoriteDay = array_key_first($dayCounts);
+
+            $result[] = [
+                'name' => $partner['name'],
+                'total_trip' => $partner['total_trip'],
+                'favorite_day' => $favoriteDay,
+                'total_distance' => round($partner['total_distance']),
+                'last_trip' => date('d M Y', strtotime($partner['last_trip'])),
+            ];
+        }
+
+        // Sort by total_trip DESC
+        usort($result, function ($a, $b) {
+            return $b['total_trip'] <=> $a['total_trip'];
+        });
+
+        return $result;
+    }
+
     public static function getAllTrip($user_id, $limit, $driver_id = null, $trip_id = null, $search = null) {
         $res = TripModel::select("trip.id", "vehicle_name", "driver.fullname as driver_fullname", "vehicle_plate_number", "trip_desc", "trip_category", "trip_origin_name", "trip_person", "trip_origin_coordinate", "trip_destination_name","trip_destination_coordinate","vehicle_type", "trip.created_at")
             ->join('vehicle','vehicle.id','=','trip.vehicle_id')

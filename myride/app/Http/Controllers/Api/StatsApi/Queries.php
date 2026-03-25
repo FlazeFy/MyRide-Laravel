@@ -1194,10 +1194,10 @@ class Queries extends Controller
      *         @OA\JsonContent(
      *             @OA\Property(property="status", type="string", example="success"),
      *             @OA\Property(property="message", type="string", example="stats fetched"),
-     *                 @OA\Property(property="data", type="array",
-     *                     @OA\Items(
-     *                          @OA\Property(property="context", type="string", example="John Doe"),
-     *                          @OA\Property(property="total", type="integer", example=3)
+     *             @OA\Property(property="data", type="array",
+     *                 @OA\Items(
+     *                      @OA\Property(property="context", type="string", example="John Doe"),
+     *                      @OA\Property(property="total", type="integer", example=3)
      *                 )
      *             )
      *         )
@@ -1480,6 +1480,83 @@ class Queries extends Controller
                 'status' => 'failed',
                 'message' => Generator::getMessageTemplate("not_found", 'stats'),
             ], Response::HTTP_NOT_FOUND);
+        } catch(\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => Generator::getMessageTemplate("unknown_error", null),
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
+     * @OA\GET(
+     *     path="/api/v1/stats/partner",
+     *     summary="Get All Partner",
+     *     description="This request is used to get all trip partner. This request is using MySql database, and has a protected routes",
+     *     tags={"Stats"},
+     *     security={{"bearerAuth":{}}},
+     *     @OA\Response(
+     *         response=200, description="stats fetched",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="message", type="string", example="stats fetched"),
+     *             @OA\Property(property="data", type="array",
+     *                 @OA\Items(
+     *                      @OA\Property(property="name", type="string", example="John Doe"),
+     *                      @OA\Property(property="total_trip", type="integer", example=32),
+     *                      @OA\Property(property="favorite_day", type="string", example="Sun"),
+     *                      @OA\Property(property="total_distance", type="integer", example=320),
+     *                      @OA\Property(property="last_trip", type="string", example="24 May 2025"),
+     *                 )
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="protected route need to include sign in token as authorization bearer",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="failed"),
+     *             @OA\Property(property="message", type="string", example="you need to include the authorization token from login")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="stats failed to fetched",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="failed"),
+     *             @OA\Property(property="message", type="string", example="stats not found")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal Server Error",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="error"),
+     *             @OA\Property(property="message", type="string", example="something wrong. please contact admin")
+     *         )
+     *     ),
+     * )
+     */
+    public function getPartner(Request $request)
+    {
+        try {
+            $user_id = $request->user()->id;
+
+            // Get all trip partner
+            $res = TripModel::getTripPartner($user_id);
+            if ($res && count($res) > 0) {
+                // Return success response
+                return response()->json([
+                    'status' => 'success',
+                    'message' => Generator::getMessageTemplate("fetch", 'stats'),
+                    'data' => $res
+                ], Response::HTTP_OK);
+            } else {
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => Generator::getMessageTemplate("not_found", 'stats'),
+                ], Response::HTTP_NOT_FOUND);
+            }
         } catch(\Exception $e) {
             return response()->json([
                 'status' => 'error',
