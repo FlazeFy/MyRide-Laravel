@@ -377,6 +377,98 @@ class TripModel extends Model
         return $result;
     }
 
+    public static function getTripPlace($user_id) {
+        $trips = TripModel::select("trip_person", "trip_destination_name", "trip_origin_name", "created_at")
+            ->where('created_by', $user_id)
+            ->orderBy('created_at', 'DESC')
+            ->get();
+
+        $places = [];
+        foreach ($trips as $trip) {
+            // Separate person list using ", " and ", and "
+            $persons = explode(',', $trip->trip_person);
+            $persons = array_filter(array_map(function ($name) {
+                return trim(str_ireplace('and ', '', $name));
+            }, $persons));
+
+            // Count origin
+            $origin = $trip->trip_origin_name;
+            if (!isset($places[$origin])) {
+                $places[$origin] = [
+                    'trip_location' => $origin,
+                    'total_origin' => 0,
+                    'total_destination' => 0,
+                    'partners' => []
+                ];
+            }
+
+            $places[$origin]['total_origin']++;
+            foreach ($persons as $person) {
+                $person = trim($person);
+                if (!isset($places[$origin]['partners'][$person])) $places[$origin]['partners'][$person] = 0;
+
+                // Count person in this location
+                $places[$origin]['partners'][$person]++;
+            }
+
+            // Count destination
+            $destination = $trip->trip_destination_name;
+            if (!isset($places[$destination])) {
+                $places[$destination] = [
+                    'trip_location' => $destination,
+                    'total_origin' => 0,
+                    'total_destination' => 0,
+                    'partners' => []
+                ];
+            }
+
+            $places[$destination]['total_destination']++;
+            foreach ($persons as $person) {
+                $person = trim($person);
+                if (!isset($places[$destination]['partners'][$person])) $places[$destination]['partners'][$person] = 0;
+
+                // Count person in this location
+                $places[$destination]['partners'][$person]++;
+            }
+        }
+
+        $result = [];
+        foreach ($places as $place) {
+            $partnerList = [];
+            foreach ($place['partners'] as $name => $total) {
+                $partnerList[] = [
+                    'context' => $name,
+                    'total' => $total
+                ];
+            }
+
+            // Sort partner by total DESC
+            usort($partnerList, function ($a, $b) {
+                return $b['total'] <=> $a['total'];
+            });
+
+            $result[] = [
+                'trip_location' => $place['trip_location'],
+                'total_origin' => $place['total_origin'],
+                'total_destination' => $place['total_destination'],
+                'partner' => count($partnerList) > 0 ? $partnerList : null,
+                'total_all' => $place['total_origin'] + $place['total_destination'],
+            ];
+        }
+
+        // Sort by total DESC
+        usort($result, function ($a, $b) {
+            return $b['total_all'] <=> $a['total_all'];
+        });
+
+        // Remove total all (just for sorting)
+        foreach ($result as &$item) {
+            unset($item['total_all']);
+        }
+
+        return $result;
+    }
+
     public static function getAllTrip($user_id, $limit, $driver_id = null, $trip_id = null, $search = null) {
         $res = TripModel::select("trip.id", "vehicle_name", "driver.fullname as driver_fullname", "vehicle_plate_number", "trip_desc", "trip_category", "trip_origin_name", "trip_person", "trip_origin_coordinate", "trip_destination_name","trip_destination_coordinate","vehicle_type", "trip.created_at")
             ->join('vehicle','vehicle.id','=','trip.vehicle_id')
