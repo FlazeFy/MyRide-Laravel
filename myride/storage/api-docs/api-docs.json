@@ -8264,6 +8264,10 @@
                                                         "type": "string",
                                                         "example": "Place"
                                                     },
+                                                    "trip_coordinate": {
+                                                        "type": "string",
+                                                        "example": "-6.240053824288479, 106.8219550541966"
+                                                    },
                                                     "total_origin": {
                                                         "type": "integer",
                                                         "example": 32

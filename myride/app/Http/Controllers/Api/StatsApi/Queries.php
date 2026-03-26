@@ -1580,6 +1580,7 @@ class Queries extends Controller
      *             @OA\Property(property="data", type="array",
      *                 @OA\Items(
      *                      @OA\Property(property="trip_location", type="string", example="Place"),
+     *                      @OA\Property(property="trip_coordinate", type="string", example="-6.240053824288479, 106.8219550541966"),
      *                      @OA\Property(property="total_origin", type="integer", example=32),
      *                      @OA\Property(property="total_destination", type="integer", example=20),
      *                      @OA\Property(

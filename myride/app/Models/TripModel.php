@@ -378,7 +378,7 @@ class TripModel extends Model
     }
 
     public static function getTripPlace($user_id) {
-        $trips = TripModel::select("trip_person", "trip_destination_name", "trip_origin_name", "created_at")
+        $trips = TripModel::select("trip_person", "trip_destination_name", "trip_origin_coordinate", "trip_destination_coordinate", "trip_origin_name", "created_at")
             ->where('created_by', $user_id)
             ->orderBy('created_at', 'DESC')
             ->get();
@@ -396,6 +396,7 @@ class TripModel extends Model
             if (!isset($places[$origin])) {
                 $places[$origin] = [
                     'trip_location' => $origin,
+                    'trip_coordinate' => $trip->trip_origin_coordinate,
                     'total_origin' => 0,
                     'total_destination' => 0,
                     'partners' => []
@@ -416,6 +417,7 @@ class TripModel extends Model
             if (!isset($places[$destination])) {
                 $places[$destination] = [
                     'trip_location' => $destination,
+                    'trip_coordinate' => $trip->trip_destination_coordinate,
                     'total_origin' => 0,
                     'total_destination' => 0,
                     'partners' => []
@@ -449,6 +451,7 @@ class TripModel extends Model
 
             $result[] = [
                 'trip_location' => $place['trip_location'],
+                'trip_coordinate' => $place['trip_coordinate'],
                 'total_origin' => $place['total_origin'],
                 'total_destination' => $place['total_destination'],
                 'partner' => count($partnerList) > 0 ? $partnerList : null,
