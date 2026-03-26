@@ -31,8 +31,8 @@
         if (myLength >= maxLength) {
             var next = target
             while (next = next.nextElementSibling) {
-                if (next == null) break
-                if (next.tagName.toLowerCase() == "input") {
+                if (next === null) break
+                if (next.tagName.toLowerCase() === "input") {
                     next.focus()
                     break
                 }
@@ -42,8 +42,8 @@
         if (myLength === 0) {
             var next = target
             while (next = next.previousElementSibling) {
-                if (next == null) break
-                if (next.tagName.toLowerCase() == "input") {
+                if (next === null) break
+                if (next.tagName.toLowerCase() === "input") {
                     next.focus()
                     break
                 }
@@ -62,17 +62,17 @@
         var result = ""
 
         pins.forEach(function(e) {
-            if (type == "time_out") {
+            if (type === "time_out") {
                 e.disabled = true
                 e.style = "background: var(--hoverBG);"
-            } else if (type == "regenerate") {
+            } else if (type === "regenerate") {
                 e.disabled = false
                 e.value = ""
                 e.style = "background: var(--firstColor);"
-            } else if (type == "invalid") {
+            } else if (type === "invalid") {
                 e.value = ""
                 e.style = "border: 1.5px solid var(--warningBG); "
-            } else if (type == "fetch") {
+            } else if (type === "fetch") {
                 result += e.value
             }
         })
@@ -85,13 +85,13 @@
         var is_empty = false
 
         pins.forEach(function(e) {
-            if (e.value == "" || e.value == null) {
+            if (e.value === "" || e.value === null) {
                 is_empty = true
                 return
             }
         })
 
-        if (is_empty == false) {
+        if (is_empty === false) {
             const token = controlPin('fetch')
             validateToken(token)
         }

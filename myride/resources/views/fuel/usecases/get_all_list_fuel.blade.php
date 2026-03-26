@@ -45,7 +45,7 @@
                             <td class="text-start">
                                 <div class="fuel-volume">
                                     <h6 class="mb-0">Volume</h6>
-                                    <p class="mb-0">${dt.fuel_volume}${dt.fuel_brand == 'Electric' ? '%' : ' L'}</p>
+                                    <p class="mb-0">${dt.fuel_volume}${dt.fuel_brand === 'Electric' ? '%' : ' L'}</p>
                                 </div>
                                 <div class="fuel-price">
                                     <h6 class="mb-0">Price Total</h6>

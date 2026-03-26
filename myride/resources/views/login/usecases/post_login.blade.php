@@ -31,7 +31,7 @@
 
 <script>
     const viewPassword = () => {
-        if ($("#password").getAttribute('type') == "text") {
+        if ($("#password").getAttribute('type') === "text") {
             $("#password").setAttribute('type', 'password')
             $("#btn-toogle-pwd").html('<i class="fa-sharp fa-solid fa-eye-slash"></i>')
         } else {

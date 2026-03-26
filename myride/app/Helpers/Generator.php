@@ -56,7 +56,7 @@ class Generator
     }
 
     public static function getRandomDate($null) {
-        if ($null == 0) {
+        if ($null === 0) {
             $start = strtotime('2023-01-01 00:00:00');
             $end = strtotime(date("Y-m-d H:i:s"));
             $random = mt_rand($start, $end); 
@@ -71,24 +71,24 @@ class Generator
     public static function generateMonthName($idx,$type) {
         $months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
     
-        return $type == 'short' ? substr($months[$idx-1], 0, 3) : $months[$idx-1];    
+        return $type === 'short' ? substr($months[$idx-1], 0, 3) : $months[$idx-1];    
     }
 
     public static function getMessageTemplate($type, $ctx) {
         if (in_array($type, ['create', 'update', 'delete', 'permentally delete', 'fetch','recover','analyze','generate'])) {
             $ext = in_array($type, ['fetch','recover']) ? "ed" : "d";
             $res = "$ctx ".$type.$ext;              
-        } else if ($type == "not_found") {
+        } else if ($type === "not_found") {
             $res = "$ctx not found";
-        } else if ($type == "unknown_error") {
+        } else if ($type === "unknown_error") {
             $res = "something wrong. please contact admin";
-        } else if ($type == "conflict") {
+        } else if ($type === "conflict") {
             $res = "$ctx has been used. try another";
-        } else if ($type == "custom") {
+        } else if ($type === "custom") {
             $res = "$ctx";
-        } else if ($type == "validation_failed") {
+        } else if ($type === "validation_failed") {
             $res = "validation failed : $ctx";
-        } else if ($type == "permission") {
+        } else if ($type === "permission") {
             $res = "permission denied. only $ctx can use this feature";
         } else {
             $res = "failed to get respond message";
@@ -100,7 +100,7 @@ class Generator
     public static function generateDocTemplate($type) {
         $datetime = now();
 
-        if ($type == "footer") {
+        if ($type === "footer") {
             return "
                 <br><hr>
                 <div>
@@ -108,14 +108,14 @@ class Generator
                     <h6 class='date-text' style='margin: 0; float:right; margin-top:-12px;'>Generated at $datetime by <span style='color:#3b82f6;'>https://myride.leonardhors.com</span></h6>
                 </div>
             ";
-        } else if ($type == "header") {
+        } else if ($type === "header") {
             return "
                 <div style='text-align:center;'>
                     <h1 style='color:#3b82f6; margin:0;'>MyRide</h1>
                     <h4 style='color:#212121; margin:0; font-style:italic;'>Management Apps for your vehicle</div>
                 <hr>
             ";
-        } else if ($type == "style") {
+        } else if ($type === "style") {
             return "
                 <style>
                     body { font-family: Helvetica; }

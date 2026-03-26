@@ -40,17 +40,17 @@ class StatsController extends Controller
     {
         $user_id = Generator::getUserId(session()->get('role_key'));
 
-        if ($request->module == 'Vehicle') {
+        if ($request->module === 'Vehicle') {
             $data = VehicleModel::select('*')
                 ->where('created_by', $user_id)
                 ->orderBy('created_at', 'DESC')
                 ->get();
-        } else if ($request->module == 'Trip') {
+        } else if ($request->module === 'Trip') {
             $data = TripModel::select('*')
                 ->where('created_by', $user_id)
                 ->orderBy('created_at', 'DESC')
                 ->get();
-        } else if ($request->module == 'Wash') {
+        } else if ($request->module === 'Wash') {
             $data = WashModel::select('*')
                 ->where('created_by', $user_id)
                 ->orderBy('created_at', 'DESC')

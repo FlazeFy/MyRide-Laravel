@@ -82,7 +82,7 @@ class Commands extends Controller
                 // Check if Telegram ID has been used
                 $check = UserModel::isTelegramIDUsed($new_telegram_id);
 
-                if ($check == null) {
+                if ($check === null) {
                     // Update user by ID
                     $res = UserModel::updateUserById(['telegram_user_id' => $new_telegram_id, 'telegram_is_valid' => 0],$user_id);;
                     
@@ -292,7 +292,7 @@ class Commands extends Controller
                 // Check username and email availability
                 $check = UserModel::isUsernameEmailUsed($request->email, $request->username, $user_id);
 
-                if ($check == null) {
+                if ($check === null) {
                     $is_telegram_updated = false;
                     $extra_msg = "";
                     $new_telegram_id = $request->telegram_user_id;
@@ -340,7 +340,7 @@ class Commands extends Controller
                         // Get user social contact
                         $user = UserModel::getSocial($user_id);
                         // Check if user's Telegram ID is valid
-                        if ($user->telegram_is_valid == 1 && !$is_telegram_updated) {
+                        if ($user->telegram_is_valid === 1 && !$is_telegram_updated) {
                             if (TelegramMessage::checkTelegramID($new_telegram_id)) {
                                 // Send telegram message
                                 $response = Telegram::sendMessage([

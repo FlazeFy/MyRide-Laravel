@@ -38,7 +38,7 @@
                 $('#form-sign-out').submit()
             },
             error: function(jqXHR, textStatus, errorThrown) {
-                if (jqXHR.status == 401) {
+                if (jqXHR.status === 401) {
                     sessionStorage.clear()
                     localStorage.clear()
                     window.location.href = "/login"

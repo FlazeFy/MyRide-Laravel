@@ -13,7 +13,7 @@ trait LoginHelperTrait
         ]);
 
         $param = [
-            'username' => $role == "user" ? env('TEST_USER_USERNAME') : env('TEST_ADMIN_USERNAME'),
+            'username' => $role === "user" ? env('TEST_USER_USERNAME') : env('TEST_ADMIN_USERNAME'),
             'password' => env('TEST_PASSWORD')
         ];
         $response = $httpClient->post("/api/v1/login", [

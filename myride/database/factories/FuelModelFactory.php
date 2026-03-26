@@ -22,7 +22,7 @@ class FuelModelFactory extends Factory
         $fuel_ron = null;
         $fuel_price = null;
 
-        if ($fuel_brand == "Pertamina") {
+        if ($fuel_brand === "Pertamina") {
             $fuel_type_list = ["Pertamax", "Pertalite", "Pertamax Turbo"];
             $fuel_type = $fuel_type_list[mt_rand(0, count($fuel_type_list) - 1)];
             switch ($fuel_type) {
@@ -39,7 +39,7 @@ class FuelModelFactory extends Factory
                     $fuel_price = $fuel_vol * 16000;
                     break;
             }
-        } else if ($fuel_brand == "BP") {
+        } else if ($fuel_brand === "BP") {
             $fuel_type_list = ["BP 90", "BP 92", "BP 95"];
             $fuel_type = $fuel_type_list[mt_rand(0, count($fuel_type_list) - 1)];
             switch ($fuel_type) {
@@ -56,7 +56,7 @@ class FuelModelFactory extends Factory
                     $fuel_price = $fuel_vol * 15500;
                     break;
             }
-        } else if ($fuel_brand == "Shell") {
+        } else if ($fuel_brand === "Shell") {
             $fuel_type_list = ["Shell Super", "Shell V-Power", "Shell V-Power Nitro+"];
             $fuel_type = $fuel_type_list[mt_rand(0, count($fuel_type_list) - 1)];
             switch ($fuel_type) {
@@ -73,7 +73,7 @@ class FuelModelFactory extends Factory
                     $fuel_price = $fuel_vol * 16500;
                     break;
             }
-        } else if ($fuel_brand == "Vivo") {
+        } else if ($fuel_brand === "Vivo") {
             $fuel_type_list = ["Vivo Revvo 90", "Vivo Revvo 92", "Vivo Revvo 95"];
             $fuel_type = $fuel_type_list[mt_rand(0, count($fuel_type_list) - 1)];
             switch ($fuel_type) {

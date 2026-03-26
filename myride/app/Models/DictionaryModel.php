@@ -70,7 +70,7 @@ class DictionaryModel extends Model
 
     // For Seeder
     public static function getRandom($null,$type) {
-        if ($null == 0) {
+        if ($null === 0) {
             $data = DictionaryModel::inRandomOrder()->take(1)->where('dictionary_type',$type)->first();
             $res = $data->dictionary_name;
         } else {

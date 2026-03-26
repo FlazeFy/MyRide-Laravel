@@ -6,7 +6,7 @@ const getDateToContext = (datetime, type, isFlexible = true) => {
     if (datetime) {
         const result = new Date(datetime);
 
-        if (type == "full") {
+        if (type === "full") {
             const now = new Date(Date.now());
             const yesterday = new Date();
             const tomorrow = new Date();
@@ -22,13 +22,13 @@ const getDateToContext = (datetime, type, isFlexible = true) => {
             } else {
                 return ` ${result.getFullYear()}/${(result.getMonth() + 1)}/${("0" + result.getDate()).slice(-2)} ${("0" + result.getHours()).slice(-2)}:${("0" + result.getMinutes()).slice(-2)}`
             }
-        } else if (type == "24h" || type == "12h") {
+        } else if (type === "24h" || type === "12h") {
             return `${("0" + result.getHours()).slice(-2)}:${("0" + result.getMinutes()).slice(-2)}`
-        } else if (type == "datetime") {
+        } else if (type === "datetime") {
             return ` ${result.getFullYear()}/${(result.getMonth() + 1)}/${("0" + result.getDate()).slice(-2)} ${("0" + result.getHours()).slice(-2)}:${("0" + result.getMinutes()).slice(-2)}`
-        } else if (type == "date") {
+        } else if (type === "date") {
             return `${result.getFullYear()}-${("0" + (result.getMonth() + 1)).slice(-2)}-${("0" + result.getDate()).slice(-2)}`
-        } else if (type == "calendar") {
+        } else if (type === "calendar") {
             const result = new Date(datetime)
 
             if (isFlexible) {
@@ -90,7 +90,7 @@ const generatePagination = (items_holder, fetch_callback, total_page, current_pa
 
     $(`#pagination-${items_holder}`).remove()
 
-    if ($('#'+items_holder).closest('table').length == 0) {
+    if ($('#'+items_holder).closest('table').length === 0) {
         $(`<div id='pagination-${items_holder}' class='btn-page-holder'><label>Page</label>${page_element}</div>`).insertAfter(`#${items_holder}`)
     } else {
         $(`<div id='pagination-${items_holder}' class='btn-page-holder'><label>Page</label>${page_element}</div>`).insertAfter($(`#${items_holder}`).closest('table'))
@@ -136,7 +136,7 @@ const generateApiError = (response, is_list_format) => {
 }
 
 const validateInput = (type, id, max, min) => {
-    if (type == "text") {
+    if (type === "text") {
         const check = $(`#${id}`).val()
         const check_len = check.trim().length
     

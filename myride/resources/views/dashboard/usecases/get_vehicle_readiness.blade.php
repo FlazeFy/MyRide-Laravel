@@ -37,7 +37,7 @@
 
                 $(`#${holder}`).empty()
                 data.forEach(dt => {
-                    const vehicle_name = `${dt.vehicle_name}${dt.vehicle_transmission == 'Automatic' ? ' AT' : dt.vehicle_transmission == 'Manual' ? ' MT' : ' '+dt.vehicle_transmission}`
+                    const vehicle_name = `${dt.vehicle_name}${dt.vehicle_transmission === 'Automatic' ? ' AT' : dt.vehicle_transmission === 'Manual' ? ' MT' : ' '+dt.vehicle_transmission}`
                     $(`#${holder}`).append(`
                         <tr>
                             <td><span class="plate-number">${dt.vehicle_plate_number}</span></td>
@@ -45,8 +45,8 @@
                                 <p class="mb-0" style="font-weight:500">${vehicle_name}${dt.deleted_at ? '<span class="chip-mini bg-danger ms-2">Deleted</span>' : ''}</p>
                                 <p class="mb-0 text-secondary">${dt.vehicle_type}</p>
                             </td>
-                            <td><span class="chip bg-${dt.vehicle_status == 'Available' ? 'success': dt.vehicle_status == 'Reserved' ? 'warning':'danger'}">${dt.vehicle_status}</span></td>
-                            <td><span class="chip bg-${dt.vehicle_fuel_status == 'Full' || dt.vehicle_fuel_status == 'High' ? 'success': dt.vehicle_fuel_status == 'Normal' ? 'warning':'danger'}">${dt.vehicle_fuel_status}</span></td>
+                            <td><span class="chip bg-${dt.vehicle_status === 'Available' ? 'success': dt.vehicle_status === 'Reserved' ? 'warning':'danger'}">${dt.vehicle_status}</span></td>
+                            <td><span class="chip bg-${dt.vehicle_fuel_status === 'Full' || dt.vehicle_fuel_status === 'High' ? 'success': dt.vehicle_fuel_status === 'Normal' ? 'warning':'danger'}">${dt.vehicle_fuel_status}</span></td>
                             <td><i class="fa-solid fa-users"></i> ${dt.vehicle_capacity}</td>
                             <td><a class="btn btn-success px-4 btn-action-readiness" data-id="${dt.id}" data-vehicle_name="${vehicle_name}" data-vehicle_plate_number="${dt.vehicle_plate_number}"><i class="fa-solid fa-play"></i></a></td>
                         </tr>

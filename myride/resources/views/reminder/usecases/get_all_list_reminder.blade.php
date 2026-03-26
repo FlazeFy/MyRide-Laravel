@@ -79,7 +79,7 @@
                         dt.reminder_attachment.forEach((at,idx) => {
                             reminder_attachment_el += `
                                 <a class="chip bg-info fw-normal m-0" data-bs-toggle="modal" data-bs-target="#attachment_${dt.id}_${idx}-modal">
-                                    <i class="fa-solid ${at.attachment_type == 'location' ? 'fa-location-dot' : at.attachment_type == 'driver' ? 'fa-user' : 'fa-image'}"></i> ${ucFirst(at.attachment_type)}
+                                    <i class="fa-solid ${at.attachment_type === 'location' ? 'fa-location-dot' : at.attachment_type === 'driver' ? 'fa-user' : 'fa-image'}"></i> ${ucFirst(at.attachment_type)}
                                 </a>
                                 <div class="modal fade" id="attachment_${dt.id}_${idx}-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                     <div class="modal-dialog">
@@ -90,8 +90,8 @@
                                             </div>
                                             <div class="modal-body">
                                                 ${
-                                                    at.attachment_type == 'image' ? `<img src="${at.attachment_value}" class="img-fluid mb-2" alt="attachment">` :
-                                                    at.attachment_type == 'location' ? `
+                                                    at.attachment_type === 'image' ? `<img src="${at.attachment_value}" class="img-fluid mb-2" alt="attachment">` :
+                                                    at.attachment_type === 'location' ? `
                                                         <div class="map-board" id="map_${dt.id}_${idx}-holder"></div>
                                                         <a class="btn btn-success w-100 mt-3 btn-set-route" data-trip-origin-coordinate="now" data-trip-destination-coordinate="${at.attachment_value.split(",").map(Number)}" data-vehicle-type="undefined"><i class="fa-solid fa-map-pin" aria-hidden="true"></i> Set Route</a>
                                                     `:''

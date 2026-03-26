@@ -97,7 +97,7 @@ class AuditSchedule
                 foreach($admin as $dt) {
                     $message = "[ADMIN] Hello $dt->username, the system just run an audit error, with result of $total error found. Here's the document";
                     
-                    if ($dt->telegram_user_id && $dt->telegram_is_valid == 1) {
+                    if ($dt->telegram_user_id && $dt->telegram_is_valid === 1) {
                         if (TelegramMessage::checkTelegramID($dt->telegram_user_id)) {
                             $response = Telegram::sendDocument([
                                 'chat_id' => $dt->telegram_user_id,
@@ -126,7 +126,7 @@ class AuditSchedule
             foreach ($listCols as $col) {
                 // Model
                 $res = VehicleModel::getContextTotalStats($col, $us->id);
-                if ($res == null || $res->isEmpty()) continue;
+                if ($res === null || $res->isEmpty()) continue;
     
                 // Dataset
                 $labels = $res->pluck('context')->map(fn($c) => Str::upper(str_replace('_', ' ', $c)))->all();
@@ -225,13 +225,13 @@ class AuditSchedule
             // Total Fuel Spending Per Month
             // Model
             $res_fuel_monthly = FuelModel::getTotalFuelSpendingPerMonth($us->id, $year, false);
-            if ($res_fuel_monthly == null || $res_fuel_monthly->isEmpty()) continue;
+            if ($res_fuel_monthly === null || $res_fuel_monthly->isEmpty()) continue;
 
             $res_final_fuel_monthly = [];
             for ($i=1; $i <= 12; $i++) { 
                 $total = 0;
                 foreach ($res_fuel_monthly as $idx => $val) {
-                    if ($i == $val->context) {
+                    if ($i === $val->context) {
                         $total = $val->total;
                         break;
                     }
@@ -254,13 +254,13 @@ class AuditSchedule
             // Total Wash Spending Per Month
             // Model
             $res_wash_monthly = WashModel::getTotalWashSpendingPerMonth($us->id, $year, false);
-            if ($res_wash_monthly == null || $res_wash_monthly->isEmpty()) continue;
+            if ($res_wash_monthly === null || $res_wash_monthly->isEmpty()) continue;
 
             $res_final_wash_monthly = [];
             for ($i=1; $i <= 12; $i++) { 
                 $total = 0;
                 foreach ($res_wash_monthly as $idx => $val) {
-                    if ($i == $val->context) {
+                    if ($i === $val->context) {
                         $total = $val->total;
                         break;
                     }
@@ -327,7 +327,7 @@ class AuditSchedule
             $admin = AdminModel::getAllContact();
 
             foreach($admin as $dt) {
-                if ($dt->telegram_user_id && $dt->telegram_is_valid == 1) {
+                if ($dt->telegram_user_id && $dt->telegram_is_valid === 1) {
                     if (TelegramMessage::checkTelegramID($dt->telegram_user_id)) {    
                         $message_template = "[ADMIN] Hello $dt->username, here's the apps summary for the last $days days:";
                         $message = "$message_template\n\n- Vehicle Created: $summary->vehicle_created\n- Inventory Created: $summary->inventory_created\n- New User : $summary->new_user\n- Trip Created : $summary->trip_created\n- Fuel Created : $summary->fuel_created\n- Service Created : $summary->service_created\n- Wash Created : $summary->wash_created\n- Error Happen : $summary->error_happen";
@@ -356,7 +356,7 @@ class AuditSchedule
                 $total_service = MultiModel::countTotalContext('service',$dt->id);
                 $total_trip = MultiModel::countTotalContext('trip',$dt->id);
                 
-                if ($dt->telegram_user_id && $dt->telegram_is_valid == 1) {
+                if ($dt->telegram_user_id && $dt->telegram_is_valid === 1) {
                     if (TelegramMessage::checkTelegramID($dt->telegram_user_id)) {    
                         $message_template = "Hello $dt->username, here's the weekly dashboard we've gathered so far from your account :";
                         $message = "$message_template\n\n- Total Vehicle : $total_vehicle\n- Total Wash : $total_wash\n- Total Driver : $total_driver\n- Total Service : $total_service\n- Total Trip : $total_trip";        

@@ -14,7 +14,7 @@ class Converter
         $distance = acos($distance);
         $distance = rad2deg($distance);
         $distance = $distance * 60 * 1.1515; 
-        if ($unit == 'km') $distance = $distance * 1.609344;
+        if ($unit === 'km') $distance = $distance * 1.609344;
         $distance = number_format($distance, 2);
         
         return $distance;

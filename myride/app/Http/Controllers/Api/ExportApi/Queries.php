@@ -74,20 +74,20 @@ class Queries extends Controller {
                     'vehicle_name' => $dt->vehicle_name,
                     'wash_desc' => $dt->wash_desc,
                     'wash_by' => $dt->wash_by,
-                    'is_wash_body' => $dt->is_wash_body == 1 ? "Yes" : "No",
-                    'is_wash_window' => $dt->is_wash_window == 1 ? "Yes" : "No",
-                    'is_wash_dashboard' => $dt->is_wash_dashboard == 1 ? "Yes" : "No",
-                    'is_wash_tires' => $dt->is_wash_tires == 1 ? "Yes" : "No",
-                    'is_wash_trash' => $dt->is_wash_trash == 1 ? "Yes" : "No",
-                    'is_wash_engine' => $dt->is_wash_engine == 1 ? "Yes" : "No",
-                    'is_wash_seat' => $dt->is_wash_seat == 1 ? "Yes" : "No",
-                    'is_wash_carpet' => $dt->is_wash_carpet == 1 ? "Yes" : "No",
-                    'is_wash_pillows' => $dt->is_wash_pillows == 1 ? "Yes" : "No",
+                    'is_wash_body' => $dt->is_wash_body === 1 ? "Yes" : "No",
+                    'is_wash_window' => $dt->is_wash_window === 1 ? "Yes" : "No",
+                    'is_wash_dashboard' => $dt->is_wash_dashboard === 1 ? "Yes" : "No",
+                    'is_wash_tires' => $dt->is_wash_tires === 1 ? "Yes" : "No",
+                    'is_wash_trash' => $dt->is_wash_trash === 1 ? "Yes" : "No",
+                    'is_wash_engine' => $dt->is_wash_engine === 1 ? "Yes" : "No",
+                    'is_wash_seat' => $dt->is_wash_seat === 1 ? "Yes" : "No",
+                    'is_wash_carpet' => $dt->is_wash_carpet === 1 ? "Yes" : "No",
+                    'is_wash_pillows' => $dt->is_wash_pillows === 1 ? "Yes" : "No",
                     'wash_address' => $dt->wash_address,
                     'wash_start_time' => $dt->wash_start_time,
                     'wash_end_time' => $dt->wash_end_time,
-                    'is_fill_window_washing_water' => $dt->is_fill_window_washing_water == 1 ? "Yes" : "No",
-                    'is_wash_hollow' => $dt->is_wash_hollow == 1 ? "Yes" : "No",
+                    'is_fill_window_washing_water' => $dt->is_fill_window_washing_water === 1 ? "Yes" : "No",
+                    'is_wash_hollow' => $dt->is_wash_hollow === 1 ? "Yes" : "No",
                     'datetime' => $dt->datetime,
                 ];
             });
@@ -114,7 +114,7 @@ class Queries extends Controller {
             }
 
             // Check if user has valid Telegram
-            if ($user && $user->telegram_is_valid == 1 && $user->telegram_user_id) {
+            if ($user && $user->telegram_is_valid === 1 && $user->telegram_user_id) {
                 // Check if user's Telegram ID is valid
                 if (TelegramMessage::checkTelegramID($user->telegram_user_id)) {
                     // Create input file to attach in Telegram message
@@ -221,7 +221,7 @@ class Queries extends Controller {
             }
 
             // Check if user has valid Telegram
-            if ($user && $user->telegram_is_valid == 1 && $user->telegram_user_id) {
+            if ($user && $user->telegram_is_valid === 1 && $user->telegram_user_id) {
                 // Check if user's Telegram ID is valid
                 if (TelegramMessage::checkTelegramID($user->telegram_user_id)) {
                     // Create input file to attach in Telegram message
@@ -328,7 +328,7 @@ class Queries extends Controller {
             }
 
             // Check if user has valid Telegram
-            if ($user && $user->telegram_is_valid == 1 && $user->telegram_user_id) {
+            if ($user && $user->telegram_is_valid === 1 && $user->telegram_user_id) {
                 // Check if user's Telegram ID is valid
                 if (TelegramMessage::checkTelegramID($user->telegram_user_id)) {
                     // Create input file to attach in Telegram message
@@ -436,7 +436,7 @@ class Queries extends Controller {
             }
 
             // Check if user has valid Telegram
-            if ($user && $user->telegram_is_valid == 1 && $user->telegram_user_id) {
+            if ($user && $user->telegram_is_valid === 1 && $user->telegram_user_id) {
                 // Check if user's Telegram ID is valid
                 if (TelegramMessage::checkTelegramID($user->telegram_user_id)) {
                     // Create input file to attach in Telegram message
@@ -543,7 +543,7 @@ class Queries extends Controller {
             }
 
             // Check if user has valid Telegram
-            if ($user && $user->telegram_is_valid == 1 && $user->telegram_user_id) {
+            if ($user && $user->telegram_is_valid === 1 && $user->telegram_user_id) {
                 // Check if user's Telegram ID is valid
                 if (TelegramMessage::checkTelegramID($user->telegram_user_id)) {
                     // Create input file to attach in Telegram message
@@ -654,7 +654,7 @@ class Queries extends Controller {
             }
 
             // Check if user has valid Telegram 
-            if ($user && $user->telegram_is_valid == 1 && $user->telegram_user_id) {
+            if ($user && $user->telegram_is_valid === 1 && $user->telegram_user_id) {
                 // Check if user's Telegram ID is valid
                 if (TelegramMessage::checkTelegramID($user->telegram_user_id)) {
                     // Create input file to attach in Telegram message

@@ -86,7 +86,7 @@ class UserModel extends Authenticatable
             ->where('id',$id)
             ->first();
 
-        if ($res == null) {
+        if ($res === null) {
             $res = AdminModel::select('username','telegram_user_id','telegram_is_valid','email')
                 ->where('id',$id)
                 ->first();
@@ -151,7 +151,7 @@ class UserModel extends Authenticatable
 
     // For Seeder
     public static function getRandom($null) {
-        if ($null == 0) {
+        if ($null === 0) {
             $data = UserModel::inRandomOrder()->take(1)->first();
             $res = $data->id;
         } else {
@@ -162,7 +162,7 @@ class UserModel extends Authenticatable
     }
 
     public static function getRandomWithVehicle($null) {
-        if ($null == 0) {
+        if ($null === 0) {
             $data = UserModel::select('users.id')
                 ->join('vehicle','users.id','=','vehicle.created_by')
                 ->inRandomOrder()
@@ -177,7 +177,7 @@ class UserModel extends Authenticatable
     }
 
     public static function getRandomWithVehicleDriver($null) {
-        if ($null == 0) {
+        if ($null === 0) {
             $data = UserModel::select('users.id')
                 ->join('vehicle','users.id','=','vehicle.created_by')
                 ->join('driver','users.id','=','driver.created_by')

@@ -89,7 +89,7 @@ class Queries extends Controller
             if (str_contains($context,",")) {
                 $list_context = explode(",",$context);
                 foreach ($list_context as $dt) {
-                    if ($dt == "trip_category" || $dt == "trip_origin_name" || $dt == "trip_destination_name") {
+                    if ($dt === "trip_category" || $dt === "trip_origin_name" || $dt === "trip_destination_name") {
                         // Get the total by context in the trip table
                         $res[] = [
                             'context' => $dt,
@@ -196,7 +196,7 @@ class Queries extends Controller
             if (str_contains($context,",")) {
                 $list_context = explode(",",$context);
                 foreach ($list_context as $dt) {
-                    if ($dt == "inventory_category" || $dt == "inventory_storage") {
+                    if ($dt === "inventory_category" || $dt === "inventory_storage") {
                         // Get the total by context in the inventory table
                         $res[] = [
                             'context' => $dt,
@@ -302,7 +302,7 @@ class Queries extends Controller
             if (str_contains($context,",")) {
                 $list_context = explode(",",$context);
                 foreach ($list_context as $dt) {
-                    if ($dt == "service_category" || $dt == "service_location") {
+                    if ($dt === "service_category" || $dt === "service_location") {
                         // Get the total by context in the service table
                         $res[] = [
                             'context' => $dt,
@@ -538,7 +538,7 @@ class Queries extends Controller
                 for ($i=1; $i <= 12; $i++) { 
                     $total = 0;
                     foreach ($res as $idx => $val) {
-                        if ($i == $val->context) {
+                        if ($i === $val->context) {
                             $total = $val->total;
                             break;
                         }
@@ -656,7 +656,7 @@ class Queries extends Controller
                 for ($i=1; $i <= 12; $i++) { 
                     $total = 0;
                     foreach ($res as $idx => $val) {
-                        if ($i == $val->context) {
+                        if ($i === $val->context) {
                             $total = (int)$val->total;
                             break;
                         }
@@ -788,7 +788,7 @@ class Queries extends Controller
                     for ($i=1; $i <= 12; $i++) { 
                         $total = 0;
                         foreach ($res as $idx => $val) {
-                            if ($i == $val->context) {
+                            if ($i === $val->context) {
                                 $total = (int)$val->total;
                                 break;
                             }
@@ -914,7 +914,7 @@ class Queries extends Controller
                     for ($i=1; $i <= 12; $i++) { 
                         $total = 0;
                         foreach ($res as $idx => $val) {
-                            if ($i == $val->context) {
+                            if ($i === $val->context) {
                                 $total = (int)$val->total;
                                 break;
                             }
@@ -1052,7 +1052,7 @@ class Queries extends Controller
                     for ($i=1; $i <= 12; $i++) { 
                         $total = 0;
                         foreach ($res as $idx => $val) {
-                            if ($i == $val->context) {
+                            if ($i === $val->context) {
                                 $total = (int)$val->total;
                                 break;
                             }
@@ -1162,7 +1162,7 @@ class Queries extends Controller
             ];
 
             // If authentication is not attached, also get total user
-            if ($user_id == null) {
+            if ($user_id === null) {
                 $total_user = MultiModel::countTotalContext('users',$user_id);
                 $data['total_user'] = $total_user;
             }

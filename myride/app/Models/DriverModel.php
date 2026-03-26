@@ -68,9 +68,9 @@ class DriverModel extends Authenticatable
     public static function getAllDriver($user_id = null, $limit, $col = 'driver.*,COUNT(trip.id) as total_trip') {
         $res = DriverModel::selectRaw($col);
 
-        if ($col == 'driver.*,COUNT(trip.id) as total_trip') $res = $res->leftjoin('trip','trip.driver_id','=','driver.id');
+        if ($col === 'driver.*,COUNT(trip.id) as total_trip') $res = $res->leftjoin('trip','trip.driver_id','=','driver.id');
         if ($user_id) $res = $res->where('driver.created_by', $user_id);
-        if ($col == 'driver.*,COUNT(trip.id) as total_trip') $res = $res->groupby('driver.id');
+        if ($col === 'driver.*,COUNT(trip.id) as total_trip') $res = $res->groupby('driver.id');
             
         if ($limit !== 0) {
             return $res->orderBy('driver.created_at', 'desc')->paginate($limit); 
@@ -115,7 +115,7 @@ class DriverModel extends Authenticatable
 
     // For Seeder
     public static function getRandom($null, $user_id) {
-        if ($null == 0) {
+        if ($null === 0) {
             $data = DriverModel::where('created_by',$user_id)->inRandomOrder()->take(1)->first();
             $res = $data->id;
         } else {

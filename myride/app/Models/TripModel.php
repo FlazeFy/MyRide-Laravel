@@ -207,7 +207,7 @@ class TripModel extends Model
     }
 
     public static function getTotalTripByVehiclePerYear($user_id = null, $vehicle_id = null, $year = null) {
-        if ($year == null) $year = date('Y');
+        if ($year === null) $year = date('Y');
         $res = TripModel::selectRaw("COUNT(DISTINCT trip.id) as total, MONTH(trip.created_at) as context");
 
         if ($vehicle_id) $res = $res->where('vehicle_id',$vehicle_id);

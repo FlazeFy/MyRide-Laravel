@@ -1,8 +1,8 @@
 <div id="sidebar" class="sidebar">
     <h5 class="group-menu">Menu</h5>
     <ul class="nav nav-pills flex-column" id="sidebar_menu-holder">
-        <li><a href="/dashboard" class="nav-link <?= $active_menu == "dashboard" ? "active" : "" ?>"><i class="fa-solid fa-table"></i> <span>Dashboard</span></a></li>
-        <li><a href="/garage" class="nav-link <?= $active_menu == "garage" ? "active" : "" ?>"><i class="fa-solid fa-warehouse"></i> <span>My Garage</span></a></li>
+        <li><a href="/dashboard" class="nav-link <?= $active_menu === "dashboard" ? "active" : "" ?>"><i class="fa-solid fa-table"></i> <span>Dashboard</span></a></li>
+        <li><a href="/garage" class="nav-link <?= $active_menu === "garage" ? "active" : "" ?>"><i class="fa-solid fa-warehouse"></i> <span>My Garage</span></a></li>
     </ul>
     <h5 class="group-menu">Trip</h5>
     <ul class="nav nav-pills flex-column" id="sidebar_trip_menu-holder"></ul>
@@ -10,9 +10,9 @@
     <ul class="nav nav-pills flex-column" id="vehicle_menu-list"></ul>
     <h5 class="group-menu">Others</h5>
     <ul class="nav nav-pills flex-column">
-        <li><a href="/history" class="nav-link <?= $active_menu == "history" ? "active" : "" ?>"><i class="fa-solid fa-clock-rotate-left"></i> <span>History</span></a></li>
-        <li><a href="/help" class="nav-link <?= $active_menu == "help" ? "active" : "" ?>"><i class="fa-solid fa-headset"></i> <span>Help Center</span></a></li>
-        <li><a href="/about" class="nav-link <?= $active_menu == "about" ? "active" : "" ?>"><i class="fa-solid fa-circle-info"></i> <span>About Us</span></a></li>
+        <li><a href="/history" class="nav-link <?= $active_menu === "history" ? "active" : "" ?>"><i class="fa-solid fa-clock-rotate-left"></i> <span>History</span></a></li>
+        <li><a href="/help" class="nav-link <?= $active_menu === "help" ? "active" : "" ?>"><i class="fa-solid fa-headset"></i> <span>Help Center</span></a></li>
+        <li><a href="/about" class="nav-link <?= $active_menu === "about" ? "active" : "" ?>"><i class="fa-solid fa-circle-info"></i> <span>About Us</span></a></li>
     </ul>
 </div>
 
@@ -71,18 +71,19 @@
     const generate_menu = (is_have_vehicle, holder) => {
         if (is_have_vehicle) {
             $(`#${holder}`).append(`
-                <li><a href="/fuel" class="nav-link <?= $active_menu == "fuel" ? "active" : "" ?>"><i class="fa-solid fa-gas-pump"></i> Fuel</a></li>
-                <li><a href="/wash" class="nav-link <?= $active_menu == "wash" ? "active" : "" ?>"><i class="fa-solid fa-soap"></i> Wash</a></li>
-                <li><a href="/service" class="nav-link <?= $active_menu == "service" ? "active" : "" ?>"><i class="fa-solid fa-screwdriver-wrench"></i> Service</a></li>
-                <li><a href="/reminder" class="nav-link <?= $active_menu == "reminder" ? "active" : "" ?>"><i class="fa-solid fa-clock"></i> Reminder</a></li>
-                <li><a href="/stats" class="nav-link <?= $active_menu == "stats" ? "active" : "" ?>"><i class="fa-solid fa-chart-simple"></i> Statistic</a></li>
-                <li><a href="/driver" class="nav-link <?= $active_menu == "driver" ? "active" : "" ?>"><i class="fa-solid fa-users"></i> Driver</a></li>
-                <li><a href="/inventory" class="nav-link <?= $active_menu == "inventory" ? "active" : "" ?>"><i class="fa-solid fa-boxes-stacked"></i> Inventory</a></li>
+                <li><a href="/fuel" class="nav-link <?= $active_menu === "fuel" ? "active" : "" ?>"><i class="fa-solid fa-gas-pump"></i> Fuel</a></li>
+                <li><a href="/wash" class="nav-link <?= $active_menu === "wash" ? "active" : "" ?>"><i class="fa-solid fa-soap"></i> Wash</a></li>
+                <li><a href="/service" class="nav-link <?= $active_menu === "service" ? "active" : "" ?>"><i class="fa-solid fa-screwdriver-wrench"></i> Service</a></li>
+                <li><a href="/reminder" class="nav-link <?= $active_menu === "reminder" ? "active" : "" ?>"><i class="fa-solid fa-clock"></i> Reminder</a></li>
+                <li><a href="/stats" class="nav-link <?= $active_menu === "stats" ? "active" : "" ?>"><i class="fa-solid fa-chart-simple"></i> Statistic</a></li>
+                <li><a href="/driver" class="nav-link <?= $active_menu === "driver" ? "active" : "" ?>"><i class="fa-solid fa-users"></i> Driver</a></li>
+                <li><a href="/inventory" class="nav-link <?= $active_menu === "inventory" ? "active" : "" ?>"><i class="fa-solid fa-boxes-stacked"></i> Inventory</a></li>
             `)
             $(`#sidebar_trip_menu-holder`).append(`
-                <li><a href="/trip" class="nav-link <?= $active_menu == "trip" ? "active" : "" ?>"><i class="fa-solid fa-suitcase"></i> Trip</a></li>
-                <li><a href="/journey" class="nav-link <?= $active_menu == "journey" ? "active" : "" ?>"><i class="fa-solid fa-route"></i> <span>Journey</span></a></li>
-                <li><a href="/partner" class="nav-link <?= $active_menu == "partner" ? "active" : "" ?>"><i class="fa-solid fa-user-group"></i> Partner</a></li>
+                <li><a href="/trip" class="nav-link <?= $active_menu === "trip" ? "active" : "" ?>"><i class="fa-solid fa-suitcase"></i> Trip</a></li>
+                <li><a href="/journey" class="nav-link <?= $active_menu === "journey" ? "active" : "" ?>"><i class="fa-solid fa-route"></i> <span>Journey</span></a></li>
+                <li><a href="/place" class="nav-link <?= $active_menu === "place" ? "active" : "" ?>"><i class="fa-solid fa-location-dot"></i> Place</a></li>
+                <li><a href="/partner" class="nav-link <?= $active_menu === "partner" ? "active" : "" ?>"><i class="fa-solid fa-user-group"></i> Partner</a></li>
             `)
         } else {
             $(`#${holder}`).prepend(`<li><a href="/garage/add" class="nav-link"><i class="fa-solid fa-plus"></i> Vehicle</a></li>`)

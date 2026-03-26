@@ -78,12 +78,12 @@ class Validation
     }
 
     public static function getValidateDictionary($request,$type) {
-        if ($type == 'create') {
+        if ($type === 'create') {
             return Validator::make($request->all(), [
                 'dictionary_name' => 'required|string|max:75|min:2',
                 'dictionary_type' => ['required', new DictionaryTypeRule],
             ]);  
-        } else if ($type == 'delete') {
+        } else if ($type === 'delete') {
             return Validator::make($request->all(), [
                 'id' => 'required|string|max:36|min:36',
             ]); 
@@ -91,7 +91,7 @@ class Validation
     }
 
     public static function getValidateVehicle($request, $type) {
-        if ($type == 'detail') {
+        if ($type === 'detail') {
             return Validator::make($request->all(), [
                 'vehicle_name' => 'required|string|min:2|max:75',
                 'vehicle_merk' => 'required|string|max:36',

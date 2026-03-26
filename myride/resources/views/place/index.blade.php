@@ -6,6 +6,6 @@
     </script>
 
     <div class="position-relative text-center mx-auto py-5" style='max-width: 720px;'>
-        @include('partner.usecases.all_trip_partner')
+        @include('place.usecases.all_trip_place')
     </div>
 @endsection
