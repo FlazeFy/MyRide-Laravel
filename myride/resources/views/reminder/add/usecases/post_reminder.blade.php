@@ -88,11 +88,9 @@
 
         const lat = parseFloat(parts[0])
         const lng = parseFloat(parts[1])
-
         if (isNaN(lat) || isNaN(lng)) return
 
         const position = { lat, lng }
-
         if (marker) marker.setMap(null)
         marker = new google.maps.Marker({ position, map })
 
@@ -213,7 +211,6 @@
         }
 
         const fd = new FormData()
-
         fd.append("vehicle_id", vehicle_id)
         fd.append("reminder_title", $('#reminder_title').val())
         fd.append("reminder_context", reminder_context)

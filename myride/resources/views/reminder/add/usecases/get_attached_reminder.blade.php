@@ -42,11 +42,7 @@
                 },
                 error: function(response, jqXHR, textStatus, errorThrown) {
                     Swal.close()
-                    if (response.status !== 404) {
-                        generateApiError(response, true)                
-                    } else {
-                        messageAlertBox(reminder_holder, "danger", "No active reminder attached to this vehicle")
-                    }
+                    response.status !== 404 ? generateApiError(response, true) : messageAlertBox(reminder_holder, "danger", "No active reminder attached to this vehicle")
                 }
             })
         } else {

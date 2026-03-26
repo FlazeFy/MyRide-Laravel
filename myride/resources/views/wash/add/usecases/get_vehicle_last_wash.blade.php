@@ -28,40 +28,17 @@
                     let wash_checklist = ''
                     const classChip = 'chip bg-warning d-inline m-0 text-dark'
 
-                    if (data.is_wash_body) {
-                        wash_checklist += `<h6 class="${classChip}">Body</h6>`
-                    }
-                    if (data.is_wash_window) {
-                        wash_checklist += `<h6 class="${classChip}">Window</h6>`
-                    }
-                    if (data.is_wash_dashboard) {
-                        wash_checklist += `<h6 class="${classChip}">Dashboard</h6>`
-                    }
-                    if (data.is_wash_tires) {
-                        wash_checklist += `<h6 class="${classChip}">Tires</h6>`
-                    }
-                    if (data.is_wash_trash) {
-                        wash_checklist += `<h6 class="${classChip}">Trash</h6>`
-                    }
-                    if (data.is_wash_engine) {
-                        wash_checklist += `<h6 class="${classChip}">Engine</h6>`
-                    }
-                    if (data.is_wash_seat) {
-                        wash_checklist += `<h6 class="${classChip}">Seat</h6>`
-                    }
-                    if (data.is_wash_carpet) {
-                        wash_checklist += `<h6 class="${classChip}">Carpet</h6>`
-                    }
-                    if (data.is_wash_pillows) {
-                        wash_checklist += `<h6 class="${classChip}">Pillows</h6>`
-                    }
-                    if (data.is_fill_window_washing_water) {
-                        wash_checklist += `<h6 class="${classChip}">Window washing Water</h6>`
-                    }
-                    if (data.is_wash_hollow) {
-                        wash_checklist += `<h6 class="${classChip}">Hollow</h6>`
-                    }
-
+                    if (data.is_wash_body) wash_checklist += `<h6 class="${classChip}">Body</h6>`
+                    if (data.is_wash_window) wash_checklist += `<h6 class="${classChip}">Window</h6>`
+                    if (data.is_wash_dashboard) wash_checklist += `<h6 class="${classChip}">Dashboard</h6>`
+                    if (data.is_wash_tires) wash_checklist += `<h6 class="${classChip}">Tires</h6>`
+                    if (data.is_wash_trash) wash_checklist += `<h6 class="${classChip}">Trash</h6>`
+                    if (data.is_wash_engine) wash_checklist += `<h6 class="${classChip}">Engine</h6>`
+                    if (data.is_wash_seat) wash_checklist += `<h6 class="${classChip}">Seat</h6>`
+                    if (data.is_wash_carpet) wash_checklist += `<h6 class="${classChip}">Carpet</h6>`
+                    if (data.is_wash_pillows) wash_checklist += `<h6 class="${classChip}">Pillows</h6>`
+                    if (data.is_fill_window_washing_water) wash_checklist += `<h6 class="${classChip}">Window washing Water</h6>`
+                    if (data.is_wash_hollow) wash_checklist += `<h6 class="${classChip}">Hollow</h6>`
                     wash_checklist = wash_checklist.replace(/, $/, '')
                     
                     $(`#${wash_holder}`).html(`
@@ -77,11 +54,7 @@
                 },
                 error: function(response, jqXHR, textStatus, errorThrown) {
                     Swal.close()
-                    if (response.status !== 404) {
-                        generateApiError(response, true)
-                    } else {
-                        messageAlertBox(wash_holder, "danger", "You never wash this vehicle")
-                    }
+                    response.status !== 404 ? generateApiError(response, true) : messageAlertBox(wash_holder, "danger", "You never wash this vehicle")
                 }
             })
         } else {

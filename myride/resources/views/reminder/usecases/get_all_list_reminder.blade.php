@@ -112,11 +112,7 @@
                         })
                     }
 
-                    if (dt.reminder_context.includes(['Service','Pick Up','Drop Off','Trip'])) {
-                        class_chip = 'bg-danger'
-                    } else {
-                        class_chip = 'bg-success'
-                    }
+                    class_chip = dt.reminder_context.includes(['Service','Pick Up','Drop Off','Trip']) ? 'bg-danger' : 'bg-success'
 
                     $(`#${holder}`).append(`
                         <tr>

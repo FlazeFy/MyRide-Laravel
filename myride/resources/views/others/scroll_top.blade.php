@@ -27,8 +27,8 @@
             $('#scroll-to-top-btn').remove()
         }
     }
-
     handle_scroll_top_btn()
+    
     $(window).on('scroll resize', () => {
         handle_scroll_top_btn()
     })

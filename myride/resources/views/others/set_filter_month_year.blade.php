@@ -27,9 +27,7 @@
             const years = data.map(dt => dt.year)
             years.forEach(dt => {
                 for (let idx = 1; idx < 13; idx++) {
-                    if (now !== `${idx}-${dt}`) {
-                        $(`#${holder}`).append(`<option value="${idx}-${dt}" ${selected === `${idx}-${dt}` ? "selected":""}>${idx}-${dt}</option>`)
-                    }
+                    if (now !== `${idx}-${dt}`) $(`#${holder}`).append(`<option value="${idx}-${dt}" ${selected === `${idx}-${dt}` ? "selected":""}>${idx}-${dt}</option>`)
                 }
             })
         }

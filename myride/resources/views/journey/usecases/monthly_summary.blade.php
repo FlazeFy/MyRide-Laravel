@@ -1,8 +1,6 @@
 <script>
     const generateMonthlySummary = (monthYear, totalTrip, totalService, totalWash, totalFuel, mostFavoritePerson, mostTripCategory, targetElement) => {
         let elFavoritePerson = ''
-        let elMostCategory = ''
-
         if (mostFavoritePerson && mostFavoritePerson.length > 0) {
             mostFavoritePerson.forEach(el => {
                 elFavoritePerson += `
@@ -14,6 +12,7 @@
             })
         }
 
+        let elMostCategory = ''
         if (mostTripCategory && mostTripCategory.length > 0) {
             mostTripCategory.forEach(el => {
                 elMostCategory += `

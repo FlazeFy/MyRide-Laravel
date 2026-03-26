@@ -35,18 +35,12 @@
     let map
     
     $(document).ready(() => {
-        if ($(window).width() < 767) {
-            $('#map-board').css('box-shadow','rgba(0, 0, 0, 0.35) 0px 5px 15px')
-        }
+        if ($(window).width() < 767) $('#map-board').css('box-shadow','rgba(0, 0, 0, 0.35) 0px 5px 15px')
         $(document).on('click','#toggle_close-map',function() {
             $(this).toggleClass('btn-danger mt-2 btn-primary mt-0')
             $(this).find('i').toggleClass('fa-circle-xmark fa-map')
             $('#map-board').toggleClass('d-block d-none')
-            if ($('#map-board').hasClass('d-block')) {
-                $('#map-board').css('box-shadow','rgba(0, 0, 0, 0.35) 0px 5px 15px')
-            } else {
-                $('#map-board').css('box-shadow','none')
-            }
+            $('#map-board').hasClass('d-block') ? $('#map-board').css('box-shadow','rgba(0, 0, 0, 0.35) 0px 5px 15px') : $('#map-board').css('box-shadow','none')
         })
         $(window).on('resize', function() {
             if ($(window).width() < 767) {
@@ -56,9 +50,7 @@
                     $('#toggle_close-map').toggleClass('btn-danger mt-2 btn-primary mt-0')
                 }
             } else {
-                if ($('#map-board').hasClass('d-none')) {
-                    $('#map-board').toggleClass('d-none d-block')
-                }
+                if ($('#map-board').hasClass('d-none')) $('#map-board').toggleClass('d-none d-block')
                 $('#map-board').css('box-shadow','none')
             }
         })
@@ -113,9 +105,7 @@
             }
         })
 
-        if (props.iconImage) {
-            marker.setIcon(props.iconImage)
-        }
+        if (props.iconImage) marker.setIcon(props.iconImage)
         if (props.content) {
             var infoWindow = new google.maps.InfoWindow({
                 content: props.content
@@ -138,9 +128,7 @@
             center: { lat: -6.226838579766097, lng: 106.82157923228753},
             zoom: 12,
         })
-        if (markers.length > 0) {
-            markers.forEach(markerData => add_marker(markerData))
-        }
+        if (markers.length > 0) markers.forEach(markerData => add_marker(markerData))
     }
 
 

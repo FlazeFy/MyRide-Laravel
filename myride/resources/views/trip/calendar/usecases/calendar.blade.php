@@ -212,9 +212,7 @@
                     calendar.addEventSource(events)
                 },
                 error: function(response, jqXHR, textStatus, errorThrown) {
-                    if (response.status !== 404) {
-                        generate_api_error(response, true)
-                    }
+                    if (response.status !== 404) generate_api_error(response, true)
                 }
             })
         }

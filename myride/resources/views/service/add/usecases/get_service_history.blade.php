@@ -59,11 +59,7 @@
             },
             error: function(response, jqXHR, textStatus, errorThrown) {
                 Swal.close()
-                if (response.status !== 404) {
-                    generateApiError(response, true)
-                } else {
-                    $(`#${holder}`).html(`<tr><td scope="row" colspan="3" class="no-msg-text">- No Service Found -</td></tr>`)
-                }
+                response.status !== 404 ? generateApiError(response, true) : $(`#${holder}`).html(`<tr><td scope="row" colspan="3" class="no-msg-text">- No Service Found -</td></tr>`)
             }
         })
     }

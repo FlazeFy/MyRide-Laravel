@@ -9,9 +9,7 @@
             cancelButtonText: 'Cancel',
             reverseButtons: true
         }).then((result) => {
-            if (result.isConfirmed) {
-                put_wash($(this).data('id'))
-            }
+            if (result.isConfirmed) put_wash($(this).data('id'))
         })
     })
 

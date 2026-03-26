@@ -48,7 +48,9 @@
                 $(`#created_at`).text(data.created_at ?? '-')
                 $(`#updated_at`).text(data.updated_at ?? '-')
                 $('#telegram_validated_status').html(
-                    (data.telegram_is_valid == 0 && data.telegram_user_id) || data.telegram_user_id === null ? `<span class='text-danger'><i class="fa-solid fa-triangle-exclamation text-danger"></i> Not ${data.telegram_user_id ? 'Validated' : 'Attached'}</span>` : `<span class='text-success'><i class="fa-solid fa-check text-success"></i> Validated</span>` 
+                    (data.telegram_is_valid == 0 && data.telegram_user_id) || data.telegram_user_id === null 
+                        ? `<span class='text-danger'><i class="fa-solid fa-triangle-exclamation text-danger"></i> Not ${data.telegram_user_id ? 'Validated' 
+                        : 'Attached'}</span>` : `<span class='text-success'><i class="fa-solid fa-check text-success"></i> Validated</span>` 
                 )
                 current_telegram_id = data.telegram_user_id ?? ''
                 if (data.telegram_is_valid === 0 && data_telegram == null && data.telegram_user_id) {
@@ -80,9 +82,7 @@
             success: function(response) {
                 Swal.close()
                 Swal.fire("Success!", response.message, "success").then((result) => {
-                    if (result.isConfirmed) {
-                        get_my_profile()
-                    }
+                    if (result.isConfirmed) get_my_profile()
                 })
             },
             error: function(response, textStatus, errorThrown) {
@@ -113,9 +113,7 @@
             success: function(response) {
                 Swal.close()
                 Swal.fire("Success!", response.message, "success").then((result) => {
-                    if (result.isConfirmed) {
-                        get_profile()
-                    }
+                    if (result.isConfirmed) get_profile()
                 })
             },
             error: function(response, textStatus, errorThrown) {

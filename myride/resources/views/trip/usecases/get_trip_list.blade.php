@@ -41,10 +41,7 @@
                 const searchQuery = search ? `&search=${search}` : ''
                 const holder = '<?= $carouselId ?>'
 
-                if (params.has("trip_id")) {
-                    queryTripId = `&trip_id=${params.get("trip_id")}`
-                }
-           
+                if (params.has("trip_id")) queryTripId = `&trip_id=${params.get("trip_id")}`
                 $.ajax({
                     url: `/api/v1/trip?page=${page}${queryTripId}${searchQuery}`,
                     type: 'GET',
@@ -72,11 +69,7 @@
                         }
 
                         resolve()
-
-                        if (data.length > 3) {
-                            templateCarouselNavigation("carousel-nav-holder", holder)
-                        }
-
+                        if (data.length > 3) templateCarouselNavigation("carousel-nav-holder", holder)
                         pauseCarousel(holder)
                         syncCarouselIndicator(holder)
                     },

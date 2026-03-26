@@ -12,15 +12,12 @@
     $(document).ready(function () {
         const theme = localStorage.getItem("theme") || "light"
         const autoTheme = localStorage.getItem("autoTheme") || "off"
-
         const lightCaption = '<i class="fa-solid fa-sun me-1"></i> Light'
         const darkCaption = '<i class="fa-solid fa-moon me-1"></i> Dark'
 
         $('#themeToggle').html(theme === "light" ? lightCaption : darkCaption)
 
-        if (autoTheme === "on") {
-            $("#themeToggle").prop("disabled", true)
-        }
+        if (autoTheme === "on") $("#themeToggle").prop("disabled", true)
 
         $("#themeToggle").on("click", function () {
             if ($("body").hasClass("light")) {

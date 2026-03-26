@@ -54,15 +54,11 @@
                 })
                 callModal('trip_coordinate-modal')
 
-                if (lastPage > page) {
-                    $(holder).append(`<a class="btn btn-warning py-1 mx-auto see_more-button" data-location-name="${locationName}" data-id="${id}" data-current-page="${page}"><i class="fa-solid fa-magnifying-glass"></i> See More</a>`)
-                }
+                if (lastPage > page) $(holder).append(`<a class="btn btn-warning py-1 mx-auto see_more-button" data-location-name="${locationName}" data-id="${id}" data-current-page="${page}"><i class="fa-solid fa-magnifying-glass"></i> See More</a>`)
             },
             error: function(response, jqXHR, textStatus, errorThrown) {
                 Swal.close()
-                if (response.status !== 404) {
-                    generateApiError(response, true)
-                } 
+                if (response.status !== 404) generateApiError(response, true)
             }
         })
     }
@@ -77,7 +73,6 @@
             $(`#${id}`).val(locName)
             const [lat, lng] = coordinate.split(',').map(c => parseFloat(c.trim()))
             placeMarkerAndPanTo({lat: lat, lng: lng}, map, id.includes('origin') ? 'Origin' : 'Destination')
-
             $('#trip_coordinate-modal').modal('hide')
         })
 
