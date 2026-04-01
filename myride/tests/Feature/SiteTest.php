@@ -114,8 +114,115 @@ class SiteTest extends TestCase
             $summary .= $line . "\n";
         }
     
-        Audit::auditRecordText("Test - Site Test", "All Web Routes", $summary);
-        Audit::auditRecordSheet("Test - Site Test", "All Web Routes", 'ALL', $summary);
+        // Audit Test
+        Audit::auditRecordText("Test - Smoke Site Test", "All Web Routes", $summary);
+        Audit::auditRecordSheet("Test - Smoke Site Test", "All Web Routes", 'ALL', $summary);
+    
+        $this->assertNotEmpty($summary);
+    }
+
+    public function test_all_api_routes() {
+        $summary = '';
+    
+        $routes = [
+            // Public Routes
+            ['uri' => '/api/v1/stats/summary', 'type' => 'public'],
+            ['uri' => '/api/v1/stats/total/trip/monthly/2024', 'type' => 'public'],
+            ['uri' => '/api/v1/stats/total/fuel/monthly/fuel_volume/2024', 'type' => 'public'],
+            ['uri' => '/api/v1/stats/total/service/monthly/service_price/2024', 'type' => 'public'],
+            ['uri' => '/api/v1/stats/total/wash/monthly/wash_price/2024', 'type' => 'public'],
+            ['uri' => '/api/v1/question/faq', 'type' => 'public'],
+            ['uri' => '/api/v1/dictionary/type/fuel', 'type' => 'public'],
+            ['uri' => '/api/v1/trip/discovered', 'type' => 'public'],
+    
+            // Private Routes
+            ['uri' => '/api/v1/vehicle/header', 'type' => 'private'],
+            ['uri' => '/api/v1/vehicle/name', 'type' => 'private'],
+            ['uri' => '/api/v1/vehicle/fuel', 'type' => 'private'],
+            ['uri' => '/api/v1/vehicle/detail/1', 'type' => 'private'],
+            ['uri' => '/api/v1/vehicle/detail/full/1', 'type' => 'private'],
+            ['uri' => '/api/v1/vehicle/trip/summary/1', 'type' => 'private'],
+            ['uri' => '/api/v1/vehicle/readiness', 'type' => 'private'],
+            ['uri' => '/api/v1/wash', 'type' => 'private'],
+            ['uri' => '/api/v1/wash/last/1', 'type' => 'private'],
+            ['uri' => '/api/v1/wash/summary', 'type' => 'private'],
+            ['uri' => '/api/v1/history', 'type' => 'private'],
+            ['uri' => '/api/v1/chat', 'type' => 'private'],
+            ['uri' => '/api/v1/error', 'type' => 'private'],
+            ['uri' => '/api/v1/reminder', 'type' => 'private'],
+            ['uri' => '/api/v1/reminder/next', 'type' => 'private'],
+            ['uri' => '/api/v1/reminder/recently', 'type' => 'private'],
+            ['uri' => '/api/v1/reminder/vehicle/1', 'type' => 'private'],
+            ['uri' => '/api/v1/service', 'type' => 'private'],
+            ['uri' => '/api/v1/service/next', 'type' => 'private'],
+            ['uri' => '/api/v1/service/spending', 'type' => 'private'],
+            ['uri' => '/api/v1/service/vehicle/1', 'type' => 'private'],
+            ['uri' => '/api/v1/driver', 'type' => 'private'],
+            ['uri' => '/api/v1/driver/name', 'type' => 'private'],
+            ['uri' => '/api/v1/driver/vehicle', 'type' => 'private'],
+            ['uri' => '/api/v1/driver/vehicle/list', 'type' => 'private'],
+            ['uri' => '/api/v1/stats/total/trip/all', 'type' => 'private'],
+            ['uri' => '/api/v1/stats/journey/1', 'type' => 'private'],
+            ['uri' => '/api/v1/stats/partner', 'type' => 'private'],
+            ['uri' => '/api/v1/stats/place', 'type' => 'private'],
+            ['uri' => '/api/v1/stats/total/most_person_trip_with', 'type' => 'private'],
+            ['uri' => '/api/v1/stats/total/inventory/all', 'type' => 'private'],
+            ['uri' => '/api/v1/stats/total/vehicle/all', 'type' => 'private'],
+            ['uri' => '/api/v1/stats/total/service/all', 'type' => 'private'],
+            ['uri' => '/api/v1/stats/total/trip/monthly/2024/1', 'type' => 'private'],
+            ['uri' => '/api/v1/fuel', 'type' => 'private'],
+            ['uri' => '/api/v1/fuel/last', 'type' => 'private'],
+            ['uri' => '/api/v1/fuel/summary/2024-01', 'type' => 'private'],
+            ['uri' => '/api/v1/trip', 'type' => 'private'],
+            ['uri' => '/api/v1/trip/last', 'type' => 'private'],
+            ['uri' => '/api/v1/trip/calendar', 'type' => 'private'],
+            ['uri' => '/api/v1/trip/coordinate', 'type' => 'private'],
+            ['uri' => '/api/v1/trip/driver/1', 'type' => 'private'],
+            ['uri' => '/api/v1/inventory', 'type' => 'private'],
+            ['uri' => '/api/v1/inventory/vehicle/1', 'type' => 'private'],
+            ['uri' => '/api/v1/user', 'type' => 'private'],
+            ['uri' => '/api/v1/user/my_year', 'type' => 'private'],
+            ['uri' => '/api/v1/user/my_profile', 'type' => 'private'],
+            ['uri' => '/api/v1/export/wash', 'type' => 'private'],
+            ['uri' => '/api/v1/export/trip', 'type' => 'private'],
+            ['uri' => '/api/v1/export/fuel', 'type' => 'private'],
+            ['uri' => '/api/v1/export/inventory', 'type' => 'private'],
+            ['uri' => '/api/v1/export/service', 'type' => 'private'],
+            ['uri' => '/api/v1/export/driver', 'type' => 'private'],
+        ];
+    
+        foreach ($routes as $route) {
+            auth()->logout();
+    
+            $start = microtime(true);
+            $response = $this->followingRedirects(false)->get($route['uri']);
+            $duration = microtime(true) - $start;
+    
+            // Check if return 401 status code if access protected route without auth header
+            if ($route['type'] === 'public') {
+                $this->assertNotEquals(401, $response->status(), "Public route returned 401: {$route['uri']}");
+            } else {
+                $response->assertStatus(401);
+                $response->assertJson([
+                    'status' => 'failed',
+                    'message' => 'you need to include the authorization token from login',
+                ]);
+            }
+    
+            // Prevent silent 500
+            $this->assertNotEquals(500, $response->status(), "Route crashed: {$route['uri']}");
+
+            // Performance guard
+            $this->assertTrue($duration < 1.5, "Slow route: {$route['uri']} ({$duration}s)");
+    
+            $ms = round($duration * 1000, 4);
+            $line = "{$ms}ms | {$response->status()} | [{$route['type']}] {$route['uri']}";
+            $summary .= $line . "\n";
+        }
+    
+        // Audit Test
+        Audit::auditRecordText("Test - Smoke Site Test", "All API Routes", $summary);
+        Audit::auditRecordSheet("Test - Smoke Site Test", "All API Routes", 'ALL', $summary);
     
         $this->assertNotEmpty($summary);
     }
