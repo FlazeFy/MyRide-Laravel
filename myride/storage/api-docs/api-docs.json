@@ -587,14 +587,125 @@
                 ]
             }
         },
-        "/api/v1/chat": {
+        "/api/v1/chat/ai": {
             "post": {
                 "tags": [
                     "Chat"
                 ],
-                "summary": "Post Chat",
+                "summary": "Post Chat (AI)",
+                "description": "This AI request is used to do analyze and find data using command (prompt) to generate dynamic query. This request interacts with the MySQL database.",
+                "operationId": "f09b5aa21f0f4c3b057e1547d4d1af6f",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "question"
+                                ],
+                                "properties": {
+                                    "question": {
+                                        "type": "string",
+                                        "example": "can you find my vehicle with the most trip?"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "chat answered successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "lorem ipsum"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "{validation_msg}",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "{field validation message}"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "protected route need to include sign in token as authorization bearer",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "you need to include the authorization token from login"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "something wrong. please contact admin"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/chat/nlp": {
+            "post": {
+                "tags": [
+                    "Chat"
+                ],
+                "summary": "Post Chat (NLP)",
                 "description": "This NLP request is used to do analyze and find data using command (prompt). This request interacts with the MySQL database.",
-                "operationId": "2b604313d8bc508d0dc422a1f51d3e79",
+                "operationId": "94169eaddd33e6b542a63bafd61e68fa",
                 "requestBody": {
                     "required": true,
                     "content": {

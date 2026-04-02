@@ -11,7 +11,7 @@ use App\Models\VehicleModel;
 use App\Helpers\Validation;
 use App\Helpers\Generator;
 
-class Commands extends Controller
+class CommandsNLP extends Controller
 {
     private function detectIntent(array $tokens)
     {
@@ -55,8 +55,8 @@ class Commands extends Controller
 
     /**
      * @OA\POST(
-     *     path="/api/v1/chat",
-     *     summary="Post Chat",
+     *     path="/api/v1/chat/nlp",
+     *     summary="Post Chat (NLP)",
      *     description="This NLP request is used to do analyze and find data using command (prompt). This request interacts with the MySQL database.",
      *     tags={"Chat"},
      *     @OA\RequestBody(
@@ -100,7 +100,7 @@ class Commands extends Controller
      *     ),
      * )
      */
-    public function postChat(Request $request)
+    public function postChatNLP(Request $request)
     {
         try {
             // Validate request body
