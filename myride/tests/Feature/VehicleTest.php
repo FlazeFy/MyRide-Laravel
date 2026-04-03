@@ -61,9 +61,7 @@ class VehicleTest extends TestCase
 
             $check_nullable_str = ["vehicle_desc", "vehicle_img_url", "updated_at"];
             foreach ($check_nullable_str as $col) {
-                if (!is_null($dt[$col])) {
-                    $this->assertIsString($dt[$col]);
-                }
+                if (!is_null($dt[$col])) $this->assertIsString($dt[$col]);
             }
 
             $check_not_null_int = ["vehicle_distance","vehicle_capacity"];

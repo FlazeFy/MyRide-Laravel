@@ -138,13 +138,8 @@ class ServiceTest extends TestCase
                 $this->assertIsString($dt[$col]);
             }
 
-            if (!is_null($dt["service_price_total"])) {
-                $this->assertIsInt($dt["service_price_total"]);
-            }
-
-            if (!is_null($dt["service_note"])) {
-                $this->assertIsString($dt["service_note"]);
-            }
+            if (!is_null($dt["service_price_total"])) $this->assertIsInt($dt["service_price_total"]);
+            if (!is_null($dt["service_note"])) $this->assertIsString($dt["service_note"]);
         }
         
         Audit::auditRecordText("Test - Get Service By Vehicle ID", "TC-XXX", "Result : ".json_encode($data));
@@ -255,14 +250,10 @@ class ServiceTest extends TestCase
             }
 
             foreach ($check_nullable_str as $col) {
-                if (!is_null($dt[$col])) {
-                    $this->assertIsString($dt[$col]);
-                }
+                if (!is_null($dt[$col])) $this->assertIsString($dt[$col]);
             }
 
-            if (!is_null($dt["service_price_total"])) {
-                $this->assertIsInt($dt["service_price_total"]);
-            }
+            if (!is_null($dt["service_price_total"])) $this->assertIsInt($dt["service_price_total"]);
         }
         
         Audit::auditRecordText("Test - Get All Service", "TC-XXX", "Result : ".json_encode($data));

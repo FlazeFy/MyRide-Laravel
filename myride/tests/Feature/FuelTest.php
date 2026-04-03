@@ -60,9 +60,7 @@ class FuelTest extends TestCase
             }
 
             foreach ($check_nullable_str as $col) {
-                if (!is_null($dt[$col])) {
-                    $this->assertIsString($dt[$col]);
-                }
+                if (!is_null($dt[$col])) $this->assertIsString($dt[$col]);
             }
 
             foreach ($check_nullable_int as $col) {
@@ -75,9 +73,7 @@ class FuelTest extends TestCase
             $this->assertIsInt($dt["fuel_volume"]);
             $this->assertGreaterThan(0, $dt["fuel_volume"]);
 
-            if (!is_null($dt["fuel_ron"])) {
-                $this->assertContains($dt["fuel_ron"], [90,92,95,98]);
-            }
+            if (!is_null($dt["fuel_ron"])) $this->assertContains($dt["fuel_ron"], [90,92,95,98]);
 
             $this->assertEquals(36,strlen($dt['id']));
         }
@@ -120,9 +116,7 @@ class FuelTest extends TestCase
         }
 
         foreach ($check_nullable_str as $col) {
-            if (!is_null($data['data'][$col])) {
-                $this->assertIsString($data['data'][$col]);
-            }
+            if (!is_null($data['data'][$col])) $this->assertIsString($data['data'][$col]);
         }
 
         foreach ($check_nullable_int as $col) {
@@ -135,9 +129,7 @@ class FuelTest extends TestCase
         $this->assertIsInt($data['data']["fuel_volume"]);
         $this->assertGreaterThan(0, $data['data']["fuel_volume"]);
 
-        if (!is_null($data['data']["fuel_ron"])) {
-            $this->assertContains($data['data']["fuel_ron"], [90,92,95,98]);
-        }
+        if (!is_null($data['data']["fuel_ron"])) $this->assertContains($data['data']["fuel_ron"], [90,92,95,98]);
 
         Audit::auditRecordText("Test - Get Last Fuel", "TC-XXX", "Result : ".json_encode($data));
         Audit::auditRecordSheet("Test - Get Last Fuel", "TC-XXX", 'TC-XXX test_get_last_fuel', json_encode($data));
@@ -191,9 +183,7 @@ class FuelTest extends TestCase
         foreach ($check_not_nullable_int as $col) {
             $this->assertNotNull($data['data'][$col]);
             
-            if ($data['data'][$col]) {
-                $this->assertIsInt($data['data'][$col]);
-            }
+            if ($data['data'][$col]) $this->assertIsInt($data['data'][$col]);
         }
 
         $check_not_null_int = ['total_refueling'];

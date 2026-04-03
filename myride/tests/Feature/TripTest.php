@@ -91,9 +91,7 @@ class TripTest extends TestCase
 
             $check_nullable_str = ["trip_person", "trip_origin_coordinate", "trip_destination_coordinate", "driver_fullname"];
             foreach ($check_nullable_str as $col) {
-                if (!is_null($dt[$col])) {
-                    $this->assertIsString($dt[$col]);
-                }
+                if (!is_null($dt[$col])) $this->assertIsString($dt[$col]);
             }
 
             $this->assertEquals(36,strlen($dt['id']));
@@ -137,9 +135,7 @@ class TripTest extends TestCase
 
             $check_nullable_str = ["trip_person","trip_desc"];
             foreach ($check_nullable_str as $col) {
-                if (!is_null($dt[$col])) {
-                    $this->assertIsString($dt[$col]);
-                }
+                if (!is_null($dt[$col])) $this->assertIsString($dt[$col]);
             }
 
             $this->assertEquals(36,strlen($dt['id']));
@@ -213,9 +209,7 @@ class TripTest extends TestCase
             $this->assertIsString($dt[$col]);
         }
 
-        if (!is_null($dt["driver_username"])) {
-            $this->assertIsString($dt["driver_username"]);
-        }
+        if (!is_null($dt["driver_username"])) $this->assertIsString($dt["driver_username"]);
 
         Audit::auditRecordText("Test - Get Last Trip", "TC-XXX", "Result : ".json_encode($data));
         Audit::auditRecordSheet("Test - Get Last Trip", "TC-XXX", 'TC-XXX test_get_last_trip', json_encode($data));
@@ -291,9 +285,7 @@ class TripTest extends TestCase
 
             $check_nullable_str = ["trip_person", "trip_origin_coordinate", "trip_destination_coordinate"];
             foreach ($check_nullable_str as $col) {
-                if (!is_null($dt[$col])) {
-                    $this->assertIsString($dt[$col]);
-                }
+                if (!is_null($dt[$col])) $this->assertIsString($dt[$col]);
             }
         }
 
@@ -399,5 +391,46 @@ class TripTest extends TestCase
 
         Audit::auditRecordText("Test - Get Trip Discovered", "TC-XXX", "Result : ".json_encode($data));
         Audit::auditRecordSheet("Test - Get Trip Discovered", "TC-XXX", 'TC-XXX test_get_trip_discovered', json_encode($data));
+    }
+
+    public function test_get_nearest_coordinate(): void
+    {
+        // Exec
+        $token = $this->login_trait("user");
+        $coordinate = "-6.193307477576132,106.8290024771821";
+        $response = $this->httpClient->get("coordinate/nearest/$coordinate", [
+            'headers' => [
+                'Authorization' => "Bearer $token"
+            ]
+        ]);
+
+        $data = json_decode($response->getBody(), true);
+
+        // Test Parameter
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertArrayHasKey('status', $data);
+        $this->assertEquals('success', $data['status']);
+        $this->assertArrayHasKey('message', $data);
+        $this->assertArrayHasKey('data', $data);
+
+        foreach ($data['data']['data'] as $dt) {
+            $check_object = ["place_name","place_coordinate","place_distance","last_visit"];
+
+            foreach ($check_object as $col) {
+                $this->assertArrayHasKey($col, $dt);
+            }
+
+            $check_not_null_str = ["place_name","place_coordinate","last_visit"];
+            foreach ($check_not_null_str as $col) {
+                $this->assertNotNull($dt[$col]);
+                $this->assertIsString($dt[$col]);
+            }
+
+            $this->assertNotNull($dt["place_distance"]);
+            $this->assertIsInt($dt["place_distance"]);
+        }
+
+        Audit::auditRecordText("Test - Get Nearest Coordinate", "TC-XXX", "Result : ".json_encode($data));
+        Audit::auditRecordSheet("Test - Get Nearest Coordinate", "TC-XXX", 'TC-XXX test_get_nearest_coordinate', json_encode($data));
     }
 }

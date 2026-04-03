@@ -59,9 +59,7 @@ class WashTest extends TestCase
 
             $check_nullable_str = ["wash_desc", "wash_by", "wash_address", "wash_end_time", "updated_at"];
             foreach ($check_nullable_str as $col) {
-                if (!is_null($dt[$col])) {
-                    $this->assertIsString($dt[$col]);
-                }
+                if (!is_null($dt[$col])) $this->assertIsString($dt[$col]);
             }
 
             $check_not_null_int = ["is_wash_body", "is_wash_window", "is_wash_dashboard", "is_wash_tires", "is_wash_trash", "is_wash_engine", "is_wash_seat", 
@@ -303,9 +301,7 @@ class WashTest extends TestCase
 
         $check_nullable_str = ["wash_desc", "wash_address"];
         foreach ($check_nullable_str as $col) {
-            if (!is_null($data['data'][$col])) {
-                $this->assertIsString($data['data'][$col]);
-            }
+            if (!is_null($data['data'][$col])) $this->assertIsString($data['data'][$col]);
         }
 
         $check_not_null_int = ["is_wash_body", "is_wash_window", "is_wash_dashboard", "is_wash_tires", "is_wash_trash", "is_wash_engine", "is_wash_seat", 

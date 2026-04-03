@@ -54,9 +54,7 @@ class AuthTest extends TestCase
 
         $check_nullable_str = ['telegram_user_id','updated_at'];
         foreach ($check_nullable_str as $col) {
-            if (!is_null($data['message'][$col])) {
-                $this->assertIsString($col, $data['message'][$col]);
-            }
+            if (!is_null($data['message'][$col])) $this->assertIsString($col, $data['message'][$col]);
         }
 
         $this->assertContains($data['message']["telegram_is_valid"], [0, 1]);
@@ -125,6 +123,7 @@ class AuthTest extends TestCase
 
         // Test Parameter
         $this->assertEquals(200, $response->getStatusCode());
+        
         $check_keys_data = ['message','is_signed_in','token'];
         foreach ($check_keys_data as $dt) {
             $this->assertArrayHasKey($dt, $data);

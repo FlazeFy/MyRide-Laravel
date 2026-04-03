@@ -50,11 +50,7 @@ class UserTest extends TestCase
 
         $this->assertContains($data['data']['role'], ['user', 'admin']);
         $this->assertContains($data['data']['telegram_is_valid'], [0, 1]);
-        if (!is_null($data['data']['telegram_user_id'])) {
-            $this->assertIsString($data['data']['telegram_user_id']);
-        } else {
-            $this->assertEquals(0,$data['data']['telegram_user_id']);
-        }
+        !is_null($data['data']['telegram_user_id']) ? $this->assertIsString($data['data']['telegram_user_id']) : $this->assertEquals(0,$data['data']['telegram_user_id']);
 
         Audit::auditRecordText("Test - Get My Profile", "TC-XXX", "Result : ".json_encode($data));
         Audit::auditRecordSheet("Test - Get My Profile", "TC-XXX", 'TC-XXX test_get_my_profile', json_encode($data));
