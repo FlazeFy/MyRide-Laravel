@@ -4,6 +4,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Collection;
 
 // Helpers
 use App\Helpers\Converter;
@@ -59,7 +61,7 @@ class TripModel extends Model
                 [$originLat, $originLng] = explode(',', $item->trip_origin_coordinate);
                 [$destLat, $destLng] = explode(',', $item->trip_destination_coordinate);
 
-                $distance = Converter::calculate_distance((float) $originLat,(float) $originLng,(float) $destLat,(float) $destLng,'km');
+                $distance = Converter::calculate_distance((float) $originLat,(float) $originLng,(float) $destLat,(float) $destLng, 'km');
                 $totalDistance += (float) $distance;
 
                 if (is_null($lastUpdate) || $item->last_update > $lastUpdate) $lastUpdate = $item->last_update;
@@ -540,5 +542,89 @@ class TripModel extends Model
         if ($user_id) $res = $res->where('created_by',$user_id);
             
         return $res->delete();
+    }
+
+    public static function getNearestPlacesByCoordinate($user_id, $coordinate, $perPage) {
+        // Split input coordinate
+        [$inputLat, $inputLng] = array_map('trim', explode(',', $coordinate));
+
+        // Get all trips
+        $res = TripModel::select('trip_origin_name','trip_destination_name','trip_origin_coordinate','trip_destination_coordinate','created_at')
+            ->where('created_by', $user_id)
+            ->get();
+
+        $places = [];
+        foreach ($res as $item) {
+            // Origin
+            if ($item->trip_origin_name && $item->trip_origin_coordinate) {
+                [$lat, $lng] = explode(',', $item->trip_origin_coordinate);
+
+                $distance = Converter::calculate_distance((float) $inputLat, (float) $inputLng, (float) $lat, (float) $lng, 'km');
+                $distanceMeter = $distance * 1000;
+
+                if (!isset($places[$item->trip_origin_name])) {
+                    $places[$item->trip_origin_name] = [
+                        'place_name' => $item->trip_origin_name,
+                        'place_coordinate' => $item->trip_origin_coordinate,
+                        'place_distance' => (float) $distanceMeter,
+                        'last_visit' => $item->created_at,
+                    ];
+                } else {
+                    // Update last visit
+                    if ($item->created_at > $places[$item->trip_origin_name]['last_visit']) $places[$item->trip_origin_name]['last_visit'] = $item->created_at;
+
+                    // Keep nearest coordinate
+                    if ($distanceMeter < $places[$item->trip_origin_name]['place_distance']) {
+                        $places[$item->trip_origin_name]['place_distance'] = (float) $distanceMeter;
+                        $places[$item->trip_origin_name]['place_coordinate'] = $item->trip_origin_coordinate;
+                    }
+                }
+            }
+
+            // Destination
+            if ($item->trip_destination_name && $item->trip_destination_coordinate) {
+                [$lat, $lng] = explode(',', $item->trip_destination_coordinate);
+
+                $distance = Converter::calculate_distance((float) $inputLat, (float) $inputLng, (float) $lat, (float) $lng, 'km');
+                $distanceMeter = $distance * 1000;
+
+                if (!isset($places[$item->trip_destination_name])) {
+                    $places[$item->trip_destination_name] = [
+                        'place_name' => $item->trip_destination_name,
+                        'place_coordinate' => $item->trip_destination_coordinate,
+                        'place_distance' => (float) $distanceMeter,
+                        'last_visit' => $item->created_at,
+                    ];
+                } else {
+                    // Update last visit
+                    if ($item->created_at > $places[$item->trip_destination_name]['last_visit']) $places[$item->trip_destination_name]['last_visit'] = $item->created_at;
+
+                    // Keep nearest coordinate
+                    if ($distanceMeter < $places[$item->trip_destination_name]['place_distance']) {
+                        $places[$item->trip_destination_name]['place_distance'] = (float) $distanceMeter;
+                        $places[$item->trip_destination_name]['place_coordinate'] = $item->trip_destination_coordinate;
+                    }
+                }
+            }
+        }
+
+        // Sorting
+        $places = array_values($places);
+        usort($places, function ($a, $b) {
+            return $a['place_distance'] <=> $b['place_distance'];
+        });
+
+        // Pagination
+        $currentPage = LengthAwarePaginator::resolveCurrentPage();
+        $collection = new Collection($places);
+
+        $currentItems = $collection->slice(($currentPage - 1) * $perPage, $perPage)->values();
+
+        return new LengthAwarePaginator($currentItems, $collection->count(), $perPage, $currentPage,
+            [
+                'path' => request()->url(),
+                'query' => request()->query(),
+            ]
+        );
     }
 }

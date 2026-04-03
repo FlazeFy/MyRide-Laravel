@@ -611,4 +611,89 @@ class Queries extends Controller
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
+
+    /**
+     * @OA\GET(
+     *     path="/api/v1/trip/coordinate/nearest/{coordinate}",
+     *     summary="Get Nearest Place By Coordinate",
+     *     description="This request is used to get nearest place (trip destination or trip origin name).  This request interacts with the MySQL database, has protected routes, and a pagination",
+     *     tags={"Trip"},
+     *     security={{"bearerAuth":{}}},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Trip fetched successfully. Ordered in descending order by `distance`",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="message", type="string", example="trip fetched"),
+     *             @OA\Property(property="data",
+     *                 @OA\Property(property="current_page", type="integer", example=1),
+     *                 @OA\Property(property="data", type="array",
+     *                     @OA\Items(
+     *                         @OA\Property(property="id", type="string", format="uuid", example="28668090-5653-dff5-2d8f-af603fc36b45"),
+     *                         @OA\Property(property="place_name", type="string", example="Location A"),
+     *                         @OA\Property(property="place_coordinate", type="string", example="-6.177464532426197, 106.7912179194768"),
+     *                         @OA\Property(property="place_distance", type="integer", example=20),
+     *                         @OA\Property(property="last_visit", type="string", format="datetime", example="2025-06-19 07:54:42")
+     *                     )
+     *                 ),
+     *                 @OA\Property(property="last_page", type="integer", example=1),
+     *                 @OA\Property(property="per_page", type="integer", example=14),
+     *                 @OA\Property(property="total", type="integer", example=1)
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="protected route need to include sign in token as authorization bearer",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="failed"),
+     *             @OA\Property(property="message", type="string", example="you need to include the authorization token from login")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="trip failed to fetched",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="failed"),
+     *             @OA\Property(property="message", type="string", example="trip not found")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal Server Error",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="error"),
+     *             @OA\Property(property="message", type="string", example="something wrong. please contact admin")
+     *         )
+     *     ),
+     * )
+     */
+    public function getNearestPlaces(Request $request, $coordinate)
+    {
+        try{
+            $user_id = $request->user()->id;
+            $limit = $request->query("limit",15);
+
+            // Get nearest trip location
+            $res = TripModel::getNearestPlacesByCoordinate($user_id, $coordinate, $limit);
+            if (count($res) > 0) {
+                // Return success response
+                return response()->json([
+                    'status' => 'success',
+                    'message' => Generator::getMessageTemplate("fetch", $this->module),
+                    'data' => $res
+                ], Response::HTTP_OK);
+            } else {
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => Generator::getMessageTemplate("not_found", $this->module),
+                ], Response::HTTP_NOT_FOUND);
+            }
+        } catch(\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => Generator::getMessageTemplate("unknown_error", null),
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
 }

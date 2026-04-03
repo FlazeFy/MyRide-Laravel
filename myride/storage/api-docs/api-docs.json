@@ -9912,6 +9912,154 @@
                 ]
             }
         },
+        "/api/v1/trip/coordinate/nearest/{coordinate}": {
+            "get": {
+                "tags": [
+                    "Trip"
+                ],
+                "summary": "Get Nearest Place By Coordinate",
+                "description": "This request is used to get nearest place (trip destination or trip origin name).  This request interacts with the MySQL database, has protected routes, and a pagination",
+                "operationId": "e421b4387d5bd6671c9d8e707b60d5ed",
+                "responses": {
+                    "200": {
+                        "description": "Trip fetched successfully. Ordered in descending order by `distance`",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "trip fetched"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "current_page": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "data": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "string",
+                                                                "format": "uuid",
+                                                                "example": "28668090-5653-dff5-2d8f-af603fc36b45"
+                                                            },
+                                                            "place_name": {
+                                                                "type": "string",
+                                                                "example": "Location A"
+                                                            },
+                                                            "place_coordinate": {
+                                                                "type": "string",
+                                                                "example": "-6.177464532426197, 106.7912179194768"
+                                                            },
+                                                            "place_distance": {
+                                                                "type": "integer",
+                                                                "example": 20
+                                                            },
+                                                            "last_visit": {
+                                                                "type": "string",
+                                                                "format": "datetime",
+                                                                "example": "2025-06-19 07:54:42"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                },
+                                                "last_page": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "per_page": {
+                                                    "type": "integer",
+                                                    "example": 14
+                                                },
+                                                "total": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "protected route need to include sign in token as authorization bearer",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "you need to include the authorization token from login"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "trip failed to fetched",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "trip not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "something wrong. please contact admin"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/v1/user/update_telegram_id": {
             "put": {
                 "tags": [

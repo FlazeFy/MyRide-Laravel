@@ -95,15 +95,15 @@ class CommandsAI extends Controller
 
             return response()->json([
                 'status' => 'success',
-                'message' => 'AI query executed',
-                'sql' => $safeSql,
-                'data' => $res,
-                'text' => $text
+                // 'message' => 'AI query executed',
+                // 'sql' => $safeSql,
+                // 'data' => $res,
+                'message' => $text
             ], Response::HTTP_OK);
         } catch(\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => $e->getMessage(),
+                'message' => Generator::getMessageTemplate("unknown_error", null),
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
