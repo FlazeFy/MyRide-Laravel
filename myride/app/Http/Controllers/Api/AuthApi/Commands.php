@@ -197,51 +197,60 @@ class Commands extends Controller
     public function getRegisterValidationToken(Request $request)
     {
         try{
-            // Check if account exist by username
-            $username = $request->username;
-            $check_user = UserModel::isUsernameUsed($username);
-            if (!$check_user) {
-                // Check if request doesnt duplicate
-                $valid = ValidateRequestModel::isUserRequestDuplicate('register',$username);
-                if (!$valid) {
-                    // Generate token
-                    $token_length = 6;
-                    $token = Generator::getTokenValidation($token_length);
-                    $data_req = (object)[
-                        'request_type' => 'register',
-                        'request_context' => $token
-                    ];
-                    $valid_insert = ValidateRequestModel::createValidateRequest($data_req, $username);
+            // Validate request body
+            $validator = Validation::getValidateUser($request, null);
+            if ($validator->fails()) {
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => $validator->messages()
+                ], Response::HTTP_UNPROCESSABLE_ENTITY);
+            } else {
+                // Check if account exist by username
+                $username = $request->username;
+                $check_user = UserModel::isUsernameUsed($username);
+                if (!$check_user) {
+                    // Check if request doesnt duplicate
+                    $valid = ValidateRequestModel::isUserRequestDuplicate('register',$username);
+                    if (!$valid) {
+                        // Generate token
+                        $token_length = 6;
+                        $token = Generator::getTokenValidation($token_length);
+                        $data_req = [
+                            'request_type' => 'register',
+                            'request_context' => $token
+                        ];
+                        $valid_insert = ValidateRequestModel::createValidateRequest($data_req, $username);
 
-                    if ($valid_insert) {
-                        // Send token email
-                        $ctx = 'Generate registration token';
-                        $email = $request->email;
-                        $data = "You almost finish your registration process. We provided you with this token <br><h5>$token</h5> to make sure this account is yours.<br>If you're the owner just paste this token into the Token's Field. If its not, just leave this message<br>Thank You, MyRide";
-                        dispatch(new UserJob($ctx, $data, $username, $email));
+                        if ($valid_insert) {
+                            // Send token email
+                            $ctx = 'Generate registration token';
+                            $email = $request->email;
+                            $data = "You almost finish your registration process. We provided you with this token <br><h5>$token</h5> to make sure this account is yours.<br>If you're the owner just paste this token into the Token's Field. If its not, just leave this message<br>Thank You, MyRide";
+                            dispatch(new UserJob($ctx, $data, $username, $email));
 
-                        // Return success response
-                        return response()->json([
-                            'status' => 'success',
-                            'message' => Generator::getMessageTemplate("custom", "the validation token has been sended to $email email account"),
-                        ], Response::HTTP_OK);
+                            // Return success response
+                            return response()->json([
+                                'status' => 'success',
+                                'message' => Generator::getMessageTemplate("custom", "the validation token has been sended to $email email account"),
+                            ], Response::HTTP_OK);
+                        } else {
+                            return response()->json([
+                                'status' => 'failed',
+                                'message' => Generator::getMessageTemplate("unknown_error", null),
+                            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+                        }
                     } else {
                         return response()->json([
                             'status' => 'failed',
-                            'message' => Generator::getMessageTemplate("unknown_error", null),
-                        ], Response::HTTP_INTERNAL_SERVER_ERROR);
+                            'message' => Generator::getMessageTemplate("custom", 'there already a request with same username'),
+                        ], Response::HTTP_CONFLICT);
                     }
                 } else {
                     return response()->json([
                         'status' => 'failed',
-                        'message' => Generator::getMessageTemplate("custom", 'there already a request with same username'),
+                        'message' => Generator::getMessageTemplate("conflict", 'username'),
                     ], Response::HTTP_CONFLICT);
                 }
-            } else {
-                return response()->json([
-                    'status' => 'failed',
-                    'message' => Generator::getMessageTemplate("conflict", 'username'),
-                ], Response::HTTP_CONFLICT);
             }
         } catch(\Exception $e) {
             return response()->json([
@@ -438,24 +447,61 @@ class Commands extends Controller
     public function postRegenerateRegisterToken(Request $request)
     {
         try{
-            $username = $request->username;
+            // Validate request body
+            $validator = Validation::getValidateUser($request, null);
+            if ($validator->fails()) {
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => $validator->messages()
+                ], Response::HTTP_UNPROCESSABLE_ENTITY);
+            } else {
+                $username = $request->username;
 
-            // Check if request valid
-            $valid = ValidateRequestModel::isUserRequestValid('register',null,$username);
-            // Generate token
-            $token_length = 6;
-            $token = Generator::getTokenValidation($token_length);
+                // Check if request valid
+                $valid = ValidateRequestModel::isUserRequestValid('register',null,$username);
+                // Generate token
+                $token_length = 6;
+                $token = Generator::getTokenValidation($token_length);
 
-            // Create register token
-            $data_req = (object)[
-                'request_type' => 'register',
-                'request_context' => $token
-            ];
-            if ($valid) {
-                // If token still fresh but user request a new one
-                // Delete request after validation
-                $delete = ValidateRequestModel::destroy($valid->id);
-                if ($delete > 0) {
+                // Create register token
+                $data_req = [
+                    'request_type' => 'register',
+                    'request_context' => $token
+                ];
+                if ($valid) {
+                    // If token still fresh but user request a new one
+                    // Delete request after validation
+                    $delete = ValidateRequestModel::destroy($valid->id);
+                    if ($delete > 0) {
+                        $valid_insert = ValidateRequestModel::createValidateRequest($data_req, $username);
+
+                        if ($valid_insert) {
+                            // Send email regenerate token
+                            $ctx = 'Generate registration token';
+                            $email = $request->email;
+                            $data = "You almost finish your registration process. We provided you with this token <br><h5>$token</h5> to make sure this account is yours.<br>If you're the owner just paste this token into the Token's Field. If its not, just leave this message<br>Thank You, MyRide";
+                            dispatch(new UserJob($ctx, $data, $username, $email));
+
+                            // Return success response
+                            return response()->json([
+                                'status' => 'success',
+                                'message' => Generator::getMessageTemplate("custom", "the validation token has been sended to $email email account"),
+                            ], Response::HTTP_OK);
+                        } else {
+                            return response()->json([
+                                'status' => 'failed',
+                                'message' => Generator::getMessageTemplate("unknown_error", null),
+                            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+                        }
+                    } else {
+                        return response()->json([
+                            'status' => 'error',
+                            'message' => Generator::getMessageTemplate("not_found", 'request'),
+                        ], Response::HTTP_NOT_FOUND);
+                    }
+                } else {
+                    // If token already deleted / expired
+                    // Create register token
                     $valid_insert = ValidateRequestModel::createValidateRequest($data_req, $username);
 
                     if ($valid_insert) {
@@ -476,34 +522,6 @@ class Commands extends Controller
                             'message' => Generator::getMessageTemplate("unknown_error", null),
                         ], Response::HTTP_INTERNAL_SERVER_ERROR);
                     }
-                } else {
-                    return response()->json([
-                        'status' => 'error',
-                        'message' => Generator::getMessageTemplate("not_found", 'request'),
-                    ], Response::HTTP_NOT_FOUND);
-                }
-            } else {
-                // If token already deleted / expired
-                // Create register token
-                $valid_insert = ValidateRequestModel::createValidateRequest($data_req, $username);
-
-                if ($valid_insert) {
-                    // Send email regenerate token
-                    $ctx = 'Generate registration token';
-                    $email = $request->email;
-                    $data = "You almost finish your registration process. We provided you with this token <br><h5>$token</h5> to make sure this account is yours.<br>If you're the owner just paste this token into the Token's Field. If its not, just leave this message<br>Thank You, MyRide";
-                    dispatch(new UserJob($ctx, $data, $username, $email));
-
-                    // Return success response
-                    return response()->json([
-                        'status' => 'success',
-                        'message' => Generator::getMessageTemplate("custom", "the validation token has been sended to $email email account"),
-                    ], Response::HTTP_OK);
-                } else {
-                    return response()->json([
-                        'status' => 'failed',
-                        'message' => Generator::getMessageTemplate("unknown_error", null),
-                    ], Response::HTTP_INTERNAL_SERVER_ERROR);
                 }
             }
         } catch(\Exception $e) {

@@ -144,12 +144,19 @@ class Validation
         ]);
     }
 
-    public static function getValidateUser($request) {
-        return Validator::make($request->all(), [
-            'username' => 'required|min:6|max:30|string',
-            'email' => 'nullable|string|max:144|min:10', 
-            'telegram_user_id' => 'nullable|string|max:36|min:2'
-        ]);
+    public static function getValidateUser($request, $type = null) {
+        $rules = [
+            'username' => 'required|string|min:6|max:36',
+            'email' => 'required|string|min:10|max:255',
+        ];
+
+        if ($type === 'create') {
+            $rules['password'] = 'required|string|min:6|max:500';
+            $rules['telegram_user_id'] = 'nullable|string|max:36|min:2';
+        }
+        if ($type === 'update') $rules['telegram_user_id'] = 'nullable|string|max:36|min:2';
+
+        return Validator::make($request->all(), $rules);
     }
 
     public static function getValidateWash($request) {

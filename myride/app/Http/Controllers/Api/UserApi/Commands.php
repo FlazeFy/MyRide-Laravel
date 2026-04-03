@@ -282,7 +282,7 @@ class Commands extends Controller
             $user_id = $request->user()->id;
 
             // Validate request body
-            $validator = Validation::getValidateUser($request);
+            $validator = Validation::getValidateUser($request, 'update');
             if ($validator->fails()) {
                 return response()->json([
                     'status' => 'error',
