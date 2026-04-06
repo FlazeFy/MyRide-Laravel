@@ -32,7 +32,7 @@ class HistoryModel extends Model
     protected $fillable = ['id', 'history_type', 'history_context', 'created_at', 'created_by'];
 
     public static function getAllHistory($type, $user_id, $paginate) {
-        $select_query = $type === "admin" ? 'history.id, username, history_type, history_context, history.created_at' : '*';
+        $select_query = $type === "admin" ? 'history.id, username, history_type, history_context, history.created_at' : 'id, history_type, history_context, created_at';
         
         $res = HistoryModel::selectRaw($select_query);
         if ($type === "admin") $res = $res->join('users','users.id','=','history.created_by');

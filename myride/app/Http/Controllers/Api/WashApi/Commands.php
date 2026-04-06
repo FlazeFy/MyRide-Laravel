@@ -177,7 +177,7 @@ class Commands extends Controller
             $validator = Validation::getValidateWash($request);
             if ($validator->fails()) {
                 return response()->json([
-                    'status' => 'error',
+                    'status' => 'failed',
                     'message' => $validator->errors()
                 ], Response::HTTP_BAD_REQUEST);
             } else {
@@ -374,7 +374,7 @@ class Commands extends Controller
             $validator = Validation::getValidateWash($request);
             if ($validator->fails()) {
                 return response()->json([
-                    'status' => 'error',
+                    'status' => 'failed',
                     'message' => $validator->errors()
                 ], Response::HTTP_BAD_REQUEST);
             } else {

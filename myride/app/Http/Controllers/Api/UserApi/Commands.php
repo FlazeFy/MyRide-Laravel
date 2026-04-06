@@ -285,7 +285,7 @@ class Commands extends Controller
             $validator = Validation::getValidateUser($request, 'update');
             if ($validator->fails()) {
                 return response()->json([
-                    'status' => 'error',
+                    'status' => 'failed',
                     'message' => $validator->errors()
                 ], Response::HTTP_BAD_REQUEST);
             } else {

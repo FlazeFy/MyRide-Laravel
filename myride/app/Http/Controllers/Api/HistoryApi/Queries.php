@@ -39,7 +39,6 @@ class Queries extends Controller
      *                         @OA\Property(property="history_type", type="string", example="Create"),
      *                         @OA\Property(property="history_context", type="string", example="Barang bawaan"),
      *                         @OA\Property(property="created_at", type="string", format="date-time", example="2024-09-20 22:53:47"),
-     *                         @OA\Property(property="created_by", type="string", example="2d98f524-de02-11ed-b5ea-0242ac120002")
      *                     )
      *                 ),
      *             )
@@ -76,6 +75,13 @@ class Queries extends Controller
         try{
             $user_id = $request->user()->id;
             $paginate = $request->query('per_page_key') ?? 15;
+            // Validate query
+            if (!is_numeric($paginate) || (int)$paginate <= 0) {
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => 'per_page_key is not a valid page',
+                ], Response::HTTP_BAD_REQUEST);
+            }
 
             // Define user id by role
             $check_admin = AdminModel::find($user_id);

@@ -107,7 +107,7 @@ class Commands extends Controller
             $validator = Validation::getValidateTrip($request,"create");
             if ($validator->fails()) {
                 return response()->json([
-                    'status' => 'error',
+                    'status' => 'failed',
                     'message' => $validator->errors()
                 ], Response::HTTP_BAD_REQUEST);
             } else {
@@ -120,14 +120,14 @@ class Commands extends Controller
 
                 if ($trip_origin_name === $trip_destination_name) {
                     return response()->json([
-                        'status' => 'error',
+                        'status' => 'failed',
                         'message' => Generator::getMessageTemplate("custom", 'trip origin and destination coordinate must be different')
                     ], Response::HTTP_BAD_REQUEST);
                 }
 
                 if ($trip_origin_coordinate === $trip_destination_coordinate) {
                     return response()->json([
-                        'status' => 'error',
+                        'status' => 'failed',
                         'message' => Generator::getMessageTemplate("custom", 'trip origin and destination coordinate must be different')
                     ], Response::HTTP_BAD_REQUEST);
                 }
@@ -372,7 +372,7 @@ class Commands extends Controller
             $validator = Validation::getValidateTrip($request,"update");
             if ($validator->fails()) {
                 return response()->json([
-                    'status' => 'error',
+                    'status' => 'failed',
                     'message' => $validator->errors()
                 ], Response::HTTP_BAD_REQUEST);
             } else {
@@ -383,14 +383,14 @@ class Commands extends Controller
 
                 if ($trip_origin_name === $trip_destination_name) {
                     return response()->json([
-                        'status' => 'error',
+                        'status' => 'failed',
                         'message' => Generator::getMessageTemplate("custom", 'trip origin and destination coordinate must be different')
                     ], Response::HTTP_BAD_REQUEST);
                 }
 
                 if ($trip_origin_coordinate === $trip_destination_coordinate) {
                     return response()->json([
-                        'status' => 'error',
+                        'status' => 'failed',
                         'message' => Generator::getMessageTemplate("custom", 'trip origin and destination coordinate must be different')
                     ], Response::HTTP_BAD_REQUEST);
                 }

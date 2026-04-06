@@ -84,7 +84,7 @@ class Commands extends Controller
             $validator = Validation::getValidateDictionary($request,'delete');
             if ($validator->fails()) {
                 return response()->json([
-                    'status' => 'error',
+                    'status' => 'failed',
                     'message' => $validator->errors()
                 ], Response::HTTP_BAD_REQUEST);
             } else {
@@ -178,7 +178,7 @@ class Commands extends Controller
             $validator = Validation::getValidateDictionary($request,'create');
             if ($validator->fails()) {
                 return response()->json([
-                    'status' => 'error',
+                    'status' => 'failed',
                     'message' => $validator->errors()
                 ], Response::HTTP_BAD_REQUEST);
             } else {
@@ -190,7 +190,7 @@ class Commands extends Controller
                 $isUsedName = DictionaryModel::isUsedName($dictionary_name, $dictionary_type);
                 if ($isUsedName) {
                     return response()->json([
-                        'status' => 'error',
+                        'status' => 'failed',
                         'message' => Generator::getMessageTemplate("conflict", "$this->module name"),
                     ], Response::HTTP_CONFLICT);
                 } else {

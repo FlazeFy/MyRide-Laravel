@@ -258,7 +258,7 @@ class Commands extends Controller
             $validator = Validation::getValidateDriver($request,'create');
             if ($validator->fails()) {
                 return response()->json([
-                    'status' => 'error',
+                    'status' => 'failed',
                     'message' => $validator->errors()
                 ], Response::HTTP_BAD_REQUEST);
             } else {
@@ -367,7 +367,7 @@ class Commands extends Controller
             $validator = Validation::getValidateDriver($request,'update');
             if ($validator->fails()) {
                 return response()->json([
-                    'status' => 'error',
+                    'status' => 'failed',
                     'message' => $validator->errors()
                 ], Response::HTTP_BAD_REQUEST);
             } else {
@@ -471,7 +471,7 @@ class Commands extends Controller
             $validator = Validation::getValidateDriver($request,'create_relation');
             if ($validator->fails()) {
                 return response()->json([
-                    'status' => 'error',
+                    'status' => 'failed',
                     'message' => $validator->errors()
                 ], Response::HTTP_BAD_REQUEST);
             } else {

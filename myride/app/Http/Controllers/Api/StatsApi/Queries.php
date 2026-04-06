@@ -104,8 +104,16 @@ class Queries extends Controller
                     }
                 }
             } else {
-                // Get the total by context in the trip table
-                $res = MultiModel::getContextTotalStats($context,$user_id,'trip');
+                if ($context === "trip_category" || $context === "trip_origin_name" || $context === "trip_destination_name") {
+                    // Get the total by context in the trip table
+                    $res = MultiModel::getContextTotalStats($context,$user_id,'trip');
+                } else {
+                    // Context not valid
+                    return response()->json([
+                        'status' => 'failed',
+                        'message' => Generator::getMessageTemplate("custom", "$context is not available"),
+                    ], Response::HTTP_BAD_REQUEST);
+                }
             }
                 
             if ($res) {

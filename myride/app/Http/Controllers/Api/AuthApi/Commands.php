@@ -327,7 +327,7 @@ class Commands extends Controller
             $validator = Validation::getValidateUser($request,'create');
             if ($validator->fails()) {
                 return response()->json([
-                    'status' => 'error',
+                    'status' => 'failed',
                     'message' => $validator->errors()
                 ], Response::HTTP_UNPROCESSABLE_ENTITY);
             } else {

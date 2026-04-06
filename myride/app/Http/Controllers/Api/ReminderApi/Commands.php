@@ -201,7 +201,7 @@ class Commands extends Controller
             $validator = Validation::getValidateReminder($request);
             if ($validator->fails()) {
                 return response()->json([
-                    'status' => 'error',
+                    'status' => 'failed',
                     'message' => $validator->errors()
                 ], Response::HTTP_BAD_REQUEST);
             } else {
