@@ -75,6 +75,7 @@ class Queries extends Controller
         try{
             $user_id = $request->user()->id;
             $paginate = $request->query('per_page_key') ?? 15;
+            
             // Validate query
             if (!is_numeric($paginate) || (int)$paginate <= 0) {
                 return response()->json([

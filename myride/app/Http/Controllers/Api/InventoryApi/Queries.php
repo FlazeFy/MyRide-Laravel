@@ -92,7 +92,7 @@ class Queries extends Controller
                 ], Response::HTTP_BAD_REQUEST);
             }
             // This will get all inventory if vehicle_id not attached
-            if ($vehicle_id && strlen($vehicle_id) !== 36 || !preg_match('/^[0-9a-fA-F-]{36}$/', $vehicle_id)) {
+            if ($vehicle_id && (strlen($vehicle_id) !== 36 || !preg_match('/^[0-9a-fA-F-]{36}$/', $vehicle_id))) {
                 return response()->json([
                     'status' => 'failed',
                     'message' => 'vehicle_id must be a valid UUID',

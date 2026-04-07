@@ -152,7 +152,9 @@ class WashModel extends Model
             });
         }
 
-        return $res->orderBy('wash.created_at','desc')->paginate($limit);
+        return $res->where('wash.created_by', $user_id)
+            ->orderBy('wash.created_at','desc')
+            ->paginate($limit);
     }
 
     public static function getJourney($user_id, $vehicle_id) {

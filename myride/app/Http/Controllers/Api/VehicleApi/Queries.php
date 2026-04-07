@@ -94,10 +94,18 @@ class Queries extends Controller
     {
         try{
             $user_id = $request->user()->id;
-            $limit = $request->query("limit",15);
+            $paginate = $request->query("per_page_key",15);
+
+            // Validate query
+            if (!is_numeric($paginate) || (int)$paginate <= 0) {
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => 'per_page_key is not a valid page',
+                ], Response::HTTP_BAD_REQUEST);
+            }
 
             // Get all vehicle header
-            $res = VehicleModel::getAllVehicleHeader($user_id,$limit);
+            $res = VehicleModel::getAllVehicleHeader($user_id,$paginate);
             if ($res) {
                 // Return success response
                 return response()->json([
@@ -183,15 +191,22 @@ class Queries extends Controller
     public function getVehicleReadiness(Request $request)
     {
         try{
-            $limit = $request->query("limit",15);
-
             // Define user id by role
             $user_id = $request->user()->id;
             $check_admin = AdminModel::find($user_id);
             $user_id = $check_admin ? $request->query("user_id",null) : $user_id;
 
+            $paginate = $request->query("per_page_key",15);
+            // Validate query
+            if (!is_numeric($paginate) || (int)$paginate <= 0) {
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => 'per_page_key is not a valid page',
+                ], Response::HTTP_BAD_REQUEST);
+            }
+
             // Get vehicle readiness status
-            $res = VehicleModel::getVehicleReadiness($user_id,$limit);
+            $res = VehicleModel::getVehicleReadiness($user_id,$paginate);
             if ($res) {
                 // Return success response
                 return response()->json([
@@ -624,6 +639,32 @@ class Queries extends Controller
             $limit_wash = $request->query("limit_wash",4);
             $page_trip = $request->query("page_trip",1);
             $page_wash = $request->query("page_wash",1);
+
+            // Validate query
+            if (!is_numeric($limit_trip) || (int)$limit_trip <= 0) {
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => 'limit_trip is not a valid limit',
+                ], Response::HTTP_BAD_REQUEST);
+            }
+            if (!is_numeric($limit_wash) || (int)$limit_wash <= 0) {
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => 'limit_wash is not a valid limit',
+                ], Response::HTTP_BAD_REQUEST);
+            }
+            if (!is_numeric($page_trip) || (int)$page_trip <= 0) {
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => 'page_trip is not a valid page',
+                ], Response::HTTP_BAD_REQUEST);
+            }
+            if (!is_numeric($page_wash) || (int)$page_wash <= 0) {
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => 'page_wash is not a valid page',
+                ], Response::HTTP_BAD_REQUEST);
+            }
 
             // Get vehicle detail
             $res = VehicleModel::getVehicleDetailById($user_id,$id);

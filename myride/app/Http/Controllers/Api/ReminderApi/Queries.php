@@ -165,11 +165,19 @@ class Queries extends Controller
     {
         try{
             $user_id = $request->user()->id;
-            $limit = $request->query("limit",15);
+            $paginate = $request->query("per_page_key",15);
             $search = $request->query("search",null);
 
+            // Validate query
+            if (!is_numeric($paginate) || (int)$paginate <= 0) {
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => 'per_page_key is not a valid page',
+                ], Response::HTTP_BAD_REQUEST);
+            }
+
             // Get all reminder with pagination
-            $res = ReminderModel::getAllReminder($user_id, $limit, $search);
+            $res = ReminderModel::getAllReminder($user_id, $paginate, $search);
             if (count($res) > 0) {
                 // Return success response
                 return response()->json([
@@ -248,10 +256,18 @@ class Queries extends Controller
     {
         try{
             $user_id = $request->user()->id;
-            $limit = $request->query("limit",15);
+            $paginate = $request->query("per_page_key",15);
+
+            // Validate query
+            if (!is_numeric($paginate) || (int)$paginate <= 0) {
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => 'per_page_key is not a valid page',
+                ], Response::HTTP_BAD_REQUEST);
+            }
 
             // Get recently created reminder
-            $res = ReminderModel::getRecentlyReminder($user_id,$limit);
+            $res = ReminderModel::getRecentlyReminder($user_id,$paginate);
             if (count($res) > 0) {
                 // Return success response
                 return response()->json([

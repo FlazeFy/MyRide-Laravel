@@ -83,6 +83,14 @@ class Queries extends Controller
         try{
             $user_id = $request->user()->id;
             $paginate = $request->query('per_page_key') ?? 15;
+            
+            // Validate query
+            if (!is_numeric($paginate) || (int)$paginate <= 0) {
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => 'per_page_key is not a valid page',
+                ], Response::HTTP_BAD_REQUEST);
+            }
 
             // Define user id by role
             $check_admin = AdminModel::find($user_id);
@@ -245,6 +253,14 @@ class Queries extends Controller
         try{
             $user_id = $request->user()->id;
             $paginate = $request->query('per_page_key') ?? 15;
+
+            // Validate query
+            if (!is_numeric($paginate) || (int)$paginate <= 0) {
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => 'per_page_key is not a valid page',
+                ], Response::HTTP_BAD_REQUEST);
+            }
 
             // Define user id by role
             $check_admin = AdminModel::find($user_id);

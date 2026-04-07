@@ -83,8 +83,22 @@ class Queries extends Controller
             $user_id = $request->user()->id;
             $paginate = $request->query('per_page_key') ?? 15;
             $search = $request->query("search",null);
-            // This will get all service if vehicle_id not attached
             $vehicle_id = $request->query('vehicle_id') ?? null;
+
+            // Validate query
+            if (!is_numeric($paginate) || (int)$paginate <= 0) {
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => 'per_page_key is not a valid page',
+                ], Response::HTTP_BAD_REQUEST);
+            }
+            // This will get all service if vehicle_id not attached
+            if ($vehicle_id && (strlen($vehicle_id) !== 36 || !preg_match('/^[0-9a-fA-F-]{36}$/', $vehicle_id))) {
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => 'vehicle_id must be a valid UUID',
+                ], Response::HTTP_BAD_REQUEST);
+            }
 
             // Define user id by role
             $check_admin = AdminModel::find($user_id);

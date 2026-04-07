@@ -87,12 +87,27 @@ class Queries extends Controller
     {
         try{
             $user_id = $request->user()->id;
-            $limit = $request->query("limit",15);
+            $paginate = $request->query("per_page_key",15);
             $trip_id = $request->query("trip_id",null);
             $search = $request->query("search",null);
 
+            // Validate query
+            if (!is_numeric($paginate) || (int)$paginate <= 0) {
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => 'per_page_key is not a valid page',
+                ], Response::HTTP_BAD_REQUEST);
+            }
+            // This will get all trip if trip_id not attached
+            if ($trip_id && (strlen($trip_id) !== 36 || !preg_match('/^[0-9a-fA-F-]{36}$/', $trip_id))) {
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => 'trip_id must be a valid UUID',
+                ], Response::HTTP_BAD_REQUEST);
+            }
+
             // Get all trip with pagination
-            $res = TripModel::getAllTrip($user_id, $limit, null, $trip_id, $search);
+            $res = TripModel::getAllTrip($user_id, $paginate, null, $trip_id, $search);
             if ($res && count($res) > 0) {
                 // Return success response
                 return response()->json([
@@ -180,10 +195,18 @@ class Queries extends Controller
     {
         try{
             $user_id = $request->user()->id;
-            $limit = $request->query("limit",15);
+            $paginate = $request->query("per_page_key",15);
+
+            // Validate query
+            if (!is_numeric($paginate) || (int)$paginate <= 0) {
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => 'per_page_key is not a valid page',
+                ], Response::HTTP_BAD_REQUEST);
+            }
 
             // Get all trip with pagination by driver_id
-            $res = TripModel::getAllTrip($user_id,$limit,$driver_id);
+            $res = TripModel::getAllTrip($user_id,$paginate,$driver_id);
             if ($res && count($res) > 0) {
                 // Remove driver_fullname
                 $res->getCollection()->transform(function ($item) {
@@ -431,6 +454,13 @@ class Queries extends Controller
             
             // This will get all trip if vehicle_id not attached
             $vehicle_id = $request->query("vehicle_id",null);
+            if ($vehicle_id && (strlen($vehicle_id) !== 36 || !preg_match('/^[0-9a-fA-F-]{36}$/', $vehicle_id))) {
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => 'vehicle_id must be a valid UUID',
+                ], Response::HTTP_BAD_REQUEST);
+            }
+
             // Get trip discovered stats
             $res = TripModel::getTripDiscovered($user_id,$vehicle_id);
             if ($res && $res['last_update']) {
@@ -672,10 +702,18 @@ class Queries extends Controller
     {
         try{
             $user_id = $request->user()->id;
-            $limit = $request->query("limit",15);
+            $paginate = $request->query("per_page_key",15);
+
+            // Validate query
+            if (!is_numeric($paginate) || (int)$paginate <= 0) {
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => 'per_page_key is not a valid page',
+                ], Response::HTTP_BAD_REQUEST);
+            }
 
             // Get nearest trip location
-            $res = TripModel::getNearestPlacesByCoordinate($user_id, $coordinate, $limit);
+            $res = TripModel::getNearestPlacesByCoordinate($user_id, $coordinate, $paginate);
             if (count($res) > 0) {
                 // Return success response
                 return response()->json([

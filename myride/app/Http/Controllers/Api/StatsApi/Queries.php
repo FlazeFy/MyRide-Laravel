@@ -783,7 +783,15 @@ class Queries extends Controller
             } else {
                 $user_id = null;
             }
+
+            // This will get all service if vehicle_id not attached
             $vehicle_id = $request->query('vehicle_id') ?? null;
+            if ($vehicle_id && (strlen($vehicle_id) !== 36 || !preg_match('/^[0-9a-fA-F-]{36}$/', $vehicle_id))) {
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => 'vehicle_id must be a valid UUID',
+                ], Response::HTTP_BAD_REQUEST);
+            }
 
             // Check if context valid
             if ($context !== "fuel_volume" || $context !== "fuel_price_total") {
@@ -1047,7 +1055,15 @@ class Queries extends Controller
             } else {
                 $user_id = null;
             }
+
+            // This will get all service if vehicle_id not attached
             $vehicle_id = $request->query('vehicle_id') ?? null;
+            if ($vehicle_id && (strlen($vehicle_id) !== 36 || !preg_match('/^[0-9a-fA-F-]{36}$/', $vehicle_id))) {
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => 'vehicle_id must be a valid UUID',
+                ], Response::HTTP_BAD_REQUEST);
+            }
 
             // Check if context valid
             if ($context !== "total_item" || $context !== "total_price") {

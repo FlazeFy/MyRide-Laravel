@@ -94,11 +94,19 @@ class Queries extends Controller
     {
         try{
             $user_id = $request->user()->id;
-            $limit = $request->query("limit",15);
+            $paginate = $request->query("per_page_key",15);
             $search = $request->query("search",null);
 
+            // Validate query
+            if (!is_numeric($paginate) || (int)$paginate <= 0) {
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => 'per_page_key is not a valid page',
+                ], Response::HTTP_BAD_REQUEST);
+            }
+
             // Get all wash history
-            $res = WashModel::getAllWashHistory($user_id, $limit, $search);
+            $res = WashModel::getAllWashHistory($user_id, $paginate, $search);
             if ($res && count($res) > 0) {
                 // Return success response
                 return response()->json([
@@ -270,7 +278,15 @@ class Queries extends Controller
     public function getWashSummaryByVehicleId(Request $request) {
         try{
             $user_id = $request->user()->id;
+
+            // This will get all service if vehicle_id not attached
             $vehicle_id = $request->query('vehicle_id') ?? null;
+            if ($vehicle_id && (strlen($vehicle_id) !== 36 || !preg_match('/^[0-9a-fA-F-]{36}$/', $vehicle_id))) {
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => 'vehicle_id must be a valid UUID',
+                ], Response::HTTP_BAD_REQUEST);
+            }
 
             // Get wash summary by vehicle id
             $res = WashModel::getWashSummaryByVehicleId($user_id,$vehicle_id);
