@@ -5,6 +5,7 @@ use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Cache;
 
 // Service
 use App\Services\AIService;
@@ -80,25 +81,23 @@ class CommandsAI extends Controller
             }
 
             $user_id = $request->user()->id;
+            $cacheKey = "ai_chat_{$user_id}_".md5(strtolower(trim($request->question)));
 
-            // Generate SQL
-            $sql = $this->ai->generateSQL($request->question, $user_id);
+            // Caching pipeline (Generated SQL and narration)
+            $result = Cache::remember($cacheKey, now()->addMinutes(5), function () use ($request, $user_id) {
+                $sql = $this->ai->generateSQL($request->question, $user_id);
+                $safeSql = $this->ai->validateSQL($sql, $user_id);
+                $res = DB::select($safeSql);
+                $text = $this->ai->generateNarration($request->question, $res);
 
-            // Validate SQL
-            $safeSql = $this->ai->validateSQL($sql, $user_id);
-
-            // Execute query
-            $res = DB::select($safeSql);
-            
-            // Generate explanation
-            $text = $this->ai->generateNarration($request->question, $res);
+                return [
+                    'message' => $text
+                ];
+            });
 
             return response()->json([
                 'status' => 'success',
-                // 'message' => 'AI query executed',
-                // 'sql' => $safeSql,
-                // 'data' => $res,
-                'message' => $text
+                'message' => $result['message']
             ], Response::HTTP_OK);
         } catch(\Exception $e) {
             return response()->json([
