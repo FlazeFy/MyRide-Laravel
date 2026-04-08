@@ -764,6 +764,21 @@ class Queries extends Controller
     public function getVehicleTripSummaryById(Request $request, $id) {
         try{
             $user_id = $request->user()->id;
+            
+            // Validate the route param
+            if (strlen($id) !== 36 || !preg_match('/^[0-9a-fA-F-]{36}$/', $id)) {
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => 'id must be a valid UUID',
+                ], Response::HTTP_BAD_REQUEST);
+            }
+            // Check if vehicle exist
+            if (!VehicleModel::getVehicleDetailById($user_id, $id)) {
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => 'vehicle not found',
+                ], Response::HTTP_NOT_FOUND);
+            }
 
             // Get person name that most travelled with
             $res_most_person_with = TripModel::getPersonWithMostTripWith($user_id,$id);

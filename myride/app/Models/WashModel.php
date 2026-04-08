@@ -80,7 +80,7 @@ class WashModel extends Model
         return $res->isEmpty() ? null : $res;
     }
 
-    public static function getWashSummaryByVehicleId($user_id,$vehicle_id) {
+    public static function getWashSummaryPerVehicle($user_id,$vehicle_id) {
         $res = WashModel::selectRaw("
             vehicle_type, CONCAT(vehicle.vehicle_merk, ' - ', vehicle.vehicle_name) as vehicle_name, vehicle_plate_number,
             COUNT(*) AS total_wash,

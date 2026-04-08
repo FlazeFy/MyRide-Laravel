@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 
 //  Models
 use App\Models\WashModel;
+use App\Models\VehicleModel;
 // Helpers
 use App\Helpers\Generator;
 
@@ -190,6 +191,21 @@ class Queries extends Controller
         try{
             $user_id = $request->user()->id;
 
+            // This will get all service if vehicle_id not attached
+            if ($vehicle_id && (strlen($vehicle_id) !== 36 || !preg_match('/^[0-9a-fA-F-]{36}$/', $vehicle_id))) {
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => 'vehicle_id must be a valid UUID',
+                ], Response::HTTP_BAD_REQUEST);
+            }
+            // Check if vehicle exist
+            if (!VehicleModel::getVehicleDetailById($user_id, $vehicle_id)) {
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => 'vehicle not found',
+                ], Response::HTTP_NOT_FOUND);
+            }
+
             // Get last wash by vehicle id
             $res = WashModel::getLastWashByVehicleId($user_id,$vehicle_id);
             if ($res) {
@@ -275,7 +291,7 @@ class Queries extends Controller
      *     ),
      * )
      */
-    public function getWashSummaryByVehicleId(Request $request) {
+    public function getWashSummaryPerVehicle(Request $request) {
         try{
             $user_id = $request->user()->id;
 
@@ -287,9 +303,16 @@ class Queries extends Controller
                     'message' => 'vehicle_id must be a valid UUID',
                 ], Response::HTTP_BAD_REQUEST);
             }
+            // Check if vehicle exist
+            if ($vehicle_id && !VehicleModel::getVehicleDetailById($user_id, $vehicle_id)) {
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => 'vehicle not found',
+                ], Response::HTTP_NOT_FOUND);
+            }
 
             // Get wash summary by vehicle id
-            $res = WashModel::getWashSummaryByVehicleId($user_id,$vehicle_id);
+            $res = WashModel::getWashSummaryPerVehicle($user_id,$vehicle_id);
             if ($res && count($res) > 0) {
                 // Return success response
                 return response()->json([

@@ -98,7 +98,7 @@ Route::prefix('/v1/wash')->middleware(['auth:sanctum'])->group(function () {
     Route::get('/', [QueriesWashController::class, 'getAllWashHistory']);
     Route::delete('/destroy/{id}', [CommandsWashController::class, 'hardDeleteWashById']);
     Route::get('/last/{vehicle_id}', [QueriesWashController::class, 'getLastWashByVehicleId']);
-    Route::get('/summary', [QueriesWashController::class, 'getWashSummaryByVehicleId']);
+    Route::get('/summary', [QueriesWashController::class, 'getWashSummaryPerVehicle']);
     Route::post('/', [CommandsWashController::class, 'postCreateWash']);
     Route::put('/finish/{id}', [CommandsWashController::class, 'putFinishWashById']);
     Route::put('/{id}', [CommandsWashController::class, 'putUpdateWashById']);

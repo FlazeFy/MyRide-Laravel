@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 // Model
 use App\Models\InventoryModel;
 use App\Models\AdminModel;
+use App\Models\VehicleModel;
 // Helper
 use App\Helpers\Generator;
 
@@ -98,7 +99,14 @@ class Queries extends Controller
                     'message' => 'vehicle_id must be a valid UUID',
                 ], Response::HTTP_BAD_REQUEST);
             }
-            
+            // Check if vehicle exist
+            if ($vehicle_id && !VehicleModel::getVehicleDetailById($user_id, $vehicle_id)) {
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => 'vehicle not found',
+                ], Response::HTTP_NOT_FOUND);
+            }
+
             // Define user id by role
             $check_admin = AdminModel::find($user_id);
             $user_id = $check_admin ? null : $user_id;
