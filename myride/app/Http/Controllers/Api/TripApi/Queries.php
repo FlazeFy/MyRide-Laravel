@@ -85,7 +85,7 @@ class Queries extends Controller
      */
     public function getAllTrip(Request $request)
     {
-        try{
+        try {
             $user_id = $request->user()->id;
             $paginate = $request->query("per_page_key",15);
             $trip_id = $request->query("trip_id",null);
@@ -193,7 +193,7 @@ class Queries extends Controller
      */
     public function getAllTripByDriverId(Request $request,$driver_id)
     {
-        try{
+        try {
             $user_id = $request->user()->id;
             $paginate = $request->query("per_page_key",15);
 
@@ -285,7 +285,7 @@ class Queries extends Controller
      */
     public function getLastTrip(Request $request)
     {
-        try{
+        try {
             $user_id = $request->user()->id;
 
             // Get last trip
@@ -368,7 +368,7 @@ class Queries extends Controller
      */
     public function getAllCoordinate(Request $request)
     {
-        try{
+        try {
             $user_id = $request->user()->id;
             $search = $request->query("search",null);
 
@@ -443,7 +443,7 @@ class Queries extends Controller
      */
     public function getTripDiscovered(Request $request)
     {
-        try{
+        try {
             // Check whether authentication is attached. If yes, retrieve statistics by user; if not, retrieve statistics for all users
             if ($request->hasHeader('Authorization')) {
                 $user = Auth::guard('sanctum')->user(); 
@@ -539,7 +539,7 @@ class Queries extends Controller
      */
     public function getCoordinateByTripLocationName(Request $request, $trip_location_name)
     {
-        try{
+        try {
             $user_id = $request->user()->id;
 
             // Get trip history's coordinate by trip location name
@@ -616,7 +616,7 @@ class Queries extends Controller
      */
     public function getTripCalendar(Request $request)
     {
-        try{
+        try {
             $user_id = $request->user()->id;
 
             // Get trip calendar format
@@ -700,7 +700,7 @@ class Queries extends Controller
      */
     public function getNearestPlaces(Request $request, $coordinate)
     {
-        try{
+        try {
             $user_id = $request->user()->id;
             $paginate = $request->query("per_page_key",15);
 

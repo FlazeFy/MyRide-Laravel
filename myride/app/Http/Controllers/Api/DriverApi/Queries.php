@@ -80,7 +80,7 @@ class Queries extends Controller
      */
     public function getAllDriver(Request $request)
     {
-        try{
+        try {
             $user_id = $request->user()->id;
             $paginate = $request->query('per_page_key') ?? 15;
             
@@ -169,7 +169,7 @@ class Queries extends Controller
      */
     public function getAllDriverName(Request $request)
     {
-        try{
+        try {
             $user_id = $request->user()->id;
 
             // Get all driver name
@@ -250,7 +250,7 @@ class Queries extends Controller
      * )
      */
     public function getDriverVehicle(Request $request) {
-        try{
+        try {
             $user_id = $request->user()->id;
             $paginate = $request->query('per_page_key') ?? 15;
 
@@ -357,7 +357,7 @@ class Queries extends Controller
      * )
      */
     public function getDriverVehicleManageList(Request $request) {
-        try{
+        try {
             $user_id = $request->user()->id;
 
             // Get all vehicle name

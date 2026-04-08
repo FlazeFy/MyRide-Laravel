@@ -94,7 +94,7 @@ class Commands extends Controller
      */
     public function postCreateTrip(Request $request)
     {
-        try{
+        try {
             // Prepare request body
             $driver_id = null;
             if ($request->driver_id === "-") {
@@ -275,7 +275,7 @@ class Commands extends Controller
      */
     public function hardDeleteTripById(Request $request, $id)
     {
-        try{
+        try {
             $user_id = $request->user()->id;
 
             // Define user id by role
@@ -364,7 +364,7 @@ class Commands extends Controller
      * )
      */
     public function putUpdateTripById(Request $request, $id) {
-        try{
+        try {
             $user_id = $request->user()->id;
             $driver_id = $request->driver_id === "-" ? null : $request->driver_id;
 

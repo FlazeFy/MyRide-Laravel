@@ -78,7 +78,7 @@ class Queries extends Controller
      */
     public function getAllFuel(Request $request)
     {
-        try{
+        try {
             $user_id = $request->user()->id;
             $vehicle_id = $request->query('vehicle_id') ?? null;
             $paginate = $request->query('per_page_key') ?? 15;
@@ -179,7 +179,7 @@ class Queries extends Controller
      * )
      */
     public function getLastFuel(Request $request) {
-        try{
+        try {
             $user_id = $request->user()->id;
             $vehicle_id = $request->query('vehicle_id') ?? null;
 
@@ -261,7 +261,7 @@ class Queries extends Controller
      * )
      */
     public function getMonthlyFuelSummary(Request $request, $month_year) {
-        try{
+        try {
             $user_id = $request->user()->id;
             $vehicle_id = $request->query('vehicle_id') ?? null;
 

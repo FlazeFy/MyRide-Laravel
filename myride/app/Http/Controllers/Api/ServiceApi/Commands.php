@@ -76,7 +76,7 @@ class Commands extends Controller
      * )
      */
     public function postService(Request $request) {
-        try{
+        try {
             $user_id = $request->user()->id;
 
             // Validate request body
@@ -173,7 +173,7 @@ class Commands extends Controller
      */
     public function hardDeleteServiceById(Request $request, $id)
     {
-        try{
+        try {
             $user_id = $request->user()->id;
 
             // Define user id by role
@@ -259,7 +259,7 @@ class Commands extends Controller
      * )
      */
     public function putUpdateServiceById(Request $request, $id) {
-        try{
+        try {
             $user_id = $request->user()->id;
 
             // Validate request body

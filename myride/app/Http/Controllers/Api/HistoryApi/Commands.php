@@ -70,7 +70,7 @@ class Commands extends Controller
      */
     public function hardDeleteHistoryById(Request $request, $id)
     {
-        try{
+        try {
             $user_id = $request->user()->id;
 
             // Define user id by role

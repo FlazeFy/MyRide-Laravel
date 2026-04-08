@@ -72,7 +72,7 @@ class Commands extends Controller
      */
     public function hardDeleteWashById(Request $request, $id)
     {
-        try{
+        try {
             $user_id = $request->user()->id;
 
             // Define user id by role
@@ -170,7 +170,7 @@ class Commands extends Controller
      * )
      */
     public function postCreateWash(Request $request) {
-        try{
+        try {
             $user_id = $request->user()->id;
 
             // Validate request body
@@ -276,7 +276,7 @@ class Commands extends Controller
      * )
      */
     public function putFinishWashById(Request $request,$id) {
-        try{
+        try {
             $user_id = $request->user()->id;
 
             // Update wash by ID
@@ -367,7 +367,7 @@ class Commands extends Controller
      * )
      */
     public function putUpdateWashById(Request $request,$id) {
-        try{
+        try {
             $user_id = $request->user()->id;
 
             // Validate request body

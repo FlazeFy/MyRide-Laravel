@@ -57,7 +57,7 @@ class Queries extends Controller
      */
     public function getShowingFAQ()
     {
-        try{
+        try {
             // Get Showing FAQ
             $res = FAQModel::getShowingFAQ();
             if ($res) {

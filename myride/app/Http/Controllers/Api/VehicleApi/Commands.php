@@ -119,7 +119,7 @@ class Commands extends Controller
      */
     public function putUpdateVehicleDetailById(Request $request, $id)
     {
-        try{
+        try {
             // Validate request body
             $validator = Validation::getValidateVehicle($request,'detail');
             if ($validator->fails()) {
@@ -252,7 +252,7 @@ class Commands extends Controller
      */
     public function postUpdateVehicleImageById(Request $request, $id)
     {
-        try{
+        try {
             $user_id = $request->user()->id;
 
             // Get vehicle by ID
@@ -399,7 +399,7 @@ class Commands extends Controller
      */
     public function postUpdateVehicleImageCollectionById(Request $request, $id)
     {
-        try{
+        try {
             $user_id = $request->user()->id;
 
             // Get vehicle by ID
@@ -560,7 +560,7 @@ class Commands extends Controller
      */
     public function hardDeleteVehicleImageCollectionById(Request $request, $vehicle_id, $image_id)
     {
-        try{
+        try {
             $user_id = $request->user()->id;
 
             // Get vehicle by ID
@@ -702,7 +702,7 @@ class Commands extends Controller
      */
     public function postVehicle(Request $request)
     {
-        try{
+        try {
             // Validate request body
             $validator = Validation::getValidateVehicle($request,'detail');
             if ($validator->fails()) {
@@ -926,7 +926,7 @@ class Commands extends Controller
      */
     public function postVehicleDoc(Request $request, $id)
     {
-        try{
+        try {
             $user_id = $request->user()->id;
 
             // Get vehicle by ID
@@ -1067,7 +1067,7 @@ class Commands extends Controller
      */
     public function softDeleteVehicleById(Request $request, $id)
     {
-        try{
+        try {
             $user_id = $request->user()->id;
 
             // Define user id by role
@@ -1177,7 +1177,7 @@ class Commands extends Controller
      * )
      */
     public function hardDeleteVehicleDocById(Request $request, $vehicle_id, $doc_id) {
-        try{
+        try {
             $user_id = $request->user()->id;
 
             // Get vehicle by ID
@@ -1286,7 +1286,7 @@ class Commands extends Controller
      */
     public function putRecoverVehicleById(Request $request, $id)
     {
-        try{
+        try {
             $user_id = $request->user()->id;
 
             // Define user id by role
@@ -1372,7 +1372,7 @@ class Commands extends Controller
      */
     public function hardDeleteVehicleById(Request $request, $id)
     {
-        try{
+        try {
             $user_id = $request->user()->id;
 
             // Define user id by role

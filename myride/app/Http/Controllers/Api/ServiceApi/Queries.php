@@ -79,7 +79,7 @@ class Queries extends Controller
      */
     public function getAllService(Request $request)
     {
-        try{
+        try {
             $user_id = $request->user()->id;
             $paginate = $request->query('per_page_key') ?? 15;
             $search = $request->query("search",null);
@@ -188,7 +188,7 @@ class Queries extends Controller
      */
     public function getServiceByVehicle(Request $request,$vehicle_id)
     {
-        try{
+        try {
             $user_id = $request->user()->id;
 
             // Get service by vehicle ID
@@ -263,7 +263,7 @@ class Queries extends Controller
      * )
      */
     public function getAllServiceSpending(Request $request) {
-        try{
+        try {
             $user_id = $request->user()->id;
 
             // Get all service spending 
@@ -339,7 +339,7 @@ class Queries extends Controller
      */
     public function getNextService(Request $request)
     {
-        try{
+        try {
             $user_id = $request->user()->id;
             
             // Get next / upcoming service

@@ -79,7 +79,7 @@ class Commands extends Controller
      */
     public function hardDeleteDriverById(Request $request, $id)
     {
-        try{
+        try {
             $user_id = $request->user()->id;
 
             // Define user id by role
@@ -168,7 +168,7 @@ class Commands extends Controller
      */
     public function hardDeleteDriverRelationById(Request $request, $id)
     {
-        try{
+        try {
             $user_id = $request->user()->id;
 
             // Define user id by role
@@ -253,7 +253,7 @@ class Commands extends Controller
      * )
      */
     public function postCreateDriver(Request $request) {
-        try{
+        try {
             // Validate request body
             $validator = Validation::getValidateDriver($request,'create');
             if ($validator->fails()) {
@@ -362,7 +362,7 @@ class Commands extends Controller
      * )
      */
     public function putUpdateDriverById(Request $request, $id) {
-        try{
+        try {
             // Validate request body
             $validator = Validation::getValidateDriver($request,'update');
             if ($validator->fails()) {
@@ -466,7 +466,7 @@ class Commands extends Controller
      * )
      */
     public function postCreateDriverVehicle(Request $request) {
-        try{
+        try {
             // Validate request body
             $validator = Validation::getValidateDriver($request,'create_relation');
             if ($validator->fails()) {

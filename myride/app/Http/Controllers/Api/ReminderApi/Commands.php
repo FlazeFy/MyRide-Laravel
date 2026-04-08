@@ -82,7 +82,7 @@ class Commands extends Controller
      */
     public function hardDeleteReminderById(Request $request, $id)
     {
-        try{
+        try {
             $user_id = $request->user()->id;
 
             // Define user id by role
@@ -192,7 +192,7 @@ class Commands extends Controller
      * )
      */
     public function postCreateReminder(Request $request) {
-        try{
+        try {
             // Init firebase factory to use in Google Calendar
             $factory = (new Factory)->withServiceAccount(base_path('/firebase/myride-a0077-firebase-adminsdk-7x7j4-6b7da5321a.json'));
             $user_id = $request->user()->id;

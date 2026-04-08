@@ -92,7 +92,7 @@ class Queries extends Controller
      */
     public function getAllVehicleHeader(Request $request)
     {
-        try{
+        try {
             $user_id = $request->user()->id;
             $paginate = $request->query("per_page_key",15);
 
@@ -190,7 +190,7 @@ class Queries extends Controller
      */
     public function getVehicleReadiness(Request $request)
     {
-        try{
+        try {
             // Define user id by role
             $user_id = $request->user()->id;
             $check_admin = AdminModel::find($user_id);
@@ -278,7 +278,7 @@ class Queries extends Controller
      * )
      */
     public function getAllVehicleName(Request $request) {
-        try{
+        try {
             $user_id = $request->user()->id;
 
             // Get all vehicle name
@@ -355,7 +355,7 @@ class Queries extends Controller
      * )
      */
     public function getAllVehicleFuel(Request $request) {
-        try{
+        try {
             $user_id = $request->user()->id;
 
             // Get all vehicle fuel
@@ -467,7 +467,7 @@ class Queries extends Controller
      */
     public function getVehicleDetailById(Request $request, $id)
     {
-        try{
+        try {
             $user_id = $request->user()->id;
 
             // Get vehicle detail
@@ -633,7 +633,7 @@ class Queries extends Controller
      * )
      */
     public function getVehicleFullDetailById(Request $request, $id) {
-        try{
+        try {
             $user_id = $request->user()->id;
             $limit_trip = $request->query("limit_trip",15);
             $limit_wash = $request->query("limit_wash",4);
@@ -762,7 +762,7 @@ class Queries extends Controller
      * )
      */
     public function getVehicleTripSummaryById(Request $request, $id) {
-        try{
+        try {
             $user_id = $request->user()->id;
             
             // Validate the route param

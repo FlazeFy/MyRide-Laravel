@@ -196,7 +196,7 @@ class Commands extends Controller
      */
     public function getRegisterValidationToken(Request $request)
     {
-        try{
+        try {
             // Validate request body
             $validator = Validation::getValidateUser($request, null);
             if ($validator->fails()) {
@@ -322,7 +322,7 @@ class Commands extends Controller
      */
     public function postValidateRegister(Request $request)
     {
-        try{
+        try {
             // Validate request body
             $validator = Validation::getValidateUser($request,'create');
             if ($validator->fails()) {
@@ -446,7 +446,7 @@ class Commands extends Controller
      */
     public function postRegenerateRegisterToken(Request $request)
     {
-        try{
+        try {
             // Validate request body
             $validator = Validation::getValidateUser($request, null);
             if ($validator->fails()) {

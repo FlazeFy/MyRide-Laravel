@@ -70,7 +70,7 @@ class Commands extends Controller
      */
     public function hardDeleteErrorById(Request $request, $id)
     {
-        try{
+        try {
             $user_id = $request->user()->id;
 
             // Make sure only admin can access the request

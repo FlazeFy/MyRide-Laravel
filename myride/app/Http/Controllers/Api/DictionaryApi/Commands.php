@@ -78,7 +78,7 @@ class Commands extends Controller
      */
     public function hardDeleteDictionaryById(Request $request, $id)
     {
-        try{
+        try {
             // Validate param
             $request->merge(['id' => $id]);
             $validator = Validation::getValidateDictionary($request,'delete');
@@ -173,7 +173,7 @@ class Commands extends Controller
      */
     public function postCreateDictionary(Request $request)
     {
-        try{
+        try {
             // Validate request body
             $validator = Validation::getValidateDictionary($request,'create');
             if ($validator->fails()) {

@@ -93,7 +93,7 @@ class Queries extends Controller
      */
     public function getAllWashHistory(Request $request)
     {
-        try{
+        try {
             $user_id = $request->user()->id;
             $paginate = $request->query("per_page_key",15);
             $search = $request->query("search",null);
@@ -188,7 +188,7 @@ class Queries extends Controller
      * )
      */
     public function getLastWashByVehicleId(Request $request, $vehicle_id) {
-        try{
+        try {
             $user_id = $request->user()->id;
 
             // This will get all service if vehicle_id not attached
@@ -292,7 +292,7 @@ class Queries extends Controller
      * )
      */
     public function getWashSummaryPerVehicle(Request $request) {
-        try{
+        try {
             $user_id = $request->user()->id;
 
             // This will get all service if vehicle_id not attached

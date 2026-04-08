@@ -72,7 +72,7 @@ class Queries extends Controller
      */
     public function getMyProfile(Request $request)
     {
-        try{
+        try {
             $user_id = $request->user()->id;
 
             $res = UserModel::getUserById($user_id);
@@ -160,7 +160,7 @@ class Queries extends Controller
      */
     public function getAllUser(Request $request)
     {
-        try{
+        try {
             $user_id = $request->user()->id;
             $paginate = $request->query('per_page_key') ?? 15;
 
@@ -251,7 +251,7 @@ class Queries extends Controller
      * )
      */
     public function getContentYear(Request $request) {
-        try{
+        try {
             $user_id = $request->user()->id;
 
             // Check if admin

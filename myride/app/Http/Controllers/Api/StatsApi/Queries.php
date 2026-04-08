@@ -6,6 +6,7 @@ use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Cache;
 
 // Helper
 use App\Helpers\Generator;
@@ -22,6 +23,22 @@ use App\Models\MultiModel;
 
 class Queries extends Controller
 {
+    private $module;
+    private $cacheKeyLifeTime;
+    private $cacheKeyPersonWithMostTrip;
+    private $cacheKeyTripPlace;
+    private $cacheKeyTripPartner;
+
+    public function __construct()
+    {
+        $this->module = "stats";
+        $this->cacheKeyPersonWithMostTrip = "{$this->module}:person_with_most_trip";
+        $this->cacheKeyTripPlace = "{$this->module}:trip_place";
+        $this->cacheKeySummary = "{$this->module}:summary";
+        $this->cacheKeyTripPartner = "{$this->module}:trip_partner";
+        $this->cacheKeyLifeTime = 600;
+    }
+
     /**
      * @OA\GET(
      *     path="/api/v1/stats/total/trip/{context}",
@@ -79,9 +96,8 @@ class Queries extends Controller
      *     ),
      * )
      */
-    public function getTotalTripByContext(Request $request, $context)
-    {
-        try{
+    public function getTotalTripByContext(Request $request, $context) {
+        try {
             $user_id = $request->user()->id;
 
             $res = null;
@@ -120,13 +136,13 @@ class Queries extends Controller
                 // Return success response
                 return response()->json([
                     'status' => 'success',
-                    'message' => Generator::getMessageTemplate("fetch", 'stats'),
+                    'message' => Generator::getMessageTemplate("fetch", $this->module),
                     'data' => $res
                 ], Response::HTTP_OK);
             } else {
                 return response()->json([
                     'status' => 'failed',
-                    'message' => Generator::getMessageTemplate("not_found", 'stats'),
+                    'message' => Generator::getMessageTemplate("not_found", $this->module),
                 ], Response::HTTP_NOT_FOUND);
             }
         } catch(\Exception $e) {
@@ -194,9 +210,8 @@ class Queries extends Controller
      *     ),
      * )
      */
-    public function getTotalInventoryByContext(Request $request, $context)
-    {
-        try{
+    public function getTotalInventoryByContext(Request $request, $context) {
+        try {
             $user_id = $request->user()->id;
 
             $res = null;
@@ -227,13 +242,13 @@ class Queries extends Controller
                 // Return success response
                 return response()->json([
                     'status' => 'success',
-                    'message' => Generator::getMessageTemplate("fetch", 'stats'),
+                    'message' => Generator::getMessageTemplate("fetch", $this->module),
                     'data' => $res
                 ], Response::HTTP_OK);
             } else {
                 return response()->json([
                     'status' => 'failed',
-                    'message' => Generator::getMessageTemplate("not_found", 'stats'),
+                    'message' => Generator::getMessageTemplate("not_found", $this->module),
                 ], Response::HTTP_NOT_FOUND);
             }
         } catch(\Exception $e) {
@@ -302,7 +317,7 @@ class Queries extends Controller
      * )
      */
     public function getTotalServicePriceByContext(Request $request, $context) {
-        try{
+        try {
             $user_id = $request->user()->id;
 
             $res = null;
@@ -333,13 +348,13 @@ class Queries extends Controller
                 // Return success response
                 return response()->json([
                     'status' => 'success',
-                    'message' => Generator::getMessageTemplate("fetch", 'stats'),
+                    'message' => Generator::getMessageTemplate("fetch", $this->module),
                     'data' => $res
                 ], Response::HTTP_OK);
             } else {
                 return response()->json([
                     'status' => 'failed',
-                    'message' => Generator::getMessageTemplate("not_found", 'stats'),
+                    'message' => Generator::getMessageTemplate("not_found", $this->module),
                 ], Response::HTTP_NOT_FOUND);
             }
         } catch(\Exception $e) {
@@ -407,9 +422,8 @@ class Queries extends Controller
      *     ),
      * )
      */
-    public function getTotalVehicleByContext(Request $request, $context)
-    {
-        try{
+    public function getTotalVehicleByContext(Request $request, $context) {
+        try {
             $user_id = $request->user()->id;
             $vehicleContext = ["vehicle_merk","vehicle_type","vehicle_status","vehicle_category","vehicle_fuel_status","vehicle_transmission","vehicle_color"];
             
@@ -449,13 +463,13 @@ class Queries extends Controller
                 // Return success response
                 return response()->json([
                     'status' => 'success',
-                    'message' => Generator::getMessageTemplate("fetch", 'stats'),
+                    'message' => Generator::getMessageTemplate("fetch", $this->module),
                     'data' => $res
                 ], Response::HTTP_OK);
             } else {
                 return response()->json([
                     'status' => 'failed',
-                    'message' => Generator::getMessageTemplate("not_found", 'stats'),
+                    'message' => Generator::getMessageTemplate("not_found", $this->module),
                 ], Response::HTTP_NOT_FOUND);
             }
         } catch(\Exception $e) {
@@ -533,9 +547,8 @@ class Queries extends Controller
      *     ),
      * )
      */
-    public function getTotalTripByVehiclePerYear(Request $request, $year, $vehicle_id = null)
-    {
-        try{
+    public function getTotalTripByVehiclePerYear(Request $request, $year, $vehicle_id = null) {
+        try {
             $user_id = $request->user()->id;
             
             // Get total trip by its vehicle per year period
@@ -561,13 +574,13 @@ class Queries extends Controller
                 // Return success response
                 return response()->json([
                     'status' => 'success',
-                    'message' => Generator::getMessageTemplate("fetch", 'stats'),
+                    'message' => Generator::getMessageTemplate("fetch", $this->module),
                     'data' => $res_final
                 ], Response::HTTP_OK);
             } else {
                 return response()->json([
                     'status' => 'failed',
-                    'message' => Generator::getMessageTemplate("not_found", 'stats'),
+                    'message' => Generator::getMessageTemplate("not_found", $this->module),
                 ], Response::HTTP_NOT_FOUND);
             }
         } catch(\Exception $e) {
@@ -645,10 +658,9 @@ class Queries extends Controller
      *     ),
      * )
      */
-    public function getTotalTripMonthlyByYear(Request $request, $year)
-    {
-        try{
-            // Check whether authentication is attached. If yes, retrieve statistics by user; if not, retrieve statistics for all users
+    public function getTotalTripMonthlyByYear(Request $request, $year) {
+        try {
+            // Check whether authentication is attached
             if ($request->hasHeader('Authorization')) {
                 $user = Auth::guard('sanctum')->user(); 
                 $user_id = $user ? $user->id : null;
@@ -679,13 +691,13 @@ class Queries extends Controller
                 // Return success response
                 return response()->json([
                     'status' => 'success',
-                    'message' => Generator::getMessageTemplate("fetch", 'stats'),
+                    'message' => Generator::getMessageTemplate("fetch", $this->module),
                     'data' => $res_final
                 ], Response::HTTP_OK);
             } else {
                 return response()->json([
                     'status' => 'failed',
-                    'message' => Generator::getMessageTemplate("not_found", 'stats'),
+                    'message' => Generator::getMessageTemplate("not_found", $this->module),
                 ], Response::HTTP_NOT_FOUND);
             }
         } catch(\Exception $e) {
@@ -773,10 +785,9 @@ class Queries extends Controller
      *     ),
      * )
      */
-    public function getTotalFuelMonthlyByYear(Request $request, $context, $year)
-    {
-        try{
-            // Check whether authentication is attached. If yes, retrieve statistics by user; if not, retrieve statistics for all users
+    public function getTotalFuelMonthlyByYear(Request $request, $context, $year) {
+        try {
+            // Check whether authentication is attached
             if ($request->hasHeader('Authorization')) {
                 $user = Auth::guard('sanctum')->user(); 
                 $user_id = $user ? $user->id : null;
@@ -784,7 +795,7 @@ class Queries extends Controller
                 $user_id = null;
             }
 
-            // This will get all service if vehicle_id not attached
+            // Get all service if vehicle_id not attached
             $vehicle_id = $request->query('vehicle_id') ?? null;
             if ($vehicle_id && (strlen($vehicle_id) !== 36 || !preg_match('/^[0-9a-fA-F-]{36}$/', $vehicle_id))) {
                 return response()->json([
@@ -819,13 +830,13 @@ class Queries extends Controller
                     // Return success response
                     return response()->json([
                         'status' => 'success',
-                        'message' => Generator::getMessageTemplate("fetch", 'stats'),
+                        'message' => Generator::getMessageTemplate("fetch", $this->module),
                         'data' => $res_final
                     ], Response::HTTP_OK);
                 } else {
                     return response()->json([
                         'status' => 'failed',
-                        'message' => Generator::getMessageTemplate("not_found", 'stats'),
+                        'message' => Generator::getMessageTemplate("not_found", $this->module),
                     ], Response::HTTP_NOT_FOUND);
                 }
             } else {
@@ -909,10 +920,9 @@ class Queries extends Controller
      *     ),
      * )
      */
-    public function getTotalServiceMonthlyByYear(Request $request, $context, $year)
-    {
-        try{
-            // Check whether authentication is attached. If yes, retrieve statistics by user; if not, retrieve statistics for all users
+    public function getTotalServiceMonthlyByYear(Request $request, $context, $year) {
+        try {
+            // Check whether authentication is attached
             if ($request->hasHeader('Authorization')) {
                 $user = Auth::guard('sanctum')->user(); 
                 $user_id = $user ? $user->id : null;
@@ -945,13 +955,13 @@ class Queries extends Controller
                     // Return success response
                     return response()->json([
                         'status' => 'success',
-                        'message' => Generator::getMessageTemplate("fetch", 'stats'),
+                        'message' => Generator::getMessageTemplate("fetch", $this->module),
                         'data' => $res_final
                     ], Response::HTTP_OK);
                 } else {
                     return response()->json([
                         'status' => 'failed',
-                        'message' => Generator::getMessageTemplate("not_found", 'stats'),
+                        'message' => Generator::getMessageTemplate("not_found", $this->module),
                     ], Response::HTTP_NOT_FOUND);
                 }
             } else {
@@ -1045,10 +1055,9 @@ class Queries extends Controller
      *     ),
      * )
      */
-    public function getTotalWashMonthlyByYear(Request $request, $context, $year)
-    {
-        try{
-            // Check whether authentication is attached. If yes, retrieve statistics by user; if not, retrieve statistics for all users
+    public function getTotalWashMonthlyByYear(Request $request, $context, $year) {
+        try {
+            // Check whether authentication is attached
             if ($request->hasHeader('Authorization')) {
                 $user = Auth::guard('sanctum')->user(); 
                 $user_id = $user ? $user->id : null;
@@ -1056,7 +1065,7 @@ class Queries extends Controller
                 $user_id = null;
             }
 
-            // This will get all service if vehicle_id not attached
+            // Get all service if vehicle_id not attached
             $vehicle_id = $request->query('vehicle_id') ?? null;
             if ($vehicle_id && (strlen($vehicle_id) !== 36 || !preg_match('/^[0-9a-fA-F-]{36}$/', $vehicle_id))) {
                 return response()->json([
@@ -1081,6 +1090,7 @@ class Queries extends Controller
                                 break;
                             }
                         }
+
                         // Get month name short
                         array_push($res_final, [
                             'context' => Generator::generateMonthName($i,'short'),
@@ -1091,13 +1101,13 @@ class Queries extends Controller
                     // Return success response
                     return response()->json([
                         'status' => 'success',
-                        'message' => Generator::getMessageTemplate("fetch", 'stats'),
+                        'message' => Generator::getMessageTemplate("fetch", $this->module),
                         'data' => $res_final
                     ], Response::HTTP_OK);
                 } else {
                     return response()->json([
                         'status' => 'failed',
-                        'message' => Generator::getMessageTemplate("not_found", 'stats'),
+                        'message' => Generator::getMessageTemplate("not_found", $this->module),
                     ], Response::HTTP_NOT_FOUND);
                 }
             } else {
@@ -1162,8 +1172,8 @@ class Queries extends Controller
      * )
      */
     public function getSummaryApps(Request $request) {
-        try{
-            // Check whether authentication is attached. If yes, retrieve statistics by user; if not, retrieve statistics for all users
+        try {
+            // Check whether authentication is attached
             if ($request->hasHeader('Authorization')) {
                 $user = Auth::guard('sanctum')->user(); 
                 $user_id = $user ? $user->id : null;
@@ -1171,30 +1181,36 @@ class Queries extends Controller
                 $user_id = null;
             }
 
-            // Get total item for all table (main module)
-            $total_vehicle = MultiModel::countTotalContext('vehicle',$user_id);
-            $total_wash = MultiModel::countTotalContext('wash',$user_id);
-            $total_driver = MultiModel::countTotalContext('driver',$user_id);
-            $total_service = MultiModel::countTotalContext('service',$user_id);
-            $total_trip = MultiModel::countTotalContext('trip',$user_id);
-            $data = [
-                'total_vehicle' => $total_vehicle,
-                'total_service' => $total_service,
-                'total_wash' => $total_wash,
-                'total_driver' => $total_driver,
-                'total_trip' => $total_trip,
-            ];
+            $cacheKey = $user_id ? "{$this->cacheKeySummary}:user:$user_id" : "{$this->cacheKeySummary}:global";
 
-            // If authentication is not attached, also get total user
-            if ($user_id === null) {
-                $total_user = MultiModel::countTotalContext('users',$user_id);
-                $data['total_user'] = $total_user;
-            }
+            // Get total item for all main module
+            $data = Cache::remember($cacheKey, $this->cacheKeyLifeTime, function () use ($user_id) {
+                $total_vehicle = MultiModel::countTotalContext('vehicle',$user_id);
+                $total_wash = MultiModel::countTotalContext('wash',$user_id);
+                $total_driver = MultiModel::countTotalContext('driver',$user_id);
+                $total_service = MultiModel::countTotalContext('service',$user_id);
+                $total_trip = MultiModel::countTotalContext('trip',$user_id);
+                $data = [
+                    'total_vehicle' => $total_vehicle,
+                    'total_service' => $total_service,
+                    'total_wash' => $total_wash,
+                    'total_driver' => $total_driver,
+                    'total_trip' => $total_trip,
+                ];
+
+                // If global get total user
+                if ($user_id === null) {
+                    $total_user = MultiModel::countTotalContext('users',$user_id);
+                    $data['total_user'] = $total_user;
+                }
+
+                return $data;
+            });
 
             // Return success response
             return response()->json([
                 'status' => 'success',
-                'message' => Generator::getMessageTemplate("fetch", 'stats'),
+                'message' => Generator::getMessageTemplate("fetch", $this->module),
                 'data' => $data
             ], Response::HTTP_OK);
         } catch(\Exception $e) {
@@ -1252,24 +1268,25 @@ class Queries extends Controller
      *     ),
      * )
      */
-    public function getPersonWithMostTripWith(Request $request)
-    {
+    public function getPersonWithMostTripWith(Request $request) {
         try {
             $user_id = $request->user()->id;
 
             // Get most person to travel with
-            $res = TripModel::getPersonWithMostTripWith($user_id, null, 7);
+            $res = Cache::remember("{$this->cacheKeyPersonWithMostTrip}:$user_id", $this->cacheKeyLifeTime, function () use ($user_id) {
+                return TripModel::getPersonWithMostTripWith($user_id, null, 7);
+            });
             if ($res && count($res) > 0) {
                 // Return success response
                 return response()->json([
                     'status' => 'success',
-                    'message' => Generator::getMessageTemplate("fetch", 'stats'),
+                    'message' => Generator::getMessageTemplate("fetch", $this->module),
                     'data' => $res
                 ], Response::HTTP_OK);
             } else {
                 return response()->json([
                     'status' => 'failed',
-                    'message' => Generator::getMessageTemplate("not_found", 'stats'),
+                    'message' => Generator::getMessageTemplate("not_found", $this->module),
                 ], Response::HTTP_NOT_FOUND);
             }
         } catch(\Exception $e) {
@@ -1373,8 +1390,7 @@ class Queries extends Controller
      *     ),
      * )
      */
-    public function getJourney(Request $request, $vehicle_id)
-    {
+    public function getJourney(Request $request, $vehicle_id) {
         try {
             $user_id = $request->user()->id;
 
@@ -1495,14 +1511,14 @@ class Queries extends Controller
             if ($journey->isNotEmpty()) {
                 return response()->json([
                     'status' => 'success',
-                    'message' => Generator::getMessageTemplate("fetch", 'stats'),
+                    'message' => Generator::getMessageTemplate("fetch", $this->module),
                     'data' => $journey
                 ], Response::HTTP_OK);
             }
     
             return response()->json([
                 'status' => 'failed',
-                'message' => Generator::getMessageTemplate("not_found", 'stats'),
+                'message' => Generator::getMessageTemplate("not_found", $this->module),
             ], Response::HTTP_NOT_FOUND);
         } catch(\Exception $e) {
             return response()->json([
@@ -1561,24 +1577,25 @@ class Queries extends Controller
      *     ),
      * )
      */
-    public function getPartner(Request $request)
-    {
+    public function getPartner(Request $request) {
         try {
             $user_id = $request->user()->id;
 
             // Get all trip partner
-            $res = TripModel::getTripPartner($user_id);
+            $res = Cache::remember("{$this->cacheKeyTripPartner}:$user_id", $this->cacheKeyLifeTime, function () use ($user_id) {
+                return TripModel::getTripPartner($user_id);
+            });
             if ($res && count($res) > 0) {
                 // Return success response
                 return response()->json([
                     'status' => 'success',
-                    'message' => Generator::getMessageTemplate("fetch", 'stats'),
+                    'message' => Generator::getMessageTemplate("fetch", $this->module),
                     'data' => $res
                 ], Response::HTTP_OK);
             } else {
                 return response()->json([
                     'status' => 'failed',
-                    'message' => Generator::getMessageTemplate("not_found", 'stats'),
+                    'message' => Generator::getMessageTemplate("not_found", $this->module),
                 ], Response::HTTP_NOT_FOUND);
             }
         } catch(\Exception $e) {
@@ -1645,24 +1662,25 @@ class Queries extends Controller
      *     ),
      * )
      */
-    public function getPlace(Request $request)
-    {
+    public function getPlace(Request $request) {
         try {
             $user_id = $request->user()->id;
 
             // Get all trip place
-            $res = TripModel::getTripPlace($user_id);
+            $res = Cache::remember("{$this->cacheKeyTripPlace}:$user_id", $this->cacheKeyLifeTime, function () use ($user_id) {
+                return TripModel::getTripPlace($user_id);
+            });
             if ($res && count($res) > 0) {
                 // Return success response
                 return response()->json([
                     'status' => 'success',
-                    'message' => Generator::getMessageTemplate("fetch", 'stats'),
+                    'message' => Generator::getMessageTemplate("fetch", $this->module),
                     'data' => $res
                 ], Response::HTTP_OK);
             } else {
                 return response()->json([
                     'status' => 'failed',
-                    'message' => Generator::getMessageTemplate("not_found", 'stats'),
+                    'message' => Generator::getMessageTemplate("not_found", $this->module),
                 ], Response::HTTP_NOT_FOUND);
             }
         } catch(\Exception $e) {

@@ -79,7 +79,7 @@ class Queries extends Controller
      */
     public function getAllInventory(Request $request)
     {
-        try{
+        try {
             $user_id = $request->user()->id;
             $paginate = $request->query('per_page_key') ?? 15;
             $search = $request->query("search",null);
@@ -186,7 +186,7 @@ class Queries extends Controller
      * )
      */
     public function getInventoryByVehicle(Request $request,$vehicle_id) {
-        try{
+        try {
             $user_id = $request->user()->id;
 
             // Get inventory by vehicle ID

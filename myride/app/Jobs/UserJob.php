@@ -33,7 +33,7 @@ class UserJob implements ShouldQueue
 
     public function handle()
     {
-        try{
+        try {
             $email = new UserMail($this->context, $this->body, $this->username);
             Mail::to($this->receiver)->send($email);
         } catch (\Exception $e) {

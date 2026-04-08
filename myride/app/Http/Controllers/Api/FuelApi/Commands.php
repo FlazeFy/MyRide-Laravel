@@ -79,7 +79,7 @@ class Commands extends Controller
      */
     public function hardDeleteFuelById(Request $request, $id)
     {
-        try{
+        try {
             $user_id = $request->user()->id;
 
             // Define user id by role
@@ -181,7 +181,7 @@ class Commands extends Controller
      * )
      */
     public function postCreateFuel(Request $request) {
-        try{
+        try {
             $user_id = $request->user()->id;
 
             // Validate request body
@@ -320,7 +320,7 @@ class Commands extends Controller
      * )
      */
     public function putUpdateFuelById(Request $request, $id) {
-        try{
+        try {
             $user_id = $request->user()->id;
 
             // Validate request body

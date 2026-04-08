@@ -79,7 +79,7 @@ class Commands extends Controller
      */
     public function hardDeleteInventoryById(Request $request, $id)
     {
-        try{
+        try {
             $user_id = $request->user()->id;
 
             // Define user id by role
@@ -182,7 +182,7 @@ class Commands extends Controller
      * )
      */
     public function postCreateInventory(Request $request) {
-        try{
+        try {
             $user_id = $request->user()->id;
 
             // Validate request body
@@ -316,7 +316,7 @@ class Commands extends Controller
      * )
      */
     public function putUpdateInventoryById(Request $request, $id) {
-        try{
+        try {
             $user_id = $request->user()->id;
 
             // Validate request body
