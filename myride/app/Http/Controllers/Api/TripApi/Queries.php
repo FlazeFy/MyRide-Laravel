@@ -14,9 +14,14 @@ use App\Helpers\Generator;
 class Queries extends Controller
 {
     private $module;
+    private $cacheKeyTripCalendar;
+    private $cacheKeyLastTrip;
+
     public function __construct()
     {
         $this->module = "trip";
+        $this->cacheKeyTripCalendar = "{$this->module}:calendar";
+        $this->cacheKeyLastTrip = "{$this->module}:last_trip";
     }
 
     /**
@@ -289,7 +294,9 @@ class Queries extends Controller
             $user_id = $request->user()->id;
 
             // Get last trip
-            $res = TripModel::getLastTrip($user_id);
+            $res = Cache::remember("{$this->cacheKeyLastTrip}:$user_id", $this->cacheKeyLifeTime, function () use ($user_id) {
+                return TripModel::getLastTrip($user_id);
+            });
             if ($res) {
                 // Return success response
                 return response()->json([
@@ -620,7 +627,9 @@ class Queries extends Controller
             $user_id = $request->user()->id;
 
             // Get trip calendar format
-            $res = TripModel::getTripCalendar($user_id);
+            $res = Cache::remember("{$this->cacheKeyTripCalendar}:$user_id", $this->cacheKeyLifeTime, function () use ($user_id) {
+                return TripModel::getTripCalendar($user_id);
+            });
             if (count($res) > 0) {
                 // Return success response
                 return response()->json([

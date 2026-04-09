@@ -5,6 +5,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 
 // Model
 use App\Models\DictionaryModel;
@@ -14,9 +15,14 @@ use App\Helpers\Generator;
 class Queries extends Controller
 {
     private $module;
+    private $cacheKeyLifeTime;
+    private $cacheKeyDictionaryByType;
+
     public function __construct()
     {
         $this->module = "dictionary";
+        $this->cacheKeyLifeTime = 1200;
+        $this->cacheKeyDictionaryByType = "{$this->module}:dictionary_by_type";
     }
 
     /**
@@ -87,7 +93,9 @@ class Queries extends Controller
             }
 
             // Get dictionary by type and user
-            $res = DictionaryModel::getDictionaryByTypeAndUserID($type,$user_id);
+            $res = Cache::remember("{$this->module}:{$this->cacheKeyDictionaryByType}_$type", $this->cacheKeyLifeTime, function () use ($type, $user_id) {
+                return DictionaryModel::getDictionaryByTypeAndUserID($type,$user_id);
+            });
             if (count($res) > 0) {
                 // Return success response
                 return response()->json([

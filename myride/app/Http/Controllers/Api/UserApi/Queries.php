@@ -14,6 +14,17 @@ use App\Helpers\Generator;
 
 class Queries extends Controller
 {
+    private $module;
+    private $cacheKeyLifeTime;
+    private $cacheKeyContentYear;
+
+    public function __construct()
+    {
+        $this->module = "user";
+        $this->cacheKeyContentYear = "{$this->module}:content_year";
+        $this->cacheKeyLifeTime = 1200;
+    }
+
     /**
      * @OA\GET(
      *     path="/api/v1/user/my_profile",
@@ -82,14 +93,14 @@ class Queries extends Controller
                 // Return success response
                 return response()->json([
                     'status' => 'success',
-                    'message' => Generator::getMessageTemplate("fetch", 'user'),
+                    'message' => Generator::getMessageTemplate("fetch", $this->module),
                     'data' => $res,
                     'telegram_data' => $validation_telegram
                 ], Response::HTTP_OK);
             } else {
                 return response()->json([
                     'status' => 'failed',
-                    'message' => Generator::getMessageTemplate("not_found", 'user'),
+                    'message' => Generator::getMessageTemplate("not_found", $this->module),
                 ], Response::HTTP_NOT_FOUND);
             }
         } catch(\Exception $e) {
@@ -181,19 +192,19 @@ class Queries extends Controller
                     // Return success response
                     return response()->json([
                         'status' => 'success',
-                        'message' => Generator::getMessageTemplate("fetch", 'user'),
+                        'message' => Generator::getMessageTemplate("fetch", $this->module),
                         'data' => $res,
                     ], Response::HTTP_OK);
                 } else {
                     return response()->json([
                         'status' => 'failed',
-                        'message' => Generator::getMessageTemplate("not_found", 'user'),
+                        'message' => Generator::getMessageTemplate("not_found", $this->module),
                     ], Response::HTTP_NOT_FOUND);
                 }
             } else {
                 return response()->json([
                     'status' => 'failed',
-                    'message' => Generator::getMessageTemplate("permission", 'admin'),
+                    'message' => Generator::getMessageTemplate("permission", $this->module),
                 ], Response::HTTP_UNAUTHORIZED);
             }
         } catch(\Exception $e) {
@@ -258,7 +269,10 @@ class Queries extends Controller
             $check_admin = AdminModel::find($user_id);
 
             // Get available year for stats filtering based on user's content (vehicle, trip, wash, service)
-            $res = UserModel::getAvailableYear($check_admin ? null : $user_id, $check_admin ? true : false);
+            $type_key = $check_admin ? "global" : $user_id;
+            $res = Cache::remember("{$this->cacheKeyContentYear}:$type_key", $this->cacheKeyLifeTime, function () use ($check_admin, $user_id) {
+                return UserModel::getAvailableYear($check_admin ? null : $user_id, $check_admin ? true : false);
+            });
             if ($res) {
                 // Return success response
                 return response()->json([

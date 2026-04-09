@@ -15,9 +15,13 @@ use App\Helpers\Generator;
 class Queries extends Controller
 {
     private $module;
+    private $cacheKeyLifeTime;
+    private $cacheKeyAllDriverName;
+
     public function __construct()
     {
         $this->module = "driver";
+        $this->cacheKeyAllDriverName = "{$this->module}:all_driver_name";
     }
 
     /**
@@ -173,7 +177,9 @@ class Queries extends Controller
             $user_id = $request->user()->id;
 
             // Get all driver name
-            $res = DriverModel::getAllDriverName($user_id);            
+            $res = Cache::remember("{$this->cacheKeyAllDriverName}:$user_id", $this->cacheKeyLifeTime, function () use ($user_id) {
+                return DriverModel::getAllDriverName($user_id);    
+            });        
             if (count($res) > 0) {
                 // Return success response
                 return response()->json([

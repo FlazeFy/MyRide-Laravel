@@ -18,9 +18,13 @@ use App\Helpers\Generator;
 class Queries extends Controller
 {
     private $module;
+    private $cacheKeyLifeTime;
+
     public function __construct()
     {
         $this->module = "vehicle";
+        $this->cacheKeyVehicleHeader = "";
+        $this->cacheKeyLifeTime = 600;
     }
 
     /**
@@ -106,6 +110,9 @@ class Queries extends Controller
 
             // Get all vehicle header
             $res = VehicleModel::getAllVehicleHeader($user_id,$paginate);
+            $res = Cache::remember("{$this->cacheKeyVehicleHeader}:$user_id", $this->cacheKeyLifeTime, function () use ($user_id, $paginate) {
+                return VehicleModel::getAllVehicleHeader($user_id, $paginate);
+            });
             if ($res) {
                 // Return success response
                 return response()->json([
