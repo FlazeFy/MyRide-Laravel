@@ -15,6 +15,7 @@ use App\Helpers\Generator;
 class Queries extends Controller
 {
     private $module;
+    private $cacheKeyLifeTime;
     private $cacheKeyTripCalendar;
     private $cacheKeyLastTrip;
 
@@ -23,6 +24,7 @@ class Queries extends Controller
         $this->module = "trip";
         $this->cacheKeyTripCalendar = "{$this->module}:calendar";
         $this->cacheKeyLastTrip = "{$this->module}:last_trip";
+        $this->cacheKeyLifeTime = 600;
     }
 
     /**

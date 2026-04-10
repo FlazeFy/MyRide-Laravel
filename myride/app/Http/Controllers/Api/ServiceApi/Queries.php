@@ -268,7 +268,7 @@ class Queries extends Controller
 
             // Get all service spending 
             $res = ServiceModel::getAllServiceSpending($user_id);
-            if (count($res) > 0) {
+            if ($res) {
                 // Return success response 
                 return response()->json([
                     'status' => 'success',
