@@ -68,7 +68,7 @@ class AIService
 
     public function generateSQL(string $userPrompt, string $userId) {
         $schema = $this->getSchemaContext();
-
+    
         $prompt = "
         You are an expert SQL generator.
 
@@ -85,7 +85,7 @@ class AIService
         Output:
         Only SQL query without explanation.
         ";
-
+    
         return $this->callLlama($prompt);
     }
 

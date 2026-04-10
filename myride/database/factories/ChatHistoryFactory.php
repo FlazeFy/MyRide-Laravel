@@ -19,6 +19,7 @@ class ChatHistoryModelFactory extends Factory
         return [
             'id' => Generator::getUUID(), 
             'question' => fake()->words(mt_rand(5,9), true), 
+            'chat_type' => 'ai', 
             'answer' => fake()->words(mt_rand(10,30), true), 
             'intent' => DictionaryModel::getRandom(0,'chat_intent'),
             'created_at' => Generator::getRandomDate(0), 

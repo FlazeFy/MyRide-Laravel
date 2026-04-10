@@ -10,8 +10,10 @@ return new class extends Migration
     {
         Schema::create('chat_history', function (Blueprint $table) {
             $table->uuid('id')->primary();
+            $table->string('chat_type', 16);
             $table->string('question', 255);
             $table->string('answer', 500)->nullable();
+            $table->text('sql_query')->nullable();
             $table->string('intent', 144)->nullable();
             $table->boolean('is_success');
 

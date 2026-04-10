@@ -27,7 +27,16 @@ class ChatHistoryModel extends Model
 {
     use HasFactory;
     public $incrementing = false;
+    public $timestamps = false;
     protected $table = 'chat_history';
     protected $primaryKey = 'id';
-    protected $fillable = ['id', 'question', 'answer', 'intent', 'created_at', 'created_by'];
+    protected $fillable = ['id', 'chat_type', 'sql_query', 'question', 'answer', 'intent', 'is_success', 'created_at', 'created_by'];
+
+    public static function createChatHistory($data, $user_id) {
+        $data['id'] = Generator::getUUID();
+        $data['created_at'] = date('Y-m-d H:i:s');
+        $data['created_by'] = $user_id;
+
+        return ChatHistoryModel::create($data);
+    }
 }

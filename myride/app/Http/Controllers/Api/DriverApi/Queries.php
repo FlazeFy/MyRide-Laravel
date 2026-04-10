@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\DriverApi;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Cache;
 
 // Model
 use App\Models\DriverModel;

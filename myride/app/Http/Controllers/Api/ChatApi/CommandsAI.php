@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Cache;
 
+// Model
+use App\Models\ChatHistoryModel;
 // Service
 use App\Services\AIService;
 // Helpers
@@ -89,6 +91,15 @@ class CommandsAI extends Controller
                 $safeSql = $this->ai->validateSQL($sql, $user_id);
                 $res = DB::select($safeSql);
                 $text = $this->ai->generateNarration($request->question, $res);
+
+                // Store the conversation
+                ChatHistoryModel::createChatHistory([
+                    'question' => $request->question, 
+                    'chat_type' => 'ai', 
+                    'is_success' => !empty($res) ? 1 : 0,
+                    'answer' => $text,
+                    'sql_query' => $safeSql
+                ], $user_id);
 
                 return [
                     'message' => $text
