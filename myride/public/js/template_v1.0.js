@@ -23,7 +23,7 @@ const buildDeleteModal = (url, context, token, action) => {
     }).then((result) => {
         if (result.isConfirmed) {
             $.ajax({
-                url: url,
+                url,
                 type: 'DELETE',
                 beforeSend: function (xhr) {
                     xhr.setRequestHeader("Accept", "application/json")

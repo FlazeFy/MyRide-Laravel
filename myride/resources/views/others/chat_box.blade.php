@@ -81,10 +81,7 @@
         </div>
     </button>
     <div class="collapse" id="collapseChatBox">
-        <div id="chat-holder">
-            <img src="{{asset('assets/chat.png')}}" alt='chat.png' class="img img-fluid w-100 mb-3 mx-auto mt-5" style="max-width: 180px;">
-            <p class="font-italic text-center mx-5">Hi! I'm <b>Mira</b>, your MyRide assistant. What would you like to know?</p>
-        </div>
+        <div id="chat-holder"></div>
         <div class="d-flex mt-3 align-items-end">
             <textarea class="form-control me-2 mb-0" id="question-input" style="min-height: 100px;" placeholder="Ask something..." onkeydown="return submitOnEnter(event)"></textarea>
             <a class="btn btn-success rounded-circle" id="send-chat-button"><i class="fa-solid fa-paper-plane"></i></a>
@@ -95,6 +92,7 @@
 
 <script>
     const chatKey = "chatMessages"
+    const chatholderEl = 'chat-holder'
 
     const submitOnEnter = (event) => {
         if (event.key === "Enter" && !event.shiftKey && !event.altKey && !event.ctrlKey && !event.metaKey) {
@@ -109,15 +107,22 @@
         postChat()
     })    
 
+    const generateBotGreeting = (target) => {
+        $(target).html(`
+            <img src="{{asset('assets/chat.png')}}" alt='chat.png' class="img img-fluid w-100 mb-3 mx-auto mt-5" style="max-width: 180px;">
+            <p class="font-italic text-center mx-5">Hi! I'm <b>Mira</b>, your MyRide assistant. What would you like to know?</p>
+        `)
+    }
+
     $('#collapseChatBox').on('shown.bs.collapse', function(){ 
         $('.container-chat').addClass('open')
         $('#icon-holder')
             .html('<a class="btn btn-danger rounded-pill m-0" id="hide-chat"><i class="fa-solid fa-chevron-down"></i> Hide</a>')
-            .before('<a class="btn btn-danger rounded-pill m-0 me-2 start-new-chat" title="Start New Chat"><i class="fa-solid fa-trash"></i></a>')
             .closest('.d-flex')
             .removeClass('mx-auto')
         $('#chat_box-title').html('<h6 class="mb-0">Ask Me</h6>')
         $('#chat-holder').scrollTop($('#chat-holder')[0].scrollHeight)
+        getAllChatAI(pageChat)
     }) 
 
     $('#collapseChatBox').on('hidden.bs.collapse', function(){ 
@@ -139,23 +144,12 @@
     })
 
     $(document).on('click', '.start-new-chat', function(){
-        Swal.fire({
-            title: "Warning!",
-            text: "Do you want to reset and start a new chat?",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonText: "Yes, start new chat",
-            cancelButtonText: "Cancel"
-        }).then((result) => {
-            if (result.isConfirmed) {
-                resetChat()
-            } 
-        })
+        buildDeleteModal(`/api/v1/chat/delete/ai`, 'chat', token, () => resetChat())
     })
 
     const resetChat = () => {
         localStorage.removeItem(chatKey)
-        $('#chat-holder').html('<p class="font-italic text-center no-msg-chat">- No message found -</p>')
+        getAllChatAI(pageChat)
     }
  
     const formatDate = (isoString) => {
@@ -187,7 +181,7 @@
         if (messages){
             $('.no-msg-chat').remove()
             messages.forEach(dt => {
-                $('#chat-holder').append(`
+                $(`#${chatholderEl}`).append(`
                     <div class="bubble bubble-${dt.source !== 'me' ? 'bot' : dt.source}">
                         ${dt.source === 'Mira' ? '<b>Mira</b>' :''}
                         <p class="mb-0 mt-1">${dt.message}</p>
@@ -233,7 +227,7 @@
                 $('.no-msg-chat').remove()
                 $("#question-input").val("")
 
-                $('#chat-holder').append(`
+                $(`#${chatholderEl}`).append(`
                     <div class="bubble bubble-me">
                         <p class="mb-0 mt-1">${myMessage}</p>
                         <p class="text-date">${datetime}</p>
@@ -241,7 +235,7 @@
                 `)
                 storeLocalMessage('me', myMessage)
 
-                $('#chat-holder').append(`
+                $(`#${chatholderEl}`).append(`
                     <div class="bubble bubble-bot">
                         <b>Mira</b>
                         <p class="mb-0 mt-1">${message}</p>
@@ -250,7 +244,7 @@
                 `)
                 storeLocalMessage('Mira', message)
 
-                $('#chat-holder').scrollTop($('#chat-holder')[0].scrollHeight)
+                $(`#${chatholderEl}`).scrollTop($(`#${chatholderEl}`)[0].scrollHeight)
             },
             error: function(response, jqXHR, textStatus, errorThrown) {
                 Swal.close()
@@ -262,8 +256,6 @@
     let pageChat = 1
 
     const getAllChatAI = (page) => {
-        const holder = 'history-holder'
-
         $.ajax({
             url: `/api/v1/chat/ai?page=${page}`,
             type: 'GET',
@@ -271,23 +263,29 @@
                 Swal.showLoading()
                 xhr.setRequestHeader("Accept", "application/json")
                 xhr.setRequestHeader("Authorization", `Bearer <?= session()->get("token_key"); ?>`)
-                $(`#${holder}`).empty()
+                $(`#${chatholderEl}`).empty()
+                $('.start-new-chat').remove()
+            },
+            complete: function() {
+                Swal.close()
             },
             success: function(response) {
-                Swal.close()
                 const data = response.data.data
                 const current_page = response.data.current_page
                 const total_page = response.data.last_page
+
+                generateBotGreeting(`#${chatholderEl}`)
+                $('#icon-holder').before('<a class="btn btn-danger rounded-pill m-0 me-2 start-new-chat" title="Start New Chat"><i class="fa-solid fa-trash"></i></a>')
                 
                 data.forEach(dt => {
-                    $('#chat-holder').append(`
+                    $(`#${chatholderEl}`).append(`
                         <div class="bubble bubble-me">
                             <b>You</b>
                             <p class="mb-0 mt-1">${dt.question}</p>
                         </div>
                     `)
 
-                    $('#chat-holder').append(`
+                    $(`#${chatholderEl}`).append(`
                         <div class="bubble bubble-bot">
                             <b>Mira</b>
                             <p class="mb-0 mt-1">${dt.answer}</p>
@@ -296,12 +294,12 @@
                     `)  
                 })
 
-                $('#chat-holder').scrollTop($('#chat-holder')[0].scrollHeight)
+                $(`#${chatholderEl}`).scrollTop($(`#${chatholderEl}`)[0].scrollHeight)
             },
             error: function(response, jqXHR, textStatus, errorThrown) {
-                response.status !== 404 ? generateApiError(response, true) : templateAlertContainer(holder, 'no-data', "No history found", null, '<i class="fa-solid fa-rotate-left"></i>',null)
+                generateBotGreeting(`#${chatholderEl}`)
+                if (response.status !== 404) generateApiError(response, true) 
             }
         })
     }
-    getAllChatAI(pageChat)
 </script>
