@@ -3,7 +3,7 @@
         position: fixed; 
         right: var(--spaceLG); 
         bottom: var(--spaceLG); 
-        z-index: 1000; 
+        z-index: 998; 
     }
 </style>
 

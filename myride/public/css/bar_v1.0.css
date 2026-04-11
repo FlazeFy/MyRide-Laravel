@@ -5,7 +5,7 @@
     position: sticky;
     top: 0;
     background: var(--warningColor);
-    z-index: 1000;
+    z-index: 998;
 }
 .navbar .navbar-brand {
     font-size: calc(var(--textJumbo)*1.15);
@@ -64,7 +64,7 @@
     height: 100%;
     width: 0;
     position: fixed;
-    z-index: 999;
+    z-index: 997;
     top: 0;
     left: 0;
     background-color: var(--darkColor);

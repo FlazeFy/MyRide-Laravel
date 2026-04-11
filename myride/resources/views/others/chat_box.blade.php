@@ -2,8 +2,8 @@
     .container-chat {
         background: var(--warningColor);
         position: fixed;
-        bottom: 20px; 
-        right: 20px;
+        bottom: var(--spaceLG); 
+        right: var(--spaceLG);
         padding: var(--spaceMD);
         width: 70px;
         z-index: 999;
@@ -14,6 +14,17 @@
     .container-chat.open {
         width: 500px !important;
         background: var(--whiteColor);
+    }
+    @media (max-width: 575px) {
+        .container-chat {
+            bottom: 0; 
+            padding: var(--spaceMini);
+            right: var(--spaceMD);
+        }
+        .container-chat.open {
+            max-height: 95%;
+            width: 90% !important;
+        }
     }
 
     #chat-holder {
@@ -30,29 +41,31 @@
     }
     .bubble {
         width: 350px;
-        margin-bottom: var(--spaceSM);
-        padding: var(--spaceSM);
+        margin-bottom: var(--spaceXMD);
+        padding: var(--spaceXMD);
+        border-radius: var(--roundedLG);
     }
     .bubble:last-child { 
         margin-bottom: 0; 
     }
     .bubble b {
-        font-size: var(--textXSM);
+        font-size: var(--textXMD);
     }
     .bubble p {
-        font-size: var(--textXXSM);
+        font-size: var(--textMD);
     }
     .bubble-bot {
-        width: 100%;
+        max-width: 90%;
+        background: var(--warningColor);
     }
     .bubble-me {
         text-align: end;
-        border-radius: calc(var(--roundedMD)*1.5) calc(var(--roundedMD)*1.5) 0 calc(var(--roundedMDs)*1.5);
         background: var(--shadowColor);
         align-self: flex-end;
     }
     .text-date {
-        font-size: var(--textMini) !important;
+        font-size: var(--textSM);
+        margin-top: var(--spaceMini);
         margin-bottom: 0;
         font-style: italic;
     }
@@ -245,4 +258,50 @@
             },
         })
     }
+
+    let pageChat = 1
+
+    const getAllChatAI = (page) => {
+        const holder = 'history-holder'
+
+        $.ajax({
+            url: `/api/v1/chat/ai?page=${page}`,
+            type: 'GET',
+            beforeSend: function (xhr) {
+                Swal.showLoading()
+                xhr.setRequestHeader("Accept", "application/json")
+                xhr.setRequestHeader("Authorization", `Bearer <?= session()->get("token_key"); ?>`)
+                $(`#${holder}`).empty()
+            },
+            success: function(response) {
+                Swal.close()
+                const data = response.data.data
+                const current_page = response.data.current_page
+                const total_page = response.data.last_page
+                
+                data.forEach(dt => {
+                    $('#chat-holder').append(`
+                        <div class="bubble bubble-me">
+                            <b>You</b>
+                            <p class="mb-0 mt-1">${dt.question}</p>
+                        </div>
+                    `)
+
+                    $('#chat-holder').append(`
+                        <div class="bubble bubble-bot">
+                            <b>Mira</b>
+                            <p class="mb-0 mt-1">${dt.answer}</p>
+                            <p class="text-date">${getDateToContext(dt.created_at,'calendar')}</p>
+                        </div>
+                    `)  
+                })
+
+                $('#chat-holder').scrollTop($('#chat-holder')[0].scrollHeight)
+            },
+            error: function(response, jqXHR, textStatus, errorThrown) {
+                response.status !== 404 ? generateApiError(response, true) : templateAlertContainer(holder, 'no-data', "No history found", null, '<i class="fa-solid fa-rotate-left"></i>',null)
+            }
+        })
+    }
+    getAllChatAI(pageChat)
 </script>

@@ -16,13 +16,13 @@ class Queries extends Controller
 {
     private $module;
     private $cacheKeyLifeTime;
-    private $cacheKeyAIChatHistory;
+    private $cacheKeyChatHistory;
 
     public function __construct()
     {
         $this->module = "chat";
         $this->cacheKeyLifeTime = 600;
-        $this->cacheKeyAIChatHistory = "{$this->module}:ai";
+        $this->cacheKeyChatHistory = "{$this->module}:chat";
     }
 
     /**
@@ -110,7 +110,7 @@ class Queries extends Controller
             }
 
             // Get all chat history
-            $res = Cache::remember("{$this->cacheKeyAIChatHistory}:$user_id", $this->cacheKeyLifeTime, function () use ($user_id, $chat_type, $paginate) {
+            $res = Cache::remember("{$this->cacheKeyChatHistory}:$chat_type:$user_id:$paginate", $this->cacheKeyLifeTime, function () use ($user_id, $chat_type, $paginate) {
                 return ChatHistoryModel::getAllChatHistoryByType($user_id, $chat_type, $paginate);    
             });
             if (count($res) > 0) {
