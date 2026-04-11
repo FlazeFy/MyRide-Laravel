@@ -30,14 +30,21 @@ class ChatHistoryModel extends Model
     public $timestamps = false;
     protected $table = 'chat_history';
     protected $primaryKey = 'id';
-    protected $fillable = ['id', 'chat_type', 'sql_query', 'question', 'answer', 'intent', 'is_success', 'created_at', 'created_by'];
+    protected $fillable = ['id', 'chat_type', 'sql_query', 'question', 'answer', 'intent', 'is_success', 'deleted_at', 'created_at', 'created_by'];
 
     public static function getAllChatHistoryByType($user_id, $type, $paginate) {
         return ChatHistoryModel::select('question', 'answer', 'is_success', 'created_at')
             ->where('created_by', $user_id)
             ->where('chat_type', $type)
+            ->whereNull('deleted_at')
             ->orderby('created_at', 'desc')
             ->paginate($paginate);
+    }
+
+    public static function updateChatHistoryByType($user_id, $type, $data) {
+        return ChatHistoryModel::where('created_by', $user_id)
+            ->where('chat_type', $type)
+            ->update($data);
     }
 
     public static function createChatHistory($data, $user_id) {

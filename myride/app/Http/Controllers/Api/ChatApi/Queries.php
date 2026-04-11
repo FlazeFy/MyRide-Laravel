@@ -22,7 +22,7 @@ class Queries extends Controller
     {
         $this->module = "chat";
         $this->cacheKeyLifeTime = 600;
-        $this->cacheKeyChatHistory = "{$this->module}:chat";
+        $this->cacheKeyChatHistory = "{$this->module}";
     }
 
     /**
@@ -110,9 +110,14 @@ class Queries extends Controller
             }
 
             // Get all chat history
-            $res = Cache::remember("{$this->cacheKeyChatHistory}:$chat_type:$user_id:$paginate", $this->cacheKeyLifeTime, function () use ($user_id, $chat_type, $paginate) {
-                return ChatHistoryModel::getAllChatHistoryByType($user_id, $chat_type, $paginate);    
-            });
+            $versionKey = "chat_history_version:{$user_id}:{$chat_type}";
+            $version = Cache::get($versionKey, 1);
+            $res = Cache::remember(
+                "{$this->cacheKeyChatHistory}:$chat_type:$user_id:$paginate:v$version", $this->cacheKeyLifeTime,
+                function () use ($user_id, $chat_type, $paginate) {
+                    return ChatHistoryModel::getAllChatHistoryByType($user_id, $chat_type, $paginate);    
+                }
+            );
             if (count($res) > 0) {
                 // Return success response
                 return response()->json([

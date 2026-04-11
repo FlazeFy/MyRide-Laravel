@@ -587,6 +587,110 @@
                 ]
             }
         },
+        "/api/v1/chat/delete/{chat_type}": {
+            "delete": {
+                "tags": [
+                    "Chat"
+                ],
+                "summary": "Soft Delete All Chat History By Type",
+                "description": "This chat request is used to soft delete all chat history by type. This means it will no longer be visible to the user, but it will still be retained and consumed by the system. This request interacts with the MySQL database.",
+                "operationId": "93153038f02ae685a513f500e07ba87f",
+                "parameters": [
+                    {
+                        "name": "chat_type",
+                        "in": "path",
+                        "description": "Chat Type",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "ai"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "chat deleted successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "chat deleted"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "{validation_msg}",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "{field validation message}"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "protected route need to include sign in token as authorization bearer",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "you need to include the authorization token from login"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "something wrong. please contact admin"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/chat/ai": {
             "post": {
                 "tags": [
@@ -816,7 +920,7 @@
                 ],
                 "summary": "Get All Chat History",
                 "description": "This request is used to get all ai chat history when user use the App. This request interacts with the MySQL database, has a protected routes, and has a pagination.",
-                "operationId": "ce0944c8626f88d0af1e471b7552eec2",
+                "operationId": "8d99f240fa97a7c1db37ab2bdc2183b3",
                 "parameters": [
                     {
                         "name": "chat_type",

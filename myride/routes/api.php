@@ -34,6 +34,7 @@ use App\Http\Controllers\Api\ErrorApi\Queries as QueriesErrorController;
 use App\Http\Controllers\Api\ErrorApi\Commands as CommandsErrorController;
 use App\Http\Controllers\Api\ChatApi\CommandsNLP as CommandsChatNLPController;
 use App\Http\Controllers\Api\ChatApi\CommandsAI as CommandsChatAIController;
+use App\Http\Controllers\Api\ChatApi\Commands as CommandsChatController;
 use App\Http\Controllers\Api\ChatApi\Queries as QueriesChatController;
 
 ######################### Public Route #########################
@@ -113,6 +114,7 @@ Route::prefix('/v1/history')->middleware(['auth:sanctum'])->group(function () {
 Route::prefix('/v1/chat')->middleware(['auth:sanctum'])->group(function () {
     Route::get('/nlp', [CommandsChatNLPController::class, 'postChatNLP']);
     Route::post('/ai', [CommandsChatAIController::class, 'postChatAI']);
+    Route::delete('/delete/{chat_type}', [CommandsChatController::class, 'softDeleteChatHistoryByType']);
     Route::get('/{chat_type}', [QueriesChatController::class, 'getAllChatHistory']);
 });
 
