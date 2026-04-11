@@ -1,0 +1,136 @@
+<?php
+
+namespace App\Http\Controllers\Api\ChatApi;
+use Illuminate\Http\Response;
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Cache;
+
+// Model
+use App\Models\ChatHistoryModel;
+// Helpers
+use App\Helpers\Generator;
+
+class Queries extends Controller
+{
+    private $module;
+    private $cacheKeyLifeTime;
+    private $cacheKeyAIChatHistory;
+
+    public function __construct()
+    {
+        $this->module = "chat";
+        $this->cacheKeyLifeTime = 600;
+        $this->cacheKeyAIChatHistory = "{$this->module}:ai";
+    }
+
+    /**
+     * @OA\GET(
+     *     path="/api/v1/chat/{chat_type}",
+     *     summary="Get All Chat History",
+     *     description="This request is used to get all ai chat history when user use the App. This request interacts with the MySQL database, has a protected routes, and has a pagination.",
+     *     tags={"Chat"},
+     *     security={{"bearerAuth":{}}},
+     *     @OA\Parameter(
+     *         name="chat_type",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string",
+     *             example="ai"
+     *         ),
+     *         description="Chat Type can be 'ai' or 'nlp'",
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Chat fetched successfully. Ordered in descending order by `created_at`",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="message", type="string", example="chat fetched"),
+     *             @OA\Property(property="data", type="object",
+     *                 @OA\Property(property="data", type="array",
+     *                     @OA\Items(
+     *                         @OA\Property(property="id", type="string", example="6f59235e-c398-8a83-2f95-3f1fbe95ca6e"),
+     *                         @OA\Property(property="question", type="string", example="Hello there!"),
+     *                         @OA\Property(property="answer", type="string", example="Lorem ipsum"),
+     *                         @OA\Property(property="is_success", type="integer", example=1),
+     *                         @OA\Property(property="created_at", type="string", format="date-time", example="2024-09-20 22:53:47"),
+     *                     )
+     *                 ),
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="protected route need to include sign in token as authorization bearer",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="failed"),
+     *             @OA\Property(property="message", type="string", example="you need to include the authorization token from login")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="chat failed to fetched",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="failed"),
+     *             @OA\Property(property="message", type="string", example="chat not found")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal Server Error",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="error"),
+     *             @OA\Property(property="message", type="string", example="something wrong. please contact admin")
+     *         )
+     *     ),
+     * )
+     */
+    public function getAllChatHistory(Request $request, $chat_type)
+    {
+        try {
+            $user_id = $request->user()->id;
+            $paginate = $request->query('per_page_key') ?? 15;
+            
+            // Validate query
+            if (!is_numeric($paginate) || (int)$paginate <= 0) {
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => 'per_page_key is not a valid page',
+                ], Response::HTTP_BAD_REQUEST);
+            }
+
+            if ($chat_type !== "ai" && $chat_type !== "nlp") {
+                // Context not valid
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => Generator::getMessageTemplate("custom", "Chat type : $chat_type is not available"),
+                ], Response::HTTP_BAD_REQUEST);
+            }
+
+            // Get all chat history
+            $res = Cache::remember("{$this->cacheKeyAIChatHistory}:$user_id", $this->cacheKeyLifeTime, function () use ($user_id, $chat_type, $paginate) {
+                return ChatHistoryModel::getAllChatHistoryByType($user_id, $chat_type, $paginate);    
+            });
+            if (count($res) > 0) {
+                // Return success response
+                return response()->json([
+                    'status' => 'success',
+                    'message' => Generator::getMessageTemplate("fetch", $this->module),
+                    'data' => $res
+                ], Response::HTTP_OK);
+            } else {
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => Generator::getMessageTemplate("not_found", $this->module),
+                ], Response::HTTP_NOT_FOUND);
+            }
+        } catch(\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => Generator::getMessageTemplate("unknown_error", null),
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+}

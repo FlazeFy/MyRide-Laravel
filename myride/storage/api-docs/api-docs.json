@@ -809,6 +809,149 @@
                 }
             }
         },
+        "/api/v1/chat/{chat_type}": {
+            "get": {
+                "tags": [
+                    "Chat"
+                ],
+                "summary": "Get All Chat History",
+                "description": "This request is used to get all ai chat history when user use the App. This request interacts with the MySQL database, has a protected routes, and has a pagination.",
+                "operationId": "ce0944c8626f88d0af1e471b7552eec2",
+                "parameters": [
+                    {
+                        "name": "chat_type",
+                        "in": "path",
+                        "description": "Chat Type can be 'ai' or 'nlp'",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "ai"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Chat fetched successfully. Ordered in descending order by `created_at`",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "chat fetched"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "data": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "string",
+                                                                "example": "6f59235e-c398-8a83-2f95-3f1fbe95ca6e"
+                                                            },
+                                                            "question": {
+                                                                "type": "string",
+                                                                "example": "Hello there!"
+                                                            },
+                                                            "answer": {
+                                                                "type": "string",
+                                                                "example": "Lorem ipsum"
+                                                            },
+                                                            "is_success": {
+                                                                "type": "integer",
+                                                                "example": 1
+                                                            },
+                                                            "created_at": {
+                                                                "type": "string",
+                                                                "format": "date-time",
+                                                                "example": "2024-09-20 22:53:47"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "protected route need to include sign in token as authorization bearer",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "you need to include the authorization token from login"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "chat failed to fetched",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "chat not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "something wrong. please contact admin"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/v1/dictionary/{id}": {
             "delete": {
                 "tags": [
@@ -3976,10 +4119,6 @@
                                                                 "type": "string",
                                                                 "format": "date-time",
                                                                 "example": "2024-09-20 22:53:47"
-                                                            },
-                                                            "created_by": {
-                                                                "type": "string",
-                                                                "example": "2d98f524-de02-11ed-b5ea-0242ac120002"
                                                             }
                                                         },
                                                         "type": "object"
@@ -14621,7 +14760,7 @@
                 ],
                 "summary": "Get Wash Summary",
                 "description": "This request is used to get wash summary by vehicle id or all vehicle. This request interacts with the MySQL database, and has a protected routes.",
-                "operationId": "ea534c33a246d1186c2319727c55c72d",
+                "operationId": "da628fb2da0229f377978756354468df",
                 "responses": {
                     "200": {
                         "description": "Wash fetched successfully. Ordered in ascending order by `vehicle_name`",
