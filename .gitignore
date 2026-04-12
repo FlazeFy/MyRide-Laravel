@@ -3,3 +3,4 @@ myride/secrets
 myride/tests_reports
 myride/public/sample_locations_jkt.csv
 myride/.env.testing
+myride/storage/AI

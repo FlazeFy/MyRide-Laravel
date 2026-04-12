@@ -1,8 +1,8 @@
 <?php
 
 namespace App\Services;
-
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Cache;
 
 class AIService
 {
@@ -66,25 +66,52 @@ class AIService
         ";
     }
 
+    public function findRelevantExamples(string $question, int $limit = 4): array {
+        $examples = Cache::remember('sql_examples', now()->addDay(), fn() => 
+            json_decode(file_get_contents(storage_path('AI/sql_examples.json')), true)
+        );
+    
+        $keywords = explode(' ', strtolower($question));
+        
+        // Score each example by keyword overlap
+        $scored = array_map(function($ex) use ($keywords) {
+            $q = strtolower($ex['question']);
+            $score = count(array_filter($keywords, fn($k) => str_contains($q, $k)));
+            return [...$ex, 'score' => $score];
+        }, $examples);
+    
+        // Sort by score, take top N
+        usort($scored, fn($a, $b) => $b['score'] - $a['score']);
+        
+        return array_slice(array_filter($scored, fn($e) => $e['score'] > 0), 0, $limit);
+    }
+
     public function generateSQL(string $userPrompt, string $userId) {
         $schema = $this->getSchemaContext();
+        $examples = $this->findRelevantExamples($userPrompt);
+    
+        $exampleBlock = '';
+        foreach ($examples as $ex) {
+            $exampleBlock .= "\nQ: {$ex['question']}\nA: {$ex['sql']}\n";
+        }
     
         $prompt = "
-        You are an expert SQL generator.
-
+        You are a MySQL query generator.
+        Output ONLY the raw SQL query. No explanation. No markdown. No comments.
+        
+        IMPORTANT: If the question matches or is similar to an example below, 
+        use that exact SQL as your base and only adjust for the user ID.
+    
+        === SCHEMA ===
         $schema
-
+    
+        === EXAMPLES (follow these exactly) ===
+        $exampleBlock
+    
+        === TASK ===
         User ID: $userId
-
-        Instruction:
-        Convert the following request into a valid MySQL SQL query.
-
-        Request:
-        \"$userPrompt\"
-
-        Output:
-        Only SQL query without explanation.
-        ";
+        Q: $userPrompt
+        A:";
     
         return $this->callLlama($prompt);
     }
@@ -146,17 +173,28 @@ class AIService
     public function generateNarration(string $question, array $data) {
         $json = json_encode($data);
 
+        // Currency rule
+        $isMoney = preg_match('/harga|pengeluaran|biaya|cost|price|total/i', $question);
+        $moneyRule = $isMoney ? "- This question is about money/cost, ALWAYS format numbers with Rp prefix (e.g. Rp 3.459.000)" : "- Write numbers as digits only (e.g. 3.459)";
+
+        // Datetime rule
+        $hasDatetime = preg_match('/"\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])\s(0[0-9]|1[0-9]|2[0-3]):[0-5]\d:[0-5]\d"/', $json);
+        $datetimeRule = $hasDatetime ? "- Any datetime value found in the data MUST be formatted as: day (numeric) + full month name in English + year + 'at' + time in 12-hour format with AM/PM (e.g. the format pattern is: DD MMMM YYYY 'at' hh:mm AM/PM). NEVER show raw datetime string." : "";
+        
         $prompt = "
         You are a helpful assistant that explains SQL results.
 
         STRICT RULES:
-        - Answer in Bahasa Indonesia
-        - Be concise and natural
+        - Answer ONLY in Bahasa Indonesia
+        - DO NOT translate or add translation in parentheses
         - DO NOT mention 'data', 'JSON', or 'based on data'
         - DO NOT repeat the question
-        - Convert numbers into a natural sentence
+        - Write numbers as digits (e.g. 3.459.000), NOT in word form (e.g. 'tiga juta')
+        - $moneyRule
+        - $datetimeRule
         - If result is COUNT, explain as total occurrences
         - Use friendly and human-like language
+        - Dont put ID in the result
 
         Question:
         $question
