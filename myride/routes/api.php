@@ -127,7 +127,7 @@ Route::prefix('/v1/reminder')->middleware(['auth:sanctum'])->group(function () {
     Route::get('/next', [QueriesReminderController::class, 'getNextReminder']);
     Route::get('/', [QueriesReminderController::class, 'getAllReminder']);
     Route::get('/recently', [QueriesReminderController::class, 'getRecentlyReminder']);
-    Route::get('/vehicle/{vehicle_id}', [QueriesReminderController::class, 'getReminderByVehicle']);
+    Route::get('/vehicle/{vehicle_id}', [QueriesReminderController::class, 'getReminderByVehicleId']);
     Route::delete('/destroy/{id}', [CommandsReminderController::class, 'hardDeleteReminderById']);
     Route::post('/', [CommandsReminderController::class, 'postCreateReminder']);
 });
@@ -181,7 +181,7 @@ Route::prefix('/v1/trip')->middleware(['auth:sanctum'])->group(function () {
     Route::get('/last', [QueriesTripApi::class, 'getLastTrip']);
     Route::get('/calendar', [QueriesTripApi::class, 'getTripCalendar']);
     Route::get('/coordinate', [QueriesTripApi::class, 'getAllCoordinate']);
-    Route::get('/coordinate/nearest/{coordinate}', [QueriesTripApi::class, 'getNearestPlaces']);
+    Route::get('/coordinate/nearest/{coordinate}', [QueriesTripApi::class, 'getNearestPlacesByCoordinate']);
     Route::get('/coordinate/{trip_location_name}', [QueriesTripApi::class, 'getCoordinateByTripLocationName']);
     Route::get('/driver/{driver_id}', [QueriesTripApi::class, 'getAllTripByDriverId']);
     Route::delete('/destroy/{id}', [CommandsTripController::class, 'hardDeleteTripById']);
@@ -190,7 +190,7 @@ Route::prefix('/v1/trip')->middleware(['auth:sanctum'])->group(function () {
 
 Route::prefix('/v1/inventory')->middleware(['auth:sanctum'])->group(function () {
     Route::get('/', [QueriesInventoryController::class, 'getAllInventory']);
-    Route::get('/vehicle/{vehicle_id}', [QueriesInventoryController::class, 'getInventoryByVehicle']);
+    Route::get('/vehicle/{vehicle_id}', [QueriesInventoryController::class, 'getInventoryByVehicleId']);
     Route::delete('/destroy/{id}', [CommandsInventoryController::class, 'hardDeleteInventoryById']);
     Route::post('/', [CommandsInventoryController::class, 'postCreateInventory']);
     Route::put('/{id}', [CommandsInventoryController::class, 'putUpdateInventoryById']);
@@ -206,10 +206,10 @@ Route::prefix('/v1/user')->middleware(['auth:sanctum'])->group(function () {
 });
 
 Route::prefix('/v1/export')->middleware(['auth:sanctum'])->group(function () {
-    Route::get('/wash', [QueriesExportController::class, 'exportWashHistory']);
-    Route::get('/trip', [QueriesExportController::class, 'exportTripHistory']);
-    Route::get('/fuel', [QueriesExportController::class, 'exportFuelHistory']);
-    Route::get('/inventory', [QueriesExportController::class, 'exportInventory']);
-    Route::get('/service', [QueriesExportController::class, 'exportService']);
-    Route::get('/driver', [QueriesExportController::class, 'exportDriver']);
+    Route::get('/wash', [QueriesExportController::class, 'exportWashHistoryDataset']);
+    Route::get('/trip', [QueriesExportController::class, 'exportTripHistoryDataset']);
+    Route::get('/fuel', [QueriesExportController::class, 'exportFuelHistoryDataset']);
+    Route::get('/inventory', [QueriesExportController::class, 'exportInventoryDataset']);
+    Route::get('/service', [QueriesExportController::class, 'exportServiceDataset']);
+    Route::get('/driver', [QueriesExportController::class, 'exportDriverDataset']);
 });

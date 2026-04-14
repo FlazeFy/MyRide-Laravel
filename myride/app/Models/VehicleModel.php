@@ -64,7 +64,7 @@ class VehicleModel extends Model
         'vehicle_capacity' => 'integer',
     ];
 
-    public static function getVehicleDetailById($user_id = null,$id) {
+    public static function getVehicleDetailById($user_id = null, $id) {
         $res = VehicleModel::where('id',$id);
 
         if ($user_id) $res = $res->where('created_by',$user_id);
@@ -75,7 +75,7 @@ class VehicleModel extends Model
         return $res;
     }
 
-    public static function getVehicleIdentity($user_id,$id) {
+    public static function getVehicleIdentity($user_id, $id) {
         return VehicleModel::select('vehicle_name','vehicle_plate_number')
             ->where('id',$id)
             ->where('created_by',$user_id)

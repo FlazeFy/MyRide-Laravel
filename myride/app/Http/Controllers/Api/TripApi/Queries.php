@@ -199,7 +199,7 @@ class Queries extends Controller
      *     ),
      * )
      */
-    public function getAllTripByDriverId(Request $request,$driver_id)
+    public function getAllTripByDriverId(Request $request, $driver_id)
     {
         try {
             $user_id = $request->user()->id;
@@ -210,6 +210,14 @@ class Queries extends Controller
                 return response()->json([
                     'status' => 'failed',
                     'message' => 'per_page_key is not a valid page',
+                ], Response::HTTP_BAD_REQUEST);
+            }
+
+            // Validate driver id
+            if (strlen($driver_id) !== 36 || !preg_match('/^[0-9a-fA-F-]{36}$/', $driver_id)) {
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => 'driver_id must be a valid UUID',
                 ], Response::HTTP_BAD_REQUEST);
             }
 
@@ -710,7 +718,7 @@ class Queries extends Controller
      *     ),
      * )
      */
-    public function getNearestPlaces(Request $request, $coordinate)
+    public function getNearestPlacesByCoordinate(Request $request, $coordinate)
     {
         try {
             $user_id = $request->user()->id;

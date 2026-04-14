@@ -59,7 +59,7 @@ class Queries extends Controller {
      *     ),
      * )
      */
-    public function exportWashHistory(Request $request) {
+    public function exportWashHistoryDataset(Request $request) {
         try {
             $user_id = $request->user()->id;
 
@@ -175,7 +175,7 @@ class Queries extends Controller {
      *     ),
      * )
      */
-    public function exportFuelHistory(Request $request) {
+    public function exportFuelHistoryDataset(Request $request) {
         try {
             $user_id = $request->user()->id;
 
@@ -282,7 +282,7 @@ class Queries extends Controller {
      *     ),
      * )
      */
-    public function exportInventory(Request $request) {
+    public function exportInventoryDataset(Request $request) {
         try {
             $user_id = $request->user()->id;
 
@@ -389,7 +389,7 @@ class Queries extends Controller {
      *     ),
      * )
      */
-    public function exportService(Request $request) {
+    public function exportServiceDataset(Request $request) {
         try {
             $user_id = $request->user()->id;
 
@@ -497,7 +497,7 @@ class Queries extends Controller {
      *     ),
      * )
      */
-    public function exportDriver(Request $request) {
+    public function exportDriverDataset(Request $request) {
         try {
             $user_id = $request->user()->id;
 
@@ -604,7 +604,7 @@ class Queries extends Controller {
      *     ),
      * )
      */
-    public function exportTripHistory(Request $request) {
+    public function exportTripHistoryDataset(Request $request) {
         try {
             $user_id = $request->user()->id;
 

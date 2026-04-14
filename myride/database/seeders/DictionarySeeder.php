@@ -31,7 +31,7 @@ class DictionarySeeder extends Seeder
             'vehicle_default_fuel' => ['Pertamina Pertalite', 'Pertamina Pertamax', 'Pertamina Solar', 'Pertamina Dexlite', 'Shell Super', 'Shell V-Power', 'Shell V-Power Diesel', 'Shell V-Power Nitro+'],
             'trip_category' => [
                 'Culinary Hunting','Business Trip','Family Vacation','Worship','Refreshing','Strolling Around','City Exploration','Nature Retreat',
-                'Cultural Festival','Road Trip','Backpacking','Photography','Shopping','Sport Event', 'Personal', 'Drop Off', 'Pick Up'
+                'Cultural Festival','Road Trip','Backpacking','Photography','Shopping','Sport Event', 'Personal', 'Drop Off', 'Pick Up', 'Friend Trip'
             ],
             'fuel_ron' => ['90','92','95','98'],
             'fuel_brand' => ['Pertamina','Vivo','BP','Shell','Electric'],

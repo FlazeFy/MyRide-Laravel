@@ -53,7 +53,7 @@ class InventoryModel extends Model
         return $res->orderByRaw('COALESCE(inventory.updated_at, inventory.created_at) DESC')->paginate($limit);                       
     }
 
-    public static function getInventoryByVehicle($user_id, $vehicle_id) {
+    public static function getInventoryByVehicleId($user_id, $vehicle_id) {
         $res = InventoryModel::select('inventory.id','inventory_name', 'inventory_category', 'inventory_qty', 'inventory_storage', 'inventory.created_at');
         
         if ($vehicle_id) $res = $res->where('vehicle_id',$vehicle_id);

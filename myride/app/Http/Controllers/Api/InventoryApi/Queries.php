@@ -185,12 +185,28 @@ class Queries extends Controller
      *     ),
      * )
      */
-    public function getInventoryByVehicle(Request $request,$vehicle_id) {
+    public function getInventoryByVehicleId(Request $request, $vehicle_id) {
         try {
             $user_id = $request->user()->id;
 
+            // Validate vehicle id
+            if (strlen($vehicle_id) !== 36 || !preg_match('/^[0-9a-fA-F-]{36}$/', $vehicle_id)) {
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => 'vehicle_id must be a valid UUID',
+                ], Response::HTTP_BAD_REQUEST);
+            }
+
+            // Validate existence of vehicle
+            if (!VehicleModel::getVehicleDetailById($user_id, $vehicle_id)) {
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => 'vehicle not found',
+                ], Response::HTTP_NOT_FOUND);
+            }
+
             // Get inventory by vehicle ID
-            $res = InventoryModel::getInventoryByVehicle($user_id,$vehicle_id);
+            $res = InventoryModel::getInventoryByVehicleId($user_id, $vehicle_id);
             if ($res && count($res) > 0) {
                 // Return success response
                 return response()->json([

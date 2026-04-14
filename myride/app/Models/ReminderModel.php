@@ -48,7 +48,7 @@ class ReminderModel extends Model
             ->first();                       
     }
 
-    public static function getReminderByVehicle($user_id = null,$vehicle_id) {
+    public static function getReminderByVehicleId($user_id = null,$vehicle_id) {
         $res = ReminderModel::select('reminder_title', 'reminder_context', 'reminder_body', 'remind_at');
 
         if ($user_id) $res = $res->where('reminder.created_by', $user_id);

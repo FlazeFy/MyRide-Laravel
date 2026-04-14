@@ -67,15 +67,24 @@ class DriverModel extends Authenticatable
 
     public static function getAllDriver($user_id = null, $limit, $col = 'driver.*,COUNT(trip.id) as total_trip') {
         $res = DriverModel::selectRaw($col);
-
-        if ($col === 'driver.*,COUNT(trip.id) as total_trip') $res = $res->leftjoin('trip','trip.driver_id','=','driver.id');
+    
+        if ($col === 'driver.*,COUNT(trip.id) as total_trip') $res = $res->leftJoin('trip','trip.driver_id','=','driver.id');
         if ($user_id) $res = $res->where('driver.created_by', $user_id);
-        if ($col === 'driver.*,COUNT(trip.id) as total_trip') $res = $res->groupby('driver.id');
+        if ($col === 'driver.*,COUNT(trip.id) as total_trip') $res = $res->groupBy('driver.id');
             
         if ($limit !== 0) {
-            return $res->orderBy('driver.created_at', 'desc')->paginate($limit); 
+            $data = $res->orderBy('driver.created_at', 'desc')->paginate($limit);
+            $data->getCollection()->transform(function ($item) {
+                return $item->makeHidden(['password', 'created_by']);
+            });
+    
+            return $data;
         } else {
-            return $res->orderBy('driver.created_at', 'desc')->get(); 
+            $data = $res->orderBy('driver.created_at', 'desc')->get();
+    
+            return $data->map(function ($item) {
+                return $item->makeHidden(['password', 'created_by']);
+            });
         }                     
     }
 

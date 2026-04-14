@@ -346,13 +346,13 @@ class Queries extends Controller
      *     ),
      * )
      */
-    public function getReminderByVehicle(Request $request, $vehicle_id)
+    public function getReminderByVehicleId(Request $request, $vehicle_id)
     {
         try {
             $user_id = $request->user()->id;
 
             // Get reminder by vehicle ID
-            $res = ReminderModel::getReminderByVehicle($user_id,$vehicle_id);
+            $res = ReminderModel::getReminderByVehicleId($user_id,$vehicle_id);
             if (count($res) > 0) {
                 // Return success response
                 return response()->json([
