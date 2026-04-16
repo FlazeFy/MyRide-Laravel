@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Helpers\Generator;
 // Models
 use App\Models\ReminderModel;
+use App\Models\VehicleModel;
 
 class Queries extends Controller
 {
@@ -346,13 +347,27 @@ class Queries extends Controller
      *     ),
      * )
      */
-    public function getReminderByVehicleId(Request $request, $vehicle_id)
-    {
+    public function getReminderByVehicleId(Request $request, $vehicle_id) {
         try {
             $user_id = $request->user()->id;
 
+            // Validate vehicle id
+            if (strlen($vehicle_id) !== 36 || !preg_match('/^[0-9a-fA-F-]{36}$/', $vehicle_id)) {
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => 'vehicle_id must be a valid UUID',
+                ], Response::HTTP_BAD_REQUEST);
+            }
+            // Validate existence of vehicle
+            if (!VehicleModel::getVehicleDetailById($user_id, $vehicle_id)) {
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => 'vehicle not found',
+                ], Response::HTTP_NOT_FOUND);
+            }
+
             // Get reminder by vehicle ID
-            $res = ReminderModel::getReminderByVehicleId($user_id,$vehicle_id);
+            $res = ReminderModel::getReminderByVehicleId($user_id, $vehicle_id);
             if (count($res) > 0) {
                 // Return success response
                 return response()->json([
@@ -370,7 +385,7 @@ class Queries extends Controller
             return response()->json([
                 'status' => 'error',
                 'message' => Generator::getMessageTemplate("unknown_error", null),
-            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);   
         }
     }
 }

@@ -136,7 +136,7 @@ Route::prefix('/v1/service')->middleware(['auth:sanctum'])->group(function () {
     Route::get('/', [QueriesServiceController::class, 'getAllService']);
     Route::get('/next', [QueriesServiceController::class, 'getNextService']);
     Route::get('/spending', [QueriesServiceController::class, 'getAllServiceSpending']);
-    Route::get('/vehicle/{vehicle_id}', [QueriesServiceController::class, 'getServiceByVehicle']);
+    Route::get('/vehicle/{vehicle_id}', [QueriesServiceController::class, 'getServiceByVehicleId']);
     Route::post('/', [CommandsServiceController::class, 'postService']);
     Route::delete('/destroy/{id}', [CommandsServiceController::class, 'hardDeleteServiceById']);
     Route::put('/{id}', [CommandsServiceController::class, 'putUpdateServiceById']);

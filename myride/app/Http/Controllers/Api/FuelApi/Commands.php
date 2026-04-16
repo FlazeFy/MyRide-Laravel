@@ -80,40 +80,50 @@ class Commands extends Controller
     public function hardDeleteFuelById(Request $request, $id)
     {
         try {
-            $user_id = $request->user()->id;
-
-            // Define user id by role
-            $check_admin = AdminModel::find($user_id);
-            $user_id = $check_admin ? null : $user_id;
-            $fuel = FuelModel::find($id);
-
-            // Permanently delete fuel
-            $rows = FuelModel::hardDeleteFuelById($id, $user_id);
-            if ($rows > 0) {
-                // Delete Firebase uploaded image
-                if ($fuel->fuel_bill) {
-                    // Delete failed if file not found (already gone)
-                    if (!Firebase::deleteFile($fuel->fuel_bill)) {
-                        return response()->json([
-                            'status' => 'failed',
-                            'message' => Generator::getMessageTemplate("not_found", 'failed to delete fuel bill'),
-                        ], Response::HTTP_NOT_FOUND);
-                    }
-                }
-
-                // Create history
-                HistoryModel::createHistory(['history_type' => 'Fuel', 'history_context' => "remove a fuel history"], $user_id);
-                
-                // Return success response
-                return response()->json([
-                    'status' => 'success',
-                    'message' => Generator::getMessageTemplate("permentally delete", $this->module),
-                ], Response::HTTP_OK);
-            } else {
+            // Validate param
+            $request->merge(['id' => $id]);
+            $validator = Validation::getValidateId($request);
+            if ($validator->fails()) {
                 return response()->json([
                     'status' => 'failed',
-                    'message' => Generator::getMessageTemplate("not_found", $this->module),
-                ], Response::HTTP_NOT_FOUND);
+                    'message' => $validator->errors()
+                ], Response::HTTP_BAD_REQUEST);
+            } else {
+                $user_id = $request->user()->id;
+
+                // Define user id by role
+                $check_admin = AdminModel::find($user_id);
+                $user_id = $check_admin ? null : $user_id;
+                $fuel = FuelModel::find($id);
+
+                // Permanently delete fuel
+                $rows = FuelModel::hardDeleteFuelById($id, $user_id);
+                if ($rows > 0) {
+                    // Delete Firebase uploaded image
+                    if ($fuel->fuel_bill) {
+                        // Delete failed if file not found (already gone)
+                        if (!Firebase::deleteFile($fuel->fuel_bill)) {
+                            return response()->json([
+                                'status' => 'failed',
+                                'message' => Generator::getMessageTemplate("not_found", 'failed to delete fuel bill'),
+                            ], Response::HTTP_NOT_FOUND);
+                        }
+                    }
+
+                    // Create history
+                    HistoryModel::createHistory(['history_type' => 'Fuel', 'history_context' => "remove a fuel history"], $user_id);
+                    
+                    // Return success response
+                    return response()->json([
+                        'status' => 'success',
+                        'message' => Generator::getMessageTemplate("permentally delete", $this->module),
+                    ], Response::HTTP_OK);
+                } else {
+                    return response()->json([
+                        'status' => 'failed',
+                        'message' => Generator::getMessageTemplate("not_found", $this->module),
+                    ], Response::HTTP_NOT_FOUND);
+                }
             }
         } catch(\Exception $e) {
             return response()->json([

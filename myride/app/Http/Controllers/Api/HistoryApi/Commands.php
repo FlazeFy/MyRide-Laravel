@@ -10,6 +10,7 @@ use App\Models\HistoryModel;
 use App\Models\AdminModel;
 // Helper
 use App\Helpers\Generator;
+use App\Helpers\Validation;
 
 class Commands extends Controller
 {
@@ -71,25 +72,35 @@ class Commands extends Controller
     public function hardDeleteHistoryById(Request $request, $id)
     {
         try {
-            $user_id = $request->user()->id;
-
-            // Define user id by role
-            $check_admin = AdminModel::find($user_id);
-            $user_id = $check_admin ? null : $user_id;
-
-            // Hard Delete history by ID
-            $rows = HistoryModel::hardDeleteHistory($id, $user_id);
-            if ($rows > 0) {
-                // Return success response
-                return response()->json([
-                    'status' => 'success',
-                    'message' => Generator::getMessageTemplate("permentally delete", $this->module),
-                ], Response::HTTP_OK);
-            } else {
+            // Validate param
+            $request->merge(['id' => $id]);
+            $validator = Validation::getValidateId($request);
+            if ($validator->fails()) {
                 return response()->json([
                     'status' => 'failed',
-                    'message' => Generator::getMessageTemplate("not_found", $this->module),
-                ], Response::HTTP_NOT_FOUND);
+                    'message' => $validator->errors()
+                ], Response::HTTP_BAD_REQUEST);
+            } else {
+                $user_id = $request->user()->id;
+
+                // Define user id by role
+                $check_admin = AdminModel::find($user_id);
+                $user_id = $check_admin ? null : $user_id;
+
+                // Hard Delete history by ID
+                $rows = HistoryModel::hardDeleteHistory($id, $user_id);
+                if ($rows > 0) {
+                    // Return success response
+                    return response()->json([
+                        'status' => 'success',
+                        'message' => Generator::getMessageTemplate("permentally delete", $this->module),
+                    ], Response::HTTP_OK);
+                } else {
+                    return response()->json([
+                        'status' => 'failed',
+                        'message' => Generator::getMessageTemplate("not_found", $this->module),
+                    ], Response::HTTP_NOT_FOUND);
+                }
             }
         } catch(\Exception $e) {
             return response()->json([

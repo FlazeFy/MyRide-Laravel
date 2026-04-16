@@ -81,7 +81,7 @@ class Commands extends Controller
         try {
             // Validate param
             $request->merge(['id' => $id]);
-            $validator = Validation::getValidateDictionary($request,'delete');
+            $validator = Validation::getValidateId($request);
             if ($validator->fails()) {
                 return response()->json([
                     'status' => 'failed',
@@ -90,7 +90,6 @@ class Commands extends Controller
             } else {
                 // Delete dictionary
                 $rows = DictionaryModel::destroy($id);
-
                 if ($rows > 0) {
                     // Return success response
                     return response()->json([

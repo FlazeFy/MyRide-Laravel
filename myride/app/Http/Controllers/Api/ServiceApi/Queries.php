@@ -6,6 +6,7 @@ use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
 
 // Model
+use App\Models\VehicleModel;
 use App\Models\ServiceModel;
 use App\Models\AdminModel;
 
@@ -186,13 +187,28 @@ class Queries extends Controller
      *     ),
      * )
      */
-    public function getServiceByVehicle(Request $request,$vehicle_id)
+    public function getServiceByVehicleId(Request $request, $vehicle_id)
     {
         try {
             $user_id = $request->user()->id;
 
+            // Validate vehicle id
+            if (strlen($vehicle_id) !== 36 || !preg_match('/^[0-9a-fA-F-]{36}$/', $vehicle_id)) {
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => 'vehicle_id must be a valid UUID',
+                ], Response::HTTP_BAD_REQUEST);
+            }
+            // Validate existence of vehicle
+            if (!VehicleModel::getVehicleDetailById($user_id, $vehicle_id)) {
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => 'vehicle not found',
+                ], Response::HTTP_NOT_FOUND);
+            }
+
             // Get service by vehicle ID
-            $res = ServiceModel::getServiceByVehicle($user_id,$vehicle_id);
+            $res = ServiceModel::getServiceByVehicleId($user_id, $vehicle_id);
             if ($res && count($res) > 0) {
                 // Return success response
                 return response()->json([

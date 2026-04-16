@@ -90,6 +90,12 @@ class Validation
         }
     }
 
+    public static function getValidateId($request, $type = "uuid") {
+        return Validator::make($request->all(), [
+            'id' => $type === "uuid" ? 'required|uuid|size:36' : "required|integer",
+        ]); 
+    }
+
     public static function getValidateVehicle($request, $type) {
         if ($type === 'detail') {
             return Validator::make($request->all(), [

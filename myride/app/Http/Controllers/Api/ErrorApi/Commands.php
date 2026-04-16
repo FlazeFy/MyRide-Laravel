@@ -10,6 +10,7 @@ use App\Models\ErrorModel;
 use App\Models\AdminModel;
 // Helper
 use App\Helpers\Generator;
+use App\Helpers\Validation;
 
 class Commands extends Controller
 {
@@ -71,32 +72,49 @@ class Commands extends Controller
     public function hardDeleteErrorById(Request $request, $id)
     {
         try {
-            $user_id = $request->user()->id;
+            // Validate param
+            $request->merge(['id' => $id]);
+            $validator = Validation::getValidateId($request, 'int');
+            if ($validator->fails()) {
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => $validator->errors()
+                ], Response::HTTP_BAD_REQUEST);
+            } else {
+                $user_id = $request->user()->id;
 
-            // Make sure only admin can access the request
-            $check_admin = AdminModel::find($user_id);
-            if ($check_admin) {
-                // Get error by ID
-                $err = ErrorModel::find($id);
-                // Delete error by message
-                $rows = ErrorModel::hardDeleteErrorByMessage($err->message);
-                if ($rows > 0) {
-                    // Return success response
-                    return response()->json([
-                        'status' => 'success',
-                        'message' => Generator::getMessageTemplate("permentally delete", $this->module),
-                    ], Response::HTTP_OK);
+                // Make sure only admin can access the request
+                $check_admin = AdminModel::find($user_id);
+                if ($check_admin) {
+                    // Get error by ID
+                    $err = ErrorModel::find($id);
+                    if ($err) {
+                        // Delete error by message
+                        $rows = ErrorModel::hardDeleteErrorByMessage($err->message);
+                        if ($rows > 0) {
+                            // Return success response
+                            return response()->json([
+                                'status' => 'success',
+                                'message' => Generator::getMessageTemplate("permentally delete", $this->module),
+                            ], Response::HTTP_OK);
+                        } else {
+                            return response()->json([
+                                'status' => 'failed',
+                                'message' => Generator::getMessageTemplate("not_found", $this->module),
+                            ], Response::HTTP_NOT_FOUND);
+                        }
+                    } else {
+                        return response()->json([
+                            'status' => 'failed',
+                            'message' => Generator::getMessageTemplate("not_found", $this->module),
+                        ], Response::HTTP_NOT_FOUND);
+                    }
                 } else {
                     return response()->json([
                         'status' => 'failed',
-                        'message' => Generator::getMessageTemplate("not_found", $this->module),
-                    ], Response::HTTP_NOT_FOUND);
+                        'message' => Generator::getMessageTemplate("permission", 'admin'),
+                    ], Response::HTTP_UNAUTHORIZED);
                 }
-            } else {
-                return response()->json([
-                    'status' => 'failed',
-                    'message' => Generator::getMessageTemplate("permission", 'admin'),
-                ], Response::HTTP_UNAUTHORIZED);
             }
         } catch(\Exception $e) {
             return response()->json([
