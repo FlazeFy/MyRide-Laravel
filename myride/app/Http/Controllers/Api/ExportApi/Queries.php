@@ -69,7 +69,15 @@ class Queries extends Controller {
             $file_name = "Wash-$user->username-$datetime.xlsx";
 
             // Get all wash (export format) 
-            $res_wash_history = WashModel::getExportData($user_id,null)->map(function($dt) {
+            $res_wash_history = WashModel::getExportData($user_id,null);
+            if (count($res_wash_history) === 0) {
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => Generator::getMessageTemplate("not_found", "wash"),
+                ], Response::HTTP_NOT_FOUND);
+            }
+
+            $res_wash_history = $res_wash_history->map(function($dt) {
                 return [
                     'vehicle_name' => $dt->vehicle_name,
                     'wash_desc' => $dt->wash_desc,
@@ -185,7 +193,15 @@ class Queries extends Controller {
             $file_name = "Fuel-$user->username-$datetime.xlsx";
 
             // Get all fuel (export format) 
-            $res_fuel_history = FuelModel::getExportData($user_id,null)->map(function($dt) {
+            $res_fuel_history = FuelModel::getExportData($user_id,null);
+            if (count($res_fuel_history) === 0) {
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => Generator::getMessageTemplate("not_found", "fuel"),
+                ], Response::HTTP_NOT_FOUND);
+            }
+
+            $res_fuel_history = $res_fuel_history->map(function($dt) {
                 return [
                     'vehicle_name' => $dt->vehicle_name,
                     'vehicle_type' => $dt->vehicle_type,
@@ -292,7 +308,15 @@ class Queries extends Controller {
             $file_name = "Inventory-$user->username-$datetime.xlsx";
 
             // Get all inventory (export format) 
-            $res_inventory = InventoryModel::getExportData($user_id,null)->map(function($dt) {
+            $res_inventory = InventoryModel::getExportData($user_id,null);
+            if (count($res_inventory) === 0) {
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => Generator::getMessageTemplate("not_found", "inventory"),
+                ], Response::HTTP_NOT_FOUND);
+            }
+
+            $res_inventory = $res_inventory->map(function($dt) {
                 return [
                     'vehicle_name' => $dt->vehicle_name,
                     'vehicle_type' => $dt->vehicle_type,
@@ -399,7 +423,15 @@ class Queries extends Controller {
             $file_name = "Service-$user->username-$datetime.xlsx";
 
             // Get all service (export format) 
-            $res_service = ServiceModel::getExportData($user_id,null)->map(function($dt) {
+            $res_service = ServiceModel::getExportData($user_id,null);
+            if (count($res_service) === 0) {
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => Generator::getMessageTemplate("not_found", "service"),
+                ], Response::HTTP_NOT_FOUND);
+            }
+
+            $res_service = $res_service->map(function($dt) {
                 return [
                     'vehicle_name' => $dt->vehicle_name,
                     'vehicle_type' => $dt->vehicle_type,
@@ -506,8 +538,16 @@ class Queries extends Controller {
             $user = UserModel::getSocial($user_id);
             $file_name = "Driver-$user->username-$datetime.xlsx";
 
-            // Get all driver (export format) 
-            $res_driver = DriverModel::getExportData($user_id,null)->map(function($dt) {
+            // Get all driver (export format)
+            $res_driver = DriverModel::getExportData($user_id,null);
+            if (count($res_driver) === 0) {
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => Generator::getMessageTemplate("not_found", "driver"),
+                ], Response::HTTP_NOT_FOUND);
+            }
+
+            $res_driver = $res_driver->map(function($dt) {
                 return [
                     'username' => $dt->username, 
                     'fullname' => $dt->fullname,  
@@ -614,7 +654,15 @@ class Queries extends Controller {
             $file_name = "Trip-$user->username-$datetime.xlsx";
 
             // Get all trip (export format) 
-            $res_trip = TripModel::getExportData($user_id,null)->map(function($dt) {
+            $res_trip = TripModel::getExportData($user_id,null);
+            if (count($res_trip) === 0) {
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => Generator::getMessageTemplate("not_found", "trip"),
+                ], Response::HTTP_NOT_FOUND);
+            }
+
+            $res_trip = $res_trip->map(function($dt) {
                 return [
                     'vehicle_name' => $dt->vehicle_name,
                     'vehicle_type' => $dt->vehicle_type,

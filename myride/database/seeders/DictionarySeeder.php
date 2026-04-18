@@ -40,7 +40,7 @@ class DictionarySeeder extends Seeder
             'fuel_type_BP' => ['BP 90', 'BP 92', 'BP Ultimate'],
             'fuel_type_Shell' => ['Super', 'V-Power', 'Diesel'],
             'wash_by' => ['Myself','Carwash'],
-            'inventory_category' => ['Safety', 'Maintenance', 'Electronics', 'Documents','Accessoris'],
+            'inventory_category' => ['Safety', 'Maintenance', 'Electronics', 'Documents','Accessories'],
             'inventory_storage' => ['Glove Compartment', 'Trunk', 'Dashboard', 'Back Seat Pocket', 'Roof Box'],
             'reminder_context' => ['Service','Pick Up','Drop Off','Wash','Trip','Warm Up'],
         ];

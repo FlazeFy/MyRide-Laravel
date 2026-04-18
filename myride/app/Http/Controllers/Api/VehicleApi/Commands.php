@@ -1068,48 +1068,58 @@ class Commands extends Controller
     public function softDeleteVehicleById(Request $request, $id)
     {
         try {
-            $user_id = $request->user()->id;
-
-            // Define user id by role
-            $check_admin = AdminModel::find($user_id);
-            $user_id = $check_admin ? null : $user_id;
-
-            // Soft Delete vehicle by ID
-            $rows = VehicleModel::updateVehicleById(["deleted_at" => date("Y-m-d H:i")], $id, $user_id);
-            if ($rows > 0) {
-                // Get user data
-                $user = UserModel::getSocial($user_id);
-                // Get vehicle data
-                $vehicle = VehicleModel::getVehicleByIdAndUserId($id,$user_id);
-                if ($user->telegram_user_id && $user->telegram_is_valid === 1) {
-                    // Check if user's Telegram ID is valid
-                    if (TelegramMessage::checkTelegramID($user->telegram_user_id)) {
-                        $message = "Hello $user->username, your vehicle with name $vehicle->vehicle_name ($vehicle->vehicle_plate_number) data has been deleted. You can still recovered deleted vehicle before 30 days after deletion process";
-                        // Send telegram message
-                        $response = Telegram::sendMessage([
-                            'chat_id' => $user->telegram_user_id,
-                            'text' => $message,
-                            'parse_mode' => 'HTML'
-                        ]);
-                    } else {
-                        // Reset telegram from user account if not valid
-                        UserModel::updateUserById(['telegram_user_id' => null, 'telegram_is_valid' => 0],$user_id);
-                    }
-                }
-
-                // Create history
-                HistoryModel::createHistory(['history_type' => 'Vehicle', 'history_context' => "deleted a vehicle called $vehicle->vehicle_name ($vehicle->vehicle_plate_number)"], $user_id);
-                
-                // Return success response
-                return response()->json([
-                    'status' => 'success',
-                    'message' => Generator::getMessageTemplate("delete", $this->module),
-                ], Response::HTTP_OK);
-            } else {
+            // Validate param
+            $request->merge(['id' => $id]);
+            $validator = Validation::getValidateId($request);
+            if ($validator->fails()) {
                 return response()->json([
                     'status' => 'failed',
-                    'message' => Generator::getMessageTemplate("not_found", $this->module),
-                ], Response::HTTP_NOT_FOUND);
+                    'message' => $validator->errors()
+                ], Response::HTTP_BAD_REQUEST);
+            } else {
+                $user_id = $request->user()->id;
+
+                // Define user id by role
+                $check_admin = AdminModel::find($user_id);
+                $user_id = $check_admin ? null : $user_id;
+
+                // Soft Delete vehicle by ID
+                $rows = VehicleModel::updateVehicleById(["deleted_at" => date("Y-m-d H:i")], $id, $user_id);
+                if ($rows > 0) {
+                    // Get user data
+                    $user = UserModel::getSocial($user_id);
+                    // Get vehicle data
+                    $vehicle = VehicleModel::getVehicleByIdAndUserId($id,$user_id);
+                    if ($user->telegram_user_id && $user->telegram_is_valid === 1) {
+                        // Check if user's Telegram ID is valid
+                        if (TelegramMessage::checkTelegramID($user->telegram_user_id)) {
+                            $message = "Hello $user->username, your vehicle with name $vehicle->vehicle_name ($vehicle->vehicle_plate_number) data has been deleted. You can still recovered deleted vehicle before 30 days after deletion process";
+                            // Send telegram message
+                            $response = Telegram::sendMessage([
+                                'chat_id' => $user->telegram_user_id,
+                                'text' => $message,
+                                'parse_mode' => 'HTML'
+                            ]);
+                        } else {
+                            // Reset telegram from user account if not valid
+                            UserModel::updateUserById(['telegram_user_id' => null, 'telegram_is_valid' => 0],$user_id);
+                        }
+                    }
+
+                    // Create history
+                    HistoryModel::createHistory(['history_type' => 'Vehicle', 'history_context' => "deleted a vehicle called $vehicle->vehicle_name ($vehicle->vehicle_plate_number)"], $user_id);
+                    
+                    // Return success response
+                    return response()->json([
+                        'status' => 'success',
+                        'message' => Generator::getMessageTemplate("delete", $this->module),
+                    ], Response::HTTP_OK);
+                } else {
+                    return response()->json([
+                        'status' => 'failed',
+                        'message' => Generator::getMessageTemplate("not_found", $this->module),
+                    ], Response::HTTP_NOT_FOUND);
+                }
             }
         } catch(\Exception $e) {
             return response()->json([
@@ -1287,31 +1297,41 @@ class Commands extends Controller
     public function putRecoverVehicleById(Request $request, $id)
     {
         try {
-            $user_id = $request->user()->id;
-
-            // Define user id by role
-            $check_admin = AdminModel::find($user_id);
-            $user_id = $check_admin ? null : $user_id;
-
-            // Update vehicle by ID
-            $rows = VehicleModel::updateVehicleById(["deleted_at" => null], $id, $user_id);
-            if ($rows > 0) {
-                // Get vehicle by ID
-                $vehicle = VehicleModel::getVehicleByIdAndUserId($id,$user_id);
-                // Create history
-                HistoryModel::createHistory(['history_type' => 'Vehicle', 'history_context' => "recovered a vehicle called $vehicle->vehicle_name ($vehicle->vehicle_plate_number)"], $user_id);
-
-                // Return success response
-                return response()->json([
-                    'status' => 'success',
-                    'rows_affected' => $rows,
-                    'message' => Generator::getMessageTemplate("recover", $this->module),
-                ], Response::HTTP_OK);
-            } else {
+            // Validate param
+            $request->merge(['id' => $id]);
+            $validator = Validation::getValidateId($request);
+            if ($validator->fails()) {
                 return response()->json([
                     'status' => 'failed',
-                    'message' => Generator::getMessageTemplate("not_found", $this->module),
-                ], Response::HTTP_NOT_FOUND);
+                    'message' => $validator->errors()
+                ], Response::HTTP_BAD_REQUEST);
+            } else {
+                $user_id = $request->user()->id;
+
+                // Define user id by role
+                $check_admin = AdminModel::find($user_id);
+                $user_id = $check_admin ? null : $user_id;
+
+                // Update vehicle by ID
+                $rows = VehicleModel::updateVehicleById(["deleted_at" => null], $id, $user_id);
+                if ($rows > 0) {
+                    // Get vehicle by ID
+                    $vehicle = VehicleModel::getVehicleByIdAndUserId($id,$user_id);
+                    // Create history
+                    HistoryModel::createHistory(['history_type' => 'Vehicle', 'history_context' => "recovered a vehicle called $vehicle->vehicle_name ($vehicle->vehicle_plate_number)"], $user_id);
+
+                    // Return success response
+                    return response()->json([
+                        'status' => 'success',
+                        'rows_affected' => $rows,
+                        'message' => Generator::getMessageTemplate("recover", $this->module),
+                    ], Response::HTTP_OK);
+                } else {
+                    return response()->json([
+                        'status' => 'failed',
+                        'message' => Generator::getMessageTemplate("not_found", $this->module),
+                    ], Response::HTTP_NOT_FOUND);
+                }
             }
         } catch(\Exception $e) {
             return response()->json([
@@ -1373,69 +1393,79 @@ class Commands extends Controller
     public function hardDeleteVehicleById(Request $request, $id)
     {
         try {
-            $user_id = $request->user()->id;
-
-            // Define user id by role
-            $check_admin = AdminModel::find($user_id);
-            $user_id = $check_admin ? null : $user_id;
-
-            // Get vehicle data
-            $vehicle = VehicleModel::getVehicleByIdAndUserId($id,$user_id);
-            // Hard Delete vehicle by ID
-            $rows = VehicleModel::hardDeleteVehicleById($user_id,$id);
-            if ($rows > 0) {
-                // Delete Firebase uploaded image
-                if ($vehicle->vehicle_img_url) {
-                    // Delete failed if file not found (already gone)
-                    if (!Firebase::deleteFile($vehicle->vehicle_img_url)) {
-                        return response()->json([
-                            'status' => 'failed',
-                            'message' => Generator::getMessageTemplate("not_found", 'failed to delete vehicle image'),
-                        ], Response::HTTP_NOT_FOUND);
-                    }
-                }
-
-                // Hard Delete data related to vehicle module
-                WashModel::hardDeleteByVehicleId($id);
-                FuelModel::hardDeleteByVehicleId($id);
-                InventoryModel::hardDeleteByVehicleId($id);
-                ReminderModel::hardDeleteByVehicleId($id);
-                ServiceModel::hardDeleteByVehicleId($id);
-                TripModel::hardDeleteByVehicleId($id);
-
-                // Get user data
-                $user = UserModel::getSocial($user_id);
-                $vehicle_plate_number_and_name = "$vehicle->vehicle_name ($vehicle->vehicle_plate_number)";
-
-                // Check if user's Telegram ID is valid
-                if ($user->telegram_user_id && $user->telegram_is_valid === 1) {
-                    if (TelegramMessage::checkTelegramID($user->telegram_user_id)) {
-                        $message = "Hello $user->username, your vehicle $vehicle_plate_number_and_name is permanently deleted";
-                        // Send telegram message
-                        $response = Telegram::sendMessage([
-                            'chat_id' => $user->telegram_user_id,
-                            'text' => $message,
-                            'parse_mode' => 'HTML'
-                        ]);
-                    } else {
-                        // Reset telegram from user account if not valid
-                        UserModel::updateUserById(['telegram_user_id' => null, 'telegram_is_valid' => 0],$user_id);
-                    }
-                }
-
-                // Create history
-                HistoryModel::createHistory(['history_type' => 'Vehicle', 'history_context' => "permanently deleted a vehicle called $vehicle_plate_number_and_name"], $user_id);
-
-                // Return success response
-                return response()->json([
-                    'status' => 'success',
-                    'message' => Generator::getMessageTemplate("permentally delete", $this->module),
-                ], Response::HTTP_OK);
-            } else {
+            // Validate param
+            $request->merge(['id' => $id]);
+            $validator = Validation::getValidateId($request);
+            if ($validator->fails()) {
                 return response()->json([
                     'status' => 'failed',
-                    'message' => Generator::getMessageTemplate("not_found", $this->module),
-                ], Response::HTTP_NOT_FOUND);
+                    'message' => $validator->errors()
+                ], Response::HTTP_BAD_REQUEST);
+            } else {
+                $user_id = $request->user()->id;
+
+                // Define user id by role
+                $check_admin = AdminModel::find($user_id);
+                $user_id = $check_admin ? null : $user_id;
+
+                // Get vehicle data
+                $vehicle = VehicleModel::getVehicleByIdAndUserId($id,$user_id);
+                // Hard Delete vehicle by ID
+                $rows = VehicleModel::hardDeleteVehicleById($user_id,$id);
+                if ($rows > 0) {
+                    // Delete Firebase uploaded image
+                    if ($vehicle->vehicle_img_url) {
+                        // Delete failed if file not found (already gone)
+                        if (!Firebase::deleteFile($vehicle->vehicle_img_url)) {
+                            return response()->json([
+                                'status' => 'failed',
+                                'message' => Generator::getMessageTemplate("not_found", 'failed to delete vehicle image'),
+                            ], Response::HTTP_NOT_FOUND);
+                        }
+                    }
+
+                    // Hard Delete data related to vehicle module
+                    WashModel::hardDeleteByVehicleId($id);
+                    FuelModel::hardDeleteByVehicleId($id);
+                    InventoryModel::hardDeleteByVehicleId($id);
+                    ReminderModel::hardDeleteByVehicleId($id);
+                    ServiceModel::hardDeleteByVehicleId($id);
+                    TripModel::hardDeleteByVehicleId($id);
+
+                    // Get user data
+                    $user = UserModel::getSocial($user_id);
+                    $vehicle_plate_number_and_name = "$vehicle->vehicle_name ($vehicle->vehicle_plate_number)";
+
+                    // Check if user's Telegram ID is valid
+                    if ($user->telegram_user_id && $user->telegram_is_valid === 1) {
+                        if (TelegramMessage::checkTelegramID($user->telegram_user_id)) {
+                            $message = "Hello $user->username, your vehicle $vehicle_plate_number_and_name is permanently deleted";
+                            // Send telegram message
+                            $response = Telegram::sendMessage([
+                                'chat_id' => $user->telegram_user_id,
+                                'text' => $message,
+                                'parse_mode' => 'HTML'
+                            ]);
+                        } else {
+                            // Reset telegram from user account if not valid
+                            UserModel::updateUserById(['telegram_user_id' => null, 'telegram_is_valid' => 0],$user_id);
+                        }
+                    }
+
+                    // Create history
+                    HistoryModel::createHistory(['history_type' => 'Vehicle', 'history_context' => "permanently deleted a vehicle called $vehicle_plate_number_and_name"], $user_id);
+
+                    // Return success response
+                    return response()->json([
+                        'status' => 'success',
+                        'message' => Generator::getMessageTemplate("permentally delete", $this->module),
+                    ], Response::HTTP_OK);
+                } else {
+                    return response()->json([
+                        'status' => 'failed',
+                        'message' => Generator::getMessageTemplate("not_found", $this->module),
+                    ], Response::HTTP_NOT_FOUND);
+                }
             }
         } catch(\Exception $e) {
             return response()->json([
