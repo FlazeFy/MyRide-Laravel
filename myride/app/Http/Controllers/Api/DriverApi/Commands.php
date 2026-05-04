@@ -283,6 +283,15 @@ class Commands extends Controller
                 ], Response::HTTP_BAD_REQUEST);
             } else {
                 $user_id = $request->user()->id;
+                $password = $request->password;
+
+                // Validate password confirmation
+                if ($password !== $request->password_confirmation) {
+                    return response()->json([
+                        'status' => 'failed',
+                        'message' => Generator::getMessageTemplate("custom", "Password confirmation does not match.")
+                    ], Response::HTTP_BAD_REQUEST);
+                }
 
                 // Check if driver username is available
                 $check = DriverModel::getDriverByUsernameOrEmail($request->username,$request->email,null);
@@ -291,7 +300,7 @@ class Commands extends Controller
                     $data = [
                         'username' => $request->username, 
                         'fullname' => $request->fullname, 
-                        'password' => Hash::make($request->password), 
+                        'password' => Hash::make($password), 
                         'email' => $request->email, 
                         'telegram_user_id' => $request->telegram_user_id, 
                         'telegram_is_valid' => 0, 

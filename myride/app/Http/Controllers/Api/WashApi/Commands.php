@@ -9,6 +9,7 @@ use Illuminate\Http\Response;
 use App\Models\WashModel;
 use App\Models\AdminModel;
 use App\Models\HistoryModel;
+use App\Models\VehicleModel;
 // Helper
 use App\Helpers\Generator;
 use App\Helpers\Validation;
@@ -190,9 +191,18 @@ class Commands extends Controller
                     'message' => $validator->errors()
                 ], Response::HTTP_BAD_REQUEST);
             } else {
+                $vehicle_id = $request->vehicle_id;
+                // Check if vehicle exist
+                if (!VehicleModel::getVehicleDetailById($user_id, $vehicle_id)) {
+                    return response()->json([
+                        'status' => 'failed',
+                        'message' => 'vehicle not found',
+                    ], Response::HTTP_NOT_FOUND);
+                }
+
                 // Create wash
                 $data = [
-                    'vehicle_id' => $request->vehicle_id, 
+                    'vehicle_id' => $vehicle_id, 
                     'wash_desc' => $request->wash_desc, 
                     'wash_by' => $request->wash_by, 
                     'is_wash_body' => $request->is_wash_body,

@@ -56,7 +56,7 @@ class Validation
         if ($type === 'create') {
             $rules['password'] = 'required|string|min:6|max:36';
             $rules['password_confirmation'] = 'required|string|min:6|max:36';
-            $rules['telegram_user_id'] = 'nullable|string|min:2|max:36';
+            $rules['telegram_user_id'] = 'nullable|string|min:6|max:10';
         }
     
         if ($type === 'create_relation') {
@@ -68,6 +68,23 @@ class Validation
         }
     
         return Validator::make($request->all(), $rules);
+    }
+
+    public static function isValidCoordinate($coord) {
+        // Remove extra spaces
+        $coord = trim($coord);
+
+        // Check basic format using regex
+        if (!preg_match('/^\s*(-?\d+(\.\d+)?)\s*,\s*(-?\d+(\.\d+)?)\s*$/', $coord, $matches)) return false;
+
+        $lat = (float) $matches[1];
+        $lng = (float) $matches[3];
+
+        // Validate range
+        if ($lat < -90 || $lat > 90) return false;
+        if ($lng < -180 || $lng > 180) return false;
+
+        return true;
     }
 
     public static function getValidateRegisterValidation($request) {
@@ -129,6 +146,7 @@ class Validation
             'trip_origin_coordinate' => 'nullable|string|max:144',  
             'trip_destination_name' => 'required|string|max:75|min:2',
             'trip_destination_coordinate' => 'nullable|string|max:144', 
+            'departure_at' => 'nullable|date_format:Y-m-d H:i:s', 
         ];
 
         if ($type === 'create') {
@@ -182,7 +200,7 @@ class Validation
             'wash_address' => 'nullable|string|max:75|min:1', 
             'wash_price' => 'nullable|integer|min:1|max:999999999  ',
             'wash_start_time' => 'required|date_format:Y-m-d H:i:s',
-            'wash_end_time' => 'nullable|date_format:Y-m-d H:i:s', 
+            'wash_end_time' => 'nullable|date_format:Y-m-d H:i:s|after:wash_start_time', 
             'is_fill_window_washing_water' => 'required|boolean',
             'is_wash_hollow' => 'required|boolean'
         ]);

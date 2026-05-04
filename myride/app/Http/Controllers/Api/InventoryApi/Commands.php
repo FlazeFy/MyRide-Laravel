@@ -206,7 +206,7 @@ class Commands extends Controller
             } else {
                 $vehicle_id = $request->vehicle_id;
                 // Check if vehicle exist
-                if ($vehicle_id && !VehicleModel::getVehicleDetailById($user_id, $vehicle_id)) {
+                if (!VehicleModel::getVehicleDetailById($user_id, $vehicle_id)) {
                     return response()->json([
                         'status' => 'failed',
                         'message' => 'vehicle not found',

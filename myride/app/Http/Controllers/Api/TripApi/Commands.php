@@ -118,13 +118,50 @@ class Commands extends Controller
                 $trip_origin_coordinate = $request->trip_origin_coordinate;
                 $trip_destination_coordinate = $request->trip_destination_coordinate;
 
+                $vehicle_id = $request->vehicle_id;
+                // Check if vehicle exist
+                if (!VehicleModel::getVehicleDetailById($user_id, $vehicle_id)) {
+                    return response()->json([
+                        'status' => 'failed',
+                        'message' => 'vehicle not found',
+                    ], Response::HTTP_NOT_FOUND);
+                }
+
+                // Check if driver exist
+                if ($driver_id) {
+                    // Get driver by ID
+                    $driver = DriverModel::getDriverContact($driver_id);
+                    if (!$driver) {
+                        return response()->json([
+                            'status' => 'failed',
+                            'message' => 'driver not found',
+                        ], Response::HTTP_NOT_FOUND);
+                    }
+                }
+
+                // Check if origin name and destination same
                 if ($trip_origin_name === $trip_destination_name) {
                     return response()->json([
                         'status' => 'failed',
-                        'message' => Generator::getMessageTemplate("custom", 'trip origin and destination coordinate must be different')
+                        'message' => Generator::getMessageTemplate("custom", 'trip origin and destination name must be different')
                     ], Response::HTTP_BAD_REQUEST);
                 }
 
+                // Check if origin coordinate and destination have valid coordinate
+                if (!Validation::isValidCoordinate($trip_origin_coordinate)) {
+                    return response()->json([
+                        'status' => 'failed',
+                        'message' => Generator::getMessageTemplate("custom", 'trip origin coordinate must be valid coordinate')
+                    ], Response::HTTP_BAD_REQUEST);
+                }
+                if (!Validation::isValidCoordinate($trip_destination_coordinate)) {
+                    return response()->json([
+                        'status' => 'failed',
+                        'message' => Generator::getMessageTemplate("custom", 'trip destination coordinate must be valid coordinate')
+                    ], Response::HTTP_BAD_REQUEST);
+                }
+
+                // Check if origin coordinate and destination same
                 if ($trip_origin_coordinate === $trip_destination_coordinate) {
                     return response()->json([
                         'status' => 'failed',
@@ -150,10 +187,10 @@ class Commands extends Controller
                         'trip_destination_name' => $trip_destination_name, 
                         'trip_destination_coordinate' => $trip_destination_coordinate, 
                     ];
+
                     // If departure time not defined, just use current time
-                    if ($request->departure_at) {
-                        $data['created_at'] = $request->departure_at;
-                    }
+                    if ($request->departure_at) $data['created_at'] = $request->departure_at;
+
                     $rows = TripModel::createTrip($data,$user_id);
 
                     if ($rows) {
@@ -176,8 +213,6 @@ class Commands extends Controller
                         }
 
                         if ($driver_id) {
-                            // Get driver by ID
-                            $driver = DriverModel::getDriverContact($driver_id);
                             // Check if driver's Telegram ID is valid
                             if ($driver->telegram_user_id && $driver->telegram_is_valid === 1) {
                                 if (TelegramMessage::checkTelegramID($driver->telegram_user_id)) {
