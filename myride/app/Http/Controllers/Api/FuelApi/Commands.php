@@ -10,6 +10,7 @@ use App\Models\FuelModel;
 use App\Models\AdminModel;
 use App\Models\UserModel;
 use App\Models\HistoryModel;
+use App\Models\VehicleModel;
 // Helper
 use App\Helpers\Generator;
 use App\Helpers\Validation;
@@ -45,10 +46,10 @@ class Commands extends Controller
      *     ),
      *     @OA\Response(
      *         response=200,
-     *         description="fuel permentally deleted",
+     *         description="fuel permanently deleted",
      *         @OA\JsonContent(
      *             @OA\Property(property="status", type="string", example="success"),
-     *             @OA\Property(property="message", type="string", example="fuel permentally deleted")
+     *             @OA\Property(property="message", type="string", example="fuel permanently deleted")
      *         )
      *     ),
      *     @OA\Response(
@@ -61,7 +62,7 @@ class Commands extends Controller
      *     ),
      *     @OA\Response(
      *         response=404,
-     *         description="fuel failed to permentally deleted",
+     *         description="fuel failed to permanently deleted",
      *         @OA\JsonContent(
      *             @OA\Property(property="status", type="string", example="failed"),
      *             @OA\Property(property="message", type="string", example="fuel not found")
@@ -116,7 +117,7 @@ class Commands extends Controller
                     // Return success response
                     return response()->json([
                         'status' => 'success',
-                        'message' => Generator::getMessageTemplate("permentally delete", $this->module),
+                        'message' => Generator::getMessageTemplate("permanently delete", $this->module),
                     ], Response::HTTP_OK);
                 } else {
                     return response()->json([
@@ -202,6 +203,15 @@ class Commands extends Controller
                     'message' => $validator->errors()
                 ], Response::HTTP_BAD_REQUEST);
             } else {
+                $vehicle_id = $request->vehicle_id;
+                // Check if vehicle exist
+                if ($vehicle_id && !VehicleModel::getVehicleDetailById($user_id, $vehicle_id)) {
+                    return response()->json([
+                        'status' => 'failed',
+                        'message' => 'vehicle not found',
+                    ], Response::HTTP_NOT_FOUND);
+                }
+
                 $fuel_bill = null;
                 // Check if file attached
                 if ($request->hasFile('fuel_bill')) {
@@ -239,7 +249,7 @@ class Commands extends Controller
 
                 // Create fuel
                 $data = [
-                    'vehicle_id' => $request->vehicle_id, 
+                    'vehicle_id' => $vehicle_id, 
                     'fuel_volume' => $request->fuel_volume,
                     'fuel_price_total' => $request->fuel_price_total, 
                     'fuel_brand' => $request->fuel_brand, 

@@ -36,10 +36,10 @@ class Commands extends Controller
      *     ),
      *     @OA\Response(
      *         response=200,
-     *         description="dictionary permentally deleted",
+     *         description="dictionary permanently deleted",
      *         @OA\JsonContent(
      *             @OA\Property(property="status", type="string", example="success"),
-     *             @OA\Property(property="message", type="string", example="dictionary permentally deleted")
+     *             @OA\Property(property="message", type="string", example="dictionary permanently deleted")
      *         )
      *     ),
      *     @OA\Response(
@@ -52,7 +52,7 @@ class Commands extends Controller
      *     ),
      *     @OA\Response(
      *         response=404,
-     *         description="dictionary failed to permentally deleted",
+     *         description="dictionary failed to permanently deleted",
      *         @OA\JsonContent(
      *             @OA\Property(property="status", type="string", example="failed"),
      *             @OA\Property(property="message", type="string", example="dictionary not found")
@@ -94,7 +94,7 @@ class Commands extends Controller
                     // Return success response
                     return response()->json([
                         'status' => 'success',
-                        'message' => Generator::getMessageTemplate("permentally delete", $this->module),
+                        'message' => Generator::getMessageTemplate("permanently delete", $this->module),
                     ], Response::HTTP_OK);
                 } else {
                     return response()->json([

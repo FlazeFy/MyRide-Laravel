@@ -1078,7 +1078,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "dictionary permentally deleted",
+                        "description": "dictionary permanently deleted",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -1089,7 +1089,7 @@
                                         },
                                         "message": {
                                             "type": "string",
-                                            "example": "dictionary permentally deleted"
+                                            "example": "dictionary permanently deleted"
                                         }
                                     },
                                     "type": "object"
@@ -1118,7 +1118,7 @@
                         }
                     },
                     "404": {
-                        "description": "dictionary failed to permentally deleted",
+                        "description": "dictionary failed to permanently deleted",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -1472,7 +1472,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "driver permentally deleted",
+                        "description": "driver permanently deleted",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -1483,7 +1483,7 @@
                                         },
                                         "message": {
                                             "type": "string",
-                                            "example": "driver permentally deleted"
+                                            "example": "driver permanently deleted"
                                         }
                                     },
                                     "type": "object"
@@ -1512,7 +1512,7 @@
                         }
                     },
                     "404": {
-                        "description": "driver failed to permentally deleted",
+                        "description": "driver failed to permanently deleted",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -1581,7 +1581,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "driver relation permentally deleted",
+                        "description": "driver relation permanently deleted",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -1592,7 +1592,7 @@
                                         },
                                         "message": {
                                             "type": "string",
-                                            "example": "driver relation permentally deleted"
+                                            "example": "driver relation permanently deleted"
                                         }
                                     },
                                     "type": "object"
@@ -1621,7 +1621,7 @@
                         }
                     },
                     "404": {
-                        "description": "driver relation failed to permentally deleted",
+                        "description": "driver relation failed to permanently deleted",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -2680,7 +2680,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "error permentally deleted",
+                        "description": "error permanently deleted",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -2691,7 +2691,7 @@
                                         },
                                         "message": {
                                             "type": "string",
-                                            "example": "error permentally deleted"
+                                            "example": "error permanently deleted"
                                         }
                                     },
                                     "type": "object"
@@ -2720,7 +2720,7 @@
                         }
                     },
                     "404": {
-                        "description": "error failed to permentally deleted",
+                        "description": "error failed to permanently deleted",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -3288,7 +3288,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "fuel permentally deleted",
+                        "description": "fuel permanently deleted",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -3299,7 +3299,7 @@
                                         },
                                         "message": {
                                             "type": "string",
-                                            "example": "fuel permentally deleted"
+                                            "example": "fuel permanently deleted"
                                         }
                                     },
                                     "type": "object"
@@ -3328,7 +3328,7 @@
                         }
                     },
                     "404": {
-                        "description": "fuel failed to permentally deleted",
+                        "description": "fuel failed to permanently deleted",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -4091,7 +4091,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "history permentally deleted",
+                        "description": "history permanently deleted",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -4102,7 +4102,7 @@
                                         },
                                         "message": {
                                             "type": "string",
-                                            "example": "history permentally deleted"
+                                            "example": "history permanently deleted"
                                         }
                                     },
                                     "type": "object"
@@ -4131,7 +4131,7 @@
                         }
                     },
                     "404": {
-                        "description": "history failed to permentally deleted",
+                        "description": "history failed to permanently deleted",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -4327,7 +4327,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "inventory permentally deleted",
+                        "description": "inventory permanently deleted",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -4338,7 +4338,7 @@
                                         },
                                         "message": {
                                             "type": "string",
-                                            "example": "inventory permentally deleted"
+                                            "example": "inventory permanently deleted"
                                         }
                                     },
                                     "type": "object"
@@ -4367,7 +4367,7 @@
                         }
                     },
                     "404": {
-                        "description": "inventory failed to permentally deleted",
+                        "description": "inventory failed to permanently deleted",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -5081,7 +5081,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "reminder permentally deleted",
+                        "description": "reminder permanently deleted",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -5092,7 +5092,7 @@
                                         },
                                         "message": {
                                             "type": "string",
-                                            "example": "reminder permentally deleted"
+                                            "example": "reminder permanently deleted"
                                         }
                                     },
                                     "type": "object"
@@ -5121,7 +5121,7 @@
                         }
                     },
                     "404": {
-                        "description": "reminder failed to permentally deleted",
+                        "description": "reminder failed to permanently deleted",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -6188,7 +6188,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "service permentally deleted",
+                        "description": "service permanently deleted",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -6199,7 +6199,7 @@
                                         },
                                         "message": {
                                             "type": "string",
-                                            "example": "service permentally deleted"
+                                            "example": "service permanently deleted"
                                         }
                                     },
                                     "type": "object"
@@ -6228,7 +6228,7 @@
                         }
                     },
                     "404": {
-                        "description": "service failed to permentally deleted",
+                        "description": "service failed to permanently deleted",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -9094,7 +9094,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "trip permentally deleted",
+                        "description": "trip permanently deleted",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -9105,7 +9105,7 @@
                                         },
                                         "message": {
                                             "type": "string",
-                                            "example": "trip permentally deleted"
+                                            "example": "trip permanently deleted"
                                         }
                                     },
                                     "type": "object"
@@ -9134,7 +9134,7 @@
                         }
                     },
                     "404": {
-                        "description": "trip failed to permentally deleted",
+                        "description": "trip failed to permanently deleted",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -13879,7 +13879,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "wash permentally deleted",
+                        "description": "wash permanently deleted",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -13890,7 +13890,7 @@
                                         },
                                         "message": {
                                             "type": "string",
-                                            "example": "wash permentally deleted"
+                                            "example": "wash permanently deleted"
                                         }
                                     },
                                     "type": "object"
@@ -13919,7 +13919,7 @@
                         }
                     },
                     "404": {
-                        "description": "wash failed to permentally deleted",
+                        "description": "wash failed to permanently deleted",
                         "content": {
                             "application/json": {
                                 "schema": {

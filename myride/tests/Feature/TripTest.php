@@ -348,7 +348,7 @@ class TripTest extends TestCase
         $this->assertArrayHasKey('status', $data);
         $this->assertEquals('success', $data['status']);
         $this->assertArrayHasKey('message', $data);
-        $this->assertEquals('trip permentally deleted',$data['message']);
+        $this->assertEquals('trip permanently deleted',$data['message']);
 
         Audit::auditRecordText("Test - Hard Delete Trip By Id", "TC-XXX", "Result : ".json_encode($data));
         Audit::auditRecordSheet("Test - Hard Delete Trip By Id", "TC-XXX", 'TC-XXX test_hard_delete_trip_by_id', json_encode($data));

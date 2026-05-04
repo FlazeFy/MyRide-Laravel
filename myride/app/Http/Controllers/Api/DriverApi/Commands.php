@@ -45,10 +45,10 @@ class Commands extends Controller
      *     ),
      *     @OA\Response(
      *         response=200,
-     *         description="driver permentally deleted",
+     *         description="driver permanently deleted",
      *         @OA\JsonContent(
      *             @OA\Property(property="status", type="string", example="success"),
-     *             @OA\Property(property="message", type="string", example="driver permentally deleted")
+     *             @OA\Property(property="message", type="string", example="driver permanently deleted")
      *         )
      *     ),
      *     @OA\Response(
@@ -61,7 +61,7 @@ class Commands extends Controller
      *     ),
      *     @OA\Response(
      *         response=404,
-     *         description="driver failed to permentally deleted",
+     *         description="driver failed to permanently deleted",
      *         @OA\JsonContent(
      *             @OA\Property(property="status", type="string", example="failed"),
      *             @OA\Property(property="message", type="string", example="driver not found")
@@ -110,7 +110,7 @@ class Commands extends Controller
                     // Return success response
                     return response()->json([
                         'status' => 'success',
-                        'message' => Generator::getMessageTemplate("permentally delete", $this->module),
+                        'message' => Generator::getMessageTemplate("permanently delete", $this->module),
                     ], Response::HTTP_OK);
                 } else {
                     return response()->json([
@@ -144,10 +144,10 @@ class Commands extends Controller
      *     ),
      *     @OA\Response(
      *         response=200,
-     *         description="driver relation permentally deleted",
+     *         description="driver relation permanently deleted",
      *         @OA\JsonContent(
      *             @OA\Property(property="status", type="string", example="success"),
-     *             @OA\Property(property="message", type="string", example="driver relation permentally deleted")
+     *             @OA\Property(property="message", type="string", example="driver relation permanently deleted")
      *         )
      *     ),
      *     @OA\Response(
@@ -160,7 +160,7 @@ class Commands extends Controller
      *     ),
      *     @OA\Response(
      *         response=404,
-     *         description="driver relation failed to permentally deleted",
+     *         description="driver relation failed to permanently deleted",
      *         @OA\JsonContent(
      *             @OA\Property(property="status", type="string", example="failed"),
      *             @OA\Property(property="message", type="string", example="driver relation not found")

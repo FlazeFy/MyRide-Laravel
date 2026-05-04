@@ -85,7 +85,7 @@ class Validation
             ]);  
         } else if ($type === 'delete') {
             return Validator::make($request->all(), [
-                'id' => 'required|string|max:36|min:36',
+                'id' => 'required|string|size:36',
             ]); 
         }
     }
@@ -121,7 +121,7 @@ class Validation
 
     public static function getValidateTrip($request,$type) {
         $rules = [
-            'driver_id' => 'nullable|string|max:36|min:36', 
+            'driver_id' => 'nullable|string|size:36', 
             'trip_desc' => 'nullable|string|max:500', 
             'trip_category' => ['required', new TripCategoryRule],
             'trip_person' => 'nullable|string|max:255', 
@@ -132,7 +132,7 @@ class Validation
         ];
 
         if ($type === 'create') {
-            $rules['vehicle_id'] = 'required|string|max:36|min:36';
+            $rules['vehicle_id'] = 'required|string|size:36';
         }
 
         return Validator::make($request->all(), $rules);
@@ -140,7 +140,7 @@ class Validation
 
     public static function getValidateFuel($request) {
         return Validator::make($request->all(), [
-            'vehicle_id' => 'required|string|max:36|min:36', 
+            'vehicle_id' => 'required|string|size:36', 
             'fuel_volume' => 'required|integer|min:1|max:99', 
             'fuel_price_total' => 'required|integer|min:1|max:999999999',  
             'fuel_brand' => ['required', new FuelBrandRule], 
@@ -167,7 +167,7 @@ class Validation
 
     public static function getValidateWash($request) {
         return Validator::make($request->all(), [
-            'vehicle_id' => 'required|string|max:36|min:36', 
+            'vehicle_id' => 'required|string|size:36', 
             'wash_desc' => 'nullable|string|min:1|max:500',
             'wash_by' => ['required', new WashByRule], 
             'is_wash_body' => 'required|boolean',
@@ -190,7 +190,7 @@ class Validation
 
     public static function getValidateReminder($request) {
         return Validator::make($request->all(), [
-            'vehicle_id' => 'required|string|max:36|min:36', 
+            'vehicle_id' => 'required|string|size:36', 
             'reminder_title' => 'required|string|max:75|min:1', 
             'reminder_context' => ['required', new ReminderContextRule], 
             'reminder_body' => 'required|string|max:255|min:1',   
@@ -200,13 +200,13 @@ class Validation
 
     public static function getValidateService($request) {
         return Validator::make($request->all(), [
-            'vehicle_id' => 'required|string|max:36|min:36', 
+            'vehicle_id' => 'required|string|size:36', 
             'service_note' => 'required|string|min:1', 
             'service_category' => ['required', new ServiceCategoryRule], 
             'service_location' => 'required|string|max:75|min:1', 
             'service_price_total' => 'nullable|integer|max:999999999|min:1',     
-            'remind_at' => 'nullable|date_format:Y-m-d H:i:s',
             'created_at' => 'nullable|date_format:Y-m-d H:i:s',
+            'remind_at' => 'nullable|date_format:Y-m-d H:i:s|after_or_equal:created_at',
         ]);
     }
     
@@ -219,9 +219,7 @@ class Validation
             'inventory_storage' => ['required', new InventoryStorageRule],
         ];
 
-        if ($type === 'create') {
-            $rules['gudangku_inventory_id'] = 'nullable|string|size:36';
-        }
+        if ($type === 'create') $rules['gudangku_inventory_id'] = 'nullable|string|size:36';
 
         return Validator::make($request->all(), $rules);
     }

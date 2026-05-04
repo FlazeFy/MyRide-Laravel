@@ -1078,10 +1078,25 @@ class Commands extends Controller
                 ], Response::HTTP_BAD_REQUEST);
             } else {
                 $user_id = $request->user()->id;
-
+                
                 // Define user id by role
                 $check_admin = AdminModel::find($user_id);
                 $user_id = $check_admin ? null : $user_id;
+
+                // Check if vehicle exist and still active
+                $vehicle = VehicleModel::getVehicleDetailById($user_id, $id);
+                if ($vehicle === null) { 
+                    return response()->json([
+                        'status' => 'failed',
+                        'message' => Generator::getMessageTemplate("not_found", $this->module),
+                    ], Response::HTTP_NOT_FOUND);
+                }
+                if ($vehicle->deleted_at) {
+                    return response()->json([
+                        'status' => 'failed',
+                        'message' => Generator::getMessageTemplate("custom", "vehicle already deleted"),
+                    ], Response::HTTP_UNPROCESSABLE_ENTITY);
+                }
 
                 // Soft Delete vehicle by ID
                 $rows = VehicleModel::updateVehicleById(["deleted_at" => date("Y-m-d H:i")], $id, $user_id);
@@ -1294,7 +1309,7 @@ class Commands extends Controller
      *     ),
      * )
      */
-    public function putRecoverVehicleById(Request $request, $id)
+    public function putRecoverDeletedVehicleById(Request $request, $id)
     {
         try {
             // Validate param
@@ -1311,6 +1326,21 @@ class Commands extends Controller
                 // Define user id by role
                 $check_admin = AdminModel::find($user_id);
                 $user_id = $check_admin ? null : $user_id;
+
+                // Check vehicle active status
+                $vehicle = VehicleModel::getVehicleDetailById($user_id, $id);
+                if ($vehicle === null) { 
+                    return response()->json([
+                        'status' => 'failed',
+                        'message' => Generator::getMessageTemplate("not_found", $this->module),
+                    ], Response::HTTP_NOT_FOUND);
+                }
+                if (!$vehicle->deleted_at) {
+                    return response()->json([
+                        'status' => 'failed',
+                        'message' => Generator::getMessageTemplate("custom", "vehicle already active"),
+                    ], Response::HTTP_UNPROCESSABLE_ENTITY);
+                }
 
                 // Update vehicle by ID
                 $rows = VehicleModel::updateVehicleById(["deleted_at" => null], $id, $user_id);
@@ -1408,8 +1438,21 @@ class Commands extends Controller
                 $check_admin = AdminModel::find($user_id);
                 $user_id = $check_admin ? null : $user_id;
 
-                // Get vehicle data
-                $vehicle = VehicleModel::getVehicleByIdAndUserId($id,$user_id);
+                // Check vehicle deleted status
+                $vehicle = VehicleModel::getVehicleDetailById($user_id, $id);
+                if ($vehicle === null) { 
+                    return response()->json([
+                        'status' => 'failed',
+                        'message' => Generator::getMessageTemplate("not_found", $this->module),
+                    ], Response::HTTP_NOT_FOUND);
+                }
+                if (!$vehicle->deleted_at) {
+                    return response()->json([
+                        'status' => 'failed',
+                        'message' => Generator::getMessageTemplate("custom", "vehicle still active, delete it first"),
+                    ], Response::HTTP_UNPROCESSABLE_ENTITY);
+                }
+
                 // Hard Delete vehicle by ID
                 $rows = VehicleModel::hardDeleteVehicleById($user_id,$id);
                 if ($rows > 0) {
@@ -1458,7 +1501,7 @@ class Commands extends Controller
                     // Return success response
                     return response()->json([
                         'status' => 'success',
-                        'message' => Generator::getMessageTemplate("permentally delete", $this->module),
+                        'message' => Generator::getMessageTemplate("permanently delete", $this->module),
                     ], Response::HTTP_OK);
                 } else {
                     return response()->json([

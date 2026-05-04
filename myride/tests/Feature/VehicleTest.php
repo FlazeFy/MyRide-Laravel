@@ -854,7 +854,7 @@ class VehicleTest extends TestCase
         $this->assertArrayHasKey('status', $data);
         $this->assertEquals('success', $data['status']);
         $this->assertArrayHasKey('message', $data);
-        $this->assertEquals("vehicle permentally deleted", $data['message']);
+        $this->assertEquals("vehicle permanently deleted", $data['message']);
 
         Audit::auditRecordText("Test - Hard Delete Vehicle By ID", "TC-XXX", "Result : ".json_encode($data));
         Audit::auditRecordSheet("Test - Hard Delete Vehicle By ID", "TC-XXX", 'TC-XXX test_hard_delete_vehicle_by_id', json_encode($data));

@@ -43,7 +43,7 @@ class InventoryTest extends TestCase
         $this->assertArrayHasKey('status', $data);
         $this->assertEquals('success', $data['status']);
         $this->assertArrayHasKey('message', $data);
-        $this->assertEquals('inventory permentally deleted',$data['message']);
+        $this->assertEquals('inventory permanently deleted',$data['message']);
 
         Audit::auditRecordText("Test - Hard Delete Inventory By Id", "TC-XXX", "Result : ".json_encode($data));
         Audit::auditRecordSheet("Test - Hard Delete Inventory By Id", "TC-XXX", 'TC-XXX test_hard_delete_inventory_by_id', json_encode($data));

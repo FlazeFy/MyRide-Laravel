@@ -10,6 +10,7 @@ use App\Models\InventoryModel;
 use App\Models\AdminModel;
 use App\Models\UserModel;
 use App\Models\HistoryModel;
+use App\Models\VehicleModel;
 // Helper
 use App\Helpers\Generator;
 use App\Helpers\Validation;
@@ -45,10 +46,10 @@ class Commands extends Controller
      *     ),
      *     @OA\Response(
      *         response=200,
-     *         description="inventory permentally deleted",
+     *         description="inventory permanently deleted",
      *         @OA\JsonContent(
      *             @OA\Property(property="status", type="string", example="success"),
-     *             @OA\Property(property="message", type="string", example="inventory permentally deleted")
+     *             @OA\Property(property="message", type="string", example="inventory permanently deleted")
      *         )
      *     ),
      *     @OA\Response(
@@ -61,7 +62,7 @@ class Commands extends Controller
      *     ),
      *     @OA\Response(
      *         response=404,
-     *         description="inventory failed to permentally deleted",
+     *         description="inventory failed to permanently deleted",
      *         @OA\JsonContent(
      *             @OA\Property(property="status", type="string", example="failed"),
      *             @OA\Property(property="message", type="string", example="inventory not found")
@@ -118,7 +119,7 @@ class Commands extends Controller
                     // Return success response
                     return response()->json([
                         'status' => 'success',
-                        'message' => Generator::getMessageTemplate("permentally delete", $this->module),
+                        'message' => Generator::getMessageTemplate("permanently delete", $this->module),
                     ], Response::HTTP_OK);
                 } else {
                     return response()->json([
@@ -199,10 +200,19 @@ class Commands extends Controller
             $validator = Validation::getValidateInventory($request,'create');
             if ($validator->fails()) {
                 return response()->json([
-                    'status' => 'error',
+                    'status' => 'failed',
                     'message' => $validator->errors()
                 ], Response::HTTP_BAD_REQUEST);
             } else {
+                $vehicle_id = $request->vehicle_id;
+                // Check if vehicle exist
+                if ($vehicle_id && !VehicleModel::getVehicleDetailById($user_id, $vehicle_id)) {
+                    return response()->json([
+                        'status' => 'failed',
+                        'message' => 'vehicle not found',
+                    ], Response::HTTP_NOT_FOUND);
+                }
+
                 $inventory_image = null;
                 // Check if file attached
                 if ($request->hasFile('inventory_image_url')) {
@@ -241,7 +251,7 @@ class Commands extends Controller
                 // Create inventory
                 $data = [
                     'gudangku_inventory_id' => $request->gudangku_inventory_id, 
-                    'vehicle_id' => $request->vehicle_id, 
+                    'vehicle_id' => $vehicle_id, 
                     'inventory_name' => $request->inventory_name, 
                     'inventory_category' => $request->inventory_category, 
                     'inventory_qty' => $request->inventory_qty, 

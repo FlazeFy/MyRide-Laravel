@@ -230,7 +230,7 @@ class ReminderTest extends TestCase
         $this->assertArrayHasKey('status', $data);
         $this->assertEquals('success', $data['status']);
         $this->assertArrayHasKey('message', $data);
-        $this->assertEquals('reminder permentally deleted',$data['message']);
+        $this->assertEquals('reminder permanently deleted',$data['message']);
 
         Audit::auditRecordText("Test - Hard Delete Reminder By Id", "TC-XXX", "Result : ".json_encode($data));
         Audit::auditRecordSheet("Test - Hard Delete Reminder By Id", "TC-XXX", 'TC-XXX test_hard_delete_reminder_by_id', json_encode($data));

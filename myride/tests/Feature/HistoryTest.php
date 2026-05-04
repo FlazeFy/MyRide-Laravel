@@ -82,7 +82,7 @@ class HistoryTest extends TestCase
         $this->assertArrayHasKey('status', $data);
         $this->assertEquals('success', $data['status']);
         $this->assertArrayHasKey('message', $data);
-        $this->assertEquals('history permentally deleted',$data['message']);
+        $this->assertEquals('history permanently deleted',$data['message']);
 
         Audit::auditRecordText("Test - Hard Delete History By Id", "TC-XXX", "Result : ".json_encode($data));
         Audit::auditRecordSheet("Test - Hard Delete History By Id", "TC-XXX", 'TC-XXX test_hard_delete_history_by_id', json_encode($data));

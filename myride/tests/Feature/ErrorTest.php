@@ -91,7 +91,7 @@ class ErrorTest extends TestCase
         $this->assertArrayHasKey('status', $data);
         $this->assertEquals('success', $data['status']);
         $this->assertArrayHasKey('message', $data);
-        $this->assertEquals('error permentally deleted',$data['message']);
+        $this->assertEquals('error permanently deleted',$data['message']);
 
         Audit::auditRecordText("Test - Hard Delete Error By Id", "TC-XXX", "Result : ".json_encode($data));
         Audit::auditRecordSheet("Test - Hard Delete Error By Id", "TC-XXX", 'TC-XXX test_hard_delete_error_by_id', json_encode($data));

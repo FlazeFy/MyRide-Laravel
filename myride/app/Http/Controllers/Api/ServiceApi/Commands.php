@@ -9,6 +9,7 @@ use Illuminate\Http\Response;
 use App\Models\ServiceModel;
 use App\Models\AdminModel;
 use App\Models\HistoryModel;
+use App\Models\VehicleModel;
 // Helper
 use App\Helpers\Generator;
 use App\Helpers\Validation;
@@ -87,9 +88,18 @@ class Commands extends Controller
                     'message' => $validator->errors()
                 ], Response::HTTP_BAD_REQUEST);
             } else {
+                $vehicle_id = $request->vehicle_id;
+                // Check if vehicle exist
+                if ($vehicle_id && !VehicleModel::getVehicleDetailById($user_id, $vehicle_id)) {
+                    return response()->json([
+                        'status' => 'failed',
+                        'message' => 'vehicle not found',
+                    ], Response::HTTP_NOT_FOUND);
+                }
+
                 // Create service
                 $data = [
-                    'vehicle_id' => $request->vehicle_id, 
+                    'vehicle_id' => $vehicle_id, 
                     'service_note' => $request->service_note, 
                     'service_category' => $request->service_category, 
                     'service_location' => $request->service_location, 
@@ -139,10 +149,10 @@ class Commands extends Controller
      *     ),
      *     @OA\Response(
      *         response=200,
-     *         description="service permentally deleted",
+     *         description="service permanently deleted",
      *         @OA\JsonContent(
      *             @OA\Property(property="status", type="string", example="success"),
-     *             @OA\Property(property="message", type="string", example="service permentally deleted")
+     *             @OA\Property(property="message", type="string", example="service permanently deleted")
      *         )
      *     ),
      *     @OA\Response(
@@ -155,7 +165,7 @@ class Commands extends Controller
      *     ),
      *     @OA\Response(
      *         response=404,
-     *         description="service failed to permentally deleted",
+     *         description="service failed to permanently deleted",
      *         @OA\JsonContent(
      *             @OA\Property(property="status", type="string", example="failed"),
      *             @OA\Property(property="message", type="string", example="service not found")
@@ -198,7 +208,7 @@ class Commands extends Controller
                     // Return success response
                     return response()->json([
                         'status' => 'success',
-                        'message' => Generator::getMessageTemplate("permentally delete", $this->module),
+                        'message' => Generator::getMessageTemplate("permanently delete", $this->module),
                     ], Response::HTTP_OK);
                 } else {
                     return response()->json([

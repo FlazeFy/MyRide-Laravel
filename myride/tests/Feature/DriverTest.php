@@ -41,7 +41,7 @@ class DriverTest extends TestCase
         $this->assertArrayHasKey('status', $data);
         $this->assertEquals('success', $data['status']);
         $this->assertArrayHasKey('message', $data);
-        $this->assertEquals('driver permentally deleted',$data['message']);
+        $this->assertEquals('driver permanently deleted',$data['message']);
 
         Audit::auditRecordText("Test - Hard Delete Driver By Id", "TC-XXX", "Result : ".json_encode($data));
         Audit::auditRecordSheet("Test - Hard Delete Driver By Id", "TC-XXX", 'TC-XXX test_hard_delete_driver_by_id', json_encode($data));
@@ -65,7 +65,7 @@ class DriverTest extends TestCase
         $this->assertArrayHasKey('status', $data);
         $this->assertEquals('success', $data['status']);
         $this->assertArrayHasKey('message', $data);
-        $this->assertEquals('driver relation permentally deleted',$data['message']);
+        $this->assertEquals('driver relation permanently deleted',$data['message']);
 
         Audit::auditRecordText("Test - Hard Delete Driver Relation By Id", "TC-XXX", "Result : ".json_encode($data));
         Audit::auditRecordSheet("Test - Hard Delete Driver Relation By Id", "TC-XXX", 'TC-XXX test_hard_delete_driver_relation_by_id', json_encode($data));
