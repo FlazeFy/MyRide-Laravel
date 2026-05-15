@@ -204,12 +204,31 @@ class Commands extends Controller
                 ], Response::HTTP_BAD_REQUEST);
             } else {
                 $vehicle_id = $request->vehicle_id;
+                $fuel_brand = $request->fuel_brand;
+                $fuel_type = $request->fuel_type;
+
                 // Check if vehicle exist
                 if (!VehicleModel::getVehicleDetailById($user_id, $vehicle_id)) {
                     return response()->json([
                         'status' => 'failed',
                         'message' => 'vehicle not found',
                     ], Response::HTTP_NOT_FOUND);
+                }
+
+                // Validate fuel type based on branch
+                $isFound = false;
+                $fuelBrands = FuelModel::getFuelTypeByFuelBrand($fuel_brand);
+                foreach ($fuelBrands as $dt) {
+                    if ($dt->dictionary_name === $fuel_type) {
+                        $isFound = true;
+                        break;
+                    }
+                }
+                if (!$isFound) {
+                    return response()->json([
+                        'status' => 'failed',
+                        'message' => 'Fuel type is not available for '.$fuel_brand
+                    ], Response::HTTP_BAD_REQUEST);
                 }
 
                 $fuel_bill = null;
@@ -252,8 +271,8 @@ class Commands extends Controller
                     'vehicle_id' => $vehicle_id, 
                     'fuel_volume' => $request->fuel_volume,
                     'fuel_price_total' => $request->fuel_price_total, 
-                    'fuel_brand' => $request->fuel_brand, 
-                    'fuel_type' => $request->fuel_type, 
+                    'fuel_brand' => $fuel_brand, 
+                    'fuel_type' => $fuel_type, 
                     'fuel_ron' => $request->fuel_ron, 
                     'fuel_bill' => $fuel_bill
                 ];
@@ -351,13 +370,32 @@ class Commands extends Controller
                     'message' => $validator->errors()
                 ], Response::HTTP_BAD_REQUEST);
             } else {
+                $fuel_brand = $request->fuel_brand;
+                $fuel_type = $request->fuel_type;
+
+                // Validate fuel type based on branch
+                $isFound = false;
+                $fuelBrands = FuelModel::getFuelTypeByFuelBrand($fuel_brand);
+                foreach ($fuelBrands as $dt) {
+                    if ($dt->dictionary_name === $fuel_type) {
+                        $isFound = true;
+                        break;
+                    }
+                }
+                if (!$isFound) {
+                    return response()->json([
+                        'status' => 'failed',
+                        'message' => 'Fuel type is not available for '.$fuel_brand
+                    ], Response::HTTP_BAD_REQUEST);
+                }
+
                 // Update fuel by id
                 $data = [
                     'vehicle_id' => $request->vehicle_id, 
                     'fuel_volume' => $request->fuel_volume,
                     'fuel_price_total' => $request->fuel_price_total, 
-                    'fuel_brand' => $request->fuel_brand, 
-                    'fuel_type' => $request->fuel_type, 
+                    'fuel_brand' => $fuel_brand, 
+                    'fuel_type' => $fuel_type, 
                     'fuel_ron' => $request->fuel_ron, 
                     'created_at' => $request->fuel_at, 
                 ];

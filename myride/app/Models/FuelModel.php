@@ -7,6 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 // Helper
 use App\Helpers\Generator;
 
+// Others Model
+use App\Models\DictionaryModel;
+
 /**
  * @OA\Schema(
  *     schema="Fuel",
@@ -118,6 +121,12 @@ class FuelModel extends Model
 
         return $res->where('fuel.created_by',$user_id)
             ->orderBy('fuel.created_at', 'desc')
+            ->get();
+    }
+
+    public static function getFuelTypeByFuelBrand($fuel_brand) {
+        return DictionaryModel::select("dictionary_name")
+            ->where("dictionary_type", "fuel_type_$fuel_brand")
             ->get();
     }
 
