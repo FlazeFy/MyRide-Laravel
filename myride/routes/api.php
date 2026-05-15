@@ -91,7 +91,7 @@ Route::prefix('/v1/vehicle')->middleware(['auth:sanctum'])->group(function () {
     Route::delete('/image_collection/destroy/{vehicle_id}/{image_id}', [CommandsVehicleApi::class, 'hardDeleteVehicleImageCollectionById']);
 });
 
-Route::prefix('/v1/dictionary')->middleware(['auth:sanctum'])->group(function () {
+Route::prefix('/v1/dictionary')->middleware(['auth:sanctum', 'role:admin'])->group(function () {
     Route::post('/', [CommandsDictionaryApi::class, 'postCreateDictionary']);
     Route::delete('/{id}', [CommandsDictionaryApi::class, 'hardDeleteDictionaryById']);
 });
@@ -106,7 +106,7 @@ Route::prefix('/v1/wash')->middleware(['auth:sanctum'])->group(function () {
     Route::put('/{id}', [CommandsWashController::class, 'putUpdateWashById']);
 });
 
-Route::prefix('/v1/history')->middleware(['auth:sanctum'])->group(function () {
+Route::prefix('/v1/history')->middleware(['auth:sanctum', 'role:user'])->group(function () {
     Route::get('/', [QueriesHistoryController::class, 'getAllHistory']);
     Route::delete('/destroy/{id}', [CommandsHistoryController::class, 'hardDeleteHistoryById']);
 });
@@ -118,12 +118,12 @@ Route::prefix('/v1/chat')->middleware(['auth:sanctum'])->group(function () {
     Route::get('/{chat_type}', [QueriesChatController::class, 'getAllChatHistory']);
 });
 
-Route::prefix('/v1/error')->middleware(['auth:sanctum'])->group(function () {
+Route::prefix('/v1/error')->middleware(['auth:sanctum', 'role:admin'])->group(function () {
     Route::get('/', [QueriesErrorController::class, 'getAllError']);
     Route::delete('/destroy/{id}', [CommandsErrorController::class, 'hardDeleteErrorById']);
 });
 
-Route::prefix('/v1/reminder')->middleware(['auth:sanctum'])->group(function () {
+Route::prefix('/v1/reminder')->middleware(['auth:sanctum', 'role:user'])->group(function () {
     Route::get('/next', [QueriesReminderController::class, 'getNextReminder']);
     Route::get('/', [QueriesReminderController::class, 'getAllReminder']);
     Route::get('/recently', [QueriesReminderController::class, 'getRecentlyReminder']);
@@ -175,7 +175,8 @@ Route::prefix('/v1/fuel')->middleware(['auth:sanctum'])->group(function () {
     Route::put('/{id}', [CommandsFuelController::class, 'putUpdateFuelById']);
 });
 
-Route::prefix('/v1/trip')->middleware(['auth:sanctum'])->group(function () {
+
+Route::prefix('/v1/trip')->middleware(['auth:sanctum', 'role:user'])->group(function () {
     Route::post('/', [CommandsTripController::class, 'postCreateTrip']);
     Route::get('/', [QueriesTripApi::class, 'getAllTrip']);
     Route::get('/last', [QueriesTripApi::class, 'getLastTrip']);
@@ -188,7 +189,7 @@ Route::prefix('/v1/trip')->middleware(['auth:sanctum'])->group(function () {
     Route::put('/{id}', [CommandsTripController::class, 'putUpdateTripById']);
 });
 
-Route::prefix('/v1/inventory')->middleware(['auth:sanctum'])->group(function () {
+Route::prefix('/v1/inventory')->middleware(['auth:sanctum', 'role:user'])->group(function () {
     Route::get('/', [QueriesInventoryController::class, 'getAllInventory']);
     Route::get('/vehicle/{vehicle_id}', [QueriesInventoryController::class, 'getInventoryByVehicleId']);
     Route::delete('/destroy/{id}', [CommandsInventoryController::class, 'hardDeleteInventoryById']);

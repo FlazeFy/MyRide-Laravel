@@ -212,7 +212,7 @@ class Validation
             'reminder_title' => 'required|string|max:75|min:1', 
             'reminder_context' => ['required', new ReminderContextRule], 
             'reminder_body' => 'required|string|max:255|min:1',   
-            'remind_at' => 'required|date_format:Y-m-d H:i:s',
+            'remind_at' => 'required|date_format:Y-m-d H:i:s|after:now',
         ]);
     }
 

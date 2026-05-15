@@ -134,7 +134,7 @@ class Commands extends Controller
                     ], Response::HTTP_UNAUTHORIZED);
                 } else {
                     // Create Token
-                    $token = $user->createToken('login')->plainTextToken;
+                    $token = $user->createToken('login', [$role === 1 ? 'admin' : 'user'])->plainTextToken;
                     unset($user->password);
 
                     // Return success response

@@ -12,6 +12,7 @@ use App\Models\AdminModel;
 use App\Models\UserModel;
 use App\Models\GoogleTokensModel;
 use App\Models\HistoryModel;
+use App\Models\VehicleModel;
 // Helper
 use App\Helpers\Generator;
 use App\Helpers\Validation;
@@ -215,6 +216,15 @@ class Commands extends Controller
                     'message' => $validator->errors()
                 ], Response::HTTP_BAD_REQUEST);
             } else {
+                $vehicle_id = $request->vehicle_id;
+                // Check if vehicle exist
+                if ($vehicle_id && !VehicleModel::getVehicleDetailById($user_id, $vehicle_id)) {
+                    return response()->json([
+                        'status' => 'failed',
+                        'message' => 'vehicle not found',
+                    ], Response::HTTP_NOT_FOUND);
+                }
+
                 $reminder_image = null;
                 // Check if file attached
                 if ($request->hasFile('reminder_image')) {
@@ -271,7 +281,7 @@ class Commands extends Controller
 
                 // Create reminder
                 $data = [
-                    'vehicle_id' => $request->vehicle_id, 
+                    'vehicle_id' => $vehicle_id, 
                     'reminder_title' => $request->reminder_title, 
                     'reminder_context' => $request->reminder_context,  
                     'reminder_body' => $request->reminder_body,  

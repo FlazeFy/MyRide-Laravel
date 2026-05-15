@@ -504,19 +504,38 @@ class Commands extends Controller
                     'message' => $validator->errors()
                 ], Response::HTTP_BAD_REQUEST);
             } else {
+                $user_id = $request->user()->id;
+                $vehicle_id = $request->vehicle_id;
+                // Check if vehicle exist
+                if (!VehicleModel::getVehicleDetailById($user_id, $vehicle_id)) {
+                    return response()->json([
+                        'status' => 'failed',
+                        'message' => 'vehicle not found',
+                    ], Response::HTTP_NOT_FOUND);
+                }
+
+                $driver_id = $request->driver_id;
+                // Check if driver exist
+                if (!DriverModel::find($driver_id)) {
+                    return response()->json([
+                        'status' => 'failed',
+                        'message' => 'driver not found',
+                    ], Response::HTTP_NOT_FOUND);
+                }
+
                 // Check if driver relation with vehicle already exist
-                $check = DriverVehicleRelationModel::getRelationByVehicleAndDriver($request->vehicle_id,$request->driver_id);
+                $check = DriverVehicleRelationModel::getRelationByVehicleAndDriver($vehicle_id, $driver_id);
                 if (!$check) {
                     // Create driver relation with vehicle
                     $data = [
-                        'vehicle_id' => $request->vehicle_id, 
-                        'driver_id' => $request->driver_id, 
+                        'vehicle_id' => $vehicle_id, 
+                        'driver_id' => $driver_id, 
                         'relation_note' => $request->relation_note,
                     ];
                     $row = DriverVehicleRelationModel::createDriverVehicleRelation($data);
                     if ($row) {
                         // Get driver contact to broadcast and check if its has valid telegram
-                        $driver = DriverModel::getDriverContact($request->driver_id);
+                        $driver = DriverModel::getDriverContact($driver_id);
                         if ($driver->telegram_user_id && $driver->telegram_is_valid === 1) {
                             $user_id = $request->user()->id;
                             // Validate telegram id
@@ -524,7 +543,7 @@ class Commands extends Controller
                                 // Get username to put in message
                                 $user = UserModel::getSocial($user_id);
                                 // Get vehicle plate number to put in message
-                                $vehicle = VehicleModel::getVehicleDetailById(null,$request->vehicle_id);
+                                $vehicle = VehicleModel::getVehicleDetailById(null,$vehicle_id);
                                 
                                 // Send telegram message
                                 $message = "Hello $driver->username, you have been assigned by $user->username to become the driver of '$vehicle->vehicle_plate_number'";
