@@ -298,19 +298,36 @@ class Commands extends Controller
         try {
             $user_id = $request->user()->id;
 
-            // Update wash by ID
-            $rows = WashModel::updateWashById(['wash_end_time' => date('Y-m-d H:i:s')], $user_id, $id);
-            if ($rows > 0) {
+            // Validate param
+            $request->merge(['id' => $id]);
+            $validator = Validation::getValidateId($request);
+            if ($validator->fails()) {
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => $validator->errors()
+                ], Response::HTTP_BAD_REQUEST);
+            } else {
+                // Validate wash finished status
+                $wash = WashModel::find($id);
+                if ($wash && $wash->wash_end_time) {
+                    return response()->json([
+                        'status' => 'failed',
+                        'message' => Generator::getMessageTemplate("custom", "Wash already finished"),
+                    ], Response::HTTP_UNPROCESSABLE_ENTITY);
+                } else if(!$wash) {
+                    return response()->json([
+                        'status' => 'failed',
+                        'message' => Generator::getMessageTemplate("not_found", $this->module),
+                    ], Response::HTTP_NOT_FOUND);
+                }
+
+                // Update wash by ID
+                $rows = WashModel::updateWashById(['wash_end_time' => date('Y-m-d H:i:s')], $user_id, $id);
                 // Return success response
                 return response()->json([
                     'status' => 'success',
                     'message' => Generator::getMessageTemplate("update", $this->module),
                 ], Response::HTTP_OK);
-            } else {
-                return response()->json([
-                    'status' => 'failed',
-                    'message' => Generator::getMessageTemplate("not_found", $this->module),
-                ], Response::HTTP_NOT_FOUND);
             }
         } catch(\Exception $e) {
             return response()->json([
@@ -397,9 +414,27 @@ class Commands extends Controller
                     'message' => $validator->errors()
                 ], Response::HTTP_BAD_REQUEST);
             } else {
+                $vehicle_id = $request->vehicle_id;
+                // Check if vehicle exist
+                if (!VehicleModel::getVehicleDetailById($user_id, $vehicle_id)) {
+                    return response()->json([
+                        'status' => 'failed',
+                        'message' => 'vehicle not found',
+                    ], Response::HTTP_NOT_FOUND);
+                }
+
+                // Check if wash exist
+                $wash = WashModel::find($id);
+                if (!$wash) {
+                    return response()->json([
+                        'status' => 'failed',
+                        'message' => Generator::getMessageTemplate("not_found", $this->module),
+                    ], Response::HTTP_NOT_FOUND);
+                }
+
                 // Update wash by ID
                 $data = [
-                    'vehicle_id' => $request->vehicle_id, 
+                    'vehicle_id' => $vehicle_id, 
                     'wash_desc' => $request->wash_desc, 
                     'wash_by' => $request->wash_by, 
                     'is_wash_body' => $request->is_wash_body,

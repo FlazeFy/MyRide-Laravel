@@ -290,14 +290,24 @@ class Commands extends Controller
                     'message' => $validator->errors()
                 ], Response::HTTP_BAD_REQUEST);
             } else {
+                $vehicle_id = $request->vehicle_id;
+                // Check if vehicle exist
+                if (!VehicleModel::getVehicleDetailById($user_id, $vehicle_id)) {
+                    return response()->json([
+                        'status' => 'failed',
+                        'message' => 'vehicle not found',
+                    ], Response::HTTP_NOT_FOUND);
+                }
+
                 // Update service by ID
                 $data = [
-                    'vehicle_id' => $request->vehicle_id, 
+                    'vehicle_id' => $vehicle_id, 
                     'service_note' => $request->service_note, 
                     'service_price_total' => $request->service_price_total, 
                     'service_location' => $request->service_location, 
                     'service_category' => $request->service_category, 
-                    'remind_at' => $request->remind_at 
+                    'remind_at' => $request->remind_at,
+                    'created_at' => $request->created_at
                 ];
                 $rows = ServiceModel::updateServiceById($data, $user_id, $id);
                 if ($rows > 0) {

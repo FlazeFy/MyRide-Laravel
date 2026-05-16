@@ -347,9 +347,18 @@ class Commands extends Controller
                     'message' => $validator->errors()
                 ], Response::HTTP_BAD_REQUEST);
             } else {
+                $vehicle_id = $request->vehicle_id;
+                // Check if vehicle exist
+                if (!VehicleModel::getVehicleDetailById($user_id, $vehicle_id)) {
+                    return response()->json([
+                        'status' => 'failed',
+                        'message' => 'vehicle not found',
+                    ], Response::HTTP_NOT_FOUND);
+                }
+
                 // Update inventory by ID
                 $data = [
-                    'vehicle_id' => $request->vehicle_id, 
+                    'vehicle_id' => $vehicle_id, 
                     'inventory_name' => $request->inventory_name, 
                     'inventory_category' => $request->inventory_category, 
                     'inventory_qty' => $request->inventory_qty, 
@@ -367,9 +376,9 @@ class Commands extends Controller
                     ], Response::HTTP_OK);
                 } else {
                     return response()->json([
-                        'status' => 'error',
-                        'message' => Generator::getMessageTemplate("unknown_error", null),
-                    ], Response::HTTP_INTERNAL_SERVER_ERROR);
+                        'status' => 'failed',
+                        'message' => Generator::getMessageTemplate("not_found", $this->module),
+                    ], Response::HTTP_NOT_FOUND);
                 }
             }
         } catch(\Exception $e) {

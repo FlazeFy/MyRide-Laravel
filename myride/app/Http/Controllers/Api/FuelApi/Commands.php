@@ -215,7 +215,7 @@ class Commands extends Controller
                     ], Response::HTTP_NOT_FOUND);
                 }
 
-                // Validate fuel type based on branch
+                // Validate fuel type based on brand
                 $isFound = false;
                 $fuelBrands = FuelModel::getFuelTypeByFuelBrand($fuel_brand);
                 foreach ($fuelBrands as $dt) {
@@ -370,8 +370,17 @@ class Commands extends Controller
                     'message' => $validator->errors()
                 ], Response::HTTP_BAD_REQUEST);
             } else {
+                $vehicle_id = $request->vehicle_id;
                 $fuel_brand = $request->fuel_brand;
                 $fuel_type = $request->fuel_type;
+
+                // Check if vehicle exist
+                if (!VehicleModel::getVehicleDetailById($user_id, $vehicle_id)) {
+                    return response()->json([
+                        'status' => 'failed',
+                        'message' => 'vehicle not found',
+                    ], Response::HTTP_NOT_FOUND);
+                }
 
                 // Validate fuel type based on branch
                 $isFound = false;
@@ -391,7 +400,7 @@ class Commands extends Controller
 
                 // Update fuel by id
                 $data = [
-                    'vehicle_id' => $request->vehicle_id, 
+                    'vehicle_id' => $vehicle_id, 
                     'fuel_volume' => $request->fuel_volume,
                     'fuel_price_total' => $request->fuel_price_total, 
                     'fuel_brand' => $fuel_brand, 
