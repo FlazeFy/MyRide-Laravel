@@ -118,7 +118,6 @@ class Commands extends Controller
                 $trip_origin_coordinate = $request->trip_origin_coordinate;
                 $trip_destination_coordinate = $request->trip_destination_coordinate;
 
-                $vehicle_id = $request->vehicle_id;
                 // Check if vehicle exist
                 if (!VehicleModel::getVehicleDetailById($user_id, $vehicle_id)) {
                     return response()->json([
@@ -192,7 +191,6 @@ class Commands extends Controller
                     if ($request->departure_at) $data['created_at'] = $request->departure_at;
 
                     $rows = TripModel::createTrip($data,$user_id);
-
                     if ($rows) {
                         // Get user social contact
                         $user = UserModel::getSocial($user_id);
@@ -412,6 +410,7 @@ class Commands extends Controller
         try {
             $user_id = $request->user()->id;
             $driver_id = $request->driver_id === "-" ? null : $request->driver_id;
+            $request->merge(['id' => $id]);
 
             // Validate request body
             $validator = Validation::getValidateTrip($request,"update");
@@ -421,18 +420,55 @@ class Commands extends Controller
                     'message' => $validator->errors()
                 ], Response::HTTP_BAD_REQUEST);
             } else {
+                $vehicle_id = $request->vehicle_id;
                 $trip_origin_name = $request->trip_origin_name;
                 $trip_destination_name = $request->trip_destination_name;
                 $trip_origin_coordinate = $request->trip_origin_coordinate;
                 $trip_destination_coordinate = $request->trip_destination_coordinate;
 
+                // Check if vehicle exist
+                if (!VehicleModel::getVehicleDetailById($user_id, $vehicle_id)) {
+                    return response()->json([
+                        'status' => 'failed',
+                        'message' => 'vehicle not found',
+                    ], Response::HTTP_NOT_FOUND);
+                }
+
+                // Check if driver exist
+                if ($driver_id) {
+                    // Get driver by ID
+                    $driver = DriverModel::getDriverContact($driver_id);
+                    if (!$driver) {
+                        return response()->json([
+                            'status' => 'failed',
+                            'message' => 'driver not found',
+                        ], Response::HTTP_NOT_FOUND);
+                    }
+                }
+
+                // Check if origin name and destination same
                 if ($trip_origin_name === $trip_destination_name) {
                     return response()->json([
                         'status' => 'failed',
-                        'message' => Generator::getMessageTemplate("custom", 'trip origin and destination coordinate must be different')
+                        'message' => Generator::getMessageTemplate("custom", 'trip origin and destination name must be different')
                     ], Response::HTTP_BAD_REQUEST);
                 }
 
+                // Check if origin coordinate and destination have valid coordinate
+                if (!Validation::isValidCoordinate($trip_origin_coordinate)) {
+                    return response()->json([
+                        'status' => 'failed',
+                        'message' => Generator::getMessageTemplate("custom", 'trip origin coordinate must be valid coordinate')
+                    ], Response::HTTP_BAD_REQUEST);
+                }
+                if (!Validation::isValidCoordinate($trip_destination_coordinate)) {
+                    return response()->json([
+                        'status' => 'failed',
+                        'message' => Generator::getMessageTemplate("custom", 'trip destination coordinate must be valid coordinate')
+                    ], Response::HTTP_BAD_REQUEST);
+                }
+
+                // Check if origin coordinate and destination same
                 if ($trip_origin_coordinate === $trip_destination_coordinate) {
                     return response()->json([
                         'status' => 'failed',
@@ -442,7 +478,7 @@ class Commands extends Controller
 
                 // Update trip by ID
                 $data = [
-                    'vehicle_id' => $request->vehicle_id, 
+                    'vehicle_id' => $vehicle_id, 
                     'driver_id' => $driver_id,
                     'trip_desc' => $request->trip_desc, 
                     'trip_category' => $request->trip_category, 
@@ -486,8 +522,8 @@ class Commands extends Controller
                 } else {
                     return response()->json([
                         'status' => 'error',
-                        'message' => Generator::getMessageTemplate("unknown_error", null),
-                    ], Response::HTTP_INTERNAL_SERVER_ERROR);
+                        'message' => Generator::getMessageTemplate("not_found", null),
+                    ], Response::HTTP_NOT_FOUND);
                 }
             }
         } catch(\Exception $e) {

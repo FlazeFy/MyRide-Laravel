@@ -149,8 +149,11 @@ class Validation
             'departure_at' => 'nullable|date_format:Y-m-d H:i:s', 
         ];
 
-        if ($type === 'create') {
+        if ($type === 'create' || $type === 'update') {
             $rules['vehicle_id'] = 'required|string|size:36';
+        }
+        if ($type === 'update') {
+            $rules['id'] = 'required|string|size:36';
         }
 
         return Validator::make($request->all(), $rules);
