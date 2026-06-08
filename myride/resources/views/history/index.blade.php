@@ -6,7 +6,7 @@
     </script>
 
     <div class="mx-auto" style="max-width: 720px">
-        <div class="container-fluid">
+        <div class="container-fluid" id="all_history-section">
             @include('history.usecases.get_all_list_history')
             @include('history.usecases.hard_delete_history')
         </div>

@@ -7,9 +7,7 @@ const messageShortImage = (target, image, caption) => {
     `)
 }
 
-const failedMsg = (context) => {
-    Swal.fire("Oops!", `Failed to ${context}`, "error")
-}
+const failedMsg = (context) => Swal.fire("Oops!", `Failed to ${context}`, "error")
 
 const messageAlertBox = (holder, type, message) => {
     $(`#${holder}`).html(`

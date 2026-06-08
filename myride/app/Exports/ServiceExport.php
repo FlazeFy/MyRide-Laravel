@@ -20,7 +20,7 @@ class ServiceExport implements FromCollection, WithHeadings, WithTitle
     }
     public function headings(): array
     {
-        return ["vehicle_name","vehicle_plate_number", "vehicle_type", 'service_category', 'service_price_total', 'service_location', 'service_note', 'remind_at', 'created_at', 'updated_at'];
+        return ["vehicle_name", "vehicle_type", "vehicle_plate_number", "service_category", "service_price_total", "service_location", "service_note", "remind_at", "created_at", "updated_at"];
     }
     public function title(): string
     {

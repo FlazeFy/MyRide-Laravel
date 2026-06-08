@@ -20,7 +20,7 @@ class DriverExport implements FromCollection, WithHeadings, WithTitle
     }
     public function headings(): array
     {
-        return ['username', 'fullname', 'email', 'telegram_user_id', 'telegram_is_valid', 'phone', 'notes', 'created_at', 'updated_at'];
+        return ["username", "fullname", "email", "telegram_user_id", "telegram_is_valid", "phone", "notes", "created_at", "updated_at"];
     }
     public function title(): string
     {

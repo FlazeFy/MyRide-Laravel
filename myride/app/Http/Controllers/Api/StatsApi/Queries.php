@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Cache;
 // Helper
 use App\Helpers\Generator;
 use App\Helpers\Converter;
+use App\Helpers\Validation;
 // Models
 use App\Models\TripModel;
 use App\Models\VehicleModel;
@@ -550,6 +551,18 @@ class Queries extends Controller
     public function getTotalTripByVehiclePerYear(Request $request, $year, $vehicle_id = null) {
         try {
             $user_id = $request->user()->id;
+
+            if ($vehicle_id) {
+                // Validate param
+                $request->merge(['id' => $vehicle_id]);
+                $validator = Validation::getValidateId($request);
+                if ($validator->fails()) {
+                    return response()->json([
+                        'status' => 'failed',
+                        'message' => $validator->errors()
+                    ], Response::HTTP_BAD_REQUEST);
+                }
+            }
             
             // Get total trip by its vehicle per year period
             $res = TripModel::getTotalTripByVehiclePerYear($user_id, $vehicle_id, $year);

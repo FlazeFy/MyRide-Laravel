@@ -11,9 +11,15 @@
         border: 3px solid black;
         transition: all 0.3s ease;
     }
+    .container-chat h6, .container-chat p, .container-chat b {
+        color: var(--secondaryColor);
+    }
+    .container-chat .btn * {
+        color: var(--whiteColor);
+    }
     .container-chat.open {
         width: 500px !important;
-        background: var(--whiteColor);
+        background: var(--firstColor);
     }
     @media (max-width: 575px) {
         .container-chat {
@@ -62,6 +68,12 @@
         text-align: end;
         background: var(--shadowColor);
         align-self: flex-end;
+    }
+    .bubble-me p, .bubble-me b {
+        color: var(--secondaryColor) !important;
+    }
+    .bubble-bot p, .bubble-bot b {
+        color: var(--darkColor) !important;
     }
     .text-date {
         font-size: var(--textSM);

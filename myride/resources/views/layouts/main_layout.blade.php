@@ -93,7 +93,9 @@
     @include('others.detect_flazenapps')
     <?php if (!preg_match('(embed)', $cleanedUrl)): ?>
         @include('others.bars.navbar')
-        @include('others.chat_box')
+        <?php if ($route !== "welcome"): ?>
+            @include('others.chat_box')
+        <?php endif; ?>
     <?php endif; ?>
     <?php if (!preg_match('(embed)', $cleanedUrl) && $route !== "welcome"): ?>
         @include('others.bars.sidebar')

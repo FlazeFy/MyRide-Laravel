@@ -179,25 +179,14 @@ const generateBarChart = (title, holder, data) => {
 }
 
 const generateSemiGaugeChart = (title = null, holder, percentage) => {
-    if (title) {
-        $(`#${holder}`).before(`<h2 class='title-chart'>${ucEachWord(title)}</h2>`)
-    }
+    if (title) $(`#${holder}`).before(`<h2 class='title-chart'>${ucEachWord(title)}</h2>`)
 
     if (0 >= percentage <= 100) {
-        let fillColor
-
-        if (percentage < 30) {
-            fillColor = "var(--dangerColor)"
-        } else if (percentage < 70) {
-            fillColor = "var(--warningColor)"
-        } else {
-            fillColor = "var(--successColor)"
-        }
+        const fillColor = percentage < 30 ? "var(--dangerColor)" : percentage < 70 ? "var(--warningColor)" : "var(--successColor)"
 
         let options = {
             series: [percentage],
             chart: {
-                height: 350,
                 type: "radialBar",
                 sparkline: {
                     enabled: true
@@ -212,7 +201,9 @@ const generateSemiGaugeChart = (title = null, holder, percentage) => {
                         size: "70%",
                     },
                     dataLabels: {
-                        name: { show: false},
+                        name: { 
+                            show: false
+                        },
                         value: {
                             show: true,
                             offsetY: -10, 

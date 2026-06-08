@@ -171,7 +171,6 @@ const buildLayoutTrip = (dt, holder) => {
 
     const itemsPerSlide = 3
     const carouselInner = $(`#${holder} .carousel-inner`)
-
     carouselInner.empty()
     $(`#${holder} .btn-page-holder`).remove()
     $(`#${holder}`).append(`<div class="btn-page-holder rounded mx-1"><label>Page</label></div>`)
@@ -219,11 +218,7 @@ const navigateCarouselPage = (holder, direction) => {
     if (!total) return
 
     let current = Number(activeBtn.data('slide'))
-    if (direction === 'next') {
-        current = current + 1 >= total ? 0 : current + 1
-    } else {
-        current = current - 1 < 0 ? total - 1 : current - 1
-    }
+    current = direction === 'next' ? (current + 1 >= total ? 0 : current + 1) : (current - 1 < 0 ? total - 1 : current - 1)
 
     pages.removeClass('active')
     pages.filter(`[data-slide="${current}"]`).addClass('active')

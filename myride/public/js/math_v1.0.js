@@ -8,9 +8,7 @@ const calculateDistance = (lat1, lon1, lat2, lon2, unit = 'km') => {
     distance = (distance * 180) / Math.PI
     distance = distance * 60 * 1.1515 
 
-    if (unit === 'km') {
-        distance *= 1.609344
-    }
+    if (unit === 'km') distance *= 1.609344
 
     return distance.toFixed(2)
 }

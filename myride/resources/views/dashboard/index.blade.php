@@ -16,7 +16,7 @@
                     @include('dashboard.usecases.get_vehicle_readiness')
                     @include('dashboard.usecases.set_action_readiness')
                 </div>
-                <div class='container-fluid'>
+                <div class='container-fluid' id="total_monthly_trip-section">
                     <div class="row">
                         <div class="col-md-12">
                             @include('dashboard.usecases.set_filter_year')
@@ -24,7 +24,7 @@
                     </div>
                     @include('dashboard.usecases.get_total_trip_monthly')
                 </div>
-                <div class='container-fluid'>
+                <div class='container-fluid' id="total_monthly_fuel_consumption-section">
                     <div class="row">
                         <div class="col-md-12">
                             @include('dashboard.usecases.set_filter_fuel_monthly')
@@ -51,7 +51,7 @@
                         </div>
                     </div>
                     <div class="col-lg-12 col-md-6">
-                        <div class='container-fluid text-center'>
+                        <div class='container-fluid text-center' id="next_service-section">
                             @include('dashboard.usecases.get_next_service')
                         </div>
                     </div>

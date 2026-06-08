@@ -14,7 +14,7 @@
         </div>
         <div class="row mt-3">
             <div class="col-xl-9 col-lg-8 col-md-12">
-                <div class="container-fluid">
+                <div class="container-fluid" id="all_wash-section">
                     @include('wash.usecases.get_all_list_wash')
                     @include('wash.usecases.put_wash')
                     @include('wash.usecases.hard_delete_wash')

@@ -5,6 +5,11 @@ a {
 h1, h2, h3, h4, h5, h6, p {
     text-transform: capitalize;
 }
+.alert-text {
+    color: var(--dangerColor) !important;
+    font-size: var(--textMD);
+    font-style: italic;
+}
 
 /* Font Size */
 .summary-label {

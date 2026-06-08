@@ -55,14 +55,16 @@
 
 /* Body */
 body.light {
-    --secondaryColor : #232323;
-    --firstColor : #f6fbff;
-    --greyColor : #656565;
+    --secondaryColor: #232323;
+    --firstColor: #f6fbff;
+    --greyColor: #656565;
+    --shadowColor: #f2f2f2;
 }
 body.dark {
-    --secondaryColor : #f6fbff;
-    --firstColor : #232323;
-    --greyColor : #aaaaaa;
+    --secondaryColor: #f6fbff;
+    --firstColor: #232323;
+    --greyColor: #aaaaaa;
+    --shadowColor: #656565;
 }
 body {
     min-height: 100vh;

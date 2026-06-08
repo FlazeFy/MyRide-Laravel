@@ -20,7 +20,7 @@ class InventoryExport implements FromCollection, WithHeadings, WithTitle
     }
     public function headings(): array
     {
-        return ["vehicle_name","vehicle_plate_number", "vehicle_type", 'inventory_name', 'inventory_category', 'inventory_qty', 'inventory_storage', 'created_at', 'updated_at'];
+        return ["vehicle_name", "vehicle_type", "vehicle_plate_number", "inventory_name", "inventory_category", "inventory_qty", "inventory_storage", "created_at", "updated_at"];
     }
     public function title(): string
     {

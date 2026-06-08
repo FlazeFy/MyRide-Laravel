@@ -45,6 +45,7 @@ const getDateToContext = (datetime, type, isFlexible = true) => {
 
 const getUTCHourOffset = () => {
     const offsetMi = new Date().getTimezoneOffset()
+    
     return -offsetMi / 60
 }
 
@@ -71,6 +72,7 @@ const ucEachWord = (val) => {
     for (var i = 0; i < arr.length; i++) {
         arr[i] = arr[i].charAt(0).toUpperCase() + arr[i].slice(1)
     }
+
     return arr.join(" ")
 }
 
@@ -89,12 +91,14 @@ const generatePagination = (items_holder, fetch_callback, total_page, current_pa
     }
 
     $(`#pagination-${items_holder}`).remove()
+    const target = $(`#${items_holder}`).closest('table').length ? $(`#${items_holder}`).closest('table') : `#${items_holder}`
 
-    if ($('#'+items_holder).closest('table').length === 0) {
-        $(`<div id='pagination-${items_holder}' class='btn-page-holder'><label>Page</label>${page_element}</div>`).insertAfter(`#${items_holder}`)
-    } else {
-        $(`<div id='pagination-${items_holder}' class='btn-page-holder'><label>Page</label>${page_element}</div>`).insertAfter($(`#${items_holder}`).closest('table'))
-    }
+    $(`
+        <div id='pagination-${items_holder}' class='btn-page-holder'>
+            <label>Page</label>
+            ${page_element}
+        </div>
+    `).insertAfter(target)
 
     $(document).off('click', `#pagination-${items_holder} .btn-page`)
     $(document).on('click', `#pagination-${items_holder} .btn-page`, function() {
@@ -114,9 +118,7 @@ const generateApiError = (response, is_list_format) => {
             const allMsg = Object.values(msg).flat()
             if (is_list_format) {
                 msg = '<ol>'
-                allMsg.forEach((dt) => {
-                    msg += `<li>- ${dt.replace('.','')}</li>`
-                })
+                allMsg.forEach((dt) => msg += `<li>- ${dt.replace('.','')}</li>`)
                 msg += '</ol>'
             } else {
                 msg = allMsg.join(', ').replace('.','')
@@ -127,7 +129,7 @@ const generateApiError = (response, is_list_format) => {
             title: "Validation Error!",
             html: msg,
             icon: "error"
-        });
+        })
     } else if (response.status === 404) {
         Swal.fire("Oops!", "Data not found", "error")
     } else {
@@ -140,11 +142,7 @@ const validateInput = (type, id, max, min) => {
         const check = $(`#${id}`).val()
         const check_len = check.trim().length
     
-        if (check && check_len > 0 && check_len <= max && check_len >= min) {
-            return true
-        } else {
-            return false
-        }
+        return check && check_len > 0 && check_len <= max && check_len >= min ? true : false
     }
 }
 
@@ -165,9 +163,7 @@ const buttonSetRoute = () => {
 }
 
 const checkScreenSize = (width) => {
-    if (width < 320) {
-        Swal.fire("Warning!", "Your device has a small screen width, so some content may not display properly", "warning")
-    }
+    if (width < 320) Swal.fire("Warning!", "Your device has a small screen width, so some content may not display properly", "warning")
 }
 
 const setChecklistHolder = () => {
@@ -187,13 +183,7 @@ const setChecklistHolder = () => {
 }
 
 const setCurrentLocalDateTime = (target, datetime = null) => {
-    let date
-
-    if (datetime) {
-        date = new Date(datetime.replace(" ", "T"))
-    } else {
-        date = new Date()
-    }
+    const date = datetime ? new Date(datetime.replace(" ", "T")) : new Date()
 
     const year = date.getFullYear()
     const month = String(date.getMonth() + 1).padStart(2, "0")
@@ -201,6 +191,7 @@ const setCurrentLocalDateTime = (target, datetime = null) => {
     const hour = String(date.getHours()).padStart(2, "0")
     const minute = String(date.getMinutes()).padStart(2, "0")
     const formatted = `${year}-${month}-${day}T${hour}:${minute}`
+
     $(`#${target}`).val(formatted)
 }
 
