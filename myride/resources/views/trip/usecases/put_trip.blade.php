@@ -29,7 +29,7 @@
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-12">
                             <label>Person</label>
-                            <textarea class="form-control" name="trip_person" id="trip_person" required></textarea>
+                            <textarea class="form-control form-validator" name="trip_person" data-validator="tidy_up_comma" id="trip_person" required></textarea>
                         </div>
                     </div>
                     <hr>

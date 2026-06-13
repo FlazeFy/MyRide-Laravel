@@ -215,6 +215,15 @@ const applyAutoTheme = () => {
     }
 }
 
+const showToast = (msg) => {
+    $(document).ready(function() {
+        $("#toast-message").text(msg)
+        const toastEl = $("#toast")[0]
+        const toast = new bootstrap.Toast(toastEl, { delay: 4000 })
+        toast.show()
+    })
+}
+
 const validatorInput = () => {
     $('.form-validator').each(function() {
         const $el = $(this)
@@ -281,24 +290,31 @@ const validatorInput = () => {
                 }
             })
         }
-
+        
         if (validator && validator.trim() === 'tidy_up_comma') {
             $el.on('blur', function() {
                 const val = $(this).val().trim()
                 if (val !== '') {
                     const textComma = val.split(/,\s+and\s+|,\s+|\s+and\s+/).map(dt => dt.trim().toLowerCase()).filter(dt => dt !== '')
+                    const uniqueTextComma = [...new Set(textComma)]
                     let cleanTextComma = ''
-            
-                    if (textComma.length > 1) {
-                        cleanTextComma = textComma.slice(0, -1).map(dt => ucEachWord(dt)).join(', ') + `, and ${ucEachWord(textComma[textComma.length - 1])}`
-                    } else if (textComma.length === 1) {
-                        cleanTextComma = ucEachWord(textComma[0])
+        
+                    if (uniqueTextComma.length > 1) {
+                        cleanTextComma = uniqueTextComma.slice(0, -1).map(dt => ucEachWord(dt)).join(', ') + `, and ${ucEachWord(uniqueTextComma[uniqueTextComma.length - 1])}`
+                    } else if (uniqueTextComma.length === 1) {
+                        cleanTextComma = ucEachWord(uniqueTextComma[0])
                     }
-            
+        
                     $(this).val(cleanTextComma)
+                    let message = "Input has been tidied up"
+                    if (uniqueTextComma.length < textComma.length) {
+                        message += ". Duplicate items have been removed"
+                    }
+
+                    showToast(message)
                 }
             })
-        }        
+        }                
     });
 }
 

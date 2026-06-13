@@ -114,10 +114,13 @@
             const type = $(this).data('bs-slide')
             navigateCarouselPage(holder, type === 'next' ? 'next' : 'prev')
         })
-
+        
         $(document).on('keydown', function (e) {
             if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return
-            navigateCarouselPage('<?= $carouselId ?>', e.key === 'ArrowRight' ? 'next' : 'prev')
+            const hasBs5Modal = $('.modal.show').length > 0
+            const hasSwal = $('.swal2-container').length > 0
+
+            if (!hasBs5Modal && !hasSwal) navigateCarouselPage('<?= $carouselId ?>', e.key === 'ArrowRight' ? 'next' : 'prev')
         })
     })
 </script>

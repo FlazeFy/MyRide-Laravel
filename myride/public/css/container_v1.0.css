@@ -8,26 +8,38 @@
 .gm-style-iw.gm-style-iw-c {
     border-bottom: var(--spaceXXSM) solid var(--secondaryColor) !important;
 }
-.container, .modal-content, .swal2-popup, .popover, .plate-number, .chip, .container-fluid {
+.container, .modal-content, .swal2-popup, .popover, .plate-number, .chip, .container-fluid, .toast {
     padding: var(--spaceXLG);
     margin-bottom: var(--spaceLG);
     background: var(--firstColor);
     position: relative;
 }
+.toast .toast-header {
+    background: var(--warningColor);
+    border-radius: var(--roundedLG) var(--roundedLG) 0 0;
+}
+.toast-container {
+    top: 100px;
+    z-index: 2000;
+}
+
 @media (max-width: 575px) {
     .container, .popover, .container-fluid, .gm-style-iw.gm-style-iw-c {
         padding: var(--spaceXMD) !important;
     } 
+    .modal-content, .swal2-popup {
+        padding: var(--spaceMini) !important;
+    } 
+}
+@media (max-width: 991px) {
+    .toast-container {
+        top: 85px;
+    }
 }
 @media (min-width: 768px) and (max-width: 991px) {
     .modal-content, .swal2-popup {
         padding: var(--spaceXSM) !important;
     }  
-}
-@media (max-width: 575px) {
-    .modal-content, .swal2-popup {
-        padding: var(--spaceMini) !important;
-    } 
 }
 .container, .container-fluid {
     width: 100%;
@@ -45,7 +57,7 @@
 .modal-content, .swal2-popup, .popover, .btn:hover, .container-landing, .apexcharts-tooltip {
     box-shadow: rgba(0, 0, 0, 0.2) 1.975px 1.975px 2.8px !important;
 }
-.popover {
+.popover, .toast {
     border-radius: var(--roundedLG);
     padding: 0 !important;
 }

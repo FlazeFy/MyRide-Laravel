@@ -150,7 +150,7 @@
     window.initMap = initMap
 
     $(document).on('click','#submit-add-trip-btn', function() {
-        post_trip()
+        postTrip()
     })
 
     $(document).on('blur', '#trip_origin_coordinate, #trip_destination_coordinate', function() {
@@ -186,7 +186,7 @@
         )
     })
 
-    const post_trip = () => {
+    const postTrip = () => {
         Swal.showLoading()
 
         if ($('#vehicle_holder').val() === "-" || $('#trip_category').val() === "-") {

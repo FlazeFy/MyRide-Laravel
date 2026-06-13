@@ -113,6 +113,7 @@
 <!--Modal-->
 @include('others.scroll_top')
 @include('others.popup.success')
+@include('others.toast')
 @include('others.popup.failed')
 
 <script>

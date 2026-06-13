@@ -10,7 +10,7 @@
             @include('profile.usecases.get_active_req')
             @include('profile.usecases.get_profile')
         </div>
-        <div class="container-fluid">
+        <div class="container-fluid" id="setting-section">
             <h2>Setting</h2><hr>
             @include('profile.usecases.set_auto_bg_mode')
             @include('profile.usecases.set_light_dark_mode')
