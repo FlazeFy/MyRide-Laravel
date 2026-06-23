@@ -16,7 +16,8 @@
     <input hidden name="token" value="" id="token">
     <input hidden name="email" value="" id="email">
     <input hidden name="role" value="" id="role">
-    <a onclick="login()" class="btn btn-success w-100 mb-3"><i class="fa-solid fa-arrow-right-to-bracket mx-1"></i> Enter the Garage</a>
+    <input hidden name="continue" value="" id="continue">
+    <a onclick="login()" class="btn btn-success w-100 mb-3" id="login-button"><i class="fa-solid fa-arrow-right-to-bracket mx-1"></i> Enter the Garage</a>
     <a href="/auth/google" class="btn btn-primary w-100"><i class="fa-brands fa-google mx-1"></i> Sign In With Google</a>
     <hr>
     <div class="row">
@@ -134,7 +135,22 @@
             localStorage.clear()
         }
     }
-    auto_login()
+
+    $(document).ready(function () {
+        const params = new URLSearchParams(window.location.search)
+        const continueUrl = params.get('continue')
+
+        if (continueUrl) {
+            $('#continue').val(continueUrl)
+            const page = continueUrl.replace(/^\//, '').split('/')[0]
+            $('#login-button').html(`
+                <i class="fa-solid fa-arrow-right-to-bracket mx-1"></i> Enter the Garage
+                <br><span class="text-sm">And continue at /${page}</span>
+            `)
+        }
+
+        auto_login()
+    })
 
     const submitOnEnter = (event) => {
         if (event.keyCode === 13) { 
