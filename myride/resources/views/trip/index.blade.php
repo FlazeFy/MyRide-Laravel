@@ -48,7 +48,13 @@
             const params = new URLSearchParams(window.location.search)
 
             $(document).on('click','#show_all_trip-button',function() {
-                params.has("trip_id") ? window.location.href = '/trip' : initMap()
+                if (params.has("trip_id")) {
+                    window.location.href = '/trip'
+                } else { 
+                    initMap()
+                    getAllTripCoordinate(null)
+                    $('.trip-box').removeClass('bg-warning-light')
+                }
             })
         })
     </script>

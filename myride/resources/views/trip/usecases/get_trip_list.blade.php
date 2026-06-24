@@ -122,5 +122,10 @@
 
             if (!hasBs5Modal && !hasSwal) navigateCarouselPage('<?= $carouselId ?>', e.key === 'ArrowRight' ? 'next' : 'prev')
         })
+
+        $(document).on('click', '.trip-box', function () {
+            $('.trip-box').removeClass('bg-warning-light')
+            $(this).addClass('bg-warning-light')
+        })
     })
 </script>

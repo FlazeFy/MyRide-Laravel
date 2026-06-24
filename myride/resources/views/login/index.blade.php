@@ -6,4 +6,5 @@
         <h6>Management Apps for your vehicle</h6><br>
         @include('login.usecases.post_login')
     </div>
+    @include('others.popup.failed')
 @endsection

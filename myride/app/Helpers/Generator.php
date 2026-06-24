@@ -21,7 +21,7 @@ class Generator
                 $res = $user->id;
                 return $res;
             } else {
-                return redirect("/")->with('failed_message','This account is no longer exist');
+                return redirect("/")->with('failed_message','This session is no longer exist');
             }
         } else {
             return null;

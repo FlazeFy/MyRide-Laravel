@@ -43,6 +43,7 @@
     --dangerColor: #f55d86;
     --secondaryDangerColor: #d94b6e;   
     --warningColor: #FFC352;
+    --warningLightColor: #ffedcb;
     --secondaryWarningColor: #e0a840;  
     --infoColor: #00b8ff;
     --secondaryInfoColor: #0095cc;    
@@ -92,6 +93,9 @@ body {
 }
 .bg-warning {
     background: var(--warningColor) !important;
+}
+.bg-warning-light {
+    background: var(--warningLightColor) !important;
 }
 .bg-danger {
     background: var(--dangerColor) !important;

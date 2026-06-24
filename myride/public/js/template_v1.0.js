@@ -48,7 +48,7 @@ const templateTripBox = (dt, extra_class = '', showLocation = true) => {
     const clickFunc = coorOrigin && showLocation ? `onclick="show_location(${coorOrigin[0]}, ${coorOrigin[1]}, ${coorDestination[0]}, ${coorDestination[1]})"` : ''
 
     return `
-        <button class="container-fluid text-start mb-4 ${extra_class}" style="${deletedStyle}" ${deletedTitle} ${clickFunc}>
+        <button class="container-fluid trip-box text-start mb-4 ${extra_class}" style="${deletedStyle}" ${deletedTitle} ${clickFunc}>
             ${dt.vehicle_plate_number ? `<span class="plate-number position-absolute" style="top:calc(-2*var(--spaceSM)); left:calc(-2*var(--spaceSM)); width: fit-content;">${dt.vehicle_plate_number}</span>`:''}
             ${dt.vehicle_name ? `<h6 class="mb-2">${dt.vehicle_name}</h6>`:''}
             <p class="text-secondary">${dt.trip_desc ?? '- No Description Provided -'}</p>
@@ -56,17 +56,17 @@ const templateTripBox = (dt, extra_class = '', showLocation = true) => {
             <div class="mt-3 d-flex justify-content-between flex-wrap align-items-center">
                 <div>
                     <h6 class="mb-0">From</h6>
-                    <p class="mb-0">${dt.trip_origin_name}</p>
+                    <p class="mb-0 text-sm">${dt.trip_origin_name}</p>
                 </div>
                 ${ coorOrigin ? `
                     <div class="text-center">
-                        <a><i class="fa-solid fa-arrow-right"></i></a>
-                        <p class="mb-0" style="font-size: var(--textMD);">${calculateDistance(coorOrigin[0], coorOrigin[1], coorDestination[0], coorDestination[1])} Km</p>
+                        <a><i class="fa-solid fa-arrow-right text-sm"></i></a>
+                        <p class="mb-0 text-sm">${calculateDistance(coorOrigin[0], coorOrigin[1], coorDestination[0], coorDestination[1])} Km</p>
                     </div>`: ''
                 }
                 <div class="text-end">
                     <h6 class="mb-0">Destination</h6>
-                    <p class="mb-0">${dt.trip_destination_name}</p>
+                    <p class="mb-0 text-sm">${dt.trip_destination_name}</p>
                 </div>
             </div>
             <div class="collapse" id="collapseDetailTrip${dt.id}">
