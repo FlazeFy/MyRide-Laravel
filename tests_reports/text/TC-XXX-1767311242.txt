@@ -1,0 +1,5 @@
+Context   : Test - Get All Service Spending
+Title     : TC-XXX
+Record    : 
+
+Result : {"status":"success","message":"service fetched","data":[{"vehicle_plate_number":"F 8293 OU","vehicle_type":"Wagon","total":5444649}]}

@@ -1,0 +1,5 @@
+Context   : Test - Get Total Fuel Per Year By Fuel Price Total
+Title     : TC-XXX
+Record    : 
+
+Result : {"status":"success","message":"stats fetched","data":[{"context":"Jan","total":0},{"context":"Feb","total":0},{"context":"Mar","total":0},{"context":"Apr","total":0},{"context":"May","total":0},{"context":"Jun","total":0},{"context":"Jul","total":0},{"context":"Aug","total":0},{"context":"Sep","total":610000},{"context":"Oct","total":0},{"context":"Nov","total":0},{"context":"Dec","total":0}]}

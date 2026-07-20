@@ -1,0 +1,5 @@
+Context   : Test - Get Total Trip By Trip Destination Name
+Title     : TC-XXX
+Record    : 
+
+Result : {"status":"success","message":"stats fetched","data":[{"context":"Babi Balah","total":1},{"context":"Loffee Coffee Eatery","total":1},{"context":"Uki Matcha","total":1},{"context":"Macanria PIK 1","total":1},{"context":"Mamasays","total":1},{"context":"Ricaraja","total":1}]}

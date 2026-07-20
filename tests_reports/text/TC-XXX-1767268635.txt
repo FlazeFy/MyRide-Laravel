@@ -1,0 +1,5 @@
+Context   : Test - Get Next Reminder
+Title     : TC-XXX
+Record    : 
+
+Result : {"status":"success","message":"reminder fetched","data":{"reminder_title":"Dolorem doloremque et blanditiis.","reminder_context":"Warm Up","reminder_body":"Excepturi unde quia amet sed.","remind_at":"2026-02-04 00:00:00","vehicle_plate_number":"F 8293 OU"}}

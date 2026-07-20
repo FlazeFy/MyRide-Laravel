@@ -1,0 +1,5 @@
+Context   : Test - Get All Dictionary By Type
+Title     : TC-XXX
+Record    : 
+
+Result : {"status":"success","message":"dictionary fetched","data":[{"dictionary_name":"Healing","dictionary_type":"trip_category"},{"dictionary_name":"Others","dictionary_type":"trip_category"},{"dictionary_name":"Shopping","dictionary_type":"trip_category"}]}

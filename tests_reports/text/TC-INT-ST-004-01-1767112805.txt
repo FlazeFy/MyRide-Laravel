@@ -1,0 +1,5 @@
+Context   : Integration Test - Success Get Total Wash Per Year By Total Item (Public)
+Title     : TC-INT-ST-004-01
+Record    : 
+
+Result : {"status":"success","message":"stats fetched","data":[{"context":"Jan","total":4},{"context":"Feb","total":7},{"context":"Mar","total":10},{"context":"Apr","total":3},{"context":"May","total":9},{"context":"Jun","total":9},{"context":"Jul","total":9},{"context":"Aug","total":11},{"context":"Sep","total":3},{"context":"Oct","total":8},{"context":"Nov","total":8},{"context":"Dec","total":15}]}

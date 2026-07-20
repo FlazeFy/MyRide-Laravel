@@ -1,0 +1,5 @@
+Context   : Test - Post Create Reminder
+Title     : TC-XXX
+Record    : 
+
+Result : {"status":"success","message":"reminder created"}

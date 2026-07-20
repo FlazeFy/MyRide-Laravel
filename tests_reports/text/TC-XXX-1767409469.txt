@@ -1,0 +1,5 @@
+Context   : Test - Put Update Inventory By ID
+Title     : TC-XXX
+Record    : 
+
+Result : {"status":"success","message":"inventory updated"}

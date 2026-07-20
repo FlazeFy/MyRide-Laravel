@@ -1,0 +1,5 @@
+Context   : Test - Get Monthly Fuel Summary
+Title     : TC-XXX
+Record    : 
+
+Result : {"status":"success","message":"fuel fetched","data":{"total_fuel_price":610000,"total_fuel_volume":40,"total_refueling":2}}

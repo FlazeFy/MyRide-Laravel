@@ -1,0 +1,5 @@
+Context   : Test - Get Total Service Price By Service Location
+Title     : TC-XXX
+Record    : 
+
+Result : {"status":"success","message":"stats fetched","data":[{"context":"Honda Tandean","total":4383061},{"context":"Honda Pasar Minggu","total":1155000}]}

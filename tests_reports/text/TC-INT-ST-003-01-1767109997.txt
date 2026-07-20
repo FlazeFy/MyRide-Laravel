@@ -1,0 +1,5 @@
+Context   : Integration Test - Success Get Total Fuel Per Year By Fuel Price Total (Public)
+Title     : TC-INT-ST-003-01
+Record    : 
+
+Result : {"status":"success","message":"stats fetched","data":[{"context":"Jan","total":1247400},{"context":"Feb","total":870600},{"context":"Mar","total":725500},{"context":"Apr","total":569400},{"context":"May","total":2064600},{"context":"Jun","total":873200},{"context":"Jul","total":1545400},{"context":"Aug","total":1348000},{"context":"Sep","total":365800},{"context":"Oct","total":1743600},{"context":"Nov","total":1629800},{"context":"Dec","total":697300}]}

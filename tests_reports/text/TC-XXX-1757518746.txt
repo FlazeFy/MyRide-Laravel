@@ -1,0 +1,5 @@
+Context   : Test - Get Total Vehicle By Context
+Title     : TC-XXX
+Record    : 
+
+Result : {"status":"success","message":"stats fetched","data":[{"context":"Ortiz-Nienow","total":1},{"context":"Senger Ltd","total":1}]}

@@ -1,0 +1,5 @@
+Context   : Integration Test - Success Get Total Service Per Year By Total Price (Public)
+Title     : TC-INT-ST-004-01
+Record    : 
+
+Result : {"status":"success","message":"stats fetched","data":[{"context":"Jan","total":4640621},{"context":"Feb","total":2116945},{"context":"Mar","total":1053454},{"context":"Apr","total":7326596},{"context":"May","total":2615279},{"context":"Jun","total":1300637},{"context":"Jul","total":6606109},{"context":"Aug","total":9921897},{"context":"Sep","total":1367706},{"context":"Oct","total":6679916},{"context":"Nov","total":2876154},{"context":"Dec","total":4366484}]}

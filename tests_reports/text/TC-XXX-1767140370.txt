@@ -1,0 +1,5 @@
+Context   : Test - Post Vehicle Doc
+Title     : TC-XXX
+Record    : 
+
+Result : {"status":"success","message":"vehicle document created"}

@@ -1,0 +1,5 @@
+Context   : Test - Post Create Wash
+Title     : TC-XXX
+Record    : 
+
+Result : {"status":"success","message":"wash created"}

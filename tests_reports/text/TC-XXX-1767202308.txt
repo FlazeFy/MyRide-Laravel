@@ -1,0 +1,5 @@
+Context   : Test - Put Finish Wash By ID
+Title     : TC-XXX
+Record    : 
+
+Result : {"status":"success","message":"wash updated"}

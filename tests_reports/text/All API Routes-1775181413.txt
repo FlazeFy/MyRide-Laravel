@@ -1,0 +1,5 @@
+Context   : Test - Smoke Site Test
+Title     : All API Routes
+Record    : 
+
+9.62ms | 200 | [GET] /api/v1/stats/summary

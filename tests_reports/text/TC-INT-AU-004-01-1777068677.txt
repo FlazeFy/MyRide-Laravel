@@ -1,0 +1,5 @@
+Context   : Integration Test - Success Post Validate Register With Valid Data
+Title     : TC-INT-AU-004-01
+Record    : 
+
+Result : {"is_signed_in":true,"token":"2098|KHEx4Fgx9ppsnqUOGoJRRaocr7qgJwnDFfUODzl13b3fbf1d","status":"success","message":"account is registered"}

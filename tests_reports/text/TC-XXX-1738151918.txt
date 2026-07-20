@@ -1,0 +1,5 @@
+Context   : Test - Post Dictionary
+Title     : TC-XXX
+Record    : 
+
+Result : {"status":"success","message":"dictionary created"}

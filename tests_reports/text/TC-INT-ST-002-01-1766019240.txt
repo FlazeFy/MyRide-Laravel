@@ -1,0 +1,5 @@
+Context   : Integration Test - Success Get Total Trip Per Year (Public)
+Title     : TC-INT-ST-002-01
+Record    : 
+
+Result : {"status":"success","message":"stats fetched","data":[{"context":"Jan","total":4},{"context":"Feb","total":4},{"context":"Mar","total":7},{"context":"Apr","total":6},{"context":"May","total":9},{"context":"Jun","total":3},{"context":"Jul","total":4},{"context":"Aug","total":5},{"context":"Sep","total":6},{"context":"Oct","total":4},{"context":"Nov","total":8},{"context":"Dec","total":4}]}

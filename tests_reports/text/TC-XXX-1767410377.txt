@@ -1,0 +1,5 @@
+Context   : Test - Get Inventory By Vehicle ID
+Title     : TC-XXX
+Record    : 
+
+Result : {"status":"success","message":"inventory fetched","data":[{"id":"325eb03f-8133-5d10-10dc-464ff3951cff","inventory_name":"sit praesentium","inventory_category":"Safety","inventory_qty":2,"inventory_storage":"Back Seat Pocket","created_at":"2024-09-14 11:13:16"},{"id":"a892e8e3-f89e-8d74-064b-66d6b2dcb8af","inventory_name":"Secondary Tire","inventory_category":"Maintenance","inventory_qty":2,"inventory_storage":"Trunk","created_at":"2026-01-03 01:06:58"},{"id":"3ca15bb3-a64a-ecd0-2b53-678e1a32d93f","inventory_name":"cumque eligendi","inventory_category":"Maintenance","inventory_qty":1,"inventory_storage":"Dashboard","created_at":"2023-01-09 23:39:47"},{"id":"11edeee6-2df5-279e-0dbb-156e735a0054","inventory_name":"adipisci hic voluptatem","inventory_category":"Electronics","inventory_qty":2,"inventory_storage":"Dashboard","created_at":"2023-07-28 23:39:59"}]}

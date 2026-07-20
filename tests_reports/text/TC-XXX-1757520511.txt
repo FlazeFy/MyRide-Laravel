@@ -1,0 +1,5 @@
+Context   : Test - Get Summary Apps
+Title     : TC-XXX
+Record    : 
+
+Result : {"status":"success","message":"stats fetched","data":{"total_vehicle":45,"total_service":0,"total_clean":1,"total_driver":0,"total_trip":300,"total_user":16}}

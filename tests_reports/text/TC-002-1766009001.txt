@@ -1,0 +1,5 @@
+Context   : Test - Post Get Register Validation Token
+Title     : TC-002
+Record    : 
+
+Result : {"status":"success","message":"the validation token has been sended to flazen.work@gmail.com email account"}

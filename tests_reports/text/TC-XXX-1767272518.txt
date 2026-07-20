@@ -1,0 +1,5 @@
+Context   : Test - Get Reminder By Vehicle ID
+Title     : TC-XXX
+Record    : 
+
+Result : {"status":"success","message":"reminder fetched","data":[{"id":"46ffa34d-16a7-407f-0da4-fafe90a666b3","reminder_title":"Dolor omnis dicta sapiente dolores id.","reminder_context":"Service","reminder_body":"Tenetur distinctio dicta qui.","reminder_attachment":null,"created_at":"2026-01-03 02:26:17","remind_at":"2026-01-05 02:26:17"}]}

@@ -1,0 +1,5 @@
+Context   : Test - Soft Delete Vehicle By ID
+Title     : TC-XXX
+Record    : 
+
+Result : {"status":"success","message":"vehicle deleted"}

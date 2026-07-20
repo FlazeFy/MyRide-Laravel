@@ -1,0 +1,46 @@
+Context   : Test - Smoke Site Test
+Title     : All API Routes
+Record    : 
+
+7.612ms | 200 | [GET] /api/v1/stats/summary
+2.62ms | 404 | [GET] /api/v1/stats/total/trip/monthly/2024
+1.1959ms | 404 | [GET] /api/v1/stats/total/fuel/monthly/fuel_volume/2024
+0.5689ms | 404 | [GET] /api/v1/stats/total/service/monthly/service_price/2024
+0.531ms | 404 | [GET] /api/v1/stats/total/wash/monthly/wash_price/2024
+1.327ms | 200 | [GET] /api/v1/question/faq
+1.163ms | 404 | [GET] /api/v1/dictionary/type/fuel
+5.445ms | 200 | [GET] /api/v1/trip/discovered
+1.0991ms | 401 | [POST] /api/v1/logout
+0.6471ms | 401 | [GET] /api/v1/vehicle/header
+0.325ms | 401 | [GET] /api/v1/vehicle/name
+0.313ms | 401 | [GET] /api/v1/vehicle/fuel
+0.3152ms | 401 | [GET] /api/v1/vehicle/detail/1
+0.3111ms | 401 | [GET] /api/v1/vehicle/detail/full/1
+0.3021ms | 401 | [GET] /api/v1/vehicle/trip/summary/1
+0.3269ms | 401 | [GET] /api/v1/vehicle/readiness
+1.004ms | 401 | [POST] /api/v1/vehicle
+0.3772ms | 401 | [POST] /api/v1/vehicle/doc/1
+0.3309ms | 401 | [PUT] /api/v1/vehicle/detail/1
+0.3359ms | 401 | [POST] /api/v1/vehicle/image/1
+0.325ms | 401 | [POST] /api/v1/vehicle/image_collection/1
+0.315ms | 401 | [PUT] /api/v1/vehicle/recover/1
+0.299ms | 401 | [DELETE] /api/v1/vehicle/delete/1
+0.2949ms | 401 | [DELETE] /api/v1/vehicle/destroy/1
+0.417ms | 401 | [DELETE] /api/v1/vehicle/document/destroy/1/1
+0.3729ms | 401 | [DELETE] /api/v1/vehicle/image_collection/destroy/1/1
+0.8681ms | 401 | [POST] /api/v1/dictionary
+0.3819ms | 401 | [DELETE] /api/v1/dictionary/1
+0.7489ms | 401 | [GET] /api/v1/wash
+0.69ms | 401 | [POST] /api/v1/wash
+0.3209ms | 401 | [GET] /api/v1/wash/last/1
+0.3219ms | 401 | [GET] /api/v1/wash/summary
+0.3822ms | 401 | [PUT] /api/v1/wash/finish/1
+0.3338ms | 401 | [PUT] /api/v1/wash/1
+0.3238ms | 401 | [DELETE] /api/v1/wash/destroy/1
+0.639ms | 401 | [GET] /api/v1/history
+0.628ms | 401 | [DELETE] /api/v1/history/destroy/1
+0.8731ms | 401 | [GET] /api/v1/chat/nlp
+1.2331ms | 401 | [POST] /api/v1/chat/ai
+0.627ms | 401 | [GET] /api/v1/error
+0.56ms | 401 | [DELETE] /api/v1/error/destroy/1
+0.741ms | 401 | [GET] /api/v1/reminder

@@ -1,0 +1,5 @@
+Context   : Integration Test - Success Get Summary Apps (Public)
+Title     : TC-INT-ST-001-01
+Record    : 
+
+Result : {"status":"success","message":"stats fetched","data":{"total_vehicle":24,"total_service":1,"total_wash":2,"total_driver":2,"total_trip":167,"total_user":19}}

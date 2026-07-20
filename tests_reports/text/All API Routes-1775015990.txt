@@ -1,0 +1,26 @@
+Context   : Test - Smoke Site Test
+Title     : All API Routes
+Record    : 
+
+7.8242ms | 200 | [public] /api/v1/stats/summary
+3.566ms | 404 | [public] /api/v1/stats/total/trip/monthly/2024
+1.209ms | 404 | [public] /api/v1/stats/total/fuel/monthly/fuel_volume/2024
+0.6862ms | 404 | [public] /api/v1/stats/total/service/monthly/service_price/2024
+0.6602ms | 404 | [public] /api/v1/stats/total/wash/monthly/wash_price/2024
+1.9569ms | 200 | [public] /api/v1/question/faq
+2.876ms | 404 | [public] /api/v1/dictionary/type/fuel
+8.8592ms | 200 | [public] /api/v1/trip/discovered
+2.0099ms | 401 | [private] /api/v1/vehicle/header
+0.356ms | 401 | [private] /api/v1/vehicle/name
+0.33ms | 401 | [private] /api/v1/vehicle/fuel
+0.3181ms | 401 | [private] /api/v1/vehicle/detail/1
+0.3219ms | 401 | [private] /api/v1/vehicle/detail/full/1
+0.3061ms | 401 | [private] /api/v1/vehicle/trip/summary/1
+0.2911ms | 401 | [private] /api/v1/vehicle/readiness
+0.5741ms | 401 | [private] /api/v1/wash
+0.3021ms | 401 | [private] /api/v1/wash/last/1
+0.3099ms | 401 | [private] /api/v1/wash/summary
+0.515ms | 401 | [private] /api/v1/history
+0.5541ms | 401 | [private] /api/v1/chat
+0.5238ms | 401 | [private] /api/v1/error
+0.6039ms | 401 | [private] /api/v1/reminder

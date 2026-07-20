@@ -1,0 +1,5 @@
+Context   : Test - Put Update Fuel By ID
+Title     : TC-XXX
+Record    : 
+
+Result : {"status":"success","message":"fuel updated"}

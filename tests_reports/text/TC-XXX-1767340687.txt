@@ -1,0 +1,5 @@
+Context   : Test - Post Create Fuel
+Title     : TC-XXX
+Record    : 
+
+Result : {"status":"success","message":"fuel created"}

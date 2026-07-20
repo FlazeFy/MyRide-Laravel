@@ -1,0 +1,5 @@
+Context   : Test - Get Next Service
+Title     : TC-XXX
+Record    : 
+
+Result : {"status":"success","message":"service fetched","data":{"service_category":"Inspection","service_price_total":3844649,"service_location":"quo aliquam","service_note":"Voluptatem dolores dolores quibusdam. Et suscipit sit et vel rerum accusamus quasi. Voluptate adipisci deleniti assumenda. Alias reiciendis quidem sit et maiores tempora corporis sit. Non iure nihil temporibus ut.","remind_at":"2026-01-08 06:25:37","vehicle_plate_number":"F 8293 OU"}}

@@ -1,0 +1,5 @@
+Context   : Test - Put Update Vehicle Detail By ID
+Title     : TC-XXX
+Record    : 
+
+Result : {"status":"success","message":"vehicle updated"}

@@ -1,0 +1,5 @@
+Context   : Test - Get Trip History Coordinate By Location Name
+Title     : TC-XXX
+Record    : 
+
+Result : {"status":"success","message":"trip fetched","data":[{"trip_location_name":"GBK","trip_location_coordinate":"-6.219242194114417, 106.80348958691853"},{"trip_location_name":"My Kost","trip_location_coordinate":"-6.226828716225759, 106.82152290589822"},{"trip_location_name":"My Kosts","trip_location_coordinate":"-6.226928174450419, 106.82155241019738"},{"trip_location_name":"TLT (My Office)","trip_location_coordinate":"-6.2030165592735695, 106.80200983531488"}]}

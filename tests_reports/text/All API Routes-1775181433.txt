@@ -1,0 +1,24 @@
+Context   : Test - Smoke Site Test
+Title     : All API Routes
+Record    : 
+
+7.1259ms | 200 | [GET] /api/v1/stats/summary
+2.5971ms | 404 | [GET] /api/v1/stats/total/trip/monthly/2024
+1.3549ms | 404 | [GET] /api/v1/stats/total/fuel/monthly/fuel_volume/2024
+0.6521ms | 404 | [GET] /api/v1/stats/total/service/monthly/service_price/2024
+0.571ms | 404 | [GET] /api/v1/stats/total/wash/monthly/wash_price/2024
+1.241ms | 200 | [GET] /api/v1/question/faq
+2.6531ms | 404 | [GET] /api/v1/dictionary/type/fuel
+7.75ms | 200 | [GET] /api/v1/trip/discovered
+2.5911ms | 401 | [POST] /api/v1/logout
+0.8931ms | 401 | [GET] /api/v1/vehicle/header
+0.3262ms | 401 | [GET] /api/v1/vehicle/name
+0.299ms | 401 | [GET] /api/v1/vehicle/fuel
+0.3052ms | 401 | [GET] /api/v1/vehicle/detail/1
+0.308ms | 401 | [GET] /api/v1/vehicle/detail/full/1
+0.36ms | 401 | [GET] /api/v1/vehicle/trip/summary/1
+0.3061ms | 401 | [GET] /api/v1/vehicle/readiness
+1.065ms | 401 | [POST] /api/v1/vehicle
+0.402ms | 401 | [POST] /api/v1/vehicle/doc/1
+0.314ms | 401 | [PUT] /api/v1/vehicle/detail/1
+0.3109ms | 401 | [POST] /api/v1/vehicle/image/1

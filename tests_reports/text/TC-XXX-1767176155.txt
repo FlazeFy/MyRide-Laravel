@@ -1,0 +1,5 @@
+Context   : Test - Put Recover Vehicle By ID
+Title     : TC-XXX
+Record    : 
+
+Result : {"status":"success","rows_affected":1,"message":"vehicle recovered"}

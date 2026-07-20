@@ -1,0 +1,5 @@
+Context   : Test - Get Total Inventory By Inventory Storage
+Title     : TC-XXX
+Record    : 
+
+Result : {"status":"success","message":"stats fetched","data":[{"context":"Trunk","total":2}]}

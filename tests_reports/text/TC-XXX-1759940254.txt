@@ -1,0 +1,5 @@
+Context   : Test - Get Driver Vehicle Manage List
+Title     : TC-XXX
+Record    : 
+
+Result : {"status":"success","message":"driver fetched","data":{"vehicle":[{"id":"8585ab36-fc67-139c-35c6-608931244634","vehicle_name":"Non dolorum velit corrupti","vehicle_plate_number":"C 80 OON"},{"id":"ec59ba31-b101-0600-2ae1-9d0ef6b91a41","vehicle_name":"Distinctio dolore quisquam autem","vehicle_plate_number":"S 191 BI"}],"driver":[{"id":"a3f743ae-a373-11f0-86ad-3216422910e8","username":"tester_jhona","fullname":"asd"}],"assigned":[{"id":"1c8a4d88-d9b0-11ed-afa1-0242ac120002","vehicle_plate_number":"C 80 OON","vehicle_id":"8585ab36-fc67-139c-35c6-608931244634","driver_id":"a3f743ae-a373-11f0-86ad-3216422910e8","username":"tester_jhona","fullname":"asd"},{"id":"465c0721-bd25-4808-9570-11444e7d0b29","vehicle_plate_number":"S 191 BI","vehicle_id":"ec59ba31-b101-0600-2ae1-9d0ef6b91a41","driver_id":"a3f743ae-a373-11f0-86ad-3216422910e8","username":"tester_jhona","fullname":"asd"}]}}

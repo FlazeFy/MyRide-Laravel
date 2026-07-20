@@ -1,0 +1,5 @@
+Context   : Test - Get Last Fuel
+Title     : TC-XXX
+Record    : 
+
+Result : {"status":"success","message":"fuel fetched","data":{"vehicle_plate_number":"K 2612 PRM","vehicle_type":"Sedan","fuel_volume":20,"fuel_price_total":300000,"fuel_brand":"Shell","fuel_type":"Shell Super","fuel_ron":92,"created_at":"2026-01-02 07:58:07"}}

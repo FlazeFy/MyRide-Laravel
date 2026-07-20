@@ -1,0 +1,5 @@
+Context   : Test - Get All Vehicle Fuel
+Title     : TC-XXX
+Record    : 
+
+Result : {"status":"success","message":"vehicle fetched","data":[{"id":"8585ab36-fc67-139c-35c6-608931244634","vehicle_name":"Non dolorum velit corrupti","vehicle_plate_number":"C 80 OON","vehicle_fuel_status":"Low"},{"id":"ec59ba31-b101-0600-2ae1-9d0ef6b91a41","vehicle_name":"Distinctio dolore quisquam autem","vehicle_plate_number":"S 191 BI","vehicle_fuel_status":"Normal"}]}

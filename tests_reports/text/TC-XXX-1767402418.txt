@@ -1,0 +1,5 @@
+Context   : Test - Post Create Inventory
+Title     : TC-XXX
+Record    : 
+
+Result : {"status":"success","message":"inventory created"}

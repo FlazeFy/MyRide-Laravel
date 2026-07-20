@@ -1,0 +1,5 @@
+Context   : Test - Hard Delete Reminder By Id
+Title     : TC-XXX
+Record    : 
+
+Result : {"status":"success","message":"reminder permentally deleted"}

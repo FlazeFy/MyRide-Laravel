@@ -1,0 +1,5 @@
+Context   : Test - Get All Driver Name
+Title     : TC-XXX
+Record    : 
+
+Result : {"status":"success","message":"driver fetched","data":[{"id":"f46fe7cf-e0fe-253b-209d-4b7fa1ac1932","username":"salvatore41","fullname":"Eryn Kautzer"}]}

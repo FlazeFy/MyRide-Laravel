@@ -1,0 +1,5 @@
+Context   : Test - Hard Delete Vehicle By ID
+Title     : TC-XXX
+Record    : 
+
+Result : {"status":"success","message":"vehicle permentally deleted"}

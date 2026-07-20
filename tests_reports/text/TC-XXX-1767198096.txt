@@ -1,0 +1,5 @@
+Context   : Test - Get Vehicle Trip Summary By ID
+Title     : TC-XXX
+Record    : 
+
+Result : {"status":"success","message":"vehicle fetched","data":{"most_person_with":"alessandro shields","vehicle_total_trip_distance":44.24,"most_origin":"paris sorbet","most_destination":"sarang oci","most_category":"Nature Retreat"}}

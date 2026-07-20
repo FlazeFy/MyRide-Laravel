@@ -1,0 +1,50 @@
+Context   : Test - Smoke Site Test
+Title     : All API Routes
+Record    : 
+
+11.6889ms | 200 | [public] /api/v1/stats/summary
+5.8858ms | 404 | [public] /api/v1/stats/total/trip/monthly/2024
+1.699ms | 404 | [public] /api/v1/stats/total/fuel/monthly/fuel_volume/2024
+0.762ms | 404 | [public] /api/v1/stats/total/service/monthly/service_price/2024
+0.757ms | 404 | [public] /api/v1/stats/total/wash/monthly/wash_price/2024
+2.1811ms | 200 | [public] /api/v1/question/faq
+1.8809ms | 404 | [public] /api/v1/dictionary/type/fuel
+7.498ms | 200 | [public] /api/v1/trip/discovered
+2.687ms | 401 | [private] /api/v1/vehicle/header
+0.4659ms | 401 | [private] /api/v1/vehicle/name
+0.3631ms | 401 | [private] /api/v1/vehicle/fuel
+0.371ms | 401 | [private] /api/v1/vehicle/detail/1
+0.3691ms | 401 | [private] /api/v1/vehicle/detail/full/1
+0.349ms | 401 | [private] /api/v1/vehicle/trip/summary/1
+0.3319ms | 401 | [private] /api/v1/vehicle/readiness
+0.6571ms | 401 | [private] /api/v1/wash
+0.34ms | 401 | [private] /api/v1/wash/last/1
+0.3228ms | 401 | [private] /api/v1/wash/summary
+0.613ms | 401 | [private] /api/v1/history
+0.7799ms | 401 | [private] /api/v1/chat
+0.7648ms | 401 | [private] /api/v1/error
+0.7591ms | 401 | [private] /api/v1/reminder
+0.3588ms | 401 | [private] /api/v1/reminder/next
+0.3622ms | 401 | [private] /api/v1/reminder/recently
+0.3788ms | 401 | [private] /api/v1/reminder/vehicle/1
+0.6611ms | 401 | [private] /api/v1/service
+0.3669ms | 401 | [private] /api/v1/service/next
+0.335ms | 401 | [private] /api/v1/service/spending
+0.344ms | 401 | [private] /api/v1/service/vehicle/1
+0.659ms | 401 | [private] /api/v1/driver
+0.33ms | 401 | [private] /api/v1/driver/name
+0.3321ms | 401 | [private] /api/v1/driver/vehicle
+0.3312ms | 401 | [private] /api/v1/driver/vehicle/list
+0.3388ms | 401 | [private] /api/v1/stats/total/trip/all
+0.3462ms | 401 | [private] /api/v1/stats/journey/1
+0.3331ms | 401 | [private] /api/v1/stats/partner
+0.3269ms | 401 | [private] /api/v1/stats/place
+0.3331ms | 401 | [private] /api/v1/stats/total/most_person_trip_with
+0.3359ms | 401 | [private] /api/v1/stats/total/inventory/all
+0.3319ms | 401 | [private] /api/v1/stats/total/vehicle/all
+0.334ms | 401 | [private] /api/v1/stats/total/service/all
+0.349ms | 401 | [private] /api/v1/stats/total/trip/monthly/2024/1
+0.6351ms | 401 | [private] /api/v1/fuel
+0.3378ms | 401 | [private] /api/v1/fuel/last
+0.3312ms | 401 | [private] /api/v1/fuel/summary/2024-01
+0.335ms | 401 | [private] /api/v1/trip

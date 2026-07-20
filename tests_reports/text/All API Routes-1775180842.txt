@@ -1,0 +1,54 @@
+Context   : Test - Smoke Site Test
+Title     : All API Routes
+Record    : 
+
+6.9849ms | 200 | [public] /api/v1/stats/summary
+3.1421ms | 404 | [public] /api/v1/stats/total/trip/monthly/2024
+1.0571ms | 404 | [public] /api/v1/stats/total/fuel/monthly/fuel_volume/2024
+0.51ms | 404 | [public] /api/v1/stats/total/service/monthly/service_price/2024
+0.494ms | 404 | [public] /api/v1/stats/total/wash/monthly/wash_price/2024
+1.3962ms | 200 | [public] /api/v1/question/faq
+1.642ms | 404 | [public] /api/v1/dictionary/type/fuel
+7.3202ms | 200 | [public] /api/v1/trip/discovered
+1.991ms | 401 | [private] /api/v1/error
+0.7739ms | 401 | [private] /api/v1/reminder
+0.349ms | 401 | [private] /api/v1/reminder/next
+0.3102ms | 401 | [private] /api/v1/reminder/recently
+0.315ms | 401 | [private] /api/v1/reminder/vehicle/1
+0.7381ms | 401 | [private] /api/v1/service
+0.3419ms | 401 | [private] /api/v1/service/next
+0.3309ms | 401 | [private] /api/v1/service/spending
+0.3181ms | 401 | [private] /api/v1/service/vehicle/1
+0.634ms | 401 | [private] /api/v1/driver
+0.3228ms | 401 | [private] /api/v1/driver/name
+0.2999ms | 401 | [private] /api/v1/driver/vehicle
+0.3018ms | 401 | [private] /api/v1/driver/vehicle/list
+0.4182ms | 401 | [private] /api/v1/stats/total/trip/all
+0.3481ms | 401 | [private] /api/v1/stats/journey/1
+0.3569ms | 401 | [private] /api/v1/stats/partner
+0.3281ms | 401 | [private] /api/v1/stats/place
+0.32ms | 401 | [private] /api/v1/stats/total/most_person_trip_with
+0.315ms | 401 | [private] /api/v1/stats/total/inventory/all
+0.3231ms | 401 | [private] /api/v1/stats/total/vehicle/all
+0.3119ms | 401 | [private] /api/v1/stats/total/service/all
+0.3109ms | 401 | [private] /api/v1/stats/total/trip/monthly/2024/1
+0.5991ms | 401 | [private] /api/v1/fuel
+0.315ms | 401 | [private] /api/v1/fuel/last
+0.3119ms | 401 | [private] /api/v1/fuel/summary/2024-01
+0.3119ms | 401 | [private] /api/v1/trip
+0.3052ms | 401 | [private] /api/v1/trip/last
+0.314ms | 401 | [private] /api/v1/trip/calendar
+0.308ms | 401 | [private] /api/v1/trip/coordinate
+0.3211ms | 401 | [private] /api/v1/trip/coordinate/nearest/-6.193307477576132,106.8290024771821
+0.3111ms | 401 | [private] /api/v1/trip/driver/1
+0.6001ms | 401 | [private] /api/v1/inventory
+0.3159ms | 401 | [private] /api/v1/inventory/vehicle/1
+0.5429ms | 401 | [private] /api/v1/user
+0.3209ms | 401 | [private] /api/v1/user/my_year
+0.313ms | 401 | [private] /api/v1/user/my_profile
+0.8349ms | 401 | [private] /api/v1/export/wash
+0.3202ms | 401 | [private] /api/v1/export/trip
+0.3099ms | 401 | [private] /api/v1/export/fuel
+0.315ms | 401 | [private] /api/v1/export/inventory
+0.3231ms | 401 | [private] /api/v1/export/service
+0.3111ms | 401 | [private] /api/v1/export/driver

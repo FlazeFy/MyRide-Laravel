@@ -1,0 +1,10 @@
+[
+    {
+        "question": "kendaraan dengan perjalanan terbanyak",
+        "sql": "SELECT v.vehicle_name, COUNT(t.id) AS total FROM vehicle v LEFT JOIN trip t ON v.id = t.vehicle_id GROUP BY v.id ORDER BY total DESC LIMIT 1"
+    },
+    {
+        "question": "total biaya bahan bakar per kendaraan",
+        "sql": "SELECT v.vehicle_name, SUM(f.fuel_price_total) AS total_fuel FROM vehicle v LEFT JOIN fuel f ON v.id = f.vehicle_id GROUP BY v.id ORDER BY total_fuel DESC"
+    }
+]

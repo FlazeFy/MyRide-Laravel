@@ -1,0 +1,5 @@
+Context   : Test - Get Recently Reminder
+Title     : TC-XXX
+Record    : 
+
+Result : {"status":"success","message":"reminder fetched","data":{"current_page":1,"data":[{"id":"161df2c1-48fe-545a-1a8d-de0ec354358e","reminder_title":"Dolorem doloremque et blanditiis.","reminder_context":"Warm Up","reminder_body":"Excepturi unde quia amet sed.","remind_at":"2025-12-31 15:16:00","vehicle_plate_number":"F 8293 OU"}],"first_page_url":"http:\/\/127.0.0.1:8000\/api\/v1\/reminder\/recently?page=1","from":1,"last_page":1,"last_page_url":"http:\/\/127.0.0.1:8000\/api\/v1\/reminder\/recently?page=1","links":[{"url":null,"label":"&laquo; Previous","active":false},{"url":"http:\/\/127.0.0.1:8000\/api\/v1\/reminder\/recently?page=1","label":"1","active":true},{"url":null,"label":"Next &raquo;","active":false}],"next_page_url":null,"path":"http:\/\/127.0.0.1:8000\/api\/v1\/reminder\/recently","per_page":15,"prev_page_url":null,"to":1,"total":1}}

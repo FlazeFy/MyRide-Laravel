@@ -1,0 +1,5 @@
+Context   : Integration Test - Success Post Sign Out With Valid Token
+Title     : TC-INT-AU-002-01
+Record    : 
+
+Result : {"status":"success","message":"logout success"}

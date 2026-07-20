@@ -1,0 +1,12 @@
+Context   : Test - Smoke Site Test
+Title     : All API Routes
+Record    : 
+
+11.6298ms | 200 | [public] /api/v1/stats/summary
+5.372ms | 404 | [public] /api/v1/stats/total/trip/monthly/2024
+3.8149ms | 404 | [public] /api/v1/stats/total/fuel/monthly/fuel_volume/2024
+0.71ms | 404 | [public] /api/v1/stats/total/service/monthly/service_price/2024
+0.7212ms | 404 | [public] /api/v1/stats/total/wash/monthly/wash_price/2024
+6.561ms | 200 | [public] /api/v1/question/faq
+12.176ms | 404 | [public] /api/v1/dictionary/type/fuel
+12.6889ms | 200 | [public] /api/v1/trip/discovered

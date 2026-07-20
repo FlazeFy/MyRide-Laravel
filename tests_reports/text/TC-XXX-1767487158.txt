@@ -1,0 +1,5 @@
+Context   : Test - Put Validate Telegram ID
+Title     : TC-XXX
+Record    : 
+
+Result : {"status":"success","message":"telegram ID has been validated"}

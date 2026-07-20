@@ -1,0 +1,5 @@
+Context   : Test - Hard Delete Inventory By Id
+Title     : TC-XXX
+Record    : 
+
+Result : {"status":"success","message":"inventory permentally deleted"}

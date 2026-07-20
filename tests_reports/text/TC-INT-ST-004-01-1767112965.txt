@@ -1,0 +1,5 @@
+Context   : Integration Test - Success Get Total Wash Per Year By Total Price (Public)
+Title     : TC-INT-ST-004-01
+Record    : 
+
+Result : {"status":"success","message":"stats fetched","data":[{"context":"Jan","total":490484},{"context":"Feb","total":628581},{"context":"Mar","total":341671},{"context":"Apr","total":1602063},{"context":"May","total":951133},{"context":"Jun","total":841885},{"context":"Jul","total":728336},{"context":"Aug","total":1378181},{"context":"Sep","total":573575},{"context":"Oct","total":1078956},{"context":"Nov","total":369919},{"context":"Dec","total":958687}]}

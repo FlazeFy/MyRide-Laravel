@@ -1,0 +1,5 @@
+Context   : Test - Get Total Vehicle By Vehicle Transmission
+Title     : TC-XXX
+Record    : 
+
+Result : {"status":"success","message":"stats fetched","data":[{"context":"Manual","total":2}]}

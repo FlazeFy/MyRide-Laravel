@@ -1,0 +1,5 @@
+Context   : Test - Post Trip
+Title     : TC-XXX
+Record    : 
+
+Result : {"status":"success","message":"trip created"}

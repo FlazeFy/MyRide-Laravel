@@ -1,0 +1,5 @@
+Context   : Integration Test - Success Post Regenerate Register Token With Valid Data
+Title     : TC-INT-AU-005-01
+Record    : 
+
+Result : {"status":"success","message":"the validation token has been sended to flazen.work@gmail.com email account"}

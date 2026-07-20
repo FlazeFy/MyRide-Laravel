@@ -1,0 +1,5 @@
+Context   : Test - Get Total Trip By Context
+Title     : TC-XXX
+Record    : 
+
+Result : {"status":"success","message":"stats fetched","data":[{"context":"Others","total":4}]}

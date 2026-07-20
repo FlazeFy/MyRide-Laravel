@@ -1,0 +1,5 @@
+Context   : Integration Test - Success Get Total Service Per Year By Total Item (Protected)
+Title     : TC-INT-ST-004-02
+Record    : 
+
+Result : {"status":"success","message":"stats fetched","data":[{"context":"Jan","total":0},{"context":"Feb","total":0},{"context":"Mar","total":0},{"context":"Apr","total":0},{"context":"May","total":0},{"context":"Jun","total":0},{"context":"Jul","total":0},{"context":"Aug","total":0},{"context":"Sep","total":1},{"context":"Oct","total":1},{"context":"Nov","total":0},{"context":"Dec","total":1}]}

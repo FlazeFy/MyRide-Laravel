@@ -1,0 +1,5 @@
+Context   : Test - Get Trip Discovered
+Title     : TC-XXX
+Record    : 
+
+Result : {"status":"success","message":"trip fetched","data":{"total_trip":44,"distance_km":559.99,"last_update":"2026-01-02 23:05:08"}}

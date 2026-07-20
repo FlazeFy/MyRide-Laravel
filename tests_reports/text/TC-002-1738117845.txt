@@ -1,0 +1,5 @@
+Context   : Test - Sign Out
+Title     : TC-002
+Record    : 
+
+Result : {"message":"logout success"}
