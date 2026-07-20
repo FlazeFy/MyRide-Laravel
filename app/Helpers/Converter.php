@@ -4,11 +4,11 @@ namespace App\Helpers;
 
 class Converter
 {
-    public static function convert_price_k($val) {
+    public static function convertPriceK($val) {
         return $val >= 1000 ? round($val / 1000, 1) . 'K' : $val;
     }
 
-    public static function calculate_distance($lat1, $lon1, $lat2, $lon2, $unit = 'km') {
+    public static function calculateDistance($lat1, $lon1, $lat2, $lon2, $unit = 'km') {
         $theta = $lon1 - $lon2;
         $distance = sin(deg2rad($lat1)) * sin(deg2rad($lat2)) + cos(deg2rad($lat1)) * cos(deg2rad($lat2)) * cos(deg2rad($theta));
         $distance = acos($distance);

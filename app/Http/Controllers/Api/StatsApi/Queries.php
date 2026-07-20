@@ -1415,7 +1415,7 @@ class Queries extends Controller
                 $lon1 = $origin_coor[1];
                 $lat2 = $destination_coor[0];
                 $lon2 = $destination_coor[1];
-                $distance = Converter::calculate_distance($lat1, $lon1, $lat2, $lon2, $unit = 'km');
+                $distance = Converter::calculateDistance($lat1, $lon1, $lat2, $lon2, $unit = 'km');
     
                 return [
                     'journey_category' => 'trip',

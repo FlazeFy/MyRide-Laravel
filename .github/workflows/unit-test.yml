@@ -37,7 +37,7 @@ jobs:
         run: |
           php artisan test --testsuite=Unit | tee test-report.txt
 
-      - name: Send test report via email
+      - name: Send Test Report Via Email
         if: always()
         uses: dawidd6/action-send-mail@v3
         with:

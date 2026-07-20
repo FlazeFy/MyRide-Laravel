@@ -129,6 +129,7 @@ class Generator
             ";
         }
     }
+    
     public static function getPlateNumber() {
         // First Word: 1–2 letters (A–Z)
         $first = '';
@@ -153,5 +154,4 @@ class Generator
     
         return "$first $second $last";
     }
-    
 }

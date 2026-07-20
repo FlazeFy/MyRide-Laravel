@@ -21,3 +21,4 @@ yarn-error.log
 /.vscode
 /secrets
 .env.testing
+tests_reports

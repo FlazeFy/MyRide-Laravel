@@ -61,7 +61,7 @@ class TripModel extends Model
                 [$originLat, $originLng] = explode(',', $item->trip_origin_coordinate);
                 [$destLat, $destLng] = explode(',', $item->trip_destination_coordinate);
 
-                $distance = Converter::calculate_distance((float) $originLat,(float) $originLng,(float) $destLat,(float) $destLng, 'km');
+                $distance = Converter::calculateDistance((float) $originLat,(float) $originLng,(float) $destLat,(float) $destLng, 'km');
                 $totalDistance += (float) $distance;
 
                 if (is_null($lastUpdate) || $item->last_update > $lastUpdate) $lastUpdate = $item->last_update;
@@ -127,7 +127,7 @@ class TripModel extends Model
                 $lat2 = $destination_coor[0];
                 $lon2 = $destination_coor[1];
 
-                $distance = Converter::calculate_distance($lat1, $lon1, $lat2, $lon2, $unit = 'km');
+                $distance = Converter::calculateDistance($lat1, $lon1, $lat2, $lon2, $unit = 'km');
                 $total_distance = $total_distance + $distance;
             }
         }
@@ -326,7 +326,7 @@ class TripModel extends Model
             [$lat1, $lon1] = explode(",", $trip->trip_origin_coordinate);
             [$lat2, $lon2] = explode(",", $trip->trip_destination_coordinate);
             // Calculate distance
-            $distance = Converter::calculate_distance($lat1, $lon1, $lat2, $lon2, 'km');
+            $distance = Converter::calculateDistance($lat1, $lon1, $lat2, $lon2, 'km');
 
             foreach ($persons as $person) {
                 $person = trim($person);
@@ -559,7 +559,7 @@ class TripModel extends Model
             if ($item->trip_origin_name && $item->trip_origin_coordinate) {
                 [$lat, $lng] = explode(',', $item->trip_origin_coordinate);
 
-                $distance = Converter::calculate_distance((float) $inputLat, (float) $inputLng, (float) $lat, (float) $lng, 'km');
+                $distance = Converter::calculateDistance((float) $inputLat, (float) $inputLng, (float) $lat, (float) $lng, 'km');
                 $distanceMeter = $distance * 1000;
 
                 if (!isset($places[$item->trip_origin_name])) {
@@ -585,7 +585,7 @@ class TripModel extends Model
             if ($item->trip_destination_name && $item->trip_destination_coordinate) {
                 [$lat, $lng] = explode(',', $item->trip_destination_coordinate);
 
-                $distance = Converter::calculate_distance((float) $inputLat, (float) $inputLng, (float) $lat, (float) $lng, 'km');
+                $distance = Converter::calculateDistance((float) $inputLat, (float) $inputLng, (float) $lat, (float) $lng, 'km');
                 $distanceMeter = $distance * 1000;
 
                 if (!isset($places[$item->trip_destination_name])) {

@@ -8,8 +8,7 @@ use PHPUnit\Framework\TestCase;
 class GeneratorTest extends TestCase
 {
     /** @test */
-    public function it_generates_a_valid_uuid()
-    {
+    public function getUuidGeneratesAValidUuid() {
         // Test Data: Generate UUID
         $uuid = Generator::getUUID();
 
@@ -21,8 +20,7 @@ class GeneratorTest extends TestCase
     }
 
     /** @test */
-    public function it_generates_unique_uuids()
-    {
+    public function getUuidGeneratesUniqueUuids() {
         // Test Data: Generate two UUIDs
         $uuid1 = Generator::getUUID();
         $uuid2 = Generator::getUUID();
@@ -32,8 +30,7 @@ class GeneratorTest extends TestCase
     }
 
     /** @test */
-    public function it_generates_validation_token_with_requested_length()
-    {
+    public function getTokenValidationGeneratesValidationTokenWithRequestedLength() {
         // Test Data: Generate validation token with length of 8
         $token = Generator::getTokenValidation(8);
 
@@ -42,8 +39,7 @@ class GeneratorTest extends TestCase
     }
 
     /** @test */
-    public function it_generates_validation_token_using_only_valid_characters()
-    {
+    public function getTokenValidationGeneratesValidationTokenUsingOnlyValidCharacters() {
         // Test Data: Generate validation token
         $token = Generator::getTokenValidation(20);
 
@@ -52,8 +48,7 @@ class GeneratorTest extends TestCase
     }
 
     /** @test */
-    public function it_generates_empty_token_when_length_is_zero()
-    {
+    public function getTokenValidationGeneratesEmptyTokenWhenLengthIsZero() {
         // Test Data: Generate validation token with zero length
         $token = Generator::getTokenValidation(0);
 
@@ -62,8 +57,7 @@ class GeneratorTest extends TestCase
     }
 
     /** @test */
-    public function it_returns_random_date_when_null_is_zero()
-    {
+    public function getRandomDateReturnsRandomDateWhenNullIsZero() {
         // Test Data: Generate random date
         $date = Generator::getRandomDate(0);
 
@@ -81,12 +75,88 @@ class GeneratorTest extends TestCase
     }
 
     /** @test */
-    public function it_returns_null_when_null_parameter_is_not_zero()
-    {
+    public function getRandomDateReturnsNullWhenNullParameterIsNotZero() {
         // Test Data: Generate random date with non-zero parameter
         $date = Generator::getRandomDate(1);
 
         // Validate returned value is null
         $this->assertNull($date);
+    }
+    
+    /** @test */
+    public function generateMonthNameReturnsExpectedMonthNameBasedOnType() {
+        // Test Data: Month index with long and short type
+        $longMonth = Generator::generateMonthName(1, 'long');
+        $shortMonth = Generator::generateMonthName(1, 'short');
+
+        // Validate generated month names
+        $this->assertEquals('January', $longMonth);
+        $this->assertEquals('Jan', $shortMonth);
+    }
+
+    /** @test */
+    public function getMessageTemplateReturnsExpectedMessageBasedOnType() {
+        // Test Data: Various message types
+        $create = Generator::getMessageTemplate('create', 'User');
+        $update = Generator::getMessageTemplate('update', 'User');
+        $delete = Generator::getMessageTemplate('delete', 'User');
+        $permanentlyDelete = Generator::getMessageTemplate('permanently delete', 'User');
+        $fetch = Generator::getMessageTemplate('fetch', 'User');
+        $recover = Generator::getMessageTemplate('recover', 'User');
+        $analyze = Generator::getMessageTemplate('analyze', 'User');
+        $generate = Generator::getMessageTemplate('generate', 'User');
+        $notFound = Generator::getMessageTemplate('not_found', 'User');
+        $unknownError = Generator::getMessageTemplate('unknown_error', '');
+        $conflict = Generator::getMessageTemplate('conflict', 'Email');
+        $custom = Generator::getMessageTemplate('custom', 'Custom message');
+        $validationFailed = Generator::getMessageTemplate('validation_failed', 'email is required');
+        $permission = Generator::getMessageTemplate('permission', 'Admin');
+        $default = Generator::getMessageTemplate('invalid', '');
+
+        // Validate generated messages
+        $this->assertEquals('User created', $create);
+        $this->assertEquals('User updated', $update);
+        $this->assertEquals('User deleted', $delete);
+        $this->assertEquals('User permanently deleted', $permanentlyDelete);
+        $this->assertEquals('User fetched', $fetch);
+        $this->assertEquals('User recovered', $recover);
+        $this->assertEquals('User analyzed', $analyze);
+        $this->assertEquals('User generated', $generate);
+        $this->assertEquals('User not found', $notFound);
+        $this->assertEquals('something wrong. please contact admin', $unknownError);
+        $this->assertEquals('Email has been used. try another', $conflict);
+        $this->assertEquals('Custom message', $custom);
+        $this->assertEquals('validation failed : email is required', $validationFailed);
+        $this->assertEquals('permission denied. only Admin can use this feature', $permission);
+        $this->assertEquals('failed to get respond message', $default);
+    }
+
+    /** @test */
+    public function generateDocTemplateReturnsExpectedTemplateBasedOnType() {
+        // Test Data: Generate document templates
+        $footer = Generator::generateDocTemplate('footer');
+        $header = Generator::generateDocTemplate('header');
+        $style = Generator::generateDocTemplate('style');
+
+        // Validate footer template
+        $this->assertStringContainsString('Parts of FlazenApps', $footer);
+        $this->assertStringContainsString('Generated at', $footer);
+
+        // Validate header template
+        $this->assertStringContainsString('MyRide', $header);
+        $this->assertStringContainsString('Management Apps for your vehicle', $header);
+
+        // Validate style template
+        $this->assertStringContainsString('<style>', $style);
+        $this->assertStringContainsString('font-family: Helvetica', $style);
+    }
+
+    /** @test */
+    public function getPlateNumberGeneratesValidPlateNumber() {
+        // Test Data: Generate plate number
+        $plateNumber = Generator::getPlateNumber();
+
+        // Validate plate number format
+        $this->assertMatchesRegularExpression('/^[A-Z]{1,2} [1-9][0-9]{1,3} [A-Z]{2,3}$/', $plateNumber);
     }
 }
