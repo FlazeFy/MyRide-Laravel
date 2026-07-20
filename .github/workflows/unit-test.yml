@@ -1,4 +1,4 @@
-name: Laravel Unit Test
+name: MyRide Unit Test
 
 on:
   push:
@@ -9,7 +9,7 @@ on:
       - main
 
 jobs:
-  phpunit:
+  helpers-test:
     runs-on: ubuntu-latest
 
     steps:
@@ -33,4 +33,30 @@ jobs:
         run: php artisan key:generate
 
       - name: Run Unit Tests
-        run: php artisan test --testsuite=Unit
+        id: tests
+        run: |
+          php artisan test --testsuite=Unit | tee test-report.txt
+
+      - name: Send test report via email
+        if: always()
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          secure: true
+          username: ${{ secrets.MAIL_USERNAME }}
+          password: ${{ secrets.MAIL_PASSWORD }}
+          subject: "Unit Test Report - ${{ job.status }} - ${{ github.repository }}"
+          to: ${{ secrets.MAIL_TO }}
+          from: MyRide Automation Test Bot
+          body: |
+            Test run finished with status: ${{ job.status }}
+
+            Module: PHP Helpers
+            Repository: ${{ github.repository }}
+            Branch: ${{ github.ref_name }}
+            Commit: ${{ github.sha }}
+            Triggered by: ${{ github.actor }}
+
+            See attached test report.
+          attachments: test-report.txt
