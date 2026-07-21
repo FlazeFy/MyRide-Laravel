@@ -340,7 +340,13 @@ class Commands extends Controller
                     $check_user = UserModel::isUsernameUsed($username);
                     if (!$check_user) {
                         // Delete request after validation
-                        ValidateRequestModel::destroy($valid->id);
+                        $deleted = ValidateRequestModel::destroy($valid->id);
+                        if ($deleted === 0) {
+                            return response()->json([
+                                'status' => 'error',
+                                'message' => Generator::getMessageTemplate("unknown_error", null),
+                            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+                        }
 
                         // Create user
                         $data = (object)[

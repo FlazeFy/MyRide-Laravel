@@ -2913,7 +2913,7 @@
                 ],
                 "summary": "Get Export Wash Dataset",
                 "description": "This request is used to export all wash data (dataset). To test it, you must execute the request in a web browser to download the file. This request interacts with the MySQL database, has a protected routes, exported file, and broadcast message with Telegram.",
-                "operationId": "02d25059f8c5470d729015ab9e7af8a5",
+                "operationId": "492fa430cda4b444c26d9ef9e6f2c910",
                 "responses": {
                     "200": {
                         "description": "Export wash successfully. File downloaded as `xlsx` format and ordered in descending order by `created_at`"
@@ -2973,7 +2973,7 @@
                 ],
                 "summary": "Get Export Fuel Dataset",
                 "description": "This request is used to export all fuel data (dataset). To test it, you must execute the request in a web browser to download the file. This request interacts with the MySQL database, has a protected routes, exported file, and broadcast message with Telegram.",
-                "operationId": "205c1243aa0342561c309292662c9f07",
+                "operationId": "81e941ed9405fbb609ebdffe35cd66b9",
                 "responses": {
                     "200": {
                         "description": "Export fuel successfully. File downloaded as `xlsx` format and ordered in descending order by `created_at`"
@@ -3033,7 +3033,7 @@
                 ],
                 "summary": "Get Export Inventory Dataset",
                 "description": "This request is used to export all inventory data (dataset). To test it, you must execute the request in a web browser to download the file. This request interacts with the MySQL database, has a protected routes, exported file, and broadcast message with Telegram.",
-                "operationId": "775572b984a49144f601693abaa8be03",
+                "operationId": "ac42c5cc297d9cfb5425eb5adaa29080",
                 "responses": {
                     "200": {
                         "description": "Export inventory successfully. File downloaded as `xlsx` format and ordered in descending order by `created_at`"
@@ -3093,7 +3093,7 @@
                 ],
                 "summary": "Get Export Service Dataset",
                 "description": "This request is used to export all service data (dataset). To test it, you must execute the request in a web browser to download the file. This request interacts with the MySQL database, has a protected routes, exported file, and broadcast message with Telegram.",
-                "operationId": "956c5632271d9947a85a77d7350ef04c",
+                "operationId": "74f9783c93d59d31a09c6a03eafbd2df",
                 "responses": {
                     "200": {
                         "description": "Export service successfully. File downloaded as `xlsx` format and ordered in descending order by `created_at`"
@@ -3153,7 +3153,7 @@
                 ],
                 "summary": "Get Export Driver Dataset",
                 "description": "This request is used to export all driver data (dataset). To test it, you must execute the request in a web browser to download the file. This request interacts with the MySQL database, has a protected routes, exported file, and broadcast message with Telegram.",
-                "operationId": "1a2bf45f28487891a988febcbcbef945",
+                "operationId": "58728df86fd6904ec5a4cd417d0ebf2b",
                 "responses": {
                     "200": {
                         "description": "Export driver successfully. File downloaded as `xlsx` format and ordered in descending order by `created_at`"
@@ -3213,7 +3213,7 @@
                 ],
                 "summary": "Get Export Trip Dataset",
                 "description": "This request is used to export all trip data (dataset). To test it, you must execute the request in a web browser to download the file. This request interacts with the MySQL database, has a protected routes, exported file, and broadcast message with Telegram.",
-                "operationId": "31eaffd57f17c1c5c49fe4db4c4a8839",
+                "operationId": "acd5acffd3fb0f0526f39d1ddc400beb",
                 "responses": {
                     "200": {
                         "description": "Export trip successfully. File downloaded as `xlsx` format and ordered in descending order by `created_at`"
@@ -4848,7 +4848,7 @@
                 ],
                 "summary": "Get Inventory By Vehicle ID",
                 "description": "This request is used to get all inventory by given `vehicle_id`. This request interacts with the MySQL database, has a protected routes, and a pagination.",
-                "operationId": "22ae415791f3b39ae3bf098ce09f34b6",
+                "operationId": "15532646cc9e31af2976fa20dbcfefd0",
                 "responses": {
                     "200": {
                         "description": "Inventory fetched successfully. Ordered in descending order by `inventory_name`",
@@ -5209,10 +5209,6 @@
                                                             "vehicle_plate_number": {
                                                                 "type": "string",
                                                                 "example": "D 1610 ZBC"
-                                                            },
-                                                            "vehicle_type": {
-                                                                "type": "string",
-                                                                "example": "City Car"
                                                             },
                                                             "reminder_context": {
                                                                 "type": "string",
@@ -5742,7 +5738,7 @@
                 ],
                 "summary": "Get Reminder By Vehicle ID",
                 "description": "This request is used to get reminder by `vehicle_id`. This request interacts with the MySQL database, and has a protected routes.",
-                "operationId": "73387d06e291173fd973bab044aa3b38",
+                "operationId": "63d395240aa933355166e9ed8dbfb073",
                 "parameters": [
                     {
                         "name": "vehicle_id",
@@ -6422,7 +6418,7 @@
                 ],
                 "summary": "Get Service By Vehicle ID",
                 "description": "This request is used to get all service history. This request interacts with the MySQL database, and has a protected routes.",
-                "operationId": "372f13c4dc92a804af46c297dca8fe4c",
+                "operationId": "5b5bd5aa28bc3e5c48e7c7eeaaee4877",
                 "parameters": [
                     {
                         "name": "vehicle_id",
@@ -10162,7 +10158,7 @@
                 ],
                 "summary": "Get Nearest Place By Coordinate",
                 "description": "This request is used to get nearest place (trip destination or trip origin name).  This request interacts with the MySQL database, has protected routes, and a pagination",
-                "operationId": "e421b4387d5bd6671c9d8e707b60d5ed",
+                "operationId": "79d56ffdba0c8bb0baaeac5f59fa1e03",
                 "responses": {
                     "200": {
                         "description": "Trip fetched successfully. Ordered in descending order by `distance`",
@@ -11018,6 +11014,107 @@
                                         "message": {
                                             "type": "string",
                                             "example": "user year not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "something wrong. please contact admin"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/user/validate_request/{type}/{created_by}": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Get Validate Request By Created By",
+                "description": "This request is used to validate a user’s token. It is not implemented in the business logic, but serves only for end-to-end (E2E) and integration testing. It provides an alternative way to obtain a token if another request has already sent the token via email or Telegram. This request interacts with the MySQL database and is protected by route authentication.",
+                "operationId": "b58c26179071f036d81be51af4a932f3",
+                "responses": {
+                    "200": {
+                        "description": "User request fetched successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "user year fetched"
+                                        },
+                                        "data": {
+                                            "type": "string",
+                                            "example": "ABC123"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "protected route need to include api key",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "you need to include the api key"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "user request failed to fetched",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "failed"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "user request not found"
                                         }
                                     },
                                     "type": "object"
@@ -12223,7 +12320,7 @@
                 ],
                 "summary": "Put Recover Vehicle By ID",
                 "description": "This request is used to recover deleted vehicle based on the provided `ID`. This request interacts with the MySQL database, has a protected routes, and audited activity (history).",
-                "operationId": "38e3c6f69d9dbf8489659f13856315cd",
+                "operationId": "747f2ef80b7645e8b645fdd66671fc94",
                 "parameters": [
                     {
                         "name": "id",
