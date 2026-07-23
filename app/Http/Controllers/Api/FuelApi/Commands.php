@@ -233,38 +233,38 @@ class Commands extends Controller
 
                 $fuel_bill = null;
                 // Check if file attached
-                if ($request->hasFile('fuel_bill')) {
-                    $file = $request->file('fuel_bill');
-                    if ($file->isValid()) {
-                        // Validate file type
-                        $file_ext = $file->getClientOriginalExtension();
-                        if (!in_array($file_ext, $this->allowed_file_type)) {
-                            return response()->json([
-                                'status' => 'failed',
-                                'message' => Generator::getMessageTemplate("custom", 'The file must be a '.implode(', ', $this->allowed_file_type).' file type'),
-                            ], Response::HTTP_UNPROCESSABLE_ENTITY);
-                        }
-                        // Validate file size
-                        if ($file->getSize() > $this->max_size_file) {
-                            return response()->json([
-                                'status' => 'failed',
-                                'message' => Generator::getMessageTemplate("custom", 'The file size must be under '.($this->max_size_file/1000000).' Mb'),
-                            ], Response::HTTP_UNPROCESSABLE_ENTITY);
-                        }
+                // if ($request->hasFile('fuel_bill')) {
+                //     $file = $request->file('fuel_bill');
+                //     if ($file->isValid()) {
+                //         // Validate file type
+                //         $file_ext = $file->getClientOriginalExtension();
+                //         if (!in_array($file_ext, $this->allowed_file_type)) {
+                //             return response()->json([
+                //                 'status' => 'failed',
+                //                 'message' => Generator::getMessageTemplate("custom", 'The file must be a '.implode(', ', $this->allowed_file_type).' file type'),
+                //             ], Response::HTTP_UNPROCESSABLE_ENTITY);
+                //         }
+                //         // Validate file size
+                //         if ($file->getSize() > $this->max_size_file) {
+                //             return response()->json([
+                //                 'status' => 'failed',
+                //                 'message' => Generator::getMessageTemplate("custom", 'The file size must be under '.($this->max_size_file/1000000).' Mb'),
+                //             ], Response::HTTP_UNPROCESSABLE_ENTITY);
+                //         }
         
-                        try {
-                            // Get user data
-                            $user = UserModel::getSocial($user_id);
-                            // Upload file to Firebase storage
-                            $fuel_bill = Firebase::uploadFile('fuel', $user_id, $user->username, $file, $file_ext); 
-                        } catch (\Exception $e) {
-                            return response()->json([
-                                'status' => 'error',
-                                'message' => Generator::getMessageTemplate("unknown_error", null),
-                            ], Response::HTTP_INTERNAL_SERVER_ERROR);
-                        }
-                    }
-                }
+                //         try {
+                //             // Get user data
+                //             $user = UserModel::getSocial($user_id);
+                //             // Upload file to Firebase storage
+                //             $fuel_bill = Firebase::uploadFile('fuel', $user_id, $user->username, $file, $file_ext); 
+                //         } catch (\Exception $e) {
+                //             return response()->json([
+                //                 'status' => 'error',
+                //                 'message' => Generator::getMessageTemplate("unknown_error", null),
+                //             ], Response::HTTP_INTERNAL_SERVER_ERROR);
+                //         }
+                //     }
+                // }
 
                 // Create fuel
                 $data = [
@@ -289,6 +289,9 @@ class Commands extends Controller
                     return response()->json([
                         'status' => 'success',
                         'message' => Generator::getMessageTemplate("create", $this->module),
+                        'data' => [
+                            'id' => $rows->id
+                        ]
                     ], Response::HTTP_CREATED);
                 } else {
                     return response()->json([

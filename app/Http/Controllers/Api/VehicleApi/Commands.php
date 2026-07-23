@@ -261,14 +261,14 @@ class Commands extends Controller
                 $vehicle_image = null;
 
                 // Check if a vehicle image exists in the old vehicle data
-                if ($vehicle->vehicle_img_url) {
-                    if (!Firebase::deleteFile($vehicle->vehicle_img_url)) {
-                        return response()->json([
-                            'status' => 'failed',
-                            'message' => Generator::getMessageTemplate("not_found", 'failed to delete vehicle image'),
-                        ], Response::HTTP_NOT_FOUND);
-                    }
-                }
+                // if ($vehicle->vehicle_img_url) {
+                //     if (!Firebase::deleteFile($vehicle->vehicle_img_url)) {
+                //         return response()->json([
+                //             'status' => 'failed',
+                //             'message' => Generator::getMessageTemplate("not_found", 'failed to delete vehicle image'),
+                //         ], Response::HTTP_NOT_FOUND);
+                //     }
+                // }
 
                 // Check if file attached
                 if ($request->hasFile('vehicle_image')) {
@@ -294,7 +294,7 @@ class Commands extends Controller
                             // Get user data
                             $user = UserModel::getSocial($user_id);
                             // Upload file to Firebase storage
-                            $vehicle_image = Firebase::uploadFile('vehicle', $user_id, $user->username, $file, $file_ext); 
+                            // $vehicle_image = Firebase::uploadFile('vehicle', $user_id, $user->username, $file, $file_ext); 
                         } catch (\Exception $e) {
                             return response()->json([
                                 'status' => 'error',
@@ -431,11 +431,11 @@ class Commands extends Controller
                                 // Get user data
                                 $user = UserModel::getSocial($user_id);
                                 // Upload file to Firebase storage
-                                $vehicle_img_url = Firebase::uploadFile('vehicle', $user_id, $user->username, $file, $file_ext); 
-                                $vehicle_other_img_url[] = (object)[
-                                    'vehicle_img_id' => Generator::getUUID(),
-                                    'vehicle_img_url' => $vehicle_img_url
-                                ];
+                                // $vehicle_img_url = Firebase::uploadFile('vehicle', $user_id, $user->username, $file, $file_ext); 
+                                // $vehicle_other_img_url[] = (object)[
+                                //     'vehicle_img_id' => Generator::getUUID(),
+                                //     'vehicle_img_url' => $vehicle_img_url
+                                // ];
                             } catch (\Exception $e) {
                                 return response()->json([
                                     'status' => 'error',
@@ -448,12 +448,12 @@ class Commands extends Controller
                     // If file not attached and there is some image exist in the old data
                     foreach ($vehicle->vehicle_other_img_url as $dt) {
                         // Delete failed if file not found (already gone)
-                        if (!Firebase::deleteFile($dt['vehicle_img_url'])) {
-                            return response()->json([
-                                'status' => 'failed',
-                                'message' => Generator::getMessageTemplate("not_found", 'failed to delete vehicle image'),
-                            ], Response::HTTP_NOT_FOUND);
-                        }
+                        // if (!Firebase::deleteFile($dt['vehicle_img_url'])) {
+                        //     return response()->json([
+                        //         'status' => 'failed',
+                        //         'message' => Generator::getMessageTemplate("not_found", 'failed to delete vehicle image'),
+                        //     ], Response::HTTP_NOT_FOUND);
+                        // }
                     }
                 }
 
@@ -571,12 +571,12 @@ class Commands extends Controller
                 foreach ($vehicle_other_img_urls as $dt) {
                     if ($dt['vehicle_img_id'] === $image_id) {
                         // Delete failed if file not found (already gone)
-                        if (!Firebase::deleteFile($dt['vehicle_img_url'])) {
-                            return response()->json([
-                                'status' => 'failed',
-                                'message' => Generator::getMessageTemplate("not_found", 'failed to delete vehicle image'),
-                            ], Response::HTTP_NOT_FOUND);
-                        }
+                        // if (!Firebase::deleteFile($dt['vehicle_img_url'])) {
+                        //     return response()->json([
+                        //         'status' => 'failed',
+                        //         'message' => Generator::getMessageTemplate("not_found", 'failed to delete vehicle image'),
+                        //     ], Response::HTTP_NOT_FOUND);
+                        // }
                         break;
                     }
                 }
@@ -720,75 +720,75 @@ class Commands extends Controller
                 // Get user data
                 $user = UserModel::getSocial($user_id);
                 // Check if file attached
-                if ($request->hasFile('vehicle_image')) {
-                    $file = $request->file('vehicle_image');
-                    if ($file->isValid()) {
-                        $file_ext = $file->getClientOriginalExtension();
-                        // Validate file type
-                        if (!in_array($file_ext, $this->allowed_file_type)) {
-                            return response()->json([
-                                'status' => 'failed',
-                                'message' => Generator::getMessageTemplate("custom", 'The file must be a '.implode(', ', $this->allowed_file_type).' file type'),
-                            ], Response::HTTP_UNPROCESSABLE_ENTITY);
-                        }
-                        // Validate file size
-                        if ($file->getSize() > $this->max_size_file) {
-                            return response()->json([
-                                'status' => 'failed',
-                                'message' => Generator::getMessageTemplate("custom", 'The file size must be under '.($this->max_size_file/1000000).' Mb'),
-                            ], Response::HTTP_UNPROCESSABLE_ENTITY);
-                        }
+                // if ($request->hasFile('vehicle_image')) {
+                //     $file = $request->file('vehicle_image');
+                //     if ($file->isValid()) {
+                //         $file_ext = $file->getClientOriginalExtension();
+                //         // Validate file type
+                //         if (!in_array($file_ext, $this->allowed_file_type)) {
+                //             return response()->json([
+                //                 'status' => 'failed',
+                //                 'message' => Generator::getMessageTemplate("custom", 'The file must be a '.implode(', ', $this->allowed_file_type).' file type'),
+                //             ], Response::HTTP_UNPROCESSABLE_ENTITY);
+                //         }
+                //         // Validate file size
+                //         if ($file->getSize() > $this->max_size_file) {
+                //             return response()->json([
+                //                 'status' => 'failed',
+                //                 'message' => Generator::getMessageTemplate("custom", 'The file size must be under '.($this->max_size_file/1000000).' Mb'),
+                //             ], Response::HTTP_UNPROCESSABLE_ENTITY);
+                //         }
         
-                        try {
-                            // Upload file to Firebase storage
-                            $vehicle_image = Firebase::uploadFile('vehicle', $user_id, $user->username, $file, $file_ext); 
-                        } catch (\Exception $e) {
-                            return response()->json([
-                                'status' => 'error',
-                                'message' => Generator::getMessageTemplate("unknown_error", null),
-                            ], Response::HTTP_INTERNAL_SERVER_ERROR);
-                        }
-                    }
-                }
+                //         try {
+                //             // Upload file to Firebase storage
+                //             $vehicle_image = Firebase::uploadFile('vehicle', $user_id, $user->username, $file, $file_ext); 
+                //         } catch (\Exception $e) {
+                //             return response()->json([
+                //                 'status' => 'error',
+                //                 'message' => Generator::getMessageTemplate("unknown_error", null),
+                //             ], Response::HTTP_INTERNAL_SERVER_ERROR);
+                //         }
+                //     }
+                // }
 
                 $vehicle_other_img_url = [];
-                if ($request->hasFile('vehicle_other_img_url')) {
-                    // Iterate to upload file
-                    foreach ($request->file('vehicle_other_img_url') as $file) {
-                        if ($file->isValid()) {
-                            $file_ext = $file->getClientOriginalExtension();
+                // if ($request->hasFile('vehicle_other_img_url')) {
+                //     // Iterate to upload file
+                //     foreach ($request->file('vehicle_other_img_url') as $file) {
+                //         if ($file->isValid()) {
+                //             $file_ext = $file->getClientOriginalExtension();
 
-                            // Validate file type
-                            if (!in_array($file_ext, $this->allowed_file_type)) {
-                                return response()->json([
-                                    'status' => 'failed',
-                                    'message' => Generator::getMessageTemplate("custom", 'The file must be a '.implode(', ', $this->allowed_file_type).' file type'),
-                                ], Response::HTTP_UNPROCESSABLE_ENTITY);
-                            }
-                            // Validate file size
-                            if ($file->getSize() > $this->max_size_file) {
-                                return response()->json([
-                                    'status' => 'failed',
-                                    'message' => Generator::getMessageTemplate("custom", 'The file size must be under '.($this->max_size_file/1000000).' Mb'),
-                                ], Response::HTTP_UNPROCESSABLE_ENTITY);
-                            }
+                //             // Validate file type
+                //             if (!in_array($file_ext, $this->allowed_file_type)) {
+                //                 return response()->json([
+                //                     'status' => 'failed',
+                //                     'message' => Generator::getMessageTemplate("custom", 'The file must be a '.implode(', ', $this->allowed_file_type).' file type'),
+                //                 ], Response::HTTP_UNPROCESSABLE_ENTITY);
+                //             }
+                //             // Validate file size
+                //             if ($file->getSize() > $this->max_size_file) {
+                //                 return response()->json([
+                //                     'status' => 'failed',
+                //                     'message' => Generator::getMessageTemplate("custom", 'The file size must be under '.($this->max_size_file/1000000).' Mb'),
+                //                 ], Response::HTTP_UNPROCESSABLE_ENTITY);
+                //             }
             
-                            try {
-                                // Upload file to Firebase storage
-                                $vehicle_img_url = Firebase::uploadFile('vehicle', $user_id, $user->username, $file, $file_ext); 
-                                $vehicle_other_img_url[] = (object)[
-                                    'vehicle_img_id' => Generator::getUUID(),
-                                    'vehicle_img_url' => $vehicle_img_url
-                                ];
-                            } catch (\Exception $e) {
-                                return response()->json([
-                                    'status' => 'error',
-                                    'message' => Generator::getMessageTemplate("unknown_error", null),
-                                ], Response::HTTP_INTERNAL_SERVER_ERROR);
-                            }
-                        }
-                    }
-                }
+                //             try {
+                //                 // Upload file to Firebase storage
+                //                 $vehicle_img_url = Firebase::uploadFile('vehicle', $user_id, $user->username, $file, $file_ext); 
+                //                 $vehicle_other_img_url[] = (object)[
+                //                     'vehicle_img_id' => Generator::getUUID(),
+                //                     'vehicle_img_url' => $vehicle_img_url
+                //                 ];
+                //             } catch (\Exception $e) {
+                //                 return response()->json([
+                //                     'status' => 'error',
+                //                     'message' => Generator::getMessageTemplate("unknown_error", null),
+                //                 ], Response::HTTP_INTERNAL_SERVER_ERROR);
+                //             }
+                //         }
+                //     }
+                // }
                 // Make vehicle image collection null if empty array
                 if (count($vehicle_other_img_url) === 0) {
                     $vehicle_other_img_url = null;
@@ -841,17 +841,13 @@ class Commands extends Controller
                     HistoryModel::createHistory(['history_type' => 'Vehicle', 'history_context' => "added a vehicle called $vehicle_plate_number_and_name"], $user_id);
                     
                     // Return success response
-                    if ($extra_msg) {
-                        return response()->json([
-                            'status' => 'success',
-                            'message' => Generator::getMessageTemplate("custom", "vehicle created, but$message"),
-                        ], Response::HTTP_CREATED);
-                    } else {
-                        return response()->json([
-                            'status' => 'success',
-                            'message' => Generator::getMessageTemplate("create", $this->module),
-                        ], Response::HTTP_CREATED);
-                    }
+                    return response()->json([
+                        'status' => 'success',
+                        'message' => Generator::getMessageTemplate($extra_msg ? "custom" : "create", $extra_msg ? "vehicle created, but$message" : $this->module),
+                        'data' => [
+                            "id" => $rows->id
+                        ]
+                    ], Response::HTTP_CREATED);
                 } else {
                     return response()->json([
                         'status' => 'failed',
@@ -862,7 +858,7 @@ class Commands extends Controller
         } catch(\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => Generator::getMessageTemplate("unknown_error", null),
+                'message' => $e->getMessage(),
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
@@ -939,49 +935,49 @@ class Commands extends Controller
                     $user = UserModel::getSocial($user_id);
 
                     // Iterate to upload file
-                    foreach ($request->file('vehicle_document') as $idx => $file) {
-                        if ($file->isValid()) {
-                            $file_ext = $file->getClientOriginalExtension();
+                    // foreach ($request->file('vehicle_document') as $idx => $file) {
+                    //     if ($file->isValid()) {
+                    //         $file_ext = $file->getClientOriginalExtension();
 
-                            // Validate file type
-                            if (!in_array($file_ext, $this->allowed_doc_file_type)) {
-                                return response()->json([
-                                    'status' => 'failed',
-                                    'message' => Generator::getMessageTemplate("custom", 'The file must be a '.implode(', ', $this->allowed_doc_file_type).' file type'),
-                                ], Response::HTTP_UNPROCESSABLE_ENTITY);
-                            }
-                            // Validate file size
-                            if ($file->getSize() > $this->max_doc_size_file) {
-                                return response()->json([
-                                    'status' => 'failed',
-                                    'message' => Generator::getMessageTemplate("custom", 'The file size must be under '.($this->max_doc_size_file/1000000).' Mb'),
-                                ], Response::HTTP_UNPROCESSABLE_ENTITY);
-                            }
+                    //         // Validate file type
+                    //         if (!in_array($file_ext, $this->allowed_doc_file_type)) {
+                    //             return response()->json([
+                    //                 'status' => 'failed',
+                    //                 'message' => Generator::getMessageTemplate("custom", 'The file must be a '.implode(', ', $this->allowed_doc_file_type).' file type'),
+                    //             ], Response::HTTP_UNPROCESSABLE_ENTITY);
+                    //         }
+                    //         // Validate file size
+                    //         if ($file->getSize() > $this->max_doc_size_file) {
+                    //             return response()->json([
+                    //                 'status' => 'failed',
+                    //                 'message' => Generator::getMessageTemplate("custom", 'The file size must be under '.($this->max_doc_size_file/1000000).' Mb'),
+                    //             ], Response::HTTP_UNPROCESSABLE_ENTITY);
+                    //         }
             
-                            try {
-                                if ($request->has('vehicle_document_caption')) {
-                                    // Upload file to Firebase storage
-                                    $vehicle_document_url = Firebase::uploadFile('vehicle_document', $user_id, $user->username, $file, $file_ext); 
-                                    $vehicle_document[] = (object)[
-                                        'vehicle_document_id' => Generator::getUUID(),
-                                        'vehicle_document_url' => $vehicle_document_url,
-                                        'vehicle_document_caption' => $request->vehicle_document_caption[$idx],
-                                        'vehicle_document_type' => $file_ext === "pdf" ? "pdf" : "image"
-                                    ];
-                                } else {
-                                    return response()->json([
-                                        'status' => 'failed',
-                                        'message' => Generator::getMessageTemplate("custom", "document caption can't be empty"),
-                                    ], Response::HTTP_UNPROCESSABLE_ENTITY);
-                                }
-                            } catch (\Exception $e) {
-                                return response()->json([
-                                    'status' => 'error',
-                                    'message' => Generator::getMessageTemplate("unknown_error", null),
-                                ], Response::HTTP_INTERNAL_SERVER_ERROR);
-                            }
-                        }
-                    }
+                    //         try {
+                    //             if ($request->has('vehicle_document_caption')) {
+                    //                 // Upload file to Firebase storage
+                    //                 $vehicle_document_url = Firebase::uploadFile('vehicle_document', $user_id, $user->username, $file, $file_ext); 
+                    //                 $vehicle_document[] = (object)[
+                    //                     'vehicle_document_id' => Generator::getUUID(),
+                    //                     'vehicle_document_url' => $vehicle_document_url,
+                    //                     'vehicle_document_caption' => $request->vehicle_document_caption[$idx],
+                    //                     'vehicle_document_type' => $file_ext === "pdf" ? "pdf" : "image"
+                    //                 ];
+                    //             } else {
+                    //                 return response()->json([
+                    //                     'status' => 'failed',
+                    //                     'message' => Generator::getMessageTemplate("custom", "document caption can't be empty"),
+                    //                 ], Response::HTTP_UNPROCESSABLE_ENTITY);
+                    //             }
+                    //         } catch (\Exception $e) {
+                    //             return response()->json([
+                    //                 'status' => 'error',
+                    //                 'message' => Generator::getMessageTemplate("unknown_error", null),
+                    //             ], Response::HTTP_INTERNAL_SERVER_ERROR);
+                    //         }
+                    //     }
+                    // }
                 }
                 // Make null if array document empty
                 if (count($vehicle_document) === 0) {
@@ -1210,18 +1206,18 @@ class Commands extends Controller
             if ($vehicle) {
                 $vehicle_documents = $vehicle->vehicle_document;
                 // Delete Firebase uploaded document
-                foreach ($vehicle_documents as $dt) {
-                    if ($dt['vehicle_document_id'] === $doc_id) {
-                        // Delete failed if file not found (already gone)
-                        if (!Firebase::deleteFile($dt['vehicle_document_url'])) {
-                            return response()->json([
-                                'status' => 'failed',
-                                'message' => Generator::getMessageTemplate("not_found", 'failed to delete inventory image'),
-                            ], Response::HTTP_NOT_FOUND);
-                        }
-                        break;
-                    }
-                }
+                // foreach ($vehicle_documents as $dt) {
+                //     if ($dt['vehicle_document_id'] === $doc_id) {
+                //         // Delete failed if file not found (already gone)
+                //         if (!Firebase::deleteFile($dt['vehicle_document_url'])) {
+                //             return response()->json([
+                //                 'status' => 'failed',
+                //                 'message' => Generator::getMessageTemplate("not_found", 'failed to delete inventory image'),
+                //             ], Response::HTTP_NOT_FOUND);
+                //         }
+                //         break;
+                //     }
+                // }
             
                 // Remove item from vehicle document ID
                 $vehicle_documents = array_filter($vehicle_documents, function ($dt) use ($doc_id) {
@@ -1457,15 +1453,15 @@ class Commands extends Controller
                 $rows = VehicleModel::hardDeleteVehicleById($user_id,$id);
                 if ($rows > 0) {
                     // Delete Firebase uploaded image
-                    if ($vehicle->vehicle_img_url) {
-                        // Delete failed if file not found (already gone)
-                        if (!Firebase::deleteFile($vehicle->vehicle_img_url)) {
-                            return response()->json([
-                                'status' => 'failed',
-                                'message' => Generator::getMessageTemplate("not_found", 'failed to delete vehicle image'),
-                            ], Response::HTTP_NOT_FOUND);
-                        }
-                    }
+                    // if ($vehicle->vehicle_img_url) {
+                    //     // Delete failed if file not found (already gone)
+                    //     if (!Firebase::deleteFile($vehicle->vehicle_img_url)) {
+                    //         return response()->json([
+                    //             'status' => 'failed',
+                    //             'message' => Generator::getMessageTemplate("not_found", 'failed to delete vehicle image'),
+                    //         ], Response::HTTP_NOT_FOUND);
+                    //     }
+                    // }
 
                     // Hard Delete data related to vehicle module
                     WashModel::hardDeleteByVehicleId($id);

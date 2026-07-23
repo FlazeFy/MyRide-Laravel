@@ -12,7 +12,10 @@
             <directory>tests/Feature</directory>
         </testsuite>
         <testsuite name="Integration">
-            <directory>tests/Integration</directory>
+            <file>tests/Integration/AuthTest.php</file>
+            <file>tests/Integration/VehicleTest.php</file>
+            <file>tests/Integration/FuelTest.php</file>
+            <file>tests/Integration/TripTest.php</file>
         </testsuite>
     </testsuites>
     <source>

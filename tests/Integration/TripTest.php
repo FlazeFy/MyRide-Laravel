@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Integration;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use GuzzleHttp\Client;
@@ -8,10 +8,14 @@ use Tests\TestCase;
 
 // Helper
 use App\Helpers\Audit;
+use App\Helpers\TestDataReader;
 
 class TripTest extends TestCase
 {
     protected $httpClient;
+    protected string $token;
+    protected string $vehicleId;
+    protected string $tripId;
     use LoginHelperTrait;
 
     protected function setUp(): void
@@ -21,14 +25,20 @@ class TripTest extends TestCase
             'base_uri' => 'http://127.0.0.1:8000/api/v1/trip/',
             'http_errors' => false
         ]);
+
+        // Pre-Condition: User already sign in
+        $this->token = $this->login_trait("user");
+        // Pre-Condition: At least a vehicle exists
+        $this->vehicleId = TestDataReader::getValue('vehicle_id') ?? "";
+        // Pre-Condition: At least a trip exists
+        $this->tripId = TestDataReader::getValue('trip_id') ?? "";
     }
 
     public function test_post_create_trip(): void
     {
         // Exec
-        $token = $this->login_trait("user");
         $body = [
-            'vehicle_id' => 'ac278923-14ab-cb8b-0ca5-6cb6cdff094b', 
+            'vehicle_id' => $this->vehicleId, 
             'trip_desc' => 'jalan2', 
             'trip_category' => 'Family Vacation',
             'trip_person' => 'John Doe', 
@@ -39,7 +49,7 @@ class TripTest extends TestCase
         ];
         $response = $this->httpClient->post("", [
             'headers' => [
-                'Authorization' => "Bearer $token"
+                'Authorization' => "Bearer ".$this->token
             ],
             'json' => $body
         ]);
@@ -53,6 +63,12 @@ class TripTest extends TestCase
         $this->assertArrayHasKey('message', $data);
         $this->assertEquals("trip created", $data['message']);
 
+        // Store all created data
+        foreach ($body as $key => $val) {
+            TestDataReader::setValue($key, $val);
+        }
+        TestDataReader::setValue('trip_id', $data['data']['id']);
+
         Audit::auditRecordText("Test - Post Create Trip", "TC-XXX", "Result : ".json_encode($data));
         Audit::auditRecordSheet("Test - Post Create Trip", "TC-XXX", 'TC-XXX test_post_create_trip', json_encode($data));
     }
@@ -60,10 +76,9 @@ class TripTest extends TestCase
     public function test_get_all_trip(): void
     {
         // Exec
-        $token = $this->login_trait("user");
         $response = $this->httpClient->get("", [
             'headers' => [
-                'Authorization' => "Bearer $token"
+                'Authorization' => "Bearer ".$this->token
             ]
         ]);
 
@@ -104,10 +119,9 @@ class TripTest extends TestCase
     public function test_get_all_trip_coordinate(): void
     {
         // Exec
-        $token = $this->login_trait("user");
         $response = $this->httpClient->get("coordinate", [
             'headers' => [
-                'Authorization' => "Bearer $token"
+                'Authorization' => "Bearer ".$this->token
             ]
         ]);
 
@@ -148,11 +162,10 @@ class TripTest extends TestCase
     public function test_get_trip_history_coordinate_by_location_name(): void
     {
         // Exec
-        $token = $this->login_trait("user");
         $location_name = "my";
         $response = $this->httpClient->get("coordinate/$location_name", [
             'headers' => [
-                'Authorization' => "Bearer $token"
+                'Authorization' => "Bearer ".$this->token
             ]
         ]);
 
@@ -182,10 +195,9 @@ class TripTest extends TestCase
     public function test_get_last_trip(): void
     {
         // Exec
-        $token = $this->login_trait("user");
         $response = $this->httpClient->get("last", [
             'headers' => [
-                'Authorization' => "Bearer $token"
+                'Authorization' => "Bearer ".$this->token
             ]
         ]);
 
@@ -217,12 +229,10 @@ class TripTest extends TestCase
 
     public function test_get_trip_calendar(): void
     {
-        $token = $this->login_trait("user");
-
         // Exec
         $response = $this->httpClient->get("calendar", [
             'headers' => [
-                'Authorization' => "Bearer $token"
+                'Authorization' => "Bearer ".$this->token
             ]
         ]);
 
@@ -251,13 +261,12 @@ class TripTest extends TestCase
 
     public function test_get_all_trip_by_driver_id(): void
     {
-        $token = $this->login_trait("user");
         $driver_id = "c61fe1f9-7618-f041-17c6-61682541eca0";
 
         // Exec
         $response = $this->httpClient->get("driver/$driver_id", [
             'headers' => [
-                'Authorization' => "Bearer $token"
+                'Authorization' => "Bearer ".$this->token
             ]
         ]);
 
@@ -293,74 +302,12 @@ class TripTest extends TestCase
         Audit::auditRecordSheet("Test - Get All Trip By Driver ID", "TC-XXX", 'TC-XXX test_get_all_trip_by_driver_id', json_encode($data));
     }
 
-    public function test_put_update_trip_by_id(): void
-    {
-        $token = $this->login_trait("user");
-        $id = "9ebacf20-e193-5ed7-241d-ac549f9c3ea9";
-
-        $body = [
-            'vehicle_id' => 'ac278923-14ab-cb8b-0ca5-6cb6cdff094b', 
-            'trip_desc' => 'jalan2', 
-            'trip_category' => 'Business Trip',
-            'trip_person' => 'John Doe', 
-            'trip_origin_name' => 'Place B', 
-            'trip_origin_coordinate' => '-6.226828716225759, 106.82152290589822',  
-            'trip_destination_name' => 'Place D',
-            'trip_destination_coordinate' => '-6.230792280916382, 106.81781530380249', 
-        ];
-
-        // Exec
-        $response = $this->httpClient->put("$id", [
-            'headers' => [
-                'Authorization' => "Bearer $token"
-            ],
-            'json' => $body
-        ]);
-
-        $data = json_decode($response->getBody(), true);
-
-        // Test Parameter
-        $this->assertEquals(200, $response->getStatusCode());
-        $this->assertArrayHasKey('status', $data);
-        $this->assertEquals('success', $data['status']);
-        $this->assertArrayHasKey('message', $data);
-        $this->assertEquals("trip updated", $data['message']);
-
-        Audit::auditRecordText("Test - Put Update Trip By ID", "TC-XXX", "Result : ".json_encode($data));
-        Audit::auditRecordSheet("Test - Put Update Trip By ID", "TC-XXX", 'TC-XXX test_put_update_trip_by_id', json_encode($data));
-    }
-
-    public function test_hard_delete_trip_by_id(): void
-    {
-        // Exec
-        $token = $this->login_trait("user");
-        $id = "9ebacf20-e193-5ed7-241d-ac549f9c3ea9";
-        $response = $this->httpClient->delete("destroy/$id", [
-            'headers' => [
-                'Authorization' => "Bearer $token"
-            ]
-        ]);
-
-        $data = json_decode($response->getBody(), true);
-
-        // Test Parameter
-        $this->assertEquals(200, $response->getStatusCode());
-        $this->assertArrayHasKey('status', $data);
-        $this->assertEquals('success', $data['status']);
-        $this->assertArrayHasKey('message', $data);
-        $this->assertEquals('trip permanently deleted',$data['message']);
-
-        Audit::auditRecordText("Test - Hard Delete Trip By Id", "TC-XXX", "Result : ".json_encode($data));
-        Audit::auditRecordSheet("Test - Hard Delete Trip By Id", "TC-XXX", 'TC-XXX test_hard_delete_trip_by_id', json_encode($data));
-    }
-
     public function test_get_trip_discovered(): void
     {
         // Exec
-        $token = $this->login_trait("user");
         $response = $this->httpClient->get("discovered", [
             'headers' => [
-                'Authorization' => "Bearer $token"
+                'Authorization' => "Bearer ".$this->token
             ]
         ]);
 
@@ -396,11 +343,10 @@ class TripTest extends TestCase
     public function test_get_nearest_coordinate(): void
     {
         // Exec
-        $token = $this->login_trait("user");
         $coordinate = "-6.193307477576132,106.8290024771821";
         $response = $this->httpClient->get("coordinate/nearest/$coordinate", [
             'headers' => [
-                'Authorization' => "Bearer $token"
+                'Authorization' => "Bearer ".$this->token
             ]
         ]);
 
@@ -432,5 +378,101 @@ class TripTest extends TestCase
 
         Audit::auditRecordText("Test - Get Nearest Coordinate", "TC-XXX", "Result : ".json_encode($data));
         Audit::auditRecordSheet("Test - Get Nearest Coordinate", "TC-XXX", 'TC-XXX test_get_nearest_coordinate', json_encode($data));
+    }
+
+    public function test_get_vehicle_trip_summary_by_id(): void
+    {
+        // Exec
+        $response = $this->httpClient->get("trip/summary/".$this->vehicleId, [
+            'headers' => [
+                'Authorization' => "Bearer ".$this->token
+            ]
+        ]);
+
+        $data = json_decode($response->getBody(), true);
+
+        // Test Parameter
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertArrayHasKey('status', $data);
+        $this->assertEquals('success', $data['status']);
+        $this->assertArrayHasKey('message', $data);
+        $this->assertArrayHasKey('data', $data);
+
+        $check_object_trip = ["most_person_with","vehicle_total_trip_distance","most_origin","most_destination","most_category"];
+        foreach ($check_object_trip as $col) {
+            $this->assertArrayHasKey($col, $data["data"]);
+        }
+
+        $check_not_null_str_trip = ["most_origin","most_destination","most_category"];
+        foreach ($check_not_null_str_trip as $col) {
+            $this->assertNotNull($data["data"][$col]);
+            $this->assertIsString($data["data"][$col]);
+        }
+
+        if (!is_null($data["data"]["most_person_with"])) {
+            $this->assertIsString($data["data"]["most_person_with"]);
+        }
+
+        $this->assertIsFloat($data["data"]["vehicle_total_trip_distance"]);
+        $this->assertGreaterThan(0, $data["data"]["vehicle_total_trip_distance"]);
+
+        Audit::auditRecordText("Test - Get Vehicle Trip Summary By ID", "TC-XXX", "Result : ".json_encode($data));
+        Audit::auditRecordSheet("Test - Get Vehicle Trip Summary By ID", "TC-XXX", 'TC-XXX test_get_vehicle_trip_summary_by_id', json_encode($data));
+    }
+
+    public function test_put_update_trip_by_id(): void
+    {
+        $body = [
+            'vehicle_id' => $this->vehicleId, 
+            'trip_desc' => 'jalan2', 
+            'trip_category' => 'Business Trip',
+            'trip_person' => 'John Doe', 
+            'trip_origin_name' => 'Place B', 
+            'trip_origin_coordinate' => '-6.226828716225759, 106.82152290589822',  
+            'trip_destination_name' => 'Place D',
+            'trip_destination_coordinate' => '-6.230792280916382, 106.81781530380249', 
+        ];
+
+        // Exec
+        $response = $this->httpClient->put($this->tripId, [
+            'headers' => [
+                'Authorization' => "Bearer ".$this->token
+            ],
+            'json' => $body
+        ]);
+
+        $data = json_decode($response->getBody(), true);
+
+        // Test Parameter
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertArrayHasKey('status', $data);
+        $this->assertEquals('success', $data['status']);
+        $this->assertArrayHasKey('message', $data);
+        $this->assertEquals("trip updated", $data['message']);
+
+        Audit::auditRecordText("Test - Put Update Trip By ID", "TC-XXX", "Result : ".json_encode($data));
+        Audit::auditRecordSheet("Test - Put Update Trip By ID", "TC-XXX", 'TC-XXX test_put_update_trip_by_id', json_encode($data));
+    }
+
+    public function test_hard_delete_trip_by_id(): void
+    {
+        // Exec
+        $response = $this->httpClient->delete("destroy/".$this->tripId, [
+            'headers' => [
+                'Authorization' => "Bearer ".$this->token
+            ]
+        ]);
+
+        $data = json_decode($response->getBody(), true);
+
+        // Test Parameter
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertArrayHasKey('status', $data);
+        $this->assertEquals('success', $data['status']);
+        $this->assertArrayHasKey('message', $data);
+        $this->assertEquals('trip permanently deleted',$data['message']);
+
+        Audit::auditRecordText("Test - Hard Delete Trip By Id", "TC-XXX", "Result : ".json_encode($data));
+        Audit::auditRecordSheet("Test - Hard Delete Trip By Id", "TC-XXX", 'TC-XXX test_hard_delete_trip_by_id', json_encode($data));
     }
 }

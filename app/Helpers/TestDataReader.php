@@ -6,7 +6,7 @@ class TestDataReader
 {
     private static function getPath(): string
     {
-        return base_path('tests/TestData/data.csv');
+        return dirname(__DIR__, 2) . '/tests/TestData/data.csv';
     }
 
     public static function getValue(string $key): ?string
@@ -33,9 +33,6 @@ class TestDataReader
         return null;
     }
 
-    /**
-     * Set value by key.
-     */
     public static function setValue(string $key, string $value): void
     {
         self::ensureFileExists();
@@ -86,6 +83,17 @@ class TestDataReader
 
         fputcsv($handle, ['key', 'value', 'created_at',]);
 
+        fclose($handle);
+    }
+
+    public static function clear(): void
+    {
+        $handle = fopen(self::getPath(), 'w');
+        if ($handle === false) {
+            throw new \RuntimeException('Failed to clear test data');
+        }
+
+        fputcsv($handle, ['key', 'value', 'created_at']);
         fclose($handle);
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Integration;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\UploadedFile;
@@ -10,10 +10,14 @@ use Tests\TestCase;
 
 // Helper
 use App\Helpers\Audit;
+use App\Helpers\TestDataReader;
 
 class FuelTest extends TestCase
 {
     protected $httpClient;
+    protected string $token;
+    protected string $vehicleId;
+    protected string $fuelId;
     use LoginHelperTrait;
 
     protected function setUp(): void
@@ -23,15 +27,101 @@ class FuelTest extends TestCase
             'base_uri' => 'http://127.0.0.1:8000/api/v1/fuel/',
             'http_errors' => false
         ]);
+
+        // Pre-Condition: User already sign in
+        $this->token = $this->login_trait("user");
+        // Pre-Condition: At least a vehicle exists
+        $this->vehicleId = TestDataReader::getValue('vehicle_id') ?? "";
+        // Pre-Condition: At least a fuel exists
+        $this->fuelId = TestDataReader::getValue('fuel_id') ?? "";
+    }
+
+    public function test_post_create_fuel(): void
+    {
+        $fuelBill = UploadedFile::fake()->image('fuel_bill.jpg');
+
+        $form = [
+            ['name' => 'vehicle_id', 'contents' => $this->vehicleId],
+            ['name' => 'fuel_volume', 'contents' => 20],
+            ['name' => 'fuel_price_total', 'contents' => 300000],
+            ['name' => 'fuel_brand', 'contents' => 'Shell'],
+            ['name' => 'fuel_type', 'contents' => 'Super'],
+            ['name' => 'fuel_ron', 'contents' => '92'],
+            ['name' => 'fuel_at', 'contents' => '2026-01-12 00:00:00'],
+            [
+                'name' => 'fuel_bill', 
+                'contents' => fopen($fuelBill->getPathname(), 'r'), 
+                'filename' => 'fuel_bill.jpg'
+            ],
+        ];
+
+        // Exec
+        $response = $this->httpClient->post("", [
+            'headers' => [
+                'Authorization' => "Bearer ".$this->token
+            ],
+            'multipart' => $form,
+        ]);
+
+        $data = json_decode($response->getBody(), true);
+
+        // Test Parameter
+        $this->assertEquals(201, $response->getStatusCode());
+        $this->assertArrayHasKey('status', $data);
+        $this->assertEquals('success', $data['status']);
+        $this->assertArrayHasKey('message', $data);
+        $this->assertEquals("fuel created", $data['message']);
+
+        // Store all created data
+        foreach ($form as $dt) {
+            if (array_key_exists('filename', $dt)) continue; 
+            TestDataReader::setValue($dt['name'], $dt['contents']);
+        }
+        TestDataReader::setValue('fuel_id', $data['data']['id']);
+
+        Audit::auditRecordText("Test - Post Create Fuel", "TC-XXX", "Result : ".json_encode($data));
+        Audit::auditRecordSheet("Test - Post Create Fuel", "TC-XXX", 'TC-XXX test_post_create_fuel', json_encode($data));
+    }
+
+    public function test_put_update_fuel_by_id(): void
+    {
+        $body = [
+            'vehicle_id' => $this->vehicleId, 
+            'fuel_volume' => 20,
+            'fuel_price_total' => 300000, 
+            'fuel_brand' => 'Pertamina', 
+            'fuel_type' => 'Pertamax Turbo', 
+            'fuel_ron' => '98', 
+            'fuel_at' => '2026-01-12 00:00:00',
+        ];
+
+        // Exec
+        $response = $this->httpClient->put($this->fuelId, [
+            'headers' => [
+                'Authorization' => "Bearer ".$this->token
+            ],
+            'json' => $body,
+        ]);
+
+        $data = json_decode($response->getBody(), true);
+
+        // Test Parameter
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertArrayHasKey('status', $data);
+        $this->assertEquals('success', $data['status']);
+        $this->assertArrayHasKey('message', $data);
+        $this->assertEquals("fuel updated", $data['message']);
+
+        Audit::auditRecordText("Test - Put Update Fuel By ID", "TC-XXX", "Result : ".json_encode($data));
+        Audit::auditRecordSheet("Test - Put Update Fuel By ID", "TC-XXX", 'TC-XXX test_put_update_fuel_by_id', json_encode($data));
     }
 
     public function test_get_all_fuel(): void
     {
         // Exec
-        $token = $this->login_trait("user");
         $response = $this->httpClient->get("", [
             'headers' => [
-                'Authorization' => "Bearer $token"
+                'Authorization' => "Bearer ".$this->token
             ]
         ]);
 
@@ -85,10 +175,9 @@ class FuelTest extends TestCase
     public function test_get_last_fuel(): void
     {
         // Exec
-        $token = $this->login_trait("user");
         $response = $this->httpClient->get("last", [
             'headers' => [
-                'Authorization' => "Bearer $token"
+                'Authorization' => "Bearer ".$this->token
             ]
         ]);
 
@@ -135,14 +224,12 @@ class FuelTest extends TestCase
         Audit::auditRecordSheet("Test - Get Last Fuel", "TC-XXX", 'TC-XXX test_get_last_fuel', json_encode($data));
     }
 
-    public function test_hard_delete_fuel_by_id(): void
+    public function test_get_all_vehicle_fuel(): void
     {
         // Exec
-        $token = $this->login_trait("user");
-        $id = "1d2eb3ed-ab10-610b-2475-35789f801dc3";
-        $response = $this->httpClient->delete("destroy/$id", [
+        $response = $this->httpClient->get("fuel", [
             'headers' => [
-                'Authorization' => "Bearer $token"
+                'Authorization' => "Bearer ".$this->token
             ]
         ]);
 
@@ -153,20 +240,34 @@ class FuelTest extends TestCase
         $this->assertArrayHasKey('status', $data);
         $this->assertEquals('success', $data['status']);
         $this->assertArrayHasKey('message', $data);
-        $this->assertEquals('fuel permanently deleted',$data['message']);
+        $this->assertArrayHasKey('data', $data);
 
-        Audit::auditRecordText("Test - Hard Delete Fuel By Id", "TC-XXX", "Result : ".json_encode($data));
-        Audit::auditRecordSheet("Test - Hard Delete Fuel By Id", "TC-XXX", 'TC-XXX test_hard_delete_fuel_by_id', json_encode($data));
+        foreach ($data['data'] as $dt) {
+            $check_object = ["id", "vehicle_name", "vehicle_plate_number", "vehicle_fuel_status"];
+
+            foreach ($check_object as $col) {
+                $this->assertArrayHasKey($col, $dt);
+                $this->assertNotNull($dt[$col]);
+                $this->assertIsString($dt[$col]);
+            }
+
+            $this->assertIsInt($dt["vehicle_fuel_capacity"]);
+            $this->assertGreaterThan(0, $dt['vehicle_fuel_capacity']);
+
+            $this->assertEquals(36,strlen($dt['id']));
+        }
+
+        Audit::auditRecordText("Test - Get All Vehicle Fuel", "TC-XXX", "Result : ".json_encode($data));
+        Audit::auditRecordSheet("Test - Get All Vehicle Fuel", "TC-XXX", 'TC-XXX test_get_all_vehicle_fuel', json_encode($data));
     }
 
     public function test_get_monthly_fuel_summary(): void
     {
         // Exec
-        $token = $this->login_trait("user");
         $month_year = "09-2025";
         $response = $this->httpClient->get("summary/$month_year", [
             'headers' => [
-                'Authorization' => "Bearer $token"
+                'Authorization' => "Bearer ".$this->token
             ]
         ]);
 
@@ -196,67 +297,13 @@ class FuelTest extends TestCase
         Audit::auditRecordSheet("Test - Get Monthly Fuel Summary", "TC-XXX", 'TC-XXX test_get_monthly_fuel_summary', json_encode($data));
     }
 
-    public function test_post_create_fuel(): void
+    public function test_hard_delete_fuel_by_id(): void
     {
-        $token = $this->login_trait("user");
-
-        $fuelBill = UploadedFile::fake()->image('fuel_bill.jpg');
-
-        $form = [
-            ['name' => 'vehicle_id', 'contents' => 'ac278923-14ab-cb8b-0ca5-6cb6cdff094b'],
-            ['name' => 'fuel_volume', 'contents' => 20],
-            ['name' => 'fuel_price_total', 'contents' => 300000],
-            ['name' => 'fuel_brand', 'contents' => 'Shell'],
-            ['name' => 'fuel_type', 'contents' => 'Shell Super'],
-            ['name' => 'fuel_ron', 'contents' => 92],
-            [
-                'name' => 'fuel_bill', 
-                'contents' => fopen($fuelBill->getPathname(), 'r'), 
-                'filename' => 'fuel_bill.jpg'
-            ],
-        ];
-
         // Exec
-        $response = $this->httpClient->post("", [
+        $response = $this->httpClient->delete("destroy/".$this->fuelId, [
             'headers' => [
-                'Authorization' => "Bearer $token"
-            ],
-            'multipart' => $form,
-        ]);
-
-        $data = json_decode($response->getBody(), true);
-
-        // Test Parameter
-        $this->assertEquals(201, $response->getStatusCode());
-        $this->assertArrayHasKey('status', $data);
-        $this->assertEquals('success', $data['status']);
-        $this->assertArrayHasKey('message', $data);
-        $this->assertEquals("fuel created", $data['message']);
-
-        Audit::auditRecordText("Test - Post Create Fuel", "TC-XXX", "Result : ".json_encode($data));
-        Audit::auditRecordSheet("Test - Post Create Fuel", "TC-XXX", 'TC-XXX test_post_create_fuel', json_encode($data));
-    }
-
-    public function test_put_update_fuel_by_id(): void
-    {
-        $token = $this->login_trait("user");
-        $id = "de1dc721-44db-e42a-013e-229537e7754b";
-
-        $body = [
-            'vehicle_id' => 'ac278923-14ab-cb8b-0ca5-6cb6cdff094b', 
-            'fuel_volume' => 20,
-            'fuel_price_total' => 300000, 
-            'fuel_brand' => 'Pertamina', 
-            'fuel_type' => 'Pertamax Turbo', 
-            'fuel_ron' => 98, 
-        ];
-
-        // Exec
-        $response = $this->httpClient->put("$id", [
-            'headers' => [
-                'Authorization' => "Bearer $token"
-            ],
-            'json' => $body,
+                'Authorization' => "Bearer ".$this->token
+            ]
         ]);
 
         $data = json_decode($response->getBody(), true);
@@ -266,9 +313,9 @@ class FuelTest extends TestCase
         $this->assertArrayHasKey('status', $data);
         $this->assertEquals('success', $data['status']);
         $this->assertArrayHasKey('message', $data);
-        $this->assertEquals("fuel updated", $data['message']);
+        $this->assertEquals('fuel permanently deleted',$data['message']);
 
-        Audit::auditRecordText("Test - Put Update Fuel By ID", "TC-XXX", "Result : ".json_encode($data));
-        Audit::auditRecordSheet("Test - Put Update Fuel By ID", "TC-XXX", 'TC-XXX test_put_update_fuel_by_id', json_encode($data));
+        Audit::auditRecordText("Test - Hard Delete Fuel By Id", "TC-XXX", "Result : ".json_encode($data));
+        Audit::auditRecordSheet("Test - Hard Delete Fuel By Id", "TC-XXX", 'TC-XXX test_hard_delete_fuel_by_id', json_encode($data));
     }
 }

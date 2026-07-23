@@ -1,17 +1,26 @@
 <?php
 
 namespace Tests\Feature;
-
-use App\Helpers\Audit;
-use App\Helpers\TestDataReader;
-use App\Models\UserModel;
 use GuzzleHttp\Client;
 use Tests\TestCase;
+
+// Helper
+use App\Helpers\Audit;
+use App\Helpers\TestDataReader;
+// Models
+use App\Models\UserModel;
+use App\Models\ValidateRequestModel;
 
 class AuthTest extends TestCase
 {
     protected Client $httpClient;
     protected array $testUser;
+
+    public static function setUpBeforeClass(): void
+    {
+        parent::setUpBeforeClass();
+        TestDataReader::clear();
+    }
 
     protected function setUp(): void
     {
@@ -191,5 +200,13 @@ class AuthTest extends TestCase
 
         Audit::auditRecordText('Integration Test - Success Post Sign Out With Valid Token', 'TC-INT-AU-002-01', 'Result : '.json_encode($data));
         Audit::auditRecordSheet('Integration Test - Success Post Sign Out With Valid Token', 'TC-INT-AU-002-01', 'test_post_sign_out', json_encode($data));
+    }
+
+    public static function tearDownAfterClass(): void
+    {
+        parent::tearDownAfterClass();
+
+        // Remove this later
+        ValidateRequestModel::truncate();
     }
 }

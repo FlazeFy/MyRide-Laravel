@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Integration;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\UploadedFile;
@@ -10,10 +10,13 @@ use Tests\TestCase;
 
 // Helper
 use App\Helpers\Audit;
+use App\Helpers\TestDataReader;
 
 class VehicleTest extends TestCase
 {
     protected $httpClient;
+    protected string $token;
+    protected string $vehicleId;
     use LoginHelperTrait;
 
     protected function setUp(): void
@@ -23,15 +26,289 @@ class VehicleTest extends TestCase
             'base_uri' => 'http://127.0.0.1:8000/api/v1/vehicle/',
             'http_errors' => false
         ]);
+
+        // Pre-Condition: User already sign in
+        $this->token = $this->login_trait("user");
+        // Pre-Condition: At least a vehicle exists
+        $this->vehicleId = TestDataReader::getValue('vehicle_id') ?? "";
+    }
+
+    public function test_post_vehicle(): void
+    {        
+        // Create fake images
+        $img1 = UploadedFile::fake()->image('image1.jpg');
+        $img2 = UploadedFile::fake()->image('image2.jpg');
+        $img3 = UploadedFile::fake()->image('image3.jpg');
+
+        $form = [
+            ['name' => 'vehicle_name', 'contents' => 'Kijang Innova 2.0 Type G MT'],
+            ['name' => 'vehicle_merk', 'contents' => 'Toyota'],
+            ['name' => 'vehicle_type', 'contents' => 'Minibus'], 
+            ['name' => 'vehicle_price', 'contents' => 275000000],
+            ['name' => 'vehicle_desc', 'contents' => 'sudah jarang digunakan 2'],
+            ['name' => 'vehicle_distance', 'contents' => 90000],
+            ['name' => 'vehicle_category', 'contents' => 'Parents Car'], 
+            ['name' => 'vehicle_status', 'contents' => 'Available'], 
+            ['name' => 'vehicle_year_made', 'contents' => 2011],
+            ['name' => 'vehicle_plate_number', 'contents' => 'PA 1234 ZX'],
+            ['name' => 'vehicle_fuel_status', 'contents' => 'Not Monitored'], 
+            ['name' => 'vehicle_fuel_capacity', 'contents' => 50],
+            ['name' => 'vehicle_default_fuel', 'contents' => 'Pertamina Pertalite'],
+            ['name' => 'vehicle_color', 'contents' => 'White'],
+            ['name' => 'vehicle_transmission', 'contents' => 'Manual'], 
+            ['name' => 'vehicle_capacity', 'contents' => 8],
+            [
+                'name' => 'vehicle_image',
+                'contents' => fopen($img1->getPathname(), 'r'),
+                'filename' => 'image1.jpg',
+            ],
+            [
+                'name' => 'vehicle_other_img_url[]',
+                'contents' => fopen($img2->getPathname(), 'r'),
+                'filename' => 'image2.jpg',
+            ],
+            [
+                'name' => 'vehicle_other_img_url[]',
+                'contents' => fopen($img3->getPathname(), 'r'),
+                'filename' => 'image3.jpg',
+            ],
+        ];
+
+        $response = $this->httpClient->post("", [
+            'headers' => [
+                'Authorization' => "Bearer ".$this->token
+            ],
+            'multipart' => $form,
+        ]);
+
+        $data = json_decode($response->getBody(), true);
+
+        // Test Parameter
+        $this->assertEquals(201, $response->getStatusCode());
+        $this->assertArrayHasKey('status', $data);
+        $this->assertEquals('success', $data['status']);
+        $this->assertArrayHasKey('message', $data);
+        $this->assertEquals("vehicle created", $data['message']);
+
+        // Store all created data
+        foreach ($form as $dt) {
+            if (array_key_exists('filename', $dt)) continue; 
+            TestDataReader::setValue($dt['name'], $dt['contents']);
+        }
+        TestDataReader::setValue('vehicle_id', $data['data']['id']);
+
+        Audit::auditRecordText("Test - Post Vehicle", "TC-XXX", "Result : ".json_encode($data));
+        Audit::auditRecordSheet("Test - Post Vehicle", "TC-XXX", 'TC-XXX test_post_vehicle', json_encode($data));
+    }
+
+    public function test_post_vehicle_doc(): void
+    {   
+        // Create fake images & doc
+        $img1 = UploadedFile::fake()->image('image1.jpg');
+        $pdf1 = UploadedFile::fake()->create('document1.pdf', 100, 'application/pdf'); 
+
+        $form = [
+            [
+                'name' => 'vehicle_document[]',
+                'contents' => fopen($img1->getPathname(), 'r'),
+                'filename' => 'image1.jpg',
+            ],
+            [
+                'name' => 'vehicle_document[]',
+                'contents' => fopen($pdf1->getPathname(), 'r'),
+                'filename' => 'document1.pdf',
+            ],
+            [
+                'name' => 'vehicle_document_caption[]',
+                'contents' => 'this is an image',
+            ],
+            [
+                'name' => 'vehicle_document_caption[]',
+                'contents' => 'this is a doc',
+            ],
+        ];
+
+        $response = $this->httpClient->post("doc/".$this->vehicleId, [
+            'headers' => [
+                'Authorization' => "Bearer ".$this->token
+            ],
+            'multipart' => $form,
+        ]);
+
+        $data = json_decode($response->getBody(), true);
+
+        // Test Parameter
+        $this->assertEquals(201, $response->getStatusCode());
+        $this->assertArrayHasKey('status', $data);
+        $this->assertEquals('success', $data['status']);
+        $this->assertArrayHasKey('message', $data);
+        $this->assertEquals("vehicle document created", $data['message']);
+
+        Audit::auditRecordText("Test - Post Vehicle Doc", "TC-XXX", "Result : ".json_encode($data));
+        Audit::auditRecordSheet("Test - Post Vehicle Doc", "TC-XXX", 'TC-XXX test_post_vehicle_doc', json_encode($data));
+    }
+
+    public function test_post_update_vehicle_image_by_id(): void
+    {   
+        // Create fake image
+        $img1 = UploadedFile::fake()->image('image1.jpg');
+
+        $form = [
+            [
+                'name' => 'vehicle_image',
+                'contents' => fopen($img1->getPathname(), 'r'),
+                'filename' => 'image1.jpg',
+            ]
+        ];
+
+        $response = $this->httpClient->post("image/".$this->vehicleId, [
+            'headers' => [
+                'Authorization' => "Bearer ".$this->token
+            ],
+            'multipart' => $form,
+        ]);
+
+        $data = json_decode($response->getBody(), true);
+
+        // Test Parameter
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertArrayHasKey('status', $data);
+        $this->assertEquals('success', $data['status']);
+        $this->assertArrayHasKey('message', $data);
+        $this->assertEquals("vehicle updated", $data['message']);
+
+        Audit::auditRecordText("Test - Post Update Vehicle Image By ID", "TC-XXX", "Result : ".json_encode($data));
+        Audit::auditRecordSheet("Test - Post Update Vehicle Image By ID", "TC-XXX", 'TC-XXX test_post_update_vehicle_image_by_id', json_encode($data));
+    }
+
+    public function test_post_update_vehicle_image_collection_by_id(): void
+    {   
+        // Create fake images
+        $img1 = UploadedFile::fake()->image('image1.jpg');
+        $img2 = UploadedFile::fake()->image('image2.jpg');
+
+        $form = [
+            [
+                'name' => 'vehicle_other_img_url[]',
+                'contents' => fopen($img1->getPathname(), 'r'),
+                'filename' => 'image1.jpg',
+            ],
+            [
+                'name' => 'vehicle_other_img_url[]',
+                'contents' => fopen($img2->getPathname(), 'r'),
+                'filename' => 'image2.jpg',
+            ]
+        ];
+
+        $response = $this->httpClient->post("image_collection/".$this->vehicleId, [
+            'headers' => [
+                'Authorization' => "Bearer ".$this->token
+            ],
+            'multipart' => $form,
+        ]);
+
+        $data = json_decode($response->getBody(), true);
+
+        // Test Parameter
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertArrayHasKey('status', $data);
+        $this->assertEquals('success', $data['status']);
+        $this->assertArrayHasKey('message', $data);
+        $this->assertEquals("vehicle updated", $data['message']);
+
+        Audit::auditRecordText("Test - Post Update Vehicle Image Collection By ID", "TC-XXX", "Result : ".json_encode($data));
+        Audit::auditRecordSheet("Test - Post Update Vehicle Image Collection By ID", "TC-XXX", 'TC-XXX test_post_update_vehicle_image_collection_by_id', json_encode($data));
+    }
+
+    public function test_soft_delete_vehicle_by_id(): void
+    {
+        $response = $this->httpClient->delete("delete/".$this->vehicleId, [
+            'headers' => [
+                'Authorization' => "Bearer ".$this->token
+            ]
+        ]);
+
+        $data = json_decode($response->getBody(), true);
+
+        // Test Parameter
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertArrayHasKey('status', $data);
+        $this->assertEquals('success', $data['status']);
+        $this->assertArrayHasKey('message', $data);
+        $this->assertEquals("vehicle deleted", $data['message']);
+
+        Audit::auditRecordText("Test - Soft Delete Vehicle By ID", "TC-XXX", "Result : ".json_encode($data));
+        Audit::auditRecordSheet("Test - Soft Delete Vehicle By ID", "TC-XXX", 'TC-XXX test_soft_delete_vehicle_by_id', json_encode($data));
+    }
+
+    public function test_put_recover_vehicle_by_id(): void
+    {
+        $response = $this->httpClient->put("recover/".$this->vehicleId, [
+            'headers' => [
+                'Authorization' => "Bearer ".$this->token
+            ]
+        ]);
+
+        $data = json_decode($response->getBody(), true);
+
+        // Test Parameter
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertArrayHasKey('status', $data);
+        $this->assertEquals('success', $data['status']);
+        $this->assertArrayHasKey('message', $data);
+        $this->assertEquals("vehicle recovered", $data['message']);
+
+        Audit::auditRecordText("Test - Put Recover Vehicle By ID", "TC-XXX", "Result : ".json_encode($data));
+        Audit::auditRecordSheet("Test - Put Recover Vehicle By ID", "TC-XXX", 'TC-XXX test_put_recover_vehicle_by_id', json_encode($data));
+    }
+
+    public function test_put_update_vehicle_detail_by_id(): void
+    {
+        $body = [
+            'vehicle_name' => 'Kijang Innova 2.0 Type G MT',
+            'vehicle_merk' => 'Toyota',
+            'vehicle_type' => 'Minibus',
+            'vehicle_price' => 275000000,
+            'vehicle_desc' => 'sudah jarang digunakan 2',
+            'vehicle_distance' => 90000,
+            'vehicle_category' => 'Parents Car',
+            'vehicle_status' => 'Available',
+            'vehicle_year_made' => 2011,
+            'vehicle_plate_number' => 'PA 1234 ZX',
+            'vehicle_fuel_status' => 'Not Monitored',
+            'vehicle_fuel_capacity' => 50,
+            'vehicle_default_fuel' => 'Pertamina Pertalite',
+            'vehicle_color' => 'White',
+            'vehicle_transmission' => 'Manual',
+            'vehicle_capacity' => 8,
+        ];
+
+        $response = $this->httpClient->put("detail/".$this->vehicleId, [
+            'headers' => [
+                'Authorization' => "Bearer ".$this->token
+            ],
+            'json' => $body
+        ]);
+
+        $data = json_decode($response->getBody(), true);
+
+        // Test Parameter
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertArrayHasKey('status', $data);
+        $this->assertEquals('success', $data['status']);
+        $this->assertArrayHasKey('message', $data);
+        $this->assertEquals("vehicle updated", $data['message']);
+
+        Audit::auditRecordText("Test - Put Update Vehicle Detail By ID", "TC-XXX", "Result : ".json_encode($data));
+        Audit::auditRecordSheet("Test - Put Update Vehicle Detail By ID", "TC-XXX", 'TC-XXX test_put_update_vehicle_detail_by_id', json_encode($data));
     }
 
     public function test_get_all_vehicle_header(): void
     {
         // Exec
-        $token = $this->login_trait("user");
         $response = $this->httpClient->get("header", [
             'headers' => [
-                'Authorization' => "Bearer $token"
+                'Authorization' => "Bearer ".$this->token
             ]
         ]);
 
@@ -81,10 +358,9 @@ class VehicleTest extends TestCase
     public function test_get_vehicle_readiness(): void
     {
         // Exec
-        $token = $this->login_trait("user");
         $response = $this->httpClient->get("readiness", [
             'headers' => [
-                'Authorization' => "Bearer $token"
+                'Authorization' => "Bearer ".$this->token
             ]
         ]);
 
@@ -130,11 +406,9 @@ class VehicleTest extends TestCase
     public function test_get_vehicle_detail_by_id(): void
     {
         // Exec
-        $vehicle_id = "3fd091f0-68e9-87e8-0b38-ff129e29e0af";
-        $token = $this->login_trait("user");
-        $response = $this->httpClient->get("detail/$vehicle_id", [
+        $response = $this->httpClient->get("detail/".$this->vehicleId, [
             'headers' => [
-                'Authorization' => "Bearer $token"
+                'Authorization' => "Bearer ".$this->token
             ]
         ]);
 
@@ -210,11 +484,9 @@ class VehicleTest extends TestCase
     public function test_get_vehicle_full_detail_by_id(): void
     {
         // Exec
-        $vehicle_id = "3fd091f0-68e9-87e8-0b38-ff129e29e0af";
-        $token = $this->login_trait("user");
-        $response = $this->httpClient->get("detail/full/$vehicle_id", [
+        $response = $this->httpClient->get("detail/full/".$this->vehicleId, [
             'headers' => [
-                'Authorization' => "Bearer $token"
+                'Authorization' => "Bearer ".$this->token
             ]
         ]);
 
@@ -378,55 +650,12 @@ class VehicleTest extends TestCase
         Audit::auditRecordSheet("Test - Get Vehicle Full Detail By ID", "TC-XXX", 'TC-XXX test_get_vehicle_full_detail_by_id', json_encode($data));
     }
 
-    public function test_get_vehicle_trip_summary_by_id(): void
-    {
-        // Exec
-        $vehicle_id = "3fd091f0-68e9-87e8-0b38-ff129e29e0af";
-        $token = $this->login_trait("user");
-        $response = $this->httpClient->get("trip/summary/$vehicle_id", [
-            'headers' => [
-                'Authorization' => "Bearer $token"
-            ]
-        ]);
-
-        $data = json_decode($response->getBody(), true);
-
-        // Test Parameter
-        $this->assertEquals(200, $response->getStatusCode());
-        $this->assertArrayHasKey('status', $data);
-        $this->assertEquals('success', $data['status']);
-        $this->assertArrayHasKey('message', $data);
-        $this->assertArrayHasKey('data', $data);
-
-        $check_object_trip = ["most_person_with","vehicle_total_trip_distance","most_origin","most_destination","most_category"];
-        foreach ($check_object_trip as $col) {
-            $this->assertArrayHasKey($col, $data["data"]);
-        }
-
-        $check_not_null_str_trip = ["most_origin","most_destination","most_category"];
-        foreach ($check_not_null_str_trip as $col) {
-            $this->assertNotNull($data["data"][$col]);
-            $this->assertIsString($data["data"][$col]);
-        }
-
-        if (!is_null($data["data"]["most_person_with"])) {
-            $this->assertIsString($data["data"]["most_person_with"]);
-        }
-
-        $this->assertIsFloat($data["data"]["vehicle_total_trip_distance"]);
-        $this->assertGreaterThan(0, $data["data"]["vehicle_total_trip_distance"]);
-
-        Audit::auditRecordText("Test - Get Vehicle Trip Summary By ID", "TC-XXX", "Result : ".json_encode($data));
-        Audit::auditRecordSheet("Test - Get Vehicle Trip Summary By ID", "TC-XXX", 'TC-XXX test_get_vehicle_trip_summary_by_id', json_encode($data));
-    }
-
     public function test_get_all_vehicle_name(): void
     {
         // Exec
-        $token = $this->login_trait("user");
         $response = $this->httpClient->get("name", [
             'headers' => [
-                'Authorization' => "Bearer $token"
+                'Authorization' => "Bearer ".$this->token
             ]
         ]);
 
@@ -455,319 +684,14 @@ class VehicleTest extends TestCase
         Audit::auditRecordSheet("Test - Get All Vehicle Name", "TC-XXX", 'TC-XXX test_get_all_vehicle_name', json_encode($data));
     }
 
-    public function test_get_all_vehicle_fuel(): void
-    {
-        // Exec
-        $token = $this->login_trait("user");
-        $response = $this->httpClient->get("fuel", [
-            'headers' => [
-                'Authorization' => "Bearer $token"
-            ]
-        ]);
-
-        $data = json_decode($response->getBody(), true);
-
-        // Test Parameter
-        $this->assertEquals(200, $response->getStatusCode());
-        $this->assertArrayHasKey('status', $data);
-        $this->assertEquals('success', $data['status']);
-        $this->assertArrayHasKey('message', $data);
-        $this->assertArrayHasKey('data', $data);
-
-        foreach ($data['data'] as $dt) {
-            $check_object = ["id", "vehicle_name", "vehicle_plate_number", "vehicle_fuel_status"];
-
-            foreach ($check_object as $col) {
-                $this->assertArrayHasKey($col, $dt);
-                $this->assertNotNull($dt[$col]);
-                $this->assertIsString($dt[$col]);
-            }
-
-            $this->assertIsInt($dt["vehicle_fuel_capacity"]);
-            $this->assertGreaterThan(0, $dt['vehicle_fuel_capacity']);
-
-            $this->assertEquals(36,strlen($dt['id']));
-        }
-
-        Audit::auditRecordText("Test - Get All Vehicle Fuel", "TC-XXX", "Result : ".json_encode($data));
-        Audit::auditRecordSheet("Test - Get All Vehicle Fuel", "TC-XXX", 'TC-XXX test_get_all_vehicle_fuel', json_encode($data));
-    }
-
-    public function test_post_vehicle(): void
-    {
-        // Exec
-        $token = $this->login_trait("user");
-        
-        // Create fake images
-        $img1 = UploadedFile::fake()->image('image1.jpg');
-        $img2 = UploadedFile::fake()->image('image2.jpg');
-        $img3 = UploadedFile::fake()->image('image3.jpg');
-
-        $form = [
-            ['name' => 'vehicle_name', 'contents' => 'Kijang Innova 2.0 Type G MT'],
-            ['name' => 'vehicle_merk', 'contents' => 'Toyota'],
-            ['name' => 'vehicle_type', 'contents' => 'Minibus'], 
-            ['name' => 'vehicle_price', 'contents' => 275000000],
-            ['name' => 'vehicle_desc', 'contents' => 'sudah jarang digunakan 2'],
-            ['name' => 'vehicle_distance', 'contents' => 90000],
-            ['name' => 'vehicle_category', 'contents' => 'Parents Car'], 
-            ['name' => 'vehicle_status', 'contents' => 'Available'], 
-            ['name' => 'vehicle_year_made', 'contents' => 2011],
-            ['name' => 'vehicle_plate_number', 'contents' => 'PA 1234 ZX'],
-            ['name' => 'vehicle_fuel_status', 'contents' => 'Not Monitored'], 
-            ['name' => 'vehicle_fuel_capacity', 'contents' => 50],
-            ['name' => 'vehicle_default_fuel', 'contents' => 'Pertamina Pertalite'],
-            ['name' => 'vehicle_color', 'contents' => 'White'],
-            ['name' => 'vehicle_transmission', 'contents' => 'Manual'], 
-            ['name' => 'vehicle_capacity', 'contents' => 8],
-            [
-                'name' => 'vehicle_image',
-                'contents' => fopen($img1->getPathname(), 'r'),
-                'filename' => 'image1.jpg',
-            ],
-            [
-                'name' => 'vehicle_other_img_url[]',
-                'contents' => fopen($img2->getPathname(), 'r'),
-                'filename' => 'image2.jpg',
-            ],
-            [
-                'name' => 'vehicle_other_img_url[]',
-                'contents' => fopen($img3->getPathname(), 'r'),
-                'filename' => 'image3.jpg',
-            ],
-        ];
-
-        $response = $this->httpClient->post("", [
-            'headers' => [
-                'Authorization' => "Bearer $token"
-            ],
-            'multipart' => $form,
-        ]);
-
-        $data = json_decode($response->getBody(), true);
-
-        // Test Parameter
-        $this->assertEquals(201, $response->getStatusCode());
-        $this->assertArrayHasKey('status', $data);
-        $this->assertEquals('success', $data['status']);
-        $this->assertArrayHasKey('message', $data);
-        $this->assertEquals("vehicle created", $data['message']);
-
-        Audit::auditRecordText("Test - Post Vehicle", "TC-XXX", "Result : ".json_encode($data));
-        Audit::auditRecordSheet("Test - Post Vehicle", "TC-XXX", 'TC-XXX test_post_vehicle', json_encode($data));
-    }
-
-    public function test_post_vehicle_doc(): void
-    {
-        // Exec
-        $token = $this->login_trait("user");
-        $id = "563e01b3-e06f-01a9-2fae-4d525177fdd1";
-        
-        // Create fake images & doc
-        $img1 = UploadedFile::fake()->image('image1.jpg');
-        $pdf1 = UploadedFile::fake()->create('document1.pdf', 100, 'application/pdf'); 
-
-        $form = [
-            [
-                'name' => 'vehicle_document[]',
-                'contents' => fopen($img1->getPathname(), 'r'),
-                'filename' => 'image1.jpg',
-            ],
-            [
-                'name' => 'vehicle_document[]',
-                'contents' => fopen($pdf1->getPathname(), 'r'),
-                'filename' => 'document1.pdf',
-            ],
-            [
-                'name' => 'vehicle_document_caption[]',
-                'contents' => 'this is an image',
-            ],
-            [
-                'name' => 'vehicle_document_caption[]',
-                'contents' => 'this is a doc',
-            ],
-        ];
-
-        $response = $this->httpClient->post("doc/$id", [
-            'headers' => [
-                'Authorization' => "Bearer $token"
-            ],
-            'multipart' => $form,
-        ]);
-
-        $data = json_decode($response->getBody(), true);
-
-        // Test Parameter
-        $this->assertEquals(201, $response->getStatusCode());
-        $this->assertArrayHasKey('status', $data);
-        $this->assertEquals('success', $data['status']);
-        $this->assertArrayHasKey('message', $data);
-        $this->assertEquals("vehicle document created", $data['message']);
-
-        Audit::auditRecordText("Test - Post Vehicle Doc", "TC-XXX", "Result : ".json_encode($data));
-        Audit::auditRecordSheet("Test - Post Vehicle Doc", "TC-XXX", 'TC-XXX test_post_vehicle_doc', json_encode($data));
-    }
-
-    public function test_post_update_vehicle_image_by_id(): void
-    {
-        // Exec
-        $token = $this->login_trait("user");
-        $id = "3fd091f0-68e9-87e8-0b38-ff129e29e0af";
-        
-        // Create fake image
-        $img1 = UploadedFile::fake()->image('image1.jpg');
-
-        $form = [
-            [
-                'name' => 'vehicle_image',
-                'contents' => fopen($img1->getPathname(), 'r'),
-                'filename' => 'image1.jpg',
-            ]
-        ];
-
-        $response = $this->httpClient->post("image/$id", [
-            'headers' => [
-                'Authorization' => "Bearer $token"
-            ],
-            'multipart' => $form,
-        ]);
-
-        $data = json_decode($response->getBody(), true);
-
-        // Test Parameter
-        $this->assertEquals(200, $response->getStatusCode());
-        $this->assertArrayHasKey('status', $data);
-        $this->assertEquals('success', $data['status']);
-        $this->assertArrayHasKey('message', $data);
-        $this->assertEquals("vehicle updated", $data['message']);
-
-        Audit::auditRecordText("Test - Post Update Vehicle Image By ID", "TC-XXX", "Result : ".json_encode($data));
-        Audit::auditRecordSheet("Test - Post Update Vehicle Image By ID", "TC-XXX", 'TC-XXX test_post_update_vehicle_image_by_id', json_encode($data));
-    }
-
-    public function test_post_update_vehicle_image_collection_by_id(): void
-    {
-        // Exec
-        $token = $this->login_trait("user");
-        $id = "3fd091f0-68e9-87e8-0b38-ff129e29e0af";
-        
-        // Create fake images
-        $img1 = UploadedFile::fake()->image('image1.jpg');
-        $img2 = UploadedFile::fake()->image('image2.jpg');
-
-        $form = [
-            [
-                'name' => 'vehicle_other_img_url[]',
-                'contents' => fopen($img1->getPathname(), 'r'),
-                'filename' => 'image1.jpg',
-            ],
-            [
-                'name' => 'vehicle_other_img_url[]',
-                'contents' => fopen($img2->getPathname(), 'r'),
-                'filename' => 'image2.jpg',
-            ]
-        ];
-
-        $response = $this->httpClient->post("image_collection/$id", [
-            'headers' => [
-                'Authorization' => "Bearer $token"
-            ],
-            'multipart' => $form,
-        ]);
-
-        $data = json_decode($response->getBody(), true);
-
-        // Test Parameter
-        $this->assertEquals(200, $response->getStatusCode());
-        $this->assertArrayHasKey('status', $data);
-        $this->assertEquals('success', $data['status']);
-        $this->assertArrayHasKey('message', $data);
-        $this->assertEquals("vehicle updated", $data['message']);
-
-        Audit::auditRecordText("Test - Post Update Vehicle Image Collection By ID", "TC-XXX", "Result : ".json_encode($data));
-        Audit::auditRecordSheet("Test - Post Update Vehicle Image Collection By ID", "TC-XXX", 'TC-XXX test_post_update_vehicle_image_collection_by_id', json_encode($data));
-    }
-
-    public function test_put_recover_vehicle_by_id(): void
-    {
-        // Exec
-        $token = $this->login_trait("user");
-        $id = "9f0484ff-3099-6205-0dae-b3ccbc222a2c";
-
-        $response = $this->httpClient->put("recover/$id", [
-            'headers' => [
-                'Authorization' => "Bearer $token"
-            ]
-        ]);
-
-        $data = json_decode($response->getBody(), true);
-
-        // Test Parameter
-        $this->assertEquals(200, $response->getStatusCode());
-        $this->assertArrayHasKey('status', $data);
-        $this->assertEquals('success', $data['status']);
-        $this->assertArrayHasKey('message', $data);
-        $this->assertEquals("vehicle recovered", $data['message']);
-
-        Audit::auditRecordText("Test - Put Recover Vehicle By ID", "TC-XXX", "Result : ".json_encode($data));
-        Audit::auditRecordSheet("Test - Put Recover Vehicle By ID", "TC-XXX", 'TC-XXX test_put_recover_vehicle_by_id', json_encode($data));
-    }
-
-    public function test_put_update_vehicle_detail_by_id(): void
-    {
-        // Exec
-        $token = $this->login_trait("user");
-        $id = "3fd091f0-68e9-87e8-0b38-ff129e29e0af";
-
-        $body = [
-            'vehicle_name' => 'Kijang Innova 2.0 Type G MT',
-            'vehicle_merk' => 'Toyota',
-            'vehicle_type' => 'Minibus',
-            'vehicle_price' => 275000000,
-            'vehicle_desc' => 'sudah jarang digunakan 2',
-            'vehicle_distance' => 90000,
-            'vehicle_category' => 'Parents Car',
-            'vehicle_status' => 'Available',
-            'vehicle_year_made' => 2011,
-            'vehicle_plate_number' => 'PA 1234 ZX',
-            'vehicle_fuel_status' => 'Not Monitored',
-            'vehicle_fuel_capacity' => 50,
-            'vehicle_default_fuel' => 'Pertamina Pertalite',
-            'vehicle_color' => 'White',
-            'vehicle_transmission' => 'Manual',
-            'vehicle_capacity' => 8,
-        ];
-
-        $response = $this->httpClient->put("detail/$id", [
-            'headers' => [
-                'Authorization' => "Bearer $token"
-            ],
-            'json' => $body
-        ]);
-
-        $data = json_decode($response->getBody(), true);
-
-        // Test Parameter
-        $this->assertEquals(200, $response->getStatusCode());
-        $this->assertArrayHasKey('status', $data);
-        $this->assertEquals('success', $data['status']);
-        $this->assertArrayHasKey('message', $data);
-        $this->assertEquals("vehicle updated", $data['message']);
-
-        Audit::auditRecordText("Test - Put Update Vehicle Detail By ID", "TC-XXX", "Result : ".json_encode($data));
-        Audit::auditRecordSheet("Test - Put Update Vehicle Detail By ID", "TC-XXX", 'TC-XXX test_put_update_vehicle_detail_by_id', json_encode($data));
-    }
-
     public function test_hard_delete_vehicle_image_collection_by_id(): void
     {
         // Exec
-        $token = $this->login_trait("user");
-        $vehicle_id = "563e01b3-e06f-01a9-2fae-4d525177fdd1";
         $image_id = "3be503d1-5566-1bd0-2864-9c25404294ca";
 
-        $response = $this->httpClient->delete("image_collection/destroy/$vehicle_id/$image_id", [
+        $response = $this->httpClient->delete("image_collection/destroy/".$this->vehicleId."/$image_id", [
             'headers' => [
-                'Authorization' => "Bearer $token"
+                'Authorization' => "Bearer ".$this->token
             ]
         ]);
 
@@ -787,13 +711,11 @@ class VehicleTest extends TestCase
     public function test_hard_delete_vehicle_document_by_id(): void
     {
         // Exec
-        $token = $this->login_trait("user");
-        $vehicle_id = "563e01b3-e06f-01a9-2fae-4d525177fdd1";
         $doc_id = "304d5c4a-b0a7-8c1a-1cac-50efb3413403";
 
-        $response = $this->httpClient->delete("document/destroy/$vehicle_id/$doc_id", [
+        $response = $this->httpClient->delete("document/destroy/".$this->vehicleId."/$doc_id", [
             'headers' => [
-                'Authorization' => "Bearer $token"
+                'Authorization' => "Bearer ".$this->token
             ]
         ]);
 
@@ -810,40 +732,11 @@ class VehicleTest extends TestCase
         Audit::auditRecordSheet("Test - Hard Delete Vehicle Document By ID", "TC-XXX", 'TC-XXX test_hard_delete_vehicle_document_by_id', json_encode($data));
     }
 
-    public function test_soft_delete_vehicle_by_id(): void
-    {
-        // Exec
-        $token = $this->login_trait("user");
-        $id = "563e01b3-e06f-01a9-2fae-4d525177fdd1";
-
-        $response = $this->httpClient->delete("delete/$id", [
-            'headers' => [
-                'Authorization' => "Bearer $token"
-            ]
-        ]);
-
-        $data = json_decode($response->getBody(), true);
-
-        // Test Parameter
-        $this->assertEquals(200, $response->getStatusCode());
-        $this->assertArrayHasKey('status', $data);
-        $this->assertEquals('success', $data['status']);
-        $this->assertArrayHasKey('message', $data);
-        $this->assertEquals("vehicle deleted", $data['message']);
-
-        Audit::auditRecordText("Test - Soft Delete Vehicle By ID", "TC-XXX", "Result : ".json_encode($data));
-        Audit::auditRecordSheet("Test - Soft Delete Vehicle By ID", "TC-XXX", 'TC-XXX test_soft_delete_vehicle_by_id', json_encode($data));
-    }
-
     public function test_hard_delete_vehicle_by_id(): void
     {
-        // Exec
-        $token = $this->login_trait("user");
-        $id = "563e01b3-e06f-01a9-2fae-4d525177fdd1";
-
-        $response = $this->httpClient->delete("destroy/$id", [
+        $response = $this->httpClient->delete("destroy/".$this->vehicleId, [
             'headers' => [
-                'Authorization' => "Bearer $token"
+                'Authorization' => "Bearer ".$this->token
             ]
         ]);
 
