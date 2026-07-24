@@ -16,6 +16,7 @@ class TripTest extends TestCase
     protected string $token;
     protected string $vehicleId;
     protected string $tripId;
+    protected string $driverId;
     use LoginHelperTrait;
 
     protected function setUp(): void
@@ -32,6 +33,8 @@ class TripTest extends TestCase
         $this->vehicleId = TestDataReader::getValue('vehicle_id') ?? "";
         // Pre-Condition: At least a trip exists
         $this->tripId = TestDataReader::getValue('trip_id') ?? "";
+        // Pre-Condition: At least a driver exists
+        $this->driverId = TestDataReader::getValue('driver_id') ?? "";
     }
 
     public function test_post_create_trip(): void
@@ -162,7 +165,7 @@ class TripTest extends TestCase
     public function test_get_trip_history_coordinate_by_location_name(): void
     {
         // Exec
-        $location_name = "my";
+        $location_name = TestDataReader::getValue('trip_origin_name');
         $response = $this->httpClient->get("coordinate/$location_name", [
             'headers' => [
                 'Authorization' => "Bearer ".$this->token
@@ -261,10 +264,8 @@ class TripTest extends TestCase
 
     public function test_get_all_trip_by_driver_id(): void
     {
-        $driver_id = "c61fe1f9-7618-f041-17c6-61682541eca0";
-
         // Exec
-        $response = $this->httpClient->get("driver/$driver_id", [
+        $response = $this->httpClient->get("driver/".$this->driverId, [
             'headers' => [
                 'Authorization' => "Bearer ".$this->token
             ]
@@ -452,27 +453,5 @@ class TripTest extends TestCase
 
         Audit::auditRecordText("Test - Put Update Trip By ID", "TC-XXX", "Result : ".json_encode($data));
         Audit::auditRecordSheet("Test - Put Update Trip By ID", "TC-XXX", 'TC-XXX test_put_update_trip_by_id', json_encode($data));
-    }
-
-    public function test_hard_delete_trip_by_id(): void
-    {
-        // Exec
-        $response = $this->httpClient->delete("destroy/".$this->tripId, [
-            'headers' => [
-                'Authorization' => "Bearer ".$this->token
-            ]
-        ]);
-
-        $data = json_decode($response->getBody(), true);
-
-        // Test Parameter
-        $this->assertEquals(200, $response->getStatusCode());
-        $this->assertArrayHasKey('status', $data);
-        $this->assertEquals('success', $data['status']);
-        $this->assertArrayHasKey('message', $data);
-        $this->assertEquals('trip permanently deleted',$data['message']);
-
-        Audit::auditRecordText("Test - Hard Delete Trip By Id", "TC-XXX", "Result : ".json_encode($data));
-        Audit::auditRecordSheet("Test - Hard Delete Trip By Id", "TC-XXX", 'TC-XXX test_hard_delete_trip_by_id', json_encode($data));
     }
 }

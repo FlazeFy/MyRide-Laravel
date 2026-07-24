@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Integration;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use GuzzleHttp\Client;
@@ -8,10 +8,15 @@ use Tests\TestCase;
 
 // Helper
 use App\Helpers\Audit;
+use App\Helpers\TestDataReader;
 
 class DriverTest extends TestCase
 {
     protected $httpClient;
+    protected string $token;
+    protected string $vehicleId;
+    protected string $driverId;
+    protected string $driverRelationId;
     use LoginHelperTrait;
 
     protected function setUp(): void
@@ -21,63 +26,96 @@ class DriverTest extends TestCase
             'base_uri' => 'http://127.0.0.1:8000/api/v1/driver/',
             'http_errors' => false
         ]);
+
+        // Pre-Condition: User already sign in
+        $this->token = $this->login_trait("user");
+        // Pre-Condition: At least a vehicle exists
+        $this->vehicleId = TestDataReader::getValue('vehicle_id') ?? "";
+        // Pre-Condition: At least a driver exists
+        $this->driverId = TestDataReader::getValue('driver_id') ?? "";
     }
 
-    public function test_hard_delete_driver_by_id(): void
+    public function test_post_create_driver(): void
     {
+        $body = [
+            'username' => 'tester_01',
+            'fullname' => 'Tester User',
+            'email' => 'flazen.work@gmail.com',
+            'phone' => '08123456789',
+            'notes' => 'Lorem ipsum',
+            'telegram_user_id' => '1317625977',
+            'password' => 'nopass123',
+            'password_confirmation' => 'nopass123'
+        ];
+
         // Exec
-        $token = $this->login_trait("user");
-        $id = "70ff5a26-a2cf-11f0-86ad-3216422910e8";
-        $response = $this->httpClient->delete("destroy/$id", [
+        $response = $this->httpClient->post("", [
             'headers' => [
-                'Authorization' => "Bearer $token"
-            ]
+                'Authorization' => "Bearer ".$this->token
+            ],
+            'json' => $body,
         ]);
 
         $data = json_decode($response->getBody(), true);
 
         // Test Parameter
-        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals(201, $response->getStatusCode());
         $this->assertArrayHasKey('status', $data);
         $this->assertEquals('success', $data['status']);
         $this->assertArrayHasKey('message', $data);
-        $this->assertEquals('driver permanently deleted',$data['message']);
+        $this->assertEquals("driver created", $data['message']);
 
-        Audit::auditRecordText("Test - Hard Delete Driver By Id", "TC-XXX", "Result : ".json_encode($data));
-        Audit::auditRecordSheet("Test - Hard Delete Driver By Id", "TC-XXX", 'TC-XXX test_hard_delete_driver_by_id', json_encode($data));
+        // Store all created data
+        foreach ($body as $key => $val) {
+            TestDataReader::setValue("driver_$key", $val);
+        }
+        TestDataReader::setValue('driver_id', $data['data']['id']);
+
+        Audit::auditRecordText("Test - Post Create Driver", "TC-XXX", "Result : ".json_encode($data));
+        Audit::auditRecordSheet("Test - Post Create Driver", "TC-XXX", 'TC-XXX test_post_create_driver', json_encode($data));
     }
 
-    public function test_hard_delete_driver_relation_by_id(): void
+    public function test_post_create_driver_vehicle(): void
     {
+        $body = [
+            'vehicle_id' => $this->vehicleId,
+            'driver_id' => $this->driverId,
+            'relation_note' => 'Driver weekday'
+        ];
+
         // Exec
-        $token = $this->login_trait("user");
-        $id = "8e57f7c5-2828-8948-1208-b012b3bb8365";
-        $response = $this->httpClient->delete("destroy/relation/$id", [
+        $response = $this->httpClient->post("vehicle", [
             'headers' => [
-                'Authorization' => "Bearer $token"
-            ]
+                'Authorization' => "Bearer ".$this->token
+            ],
+            'json' => $body,
         ]);
 
         $data = json_decode($response->getBody(), true);
 
         // Test Parameter
-        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals(201, $response->getStatusCode());
         $this->assertArrayHasKey('status', $data);
         $this->assertEquals('success', $data['status']);
         $this->assertArrayHasKey('message', $data);
-        $this->assertEquals('driver relation permanently deleted',$data['message']);
+        $this->assertEquals("driver relation created", $data['message']);
 
-        Audit::auditRecordText("Test - Hard Delete Driver Relation By Id", "TC-XXX", "Result : ".json_encode($data));
-        Audit::auditRecordSheet("Test - Hard Delete Driver Relation By Id", "TC-XXX", 'TC-XXX test_hard_delete_driver_relation_by_id', json_encode($data));
+        // Store all created data
+        foreach ($body as $key => $val) {
+            TestDataReader::setValue($key, $val);
+        }
+        TestDataReader::setValue('driver_relation_id', $data['data']['id']);
+
+        Audit::auditRecordText("Test - Post Create Driver Vehicle", "TC-XXX", "Result : ".json_encode($data));
+        Audit::auditRecordSheet("Test - Post Create Driver Vehicle", "TC-XXX", 'TC-XXX test_post_create_driver_vehicle', json_encode($data));
     }
 
     public function test_get_all_driver(): void
     {
         // Exec
-        $token = $this->login_trait("user");
         $response = $this->httpClient->get("", [
             'headers' => [
-                'Authorization' => "Bearer $token"
+                'Authorization' => "Bearer ".$this->token
             ]
         ]);
 
@@ -127,12 +165,10 @@ class DriverTest extends TestCase
 
     public function test_get_all_driver_name(): void
     {
-        $token = $this->login_trait("user");
-
         // Exec
         $response = $this->httpClient->get("name", [
             'headers' => [
-                'Authorization' => "Bearer $token"
+                'Authorization' => "Bearer ".$this->token
             ]
         ]);
 
@@ -161,78 +197,8 @@ class DriverTest extends TestCase
         Audit::auditRecordSheet("Test - Get All Driver Name", "TC-XXX", 'TC-XXX test_get_all_driver_name', json_encode($data));
     }
 
-    public function test_post_create_driver_vehicle(): void
-    {
-        $token = $this->login_trait("user");
-
-        $body = [
-            'vehicle_id' => '830b1ba4-3e90-28d4-1f0b-aadcd406090f',
-            'driver_id' => '6c1ff866-ce85-fa03-21ce-b30905b43b1a',
-            'relation_note' => 'Driver weekday'
-        ];
-
-        // Exec
-        $response = $this->httpClient->post("vehicle", [
-            'headers' => [
-                'Authorization' => "Bearer $token"
-            ],
-            'json' => $body,
-        ]);
-
-        $data = json_decode($response->getBody(), true);
-
-        // Test Parameter
-        $this->assertEquals(201, $response->getStatusCode());
-        $this->assertArrayHasKey('status', $data);
-        $this->assertEquals('success', $data['status']);
-        $this->assertArrayHasKey('message', $data);
-        $this->assertEquals("driver relation created", $data['message']);
-
-        Audit::auditRecordText("Test - Post Create Driver Vehicle", "TC-XXX", "Result : ".json_encode($data));
-        Audit::auditRecordSheet("Test - Post Create Driver Vehicle", "TC-XXX", 'TC-XXX test_post_create_driver_vehicle', json_encode($data));
-    }
-
-    public function test_post_create_driver(): void
-    {
-        $token = $this->login_trait("user");
-
-        $body = [
-            'username' => 'tester_01',
-            'fullname' => 'Tester User',
-            'email' => 'flazen.work@gmail.com',
-            'phone' => '08123456789',
-            'notes' => 'Lorem ipsum',
-            'telegram_user_id' => '1317625977',
-            'password' => 'nopass123',
-            'password_confirmation' => 'nopass123'
-        ];
-
-        // Exec
-        $response = $this->httpClient->post("", [
-            'headers' => [
-                'Authorization' => "Bearer $token"
-            ],
-            'json' => $body,
-        ]);
-
-        $data = json_decode($response->getBody(), true);
-
-        // Test Parameter
-        $this->assertEquals(201, $response->getStatusCode());
-        $this->assertArrayHasKey('status', $data);
-        $this->assertEquals('success', $data['status']);
-        $this->assertArrayHasKey('message', $data);
-        $this->assertEquals("driver created", $data['message']);
-
-        Audit::auditRecordText("Test - Post Create Driver", "TC-XXX", "Result : ".json_encode($data));
-        Audit::auditRecordSheet("Test - Post Create Driver", "TC-XXX", 'TC-XXX test_post_create_driver', json_encode($data));
-    }
-
     public function test_put_update_driver_by_id(): void
     {
-        $token = $this->login_trait("user");
-        $id = "558bd768-392a-d389-09f3-a28933ca9183";
-
         $body = [
             'username' => 'tester_01',
             'fullname' => 'Tester User',
@@ -242,9 +208,9 @@ class DriverTest extends TestCase
         ];
 
         // Exec
-        $response = $this->httpClient->put("$id", [
+        $response = $this->httpClient->put($this->driverId, [
             'headers' => [
-                'Authorization' => "Bearer $token"
+                'Authorization' => "Bearer ".$this->token
             ],
             'json' => $body,
         ]);
@@ -265,10 +231,9 @@ class DriverTest extends TestCase
     public function test_get_driver_vehicle(): void
     {
         // Exec
-        $token = $this->login_trait("user");
         $response = $this->httpClient->get("vehicle", [
             'headers' => [
-                'Authorization' => "Bearer $token"
+                'Authorization' => "Bearer ".$this->token
             ]
         ]);
 
@@ -317,10 +282,9 @@ class DriverTest extends TestCase
     public function test_get_driver_vehicle_manage_list(): void
     {
         // Exec
-        $token = $this->login_trait("user");
         $response = $this->httpClient->get("vehicle/list", [
             'headers' => [
-                'Authorization' => "Bearer $token"
+                'Authorization' => "Bearer ".$this->token
             ]
         ]);
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Integration;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\UploadedFile;
@@ -10,10 +10,14 @@ use Tests\TestCase;
 
 // Helper
 use App\Helpers\Audit;
+use App\Helpers\TestDataReader;
 
 class InventoryTest extends TestCase
 {
     protected $httpClient;
+    protected string $token;
+    protected string $vehicleId;
+    protected string $inventoryId;
     use LoginHelperTrait;
 
     protected function setUp(): void
@@ -23,17 +27,77 @@ class InventoryTest extends TestCase
             'base_uri' => 'http://127.0.0.1:8000/api/v1/inventory/',
             'http_errors' => false
         ]);
+
+        // Pre-Condition: User already sign in
+        $this->token = $this->login_trait("user");
+        // Pre-Condition: At least a vehicle exists
+        $this->vehicleId = TestDataReader::getValue('vehicle_id') ?? "";
+        // Pre-Condition: At least a inventory exists
+        $this->inventoryId = TestDataReader::getValue('inventory_id') ?? "";
     }
 
-    public function test_hard_delete_inventory_by_id(): void
+    public function test_post_create_inventory(): void
     {
-        // Exec
-        $token = $this->login_trait("user");
-        $id = "2599322c-a232-11ee-8c90-0242ac120002";
-        $response = $this->httpClient->delete("destroy/$id", [
-            'headers' => [
-                'Authorization' => "Bearer $token"
+        // Create fake image
+        $img1 = UploadedFile::fake()->image('image1.jpg');
+
+        $form = [
+            ['name' => 'vehicle_id', 'contents' => $this->vehicleId],
+            ['name' => 'inventory_name', 'contents' => 'Secondary Tire'],
+            ['name' => 'inventory_category', 'contents' => 'Maintenance'], 
+            ['name' => 'inventory_storage', 'contents' => 'Trunk'],
+            ['name' => 'inventory_qty', 'contents' => 1],
+            [
+                'name' => 'inventory_image_url',
+                'contents' => fopen($img1->getPathname(), 'r'),
+                'filename' => 'image1.jpg',
             ]
+        ];
+
+        // Exec
+        $response = $this->httpClient->post("", [
+            'headers' => [
+                'Authorization' => "Bearer ".$this->token
+            ],
+            'multipart' => $form
+        ]);
+
+        $data = json_decode($response->getBody(), true);
+
+        // Test Parameter
+        $this->assertEquals(201, $response->getStatusCode());
+        $this->assertArrayHasKey('status', $data);
+        $this->assertEquals('success', $data['status']);
+        $this->assertArrayHasKey('message', $data);
+        $this->assertEquals("inventory created", $data['message']);
+
+        // Store all created data
+        foreach ($form as $dt) {
+            if (array_key_exists('filename', $dt)) continue; 
+            TestDataReader::setValue($dt['name'], $dt['contents']);
+        }
+        TestDataReader::setValue('inventory_id', $data['data']['id']);
+
+        Audit::auditRecordText("Test - Post Create Inventory", "TC-XXX", "Result : ".json_encode($data));
+        Audit::auditRecordSheet("Test - Post Create Inventory", "TC-XXX", 'TC-XXX test_post_create_inventory', json_encode($data));
+    }
+
+    public function test_put_update_inventory_by_id(): void
+    {
+        $body = [
+            'vehicle_id' => $this->vehicleId, 
+            'inventory_name' => 'Secondary Tire', 
+            'inventory_category' => 'Maintenance', 
+            'inventory_qty' => 2, 
+            'inventory_storage' => 'Trunk'
+        ];
+
+        // Exec
+        $response = $this->httpClient->put($this->inventoryId, [
+            'headers' => [
+                'Authorization' => "Bearer ".$this->token
+            ],
+            'json' => $body
         ]);
 
         $data = json_decode($response->getBody(), true);
@@ -43,19 +107,18 @@ class InventoryTest extends TestCase
         $this->assertArrayHasKey('status', $data);
         $this->assertEquals('success', $data['status']);
         $this->assertArrayHasKey('message', $data);
-        $this->assertEquals('inventory permanently deleted',$data['message']);
+        $this->assertEquals("inventory updated", $data['message']);
 
-        Audit::auditRecordText("Test - Hard Delete Inventory By Id", "TC-XXX", "Result : ".json_encode($data));
-        Audit::auditRecordSheet("Test - Hard Delete Inventory By Id", "TC-XXX", 'TC-XXX test_hard_delete_inventory_by_id', json_encode($data));
+        Audit::auditRecordText("Test - Put Update Inventory By ID", "TC-XXX", "Result : ".json_encode($data));
+        Audit::auditRecordSheet("Test - Put Update Inventory By ID", "TC-XXX", 'TC-XXX test_put_update_inventory_by_id', json_encode($data));
     }
 
     public function test_get_all_inventory(): void
     {
         // Exec
-        $token = $this->login_trait("user");
         $response = $this->httpClient->get("", [
             'headers' => [
-                'Authorization' => "Bearer $token"
+                'Authorization' => "Bearer ".$this->token
             ]
         ]);
 
@@ -95,90 +158,12 @@ class InventoryTest extends TestCase
         Audit::auditRecordSheet("Test - Get All Inventory", "TC-XXX", 'TC-XXX test_get_all_inventory', json_encode($data));
     }
 
-    public function test_post_create_inventory(): void
-    {
-        $token = $this->login_trait("user");
-
-        // Create fake image
-        $img1 = UploadedFile::fake()->image('image1.jpg');
-
-        $form = [
-            ['name' => 'vehicle_id', 'contents' => 'ac278923-14ab-cb8b-0ca5-6cb6cdff094b'],
-            ['name' => 'inventory_name', 'contents' => 'Secondary Tire'],
-            ['name' => 'inventory_category', 'contents' => 'Maintenance'], 
-            ['name' => 'inventory_storage', 'contents' => 'Trunk'],
-            ['name' => 'inventory_qty', 'contents' => 1],
-            [
-                'name' => 'inventory_image_url',
-                'contents' => fopen($img1->getPathname(), 'r'),
-                'filename' => 'image1.jpg',
-            ]
-        ];
-
-        // Exec
-        $response = $this->httpClient->post("", [
-            'headers' => [
-                'Authorization' => "Bearer $token"
-            ],
-            'multipart' => $form
-        ]);
-
-        $data = json_decode($response->getBody(), true);
-
-        // Test Parameter
-        $this->assertEquals(201, $response->getStatusCode());
-        $this->assertArrayHasKey('status', $data);
-        $this->assertEquals('success', $data['status']);
-        $this->assertArrayHasKey('message', $data);
-        $this->assertEquals("inventory created", $data['message']);
-
-        Audit::auditRecordText("Test - Post Create Inventory", "TC-XXX", "Result : ".json_encode($data));
-        Audit::auditRecordSheet("Test - Post Create Inventory", "TC-XXX", 'TC-XXX test_post_create_inventory', json_encode($data));
-    }
-
-    public function test_put_update_inventory_by_id(): void
-    {
-        $token = $this->login_trait("user");
-        $id = "a892e8e3-f89e-8d74-064b-66d6b2dcb8af";
-
-        $body = [
-            'vehicle_id' => 'ac278923-14ab-cb8b-0ca5-6cb6cdff094b', 
-            'inventory_name' => 'Secondary Tire', 
-            'inventory_category' => 'Maintenance', 
-            'inventory_qty' => 2, 
-            'inventory_storage' => 'Trunk'
-        ];
-
-        // Exec
-        $response = $this->httpClient->put("$id", [
-            'headers' => [
-                'Authorization' => "Bearer $token"
-            ],
-            'json' => $body
-        ]);
-
-        $data = json_decode($response->getBody(), true);
-
-        // Test Parameter
-        $this->assertEquals(200, $response->getStatusCode());
-        $this->assertArrayHasKey('status', $data);
-        $this->assertEquals('success', $data['status']);
-        $this->assertArrayHasKey('message', $data);
-        $this->assertEquals("inventory updated", $data['message']);
-
-        Audit::auditRecordText("Test - Put Update Inventory By ID", "TC-XXX", "Result : ".json_encode($data));
-        Audit::auditRecordSheet("Test - Put Update Inventory By ID", "TC-XXX", 'TC-XXX test_put_update_inventory_by_id', json_encode($data));
-    }
-
     public function test_get_inventory_by_vehicle_id(): void
     {
-        $token = $this->login_trait("user");
-        $vehicle_id = "ac278923-14ab-cb8b-0ca5-6cb6cdff094b";
-
         // Exec
-        $response = $this->httpClient->get("vehicle/$vehicle_id", [
+        $response = $this->httpClient->get("vehicle/".$this->vehicleId, [
             'headers' => [
-                'Authorization' => "Bearer $token"
+                'Authorization' => "Bearer ".$this->token
             ]
         ]);
 

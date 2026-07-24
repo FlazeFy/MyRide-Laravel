@@ -3,18 +3,33 @@
 namespace Tests\Feature;
 use GuzzleHttp\Client;
 use Tests\TestCase;
+use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 // Helper
 use App\Helpers\Audit;
 use App\Helpers\TestDataReader;
 // Models
+use App\Models\AdminModel;
 use App\Models\UserModel;
-use App\Models\ValidateRequestModel;
+use App\Models\FAQModel;
+use App\Models\VehicleModel;
+use App\Models\TripModel;
+use App\Models\WashModel;
+use App\Models\FuelModel;
+use App\Models\HistoryModel;
+use App\Models\InventoryModel;
+use App\Models\ServiceModel;
+use App\Models\DriverModel;
+use App\Models\DriverVehicleRelationModel;
+use App\Models\ReminderModel;
+use App\Models\ChatHistoryModel;
 
 class AuthTest extends TestCase
 {
     protected Client $httpClient;
     protected array $testUser;
+    protected static bool $dbCleaned = false;
 
     public static function setUpBeforeClass(): void
     {
@@ -25,6 +40,27 @@ class AuthTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
+
+        if (!self::$dbCleaned) {
+            DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+            TripModel::truncate();
+            ChatHistoryModel::truncate();
+            FAQModel::truncate();
+            WashModel::truncate();
+            FuelModel::truncate();
+            HistoryModel::truncate();
+            InventoryModel::truncate();
+            VehicleModel::truncate();
+            DriverModel::truncate();
+            UserModel::truncate();
+            AdminModel::truncate();
+            ServiceModel::truncate();
+            DriverVehicleRelationModel::truncate();
+            ReminderModel::truncate();
+            DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+
+            self::$dbCleaned = true;
+        }
 
         $this->httpClient = new Client([
             'base_uri' => 'http://127.0.0.1:8000/',

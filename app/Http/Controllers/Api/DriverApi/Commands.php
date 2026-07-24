@@ -316,6 +316,9 @@ class Commands extends Controller
                         return response()->json([
                             'status' => 'success',
                             'message' => Generator::getMessageTemplate("create", $this->module),
+                            'data' => [
+                                'id' => $row->id
+                            ]
                         ], Response::HTTP_CREATED);
                     } else {
                         return response()->json([
@@ -562,6 +565,9 @@ class Commands extends Controller
                         return response()->json([
                             'status' => 'success',
                             'message' => Generator::getMessageTemplate("create", "$this->module relation"),
+                            'data' => [
+                                'id' => $row->id
+                            ]
                         ], Response::HTTP_CREATED);
                     } else {
                         return response()->json([

@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Integration;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use GuzzleHttp\Client;
@@ -8,10 +8,14 @@ use Tests\TestCase;
 
 // Helper
 use App\Helpers\Audit;
+use App\Helpers\TestDataReader;
 
 class WashTest extends TestCase
 {
     protected $httpClient;
+    protected string $token;
+    protected string $vehicleId;
+    protected string $washId;
     use LoginHelperTrait;
 
     protected function setUp(): void
@@ -21,15 +25,137 @@ class WashTest extends TestCase
             'base_uri' => 'http://127.0.0.1:8000/api/v1/wash/',
             'http_errors' => false
         ]);
+
+        // Pre-Condition: User already sign in
+        $this->token = $this->login_trait("user");
+        // Pre-Condition: At least a vehicle exists
+        $this->vehicleId = TestDataReader::getValue('vehicle_id') ?? "";
+        // Pre-Condition: At least a wash exists
+        $this->washId = TestDataReader::getValue('wash_id') ?? "";
+    }
+
+    public function test_post_create_wash(): void
+    {
+        // Exec
+        $body = [
+            'vehicle_id' => $this->vehicleId,
+            'wash_desc' => 'Full body and interior wash',
+            'wash_by' => 'Myself',
+            'is_wash_body' => 1,
+            'is_wash_window' => 1,
+            'is_wash_dashboard' => 0,
+            'is_wash_tires' => 1,
+            'is_wash_trash' => 1,
+            'is_wash_engine' => 0,
+            'is_wash_seat' => 1,
+            'is_wash_carpet' => 1,
+            'is_wash_pillows' => 0,
+            'is_wash_hollow' => 0,
+            'wash_address' => 'Jl. Raya No. 12',
+            'wash_start_time' => date('Y-m-d H:i:s', strtotime('-4 hours')),
+            'wash_end_time' => date('Y-m-d H:i:s', strtotime('-2 hours')),
+            'wash_price' => 150000,
+            'is_fill_window_washing_water' => 1,
+        ];
+
+        $response = $this->httpClient->post("", [
+            'headers' => [
+                'Authorization' => "Bearer ".$this->token
+            ],
+            'json' => $body
+        ]);
+
+        $data = json_decode($response->getBody(), true);
+
+        // Test Parameter
+        $this->assertEquals(201, $response->getStatusCode());
+        $this->assertArrayHasKey('status', $data);
+        $this->assertEquals('success', $data['status']);
+        $this->assertArrayHasKey('message', $data);
+        $this->assertEquals("wash created", $data['message']);
+
+        // Store all created data
+        foreach ($body as $key => $val) {
+            TestDataReader::setValue($key, $val);
+        }
+        TestDataReader::setValue('wash_id', $data['data']['id']);
+
+        Audit::auditRecordText("Test - Post Create Wash", "TC-XXX", "Result : ".json_encode($data));
+        Audit::auditRecordSheet("Test - Post Create Wash", "TC-XXX", 'TC-XXX test_post_create_wash', json_encode($data));
+    }
+
+    public function test_put_update_wash_by_id(): void
+    {
+        // Exec
+        $body = [
+            'vehicle_id' => $this->vehicleId,
+            'wash_desc' => 'Full body and interior wash',
+            'wash_by' => 'Car Wash',
+            'is_wash_body' => 1,
+            'is_wash_window' => 1,
+            'is_wash_dashboard' => 0,
+            'is_wash_tires' => 1,
+            'is_wash_trash' => 1,
+            'is_wash_engine' => 0,
+            'is_wash_seat' => 1,
+            'is_wash_carpet' => 1,
+            'is_wash_pillows' => 0,
+            'is_wash_hollow' => 0,
+            'wash_address' => 'Jl. Raya No. 14',
+            'wash_start_time' => date('Y-m-d H:i:s', strtotime('-5 hours')),
+            'wash_end_time' => date('Y-m-d H:i:s', strtotime('-3 hours')),
+            'wash_price' => 120000,
+            'is_fill_window_washing_water' => 1,
+        ];
+
+        $response = $this->httpClient->put($this->washId, [
+            'headers' => [
+                'Authorization' => "Bearer ".$this->token
+            ],
+            'json' => $body
+        ]);
+
+        $data = json_decode($response->getBody(), true);
+
+        // Test Parameter
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertArrayHasKey('status', $data);
+        $this->assertEquals('success', $data['status']);
+        $this->assertArrayHasKey('message', $data);
+        $this->assertEquals("wash updated", $data['message']);
+
+        Audit::auditRecordText("Test - Put Update Wash By ID", "TC-XXX", "Result : ".json_encode($data));
+        Audit::auditRecordSheet("Test - Put Update Wash By ID", "TC-XXX", 'TC-XXX test_put_update_wash_by_id', json_encode($data));
+    }
+
+    public function test_put_finish_wash_by_id(): void
+    {
+        // Exec
+        $response = $this->httpClient->put("finish/".$this->washId, [
+            'headers' => [
+                'Authorization' => "Bearer ".$this->token
+            ]
+        ]);
+
+        $data = json_decode($response->getBody(), true);
+
+        // Test Parameter
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertArrayHasKey('status', $data);
+        $this->assertEquals('success', $data['status']);
+        $this->assertArrayHasKey('message', $data);
+        $this->assertEquals("wash updated", $data['message']);
+
+        Audit::auditRecordText("Test - Put Finish Wash By ID", "TC-XXX", "Result : ".json_encode($data));
+        Audit::auditRecordSheet("Test - Put Finish Wash By ID", "TC-XXX", 'TC-XXX test_put_finish_wash_by_id', json_encode($data));
     }
 
     public function test_get_all_wash_history(): void
     {
         // Exec
-        $token = $this->login_trait("user");
         $response = $this->httpClient->get("", [
             'headers' => [
-                'Authorization' => "Bearer $token"
+                'Authorization' => "Bearer ".$this->token
             ]
         ]);
 
@@ -77,155 +203,12 @@ class WashTest extends TestCase
         Audit::auditRecordSheet("Test - Get All Wash History", "TC-XXX", 'TC-XXX test_get_all_wash_history', json_encode($data));
     }
 
-    public function test_hard_delete_wash_by_id(): void
-    {
-        // Exec
-        $token = $this->login_trait("user");
-        $id = "ab8b8d0e-d74d-11ed-afa1-0242ac120002";
-        $response = $this->httpClient->delete("destroy/$id", [
-            'headers' => [
-                'Authorization' => "Bearer $token"
-            ]
-        ]);
-
-        $data = json_decode($response->getBody(), true);
-
-        // Test Parameter
-        $this->assertEquals(200, $response->getStatusCode());
-        $this->assertArrayHasKey('status', $data);
-        $this->assertEquals('success', $data['status']);
-        $this->assertArrayHasKey('message', $data);
-        $this->assertEquals('wash permanently deleted',$data['message']);
-
-        Audit::auditRecordText("Test - Hard Delete Wash By Id", "TC-XXX", "Result : ".json_encode($data));
-        Audit::auditRecordSheet("Test - Hard Delete Wash By Id", "TC-XXX", 'TC-XXX test_hard_delete_wash_by_id', json_encode($data));
-    }
-
-    public function test_post_create_wash(): void
-    {
-        // Exec
-        $token = $this->login_trait("user");
-
-        $body = [
-            'vehicle_id' => '3fd091f0-68e9-87e8-0b38-ff129e29e0af',
-            'wash_desc' => 'Full body and interior wash',
-            'wash_by' => 'Car Wash',
-            'is_wash_body' => 1,
-            'is_wash_window' => 1,
-            'is_wash_dashboard' => 0,
-            'is_wash_tires' => 1,
-            'is_wash_trash' => 1,
-            'is_wash_engine' => 0,
-            'is_wash_seat' => 1,
-            'is_wash_carpet' => 1,
-            'is_wash_pillows' => 0,
-            'is_wash_hollow' => 0,
-            'wash_address' => 'Jl. Raya No. 12',
-            'wash_start_time' => '2025-12-16 14:00:00',
-            'wash_end_time' => '2025-12-16 15:30:00',
-            'wash_price' => 150000,
-            'is_fill_window_washing_water' => 1,
-        ];
-
-        $response = $this->httpClient->post("", [
-            'headers' => [
-                'Authorization' => "Bearer $token"
-            ],
-            'json' => $body
-        ]);
-
-        $data = json_decode($response->getBody(), true);
-
-        // Test Parameter
-        $this->assertEquals(201, $response->getStatusCode());
-        $this->assertArrayHasKey('status', $data);
-        $this->assertEquals('success', $data['status']);
-        $this->assertArrayHasKey('message', $data);
-        $this->assertEquals("wash created", $data['message']);
-
-        Audit::auditRecordText("Test - Post Create Wash", "TC-XXX", "Result : ".json_encode($data));
-        Audit::auditRecordSheet("Test - Post Create Wash", "TC-XXX", 'TC-XXX test_post_create_wash', json_encode($data));
-    }
-
-    public function test_put_update_wash_by_id(): void
-    {
-        // Exec
-        $token = $this->login_trait("user");
-        $id = "d43b7860-d3cd-3671-25cc-d792cef3cdd4";
-
-        $body = [
-            'vehicle_id' => '3fd091f0-68e9-87e8-0b38-ff129e29e0af',
-            'wash_desc' => 'Full body and interior wash',
-            'wash_by' => 'Car Wash',
-            'is_wash_body' => 1,
-            'is_wash_window' => 1,
-            'is_wash_dashboard' => 0,
-            'is_wash_tires' => 1,
-            'is_wash_trash' => 1,
-            'is_wash_engine' => 0,
-            'is_wash_seat' => 1,
-            'is_wash_carpet' => 1,
-            'is_wash_pillows' => 0,
-            'is_wash_hollow' => 0,
-            'wash_address' => 'Jl. Raya No. 14',
-            'wash_start_time' => '2025-12-16 14:00:00',
-            'wash_end_time' => '2025-12-16 15:30:00',
-            'wash_price' => 120000,
-            'is_fill_window_washing_water' => 1,
-        ];
-
-        $response = $this->httpClient->put("$id", [
-            'headers' => [
-                'Authorization' => "Bearer $token"
-            ],
-            'json' => $body
-        ]);
-
-        $data = json_decode($response->getBody(), true);
-
-        // Test Parameter
-        $this->assertEquals(200, $response->getStatusCode());
-        $this->assertArrayHasKey('status', $data);
-        $this->assertEquals('success', $data['status']);
-        $this->assertArrayHasKey('message', $data);
-        $this->assertEquals("wash updated", $data['message']);
-
-        Audit::auditRecordText("Test - Put Update Wash By ID", "TC-XXX", "Result : ".json_encode($data));
-        Audit::auditRecordSheet("Test - Put Update Wash By ID", "TC-XXX", 'TC-XXX test_put_update_wash_by_id', json_encode($data));
-    }
-
-    public function test_put_finish_wash_by_id(): void
-    {
-        // Exec
-        $token = $this->login_trait("user");
-        $id = "d43b7860-d3cd-3671-25cc-d792cef3cdd4";
-
-        $response = $this->httpClient->put("finish/$id", [
-            'headers' => [
-                'Authorization' => "Bearer $token"
-            ]
-        ]);
-
-        $data = json_decode($response->getBody(), true);
-
-        // Test Parameter
-        $this->assertEquals(200, $response->getStatusCode());
-        $this->assertArrayHasKey('status', $data);
-        $this->assertEquals('success', $data['status']);
-        $this->assertArrayHasKey('message', $data);
-        $this->assertEquals("wash updated", $data['message']);
-
-        Audit::auditRecordText("Test - Put Finish Wash By ID", "TC-XXX", "Result : ".json_encode($data));
-        Audit::auditRecordSheet("Test - Put Finish Wash By ID", "TC-XXX", 'TC-XXX test_put_finish_wash_by_id', json_encode($data));
-    }
-
     public function test_get_wash_summary_by_vehicle_id(): void
     {
         // Exec
-        $token = $this->login_trait("user");
         $response = $this->httpClient->get("summary", [
             'headers' => [
-                'Authorization' => "Bearer $token"
+                'Authorization' => "Bearer ".$this->token
             ]
         ]);
 
@@ -267,13 +250,10 @@ class WashTest extends TestCase
 
     public function test_get_last_wash_by_vehicle_id(): void
     {
-        $token = $this->login_trait("user");
-        $vehicle_id = "c73c179b-a204-2b8f-2c46-5e77091462b0";
-
         // Exec
-        $response = $this->httpClient->get("last/$vehicle_id", [
+        $response = $this->httpClient->get("last/".$this->vehicleId, [
             'headers' => [
-                'Authorization' => "Bearer $token"
+                'Authorization' => "Bearer ".$this->token
             ]
         ]);
 

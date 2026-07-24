@@ -42,7 +42,7 @@ class DictionarySeeder extends Seeder
             'wash_by' => ['Myself','Carwash'],
             'inventory_category' => ['Safety', 'Maintenance', 'Electronics', 'Documents','Accessories'],
             'inventory_storage' => ['Glove Compartment', 'Trunk', 'Dashboard', 'Back Seat Pocket', 'Roof Box'],
-            'reminder_context' => ['Service','Pick Up','Drop Off','Wash','Trip','Warm Up'],
+            'reminder_context' => ['Service','Pick-Up','Drop-Off','Wash','Trip','Warm Up'],
         ];
         $now = Carbon::now();
 

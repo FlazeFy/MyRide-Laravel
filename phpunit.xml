@@ -14,8 +14,14 @@
         <testsuite name="Integration">
             <file>tests/Integration/AuthTest.php</file>
             <file>tests/Integration/VehicleTest.php</file>
+            <file>tests/Integration/DriverTest.php</file>
             <file>tests/Integration/FuelTest.php</file>
             <file>tests/Integration/TripTest.php</file>
+            <file>tests/Integration/ServiceTest.php</file>
+            <file>tests/Integration/InventoryTest.php</file>
+            <file>tests/Integration/WashTest.php</file>
+            <file>tests/Integration/ReminderTest.php</file>
+            <file>tests/Integration/DeleteTest.php</file>
         </testsuite>
     </testsuites>
     <source>

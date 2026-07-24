@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Integration;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\UploadedFile;
@@ -10,10 +10,14 @@ use Tests\TestCase;
 
 // Helper
 use App\Helpers\Audit;
+use App\Helpers\TestDataReader;
 
 class ReminderTest extends TestCase
 {
     protected $httpClient;
+    protected string $token;
+    protected string $vehicleId;
+    protected string $reminderId;
     use LoginHelperTrait;
 
     protected function setUp(): void
@@ -23,14 +27,67 @@ class ReminderTest extends TestCase
             'base_uri' => 'http://127.0.0.1:8000/api/v1/reminder/',
             'http_errors' => false
         ]);
+
+        // Pre-Condition: User already sign in
+        $this->token = $this->login_trait("user");
+        // Pre-Condition: At least a vehicle exists
+        $this->vehicleId = TestDataReader::getValue('vehicle_id') ?? "";
+        // Pre-Condition: At least a reminder exists
+        $this->reminderId = TestDataReader::getValue('reminder_id') ?? "";
+    }
+
+    public function test_post_create_reminder(): void
+    {
+        // Create fake image
+        $img1 = UploadedFile::fake()->image('image1.jpg');
+
+        $form = [
+            ['name' => 'vehicle_id', 'contents' => $this->vehicleId],
+            ['name' => 'reminder_title', 'contents' => 'Routine service KM 50000'],
+            ['name' => 'reminder_context', 'contents' => 'Service'], 
+            ['name' => 'reminder_body', 'contents' => 'Lorem ipsum'],
+            ['name' => 'reminder_location', 'contents' => '-6.230333799218126, 106.81866017790138'],
+            ['name' => 'remind_at', 'contents' => date('Y-m-d H:i:s', strtotime('+1 week'))],
+            [
+                'name' => 'reminder_image',
+                'contents' => fopen($img1->getPathname(), 'r'),
+                'filename' => 'image1.jpg',
+            ]
+        ];
+
+        // Exec
+        $response = $this->httpClient->post("", [
+            'headers' => [
+                'Authorization' => "Bearer ".$this->token
+            ],
+            'multipart' => $form,
+        ]);
+
+        $data = json_decode($response->getBody(), true);
+
+        // Test Parameter
+        $this->assertEquals(201, $response->getStatusCode());
+        $this->assertArrayHasKey('status', $data);
+        $this->assertEquals('success', $data['status']);
+        $this->assertArrayHasKey('message', $data);
+        $this->assertEquals("reminder created", $data['message']);
+
+        // Store all created data
+        foreach ($form as $dt) {
+            if (array_key_exists('filename', $dt)) continue; 
+            TestDataReader::setValue($dt['name'], $dt['contents']);
+        }
+        TestDataReader::setValue('reminder_id', $data['data']['id']);
+
+        Audit::auditRecordText("Test - Post Create Reminder", "TC-XXX", "Result : ".json_encode($data));
+        Audit::auditRecordSheet("Test - Post Create Reminder", "TC-XXX", 'TC-XXX test_post_create_reminder', json_encode($data));
     }
 
     public function test_get_all_reminder(): void
     {
-        $token = $this->login_trait("user");
         $response = $this->httpClient->get("", [
             'headers' => [
-                'Authorization' => "Bearer $token"
+                'Authorization' => "Bearer ".$this->token
             ]
         ]);
 
@@ -75,10 +132,9 @@ class ReminderTest extends TestCase
 
     public function test_get_next_reminder(): void
     {
-        $token = $this->login_trait("user");
         $response = $this->httpClient->get("next", [
             'headers' => [
-                'Authorization' => "Bearer $token"
+                'Authorization' => "Bearer ".$this->token
             ]
         ]);
 
@@ -105,10 +161,9 @@ class ReminderTest extends TestCase
 
     public function test_get_recently_reminder(): void
     {
-        $token = $this->login_trait("user");
         $response = $this->httpClient->get("recently", [
             'headers' => [
-                'Authorization' => "Bearer $token"
+                'Authorization' => "Bearer ".$this->token
             ]
         ]);
 
@@ -137,12 +192,9 @@ class ReminderTest extends TestCase
 
     public function test_get_reminder_by_vehicle_id(): void
     {
-        $token = $this->login_trait("user");
-        $vehicle_id = "ec936a2a-62d0-6101-10b4-1b9a730213da";
-
-        $response = $this->httpClient->get("vehicle/$vehicle_id", [
+        $response = $this->httpClient->get("vehicle/".$this->vehicleId, [
             'headers' => [
-                'Authorization' => "Bearer $token"
+                'Authorization' => "Bearer ".$this->token
             ]
         ]);
 
@@ -167,72 +219,5 @@ class ReminderTest extends TestCase
         
         Audit::auditRecordText("Test - Get Reminder By Vehicle ID", "TC-XXX", "Result : ".json_encode($data));
         Audit::auditRecordSheet("Test - Get Reminder By Vehicle ID", "TC-XXX", 'TC-XXX test_get_reminder_by_vehicle_id', json_encode($data));
-    }
-
-    public function test_post_create_reminder(): void
-    {
-        // Exec
-        $token = $this->login_trait("user");
-        
-        // Create fake image
-        $img1 = UploadedFile::fake()->image('image1.jpg');
-
-        $form = [
-            ['name' => 'vehicle_id', 'contents' => 'ec936a2a-62d0-6101-10b4-1b9a730213da'],
-            ['name' => 'reminder_title', 'contents' => 'Routine service KM 50000'],
-            ['name' => 'reminder_context', 'contents' => 'Service'], 
-            ['name' => 'reminder_body', 'contents' => 'Lorem ipsum'],
-            ['name' => 'reminder_location', 'contents' => '-6.230333799218126, 106.81866017790138'],
-            ['name' => 'remind_at', 'contents' => '2026-01-12 00:00:00'],
-            [
-                'name' => 'reminder_image',
-                'contents' => fopen($img1->getPathname(), 'r'),
-                'filename' => 'image1.jpg',
-            ]
-        ];
-
-        $response = $this->httpClient->post("", [
-            'headers' => [
-                'Authorization' => "Bearer $token"
-            ],
-            'multipart' => $form,
-        ]);
-
-        $data = json_decode($response->getBody(), true);
-
-        // Test Parameter
-        $this->assertEquals(201, $response->getStatusCode());
-        $this->assertArrayHasKey('status', $data);
-        $this->assertEquals('success', $data['status']);
-        $this->assertArrayHasKey('message', $data);
-        $this->assertEquals("reminder created", $data['message']);
-
-        Audit::auditRecordText("Test - Post Create Reminder", "TC-XXX", "Result : ".json_encode($data));
-        Audit::auditRecordSheet("Test - Post Create Reminder", "TC-XXX", 'TC-XXX test_post_create_reminder', json_encode($data));
-    }
-
-    public function test_hard_delete_reminder_by_id(): void
-    {
-        $token = $this->login_trait("user");
-        $id = "94bd8c3e-17df-29f5-0f45-cc24a1ef7429";
-
-        // Exec
-        $response = $this->httpClient->delete("destroy/$id", [
-            'headers' => [
-                'Authorization' => "Bearer $token"
-            ]
-        ]);
-
-        $data = json_decode($response->getBody(), true);
-
-        // Test Parameter
-        $this->assertEquals(200, $response->getStatusCode());
-        $this->assertArrayHasKey('status', $data);
-        $this->assertEquals('success', $data['status']);
-        $this->assertArrayHasKey('message', $data);
-        $this->assertEquals('reminder permanently deleted',$data['message']);
-
-        Audit::auditRecordText("Test - Hard Delete Reminder By Id", "TC-XXX", "Result : ".json_encode($data));
-        Audit::auditRecordSheet("Test - Hard Delete Reminder By Id", "TC-XXX", 'TC-XXX test_hard_delete_reminder_by_id', json_encode($data));
     }
 }
