@@ -82,7 +82,6 @@ Route::prefix('/v1/vehicle')->middleware(['auth:sanctum'])->group(function () {
     Route::post('/doc/{id}', [CommandsVehicleApi::class, 'postVehicleDoc']);
     Route::get('/header', [QueriesVehicleApi::class, 'getAllVehicleHeader']);
     Route::get('/name', [QueriesVehicleApi::class, 'getAllVehicleName']);
-    Route::get('/fuel', [QueriesVehicleApi::class, 'getAllVehicleFuel']);
     Route::get('/detail/{id}', [QueriesVehicleApi::class, 'getVehicleDetailById']);
     Route::get('/detail/full/{id}', [QueriesVehicleApi::class, 'getVehicleFullDetailById']);
     Route::get('/trip/summary/{id}', [QueriesVehicleApi::class, 'getVehicleTripSummaryById']);
@@ -176,6 +175,7 @@ Route::prefix('/v1/fuel')->middleware(['auth:sanctum'])->group(function () {
     Route::get('/', [QueriesFuelController::class, 'getAllFuel']);
     Route::get('/last', [QueriesFuelController::class, 'getLastFuel']);
     Route::get('/summary/{month_year}', [QueriesFuelController::class, 'getMonthlyFuelSummary']);
+    Route::get('/vehicle', [QueriesVehicleApi::class, 'getAllVehicleFuel']);
     Route::delete('/destroy/{id}', [CommandsFuelController::class, 'hardDeleteFuelById']);
     Route::post('/', [CommandsFuelController::class, 'postCreateFuel']);
     Route::put('/{id}', [CommandsFuelController::class, 'putUpdateFuelById']);

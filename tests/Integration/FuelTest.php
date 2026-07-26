@@ -227,7 +227,7 @@ class FuelTest extends TestCase
     public function test_get_all_vehicle_fuel(): void
     {
         // Exec
-        $response = $this->httpClient->get("fuel", [
+        $response = $this->httpClient->get("vehicle", [
             'headers' => [
                 'Authorization' => "Bearer ".$this->token
             ]

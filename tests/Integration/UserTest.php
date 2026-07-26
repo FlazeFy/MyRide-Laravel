@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Integration;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use GuzzleHttp\Client;
@@ -8,10 +8,13 @@ use Tests\TestCase;
 
 // Helper
 use App\Helpers\Audit;
+use App\Helpers\TestDataReader;
 
 class UserTest extends TestCase
 {
     protected $httpClient;
+    protected string $tokenUser;
+    protected string $tokenAdmin;
     use LoginHelperTrait;
 
     protected function setUp(): void
@@ -21,15 +24,19 @@ class UserTest extends TestCase
             'base_uri' => 'http://127.0.0.1:8000/api/v1/user/',
             'http_errors' => false
         ]);
+
+        // Pre-Condition: User already sign in
+        $this->tokenUser = $this->login_trait("user");
+        // Pre-Condition: User already sign in
+        $this->tokenAdmin = $this->login_trait("admin");
     }
 
     public function test_get_my_profile(): void
     {
         // Exec
-        $token = $this->login_trait("user");
         $response = $this->httpClient->get("my_profile", [
             'headers' => [
-                'Authorization' => "Bearer $token"
+                'Authorization' => "Bearer ".$this->tokenUser
             ]
         ]);
 
@@ -59,10 +66,9 @@ class UserTest extends TestCase
     public function test_get_all_user(): void
     {
         // Exec
-        $token = $this->login_trait("admin");
         $response = $this->httpClient->get("", [
             'headers' => [
-                'Authorization' => "Bearer $token"
+                'Authorization' => "Bearer ".$this->tokenAdmin
             ]
         ]);
 
@@ -105,10 +111,9 @@ class UserTest extends TestCase
     public function test_get_content_year(): void
     {
         // Exec
-        $token = $this->login_trait("user");
         $response = $this->httpClient->get("my_year", [
             'headers' => [
-                'Authorization' => "Bearer $token"
+                'Authorization' => "Bearer ".$this->tokenUser
             ]
         ]);
 
@@ -135,14 +140,13 @@ class UserTest extends TestCase
     public function test_put_update_profile(): void
     {
         // Exec
-        $token = $this->login_trait("user");
         $body = [
             "email" => "flazen.edu@gmail.com",
             "username" => "flazefy"
         ];
         $response = $this->httpClient->put("update_profile", [
             'headers' => [
-                'Authorization' => "Bearer $token"
+                'Authorization' => "Bearer ".$this->tokenUser
             ],
             'json' => $body
         ]);
@@ -162,8 +166,6 @@ class UserTest extends TestCase
 
     public function test_put_update_telegram_id(): void
     {
-        $token = $this->login_trait("user");
-
         $body = [
             "telegram_user_id" => "1317625977"
         ];
@@ -171,7 +173,7 @@ class UserTest extends TestCase
         // Exec
         $response = $this->httpClient->put("update_telegram_id", [
             'headers' => [
-                'Authorization' => "Bearer $token"
+                'Authorization' => "Bearer ".$this->tokenUser
             ],
             'json' => $body
         ]);
@@ -191,8 +193,6 @@ class UserTest extends TestCase
 
     public function test_put_validate_telegram_id(): void
     {
-        $token = $this->login_trait("user");
-
         $body = [
             "request_context" => "R8WEO4"
         ];
@@ -200,7 +200,7 @@ class UserTest extends TestCase
         // Exec
         $response = $this->httpClient->put("validate_telegram_id", [
             'headers' => [
-                'Authorization' => "Bearer $token"
+                'Authorization' => "Bearer ".$this->tokenUser
             ],
             'json' => $body
         ]);

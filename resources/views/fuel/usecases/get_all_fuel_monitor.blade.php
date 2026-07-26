@@ -7,7 +7,7 @@
 
         Swal.showLoading()
         $.ajax({
-            url: `/api/v1/vehicle/fuel`,
+            url: `/api/v1/fuel/vehicle`,
             type: 'GET',
             beforeSend: function (xhr) {
                 xhr.setRequestHeader("Accept", "application/json")

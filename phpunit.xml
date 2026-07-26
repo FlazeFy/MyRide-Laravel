@@ -13,6 +13,7 @@
         </testsuite>
         <testsuite name="Integration">
             <file>tests/Integration/AuthTest.php</file>
+            <file>tests/Integration/QuestionTest.php</file>
             <file>tests/Integration/VehicleTest.php</file>
             <file>tests/Integration/DriverTest.php</file>
             <file>tests/Integration/FuelTest.php</file>
@@ -21,7 +22,10 @@
             <file>tests/Integration/InventoryTest.php</file>
             <file>tests/Integration/WashTest.php</file>
             <file>tests/Integration/ReminderTest.php</file>
-            <file>tests/Integration/DeleteTest.php</file>
+            <file>tests/Integration/StatsTest.php</file>
+            <file>tests/Integration/HistoryTest.php</file>
+            <file>tests/Integration/UserTest.php</file>
+            <file>tests/Integration/ClosingTest.php</file>
         </testsuite>
     </testsuites>
     <source>

@@ -12,8 +12,8 @@ trait LoginHelperTrait
     {
         // Read existing test account
         $testUser = [
-            'username' => TestDataReader::getValue('username'),
-            'password' => TestDataReader::getValue('password'),
+            'username' => TestDataReader::getValue($role !== "admin" ? 'username' : 'admin_username'),
+            'password' => TestDataReader::getValue($role !== "admin" ? 'password' : 'admin_password'),
         ];
 
         $httpClient = new Client([

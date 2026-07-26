@@ -29,6 +29,7 @@ class AuthTest extends TestCase
 {
     protected Client $httpClient;
     protected array $testUser;
+    protected array $testAdmin;
     protected static bool $dbCleaned = false;
 
     public static function setUpBeforeClass(): void
@@ -68,12 +69,17 @@ class AuthTest extends TestCase
         ]);
 
         if (TestDataReader::getValue('register_token') === null) {
-            // Create new test account
+            // Create new user test account
             $this->testUser = UserModel::factory()->apiPayload()->raw();
-
             TestDataReader::setValue('username', $this->testUser['username']);
             TestDataReader::setValue('email', $this->testUser['email']);
             TestDataReader::setValue('password', 'nopass123');
+
+            // Create new admin test account
+            $this->testAdmin = AdminModel::factory()->apiPayload()->raw();
+            TestDataReader::setValue('admin_username', $this->testAdmin['username']);
+            TestDataReader::setValue('admin_email', $this->testAdmin['email']);
+            TestDataReader::setValue('admin_password', 'nopass123');
         } else {
             // Read existing test account
             $this->testUser = [
@@ -215,27 +221,6 @@ class AuthTest extends TestCase
         Audit::auditRecordSheet('Integration Test - Success Post Login With Valid Data', 'TC-INT-AU-001-01', json_encode($payload), $data['token']);
 
         return $data['token'];
-    }
-
-    public function test_post_sign_out(): void
-    {
-        // Exec
-        $token = $this->test_post_login();
-
-        $response = $this->httpClient->post('/api/v1/logout', [
-            'headers' => [
-                'Authorization' => "Bearer $token",
-            ],
-        ]);
-
-        $data = json_decode($response->getBody(), true);
-
-        // Test Parameter
-        $this->assertEquals(200, $response->getStatusCode());
-        $this->assertArrayHasKey('message', $data);
-
-        Audit::auditRecordText('Integration Test - Success Post Sign Out With Valid Token', 'TC-INT-AU-002-01', 'Result : '.json_encode($data));
-        Audit::auditRecordSheet('Integration Test - Success Post Sign Out With Valid Token', 'TC-INT-AU-002-01', 'test_post_sign_out', json_encode($data));
     }
 
     public static function tearDownAfterClass(): void

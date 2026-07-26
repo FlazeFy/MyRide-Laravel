@@ -26,4 +26,12 @@ class AdminModelFactory extends Factory
             'updated_at' => Generator::getRandomDate($ran)
         ];
     }
+
+    public function apiPayload(): static
+    {
+        return $this->state(fn () => [
+            'password' => 'nopass123',
+            'telegram_user_id' => env('TELEGRAM_USER_ID'),
+        ]);
+    }
 }

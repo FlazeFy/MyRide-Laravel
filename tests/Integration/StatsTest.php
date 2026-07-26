@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Integration;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use GuzzleHttp\Client;
@@ -8,10 +8,12 @@ use Tests\TestCase;
 
 // Helper
 use App\Helpers\Audit;
+use App\Helpers\TestDataReader;
 
 class StatsTest extends TestCase
 {
     protected $httpClient;
+    protected string $token;
     use LoginHelperTrait;
 
     protected function setUp(): void
@@ -21,18 +23,22 @@ class StatsTest extends TestCase
             'base_uri' => 'http://127.0.0.1:8000/api/v1/stats/',
             'http_errors' => false
         ]);
+
+        // Pre-Condition: User already sign in
+        $this->token = $this->login_trait("user");
+        // Pre-Condition: At least a vehicle exists
+        $this->vehicleId = TestDataReader::getValue('vehicle_id') ?? "";
     }
 
     public function test_get_total_vehicle_by_context(): void
     {
         // Exec
-        $token = $this->login_trait("user");
         $context = ["vehicle_merk","vehicle_fuel_status","vehicle_category","vehicle_status","vehicle_transmission"];
 
         foreach($context as $ctx) {
             $response = $this->httpClient->get("total/vehicle/$ctx", [
                 'headers' => [
-                    'Authorization' => "Bearer $token"
+                    'Authorization' => "Bearer ".$this->token
                 ]
             ]);
 
@@ -66,13 +72,12 @@ class StatsTest extends TestCase
     public function test_get_total_trip_by_context(): void
     {
         // Exec
-        $token = $this->login_trait("user");
         $context = ["trip_category","trip_origin_name","trip_destination_name"];
 
         foreach($context as $ctx) {
             $response = $this->httpClient->get("total/trip/$ctx", [
                 'headers' => [
-                    'Authorization' => "Bearer $token"
+                    'Authorization' => "Bearer ".$this->token
                 ]
             ]);
 
@@ -106,13 +111,12 @@ class StatsTest extends TestCase
     public function test_get_total_inventory_by_context(): void
     {
         // Exec
-        $token = $this->login_trait("user");
         $context = ["inventory_category","inventory_storage"];
 
         foreach($context as $ctx) {
             $response = $this->httpClient->get("total/inventory/$ctx", [
                 'headers' => [
-                    'Authorization' => "Bearer $token"
+                    'Authorization' => "Bearer ".$this->token
                 ]
             ]);
 
@@ -146,13 +150,12 @@ class StatsTest extends TestCase
     public function test_get_total_service_price_by_context(): void
     {
         // Exec
-        $token = $this->login_trait("user");
         $context = ["service_category","service_location"];
 
         foreach($context as $ctx) {
             $response = $this->httpClient->get("total/service/$ctx", [
                 'headers' => [
-                    'Authorization' => "Bearer $token"
+                    'Authorization' => "Bearer ".$this->token
                 ]
             ]);
 
@@ -213,10 +216,9 @@ class StatsTest extends TestCase
     public function test_get_summary_apps_protected(): void
     {
         // Exec
-        $token = $this->login_trait("user");
         $response = $this->httpClient->get("summary",[
             'headers' => [
-                'Authorization' => "Bearer $token"
+                'Authorization' => "Bearer ".$this->token
             ]
         ]);
 
@@ -245,15 +247,14 @@ class StatsTest extends TestCase
     public function test_get_total_fuel_per_year_protected(): void
     {
         // Exec
-        $token = $this->login_trait("user");
         $context = ["fuel_volume","fuel_price_total"];
-        $year = 2025;
+        $year = date("Y");
 
         foreach($context as $ctx) {
             // Exec
             $response = $this->httpClient->get("total/fuel/monthly/$ctx/$year",[
                 'headers' => [
-                    'Authorization' => "Bearer $token"
+                    'Authorization' => "Bearer ".$this->token
                 ]
             ]);
 
@@ -288,9 +289,8 @@ class StatsTest extends TestCase
     public function test_get_total_fuel_per_year_public(): void
     {
         // Exec
-        $token = $this->login_trait("user");
         $context = ["fuel_volume","fuel_price_total"];
-        $year = 2025;
+        $year = date("Y");
 
         foreach($context as $ctx) {
             // Exec
@@ -327,15 +327,14 @@ class StatsTest extends TestCase
     public function test_get_total_service_per_year_protected(): void
     {
         // Exec
-        $token = $this->login_trait("user");
         $context = ["total_item","total_price"];
-        $year = 2024;
+        $year = date("Y");
 
         foreach($context as $ctx) {
             // Exec
             $response = $this->httpClient->get("total/service/monthly/$ctx/$year",[
                 'headers' => [
-                    'Authorization' => "Bearer $token"
+                    'Authorization' => "Bearer ".$this->token
                 ]
             ]);
 
@@ -371,7 +370,7 @@ class StatsTest extends TestCase
     {
         // Exec
         $context = ["total_item","total_price"];
-        $year = 2024;
+        $year = date("Y");
 
         foreach($context as $ctx) {
             // Exec
@@ -408,15 +407,14 @@ class StatsTest extends TestCase
     public function test_get_total_wash_per_year_protected(): void
     {
         // Exec
-        $token = $this->login_trait("user");
         $context = ["total_item","total_price"];
-        $year = 2025;
+        $year = date("Y");
 
         foreach($context as $ctx) {
             // Exec
             $response = $this->httpClient->get("total/wash/monthly/$ctx/$year",[
                 'headers' => [
-                    'Authorization' => "Bearer $token"
+                    'Authorization' => "Bearer ".$this->token
                 ]
             ]);
 
@@ -452,7 +450,7 @@ class StatsTest extends TestCase
     {
         // Exec
         $context = ["total_item","total_price"];
-        $year = 2025;
+        $year = date("Y");
 
         foreach($context as $ctx) {
             // Exec
@@ -489,7 +487,7 @@ class StatsTest extends TestCase
     public function test_get_total_trip_per_year_public(): void
     {
         // Exec
-        $year = 2025;
+        $year = date("Y");
 
         // Exec
         $response = $this->httpClient->get("total/trip/monthly/$year");
@@ -523,13 +521,12 @@ class StatsTest extends TestCase
     public function test_get_total_trip_per_year_protected(): void
     {
         // Exec
-        $token = $this->login_trait("user");
-        $year = 2025;
+        $year = date("Y");
 
         // Exec
         $response = $this->httpClient->get("total/trip/monthly/$year",[
             'headers' => [
-                'Authorization' => "Bearer $token"
+                'Authorization' => "Bearer ".$this->token
             ]
         ]);
 
@@ -562,15 +559,13 @@ class StatsTest extends TestCase
     public function test_get_journey_by_vehicle_id_protected(): void
     {
         // Exec
-        $token = $this->login_trait("user");
-        $vehicle_id = "7d53371a-e363-2ad3-25fe-180dae88c062";
-
-        // Exec
-        $response = $this->httpClient->get("journey/$vehicle_id",[
+        $response = $this->httpClient->get("journey/".$this->vehicleId,[
             'headers' => [
-                'Authorization' => "Bearer $token"
+                'Authorization' => "Bearer ".$this->token
             ]
         ]);
+
+        // dd(json_decode($response->getBody()->getContents(), true));
 
         $data = json_decode($response->getBody(), true);
 

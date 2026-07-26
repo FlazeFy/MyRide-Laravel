@@ -90,7 +90,7 @@ class WashTest extends TestCase
         $body = [
             'vehicle_id' => $this->vehicleId,
             'wash_desc' => 'Full body and interior wash',
-            'wash_by' => 'Car Wash',
+            'wash_by' => 'Carwash',
             'is_wash_body' => 1,
             'is_wash_window' => 1,
             'is_wash_dashboard' => 0,
@@ -103,7 +103,7 @@ class WashTest extends TestCase
             'is_wash_hollow' => 0,
             'wash_address' => 'Jl. Raya No. 14',
             'wash_start_time' => date('Y-m-d H:i:s', strtotime('-5 hours')),
-            'wash_end_time' => date('Y-m-d H:i:s', strtotime('-3 hours')),
+            'wash_end_time' => null,
             'wash_price' => 120000,
             'is_fill_window_washing_water' => 1,
         ];

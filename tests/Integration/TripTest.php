@@ -215,16 +215,16 @@ class TripTest extends TestCase
 
         $check_object = ["trip_destination_name", "trip_destination_coordinate", "driver_username", "vehicle_plate_number", "created_at"];
         foreach ($check_object as $col) {
-            $this->assertArrayHasKey($col, $dt);
+            $this->assertArrayHasKey($data['data'], $col);
         }
 
         $check_not_null_str = ["trip_destination_name", "trip_destination_coordinate", "vehicle_plate_number", "created_at"];
         foreach ($check_not_null_str as $col) {
-            $this->assertNotNull($dt[$col]);
-            $this->assertIsString($dt[$col]);
+            $this->assertNotNull($data['data'][$col]);
+            $this->assertIsString($data['data'][$col]);
         }
 
-        if (!is_null($dt["driver_username"])) $this->assertIsString($dt["driver_username"]);
+        if (!is_null($data['data']["driver_username"])) $this->assertIsString($data['data']["driver_username"]);
 
         Audit::auditRecordText("Test - Get Last Trip", "TC-XXX", "Result : ".json_encode($data));
         Audit::auditRecordSheet("Test - Get Last Trip", "TC-XXX", 'TC-XXX test_get_last_trip', json_encode($data));

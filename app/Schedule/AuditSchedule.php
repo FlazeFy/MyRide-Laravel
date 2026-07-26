@@ -217,7 +217,7 @@ class AuditSchedule
 
     public static function audit_yearly_stats() {
         $users = UserModel::getUserBroadcastAll();
-        $year = 2025;
+        $year = date("Y");
     
         foreach ($users as $us) {
             $chartFiles = []; 

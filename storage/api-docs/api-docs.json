@@ -14316,7 +14316,7 @@
                                     },
                                     "wash_by": {
                                         "type": "string",
-                                        "example": "Car Wash"
+                                        "example": "Carwash"
                                     },
                                     "is_wash_body": {
                                         "type": "boolean",
@@ -14632,7 +14632,7 @@
                                     },
                                     "wash_by": {
                                         "type": "string",
-                                        "example": "Car Wash"
+                                        "example": "Carwash"
                                     },
                                     "is_wash_body": {
                                         "type": "boolean",
