@@ -47,7 +47,7 @@ class FuelTest extends TestCase
             ['name' => 'fuel_brand', 'contents' => 'Shell'],
             ['name' => 'fuel_type', 'contents' => 'Super'],
             ['name' => 'fuel_ron', 'contents' => '92'],
-            ['name' => 'fuel_at', 'contents' => '2026-01-12 00:00:00'],
+            ['name' => 'fuel_at', 'contents' => date('Y-m-d H:i:s', strtotime('-1 week'))],
             [
                 'name' => 'fuel_bill', 
                 'contents' => fopen($fuelBill->getPathname(), 'r'), 
@@ -92,7 +92,7 @@ class FuelTest extends TestCase
             'fuel_brand' => 'Pertamina', 
             'fuel_type' => 'Pertamax Turbo', 
             'fuel_ron' => '98', 
-            'fuel_at' => '2026-01-12 00:00:00',
+            'fuel_at' => date('Y-m-d H:i:s', strtotime('-2 week')),
         ];
 
         // Exec

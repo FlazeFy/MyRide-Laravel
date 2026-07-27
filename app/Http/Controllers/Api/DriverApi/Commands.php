@@ -144,10 +144,10 @@ class Commands extends Controller
      *     ),
      *     @OA\Response(
      *         response=200,
-     *         description="driver relation permanently deleted",
+     *         description="driver removed",
      *         @OA\JsonContent(
      *             @OA\Property(property="status", type="string", example="success"),
-     *             @OA\Property(property="message", type="string", example="driver relation permanently deleted")
+     *             @OA\Property(property="message", type="string", example="driver removed")
      *         )
      *     ),
      *     @OA\Response(

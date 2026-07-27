@@ -80,7 +80,8 @@ class ServiceTest extends TestCase
             'service_category' => 'Routine',
             'service_location' => 'Honda Autobest',
             'service_price_total' => 1600000,
-            'remind_at' => date('Y-m-d H:i:s', strtotime('+2 week'))
+            'remind_at' => date('Y-m-d H:i:s', strtotime('+2 week')),
+            'created_at' => date('Y-m-d H:i:s')
         ];
 
         // Exec

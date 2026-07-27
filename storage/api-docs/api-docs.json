@@ -1581,7 +1581,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "driver relation permanently deleted",
+                        "description": "driver removed",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -1592,7 +1592,7 @@
                                         },
                                         "message": {
                                             "type": "string",
-                                            "example": "driver relation permanently deleted"
+                                            "example": "driver removed"
                                         }
                                     },
                                     "type": "object"
@@ -5601,7 +5601,7 @@
                     "Reminder"
                 ],
                 "summary": "Get Recently Reminder",
-                "description": "This request is used to get recently reminder history with pagination. This request interacts with the MySQL database, and has a protected routes",
+                "description": "This request is used to get recently reminder (3 days ago) history with pagination. This request interacts with the MySQL database, and has a protected routes",
                 "operationId": "626dee513de66daeb88f90d88810a750",
                 "responses": {
                     "200": {

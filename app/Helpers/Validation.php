@@ -146,7 +146,7 @@ class Validation
             'trip_origin_coordinate' => 'nullable|string|max:144',  
             'trip_destination_name' => 'required|string|max:75|min:2',
             'trip_destination_coordinate' => 'nullable|string|max:144', 
-            'departure_at' => 'nullable|date_format:Y-m-d H:i:s', 
+            'departure_at' => 'required|date_format:Y-m-d H:i:s', 
         ];
 
         if ($type === 'create' || $type === 'update') {

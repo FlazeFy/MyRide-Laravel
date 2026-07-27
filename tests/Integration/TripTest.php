@@ -49,6 +49,7 @@ class TripTest extends TestCase
             'trip_origin_coordinate' => '-6.226828716225759, 106.82152290589822',  
             'trip_destination_name' => 'Place C',
             'trip_destination_coordinate' => '-6.230792280916382, 106.81781530380249', 
+            'departure_at' => date('Y-m-d H:i:s'),
             'driver_id' => $this->driverId
         ];
         $response = $this->httpClient->post("", [
@@ -393,6 +394,7 @@ class TripTest extends TestCase
             'trip_origin_coordinate' => '-6.226828716225759, 106.82152290589822',  
             'trip_destination_name' => 'Place D',
             'trip_destination_coordinate' => '-6.230792280916382, 106.81781530380249', 
+            'departure_at' => date('Y-m-d H:i:s'),
         ];
 
         // Exec

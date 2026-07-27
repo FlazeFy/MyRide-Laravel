@@ -30,6 +30,7 @@ class ServiceModel extends Model
 {
     use HasFactory;
     public $incrementing = false;
+    public $timestamps = false;
     protected $table = 'service';
     protected $primaryKey = 'id';
     protected $fillable = ['id', 'vehicle_id', 'service_category', 'service_price_total', 'service_location', 'service_note', 'created_at', 'created_by', 'updated_at', 'remind_at'];

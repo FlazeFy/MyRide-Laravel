@@ -414,7 +414,7 @@ class ClosingTest extends TestCase
         $this->assertArrayHasKey('status', $data);
         $this->assertEquals('success', $data['status']);
         $this->assertArrayHasKey('message', $data);
-        $this->assertEquals('driver relation permanently deleted',$data['message']);
+        $this->assertEquals('driver removed',$data['message']);
 
         Audit::auditRecordText("Test - Hard Delete Driver Relation By Id", "TC-XXX", "Result : ".json_encode($data));
         Audit::auditRecordSheet("Test - Hard Delete Driver Relation By Id", "TC-XXX", 'TC-XXX test_hard_delete_driver_relation_by_id', json_encode($data));

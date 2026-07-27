@@ -185,10 +185,8 @@ class Commands extends Controller
                         'trip_origin_coordinate' => $trip_origin_coordinate, 
                         'trip_destination_name' => $trip_destination_name, 
                         'trip_destination_coordinate' => $trip_destination_coordinate, 
+                        'created_at' => $request->departure_at
                     ];
-
-                    // If departure time not defined, just use current time
-                    if ($request->departure_at) $data['created_at'] = $request->departure_at;
 
                     $rows = TripModel::createTrip($data,$user_id);
                     if ($rows) {

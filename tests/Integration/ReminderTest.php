@@ -11,6 +11,8 @@ use Tests\TestCase;
 // Helper
 use App\Helpers\Audit;
 use App\Helpers\TestDataReader;
+// Models
+use App\Models\ReminderModel;
 
 class ReminderTest extends TestCase
 {
