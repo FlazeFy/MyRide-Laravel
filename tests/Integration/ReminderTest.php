@@ -161,6 +161,9 @@ class ReminderTest extends TestCase
 
     public function test_get_recently_reminder(): void
     {
+        // Pre-Condition: At least one reminder is due within 3 days
+        ReminderModel::factory()->withRemindAt(now()->subDays(1))->create();
+
         $response = $this->httpClient->get("recently", [
             'headers' => [
                 'Authorization' => "Bearer ".$this->token

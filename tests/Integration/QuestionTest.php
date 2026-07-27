@@ -6,6 +6,8 @@ use Illuminate\Foundation\Testing\WithFaker;
 use GuzzleHttp\Client;
 use Tests\TestCase;
 
+// Models
+use App\Models\FAQModel;
 // Helper
 use App\Helpers\Audit;
 
@@ -20,6 +22,10 @@ class QuestionTest extends TestCase
             'base_uri' => 'http://127.0.0.1:8000/api/v1/question/',
             'http_errors' => false
         ]);
+
+        // Pre-Condition: At least one faq exists
+        FAQModel::factory(1)->state(['is_show' => 1])->create();
+        FAQModel::factory(1)->state(['is_show' => 0])->create();
     }
 
     public function test_get_showing_faq(): void

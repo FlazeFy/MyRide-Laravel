@@ -14,6 +14,7 @@ class StatsTest extends TestCase
 {
     protected $httpClient;
     protected string $token;
+    protected int $year;
     use LoginHelperTrait;
 
     protected function setUp(): void
@@ -28,6 +29,9 @@ class StatsTest extends TestCase
         $this->token = $this->login_trait("user");
         // Pre-Condition: At least a vehicle exists
         $this->vehicleId = TestDataReader::getValue('vehicle_id') ?? "";
+
+        // Pre-Condition: Content in specific year exists
+        $this->year = date("Y");
     }
 
     public function test_get_total_vehicle_by_context(): void
@@ -248,11 +252,10 @@ class StatsTest extends TestCase
     {
         // Exec
         $context = ["fuel_volume","fuel_price_total"];
-        $year = date("Y");
 
         foreach($context as $ctx) {
             // Exec
-            $response = $this->httpClient->get("total/fuel/monthly/$ctx/$year",[
+            $response = $this->httpClient->get("total/fuel/monthly/$ctx/".$this->year,[
                 'headers' => [
                     'Authorization' => "Bearer ".$this->token
                 ]
@@ -290,11 +293,10 @@ class StatsTest extends TestCase
     {
         // Exec
         $context = ["fuel_volume","fuel_price_total"];
-        $year = date("Y");
 
         foreach($context as $ctx) {
             // Exec
-            $response = $this->httpClient->get("total/fuel/monthly/$ctx/$year");
+            $response = $this->httpClient->get("total/fuel/monthly/$ctx/".$this->year);
 
             $data = json_decode($response->getBody(), true);
 
@@ -328,11 +330,10 @@ class StatsTest extends TestCase
     {
         // Exec
         $context = ["total_item","total_price"];
-        $year = date("Y");
 
         foreach($context as $ctx) {
             // Exec
-            $response = $this->httpClient->get("total/service/monthly/$ctx/$year",[
+            $response = $this->httpClient->get("total/service/monthly/$ctx/".$this->year,[
                 'headers' => [
                     'Authorization' => "Bearer ".$this->token
                 ]
@@ -370,11 +371,10 @@ class StatsTest extends TestCase
     {
         // Exec
         $context = ["total_item","total_price"];
-        $year = date("Y");
 
         foreach($context as $ctx) {
             // Exec
-            $response = $this->httpClient->get("total/service/monthly/$ctx/$year");
+            $response = $this->httpClient->get("total/service/monthly/$ctx/".$this->year);
 
             $data = json_decode($response->getBody(), true);
 
@@ -408,11 +408,10 @@ class StatsTest extends TestCase
     {
         // Exec
         $context = ["total_item","total_price"];
-        $year = date("Y");
 
         foreach($context as $ctx) {
             // Exec
-            $response = $this->httpClient->get("total/wash/monthly/$ctx/$year",[
+            $response = $this->httpClient->get("total/wash/monthly/$ctx/".$this->year,[
                 'headers' => [
                     'Authorization' => "Bearer ".$this->token
                 ]
@@ -450,11 +449,10 @@ class StatsTest extends TestCase
     {
         // Exec
         $context = ["total_item","total_price"];
-        $year = date("Y");
 
         foreach($context as $ctx) {
             // Exec
-            $response = $this->httpClient->get("total/wash/monthly/$ctx/$year");
+            $response = $this->httpClient->get("total/wash/monthly/$ctx/".$this->year);
 
             $data = json_decode($response->getBody(), true);
 
@@ -487,10 +485,7 @@ class StatsTest extends TestCase
     public function test_get_total_trip_per_year_public(): void
     {
         // Exec
-        $year = date("Y");
-
-        // Exec
-        $response = $this->httpClient->get("total/trip/monthly/$year");
+        $response = $this->httpClient->get("total/trip/monthly/".$this->year);
 
         $data = json_decode($response->getBody(), true);
 
@@ -521,10 +516,7 @@ class StatsTest extends TestCase
     public function test_get_total_trip_per_year_protected(): void
     {
         // Exec
-        $year = date("Y");
-
-        // Exec
-        $response = $this->httpClient->get("total/trip/monthly/$year",[
+        $response = $this->httpClient->get("total/trip/monthly/".$this->year,[
             'headers' => [
                 'Authorization' => "Bearer ".$this->token
             ]
@@ -564,8 +556,6 @@ class StatsTest extends TestCase
                 'Authorization' => "Bearer ".$this->token
             ]
         ]);
-
-        // dd(json_decode($response->getBody()->getContents(), true));
 
         $data = json_decode($response->getBody(), true);
 

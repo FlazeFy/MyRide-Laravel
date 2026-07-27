@@ -13,8 +13,7 @@ use App\Helpers\TestDataReader;
 class UserTest extends TestCase
 {
     protected $httpClient;
-    protected string $tokenUser;
-    protected string $tokenAdmin;
+    protected string $token;
     use LoginHelperTrait;
 
     protected function setUp(): void
@@ -26,9 +25,7 @@ class UserTest extends TestCase
         ]);
 
         // Pre-Condition: User already sign in
-        $this->tokenUser = $this->login_trait("user");
-        // Pre-Condition: User already sign in
-        $this->tokenAdmin = $this->login_trait("admin");
+        $this->token = $this->login_trait("user");
     }
 
     public function test_get_my_profile(): void
@@ -36,7 +33,7 @@ class UserTest extends TestCase
         // Exec
         $response = $this->httpClient->get("my_profile", [
             'headers' => [
-                'Authorization' => "Bearer ".$this->tokenUser
+                'Authorization' => "Bearer ".$this->token
             ]
         ]);
 
@@ -63,57 +60,12 @@ class UserTest extends TestCase
         Audit::auditRecordSheet("Test - Get My Profile", "TC-XXX", 'TC-XXX test_get_my_profile', json_encode($data));
     }
 
-    public function test_get_all_user(): void
-    {
-        // Exec
-        $response = $this->httpClient->get("", [
-            'headers' => [
-                'Authorization' => "Bearer ".$this->tokenAdmin
-            ]
-        ]);
-
-        $data = json_decode($response->getBody(), true);
-
-        // Test Parameter
-        $this->assertEquals(200, $response->getStatusCode());
-        $this->assertArrayHasKey('status', $data);
-        $this->assertEquals('success', $data['status']);
-        $this->assertArrayHasKey('message', $data);
-        $this->assertArrayHasKey('data', $data);
-
-        foreach ($data['data']['data'] as $dt) {
-            $check_object = ['id','username','email','telegram_user_id','telegram_is_valid','firebase_fcm_token','line_user_id','phone','timezone','created_at','updated_at'];
-            foreach ($check_object as $col) {
-                $this->assertArrayHasKey($col, $dt);
-            }
-
-            $check_not_null_str = ['id','username','email','created_at'];
-            foreach ($check_not_null_str as $col) {
-                $this->assertNotNull($dt[$col]);
-                $this->assertIsString($dt[$col]);
-            }
-
-            $check_nullable_str = ['telegram_user_id','firebase_fcm_token','line_user_id','phone','timezone','updated_at'];
-            foreach ($check_nullable_str as $col) {
-                if (!is_null($dt[$col])) {
-                    $this->assertNotNull($dt[$col]);
-                    $this->assertIsString($dt[$col]);
-                }
-            }
-
-            $this->assertContains($dt['telegram_is_valid'], [0, 1]);
-        }
-
-        Audit::auditRecordText("Test - Get All User", "TC-XXX", "Result : ".json_encode($data));
-        Audit::auditRecordSheet("Test - Get All User", "TC-XXX", 'TC-XXX test_get_all_user', json_encode($data));
-    }
-
     public function test_get_content_year(): void
     {
         // Exec
         $response = $this->httpClient->get("my_year", [
             'headers' => [
-                'Authorization' => "Bearer ".$this->tokenUser
+                'Authorization' => "Bearer ".$this->token
             ]
         ]);
 
@@ -146,7 +98,7 @@ class UserTest extends TestCase
         ];
         $response = $this->httpClient->put("update_profile", [
             'headers' => [
-                'Authorization' => "Bearer ".$this->tokenUser
+                'Authorization' => "Bearer ".$this->token
             ],
             'json' => $body
         ]);
@@ -173,7 +125,7 @@ class UserTest extends TestCase
         // Exec
         $response = $this->httpClient->put("update_telegram_id", [
             'headers' => [
-                'Authorization' => "Bearer ".$this->tokenUser
+                'Authorization' => "Bearer ".$this->token
             ],
             'json' => $body
         ]);
@@ -200,7 +152,7 @@ class UserTest extends TestCase
         // Exec
         $response = $this->httpClient->put("validate_telegram_id", [
             'headers' => [
-                'Authorization' => "Bearer ".$this->tokenUser
+                'Authorization' => "Bearer ".$this->token
             ],
             'json' => $body
         ]);

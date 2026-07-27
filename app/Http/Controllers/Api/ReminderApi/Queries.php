@@ -203,7 +203,7 @@ class Queries extends Controller
      * @OA\GET(
      *     path="/api/v1/reminder/recently",
      *     summary="Get Recently Reminder",
-     *     description="This request is used to get recently reminder history with pagination. This request interacts with the MySQL database, and has a protected routes",
+     *     description="This request is used to get recently reminder (3 days ago) history with pagination. This request interacts with the MySQL database, and has a protected routes",
      *     tags={"Reminder"},
      *     security={{"bearerAuth":{}}},
      *     @OA\Response(

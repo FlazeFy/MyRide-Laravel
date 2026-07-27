@@ -25,6 +25,7 @@
             <file>tests/Integration/StatsTest.php</file>
             <file>tests/Integration/HistoryTest.php</file>
             <file>tests/Integration/UserTest.php</file>
+            <file>tests/Integration/UserAdminTest.php</file>
             <file>tests/Integration/ClosingTest.php</file>
         </testsuite>
     </testsuites>
@@ -40,7 +41,7 @@
         <env name="DB_HOST" value="127.0.0.1"/>
         <env name="DB_PORT" value="3306"/>
         <env name="DB_CONNECTION" value="mysql"/>
-        <env name="DB_DATABASE" value="myride"/>
+        <env name="DB_DATABASE" value="myride_integration_testing"/>
         <env name="DB_USERNAME" value="root"/>
         <env name="DB_PASSWORD" value=""/>
         <env name="MAIL_MAILER" value="array"/>

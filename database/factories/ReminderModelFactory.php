@@ -57,4 +57,11 @@ class ReminderModelFactory extends Factory
             'remind_at' => Generator::getRandomDate(0), 
         ];
     }
+
+    public function withRemindAt($remindAt): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'remind_at' => $remindAt,
+        ]);
+    }
 }

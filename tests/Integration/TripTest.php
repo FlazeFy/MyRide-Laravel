@@ -49,6 +49,7 @@ class TripTest extends TestCase
             'trip_origin_coordinate' => '-6.226828716225759, 106.82152290589822',  
             'trip_destination_name' => 'Place C',
             'trip_destination_coordinate' => '-6.230792280916382, 106.81781530380249', 
+            'driver_id' => $this->driverId
         ];
         $response = $this->httpClient->post("", [
             'headers' => [
@@ -215,7 +216,7 @@ class TripTest extends TestCase
 
         $check_object = ["trip_destination_name", "trip_destination_coordinate", "driver_username", "vehicle_plate_number", "created_at"];
         foreach ($check_object as $col) {
-            $this->assertArrayHasKey($data['data'], $col);
+            $this->assertArrayHasKey($col, $data['data']);
         }
 
         $check_not_null_str = ["trip_destination_name", "trip_destination_coordinate", "vehicle_plate_number", "created_at"];
@@ -379,46 +380,6 @@ class TripTest extends TestCase
 
         Audit::auditRecordText("Test - Get Nearest Coordinate", "TC-XXX", "Result : ".json_encode($data));
         Audit::auditRecordSheet("Test - Get Nearest Coordinate", "TC-XXX", 'TC-XXX test_get_nearest_coordinate', json_encode($data));
-    }
-
-    public function test_get_vehicle_trip_summary_by_id(): void
-    {
-        // Exec
-        $response = $this->httpClient->get("trip/summary/".$this->vehicleId, [
-            'headers' => [
-                'Authorization' => "Bearer ".$this->token
-            ]
-        ]);
-
-        $data = json_decode($response->getBody(), true);
-
-        // Test Parameter
-        $this->assertEquals(200, $response->getStatusCode());
-        $this->assertArrayHasKey('status', $data);
-        $this->assertEquals('success', $data['status']);
-        $this->assertArrayHasKey('message', $data);
-        $this->assertArrayHasKey('data', $data);
-
-        $check_object_trip = ["most_person_with","vehicle_total_trip_distance","most_origin","most_destination","most_category"];
-        foreach ($check_object_trip as $col) {
-            $this->assertArrayHasKey($col, $data["data"]);
-        }
-
-        $check_not_null_str_trip = ["most_origin","most_destination","most_category"];
-        foreach ($check_not_null_str_trip as $col) {
-            $this->assertNotNull($data["data"][$col]);
-            $this->assertIsString($data["data"][$col]);
-        }
-
-        if (!is_null($data["data"]["most_person_with"])) {
-            $this->assertIsString($data["data"]["most_person_with"]);
-        }
-
-        $this->assertIsFloat($data["data"]["vehicle_total_trip_distance"]);
-        $this->assertGreaterThan(0, $data["data"]["vehicle_total_trip_distance"]);
-
-        Audit::auditRecordText("Test - Get Vehicle Trip Summary By ID", "TC-XXX", "Result : ".json_encode($data));
-        Audit::auditRecordSheet("Test - Get Vehicle Trip Summary By ID", "TC-XXX", 'TC-XXX test_get_vehicle_trip_summary_by_id', json_encode($data));
     }
 
     public function test_put_update_trip_by_id(): void

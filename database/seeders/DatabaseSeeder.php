@@ -46,7 +46,7 @@ class DatabaseSeeder extends Seeder
         AdminModel::factory(5)->create();
         UserModel::factory(15)->create();
         FAQModel::factory(8)->state(['is_show' => 1])->create();
-        FAQModel::factory(10)->state(['is_show' => 0])->create();
+        FAQModel::factory(4)->state(['is_show' => 0])->create();
         VehicleModel::factory(45)->create();
         DriverModel::factory(50)->create();
         TripModel::factory(300)->create();
