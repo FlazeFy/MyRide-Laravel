@@ -24,6 +24,7 @@ use App\Models\DriverModel;
 use App\Models\DriverVehicleRelationModel;
 use App\Models\ReminderModel;
 use App\Models\ChatHistoryModel;
+use App\Models\ValidateRequestModel;
 
 class AuthTest extends TestCase
 {
@@ -44,6 +45,7 @@ class AuthTest extends TestCase
 
         if (!self::$dbCleaned) {
             DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+            ValidateRequestModel::truncate();
             TripModel::truncate();
             ChatHistoryModel::truncate();
             FAQModel::truncate();
@@ -216,6 +218,9 @@ class AuthTest extends TestCase
         }
 
         $this->assertContains($data['message']['telegram_is_valid'], [0, 1]);
+
+        // Store token
+        TestDataReader::setValue('user_id', $data['message']['id']);
 
         Audit::auditRecordText('Integration Test - Success Post Login With Valid Data', 'TC-INT-AU-001-01', 'Token : '.$data['token']);
         Audit::auditRecordSheet('Integration Test - Success Post Login With Valid Data', 'TC-INT-AU-001-01', json_encode($payload), $data['token']);

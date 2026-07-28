@@ -492,6 +492,13 @@ class ClosingTest extends TestCase
 
     public function test_hard_delete_vehicle_by_id(): void
     {
+        // Pre-Condition: A vehicle already deleted
+        $this->httpClient->delete("vehicle/delete/".$this->vehicleId, [
+            'headers' => [
+                'Authorization' => "Bearer ".$this->token
+            ]
+        ]);
+
         $response = $this->httpClient->delete("vehicle/destroy/".$this->vehicleId, [
             'headers' => [
                 'Authorization' => "Bearer ".$this->token

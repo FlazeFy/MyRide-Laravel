@@ -112,6 +112,10 @@ class UserTest extends TestCase
         $this->assertArrayHasKey('message', $data);
         $this->assertEquals('profile updated',$data['message']);
 
+        // Store updated data
+        TestDataReader::setValue('username', $body['username']);
+        TestDataReader::setValue('email', $body['email']);
+
         Audit::auditRecordText("Test - Put Update Profile", "TC-XXX", "Result : ".json_encode($data));
         Audit::auditRecordSheet("Test - Put Update Profile", "TC-XXX", 'TC-XXX test_put_update_profile', json_encode($data));
     }
@@ -139,14 +143,29 @@ class UserTest extends TestCase
         $this->assertArrayHasKey('message', $data);
         $this->assertEquals('telegram id updated! and validation has been sended to you',$data['message']);
 
+        // Get token from email alternative
+        $userId = TestDataReader::getValue("user_id");
+        $response = $this->httpClient->get('/api/v1/user/validate_request/telegram_id_validation/'.$userId, [
+            'headers' => [
+                'X-API-KEY' => env('TESTING_API_KEY'),
+            ],
+        ]);
+
+        $data = json_decode($response->getBody(), true);
+
+        // Store token
+        TestDataReader::setValue('telegram_id_validation_token', $data['data']);
+
         Audit::auditRecordText("Test - Put Update Telegram ID", "TC-XXX", "Result : ".json_encode($data));
         Audit::auditRecordSheet("Test - Put Update Telegram ID", "TC-XXX", 'TC-XXX test_put_update_telegram_id', json_encode($data));
     }
 
     public function test_put_validate_telegram_id(): void
     {
+        // Pre-Condition: User already request a token
+        $telegramIdValidationToken = TestDataReader::getValue("telegram_id_validation_token");
         $body = [
-            "request_context" => "R8WEO4"
+            "request_context" => $telegramIdValidationToken
         ];
 
         // Exec

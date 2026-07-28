@@ -328,7 +328,6 @@ class StatsTest extends TestCase
 
     public function test_get_total_service_per_year_protected(): void
     {
-        // Exec
         $context = ["total_item","total_price"];
 
         foreach($context as $ctx) {
@@ -566,13 +565,71 @@ class StatsTest extends TestCase
         $this->assertArrayHasKey('message', $data);
         $this->assertArrayHasKey('data', $data);
 
-        $str_not_null_col = ["journey_category", "journey_context", "created_at"];
+        $str_not_null_col_non_summary = ["journey_category", "journey_context", "created_at"];
+        $str_not_null_col_summary = ["month", "created_at"];
+        $int_not_null_col_non_summary = ["distance", "spending_wash", "spending_service", "spending_fuel", "fuel_volume"];
 
         foreach ($data['data'] as $dt) {
-            foreach ($str_not_null_col as $col) {
+            $str_not_null_columns = $dt["journey_category"] === "summary" ? $str_not_null_col_summary : $str_not_null_col_non_summary;
+            foreach ($str_not_null_columns as $col) {
                 $this->assertArrayHasKey($col, $dt);
                 $this->assertNotNull($dt[$col]);
                 $this->assertIsString($dt[$col]);
+            }
+
+            if ($dt["journey_category"] !== "summary") {
+                foreach ($int_not_null_col_non_summary as $col) {
+                    $this->assertArrayHasKey($col, $dt);
+                    $this->assertNotNull($dt[$col]);
+
+                    if ($col !== "distance" || $dt[$col] == 0) {
+                        $this->assertIsInt($dt[$col]);
+                    } else {
+                        $this->assertIsFloat($dt[$col]);
+                    }
+                }
+            } else {
+                $int_not_null_col_total_trip = ["total", "distance"];
+                foreach ($int_not_null_col_total_trip as $col) {
+                    $this->assertArrayHasKey($col, $dt["total_trip"]);
+                    $this->assertNotNull($dt["total_trip"][$col]);
+                }
+
+                $this->assertIsInt($dt["total_trip"]["total"]);
+                $this->assertIsFloat($dt["total_trip"]["distance"]);
+
+                $int_not_null_col_total_fuel = ["total", "amount", "volume"];
+                foreach ($int_not_null_col_total_fuel as $col) {
+                    $this->assertArrayHasKey($col, $dt["total_fuel"]);
+                    $this->assertNotNull($dt["total_fuel"][$col]);
+                    $this->assertIsInt($dt["total_fuel"][$col]);
+                }
+
+                $int_not_null_col_total_service_wash = ["total", "amount"];
+                foreach (["total_service", "total_wash"] as $colTotalAmount) {
+                    foreach ($int_not_null_col_total_service_wash as $col) {
+                        $this->assertArrayHasKey($col, $dt[$colTotalAmount]);
+                        $this->assertNotNull($dt[$colTotalAmount][$col]);
+                        $this->assertIsInt($dt[$colTotalAmount][$col]);
+                    }
+                }
+
+                foreach (["person_most_trip_with", "monthly_most_trip_category"] as $colContextTotal) {
+                    foreach ($dt[$colContextTotal] as $dtct) {
+                        $this->assertArrayHasKey("context", $dtct);
+                        $this->assertNotNull($dtct["context"]);
+                        $this->assertIsString($dtct["context"]);
+    
+                        $this->assertArrayHasKey("total", $dtct);
+                        $this->assertNotNull($dtct["total"]);
+
+                        if ($colContextTotal === "person_most_trip_with") {
+                            $this->assertIsInt($dtct["total"]);
+                        } else {
+                            $this->assertIsInt($dtct["total"]);
+                        }
+                    }
+                }
             }
         }
 

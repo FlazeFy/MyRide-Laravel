@@ -980,9 +980,7 @@ class Commands extends Controller
                     // }
                 }
                 // Make null if array document empty
-                if (count($vehicle_document) === 0) {
-                    $vehicle_document = null;
-                }
+                if (count($vehicle_document) === 0) $vehicle_document = null;
 
                 // Update vehicle by ID
                 $rows = VehicleModel::updateVehicleById(['vehicle_document' => $vehicle_document], $id, $user_id);
