@@ -16,7 +16,7 @@ jobs:
       mysql:
         image: mysql:8.0
         env:
-          MYSQL_DATABASE: myride
+          MYSQL_DATABASE: myride_integration_testing
           MYSQL_ROOT_PASSWORD: root
         ports:
           - 3306:3306
@@ -30,7 +30,7 @@ jobs:
       DB_CONNECTION: mysql
       DB_HOST: 127.0.0.1
       DB_PORT: 3306
-      DB_DATABASE: myride
+      DB_DATABASE: myride_integration_testing
       DB_USERNAME: root
       DB_PASSWORD: root
       APP_DEBUG: true
@@ -61,6 +61,9 @@ jobs:
 
       - name: Run Migrations
         run: php artisan migrate --force
+
+      - name: Run Dictionary Seeder
+        run: php artisan db:seed --class=DictionarySeeder --force
 
       - name: Start Server
         run: php artisan serve --port=8000 &
