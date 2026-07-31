@@ -307,7 +307,7 @@ class Queries extends Controller
      *         description="User request fetched successfully",
      *         @OA\JsonContent(
      *             @OA\Property(property="status", type="string", example="success"),
-     *             @OA\Property(property="message", type="string", example="user year fetched"),
+     *             @OA\Property(property="message", type="string", example="user request"),
      *             @OA\Property(property="data", type="string", example="ABC123"),
      *         )
      *     ),
@@ -339,7 +339,7 @@ class Queries extends Controller
      */
     public function getValidateRequestByCreatedBy(Request $request, $type, $created_by) {
         try {
-
+            // Get user's active request
             $res = ValidateRequestModel::getValidateRequestByCreatedBy($type, $created_by);
 
             if ($res) {

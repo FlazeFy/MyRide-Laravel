@@ -152,13 +152,14 @@ class AuthTest extends TestCase
 
     public function test_post_validate_register(): void
     {
-        // Exec
+        // Pre-Condition: User already request for a register token
         $token = TestDataReader::getValue('register_token');
 
         $payload = array_merge($this->testUser, [
             'token' => $token,
         ]);
 
+        // Exec
         $response = $this->httpClient->post('/api/v1/register/account', [
             'json' => $payload,
         ]);
@@ -219,7 +220,7 @@ class AuthTest extends TestCase
 
         $this->assertContains($data['message']['telegram_is_valid'], [0, 1]);
 
-        // Store token
+        // Store user id
         TestDataReader::setValue('user_id', $data['message']['id']);
 
         Audit::auditRecordText('Integration Test - Success Post Login With Valid Data', 'TC-INT-AU-001-01', 'Token : '.$data['token']);
