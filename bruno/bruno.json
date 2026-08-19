@@ -1,0 +1,9 @@
+{
+    "version": "1",
+    "name": "MyRide",
+    "type": "collection",
+    "variables": {
+        "baseUrl": "http://localhost:8001/api/v1",
+        "token": "8687|a0AXGhQymf7U5nBVjDoxUfKgGGrQp9LTj0YfKWLzd94fe275"
+    }
+}
