@@ -1,0 +1,62 @@
+meta {
+  name: Get All Driver Name
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/driver/name
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+docs {
+  # Get All Driver Name
+
+  This request is used to get all driver name. This request interacts with the MySQL database, and has a protected routes.
+
+  ## Responses
+
+  **200 — Driver fetched successfully.** Ordered in ascending order by `fullname`
+```json
+  {
+    "status": "success",
+    "message": "driver fetched",
+    "data": [
+      {
+        "id": "6f59235e-c398-8a83-2f95-3f1fbe95ca6e",
+        "username": "jhondoe",
+        "fullname": "Jhon Doe"
+      }
+    ]
+  }
+```
+
+  **401 — protected route need to include sign in token as authorization bearer**
+```json
+  {
+    "status": "failed",
+    "message": "you need to include the authorization token from login"
+  }
+```
+
+  **404 — driver failed to fetched**
+```json
+  {
+    "status": "failed",
+    "message": "driver not found"
+  }
+```
+
+  **500 — Internal Server Error**
+```json
+  {
+    "status": "error",
+    "message": "something wrong. please contact admin"
+  }
+```
+}

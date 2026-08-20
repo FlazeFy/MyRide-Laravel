@@ -1,0 +1,68 @@
+meta {
+  name: Get All Driver - Vehicle Relation
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/driver/vehicle
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+docs {
+  # Get All Driver - Vehicle Relation
+
+  This request is used to get all driver with his assigned vehicle. This request interacts with the MySQL database, has a protected routes, and a pagination.
+
+  ## Responses
+
+  **200 — Driver fetched successfully.** Ordered in descending order by driver relation's `created_at`
+```json
+  {
+    "status": "success",
+    "message": "driver fetched",
+    "data": {
+      "data": [
+        {
+          "username": "jhondoe",
+          "fullname": "Jhon Doe",
+          "email": "jhondoe@gmail.com",
+          "phone": "08123456780",
+          "telegram_user_id": "123456789",
+          "telegram_is_valid": 1,
+          "vehicle_list": "D 1610 ZBC - Brio RS MT, D 4110 ADC - Toyota Innova"
+        }
+      ]
+    }
+  }
+```
+
+  **401 — protected route need to include sign in token as authorization bearer**
+```json
+  {
+    "status": "failed",
+    "message": "you need to include the authorization token from login"
+  }
+```
+
+  **404 — driver failed to fetched**
+```json
+  {
+    "status": "failed",
+    "message": "driver not found"
+  }
+```
+
+  **500 — Internal Server Error**
+```json
+  {
+    "status": "error",
+    "message": "something wrong. please contact admin"
+  }
+```
+}

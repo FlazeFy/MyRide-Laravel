@@ -1,0 +1,81 @@
+meta {
+  name: Get All Driver - Vehicle Relation For Management / Assigning
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{baseUrl}}/driver/vehicle/list
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+docs {
+  # Get All Driver - Vehicle Relation For Management / Assigning
+
+  This request is used to get all driver with their assigned vehicle for management / assigning. This request interacts with the MySQL database, and has a protected routes.
+
+  ## Responses
+
+  **200 — Driver and vehicle fetched successfully**
+```json
+  {
+    "status": "success",
+    "message": "driver fetched",
+    "data": {
+      "vehicle": [
+        {
+          "id": "8585ab36-fc67-139c-35c6-608931244634",
+          "vehicle_name": "Non dolorum velit corrupti",
+          "vehicle_plate_number": "C 80 OON"
+        }
+      ],
+      "driver": [
+        {
+          "id": "a3f743ae-a373-11f0-86ad-3216422910e8",
+          "username": "tester_jhona",
+          "fullname": "asd"
+        }
+      ],
+      "assigned": [
+        {
+          "id": "1c8a4d88-d9b0-11ed-afa1-0242ac120002",
+          "vehicle_plate_number": "C 80 OON",
+          "vehicle_id": "8585ab36-fc67-139c-35c6-608931244634",
+          "driver_id": "a3f743ae-a373-11f0-86ad-3216422910e8",
+          "username": "tester_jhona",
+          "fullname": "asd"
+        }
+      ]
+    }
+  }
+```
+
+  **401 — Protected route — requires sign-in token as authorization bearer**
+```json
+  {
+    "status": "failed",
+    "message": "you need to include the authorization token from login"
+  }
+```
+
+  **404 — Driver or vehicle not found**
+```json
+  {
+    "status": "failed",
+    "message": "driver not found"
+  }
+```
+
+  **500 — Internal Server Error**
+```json
+  {
+    "status": "error",
+    "message": "something went wrong. please contact admin"
+  }
+```
+}
