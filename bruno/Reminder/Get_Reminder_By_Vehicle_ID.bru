@@ -1,0 +1,73 @@
+meta {
+  name: Get Reminder By Vehicle ID
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/reminder/vehicle/:vehicle_id
+  body: none
+  auth: bearer
+}
+
+params:path {
+  vehicle_id: e1288783-a5d4-1c4c-2cd6-0e92f7cc3bf9
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+docs {
+  # Get Reminder By Vehicle ID
+
+  This request is used to get reminder by `vehicle_id`. This request interacts with the MySQL database, and has a protected routes.
+
+  ## Path Parameters
+
+  | Name       | Type   | Required | Description | Example                               |
+  |------------|--------|----------|--------------|------------------------------------------|
+  | vehicle_id | string | yes      | Vehicle ID  | e1288783-a5d4-1c4c-2cd6-0e92f7cc3bf9   |
+
+  ## Responses
+
+  **200 — Reminder fetched successfully.** Ordered in ascending order by `remind_at`
+```json
+  {
+    "status": "success",
+    "message": "reminder fetched",
+    "data": [
+      {
+        "reminder_title": "Routine service",
+        "reminder_context": "Service",
+        "reminder_body": "Lorem ipsum",
+        "remind_at": "2025-06-24 10:54:42"
+      }
+    ]
+  }
+```
+
+  **401 — protected route need to include sign in token as authorization bearer**
+```json
+  {
+    "status": "failed",
+    "message": "you need to include the authorization token from login"
+  }
+```
+
+  **404 — reminder failed to fetched**
+```json
+  {
+    "status": "failed",
+    "message": "reminder history not found"
+  }
+```
+
+  **500 — Internal Server Error**
+```json
+  {
+    "status": "error",
+    "message": "something wrong. please contact admin"
+  }
+```
+}

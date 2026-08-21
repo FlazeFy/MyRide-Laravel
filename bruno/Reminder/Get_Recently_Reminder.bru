@@ -1,0 +1,67 @@
+meta {
+  name: Get Recently Reminder
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/reminder/recently
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+docs {
+  # Get Recently Reminder
+
+  This request is used to get recently reminder (3 days ago) history with pagination. This request interacts with the MySQL database, and has a protected routes.
+
+  ## Responses
+
+  **200 — reminder fetched successfully.** Ordered in descending order by `remind_at`
+```json
+  {
+    "status": "success",
+    "message": "reminder fetched",
+    "data": {
+      "data": [
+        {
+          "id": "28668090-5653-dff5-2d8f-af603fc36b45",
+          "reminder_title": "Routine service",
+          "vehicle_plate_number": "D 1610 ZBC",
+          "reminder_context": "Service",
+          "reminder_body": "Lorem ipsum",
+          "remind_at": "2025-06-24 10:54:42"
+        }
+      ]
+    }
+  }
+```
+
+  **401 — protected route need to include sign in token as authorization bearer**
+```json
+  {
+    "status": "failed",
+    "message": "you need to include the authorization token from login"
+  }
+```
+
+  **404 — reminder failed to fetched**
+```json
+  {
+    "status": "failed",
+    "message": "reminder history not found"
+  }
+```
+
+  **500 — Internal Server Error**
+```json
+  {
+    "status": "error",
+    "message": "something wrong. please contact admin"
+  }
+```
+}
