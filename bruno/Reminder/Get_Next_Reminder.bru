@@ -1,0 +1,62 @@
+meta {
+  name: Get Next Reminder
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/reminder/next
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+docs {
+  # Get Next Reminder
+
+  This request is used to get the nearest reminder. This request interacts with the MySQL database, and has a protected routes.
+
+  ## Responses
+
+  **200 — reminder fetched successfully**
+```json
+  {
+    "status": "success",
+    "message": "reminder fetched",
+    "data": {
+      "reminder_title": "service berkala",
+      "reminder_context": "Service",
+      "reminder_body": "at 90.000 KM",
+      "remind_at": "2025-09-05 00:00:00",
+      "vehicle_id": "2d98f524-de02-11ed-b5ea-0242ac120002"
+    }
+  }
+```
+
+  **401 — protected route need to include sign in token as authorization bearer**
+```json
+  {
+    "status": "failed",
+    "message": "you need to include the authorization token from login"
+  }
+```
+
+  **404 — reminder failed to fetched**
+```json
+  {
+    "status": "failed",
+    "message": "reminder not found"
+  }
+```
+
+  **500 — Internal Server Error**
+```json
+  {
+    "status": "error",
+    "message": "something wrong. please contact admin"
+  }
+```
+}

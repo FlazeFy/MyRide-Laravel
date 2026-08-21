@@ -1,0 +1,74 @@
+meta {
+  name: Get All Reminder
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{baseUrl}}/reminder
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+docs {
+  # Get All Reminder
+
+  This request is used to get all reminder, you can filter the reminder data using given `search` to find based on reminder_title or reminder_body. This request interacts with the MySQL database, has a protected routes, and a pagination.
+
+  ## Responses
+
+  **200 — Reminder fetched successfully.** Ordered in descending order by `created_at`
+```json
+  {
+    "status": "success",
+    "message": "reminder fetched",
+    "data": {
+      "data": [
+        {
+          "id": "28668090-5653-dff5-2d8f-af603fc36b45",
+          "reminder_title": "Routine service",
+          "vehicle_plate_number": "D 1610 ZBC",
+          "reminder_context": "Service",
+          "reminder_body": "Lorem ipsum",
+          "reminder_attachment": [
+            {
+              "attachment_type": "location",
+              "attachment_value": "-6.223617982933017, 106.84620287273809"
+            }
+          ],
+          "remind_at": "2025-06-24 10:54:42",
+          "created_at": "2025-06-19 07:54:42"
+        }
+      ]
+    }
+  }
+```
+
+  **401 — protected route need to include sign in token as authorization bearer**
+```json
+  {
+    "status": "failed",
+    "message": "you need to include the authorization token from login"
+  }
+```
+
+  **404 — reminder failed to fetched**
+```json
+  {
+    "status": "failed",
+    "message": "reminder history not found"
+  }
+```
+
+  **500 — Internal Server Error**
+```json
+  {
+    "status": "error",
+    "message": "something wrong. please contact admin"
+  }
+```
+}

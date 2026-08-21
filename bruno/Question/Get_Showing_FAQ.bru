@@ -1,0 +1,49 @@
+meta {
+  name: Get Showing FAQ
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/question/faq
+  body: none
+  auth: none
+}
+
+docs {
+  # Get Showing FAQ
+
+  This request is used to get showing FAQ in the welcome page (Maximum to fetch 8 item). This request interacts with the MySQL database.
+
+  ## Responses
+
+  **200 — FAQ fetched successfully.** Ordered in descending order by `created_at`
+```json
+  {
+    "status": "success",
+    "message": "faq fetched",
+    "data": [
+      {
+        "faq_question": "lorem ipsum?",
+        "faq_answer": "consectetuer adipiscing elit"
+      }
+    ]
+  }
+```
+
+  **404 — faq failed to fetched**
+```json
+  {
+    "status": "failed",
+    "message": "faq not found"
+  }
+```
+
+  **500 — Internal Server Error**
+```json
+  {
+    "status": "error",
+    "message": "something wrong. please contact admin"
+  }
+```
+}
