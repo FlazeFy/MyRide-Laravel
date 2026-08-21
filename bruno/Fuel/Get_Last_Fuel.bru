@@ -1,0 +1,67 @@
+meta {
+  name: Get Last Fuel
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/fuel/last
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+docs {
+  # Get Last Fuel
+
+  This request is used to get last fuel purchase history. This request interacts with the MySQL database, and has a protected routes.
+
+  ## Responses
+
+  **200 — Fuel record fetched successfully**
+```json
+  {
+    "status": "success",
+    "message": "fuel fetched",
+    "data": {
+      "id": "6f59235e-c398-8a83-2f95-3f1fbe95ca6e",
+      "vehicle_plate_number": "B 1234 CD",
+      "vehicle_type": "City Car",
+      "fuel_volume": 45.5,
+      "fuel_price_total": 325000,
+      "fuel_brand": "Pertamina",
+      "fuel_type": "Pertamax",
+      "fuel_ron": 92,
+      "created_at": "2024-09-20 22:53:47",
+      "fuel_bill": "https://example.com/uploads/fuel_bills/bill123.jpg"
+    }
+  }
+```
+
+  **401 — protected route need to include sign in token as authorization bearer**
+```json
+  {
+    "status": "failed",
+    "message": "you need to include the authorization token from login"
+  }
+```
+
+  **404 — fuel failed to fetched**
+```json
+  {
+    "status": "failed",
+    "message": "fuel not found"
+  }
+```
+
+  **500 — Internal Server Error**
+```json
+  {
+    "status": "error",
+    "message": "something wrong. please contact admin"
+  }
+```
+}

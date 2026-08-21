@@ -1,0 +1,70 @@
+meta {
+  name: Get Fuel Summary Monthly
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/fuel/summary/:month_year
+  body: none
+  auth: bearer
+}
+
+params:path {
+  month_year: 2024-09
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+docs {
+  # Get Fuel Summary Monthly
+
+  This request is used to get summary of fuel purchase history in the specific month and year by giving `month_year`. This request interacts with the MySQL database, and has a protected routes.
+
+  ## Path Parameters
+
+  | Name       | Type   | Required | Description                    | Example |
+  |------------|--------|----------|-----------------------------------|---------|
+  | month_year | string | yes      | Target month and year (e.g. YYYY-MM) | 2024-09 |
+
+  ## Responses
+
+  **200 — Fuel fetched successfully**
+```json
+  {
+    "status": "success",
+    "message": "fuel fetched",
+    "data": {
+      "total_fuel_volume": 40,
+      "total_fuel_price": 600000,
+      "total_refueling": 2
+    }
+  }
+```
+
+  **401 — protected route need to include sign in token as authorization bearer**
+```json
+  {
+    "status": "failed",
+    "message": "you need to include the authorization token from login"
+  }
+```
+
+  **404 — fuel failed to fetched**
+```json
+  {
+    "status": "failed",
+    "message": "fuel not found"
+  }
+```
+
+  **500 — Internal Server Error**
+```json
+  {
+    "status": "error",
+    "message": "something wrong. please contact admin"
+  }
+```
+}
