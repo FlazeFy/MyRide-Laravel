@@ -1,0 +1,62 @@
+meta {
+  name: Get Next Service
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{baseUrl}}/service/next
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+docs {
+  # Get Next Service
+
+  This request is used to get the nearest service. This request interacts with the MySQL database, and has a protected routes.
+
+  ## Responses
+
+  **200 — Service fetched successfully**
+```json
+  {
+    "status": "success",
+    "message": "service fetched",
+    "data": {
+      "service_note": "service berkala",
+      "service_category": "Routine",
+      "service_location": "Honda Tandean",
+      "service_price_total": 24000000,
+      "remind_at": "2025-09-05 00:00:00"
+    }
+  }
+```
+
+  **401 — protected route need to include sign in token as authorization bearer**
+```json
+  {
+    "status": "failed",
+    "message": "you need to include the authorization token from login"
+  }
+```
+
+  **404 — service failed to fetched**
+```json
+  {
+    "status": "failed",
+    "message": "service not found"
+  }
+```
+
+  **500 — Internal Server Error**
+```json
+  {
+    "status": "error",
+    "message": "something wrong. please contact admin"
+  }
+```
+}

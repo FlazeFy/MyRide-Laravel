@@ -1,0 +1,68 @@
+meta {
+  name: Get Total Vehicle By Context
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{baseUrl}}/stats/total/vehicle/:context
+  body: none
+  auth: bearer
+}
+
+params:path {
+  context: vehicle_merk
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+docs {
+  # Get Total Vehicle By Context
+
+  This request is used to get total vehicle by `context`, that can be vehicle_merk, vehicle_type, vehicle_status, vehicle_fuel_status, vehicle_transmission, and vehicle_color. This request interacts with the MySQL database, and has a protected routes.
+
+  ## Path Parameters
+
+  | Name    | Type   | Required | Description     | Example      |
+  |---------|--------|----------|--------------------|--------------|
+  | context | string | yes      | Vehicle Context   | vehicle_merk |
+
+  ## Responses
+
+  **200 — stats fetched**
+```json
+  {
+    "status": "success",
+    "message": "stats fetched",
+    "data": [
+      { "context": "Honda", "total": 2 }
+    ]
+  }
+```
+
+  **401 — protected route need to include sign in token as authorization bearer**
+```json
+  {
+    "status": "failed",
+    "message": "you need to include the authorization token from login"
+  }
+```
+
+  **404 — stats failed to fetched**
+```json
+  {
+    "status": "failed",
+    "message": "stats not found"
+  }
+```
+
+  **500 — Internal Server Error**
+```json
+  {
+    "status": "error",
+    "message": "something wrong. please contact admin"
+  }
+```
+}
