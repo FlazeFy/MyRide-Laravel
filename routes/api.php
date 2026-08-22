@@ -175,7 +175,7 @@ Route::prefix('/v1/fuel')->middleware(['auth:sanctum'])->group(function () {
     Route::get('/', [QueriesFuelController::class, 'getAllFuel']);
     Route::get('/last', [QueriesFuelController::class, 'getLastFuel']);
     Route::get('/summary/{month_year}', [QueriesFuelController::class, 'getMonthlyFuelSummary']);
-    Route::get('/vehicle', [QueriesVehicleApi::class, 'getAllVehicleFuel']);
+    Route::get('/vehicle', [QueriesFuelController::class, 'getAllVehicleFuel']);
     Route::delete('/destroy/{id}', [CommandsFuelController::class, 'hardDeleteFuelById']);
     Route::post('/', [CommandsFuelController::class, 'postCreateFuel']);
     Route::put('/{id}', [CommandsFuelController::class, 'putUpdateFuelById']);

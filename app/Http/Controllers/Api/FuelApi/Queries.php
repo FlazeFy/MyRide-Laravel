@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 
 // Model
 use App\Models\FuelModel;
+use App\Models\VehicleModel;
 use App\Models\AdminModel;
 // Helper
 use App\Helpers\Generator;
@@ -276,6 +277,83 @@ class Queries extends Controller
             // Get monthly fuel summary
             $res = FuelModel::getMonthlyFuelSummary($user_id, $vehicle_id, $month_year);
             if ($res) {
+                // Return success response
+                return response()->json([
+                    'status' => 'success',
+                    'message' => Generator::getMessageTemplate("fetch", $this->module),
+                    'data' => $res
+                ], Response::HTTP_OK);
+            } else {
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => Generator::getMessageTemplate("not_found", $this->module),
+                ], Response::HTTP_NOT_FOUND);
+            }
+        } catch(\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => Generator::getMessageTemplate("unknown_error", null),
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+     /**
+     * @OA\GET(
+     *     path="/api/v1/fuel/vehicle",
+     *     summary="Get All Vehicle Fuel",
+     *     description="This request is used to get all vehicle fuel status. This request interacts with the MySQL database, and has a protected routes",
+     *     tags={"Vehicle"},
+     *     security={{"bearerAuth":{}}},
+     *     @OA\Response(
+     *         response=200,
+     *         description="vehicle fetched successfully. Ordered in format ('Empty', 'Low', 'Normal', 'High', 'Full', 'Not Monitored') for column `vehicle_fuel_status`",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="message", type="string", example="vehicle fetched successfully"),
+     *             @OA\Property(property="data", type="array",
+     *                 @OA\Items(
+     *                     @OA\Property(property="id", type="string", format="uuid", example="2d98f524-de02-11ed-b5ea-0242ac120002"),
+     *                     @OA\Property(property="vehicle_name", type="string", example="Brio RS MT"),
+     *                     @OA\Property(property="vehicle_plate_number", type="string", example="D 1610 ZBC"),
+     *                     @OA\Property(property="vehicle_fuel_status", type="string", example="Normal"),
+     *                     @OA\Property(property="vehicle_fuel_capacity", type="integer", example=40),
+     *                 )
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="protected route need to include sign in token as authorization bearer",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="failed"),
+     *             @OA\Property(property="message", type="string", example="you need to include the authorization token from login")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="vehicle failed to fetched",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="failed"),
+     *             @OA\Property(property="message", type="string", example="vehicle not found")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal Server Error",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="error"),
+     *             @OA\Property(property="message", type="string", example="something wrong. please contact admin")
+     *         )
+     *     ),
+     * )
+     */
+    public function getAllVehicleFuel(Request $request) {
+        try {
+            $user_id = $request->user()->id;
+
+            // Get all vehicle fuel
+            $res = VehicleModel::getAllVehicleFuel($user_id);
+            if (count($res) > 0) {
                 // Return success response
                 return response()->json([
                     'status' => 'success',

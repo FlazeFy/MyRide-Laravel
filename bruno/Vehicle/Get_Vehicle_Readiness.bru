@@ -1,0 +1,75 @@
+meta {
+  name: Get Vehicle Readiness
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/vehicle/readiness
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+docs {
+  # Get Vehicle Readiness
+
+  This request is used to get all vehicle that ready to drive. This request interacts with the MySQL database, has a protected routes, and a pagination.
+
+  ## Responses
+
+  **200 — vehicle fetched successfully.** Ordered in descending order by `readiness` and `created_at`
+```json
+  {
+    "status": "success",
+    "message": "vehicle fetched successfully",
+    "data": {
+      "current_page": 1,
+      "data": [
+        {
+          "id": "2d98f524-de02-11ed-b5ea-0242ac120002",
+          "vehicle_name": "Brio RS MT",
+          "vehicle_type": "City Car",
+          "vehicle_status": "Available",
+          "vehicle_plate_number": "D 1610 ZBC",
+          "vehicle_fuel_status": "Normal",
+          "vehicle_capacity": 5,
+          "vehicle_transmission": "CVT",
+          "vehicle_readiness": 8,
+          "deleted_at": "2025-01-29 15:04:18"
+        }
+      ],
+      "last_page": 1,
+      "per_page": 14,
+      "total": 1
+    }
+  }
+```
+
+  **401 — protected route need to include sign in token as authorization bearer**
+```json
+  {
+    "status": "failed",
+    "message": "you need to include the authorization token from login"
+  }
+```
+
+  **404 — vehicle failed to fetched**
+```json
+  {
+    "status": "failed",
+    "message": "vehicle not found"
+  }
+```
+
+  **500 — Internal Server Error**
+```json
+  {
+    "status": "error",
+    "message": "something wrong. please contact admin"
+  }
+```
+}

@@ -1,0 +1,64 @@
+meta {
+  name: Get All Vehicle Fuel
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{baseUrl}}/fuel/vehicle
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+docs {
+  # Get All Vehicle Fuel
+
+  This request is used to get all vehicle fuel status. This request interacts with the MySQL database, and has a protected routes.
+
+  ## Responses
+
+  **200 — vehicle fetched successfully.** Ordered in format ('Empty', 'Low', 'Normal', 'High', 'Full', 'Not Monitored') for column `vehicle_fuel_status`
+```json
+  {
+    "status": "success",
+    "message": "vehicle fetched successfully",
+    "data": [
+      {
+        "id": "2d98f524-de02-11ed-b5ea-0242ac120002",
+        "vehicle_name": "Brio RS MT",
+        "vehicle_plate_number": "D 1610 ZBC",
+        "vehicle_fuel_status": "Normal",
+        "vehicle_fuel_capacity": 40
+      }
+    ]
+  }
+```
+
+  **401 — protected route need to include sign in token as authorization bearer**
+```json
+  {
+    "status": "failed",
+    "message": "you need to include the authorization token from login"
+  }
+```
+
+  **404 — vehicle failed to fetched**
+```json
+  {
+    "status": "failed",
+    "message": "vehicle not found"
+  }
+```
+
+  **500 — Internal Server Error**
+```json
+  {
+    "status": "error",
+    "message": "something wrong. please contact admin"
+  }
+```
+}

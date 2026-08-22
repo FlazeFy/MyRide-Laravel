@@ -1,0 +1,97 @@
+meta {
+  name: Get Vehicle Detail By ID
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/vehicle/detail/:id
+  body: none
+  auth: bearer
+}
+
+params:path {
+  id: 4f33d5e4-de9f-11ed-b5ea-0242ac120002
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+docs {
+  # Get Vehicle Detail By ID
+
+  This request is used to get vehicle detail by `id`. This request interacts with the MySQL database, and has a protected routes.
+
+  ## Path Parameters
+
+  | Name | Type   | Required | Description | Example                               |
+  |------|--------|----------|--------------|------------------------------------------|
+  | id   | string | yes      | Vehicle ID  | 4f33d5e4-de9f-11ed-b5ea-0242ac120002   |
+
+  ## Responses
+
+  **200 — vehicle fetched successfully**
+```json
+  {
+    "status": "success",
+    "message": "vehicle fetched successfully",
+    "data": {
+      "id": "4f33d5e4-de9f-11ed-b5ea-0242ac120002",
+      "vehicle_name": "Kijang Innova 2.0 Type G MT",
+      "vehicle_merk": "Toyota",
+      "vehicle_type": "Minibus",
+      "vehicle_price": 275000000,
+      "vehicle_desc": "sudah jarang digunakan 2",
+      "vehicle_distance": 90000,
+      "vehicle_category": "Parents Car",
+      "vehicle_status": "Available",
+      "vehicle_year_made": 2011,
+      "vehicle_plate_number": "PA 1060 VZ",
+      "vehicle_fuel_status": "Not Monitored",
+      "vehicle_fuel_capacity": 50,
+      "vehicle_default_fuel": "Pertamina Pertalite",
+      "vehicle_color": "White",
+      "vehicle_transmission": "Manual",
+      "vehicle_img_url": null,
+      "vehicle_other_img_url": null,
+      "vehicle_capacity": 8,
+      "vehicle_document": [
+        {
+          "id": "fL9eDk",
+          "attach_type": "attachment_image",
+          "attach_name": "ini gambar",
+          "attach_url": "https://firebasestorage.googleapis.com/..."
+        }
+      ],
+      "created_at": "2024-03-27 04:03:34",
+      "updated_at": "2025-07-08 02:13:45",
+      "deleted_at": null
+    }
+  }
+```
+
+  **401 — protected route need to include sign in token as authorization bearer**
+```json
+  {
+    "status": "failed",
+    "message": "you need to include the authorization token from login"
+  }
+```
+
+  **404 — vehicle failed to fetched**
+```json
+  {
+    "status": "failed",
+    "message": "vehicle not found"
+  }
+```
+
+  **500 — Internal Server Error**
+```json
+  {
+    "status": "error",
+    "message": "something wrong. please contact admin"
+  }
+```
+}

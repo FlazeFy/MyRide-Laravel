@@ -1,0 +1,63 @@
+meta {
+  name: Get All Vehicle Name
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{baseUrl}}/vehicle/name
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+docs {
+  # Get All Vehicle Name
+
+  This request is used to get all vehicle name. This request interacts with the MySQL database, and has a protected routes.
+
+  ## Responses
+
+  **200 — Vehicle fetched successfully.** Ordered in ascending order by `deleted_at` and descending by `vehicle_name` and `vehicle_plate_number`
+```json
+  {
+    "status": "success",
+    "message": "vehicle fetched successfully",
+    "data": [
+      {
+        "id": "2d98f524-de02-11ed-b5ea-0242ac120002",
+        "vehicle_name": "Brio RS MT",
+        "vehicle_plate_number": "D 1610 ZBC",
+        "deleted_at": "2025-01-29 15:04:18"
+      }
+    ]
+  }
+```
+
+  **401 — protected route need to include sign in token as authorization bearer**
+```json
+  {
+    "status": "failed",
+    "message": "you need to include the authorization token from login"
+  }
+```
+
+  **404 — vehicle failed to fetched**
+```json
+  {
+    "status": "failed",
+    "message": "vehicle not found"
+  }
+```
+
+  **500 — Internal Server Error**
+```json
+  {
+    "status": "error",
+    "message": "something wrong. please contact admin"
+  }
+```
+}
