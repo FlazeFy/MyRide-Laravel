@@ -483,7 +483,7 @@ class Queries extends Controller
 
     /**
      * @OA\GET(
-     *     path="/api/v1/stats/total/trip/{year}/{vehicle_id}",
+     *     path="/api/v1/stats/total/trip/monthly/{year}/{vehicle_id}",
      *     summary="Get Total Trip By Vehicle Per Month",
      *     description="This request is used to get total trip by vehicle per month by given `year` and `vehicle_id`. This request interacts with the MySQL database, and has a protected routes.",
      *     tags={"Stats"},
@@ -993,7 +993,7 @@ class Queries extends Controller
 
     /**
      * @OA\GET(
-     *     path="/api/v1/stats/total/wash/{context}/{year}",
+     *     path="/api/v1/stats/total/wash/monthly/{context}/{year}",
      *     summary="Get Total Wash Per Month",
      *     description="This request is used to get total wash per month by given `year` and `context`. This request is using MySql database.",
      *     tags={"Stats"},

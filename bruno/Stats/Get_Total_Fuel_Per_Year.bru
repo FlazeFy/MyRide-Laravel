@@ -1,0 +1,72 @@
+meta {
+  name: Get Total Fuel Per Year
+  type: http
+  seq: 7
+}
+
+get {
+  url: {{baseUrl}}/stats/total/fuel/monthly/:context/:year
+  body: none
+  auth: bearer
+}
+
+params:path {
+  context: fuel_volume
+  year: 2026
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+docs {
+  # Get Total Fuel Per Year
+  
+  This request is used to get total fuel per month by given `year` and `context`. This request interacts with the MySQL database, and has a protected routes.
+  
+  ## Path Parameters
+  
+  | Name    | Type    | Required | Description                                     | Example     |
+  |---------|---------|----------|---------------------------------------------------|-------------|
+  | context | string  | yes      | Context can be `fuel_volume` or `fuel_price_total` | fuel_volume |
+  | year    | integer | yes      | Fuel consumption created year                     | 2024        |
+  
+  > Note: the Swagger doc for this endpoint also lists a `vehicle_id` parameter, but the URL path has no `{vehicle_id}` segment — this appears to be a doc mismatch and has been omitted here.
+  
+  ## Responses
+  
+  **200 — stats fetched**
+  ```json
+  {
+    "status": "success",
+    "message": "stats fetched",
+    "data": [
+      { "context": "Jan", "total": 3 }
+    ]
+  }
+  ```
+  
+  **401 — protected route need to include sign in token as authorization bearer**
+  ```json
+  {
+    "status": "failed",
+    "message": "you need to include the authorization token from login"
+  }
+  ```
+  
+  **404 — stats failed to fetched**
+  ```json
+  {
+    "status": "failed",
+    "message": "stats not found"
+  }
+  ```
+  
+  **500 — Internal Server Error**
+  ```json
+  {
+    "status": "error",
+    "message": "something wrong. please contact admin"
+  }
+  ```
+}

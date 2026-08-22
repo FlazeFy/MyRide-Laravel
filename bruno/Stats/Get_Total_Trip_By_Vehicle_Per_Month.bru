@@ -1,0 +1,70 @@
+meta {
+  name: Get Total Trip By Vehicle Per Month
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{baseUrl}}/stats/total/trip/monthly/:year/:vehicle_id
+  body: none
+  auth: bearer
+}
+
+params:path {
+  year: 2026
+  vehicle_id: 7d53371a-e363-2ad3-25fe-180dae88c062
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+docs {
+  # Get Total Trip By Vehicle Per Month
+  
+  This request is used to get total trip by vehicle per month by given `year` and `vehicle_id`. This request interacts with the MySQL database, and has a protected routes.
+  
+  ## Path Parameters
+  
+  | Name       | Type    | Required | Description        | Example                               |
+  |------------|---------|----------|----------------------|------------------------------------------|
+  | year       | integer | yes      | Trip created year   | 2024                                    |
+  | vehicle_id | string  | yes      | Vehicle ID           | ab8b8d0e-d74d-11ed-afa1-0242ac120002   |
+  
+  ## Responses
+  
+  **200 — stats fetched**
+  ```json
+  {
+    "status": "success",
+    "message": "stats fetched",
+    "data": [
+      { "context": "Jan", "total": 3 }
+    ]
+  }
+  ```
+  
+  **401 — protected route need to include sign in token as authorization bearer**
+  ```json
+  {
+    "status": "failed",
+    "message": "you need to include the authorization token from login"
+  }
+  ```
+  
+  **404 — stats failed to fetched**
+  ```json
+  {
+    "status": "failed",
+    "message": "stats not found"
+  }
+  ```
+  
+  **500 — Internal Server Error**
+  ```json
+  {
+    "status": "error",
+    "message": "something wrong. please contact admin"
+  }
+  ```
+}
