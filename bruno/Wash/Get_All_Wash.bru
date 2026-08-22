@@ -1,0 +1,86 @@
+meta {
+  name: Get All Wash
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/wash
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+docs {
+  # Get All Wash
+
+  This request is used to get all wash history, you can filter the wash data using given `search` to find based on wash_address or wash_desc. This request interacts with the MySQL database, has a protected routes, and a pagination.
+
+  ## Responses
+
+  **200 — Wash fetched successfully.** Ordered in descending order by `created_at`
+```json
+  {
+    "status": "success",
+    "message": "wash fetched",
+    "data": {
+      "current_page": 1,
+      "data": [
+        {
+          "id": "ab8b8d0e-d74d-11ed-afa1-0242ac120002",
+          "vehicle_name": "Honda - Brio RS MT",
+          "vehicle_plate_number": "D 1610 ZRB",
+          "wash_desc": "Cuci mobil",
+          "wash_by": "Carwash",
+          "is_wash_body": 1,
+          "is_wash_window": 1,
+          "is_wash_dashboard": 1,
+          "is_wash_tires": 1,
+          "is_wash_trash": 1,
+          "is_wash_engine": 1,
+          "is_wash_seat": 1,
+          "is_wash_carpet": 1,
+          "is_wash_pillows": 0,
+          "wash_address": "AutoService Jl. Kapten Tandean",
+          "wash_start_time": "2024-02-29 21:30:00",
+          "wash_end_time": "2024-02-29 22:20:00",
+          "is_fill_window_washing_water": 0,
+          "is_wash_hollow": 1,
+          "created_at": "2024-03-27 12:33:05",
+          "updated_at": null
+        }
+      ],
+      "last_page": 1,
+      "per_page": 14,
+      "total": 1
+    }
+  }
+```
+
+  **401 — protected route need to include sign in token as authorization bearer**
+```json
+  {
+    "status": "failed",
+    "message": "you need to include the authorization token from login"
+  }
+```
+
+  **404 — wash failed to fetched**
+```json
+  {
+    "status": "failed",
+    "message": "wash history not found"
+  }
+```
+
+  **500 — Internal Server Error**
+```json
+  {
+    "status": "error",
+    "message": "something wrong. please contact admin"
+  }
+```
+}

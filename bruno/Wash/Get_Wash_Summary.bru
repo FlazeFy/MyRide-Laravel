@@ -1,0 +1,76 @@
+meta {
+  name: Get Wash Summary
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/wash/summary
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+docs {
+  # Get Wash Summary
+
+  This request is used to get wash summary by vehicle id or all vehicle. This request interacts with the MySQL database, and has a protected routes.
+
+  ## Responses
+
+  **200 — Wash fetched successfully.** Ordered in ascending order by `vehicle_name`
+```json
+  {
+    "status": "success",
+    "message": "wash fetched",
+    "data": [
+      {
+        "vehicle_name": "Honda - Brio RS MT",
+        "vehicle_plate_number": "D 1610 ZRB",
+        "vehicle_type": "City Car",
+        "total_wash": 5,
+        "total_wash_body": 5,
+        "total_wash_window": 5,
+        "total_wash_dashboard": 4,
+        "total_wash_tires": 5,
+        "total_wash_trash": 5,
+        "total_wash_engine": 1,
+        "total_wash_seat": 4,
+        "total_wash_carpet": 4,
+        "total_wash_pillows": 0,
+        "total_fill_window_washing_water": 5,
+        "total_wash_hollow": 3,
+        "total_price": 475000,
+        "avg_price_per_wash": 95000
+      }
+    ]
+  }
+```
+
+  **401 — protected route need to include sign in token as authorization bearer**
+```json
+  {
+    "status": "failed",
+    "message": "you need to include the authorization token from login"
+  }
+```
+
+  **404 — wash failed to fetched**
+```json
+  {
+    "status": "failed",
+    "message": "wash summary not found"
+  }
+```
+
+  **500 — Internal Server Error**
+```json
+  {
+    "status": "error",
+    "message": "something wrong. please contact admin"
+  }
+```
+}

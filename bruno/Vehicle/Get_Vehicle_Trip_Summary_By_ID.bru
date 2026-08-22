@@ -1,0 +1,74 @@
+meta {
+  name: Get Vehicle Trip Summary By ID
+  type: http
+  seq: 7
+}
+
+get {
+  url: {{baseUrl}}/vehicle/trip/summary/:id
+  body: none
+  auth: bearer
+}
+
+params:path {
+  id: 4f33d5e4-de9f-11ed-b5ea-0242ac120002
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+docs {
+  # Get Vehicle Trip Summary By ID
+
+  This request is used to get vehicle trip history summary by vehicle's `id`. This request interacts with the MySQL database, and has a protected routes.
+
+  ## Path Parameters
+
+  | Name | Type   | Required | Description | Example                               |
+  |------|--------|----------|--------------|------------------------------------------|
+  | id   | string | yes      | Vehicle ID  | 4f33d5e4-de9f-11ed-b5ea-0242ac120002   |
+
+  ## Responses
+
+  **200 — vehicle fetched successfully**
+```json
+  {
+    "status": "success",
+    "message": "vehicle fetched successfully",
+    "data": {
+      "detail": {
+        "most_person_with": "John Doe",
+        "vehicle_total_trip_distance": 30.46,
+        "most_origin": "Place A",
+        "most_destination": "Place B",
+        "most_category": "Office"
+      }
+    }
+  }
+```
+
+  **401 — protected route need to include sign in token as authorization bearer**
+```json
+  {
+    "status": "failed",
+    "message": "you need to include the authorization token from login"
+  }
+```
+
+  **404 — vehicle failed to fetched**
+```json
+  {
+    "status": "failed",
+    "message": "vehicle not found"
+  }
+```
+
+  **500 — Internal Server Error**
+```json
+  {
+    "status": "error",
+    "message": "something wrong. please contact admin"
+  }
+```
+}

@@ -1,0 +1,153 @@
+meta {
+  name: Get Vehicle Full Detail By ID
+  type: http
+  seq: 6
+}
+
+get {
+  url: {{baseUrl}}/vehicle/detail/full/:id
+  body: none
+  auth: bearer
+}
+
+params:path {
+  id: 4f33d5e4-de9f-11ed-b5ea-0242ac120002
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+docs {
+  # Get Vehicle Full Detail By ID
+
+  This request is used to get vehicle detail by `id`, it comes with Wash and Trip History. This request interacts with the MySQL database, and has a protected routes.
+
+  ## Path Parameters
+
+  | Name | Type   | Required | Description | Example                               |
+  |------|--------|----------|--------------|------------------------------------------|
+  | id   | string | yes      | Vehicle ID  | 4f33d5e4-de9f-11ed-b5ea-0242ac120002   |
+
+  ## Responses
+
+  **200 — vehicle fetched successfully**
+```json
+  {
+    "status": "success",
+    "message": "vehicle fetched successfully",
+    "data": {
+      "detail": {
+        "id": "2d98f524-de02-11ed-b5ea-0242ac120002",
+        "vehicle_name": "Brio RS MT",
+        "vehicle_merk": "Honda",
+        "vehicle_type": "City Car",
+        "vehicle_price": 188000000,
+        "vehicle_desc": "snowy",
+        "vehicle_distance": 45000,
+        "vehicle_category": "Personal Car",
+        "vehicle_status": "Available",
+        "vehicle_year_made": 2020,
+        "vehicle_plate_number": "D 1060 ZBC",
+        "vehicle_fuel_status": "Normal",
+        "vehicle_fuel_capacity": 35,
+        "vehicle_default_fuel": "Shell Super",
+        "vehicle_color": "White",
+        "vehicle_transmission": "CVT",
+        "vehicle_img_url": null,
+        "vehicle_other_img_url": null,
+        "vehicle_capacity": 5,
+        "vehicle_document": null,
+        "created_at": "2024-03-27 04:03:34",
+        "updated_at": "2025-01-29 15:04:18",
+        "deleted_at": null
+      },
+      "trip": {
+        "current_page": 1,
+        "data": [
+          {
+            "id": "28668090-5653-dff5-2d8f-af603fc36b45",
+            "trip_desc": "jalan2",
+            "trip_category": "Others",
+            "trip_person": "John Doe",
+            "trip_origin_name": "Place A",
+            "trip_origin_coordinate": "-6.226828716225759, 106.82152290589822",
+            "trip_destination_name": "Place B",
+            "trip_destination_coordinate": "-6.230792280916382, 106.81781530380249",
+            "created_at": "2025-01-29 16:46:45"
+          }
+        ],
+        "last_page": 1,
+        "per_page": 14,
+        "total": 5
+      },
+      "driver": [
+        {
+          "id": "28668090-5653-dff5-2d8f-af603fc36b45",
+          "username": "jhondoe",
+          "fullname": "test123",
+          "email": "jhondoe@gmail.com",
+          "telegram_user_id": "123456789",
+          "telegram_is_valid": 1,
+          "phone": "08123456789",
+          "notes": "lorem ipsum",
+          "assigned_at": "2025-01-29 16:46:45"
+        }
+      ],
+      "wash": {
+        "current_page": 1,
+        "data": [
+          {
+            "id": "ab8b8d0e-d74d-11ed-afa1-0242ac120002",
+            "wash_desc": "Cuci mobil",
+            "wash_by": "Carwash",
+            "is_wash_body": 1,
+            "is_wash_window": 1,
+            "is_wash_dashboard": 1,
+            "is_wash_tires": 1,
+            "is_wash_trash": 1,
+            "is_wash_engine": 1,
+            "is_wash_seat": 1,
+            "is_wash_carpet": 1,
+            "is_wash_pillows": 0,
+            "wash_address": "AutoService Jl. Kapten Tandean",
+            "wash_start_time": "2024-02-29 21:30:00",
+            "wash_end_time": "2024-02-29 22:20:00",
+            "is_fill_window_washing_water": 0,
+            "is_wash_hollow": 1,
+            "created_at": "2024-03-27 12:33:05",
+            "updated_at": null
+          }
+        ],
+        "last_page": 1,
+        "per_page": 14,
+        "total": 1
+      }
+    }
+  }
+```
+
+  **401 — protected route need to include sign in token as authorization bearer**
+```json
+  {
+    "status": "failed",
+    "message": "you need to include the authorization token from login"
+  }
+```
+
+  **404 — vehicle failed to fetched**
+```json
+  {
+    "status": "failed",
+    "message": "vehicle not found"
+  }
+```
+
+  **500 — Internal Server Error**
+```json
+  {
+    "status": "error",
+    "message": "something wrong. please contact admin"
+  }
+```
+}
