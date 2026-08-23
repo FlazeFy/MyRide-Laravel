@@ -1,0 +1,63 @@
+meta {
+  name: Get Last Trip
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{baseUrl}}/trip/last
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+docs {
+  # Get Last Trip
+
+  This request is used to get the last trip. This request interacts with the MySQL database, and has a protected routes.
+
+  ## Responses
+
+  **200 — Trip fetched successfully**
+```json
+  {
+    "status": "success",
+    "message": "trip fetched",
+    "data": {
+      "trip_destination_name": "Location A",
+      "trip_destination_coordinate": "-6.177362076836449,106.79156507985539",
+      "driver_username": "jhondoe",
+      "vehicle_type": "City Car",
+      "vehicle_plate_number": "EY 28 BK",
+      "created_at": "2025-09-05 00:00:00"
+    }
+  }
+```
+
+  **401 — protected route need to include sign in token as authorization bearer**
+```json
+  {
+    "status": "failed",
+    "message": "you need to include the authorization token from login"
+  }
+```
+
+  **404 — trip failed to fetched**
+```json
+  {
+    "status": "failed",
+    "message": "trip not found"
+  }
+```
+
+  **500 — Internal Server Error**
+```json
+  {
+    "status": "error",
+    "message": "something wrong. please contact admin"
+  }
+```
+}

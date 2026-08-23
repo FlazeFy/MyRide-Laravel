@@ -1,0 +1,77 @@
+meta {
+  name: Get Trip History Coordinate By Location Name
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/trip/coordinate/:trip_location_name
+  body: none
+  auth: bearer
+}
+
+params:path {
+  trip_location_name: Location A
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+docs {
+  # Get Trip History Coordinate By Location Name
+
+  This request is used to get trip history's coordinate by given `trip_location_name`. This request interacts with the MySQL database, and has a protected routes.
+
+  ## Path Parameters
+
+  | Name                | Type   | Required | Description        | Example    |
+  |----------------------|--------|----------|-----------------------|------------|
+  | trip_location_name  | string | yes      | Trip location name   | Location A |
+
+  ## Responses
+
+  **200 — Trip fetched successfully.** Ordered in ascending order by `trip_location_name`
+```json
+  {
+    "status": "success",
+    "message": "trip fetched",
+    "data": {
+      "current_page": 1,
+      "data": [
+        {
+          "trip_location_coordinate": "-6.177362076836449,106.79156507985539",
+          "trip_location_name": "Location A"
+        }
+      ],
+      "last_page": 1,
+      "per_page": 14,
+      "total": 1
+    }
+  }
+```
+
+  **401 — protected route need to include sign in token as authorization bearer**
+```json
+  {
+    "status": "failed",
+    "message": "you need to include the authorization token from login"
+  }
+```
+
+  **404 — trip failed to fetched**
+```json
+  {
+    "status": "failed",
+    "message": "trip not found"
+  }
+```
+
+  **500 — Internal Server Error**
+```json
+  {
+    "status": "error",
+    "message": "something wrong. please contact admin"
+  }
+```
+}
