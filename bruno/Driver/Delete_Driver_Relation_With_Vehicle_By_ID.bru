@@ -1,0 +1,65 @@
+meta {
+  name: Hard Delete Driver Relation With Vehicle By ID
+  type: http
+  seq: 6
+}
+
+delete {
+  url: {{baseUrl}}/driver/destroy/relation/:id
+  body: none
+  auth: bearer
+}
+
+params:path {
+  id: e1288783-a5d4-1c4c-2cd6-0e92f7cc3bf9
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+docs {
+  # Hard Delete Driver Relation With Vehicle By ID
+
+  This request is used to permanently delete a driver relation with vehicle entry based on the provided driver relation `ID`. This request interacts with the MySQL database, and has a protected routes.
+
+  ## Path Parameters
+
+  | Name | Type   | Required | Description         | Example                               |
+  |------|--------|----------|-----------------------|------------------------------------------|
+  | id   | string | yes      | Driver Relation ID   | e1288783-a5d4-1c4c-2cd6-0e92f7cc3bf9   |
+
+  ## Responses
+
+  **200 — driver removed**
+```json
+  {
+    "status": "success",
+    "message": "driver removed"
+  }
+```
+
+  **401 — protected route need to include sign in token as authorization bearer**
+```json
+  {
+    "status": "failed",
+    "message": "you need to include the authorization token from login"
+  }
+```
+
+  **404 — driver relation failed to permanently deleted**
+```json
+  {
+    "status": "failed",
+    "message": "driver relation not found"
+  }
+```
+
+  **500 — Internal Server Error**
+```json
+  {
+    "status": "error",
+    "message": "something wrong. please contact admin"
+  }
+```
+}

@@ -1,0 +1,60 @@
+meta {
+  name: Post Create Dictionary
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/dictionary
+  body: json
+  auth: bearer
+}
+
+body:json {
+  {
+    "dictionary_type": "trip_category",
+    "dictionary_name": "test category"
+  }
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+docs {
+  # Post Create Dictionary
+
+  This request is used to created a dictionary by using given `dictionary_type`, and `dictionary_name`. This request interacts with the MySQL database, and have a protected routes.
+
+  ## Responses
+
+  **201 — Dictionary created successfully**
+```json
+  {
+    "status": "success",
+    "message": "dictionary created"
+  }
+```
+
+  **400 — Validation failed** (one of the following)
+```json
+  { "status": "failed", "message": "dictionary name must be at least 2 characters" }
+```
+```json
+  { "status": "failed", "message": "dictionary type must be one of the following values trip_category, vehicle_merk, vehicle_type, vehicle_category, vehicle_status, vehicle_default_fuel, vehicle_fuel_status, vehicle_transmission" }
+```
+```json
+  { "status": "failed", "message": "dictionary_name is a required field" }
+```
+```json
+  { "status": "failed", "message": "dictionary name has been used. try another" }
+```
+
+  **500 — Internal Server Error**
+```json
+  {
+    "status": "error",
+    "message": "something wrong. please contact admin"
+  }
+```
+}

@@ -1,0 +1,68 @@
+meta {
+  name: Post Create Driver
+  type: http
+  seq: 7
+}
+
+post {
+  url: {{baseUrl}}/driver
+  body: json
+  auth: bearer
+}
+
+body:json {
+  {
+    "username": "tester_01",
+    "fullname": "Tester User",
+    "email": "tester@mail.com",
+    "phone": "08123456789",
+    "notes": "Lorem ipsum",
+    "telegram_user_id": "1317625977",
+    "password": "nopass123",
+    "password_confirmation": "nopass123"
+  }
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+docs {
+  # Post Create Driver
+
+  This request is used to create a driver by using given `username`, `fullname`, `password`, `telegram_user_id`, `email`, `phone`, and `notes`. This request interacts with the MySQL database, has a protected routes, and audited activity (history).
+
+  ## Responses
+
+  **201 — driver created**
+```json
+  {
+    "status": "success",
+    "message": "driver created"
+  }
+```
+
+  **400 — driver failed to validated**
+```json
+  {
+    "status": "failed",
+    "message": "[failed validation message]"
+  }
+```
+
+  **401 — protected route need to include sign in token as authorization bearer**
+```json
+  {
+    "status": "failed",
+    "message": "you need to include the authorization token from login"
+  }
+```
+
+  **500 — Internal Server Error**
+```json
+  {
+    "status": "error",
+    "message": "something wrong. please contact admin"
+  }
+```
+}
