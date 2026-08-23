@@ -1,0 +1,80 @@
+meta {
+  name: Get Nearest Place By Coordinate
+  type: http
+  seq: 8
+}
+
+get {
+  url: {{baseUrl}}/trip/coordinate/nearest/:coordinate
+  body: none
+  auth: bearer
+}
+
+params:path {
+  coordinate: -6.177464532426197,106.7912179194768
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+docs {
+  # Get Nearest Place By Coordinate
+
+  This request is used to get nearest place (trip destination or trip origin name). This request interacts with the MySQL database, has protected routes, and a pagination.
+
+  ## Path Parameters
+
+  | Name       | Type   | Required | Description         | Example                              |
+  |------------|--------|----------|-----------------------|----------------------------------------|
+  | coordinate | string | yes      | Latitude,longitude   | -6.177464532426197,106.7912179194768 |
+
+  ## Responses
+
+  **200 — Trip fetched successfully.** Ordered in descending order by `distance`
+```json
+  {
+    "status": "success",
+    "message": "trip fetched",
+    "data": {
+      "current_page": 1,
+      "data": [
+        {
+          "id": "28668090-5653-dff5-2d8f-af603fc36b45",
+          "place_name": "Location A",
+          "place_coordinate": "-6.177464532426197, 106.7912179194768",
+          "place_distance": 20,
+          "last_visit": "2025-06-19 07:54:42"
+        }
+      ],
+      "last_page": 1,
+      "per_page": 14,
+      "total": 1
+    }
+  }
+```
+
+  **401 — protected route need to include sign in token as authorization bearer**
+```json
+  {
+    "status": "failed",
+    "message": "you need to include the authorization token from login"
+  }
+```
+
+  **404 — trip failed to fetched**
+```json
+  {
+    "status": "failed",
+    "message": "trip not found"
+  }
+```
+
+  **500 — Internal Server Error**
+```json
+  {
+    "status": "error",
+    "message": "something wrong. please contact admin"
+  }
+```
+}

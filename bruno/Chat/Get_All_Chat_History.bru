@@ -1,0 +1,76 @@
+meta {
+  name: Get All Chat History
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/chat/:chat_type
+  body: none
+  auth: bearer
+}
+
+params:path {
+  chat_type: ai
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+docs {
+  # Get All Chat History
+
+  This request is used to get all ai chat history when user use the App. This request interacts with the MySQL database, has a protected routes, and has a pagination.
+
+  ## Path Parameters
+
+  | Name      | Type   | Required | Description                      | Example |
+  |-----------|--------|----------|------------------------------------|---------|
+  | chat_type | string | yes      | Chat Type can be `ai` or `nlp`   | ai      |
+
+  ## Responses
+
+  **200 — Chat fetched successfully.** Ordered in descending order by `created_at`
+```json
+  {
+    "status": "success",
+    "message": "chat fetched",
+    "data": {
+      "data": [
+        {
+          "id": "6f59235e-c398-8a83-2f95-3f1fbe95ca6e",
+          "question": "Hello there!",
+          "answer": "Lorem ipsum",
+          "is_success": 1,
+          "created_at": "2024-09-20 22:53:47"
+        }
+      ]
+    }
+  }
+```
+
+  **401 — protected route need to include sign in token as authorization bearer**
+```json
+  {
+    "status": "failed",
+    "message": "you need to include the authorization token from login"
+  }
+```
+
+  **404 — chat failed to fetched**
+```json
+  {
+    "status": "failed",
+    "message": "chat not found"
+  }
+```
+
+  **500 — Internal Server Error**
+```json
+  {
+    "status": "error",
+    "message": "something wrong. please contact admin"
+  }
+```
+}

@@ -1,0 +1,41 @@
+meta {
+  name: Get Export Service Dataset
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{baseUrl}}/export/service
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+docs {
+  # Get Export Service Dataset
+
+  This request is used to export all service data (dataset). To test it, you must execute the request in a web browser to download the file. This request interacts with the MySQL database, has a protected routes, exported file, and broadcast message with Telegram.
+
+  ## Responses
+
+  **200 — Export service successfully.** File downloaded as `xlsx` format and ordered in descending order by `created_at`. No JSON body is returned — the response is the file itself.
+
+  **401 — protected route need to include sign in token as authorization bearer**
+```json
+  {
+    "status": "failed",
+    "message": "you need to include the authorization token from login"
+  }
+```
+
+  **500 — Internal Server Error**
+```json
+  {
+    "status": "error",
+    "message": "something wrong. please contact admin"
+  }
+```
+}

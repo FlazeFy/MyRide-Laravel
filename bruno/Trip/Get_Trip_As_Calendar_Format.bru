@@ -1,0 +1,63 @@
+meta {
+  name: Get Trip As Calendar Format
+  type: http
+  seq: 7
+}
+
+get {
+  url: {{baseUrl}}/trip/calendar
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+docs {
+  # Get Trip As Calendar Format
+
+  This request is used to get all trip data but in calendar format. This request interacts with the MySQL database, and has protected routes.
+
+  ## Responses
+
+  **200 — Trip fetched successfully.** Ordered in descending order by `created_at`
+```json
+  {
+    "status": "success",
+    "message": "trip fetched",
+    "data": [
+      {
+        "id": "28668090-5653-dff5-2d8f-af603fc36b45",
+        "trip_location_name": "Location A - Location B",
+        "vehicle_plate_number": "D 1710 PWT",
+        "created_at": "2024-03-19 02:37:58"
+      }
+    ]
+  }
+```
+
+  **401 — protected route need to include sign in token as authorization bearer**
+```json
+  {
+    "status": "failed",
+    "message": "you need to include the authorization token from login"
+  }
+```
+
+  **404 — trip failed to fetched**
+```json
+  {
+    "status": "failed",
+    "message": "trip not found"
+  }
+```
+
+  **500 — Internal Server Error**
+```json
+  {
+    "status": "error",
+    "message": "something wrong. please contact admin"
+  }
+```
+}
