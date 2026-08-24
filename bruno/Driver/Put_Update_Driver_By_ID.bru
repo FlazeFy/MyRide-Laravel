@@ -1,0 +1,75 @@
+meta {
+  name: Put Update Driver By ID
+  type: http
+  seq: 8
+}
+
+put {
+  url: {{baseUrl}}/driver/:id
+  body: json
+  auth: bearer
+}
+
+params:path {
+  id: e1288783-a5d4-1c4c-2cd6-0e92f7cc3bf9
+}
+
+body:json {
+  {
+    "username": "tester_01",
+    "fullname": "Tester User",
+    "email": "tester@mail.com",
+    "phone": "08123456789",
+    "notes": "Lorem ipsum"
+  }
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+docs {
+  # Put Update Driver By ID
+
+  This request is used to update a driver by using given `username`, `fullname`, `email`, `phone`, and `notes`. This request interacts with the MySQL database, has a protected routes, and audited activity (history).
+
+  ## Path Parameters
+
+  | Name | Type   | Required | Description | Example                               |
+  |------|--------|----------|--------------|------------------------------------------|
+  | id   | string | yes      | Driver ID   | e1288783-a5d4-1c4c-2cd6-0e92f7cc3bf9   |
+
+  ## Responses
+
+  **200 — driver updated**
+```json
+  {
+    "status": "success",
+    "message": "driver updated"
+  }
+```
+
+  **400 — driver failed to validated**
+```json
+  {
+    "status": "failed",
+    "message": "[failed validation message]"
+  }
+```
+
+  **401 — protected route need to include sign in token as authorization bearer**
+```json
+  {
+    "status": "failed",
+    "message": "you need to include the authorization token from login"
+  }
+```
+
+  **500 — Internal Server Error**
+```json
+  {
+    "status": "error",
+    "message": "something wrong. please contact admin"
+  }
+```
+}

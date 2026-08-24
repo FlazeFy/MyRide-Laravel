@@ -1,0 +1,77 @@
+meta {
+  name: Post Create Fuel
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{baseUrl}}/fuel
+  body: multipartForm
+  auth: bearer
+}
+
+body:multipart-form {
+  vehicle_id: e1288783-a5d4-1c4c-2cd6-0e92f7cc3bf9
+  fuel_volume: 20
+  fuel_price_total: 300000
+  fuel_brand: Shell
+  fuel_type: Super
+  fuel_ron: 92
+  fuel_bill: @file()
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+docs {
+  # Post Create Fuel
+
+  This request is used to create a fuel by using given `vehicle_id`, `fuel_volume`, `fuel_price_total`, `fuel_brand`, `fuel_type`, `fuel_ron`, and `fuel_bill` (Fuel Receipt image). This request interacts with the MySQL database, firebase storage, has a protected routes, and audited activity (history).
+
+  ## Request Body (multipart/form-data)
+
+  | Field            | Type    | Required | Description                        |
+  |-------------------|---------|----------|--------------------------------------|
+  | vehicle_id       | string  | yes      | Vehicle ID                          |
+  | fuel_volume      | integer | yes      | Fuel volume                         |
+  | fuel_price_total | integer | yes      | Total fuel price                    |
+  | fuel_brand       | string  | yes      | Fuel brand (e.g. Shell)             |
+  | fuel_type        | string  | no       | Fuel type (e.g. Super)              |
+  | fuel_ron         | integer | no       | Fuel RON rating                     |
+  | fuel_bill        | file    | no       | Fuel receipt image (binary upload)  |
+
+  ## Responses
+
+  **201 — fuel created**
+```json
+  {
+    "status": "success",
+    "message": "fuel created"
+  }
+```
+
+  **401 — protected route need to include sign in token as authorization bearer**
+```json
+  {
+    "status": "failed",
+    "message": "you need to include the authorization token from login"
+  }
+```
+
+  **404 — fuel failed to created**
+```json
+  {
+    "status": "failed",
+    "message": "fuel not found"
+  }
+```
+
+  **500 — Internal Server Error**
+```json
+  {
+    "status": "error",
+    "message": "something wrong. please contact admin"
+  }
+```
+}

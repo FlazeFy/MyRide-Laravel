@@ -1,0 +1,63 @@
+meta {
+  name: Post Create Driver Vehicle Relation
+  type: http
+  seq: 9
+}
+
+post {
+  url: {{baseUrl}}/driver/vehicle
+  body: json
+  auth: bearer
+}
+
+body:json {
+  {
+    "driver_id": "830b1ba4-3e90-28d4-1f0b-aadcd406090f",
+    "vehicle_id": "6c1ff866-ce85-fa03-21ce-b30905b43b1a",
+    "relation_note": "Driver weekday"
+  }
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+docs {
+  # Post Create Driver Vehicle Relation
+
+  This request is used to create a driver - vehicle relation by using given `vehicle_id`, `driver_id`, and `relation_note`. This request interacts with the MySQL database, has a protected routes, broadcast message with Telegram, and audited activity (history).
+
+  ## Responses
+
+  **201 — driver relation created**
+```json
+  {
+    "status": "success",
+    "message": "driver assigned"
+  }
+```
+
+  **400 — driver failed to validated**
+```json
+  {
+    "status": "failed",
+    "message": "[failed validation message]"
+  }
+```
+
+  **401 — protected route need to include sign in token as authorization bearer**
+```json
+  {
+    "status": "failed",
+    "message": "you need to include the authorization token from login"
+  }
+```
+
+  **500 — Internal Server Error**
+```json
+  {
+    "status": "error",
+    "message": "something wrong. please contact admin"
+  }
+```
+}
