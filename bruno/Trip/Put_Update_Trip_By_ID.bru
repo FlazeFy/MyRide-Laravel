@@ -1,0 +1,79 @@
+meta {
+  name: Put Update Trip By ID
+  type: http
+  seq: 11
+}
+
+put {
+  url: {{baseUrl}}/trip/:id
+  body: json
+  auth: bearer
+}
+
+params:path {
+  id: 2d98f524-de02-11ed-b5ea-0242ac120002
+}
+
+body:json {
+  {
+    "vehicle_id": "2d98f524-de02-11ed-b5ea-0242ac120002",
+    "driver_id": "2d98f524-de02-11ed-b5ea-0242ac120002",
+    "trip_desc": "Business meeting",
+    "trip_category": "Business",
+    "trip_origin_name": "Office A",
+    "trip_person": "John Doe",
+    "trip_origin_coordinate": "-6.9175,107.6191",
+    "trip_destination_coordinate": "-6.2000,106.8167",
+    "trip_destination_name": "Office B"
+  }
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+docs {
+  # Put Update Trip By ID
+
+  This request is used to update a trip using given `ID`. The updated field are `vehicle_id`, `driver_id`, `trip_desc`, `trip_category`, `trip_origin_name`, `trip_person`, `trip_origin_coordinate`, `trip_destination_coordinate`, and `trip_destination_name`. This request interacts with the MySQL database, has a protected routes, broadcast message with Telegram, and audited activity (history).
+
+  ## Path Parameters
+
+  | Name | Type   | Required | Description | Example                               |
+  |------|--------|----------|--------------|------------------------------------------|
+  | id   | string | yes      | Trip ID     | 2d98f524-de02-11ed-b5ea-0242ac120002   |
+
+  ## Responses
+
+  **200 — trip updated**
+```json
+  {
+    "status": "success",
+    "message": "trip updated"
+  }
+```
+
+  **400 — trip failed to validated**
+```json
+  {
+    "status": "failed",
+    "message": "[failed validation message]"
+  }
+```
+
+  **401 — protected route need to include sign in token as authorization bearer**
+```json
+  {
+    "status": "failed",
+    "message": "you need to include the authorization token from login"
+  }
+```
+
+  **500 — Internal Server Error**
+```json
+  {
+    "status": "error",
+    "message": "something wrong. please contact admin"
+  }
+```
+}

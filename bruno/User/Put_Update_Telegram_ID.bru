@@ -1,0 +1,61 @@
+meta {
+  name: Put Update Telegram ID
+  type: http
+  seq: 5
+}
+
+put {
+  url: {{baseUrl}}/user/update_telegram_id
+  body: json
+  auth: bearer
+}
+
+body:json {
+  {
+    "telegram_user_id": "1234567890"
+  }
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+docs {
+  # Put Update Telegram ID
+
+  This request is used to update user's `telegram_user_id` using given `ID`. This request interacts with the MySQL database, has a protected routes, broadcast message with Telegram, and audited activity (history).
+
+  ## Responses
+
+  **200 — telegram id updated! and validation has been sended to you**
+```json
+  {
+    "status": "success",
+    "message": "telegram id updated! and validation has been sended to you"
+  }
+```
+
+  **404 — telegram id failed to update**
+```json
+  {
+    "status": "failed",
+    "message": "user not found"
+  }
+```
+
+  **409 — telegram user id has been used**
+```json
+  {
+    "status": "failed",
+    "message": "telegram ID has been used. try another"
+  }
+```
+
+  **500 — Internal Server Error**
+```json
+  {
+    "status": "error",
+    "message": "something wrong. please contact admin"
+  }
+```
+}

@@ -1,0 +1,63 @@
+meta {
+  name: Put Update Profile
+  type: http
+  seq: 7
+}
+
+put {
+  url: {{baseUrl}}/user/update_profile
+  body: json
+  auth: bearer
+}
+
+body:json {
+  {
+    "telegram_user_id": "1234567890",
+    "email": "tester@gmail.com",
+    "username": "flazefy"
+  }
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+docs {
+  # Put Update Profile
+
+  This request is used to update user profile. The updated field are `email`, `username`, and `telegram_user_id`. This request interacts with the MySQL database, has a protected routes, broadcast message with Telegram, and audited activity (history).
+
+  ## Responses
+
+  **200 — profile updated**
+```json
+  {
+    "status": "success",
+    "message": "profile updated"
+  }
+```
+
+  **404 — telegram id failed to update**
+```json
+  {
+    "status": "failed",
+    "message": "user not found"
+  }
+```
+
+  **409 — username / email has been used**
+```json
+  {
+    "status": "failed",
+    "message": "username or email has been used. try another"
+  }
+```
+
+  **500 — Internal Server Error**
+```json
+  {
+    "status": "error",
+    "message": "something wrong. please contact admin"
+  }
+```
+}

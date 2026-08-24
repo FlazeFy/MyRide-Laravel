@@ -1,0 +1,49 @@
+meta {
+  name: Put Validate Telegram ID Change
+  type: http
+  seq: 6
+}
+
+put {
+  url: {{baseUrl}}/user/validate_telegram_id
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "request_context": "A1B2C3"
+  }
+}
+
+docs {
+  # Put Validate Telegram ID Change
+
+  This request is used to validate user's `telegram_user_id` changing request by using given `ID`. This request interacts with the MySQL database, has a protected routes, broadcast message with Telegram, and audited activity (history).
+
+  ## Responses
+
+  **200 — telegram id has been validated**
+```json
+  {
+    "status": "success",
+    "message": "Telegram ID has been validated"
+  }
+```
+
+  **404 — validation token is not valid**
+```json
+  {
+    "status": "failed",
+    "message": "Telegram ID is invalid"
+  }
+```
+
+  **500 — Internal Server Error**
+```json
+  {
+    "status": "error",
+    "message": "something wrong. please contact admin"
+  }
+```
+}

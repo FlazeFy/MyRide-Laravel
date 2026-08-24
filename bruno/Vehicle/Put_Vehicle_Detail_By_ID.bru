@@ -1,0 +1,89 @@
+meta {
+  name: Put Vehicle Detail By ID
+  type: http
+  seq: 8
+}
+
+put {
+  url: {{baseUrl}}/vehicle/:id
+  body: json
+  auth: bearer
+}
+
+params:path {
+  id: 4f33d5e4-de9f-11ed-b5ea-0242ac120002
+}
+
+body:json {
+  {
+    "vehicle_name": "Kijang Innova 2.0 Type G MT",
+    "vehicle_merk": "Toyota",
+    "vehicle_type": "Minibus",
+    "vehicle_price": 275000000,
+    "vehicle_desc": "sudah jarang digunakan 2",
+    "vehicle_distance": 90000,
+    "vehicle_category": "Parents Car",
+    "vehicle_status": "Available",
+    "vehicle_year_made": 2011,
+    "vehicle_plate_number": "PA 1234 ZX",
+    "vehicle_fuel_status": "Not Monitored",
+    "vehicle_fuel_capacity": 50,
+    "vehicle_default_fuel": "Pertamina Pertalite",
+    "vehicle_color": "White",
+    "vehicle_transmission": "Manual",
+    "vehicle_capacity": 8
+  }
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+docs {
+  # Put Vehicle Detail By ID
+
+  This request is used to update a vehicle by using given `ID`. The updated fields are `vehicle_name`, `vehicle_merk`, `vehicle_type`, `vehicle_price`, `vehicle_distance`, `vehicle_category`, `vehicle_status`, `vehicle_year_made`, `vehicle_plate_number`, `vehicle_fuel_status`, `vehicle_default_fuel`, `vehicle_color`, `vehicle_transmission`, and `vehicle_capacity`. This request interacts with the MySQL database, has a protected routes, and audited activity (history).
+
+  ## Path Parameters
+
+  | Name | Type   | Required | Description | Example                               |
+  |------|--------|----------|--------------|------------------------------------------|
+  | id   | string | yes      | Vehicle ID  | 4f33d5e4-de9f-11ed-b5ea-0242ac120002   |
+
+  ## Responses
+
+  **200 — Vehicle update successfully**
+```json
+  {
+    "status": "success",
+    "message": "vehicle updated"
+  }
+```
+
+  **400 — Validation failed** (one of the following)
+```json
+  { "status": "failed", "message": "vehicle name must be at least 2 characters" }
+```
+```json
+  { "status": "failed", "message": "vehicle type is a required field" }
+```
+```json
+  { "status": "failed", "message": "vehicle type must be one of the following values City Car, Minibus, Motorcycle, Hatchback, Sedan, SUV, Pickup Truck, Convertible, Coupe, Van, Wagon, Crossover, Electric" }
+```
+
+  **404 — vehicle failed to fetched**
+```json
+  {
+    "status": "failed",
+    "message": "vehicle not found"
+  }
+```
+
+  **500 — Internal Server Error**
+```json
+  {
+    "status": "error",
+    "message": "something wrong. please contact admin"
+  }
+```
+}
