@@ -1,0 +1,75 @@
+meta {
+  name: Put Update Inventory By ID
+  type: http
+  seq: 3
+}
+
+put {
+  url: {{baseUrl}}/inventory/:id
+  body: json
+  auth: bearer
+}
+
+params:path {
+  id: e1288783-a5d4-1c4c-2cd6-0e92f7cc3bf9
+}
+
+body:json {
+  {
+    "vehicle_id": "e1288783-a5d4-1c4c-2cd6-0e92f7cc3bf9",
+    "inventory_name": "Secondary Tire",
+    "inventory_category": "Vehicle Component",
+    "inventory_storage": "Trunk",
+    "inventory_qty": 1
+  }
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+docs {
+  # Put Update Inventory By ID
+
+  This request is used to update an inventory by using given `ID`. The updated field are `vehicle_id`, `inventory_name`, `inventory_category`, `inventory_storage`, and `inventory_qty`. This request interacts with the MySQL database, has a protected routes, and audited activity (history).
+
+  ## Path Parameters
+
+  | Name | Type   | Required | Description   | Example                               |
+  |------|--------|----------|----------------|------------------------------------------|
+  | id   | string | yes      | Inventory ID  | e1288783-a5d4-1c4c-2cd6-0e92f7cc3bf9   |
+
+  ## Responses
+
+  **200 — inventory updated**
+```json
+  {
+    "status": "success",
+    "message": "inventory updated"
+  }
+```
+
+  **400 — inventory failed to validated**
+```json
+  {
+    "status": "failed",
+    "message": "[failed validation message]"
+  }
+```
+
+  **401 — protected route need to include sign in token as authorization bearer**
+```json
+  {
+    "status": "failed",
+    "message": "you need to include the authorization token from login"
+  }
+```
+
+  **500 — Internal Server Error**
+```json
+  {
+    "status": "error",
+    "message": "something wrong. please contact admin"
+  }
+```
+}

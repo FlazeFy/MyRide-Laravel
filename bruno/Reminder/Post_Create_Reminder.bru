@@ -1,0 +1,77 @@
+meta {
+  name: Post Create Reminder
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{baseUrl}}/reminder
+  body: multipartForm
+  auth: bearer
+}
+
+body:multipart-form {
+  vehicle_id: e1288783-a5d4-1c4c-2cd6-0e92f7cc3bf9
+  reminder_title: Routine service KM 50000
+  reminder_context: Service
+  reminder_body: Lorem ipsum
+  reminder_location: -6.230333799218126, 106.81866017790138
+  reminder_image: @file()
+  remind_at: 2025-09-05 00:00:00
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+docs {
+  # Post Create Reminder
+
+  This request is used to create a reminder by using given `vehicle_id`, `reminder_title`, `reminder_context`, `reminder_body`, `reminder_location`, `reminder_image`, and `reminder_at`. This request interacts with the MySQL database, firebase storage, google calendar API, has a protected routes, and audited activity (history).
+
+  ## Request Body (multipart/form-data)
+
+  | Field              | Type   | Required | Description                        |
+  |----------------------|--------|----------|---------------------------------------|
+  | vehicle_id          | string | yes      | Vehicle ID                          |
+  | reminder_title      | string | yes      | Reminder title                       |
+  | reminder_context    | string | yes      | Reminder context (e.g. Service)      |
+  | reminder_body       | string | yes      | Reminder body text                   |
+  | reminder_location   | string | no       | Coordinates (lat, long)             |
+  | reminder_image      | file   | no       | Reminder image (binary)              |
+  | remind_at           | string | yes      | Reminder date/time                   |
+
+  ## Responses
+
+  **201 — reminder created**
+```json
+  {
+    "status": "success",
+    "message": "reminder created"
+  }
+```
+
+  **400 — reminder failed to validated**
+```json
+  {
+    "status": "failed",
+    "message": "[failed validation message]"
+  }
+```
+
+  **401 — protected route need to include sign in token as authorization bearer**
+```json
+  {
+    "status": "failed",
+    "message": "you need to include the authorization token from login"
+  }
+```
+
+  **500 — Internal Server Error**
+```json
+  {
+    "status": "error",
+    "message": "something wrong. please contact admin"
+  }
+```
+}

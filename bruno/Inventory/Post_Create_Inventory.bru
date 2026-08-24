@@ -1,0 +1,75 @@
+meta {
+  name: Post Create Inventory
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/inventory
+  body: multipartForm
+  auth: bearer
+}
+
+body:multipart-form {
+  vehicle_id: e1288783-a5d4-1c4c-2cd6-0e92f7cc3bf9
+  inventory_name: Secondary Tire
+  inventory_category: Vehicle Component
+  inventory_storage: Trunk
+  inventory_qty: 1
+  inventory_image_url: @file()
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+docs {
+  # Post Create Inventory
+
+  This request is used to create an inventory by using given `vehicle_id`, `inventory_name`, `inventory_category`, `inventory_storage`, `inventory_qty`, and `inventory_image_url`. This request interacts with the MySQL database, firebase storage, has a protected routes, and audited activity (history).
+
+  ## Request Body (multipart/form-data)
+
+  | Field                | Type    | Required | Description               |
+  |------------------------|---------|----------|-----------------------------|
+  | vehicle_id            | string  | yes      | Vehicle ID                 |
+  | inventory_name        | string  | yes      | Inventory name              |
+  | inventory_category    | string  | yes      | Inventory category          |
+  | inventory_storage     | string  | yes      | Inventory storage location  |
+  | inventory_qty         | integer | yes      | Quantity                    |
+  | inventory_image_url   | file    | no       | Inventory image (binary)    |
+
+  ## Responses
+
+  **201 — inventory created**
+```json
+  {
+    "status": "success",
+    "message": "inventory created"
+  }
+```
+
+  **400 — inventory failed to validated**
+```json
+  {
+    "status": "failed",
+    "message": "[failed validation message]"
+  }
+```
+
+  **401 — protected route need to include sign in token as authorization bearer**
+```json
+  {
+    "status": "failed",
+    "message": "you need to include the authorization token from login"
+  }
+```
+
+  **500 — Internal Server Error**
+```json
+  {
+    "status": "error",
+    "message": "something wrong. please contact admin"
+  }
+```
+}
