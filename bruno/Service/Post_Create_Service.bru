@@ -1,0 +1,67 @@
+meta {
+  name: Post Create Service
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{baseUrl}}/service
+  body: json
+  auth: bearer
+}
+
+body:json {
+  {
+    "vehicle_id": "e1288783-a5d4-1c4c-2cd6-0e92f7cc3bf9",
+    "service_note": "Routine service KM 50.000",
+    "service_category": "Routine",
+    "service_location": "Honda Autobest",
+    "service_price_total": 4500000,
+    "remind_at": "2025-01-20 09:15:00",
+    "created_at": "2025-01-20 09:15:00"
+  }
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+docs {
+  # Post Create Service
+
+  This request is used to create a service by using given `vehicle_id`, `service_note`, `service_category`, `service_location`, `service_price_total`, and `remind_at`. This request interacts with the MySQL database, has a protected routes, and audited activity (history).
+
+  ## Responses
+
+  **201 — service created**
+```json
+  {
+    "status": "success",
+    "message": "service created"
+  }
+```
+
+  **400 — service failed to validated**
+```json
+  {
+    "status": "failed",
+    "message": "[failed validation message]"
+  }
+```
+
+  **401 — protected route need to include sign in token as authorization bearer**
+```json
+  {
+    "status": "failed",
+    "message": "you need to include the authorization token from login"
+  }
+```
+
+  **500 — Internal Server Error**
+```json
+  {
+    "status": "error",
+    "message": "something wrong. please contact admin"
+  }
+```
+}

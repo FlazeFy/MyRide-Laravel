@@ -1,0 +1,65 @@
+meta {
+  name: Delete Trip By ID
+  type: http
+  seq: 10
+}
+
+delete {
+  url: {{baseUrl}}/trip/destroy/:id
+  body: none
+  auth: bearer
+}
+
+params:path {
+  id: e1288783-a5d4-1c4c-2cd6-0e92f7cc3bf9
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+docs {
+  # Delete Trip By ID
+
+  This request is used to permanently delete a trip based on the provided `ID`. This request interacts with the MySQL database, has a protected routes, and audited activity (history).
+
+  ## Path Parameters
+
+  | Name | Type   | Required | Description | Example                               |
+  |------|--------|----------|--------------|------------------------------------------|
+  | id   | string | yes      | Trip ID     | e1288783-a5d4-1c4c-2cd6-0e92f7cc3bf9   |
+
+  ## Responses
+
+  **200 — trip permanently deleted**
+```json
+  {
+    "status": "success",
+    "message": "trip permanently deleted"
+  }
+```
+
+  **401 — protected route need to include sign in token as authorization bearer**
+```json
+  {
+    "status": "failed",
+    "message": "you need to include the authorization token from login"
+  }
+```
+
+  **404 — trip failed to permanently deleted**
+```json
+  {
+    "status": "failed",
+    "message": "trip not found"
+  }
+```
+
+  **500 — Internal Server Error**
+```json
+  {
+    "status": "error",
+    "message": "something wrong. please contact admin"
+  }
+```
+}

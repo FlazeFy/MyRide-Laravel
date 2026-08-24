@@ -1,0 +1,76 @@
+meta {
+  name: Put Update Service By ID
+  type: http
+  seq: 6
+}
+
+put {
+  url: {{baseUrl}}/service/:id
+  body: json
+  auth: bearer
+}
+
+params:path {
+  id: e1288783-a5d4-1c4c-2cd6-0e92f7cc3bf9
+}
+
+body:json {
+  {
+    "vehicle_id": "e1288783-a5d4-1c4c-2cd6-0e92f7cc3bf9",
+    "service_note": "Routine service KM 50.000",
+    "service_category": "Routine",
+    "service_location": "Honda Autobest",
+    "service_price_total": 4500000,
+    "remind_at": "2025-01-20 09:15:00"
+  }
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+docs {
+  # Put Update Service By ID
+
+  This request is used to update service by using given `ID`. The updated field are `vehicle_id`, `service_note`, `service_category`, `service_location`, `service_price_total`, and `remind_at`. This request interacts with the MySQL database, has a protected routes, and audited activity (history).
+
+  ## Path Parameters
+
+  | Name | Type   | Required | Description | Example                               |
+  |------|--------|----------|--------------|------------------------------------------|
+  | id   | string | yes      | Service ID  | e1288783-a5d4-1c4c-2cd6-0e92f7cc3bf9   |
+
+  ## Responses
+
+  **200 — service updated**
+```json
+  {
+    "status": "success",
+    "message": "service updated"
+  }
+```
+
+  **400 — service failed to validated**
+```json
+  {
+    "status": "failed",
+    "message": "[failed validation message]"
+  }
+```
+
+  **401 — protected route need to include sign in token as authorization bearer**
+```json
+  {
+    "status": "failed",
+    "message": "you need to include the authorization token from login"
+  }
+```
+
+  **500 — Internal Server Error**
+```json
+  {
+    "status": "error",
+    "message": "something wrong. please contact admin"
+  }
+```
+}

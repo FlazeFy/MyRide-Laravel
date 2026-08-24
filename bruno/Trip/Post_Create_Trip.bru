@@ -1,0 +1,69 @@
+meta {
+  name: Post Create Trip
+  type: http
+  seq: 9
+}
+
+post {
+  url: {{baseUrl}}/trip
+  body: json
+  auth: bearer
+}
+
+body:json {
+  {
+    "vehicle_id": "2d98f524-de02-11ed-b5ea-0242ac120002",
+    "driver_id": "2d98f524-de02-11ed-b5ea-0242ac120002",
+    "trip_desc": "Business meeting",
+    "trip_category": "Business",
+    "trip_origin_name": "Office A",
+    "trip_person": "John Doe",
+    "trip_origin_coordinate": "-6.9175,107.6191",
+    "trip_destination_coordinate": "-6.2000,106.8167",
+    "trip_destination_name": "Office B"
+  }
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+docs {
+  # Post Create Trip
+
+  This request is used to create a new trip using `vehicle_id`, `driver_id`, `trip_desc`, `trip_category`, `trip_origin_name`, `trip_person`, `trip_origin_coordinate`, `trip_destination_coordinate`, and `trip_destination_name`. This request interacts with the MySQL database, has a protected routes, broadcast message with Telegram, and audited activity (history).
+
+  ## Responses
+
+  **201 — Trip created successfully**
+```json
+  {
+    "status": "success",
+    "message": "trip created"
+  }
+```
+
+  **400 — Validation failed** (one of the following)
+```json
+  { "status": "failed", "message": "trip category must be at least 2 characters" }
+```
+```json
+  { "status": "failed", "message": "trip category is a required field" }
+```
+
+  **404 — vehicle failed to fetched**
+```json
+  {
+    "status": "failed",
+    "message": "vehicle not found"
+  }
+```
+
+  **500 — Internal Server Error**
+```json
+  {
+    "status": "error",
+    "message": "something wrong. please contact admin"
+  }
+```
+}
