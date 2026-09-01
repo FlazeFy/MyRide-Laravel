@@ -1,0 +1,69 @@
+meta {
+  name: Post Update Vehicle Image Collection By Id
+  type: http
+  seq: 12
+}
+
+post {
+  url: {{baseUrl}}/vehicle/image_collection/:id
+  body: multipartForm
+  auth: bearer
+}
+
+params:path {
+  id: e1288783-a5d4-1c4c-2cd6-0e92f7cc3bf9
+}
+
+body:multipart-form {
+  vehicle_other_img_url: @file()
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+docs {
+  # Post Update Vehicle Image Collection By Id
+
+  This request is used to update vehicle image collection by given vehicle's `ID`. The updated field is `vehicle_other_img_url`. This request interacts with the MySQL database, firebase storage, and has a protected routes.
+
+  ## Path Parameters
+
+  | Name | Type   | Required | Description | Example                               |
+  |------|--------|----------|--------------|------------------------------------------|
+  | id   | string | yes      | Vehicle ID  | e1288783-a5d4-1c4c-2cd6-0e92f7cc3bf9   |
+
+  ## Responses
+
+  **201 — Vehicle image collection update successfully**
+```json
+  {
+    "status": "success",
+    "message": "vehicle updated"
+  }
+```
+
+  **400 — Validation failed**
+```json
+  {
+    "status": "failed",
+    "message": "vehicle image collection is a required field"
+  }
+```
+
+  **404 — vehicle failed to fetched**
+```json
+  {
+    "status": "failed",
+    "message": "vehicle not found"
+  }
+```
+
+  **500 — Internal Server Error**
+```json
+  {
+    "status": "error",
+    "message": "something wrong. please contact admin"
+  }
+```
+}

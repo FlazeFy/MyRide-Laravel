@@ -1,0 +1,67 @@
+meta {
+  name: Delete Vehicle Image Collection By Image ID
+  type: http
+  seq: 13
+}
+
+delete {
+  url: {{baseUrl}}/vehicle/image_collection/destroy/:vehicle_id/:image_id
+  body: none
+  auth: bearer
+}
+
+params:path {
+  vehicle_id: e1288783-a5d4-1c4c-2cd6-0e92f7cc3bf9
+  image_id: e1288783-a5d4-1c4c-2cd6-0e92f7cc3bf9
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+docs {
+  # Delete Vehicle Image Collection By Image ID
+
+  This request is used to delete an image in vehicle by given `vehicle_id` and `image_id` for the image collection. Updated field is `vehicle_other_img_url`. This request interacts with the MySQL database, firebase storage, and has a protected routes.
+
+  ## Path Parameters
+
+  | Name        | Type   | Required | Description       | Example                               |
+  |-------------|--------|----------|--------------------|------------------------------------------|
+  | vehicle_id  | string | yes      | Vehicle ID        | e1288783-a5d4-1c4c-2cd6-0e92f7cc3bf9   |
+  | image_id    | string | yes      | Vehicle Image ID  | e1288783-a5d4-1c4c-2cd6-0e92f7cc3bf9   |
+
+  ## Responses
+
+  **200 — Vehicle image collection update successfully**
+```json
+  {
+    "status": "success",
+    "message": "vehicle image update"
+  }
+```
+
+  **400 — Validation failed**
+```json
+  {
+    "status": "failed",
+    "message": "vehicle image collection is a required field"
+  }
+```
+
+  **404 — vehicle failed to fetched**
+```json
+  {
+    "status": "failed",
+    "message": "vehicle not found"
+  }
+```
+
+  **500 — Internal Server Error**
+```json
+  {
+    "status": "error",
+    "message": "something wrong. please contact admin"
+  }
+```
+}
